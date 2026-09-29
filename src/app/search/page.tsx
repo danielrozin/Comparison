@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { slugify } from "@/lib/utils/slugify";
-import { trackComparisonSearch } from "@/lib/utils/analytics";
+import { parseComparisonQuery } from "@/lib/parse-comparison-query";
+import { trackComparisonSearch, trackSearchParsed } from "@/lib/utils/analytics";
 import { saveSearchContext } from "@/lib/utils/recently-viewed";
 import { Suspense } from "react";
 
@@ -81,7 +81,7 @@ const searchPageSchema = {
       name: "Can I generate a comparison that does not exist yet?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. Type your query in the format \"A vs B\" (e.g. \"MacBook Air vs Dell XPS\") and press Enter. A Versus B will route you to that comparison page. If the page does not yet exist, it is queued for research and generation.",
+        text: "Yes. Type two things, such as \"Thailand vs Vietnam\" or \"Thailand compared to Vietnam\", and press Enter. You go straight to that comparison. If the page does not exist yet, you will see a short \"We're building your comparison\" state (usually 20–40 seconds) and then the finished page, at a permanent address, for every later visitor.",
       },
     },
     {
@@ -176,8 +176,8 @@ function SearchContent() {
   const [searchQuery, setSearchQuery] = useState(query);
   const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
   const [loading, setLoading] = useState(false);
-  const [compareWith, setCompareWith] = useState("");
   const [trending, setTrending] = useState<{ slug: string; title: string }[]>([]);
+  const parsedQuery = parseComparisonQuery(query);
 
   useEffect(() => {
     fetch("/api/v1/trending?limit=8")
@@ -191,10 +191,20 @@ function SearchContent() {
   }, []);
 
   useEffect(() => {
+    if (!query) return;
+    trackSearchParsed(query, parsedQuery.slug, parsedQuery.parsed);
+    if (parsedQuery.parsed && parsedQuery.slug) {
+      router.replace(`/compare/${parsedQuery.slug}`);
+    }
+  }, [query, parsedQuery.parsed, parsedQuery.slug, router]);
+
+  useEffect(() => {
     setSearchQuery(query);
-    if (!query) {
-      setResults([]);
-      setLoading(false);
+    if (!query || (parsedQuery.parsed && parsedQuery.slug)) {
+      if (!query) {
+        setResults([]);
+        setLoading(false);
+      }
       return;
     }
 
@@ -224,29 +234,17 @@ function SearchContent() {
     return () => {
       cancelled = true;
     };
-  }, [query]);
+  }, [query, parsedQuery.parsed, parsedQuery.slug]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    // Check if it's a comparison query
-    const patterns = [
-      /^compare\s+(.+?)\s+(?:to|and|with|vs\.?)\s+(.+)$/i,
-      /^differences?\s+between\s+(.+?)\s+and\s+(.+)$/i,
-      /^(.+?)\s+compared\s+(?:to|with)\s+(.+)$/i,
-      /^(.+?)\s+(?:vs\.?|versus|compared\s+to|against)\s+(.+)$/i,
-      /^(.+?)\s+[-–—]\s+(.+)$/,
-      /^(.{2,40}?)\s+or\s+(.{2,40})$/i,
-    ];
-
-    for (const pattern of patterns) {
-      const match = searchQuery.match(pattern);
-      if (match && match[1].trim() && match[2].trim()) {
-        const slug = `${slugify(match[1].trim())}-vs-${slugify(match[2].trim())}`;
-        router.push(`/compare/${slug}`);
-        return;
-      }
+    const parsed = parseComparisonQuery(searchQuery);
+    if (parsed.parsed && parsed.slug) {
+      trackSearchParsed(searchQuery.trim(), parsed.slug, true);
+      router.push(`/compare/${parsed.slug}`);
+      return;
     }
 
     router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
@@ -293,7 +291,7 @@ function SearchContent() {
             Search Comparisons
           </h1>
           <p className="text-primary-200 text-sm sm:text-base mb-8">
-            Find any comparison or type &ldquo;A vs B&rdquo; to generate one instantly.
+            Search the library, or type &ldquo;Thailand vs Vietnam&rdquo; and we&apos;ll create the comparison if it doesn&apos;t exist yet.
           </p>
 
           {/* Search form */}
@@ -394,38 +392,8 @@ function SearchContent() {
             </h2>
             <p className="text-text-secondary text-sm mb-4">
               Nothing in the library matches <span className="font-medium text-text">{query}</span> exactly.
-              Name something to compare it with and we&apos;ll create the comparison.
+              Type two things, like &ldquo;Thailand vs Vietnam&rdquo;, and we&apos;ll create that comparison. It usually takes 20–40 seconds, then the page stays up for everyone.
             </p>
-            <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
-              <span className="text-sm font-medium text-text">{query} vs</span>
-              <label htmlFor="compare-with" className="sr-only">Compare {query} with</label>
-              <input
-                autoComplete="off"
-                type="text"
-                placeholder="Enter something to compare..."
-                id="compare-with"
-                aria-label={`Compare ${query} with`}
-                value={compareWith}
-                onChange={(e) => setCompareWith(e.target.value)}
-                className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/60 focus:border-primary-500 outline-none w-56"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && compareWith.trim()) {
-                    router.push(`/compare/${slugify(query)}-vs-${slugify(compareWith.trim())}`);
-                  }
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  if (compareWith.trim()) {
-                    router.push(`/compare/${slugify(query)}-vs-${slugify(compareWith.trim())}`);
-                  }
-                }}
-                className="inline-block px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg transition-all duration-150 hover:shadow-md hover:scale-105 active:scale-95"
-              >
-                Create this comparison
-              </button>
-            </div>
           </div>
           <PopularComparisons items={trending} />
         </div>
@@ -433,7 +401,7 @@ function SearchContent() {
         <div className="space-y-8 pt-2">
           <PopularComparisons items={trending} />
           <p className="text-center text-sm text-text-secondary py-4">
-            Or type &ldquo;A vs B&rdquo; above to generate any comparison instantly.
+            Or type &ldquo;Thailand vs Vietnam&rdquo; above. If that page doesn&apos;t exist yet, we&apos;ll create it.
           </p>
         </div>
       )}

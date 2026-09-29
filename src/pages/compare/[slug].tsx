@@ -9,18 +9,12 @@ import {
   isComparisonDbReachable,
 } from "@/lib/services/comparison-service";
 import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
+import { canonicalRequestedComparisonSlug } from "@/lib/parse-comparison-query";
 import {
   HTML_SUFFIX_COMPARE_STATUS,
   resolveHtmlSuffixCompareRedirect,
 } from "@/lib/redirects/html-suffix-compare";
 import { resolveUsChinaGdpRedirect } from "@/lib/redirects/us-china-gdp-cluster";
-import {
-  startAttempt,
-  finishAttemptSuccess,
-  finishAttemptFailure,
-  evaluateAttemptGuard,
-  type AttemptStage,
-} from "@/lib/services/generation-attempt-tracker";
 import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, claimReviewSchema, webPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
@@ -165,6 +159,8 @@ interface PageMeta {
   title: string;
   description: string;
   canonical: string;
+  /** False for provisional (visitor-requested, not yet promoted) pages. */
+  indexable: boolean;
   ogImage: string;
   ogType: "article" | "website";
   publishedTime?: string;
@@ -261,19 +257,15 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
 /**
  * DAN-2065 — the published set is the ONLY thing `/compare/*` may render.
  *
- * A comparison renders iff it has a DB row with `status: "published"` and at
- * least two entities. This is the same predicate the sitemap uses
- * (`where: { status: "published" }`), so "in the sitemap" and "returns 200" are
- * now the same set by construction — which is what makes a claim like "page X
- * does not exist on our site" verifiable with one curl.
+ * A comparison renders iff it has a DB row with `status: "published"` or
+ * `status: "provisional"` and at least two entities. Only `published` is in
+ * the sitemap. Provisional pages are live for everyone but noindex.
  *
  * Everything else — unknown slugs, drafts, review, archived, and empty/corrupt
- * rows — 404s. Notably this replaces the DAN-1146 on-demand SSR generator, which
- * AI-generated *and persisted* a comparison for any slug a crawler invented. That
- * gave `/compare/{anything}` an HTTP 200 on first hit (an unbounded soft-404
- * crawl space) and minted a DB row per novel URL — 2,859 such rows had already
- * accumulated. On-demand generation now happens only through the vetted
- * ingestion pipeline, never from an inbound request.
+ * rows — 404s. getStaticProps never calls the generator. A missing two-entity
+ * URL 404s into the on-demand shell, and only that shell's client JavaScript
+ * may ask to build the page. Crawlers that do not run that script do not
+ * generate anything.
  *
  * The mock fixtures are the one wrinkle. `getComparisonBySlug` falls back to them
  * whenever Prisma misses OR throws, and they carry no `status` — so they are held
@@ -286,7 +278,8 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
 function isRenderableComparison(c: Comparison | null): c is Comparison {
   if (!c || (c.entities?.length ?? 0) < 2) return false;
   if (!isComparisonDbConfigured()) return true;
-  return c.metadata?.status === "published";
+  const status = c.metadata?.status;
+  return status === "published" || status === "provisional";
 }
 
 // A 404 is still revalidated: a slug that is later published through the
@@ -393,6 +386,16 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     return { redirect: { destination: `/compare/${consolidated}`, statusCode: 301 } };
   }
 
+  // Alias entities (netflix-inc → netflix) and reverse order share one URL.
+  // Do this before the database lookup so a missing alias never starts a
+  // second generation of a page we already have under the canonical slug.
+  if (slugParts.entities.length === 2) {
+    const requested = canonicalRequestedComparisonSlug(slug);
+    if (requested && requested !== slug) {
+      return { redirect: { destination: `/compare/${requested}`, statusCode: 301 } };
+    }
+  }
+
   let comparison: Comparison | null = null;
   try {
     comparison = (await getComparisonBySlug(slug)) as Comparison | null;
@@ -400,11 +403,28 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = null;
   }
 
-  // DAN-2065: anything that is not a published row is a 404 — unknown slugs,
-  // drafts, review, archived (DAN-1886), and empty/corrupt rows alike. The
-  // empty/corrupt case matters independently: the SSR layout assumes
-  // entityA/entityB exist and throws a hard 500 on a record with <2 entities
-  // (DAN-1201/DAN-1262 — 25 such records were live in prod).
+  // Two-entity order folding. A live alphabetical page always wins. A live
+  // reverse page is kept when the alphabetical one does not exist yet — the
+  // alphabetical URL redirects to it below, so visitors still land on one page.
+  if (slugParts.entities.length === 2) {
+    const sortedSlug = sortComparisonSlug(slug);
+    if (sortedSlug !== slug && getConsolidatedCompareSlug(sortedSlug) === null) {
+      let sortedRow: Comparison | null = null;
+      try {
+        sortedRow = (await getComparisonBySlug(sortedSlug)) as Comparison | null;
+      } catch {
+        sortedRow = null;
+      }
+      if (isRenderableComparison(sortedRow) || !isRenderableComparison(comparison)) {
+        return { redirect: { destination: `/compare/${sortedSlug}`, statusCode: 301 } };
+      }
+    }
+  }
+
+  // Unknown slugs, drafts, review, archived (DAN-1886), and empty/corrupt
+  // rows are not rendered here. The empty/corrupt case matters independently:
+  // the SSR layout assumes entityA/entityB exist and throws a hard 500 on a
+  // record with <2 entities (DAN-1201/DAN-1262).
   if (!isRenderableComparison(comparison)) {
     // ROO-24: unpublished US↔China GDP phrasing (explicit + conservative
     // pattern) 301s to the Product-locked canonical. Live related pages are
@@ -414,35 +434,44 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       return { redirect: { destination: `/compare/${gdpCanonical}`, statusCode: 301 } };
     }
 
-    // DAN-1265: a non-canonical ordering (B-vs-A) must never become its own URL.
-    // Fold it into the canonical alphabetically-sorted ordering — but only when
-    // that ordering is itself published. sortComparisonSlug() sorts the raw
-    // "-vs-" tokens, so a slug whose last entity carries a keyword suffix (e.g.
-    // "xbox-series-x-vs-ps5-pro-performance-comparison-2026") sorts the suffix
-    // into the middle and yields a slug that does not exist. 308-ing there would
-    // strand the variant's link equity on a dead URL, so an unpublished target
-    // falls through to the 404 below instead. (Known retired duplicates are
-    // already 301'd at the edge by next.config redirects(); this catches
-    // orderings not yet in that map.)
+    // DAN-1265: one URL per pair. Two-entity requests always fold onto the
+    // alphabetical slug, even before that page exists, so both orders share
+    // the on-demand shell. If the alphabetical page is missing but the reverse
+    // order is already live, send the visitor to the live one instead.
+    // N-way slugs still redirect only when the sorted target is itself live:
+    // sortComparisonSlug() can drag a keyword suffix into the middle of a
+    // longer slug and invent a URL that should not exist.
+    // Never 301 to a slug the edge map itself redirects away — that ping-pongs
+    // (starbucks-vs-dunkin ⇄ dunkin-vs-starbucks).
     const sortedSlug = sortComparisonSlug(slug);
-    if (sortedSlug !== slug) {
+    const edgeRedirects = (target: string) => getConsolidatedCompareSlug(target) !== null;
+
+    if (slugParts.entities.length === 2) {
+      if (slug === sortedSlug) {
+        const reverse = `${slugParts.entities[1]}-vs-${slugParts.entities[0]}`;
+        if (reverse !== slug && !edgeRedirects(reverse)) {
+          let reverseRow: Comparison | null = null;
+          try {
+            reverseRow = (await getComparisonBySlug(reverse)) as Comparison | null;
+          } catch {
+            reverseRow = null;
+          }
+          if (isRenderableComparison(reverseRow)) {
+            return {
+              redirect: { destination: `/compare/${reverse}`, statusCode: 301 },
+            };
+          }
+        }
+      }
+    } else if (sortedSlug !== slug && !edgeRedirects(sortedSlug)) {
       let canonical: Comparison | null = null;
       try {
         canonical = (await getComparisonBySlug(sortedSlug)) as Comparison | null;
       } catch {
         canonical = null;
       }
-      // DAN-2065: never 308 to a slug the edge map itself redirects away — the
-      // edge would bounce it straight back here and the two rules would ping-pong.
-      // That is a real loop, not a hypothetical: the generated ordering map picked
-      // its survivors by (seeded) viewCount, so for 18 clusters it points the
-      // opposite way to this alphabetical sort. starbucks-vs-dunkin ⇄
-      // dunkin-vs-starbucks hit curl's 10-redirect ceiling in prod.
-      const edgeRedirectsTarget = getConsolidatedCompareSlug(sortedSlug) !== null;
-
-      if (!edgeRedirectsTarget && isRenderableComparison(canonical)) {
+      if (isRenderableComparison(canonical)) {
         return {
-          // DAN-2518: 301, consistent with the edge map (see note above).
           redirect: { destination: `/compare/${sortedSlug}`, statusCode: 301 },
         };
       }
@@ -459,7 +488,15 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       );
     }
 
-    return { notFound: true, revalidate: NOT_FOUND_REVALIDATE_SECONDS };
+    // A brand-new two-entity URL revalidates quickly so a page saved by the
+    // on-demand flow shows up even if the revalidate webhook is slow. Rows
+    // that exist but must stay hidden (archived, draft) keep the hourly window.
+    const missingTwoEntity =
+      !comparison && slugParts.entities.length === 2 && slug === sortComparisonSlug(slug);
+    return {
+      notFound: true,
+      revalidate: missingTwoEntity ? 30 : NOT_FOUND_REVALIDATE_SECONDS,
+    };
   }
 
   const voteData = await getComparisonVotes(comparison.id);
@@ -626,6 +663,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       override?.description ?? enrichedComparison.metadata.metaDescription ?? fallbackDescription,
     ),
     canonical: `${SITE_URL}/compare/${slug}`,
+    indexable: enrichedComparison.metadata.status !== "provisional",
     ogImage,
     ogType: "article",
     publishedTime: enrichedComparison.metadata.publishedAt || undefined,
@@ -712,9 +750,14 @@ function MetaHead({ meta }: { meta: PageMeta }) {
     <Head>
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
-      {/* Archived rows are 404'd upstream in getStaticProps (DAN-1886), so every
-          page that renders here is indexable; keep the standard directive. */}
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      <meta
+        name="robots"
+        content={
+          meta.indexable
+            ? "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+            : "noindex, nofollow"
+        }
+      />
       {/* author — used by Bing, Yahoo, and AI content attributors for authorship resolution */}
       <meta name="author" content="A Versus B" />
       {/* coverage/distribution/rating — classic HTML meta; Bing, Yandex, and AI content

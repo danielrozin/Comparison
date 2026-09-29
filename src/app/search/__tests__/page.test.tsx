@@ -3,14 +3,17 @@ import { render, screen, waitFor } from "@testing-library/react";
 
 const state = vi.hoisted(() => ({ q: "osticket" }));
 const trackComparisonSearch = vi.hoisted(() => vi.fn());
+const trackSearchParsed = vi.hoisted(() => vi.fn());
+const replace = vi.hoisted(() => vi.fn());
 
 vi.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams({ q: state.q }),
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push: vi.fn(), replace }),
 }));
 
 vi.mock("@/lib/utils/analytics", () => ({
   trackComparisonSearch: (...args: unknown[]) => trackComparisonSearch(...args),
+  trackSearchParsed: (...args: unknown[]) => trackSearchParsed(...args),
 }));
 
 vi.mock("@/lib/utils/recently-viewed", () => ({
@@ -47,6 +50,8 @@ describe("Search page (ROO-82)", () => {
   beforeEach(() => {
     state.q = "osticket";
     trackComparisonSearch.mockClear();
+    trackSearchParsed.mockClear();
+    replace.mockClear();
     installFetch({ results: [] });
   });
 
@@ -59,7 +64,11 @@ describe("Search page (ROO-82)", () => {
       "href",
       "/compare/iphone-vs-android",
     );
-    expect(screen.getByRole("button", { name: "Create this comparison" })).toBeInTheDocument();
+    expect(screen.getByText(/we'll create that comparison/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Create this comparison" })).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(trackSearchParsed).toHaveBeenCalledWith("osticket", null, false);
+    });
     // FAQ used to index the breadcrumb node and crash the whole page.
     expect(screen.getByText("How does search work on A Versus B?")).toBeInTheDocument();
     await waitFor(() => {
@@ -96,5 +105,14 @@ describe("Search page (ROO-82)", () => {
     await waitFor(() => {
       expect(trackComparisonSearch).toHaveBeenCalledWith("osticket", "results");
     });
+  });
+
+  it("sends a two-entity query straight to the canonical comparison", async () => {
+    state.q = "Vietnam vs Thailand";
+    render(<SearchPage />);
+    await waitFor(() => {
+      expect(replace).toHaveBeenCalledWith("/compare/thailand-vs-vietnam");
+    });
+    expect(trackSearchParsed).toHaveBeenCalledWith("Vietnam vs Thailand", "thailand-vs-vietnam", true);
   });
 });

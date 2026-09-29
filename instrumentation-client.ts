@@ -1,4 +1,11 @@
+import { initBotId } from "botid/client/core";
 import posthog from "posthog-js";
+
+// Vercel BotID protects POST /api/comparisons/generate. It runs even when
+// analytics consent is off — it is bot detection, not a tracking call.
+initBotId({
+  protect: [{ path: "/api/comparisons/generate", method: "POST" }],
+});
 import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { captureComparisonViewedFromLocation } from "@/lib/analytics/comparison-view-capture";

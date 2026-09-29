@@ -2,8 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { slugify } from "@/lib/utils/slugify";
-import { trackComparisonSearch } from "@/lib/utils/analytics";
+import { parseComparisonQuery } from "@/lib/parse-comparison-query";
+import { trackComparisonSearch, trackSearchParsed } from "@/lib/utils/analytics";
 import Link from "next/link";
 import { CategoryIcon } from "@/lib/utils/category-icons";
 
@@ -26,25 +26,6 @@ const TYPING_SUGGESTIONS = [
   "Japan vs China",
   "Tesla vs BMW",
 ];
-
-function parseComparison(input: string): [string, string] | null {
-  const trimmed = input.trim();
-  const patterns = [
-    /^compare\s+(.+?)\s+(?:to|and|with|vs\.?)\s+(.+)$/i,
-    /^differences?\s+between\s+(.+?)\s+and\s+(.+)$/i,
-    /^(.+?)\s+compared\s+(?:to|with)\s+(.+)$/i,
-    /^(.+?)\s+(?:vs\.?|versus|compared\s+to|against)\s+(.+)$/i,
-    /^(.+?)\s+[-–—]\s+(.+)$/,
-    /^(.{2,40}?)\s+or\s+(.{2,40})$/i,
-  ];
-  for (const pattern of patterns) {
-    const match = trimmed.match(pattern);
-    if (match && match[1].trim() && match[2].trim()) {
-      return [match[1].trim(), match[2].trim()];
-    }
-  }
-  return null;
-}
 
 function formatTitle(title: string): { a: string; b: string } | null {
   const match = title.match(/^(.+?)\s+vs\.?\s+(.+)$/i);
@@ -140,11 +121,11 @@ export function SearchBox() {
         return;
       }
 
-      const parsed = parseComparison(query);
-      if (parsed) {
-        const slug = `${slugify(parsed[0])}-vs-${slugify(parsed[1])}`;
+      const parsed = parseComparisonQuery(query);
+      trackSearchParsed(query.trim(), parsed.slug, parsed.parsed);
+      if (parsed.parsed && parsed.slug) {
         trackComparisonSearch(query.trim(), "comparison");
-        router.push(`/compare/${slug}`);
+        router.push(`/compare/${parsed.slug}`);
         return;
       }
 
@@ -359,28 +340,28 @@ export function SearchBox() {
         <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-border z-50 animate-slide-up overflow-hidden">
           {/* "Will compare" preview when A vs B detected */}
           {(() => {
-            const parsed = parseComparison(query);
-            if (parsed) {
+            const parsed = parseComparisonQuery(query);
+            if (parsed.parsed && parsed.entityA && parsed.entityB) {
               return (
                 <div className="px-4 py-4">
-                  <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">Generate new comparison</p>
+                  <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">Create this comparison</p>
                   <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-100 rounded-xl">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                      {parsed[0].charAt(0).toUpperCase()}
+                      {parsed.entityA.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-text truncate">{parsed[0]}</p>
+                      <p className="font-semibold text-sm text-text truncate">{parsed.entityA}</p>
                     </div>
                     <span className="text-xs font-black text-white bg-gradient-to-r from-primary-600 to-accent-600 px-2 py-1 rounded-full flex-shrink-0">VS</span>
                     <div className="flex-1 min-w-0 text-right">
-                      <p className="font-semibold text-sm text-text truncate">{parsed[1]}</p>
+                      <p className="font-semibold text-sm text-text truncate">{parsed.entityB}</p>
                     </div>
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent-500 to-accent-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                      {parsed[1].charAt(0).toUpperCase()}
+                      {parsed.entityB.charAt(0).toUpperCase()}
                     </div>
                   </div>
                   <p className="text-xs text-text-secondary/70 mt-2 text-center">
-                    Press <kbd className="px-1.5 py-0.5 bg-surface-alt border border-border rounded text-xs font-mono">Enter</kbd> to generate this comparison
+                    Press <kbd className="px-1.5 py-0.5 bg-surface-alt border border-border rounded text-xs font-mono">Enter</kbd> to create this comparison
                   </p>
                 </div>
               );

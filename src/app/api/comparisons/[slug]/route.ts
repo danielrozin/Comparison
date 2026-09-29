@@ -36,7 +36,7 @@ export async function GET(
 
   const headers: Record<string, string> = {
     "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
-    "X-Robots-Tag": "all",
+    "X-Robots-Tag": comparison.metadata?.status === "provisional" ? "noindex, nofollow" : "all",
     "Access-Control-Allow-Origin": "*",
     "Vary": "Accept",
     ETag: etag,

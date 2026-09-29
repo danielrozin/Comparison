@@ -160,7 +160,7 @@ export async function generateComparison(
   entityA: string,
   entityB: string,
   slug: string,
-  options?: { skipEnrichment?: boolean }
+  options?: { skipEnrichment?: boolean; keepBelowQualityBar?: boolean }
 ): Promise<GenerationResult> {
   try {
     const client = getClient();
@@ -338,12 +338,16 @@ export async function generateComparison(
       console.warn(
         `Quality gate rejected ${slug} (score ${quality.score}): ${quality.reasons.join("; ")}`
       );
-      return {
-        success: false,
-        comparison: null,
-        error: `Generation failed quality gate: ${quality.reasons.join("; ")}`,
-        errorStage: "quality",
-      };
+      // Cron/batch still drop thin pages. A visitor request keeps the draft
+      // so it can be stored as provisional (live, noindex) instead of a dead end.
+      if (!options?.keepBelowQualityBar) {
+        return {
+          success: false,
+          comparison: null,
+          error: `Generation failed quality gate: ${quality.reasons.join("; ")}`,
+          errorStage: "quality",
+        };
+      }
     }
 
     const contradictions = findSelfContradictions(comparison);
@@ -489,7 +493,7 @@ NUMERIC CLAIM RULES (DAN-2188):
 export async function generateMultiComparison(
   entityNames: string[],
   slug: string,
-  options?: { skipEnrichment?: boolean }
+  options?: { skipEnrichment?: boolean; keepBelowQualityBar?: boolean }
 ): Promise<GenerationResult> {
   const names = entityNames.map((n) => n.trim()).filter((n) => n.length > 0);
   if (names.length < 2) {

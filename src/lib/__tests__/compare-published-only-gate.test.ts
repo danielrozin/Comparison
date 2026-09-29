@@ -149,10 +149,30 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
       redirect: { destination: '/compare/clickup-vs-notion', statusCode: 301 },
     })
 
-    // Unknown slugs still 404. stapler-vs-banana is not in any consolidation
-    // map; its alphabetical canonical (banana-vs-stapler) is unpublished here,
-    // so the runtime ordering fold must not 301 at a URL that does not exist.
-    expect(await run('stapler-vs-banana')).toMatchObject({ notFound: true })
+    // stapler-vs-banana is not in the edge map. Both orders share the
+    // alphabetical URL, even before that page exists, so the shell (still a
+    // 404) lives in one place. getStaticProps must not call the generator.
+    expect(await run('stapler-vs-banana')).toMatchObject({
+      redirect: { destination: '/compare/banana-vs-stapler', statusCode: 301 },
+    })
+    expect(generateComparison).not.toHaveBeenCalled()
+  })
+
+  it('renders a provisional comparison and keeps archived rows as 404s', async () => {
+    getComparisonBySlug.mockResolvedValue(comparison('clickup-vs-notion', 'provisional'))
+    const result = await run('clickup-vs-notion')
+    expect(result).toHaveProperty('props')
+    if (!('props' in result)) throw new Error('expected props')
+    expect(result.props.meta.indexable).toBe(false)
+  })
+
+  it('sends a missing canonical URL to the live reverse ordering', async () => {
+    getComparisonBySlug.mockImplementation(async (slug: string) =>
+      slug === 'stapler-vs-banana' ? comparison(slug, 'provisional') : null
+    )
+    expect(await run('banana-vs-stapler')).toMatchObject({
+      redirect: { destination: '/compare/stapler-vs-banana', statusCode: 301 },
+    })
     expect(generateComparison).not.toHaveBeenCalled()
   })
 
