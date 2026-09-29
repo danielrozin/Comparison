@@ -9,7 +9,12 @@ import {
   isComparisonDbReachable,
 } from "@/lib/services/comparison-service";
 import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
-import { canonicalRequestedComparisonSlug } from "@/lib/parse-comparison-query";
+import {
+  decideComparePage,
+  isHiddenComparisonStatus,
+  relatedComparisonSlugs,
+  type SlugRowState,
+} from "@/lib/compare-slug-resolution";
 import {
   HTML_SUFFIX_COMPARE_STATUS,
   resolveHtmlSuffixCompareRedirect,
@@ -282,6 +287,15 @@ function isRenderableComparison(c: Comparison | null): c is Comparison {
   return status === "published" || status === "provisional";
 }
 
+function rowState(row: Comparison | null): SlugRowState {
+  if (isRenderableComparison(row)) return "live";
+  // The renderable check is a type predicate, so a hidden row is not `Comparison`
+  // in the false branch. Read the status off the original value.
+  const status = (row as { metadata?: { status?: string } } | null)?.metadata?.status;
+  if (isHiddenComparisonStatus(status)) return "hidden";
+  return "missing";
+}
+
 // A 404 is still revalidated: a slug that is later published through the
 // pipeline heals into a 200 on the next revalidation without a redeploy.
 const NOT_FOUND_REVALIDATE_SECONDS = 3600;
@@ -386,16 +400,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     return { redirect: { destination: `/compare/${consolidated}`, statusCode: 301 } };
   }
 
-  // Alias entities (netflix-inc → netflix) and reverse order share one URL.
-  // Do this before the database lookup so a missing alias never starts a
-  // second generation of a page we already have under the canonical slug.
-  if (slugParts.entities.length === 2) {
-    const requested = canonicalRequestedComparisonSlug(slug);
-    if (requested && requested !== slug) {
-      return { redirect: { destination: `/compare/${requested}`, statusCode: 301 } };
-    }
-  }
-
   let comparison: Comparison | null = null;
   try {
     comparison = (await getComparisonBySlug(slug)) as Comparison | null;
@@ -403,29 +407,26 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = null;
   }
 
-  // Two-entity order folding. A live alphabetical page always wins. A live
-  // reverse page is kept when the alphabetical one does not exist yet — the
-  // alphabetical URL redirects to it below, so visitors still land on one page.
-  if (slugParts.entities.length === 2) {
-    const sortedSlug = sortComparisonSlug(slug);
-    if (sortedSlug !== slug && getConsolidatedCompareSlug(sortedSlug) === null) {
-      let sortedRow: Comparison | null = null;
-      try {
-        sortedRow = (await getComparisonBySlug(sortedSlug)) as Comparison | null;
-      } catch {
-        sortedRow = null;
-      }
-      if (isRenderableComparison(sortedRow) || !isRenderableComparison(comparison)) {
-        return { redirect: { destination: `/compare/${sortedSlug}`, statusCode: 301 } };
-      }
-    }
-  }
-
   // Unknown slugs, drafts, review, archived (DAN-1886), and empty/corrupt
   // rows are not rendered here. The empty/corrupt case matters independently:
   // the SSR layout assumes entityA/entityB exist and throws a hard 500 on a
   // record with <2 entities (DAN-1201/DAN-1262).
+  //
+  // A live row renders at the slug that was requested. Canonicalizing before
+  // this lookup 301'd published pages such as marvel-vs-dc onto a URL with no
+  // row, and the reverse-order branch sent that URL back — a loop.
   if (!isRenderableComparison(comparison)) {
+    // Never bake a 404 over a live page just because the DB blinked. An empty
+    // lookup during an outage is indistinguishable from "not published", and
+    // getStaticProps runs on ISR revalidation too — returning notFound here would
+    // quietly 404 all 491 published comparisons until the next successful
+    // revalidation. Throwing instead keeps the last good render in the ISR cache.
+    if (isComparisonDbConfigured() && !(await isComparisonDbReachable())) {
+      throw new Error(
+        `DAN-2065: refusing to 404 /compare/${slug} — comparison DB is unreachable`
+      );
+    }
+
     // ROO-24: unpublished US↔China GDP phrasing (explicit + conservative
     // pattern) 301s to the Product-locked canonical. Live related pages are
     // excluded inside resolveUsChinaGdpRedirect.
@@ -434,36 +435,53 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       return { redirect: { destination: `/compare/${gdpCanonical}`, statusCode: 301 } };
     }
 
-    // DAN-1265: one URL per pair. Two-entity requests always fold onto the
-    // alphabetical slug, even before that page exists, so both orders share
-    // the on-demand shell. If the alphabetical page is missing but the reverse
-    // order is already live, send the visitor to the live one instead.
-    // N-way slugs still redirect only when the sorted target is itself live:
+    if (slugParts.entities.length === 2) {
+      const states = new Map<string, SlugRowState>();
+      states.set(slug, rowState(comparison));
+      const others = relatedComparisonSlugs(slug).filter((candidate) => candidate !== slug);
+      const rows = await Promise.all(
+        others.map(async (candidate) => {
+          try {
+            return (await getComparisonBySlug(candidate)) as Comparison | null;
+          } catch {
+            return null;
+          }
+        }),
+      );
+      others.forEach((candidate, index) => {
+        states.set(candidate, rowState(rows[index] ?? null));
+      });
+
+      const decision = decideComparePage(slug, (candidate) => states.get(candidate) ?? "missing");
+      // Redirect only when that other slug is live. A missing pair still shares
+      // one building shell, at the canonical slug.
+      if (decision.action === "redirect") {
+        return {
+          redirect: { destination: `/compare/${decision.destination}`, statusCode: 301 },
+        };
+      }
+      if (decision.action === "shell" && decision.slug !== slug) {
+        return {
+          redirect: { destination: `/compare/${decision.slug}`, statusCode: 301 },
+        };
+      }
+      // Archived / draft / review stay on the hourly window. A genuinely
+      // missing canonical URL revalidates quickly so a saved page shows up
+      // even if the revalidate webhook is slow.
+      const shellHere = decision.action === "shell";
+      return {
+        notFound: true,
+        revalidate: shellHere ? 30 : NOT_FOUND_REVALIDATE_SECONDS,
+      };
+    }
+
+    // N-way slugs redirect only when the sorted target is itself live:
     // sortComparisonSlug() can drag a keyword suffix into the middle of a
     // longer slug and invent a URL that should not exist.
     // Never 301 to a slug the edge map itself redirects away — that ping-pongs
     // (starbucks-vs-dunkin ⇄ dunkin-vs-starbucks).
     const sortedSlug = sortComparisonSlug(slug);
-    const edgeRedirects = (target: string) => getConsolidatedCompareSlug(target) !== null;
-
-    if (slugParts.entities.length === 2) {
-      if (slug === sortedSlug) {
-        const reverse = `${slugParts.entities[1]}-vs-${slugParts.entities[0]}`;
-        if (reverse !== slug && !edgeRedirects(reverse)) {
-          let reverseRow: Comparison | null = null;
-          try {
-            reverseRow = (await getComparisonBySlug(reverse)) as Comparison | null;
-          } catch {
-            reverseRow = null;
-          }
-          if (isRenderableComparison(reverseRow)) {
-            return {
-              redirect: { destination: `/compare/${reverse}`, statusCode: 301 },
-            };
-          }
-        }
-      }
-    } else if (sortedSlug !== slug && !edgeRedirects(sortedSlug)) {
+    if (sortedSlug !== slug && getConsolidatedCompareSlug(sortedSlug) === null) {
       let canonical: Comparison | null = null;
       try {
         canonical = (await getComparisonBySlug(sortedSlug)) as Comparison | null;
@@ -477,25 +495,9 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       }
     }
 
-    // Never bake a 404 over a live page just because the DB blinked. An empty
-    // lookup during an outage is indistinguishable from "not published", and
-    // getStaticProps runs on ISR revalidation too — returning notFound here would
-    // quietly 404 all 491 published comparisons until the next successful
-    // revalidation. Throwing instead keeps the last good render in the ISR cache.
-    if (isComparisonDbConfigured() && !(await isComparisonDbReachable())) {
-      throw new Error(
-        `DAN-2065: refusing to 404 /compare/${slug} — comparison DB is unreachable`
-      );
-    }
-
-    // A brand-new two-entity URL revalidates quickly so a page saved by the
-    // on-demand flow shows up even if the revalidate webhook is slow. Rows
-    // that exist but must stay hidden (archived, draft) keep the hourly window.
-    const missingTwoEntity =
-      !comparison && slugParts.entities.length === 2 && slug === sortComparisonSlug(slug);
     return {
       notFound: true,
-      revalidate: missingTwoEntity ? 30 : NOT_FOUND_REVALIDATE_SECONDS,
+      revalidate: NOT_FOUND_REVALIDATE_SECONDS,
     };
   }
 

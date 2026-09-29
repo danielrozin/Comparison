@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headerSafe } from "@/lib/utils/header-safe";
-import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
+import {
+  getComparisonBySlug,
+  getPublishedComparisonBySlug,
+} from "@/lib/services/comparison-service";
+import {
+  isHiddenComparisonStatus,
+  relatedComparisonSlugs,
+} from "@/lib/compare-slug-resolution";
 import { SITE_URL } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
@@ -13,6 +20,14 @@ export async function GET(
   const comparison = await getPublishedComparisonBySlug(slug);
 
   if (!comparison) {
+    const lookup = new URL(request.url).searchParams.get("lookup");
+    if (lookup === "availability") {
+      const unavailable = await pairIsHidden(slug);
+      return NextResponse.json(
+        { error: "Not found", ...(unavailable ? { unavailable: true } : {}) },
+        { status: 404 },
+      );
+    }
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
@@ -63,4 +78,13 @@ export async function GET(
   ].join(", ");
 
   return NextResponse.json(comparison, { headers });
+}
+
+/** Archived, draft, and review rows must 404 like today — not open the builder. */
+async function pairIsHidden(slug: string): Promise<boolean> {
+  const slugs = relatedComparisonSlugs(slug);
+  const rows = await Promise.all(
+    slugs.map((candidate) => getComparisonBySlug(candidate).catch(() => null)),
+  );
+  return rows.some((row) => isHiddenComparisonStatus(row?.metadata?.status));
 }

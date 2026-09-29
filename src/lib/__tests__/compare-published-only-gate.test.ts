@@ -166,6 +166,45 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
     expect(result.props.meta.indexable).toBe(false)
   })
 
+  it('renders a published non-alphabetical slug and does not loop its reverse', async () => {
+    getComparisonBySlug.mockImplementation(async (slug: string) =>
+      slug === 'marvel-vs-dc' ? comparison(slug, 'published') : null
+    )
+
+    const live = await run('marvel-vs-dc')
+    expect(live).toHaveProperty('props')
+    expect(live).not.toHaveProperty('redirect')
+
+    expect(await run('dc-vs-marvel')).toMatchObject({
+      redirect: { destination: '/compare/marvel-vs-dc', statusCode: 301 },
+    })
+  })
+
+  it('keeps alias-shaped published pages and only redirects to that live slug', async () => {
+    getComparisonBySlug.mockImplementation(async (slug: string) =>
+      slug === 'usa-vs-china' || slug === 'chrome-vs-firefox' || slug === 'disney-plus-vs-hulu'
+        ? comparison(slug, 'published')
+        : null
+    )
+
+    for (const slug of ['usa-vs-china', 'chrome-vs-firefox', 'disney-plus-vs-hulu']) {
+      const result = await run(slug)
+      expect(result, slug).toHaveProperty('props')
+      expect(result, slug).not.toHaveProperty('redirect')
+    }
+
+    expect(await run('china-vs-united-states')).toMatchObject({
+      redirect: { destination: '/compare/usa-vs-china', statusCode: 301 },
+    })
+    expect(await run('firefox-vs-google-chrome')).toMatchObject({
+      redirect: { destination: '/compare/chrome-vs-firefox', statusCode: 301 },
+    })
+    expect(await run('disney-vs-hulu')).toMatchObject({
+      redirect: { destination: '/compare/disney-plus-vs-hulu', statusCode: 301 },
+    })
+    expect(generateComparison).not.toHaveBeenCalled()
+  })
+
   it('sends a missing canonical URL to the live reverse ordering', async () => {
     getComparisonBySlug.mockImplementation(async (slug: string) =>
       slug === 'stapler-vs-banana' ? comparison(slug, 'provisional') : null

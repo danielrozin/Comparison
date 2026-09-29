@@ -11,6 +11,7 @@ import {
   stripKeywordSuffixSlug,
 } from "@/lib/utils/slugify";
 import { canonicalRequestedComparisonSlug } from "@/lib/parse-comparison-query";
+import { relatedComparisonSlugs } from "@/lib/compare-slug-resolution";
 import {
   getComparisonBySlug,
   isComparisonDbConfigured,
@@ -144,7 +145,11 @@ export async function POST(request: NextRequest) {
       );
     }
     const baseSlug = stripKeywordSuffixSlug(canonicalSlug);
-    const candidates = [...new Set([slug, canonicalSlug, baseSlug].filter((value): value is string => !!value))];
+    // Reverse order, alias spellings, and keyword-suffix forms are the same
+    // matchup. A live row on any of them is returned instead of a new copy.
+    const candidates = [
+      ...new Set([...relatedComparisonSlugs(slug), ...(baseSlug ? [baseSlug] : [])]),
+    ];
 
     const rows = await Promise.all(candidates.map((candidate) => loadRow(candidate)));
     for (let i = 0; i < candidates.length; i++) {
