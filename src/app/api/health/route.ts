@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { getRedis } from "@/lib/services/redis";
-import { resendFromAddress } from "@/lib/services/resend-from";
+import { resendFromAddress, resendKeyCanSend } from "@/lib/services/resend-from";
 
 // Neon free tier auto-suspends after 5 min inactivity; first connection after
 // suspend is rejected in <10ms. Retry once with a short delay to let Neon wake.
@@ -25,22 +25,6 @@ async function checkDatabase(): Promise<{ status: string; latencyMs: number }> {
     }
   }
   return { status: "error", latencyMs: Date.now() - start };
-}
-
-/**
- * A full-access key can list domains. A send-only key is rejected with
- * 401 `restricted_api_key` and never delivers mail from this check.
- * That rejection still proves Resend accepted the key, which is what
- * production uses to send.
- */
-export function resendKeyCanSend(
-  status: number,
-  body: { name?: string; message?: string }
-): boolean {
-  if (status >= 200 && status < 300) return true;
-  if (status !== 401) return false;
-  if (body.name === "restricted_api_key") return true;
-  return (body.message ?? "").toLowerCase().includes("restricted to only send");
 }
 
 async function checkEmail(): Promise<{ status: string; latencyMs: number; from?: string }> {
