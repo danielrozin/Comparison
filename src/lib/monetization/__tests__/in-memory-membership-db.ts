@@ -170,6 +170,25 @@ function createDb() {
         return { id: "req" };
       },
     },
+    /**
+     * Conditional quota append. Values follow custom-compare.ts:
+     * pair, email, month, limit, pair.
+     */
+    async $executeRaw(query: TemplateStringsArray, ...values: unknown[]) {
+      const sql = Array.isArray(query) ? query.join(" ") : String(query);
+      if (!sql.includes("array_append") || !sql.includes("pro_custom_compare_usage")) {
+        throw new Error(`unexpected raw sql: ${sql}`);
+      }
+      const pair = String(values[0] ?? "");
+      const email = String(values[1] ?? "");
+      const month = String(values[2] ?? "");
+      const limit = Number(values[3]);
+      const row = usage.find((item) => item.email === email && item.month === month);
+      if (!row || row.pairKeys.includes(pair) || row.pairKeys.length >= limit) return 0;
+      row.pairKeys.push(pair);
+      row.updatedAt = new Date();
+      return 1;
+    },
     $transaction: async <T>(fn: (tx: unknown) => Promise<T>): Promise<T> => fn(undefined),
   };
   client.$transaction = (fn) => fn(client);

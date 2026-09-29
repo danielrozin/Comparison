@@ -61,6 +61,7 @@ interface StripeLineItem {
 
 interface StripeSession {
   id: string;
+  created?: number;
   customer?: string | { id?: string } | null;
   customer_email?: string | null;
   customer_details?: { email?: string | null } | null;
@@ -78,8 +79,32 @@ interface StripeList<T> {
 interface StripeSubscription {
   id?: string;
   status?: string;
+  created?: number;
   current_period_end?: number;
   error?: { message?: string };
+}
+
+const LIVE_SUBSCRIPTION_STATUSES = new Set(["active", "trialing"]);
+
+export interface CheckoutCandidate {
+  status: string;
+  /** Unix seconds. Subscription created, then Checkout Session created. */
+  created: number;
+}
+
+/**
+ * Several completed checkouts can share an email. Keep the newest
+ * active or trialing subscription. A newer canceled session must not
+ * replace an older subscription that is still active. When nothing is
+ * active, keep the newest session.
+ */
+export function pickLatestActiveSubscription<T extends CheckoutCandidate>(candidates: T[]): T {
+  if (candidates.length === 0) {
+    throw new Error("pickLatestActiveSubscription called with no checkouts");
+  }
+  const live = candidates.filter((candidate) => LIVE_SUBSCRIPTION_STATUSES.has(candidate.status));
+  const pool = live.length > 0 ? live : candidates;
+  return pool.reduce((best, candidate) => (candidate.created > best.created ? candidate : best));
 }
 
 /** Pro price ids from the consumer plans. Empty when those env vars are unset. */
@@ -163,13 +188,13 @@ async function lineItemsFor(
 async function subscriptionState(
   subscriptionId: string,
   secret: string
-): Promise<{ status: string; currentPeriodEnd: Date | null; note?: string }> {
+): Promise<{ status: string; created: number; currentPeriodEnd: Date | null; note?: string }> {
   const res = await stripeGet<StripeSubscription>(
     `/v1/subscriptions/${encodeURIComponent(subscriptionId)}`,
     secret
   );
   if (res.status === 404) {
-    return { status: "canceled", currentPeriodEnd: null, note: "subscription_missing" };
+    return { status: "canceled", created: 0, currentPeriodEnd: null, note: "subscription_missing" };
   }
   if (!res.ok) {
     throw new Error(res.body.error?.message || `Stripe subscription ${res.status}`);
@@ -177,6 +202,7 @@ async function subscriptionState(
   const end = res.body.current_period_end;
   return {
     status: (res.body.status || "active").toLowerCase(),
+    created: res.body.created ?? 0,
     currentPeriodEnd: end ? new Date(end * 1000) : null,
   };
 }
@@ -216,8 +242,10 @@ export async function backfillProMembers(options: {
     return { ...base, error: "STRIPE_SECRET_KEY is not configured." };
   }
 
+  const candidates: Array<CheckoutCandidate & { row: BackfillMemberPlan; currentPeriodEnd: Date | null }> = [];
   let startingAfter: string | undefined;
   let pages = 0;
+  let more = false;
   try {
     while (pages < MAX_PAGES) {
       pages += 1;
@@ -261,64 +289,90 @@ export async function backfillProMembers(options: {
         }
 
         let status = "active";
+        let created = session.created ?? 0;
         let currentPeriodEnd: Date | null = null;
         let note: string | undefined;
         if (subscriptionId) {
           const state = await subscriptionState(subscriptionId, secret);
           status = state.status;
           currentPeriodEnd = state.currentPeriodEnd;
+          if (state.created > 0) created = state.created;
           note = state.note;
         }
 
-        const planRow: BackfillMemberPlan = {
-          sessionId: session.id,
-          email,
-          plan: price.plan,
-          interval: price.interval,
+        candidates.push({
           status,
-          stripeCustomerId: customerId,
-          stripeSubscriptionId: subscriptionId,
-          currentPeriodEnd: currentPeriodEnd ? currentPeriodEnd.toISOString() : null,
-          src: session.metadata?.src || "backfill",
-          action: "upsert",
-          reason: options.dryRun ? note || "dry_run" : note,
-        };
-
-        if (!options.dryRun) {
-          const wrote = await upsertMember({
+          created,
+          currentPeriodEnd,
+          row: {
+            sessionId: session.id,
             email,
             plan: price.plan,
             interval: price.interval,
-            stripeCustomer: customerId,
-            stripeSubscription: subscriptionId,
             status,
-            src: planRow.src,
-            currentPeriodEnd,
-            replaceSubscription: true,
-            updatedAt: new Date().toISOString(),
-          });
-          if (!wrote) {
-            planRow.action = "skipped";
-            planRow.reason = "upsert_rejected";
-            base.skipped += 1;
-          } else {
-            base.upserted += 1;
-          }
-        }
-        base.members.push(planRow);
+            stripeCustomerId: customerId,
+            stripeSubscriptionId: subscriptionId,
+            currentPeriodEnd: currentPeriodEnd ? currentPeriodEnd.toISOString() : null,
+            src: session.metadata?.src || "backfill",
+            action: "upsert",
+            reason: options.dryRun ? note || "dry_run" : note,
+          },
+        });
       }
 
-      if (!listed.body.has_more || sessions.length === 0) {
-        base.ok = true;
-        return base;
-      }
+      more = Boolean(listed.body.has_more && sessions.length > 0);
+      if (!more) break;
       startingAfter = sessions[sessions.length - 1]?.id;
       if (!startingAfter) {
-        base.ok = true;
-        return base;
+        more = false;
+        break;
       }
     }
-    base.truncated = true;
+
+    const byEmail = new Map<string, typeof candidates>();
+    for (const candidate of candidates) {
+      const group = byEmail.get(candidate.row.email) ?? [];
+      group.push(candidate);
+      byEmail.set(candidate.row.email, group);
+    }
+
+    for (const group of byEmail.values()) {
+      const winner = pickLatestActiveSubscription(group);
+      for (const candidate of group) {
+        if (candidate === winner) continue;
+        base.skipped += 1;
+        base.members.push({
+          ...candidate.row,
+          action: "skipped",
+          reason: "kept_latest_active_subscription",
+        });
+      }
+
+      if (!options.dryRun) {
+        const wrote = await upsertMember({
+          email: winner.row.email,
+          plan: winner.row.plan,
+          interval: winner.row.interval,
+          stripeCustomer: winner.row.stripeCustomerId,
+          stripeSubscription: winner.row.stripeSubscriptionId,
+          status: winner.row.status,
+          src: winner.row.src,
+          currentPeriodEnd: winner.currentPeriodEnd,
+          replaceSubscription: true,
+          updatedAt: new Date().toISOString(),
+        });
+        if (!wrote) {
+          winner.row.action = "skipped";
+          winner.row.reason = "upsert_rejected";
+          base.skipped += 1;
+        } else {
+          base.upserted += 1;
+        }
+      }
+      base.members.push(winner.row);
+    }
+
+    base.truncated = more && pages >= MAX_PAGES;
     base.ok = true;
     return base;
   } catch (err) {
