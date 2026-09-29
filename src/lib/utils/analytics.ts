@@ -193,7 +193,7 @@ export function trackPricingViewed(src: string) {
  * Soft pricing CTA click on a lander, before `/pricing` mounts.
  * `src` is the same value as `?src=` on the href, so `pricing_viewed`
  * (fired on the pricing page) can be broken down by lander.
- * `placement` is which control was clicked (`soft-line`, `pro-upsell`).
+ * `placement` is which control was clicked (`soft-line`, `pro-upsell`, `under-verdict-pro`).
  */
 export function trackPricingCtaClick(src: string, placement = "soft-line") {
   const props = { src, placement };

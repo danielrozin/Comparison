@@ -878,6 +878,10 @@ function MetaHead({ meta }: { meta: PageMeta }) {
   );
 }
 
+/** ROO-55 — the whole sentence is the link inside #compare-under-verdict. */
+const UNDER_VERDICT_PRO_LABEL =
+  "Want a follow-up on price, country, or the tool you actually use? Pro builds it within 24 hours — $49/year.";
+
 export default function ComparisonPage(props: Props) {
   // N-entity (3+): multi-entity layout (parity with the App Router version).
   if (props.comparison.entities.length > 2) {
@@ -925,11 +929,12 @@ export default function ComparisonPage(props: Props) {
       {/* Breadcrumbs */}
       <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
 
-      {/* ROO-52: soft Pro line under the breadcrumb, above the hero.
+      {/* ROO-52: Pro line under the breadcrumb, above the hero.
           ROO-44 put this after the verdict. On a ~667px phone the cookie
           banner (fixed, z-60) covers everything below ~413px, and the
-          verdict itself starts around 2300px — so the next-step row has to
-          share this above-fold card. SoftPricingLine is unchanged. */}
+          verdict itself starts around 2300px — so the next-step row shares
+          this above-fold card. ROO-55: one Pro sentence, placement
+          under-verdict-pro. */}
       <div id="compare-under-verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
         <div className="rounded-xl border border-border/80 bg-white px-3 py-2 shadow-sm">
           <CompareUnderVerdictNextStep
@@ -937,7 +942,13 @@ export default function ComparisonPage(props: Props) {
             slug={slug}
             chips={nextStepChips}
           />
-          <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+          <SoftPricingLine
+            src={`compare-${slug}`}
+            placement="under-verdict-pro"
+            lead=""
+            label={UNDER_VERDICT_PRO_LABEL}
+            className="text-center leading-snug break-words"
+          />
         </div>
       </div>
 
@@ -1283,7 +1294,7 @@ function MultiEntityLayout({
 
       <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
 
-      {/* ROO-52 / ROO-55: same above-fold card as the two-entity layout. */}
+      {/* ROO-52 / ROO-55: same above-fold card and Pro line as the two-entity layout. */}
       <div id="compare-under-verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
         <div className="rounded-xl border border-border/80 bg-white px-3 py-2 shadow-sm">
           <CompareUnderVerdictNextStep
@@ -1291,7 +1302,13 @@ function MultiEntityLayout({
             slug={slug}
             chips={nextStepChips}
           />
-          <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+          <SoftPricingLine
+            src={`compare-${slug}`}
+            placement="under-verdict-pro"
+            lead=""
+            label={UNDER_VERDICT_PRO_LABEL}
+            className="text-center leading-snug break-words"
+          />
         </div>
       </div>
 

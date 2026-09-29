@@ -10,9 +10,9 @@ import type { CompareNextStepChip } from "@/components/comparison/CompareNextSte
 
 /**
  * Compact affiliate / next-compare action that shares a card with
- * SoftPricingLine. SoftPricingLine itself is not rendered here — the page
- * keeps that element unchanged so `pricing_cta_click` stays
- * placement=soft-line, src=compare-{slug}.
+ * SoftPricingLine. SoftPricingLine is rendered by the page, not here.
+ * That line fires `pricing_cta_click` with placement=under-verdict-pro
+ * and src=compare-{slug}. This row keeps its own placement name.
  *
  * Placement name is `under-verdict` (ROO-55). On a 390×667 phone the verdict
  * section is thousands of pixels down and the cookie banner covers everything
