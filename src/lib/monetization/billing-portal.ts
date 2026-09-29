@@ -6,8 +6,8 @@
  * not inside the email.
  *
  * This only opens a portal session for an AversusB customer id already stored
- * on the membership hash. It does not create, edit, or archive Products or
- * Prices (the Stripe account is shared with Scan2Remember).
+ * on the Postgres `pro_members` row. It does not create, edit, or archive
+ * Products or Prices (the Stripe account is shared with Scan2Remember).
  */
 
 import { SITE_URL } from "@/lib/utils/constants";

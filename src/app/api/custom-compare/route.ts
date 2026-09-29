@@ -6,7 +6,7 @@ import { submitCustomCompare } from "@/lib/monetization/custom-compare";
  *
  * Body: { entityA, entityB, email, note? }
  *
- * Members (Redis monetization:member:{email}, active) are queued.
+ * Members (Postgres pro_members, status active or trialing) are queued.
  * Everyone else gets upgradeUrl `/pricing?src=custom-compare` — never an
  * empty 200 or a swallowed error.
  */

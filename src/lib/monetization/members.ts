@@ -1,24 +1,23 @@
+import { getPrisma } from "@/lib/db/prisma";
 import { getRedis } from "@/lib/services/redis";
 
 /**
- * Paid membership index (ROO-42).
+ * Paid membership index.
  *
- * Hash: `monetization:member:{lowercase-email}`
- * Fields: plan, interval, stripeCustomer, stripeSubscription, updatedAt,
- * status, active ("1" or "0"), src, email.
+ * Postgres table `pro_members` is the source of truth. Access is on only
+ * when `status` is `active` or `trialing`. `customer.subscription.deleted`
+ * sets status `canceled`.
  *
- * Access is on only when status is `active` or `trialing`.
- * `customer.subscription.deleted` sets status `canceled` and active `0`.
+ * Stripe subscription events often omit the customer email. Checkout stores
+ * the email on the row, and later events find that row by
+ * `stripe_subscription_id` or `stripe_customer_id`.
  *
- * Stripe subscription events usually do not include the customer email, so
- * checkout also writes:
- *   monetization:member-by-subscription:{subId} -> email
- *   monetization:member-by-customer:{customerId} -> email
- * Cancel resolves the hash through those keys.
- *
- * `monetization:members` stays an append-only purchase list (LPUSH on
- * checkout). Nothing should scan that list to decide access — HGETALL this
- * hash (or GET /api/admin/membership) instead.
+ * When Redis is configured, the same fields are mirrored to:
+ *   monetization:member:{email}
+ *   monetization:member-by-subscription:{subId}
+ *   monetization:member-by-customer:{customerId}
+ * and checkout still appends `monetization:members`. Those keys are a cache.
+ * A missing Redis client must not change who has access.
  */
 
 export const MEMBERS_LIST_KEY = "monetization:members";
@@ -69,6 +68,8 @@ export interface MemberUpsert {
   status?: string | null;
   src?: string | null;
   updatedAt?: string;
+  /** Stripe `current_period_end` (unix seconds) converted by the caller. */
+  currentPeriodEnd?: Date | null;
   /**
    * Checkout passes true so a new purchase replaces the stored subscription.
    * Subscription webhook events pass false so an older sub cannot overwrite
@@ -77,9 +78,17 @@ export interface MemberUpsert {
   replaceSubscription?: boolean;
 }
 
-function asString(value: unknown): string {
-  if (value == null) return "";
-  return String(value);
+interface MembershipRow {
+  id: string;
+  email: string;
+  plan: string;
+  interval: string;
+  status: string;
+  src: string;
+  stripeCustomerId: string | null;
+  stripeSubscriptionId: string | null;
+  currentPeriodEnd: Date | null;
+  updatedAt: Date;
 }
 
 /** Upstash JSON-parses hash values, so "1" can come back as the number 1. */
@@ -93,27 +102,79 @@ export function memberIsActive(status: string, activeFlag: unknown): boolean {
   return isTruthyFlag(activeFlag);
 }
 
-function toRecord(email: string, raw: Record<string, unknown>): MemberRecord {
-  const status = asString(raw.status);
+function blankToNull(value: string | null | undefined): string | null {
+  const trimmed = value?.trim() || "";
+  return trimmed || null;
+}
+
+function rowToRecord(row: MembershipRow): MemberRecord {
+  const status = row.status || "";
   return {
-    email: normalizeMemberEmail(asString(raw.email)) || email,
-    plan: asString(raw.plan),
-    interval: asString(raw.interval),
-    stripeCustomer: asString(raw.stripeCustomer),
-    stripeSubscription: asString(raw.stripeSubscription),
-    updatedAt: asString(raw.updatedAt),
+    email: row.email,
+    plan: row.plan || "",
+    interval: row.interval || "",
+    stripeCustomer: row.stripeCustomerId || "",
+    stripeSubscription: row.stripeSubscriptionId || "",
+    updatedAt: row.updatedAt.toISOString(),
     status,
-    active: memberIsActive(status, raw.active),
-    src: asString(raw.src),
+    active: memberIsActive(status, ENTITLED_STATUSES.has(status.toLowerCase()) ? "1" : "0"),
+    src: row.src || "",
   };
 }
 
-async function readHash(email: string): Promise<Record<string, unknown> | null> {
+async function findExisting(hints: {
+  email?: string | null;
+  stripeSubscription?: string | null;
+  stripeCustomer?: string | null;
+}): Promise<MembershipRow | null> {
+  const prisma = getPrisma();
+  if (!prisma) return null;
+
+  if (hints.email) {
+    const byEmail = await prisma.proMember.findUnique({ where: { email: hints.email } });
+    if (byEmail) return byEmail;
+  }
+  const subscriptionId = blankToNull(hints.stripeSubscription);
+  if (subscriptionId) {
+    const bySub = await prisma.proMember.findUnique({
+      where: { stripeSubscriptionId: subscriptionId },
+    });
+    if (bySub) return bySub;
+  }
+  const customerId = blankToNull(hints.stripeCustomer);
+  if (customerId) {
+    return prisma.proMember.findUnique({ where: { stripeCustomerId: customerId } });
+  }
+  return null;
+}
+
+/** Best-effort cache. Failures are logged and do not change the Postgres result. */
+async function mirrorMemberToRedis(row: MembershipRow): Promise<void> {
   const redis = getRedis();
-  if (!redis) return null;
-  const raw = await redis.hgetall<Record<string, unknown>>(memberHashKey(email));
-  if (!raw || Object.keys(raw).length === 0) return null;
-  return raw;
+  if (!redis) return;
+  try {
+    const record = rowToRecord(row);
+    const fields: Record<string, string> = {
+      email: record.email,
+      plan: record.plan,
+      interval: record.interval,
+      stripeCustomer: record.stripeCustomer,
+      stripeSubscription: record.stripeSubscription,
+      updatedAt: record.updatedAt,
+      status: record.status,
+      active: record.active ? "1" : "0",
+      src: record.src,
+    };
+    await redis.hset(memberHashKey(record.email), fields);
+    if (record.stripeSubscription) {
+      await redis.set(memberBySubscriptionKey(record.stripeSubscription), record.email);
+    }
+    if (record.stripeCustomer) {
+      await redis.set(memberByCustomerKey(record.stripeCustomer), record.email);
+    }
+  } catch (err) {
+    console.error("[membership] redis cache write failed:", err);
+  }
 }
 
 export async function resolveMemberEmail(hints: {
@@ -123,41 +184,32 @@ export async function resolveMemberEmail(hints: {
 }): Promise<string | null> {
   const direct = normalizeMemberEmail(hints.email);
   if (direct) return direct;
-
-  const redis = getRedis();
-  if (!redis) return null;
-
-  if (hints.stripeSubscription) {
-    const fromSub = await redis.get<string>(memberBySubscriptionKey(hints.stripeSubscription));
-    const email = normalizeMemberEmail(typeof fromSub === "string" ? fromSub : null);
-    if (email) return email;
-  }
-  if (hints.stripeCustomer) {
-    const fromCus = await redis.get<string>(memberByCustomerKey(hints.stripeCustomer));
-    const email = normalizeMemberEmail(typeof fromCus === "string" ? fromCus : null);
-    if (email) return email;
-  }
-  return null;
+  const existing = await findExisting({
+    stripeSubscription: hints.stripeSubscription,
+    stripeCustomer: hints.stripeCustomer,
+  });
+  return existing?.email ?? null;
 }
 
 /**
- * Create or update the member hash. Returns false when Redis is down or the
- * email cannot be resolved (subscription events often omit it until checkout
- * has written the index).
+ * Create or update the Postgres member row. Returns false when the email
+ * cannot be resolved, or when an older subscription must not overwrite a
+ * newer one. Throws if the database write fails.
  */
 export async function upsertMember(input: MemberUpsert): Promise<boolean> {
-  const redis = getRedis();
-  if (!redis) return false;
+  const prisma = getPrisma();
+  if (!prisma) return false;
 
-  const email = await resolveMemberEmail({
-    email: input.email,
+  const directEmail = normalizeMemberEmail(input.email);
+  const existing = await findExisting({
+    email: directEmail,
     stripeSubscription: input.stripeSubscription,
     stripeCustomer: input.stripeCustomer,
   });
+  const email = directEmail || existing?.email || null;
   if (!email) return false;
 
-  const existing = await readHash(email);
-  const currentSub = existing ? asString(existing.stripeSubscription) : "";
+  const currentSub = existing?.stripeSubscriptionId || "";
   const nextSub = input.stripeSubscription?.trim() || "";
   if (
     input.replaceSubscription !== true &&
@@ -168,45 +220,55 @@ export async function upsertMember(input: MemberUpsert): Promise<boolean> {
     return false;
   }
 
-  const previousStatus = existing ? asString(existing.status) : "";
+  const previousStatus = existing?.status || "";
   const status = (input.status || previousStatus || "active").toLowerCase();
-  const fields: Record<string, string> = {
-    email,
-    status,
-    active: ENTITLED_STATUSES.has(status) ? "1" : "0",
-    updatedAt: input.updatedAt || new Date().toISOString(),
-  };
-
+  const updatedAt = input.updatedAt ? new Date(input.updatedAt) : new Date();
   const plan = input.plan?.trim();
   const interval = input.interval?.trim();
   const src = input.src?.trim();
-  if (plan) fields.plan = plan;
-  if (interval) fields.interval = interval;
-  if (src) fields.src = src;
-  if (input.stripeCustomer) fields.stripeCustomer = input.stripeCustomer;
-  if (nextSub) fields.stripeSubscription = nextSub;
+  const stripeCustomerId = blankToNull(input.stripeCustomer);
+  const stripeSubscriptionId = nextSub || null;
 
-  if (!existing) {
-    fields.plan ??= "";
-    fields.interval ??= "";
-    fields.stripeCustomer ??= input.stripeCustomer || "";
-    fields.stripeSubscription ??= nextSub;
-  }
+  const row = existing
+    ? await prisma.proMember.update({
+        where: { id: existing.id },
+        data: {
+          email,
+          status,
+          updatedAt,
+          ...(plan ? { plan } : {}),
+          ...(interval ? { interval } : {}),
+          ...(src ? { src } : {}),
+          ...(stripeCustomerId ? { stripeCustomerId } : {}),
+          ...(stripeSubscriptionId ? { stripeSubscriptionId } : {}),
+          ...(input.currentPeriodEnd !== undefined
+            ? { currentPeriodEnd: input.currentPeriodEnd }
+            : {}),
+        },
+      })
+    : await prisma.proMember.create({
+        data: {
+          email,
+          status,
+          plan: plan || "",
+          interval: interval || "",
+          src: src || "",
+          stripeCustomerId,
+          stripeSubscriptionId,
+          currentPeriodEnd: input.currentPeriodEnd ?? null,
+          updatedAt,
+        },
+      });
 
-  await redis.hset(memberHashKey(email), fields);
-  if (fields.stripeSubscription) {
-    await redis.set(memberBySubscriptionKey(fields.stripeSubscription), email);
-  }
-  if (fields.stripeCustomer) {
-    await redis.set(memberByCustomerKey(fields.stripeCustomer), email);
-  }
+  await mirrorMemberToRedis(row);
   return true;
 }
 
 /**
- * Mark the member canceled. Does not delete the hash, so ops can still see
+ * Mark the member canceled. Does not delete the row, so ops can still see
  * who bought and then left. A delete for a subscription id that is not the
  * one currently stored (an older sub after a re-subscribe) is ignored.
+ * Throws if the database write fails.
  */
 export async function revokeMember(hints: {
   email?: string | null;
@@ -214,29 +276,37 @@ export async function revokeMember(hints: {
   stripeSubscription?: string | null;
   updatedAt?: string;
 }): Promise<{ revoked: boolean; email: string | null }> {
-  const email = await resolveMemberEmail(hints);
-  const redis = getRedis();
-  if (!email || !redis) return { revoked: false, email: email ?? null };
+  const prisma = getPrisma();
+  if (!prisma) return { revoked: false, email: normalizeMemberEmail(hints.email) };
 
-  const existing = await readHash(email);
-  if (!existing) return { revoked: false, email };
+  const directEmail = normalizeMemberEmail(hints.email);
+  const existing = await findExisting({
+    email: directEmail,
+    stripeSubscription: hints.stripeSubscription,
+    stripeCustomer: hints.stripeCustomer,
+  });
+  const email = directEmail || existing?.email || null;
+  if (!existing || !email) return { revoked: false, email };
 
-  const currentSub = asString(existing.stripeSubscription);
+  const currentSub = existing.stripeSubscriptionId || "";
   const deletedSub = hints.stripeSubscription?.trim() || "";
   if (currentSub && deletedSub && currentSub !== deletedSub) {
     return { revoked: false, email };
   }
 
-  const fields: Record<string, string> = {
-    email,
-    status: "canceled",
-    active: "0",
-    updatedAt: hints.updatedAt || new Date().toISOString(),
-  };
-  if (hints.stripeCustomer) fields.stripeCustomer = hints.stripeCustomer;
-  if (deletedSub) fields.stripeSubscription = deletedSub;
-
-  await redis.hset(memberHashKey(email), fields);
+  const updatedAt = hints.updatedAt ? new Date(hints.updatedAt) : new Date();
+  const stripeCustomerId = blankToNull(hints.stripeCustomer);
+  const row = await prisma.proMember.update({
+    where: { id: existing.id },
+    data: {
+      email,
+      status: "canceled",
+      updatedAt,
+      ...(stripeCustomerId ? { stripeCustomerId } : {}),
+      ...(deletedSub ? { stripeSubscriptionId: deletedSub } : {}),
+    },
+  });
+  await mirrorMemberToRedis(row);
   return { revoked: true, email };
 }
 
@@ -247,8 +317,14 @@ export type MemberLookup =
 export async function lookupMember(emailRaw: string): Promise<MemberLookup> {
   const email = normalizeMemberEmail(emailRaw);
   if (!email) return { available: true, member: null };
-  if (!getRedis()) return { available: false };
-  const raw = await readHash(email);
-  if (!raw) return { available: true, member: null };
-  return { available: true, member: toRecord(email, raw) };
+  const prisma = getPrisma();
+  if (!prisma) return { available: false };
+  try {
+    const row = await prisma.proMember.findUnique({ where: { email } });
+    if (!row) return { available: true, member: null };
+    return { available: true, member: rowToRecord(row) };
+  } catch (err) {
+    console.error("[membership] lookup failed:", err);
+    return { available: false };
+  }
 }

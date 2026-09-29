@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { getRedis } from "@/lib/services/redis";
-import { Resend } from "resend";
+import { resendFromAddress } from "@/lib/services/resend-from";
 
 // Neon free tier auto-suspends after 5 min inactivity; first connection after
 // suspend is rejected in <10ms. Retry once with a short delay to let Neon wake.
@@ -27,22 +27,23 @@ async function checkDatabase(): Promise<{ status: string; latencyMs: number }> {
   return { status: "error", latencyMs: Date.now() - start };
 }
 
+/**
+ * Confirm the Resend key without sending mail. GET /domains is a read of
+ * the account; it does not deliver a message.
+ */
 async function checkEmail(): Promise<{ status: string; latencyMs: number; from?: string }> {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = (process.env.RESEND_API_KEY ?? "").replace(/[\r\n]+/g, "").trim();
   if (!apiKey) return { status: "not_configured", latencyMs: 0 };
 
-  const from = process.env.RESEND_FROM_EMAIL || "A Versus B <hello@aversusb-mail.com>";
+  const from = resendFromAddress();
   const start = Date.now();
   try {
-    const resend = new Resend(apiKey);
-    // Resend's built-in test sink — accepted and marked delivered without actual delivery
-    const { error } = await resend.emails.send({
-      from,
-      to: "delivered@resend.dev",
-      subject: "health-check",
-      text: "health",
+    const res = await fetch("https://api.resend.com/domains", {
+      method: "GET",
+      headers: { Authorization: `Bearer ${apiKey}` },
     });
-    if (error) return { status: "error", latencyMs: Date.now() - start, from };
+    await res.arrayBuffer?.().catch(() => undefined);
+    if (!res.ok) return { status: "error", latencyMs: Date.now() - start, from };
     return { status: "ok", latencyMs: Date.now() - start, from };
   } catch {
     return { status: "error", latencyMs: Date.now() - start, from };
@@ -50,10 +51,10 @@ async function checkEmail(): Promise<{ status: string; latencyMs: number; from?:
 }
 
 export async function GET() {
-  const checks: Record<string, { status: string; latencyMs?: number; from?: string }> = {};
+  const checks: Record<string, { status: string; optional?: boolean; latencyMs?: number; from?: string }> = {};
   let overallStatus = "ok";
 
-  // Check PostgreSQL (with Neon wake-up retry)
+  // Postgres is required for Pro membership. A failed query degrades health.
   const dbResult = await checkDatabase();
   if (dbResult.status === "not_configured") {
     checks.database = { status: "not_configured" };
@@ -62,22 +63,20 @@ export async function GET() {
     if (dbResult.status === "error") overallStatus = "degraded";
   }
 
-  // Check Redis
+  // Redis is an optional cache. Missing or failing Redis must not degrade.
   const redisStart = Date.now();
   try {
     const redis = getRedis();
     if (redis) {
       await redis.ping();
-      checks.redis = { status: "ok", latencyMs: Date.now() - redisStart };
+      checks.redis = { status: "ok", optional: true, latencyMs: Date.now() - redisStart };
     } else {
-      checks.redis = { status: "not_configured" };
+      checks.redis = { status: "not_configured", optional: true };
     }
   } catch {
-    checks.redis = { status: "error", latencyMs: Date.now() - redisStart };
-    overallStatus = "degraded";
+    checks.redis = { status: "error", optional: true, latencyMs: Date.now() - redisStart };
   }
 
-  // Check Resend email (using test sink — no actual delivery, just API verification)
   const emailResult = await checkEmail();
   if (emailResult.status === "not_configured") {
     checks.email = { status: "not_configured" };

@@ -1,9 +1,10 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 
 import {
   DEFAULT_ADMIN_NOTIFICATION_EMAILS,
   parseAdminNotificationEmails,
 } from "../email";
+import { resendFromAddress } from "../resend-from";
 
 describe("parseAdminNotificationEmails", () => {
   it("defaults to both founders when unset or blank", () => {
@@ -45,5 +46,19 @@ describe("parseAdminNotificationEmails", () => {
         "Daniarozin@gmail.com, daniarozin@gmail.com; SHAI.AND1@gmail.com"
       )
     ).toEqual(["Daniarozin@gmail.com", "SHAI.AND1@gmail.com"]);
+  });
+});
+
+describe("resendFromAddress", () => {
+  const previous = process.env.RESEND_FROM_EMAIL;
+
+  afterEach(() => {
+    if (previous === undefined) delete process.env.RESEND_FROM_EMAIL;
+    else process.env.RESEND_FROM_EMAIL = previous;
+  });
+
+  it("strips whitespace and newlines from RESEND_FROM_EMAIL", () => {
+    process.env.RESEND_FROM_EMAIL = " A Versus B <hello@aversusb-mail.com>\r\n";
+    expect(resendFromAddress()).toBe("A Versus B <hello@aversusb-mail.com>");
   });
 });

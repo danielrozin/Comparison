@@ -4,6 +4,12 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import crypto from "node:crypto";
 import { NextRequest } from "next/server";
+import { lookupMember } from "@/lib/monetization/members";
+import {
+  membershipTestEvents,
+  resetMembershipTestDb,
+  setMembershipDbFailWrites,
+} from "@/lib/monetization/__tests__/in-memory-membership-db";
 
 const capture = vi.fn();
 const flushPostHog = vi.fn().mockResolvedValue(undefined);
@@ -22,11 +28,13 @@ const redisState = vi.hoisted(() => {
     strings,
     lists,
     sets,
+    enabled: true,
     reset() {
       hashes.clear();
       strings.clear();
       lists.clear();
       sets.clear();
+      api.enabled = true;
     },
     async sadd(key: string, member: string) {
       let set = sets.get(key);
@@ -66,8 +74,13 @@ const redisState = vi.hoisted(() => {
 });
 
 vi.mock("@/lib/services/redis", () => ({
-  getRedis: () => redisState,
+  getRedis: () => (redisState.enabled ? redisState : null),
 }));
+
+vi.mock("@/lib/db/prisma", async () => {
+  const db = await import("@/lib/monetization/__tests__/in-memory-membership-db");
+  return { getPrisma: () => db.getMembershipTestPrisma() };
+});
 
 vi.mock("@/lib/services/email", () => ({
   sendNotificationEmail: (...args: unknown[]) => sendNotificationEmail(...args),
@@ -108,6 +121,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
     sendMemberWelcomeEmail.mockClear();
     sendMemberWelcomeEmail.mockResolvedValue({ success: true, method: "resend" });
     redisState.reset();
+    resetMembershipTestDb();
   });
 
   afterEach(() => {
@@ -479,5 +493,154 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
         subject: expect.stringContaining("sub_hash"),
       }),
     );
+  });
+
+  it("grants, updates, and revokes access in Postgres when Redis is not configured", async () => {
+    redisState.enabled = false;
+
+    const completed = await postWebhook(
+      JSON.stringify({
+        id: "evt_pg_completed",
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            id: "cs_pg",
+            customer_details: { email: "Buyer@Example.com" },
+            customer: "cus_pg",
+            subscription: "sub_pg",
+            amount_total: 4900,
+            currency: "usd",
+            metadata: { plan: "pro", interval: "year", src: "header" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(completed.status).toBe(200);
+    const granted = await lookupMember("buyer@example.com");
+    expect(granted).toMatchObject({
+      available: true,
+      member: expect.objectContaining({
+        active: true,
+        plan: "pro",
+        status: "active",
+        stripeCustomer: "cus_pg",
+        stripeSubscription: "sub_pg",
+      }),
+    });
+
+    const updated = await postWebhook(
+      JSON.stringify({
+        id: "evt_pg_updated",
+        type: "customer.subscription.updated",
+        data: {
+          object: {
+            id: "sub_pg",
+            customer: "cus_pg",
+            status: "past_due",
+            metadata: { plan: "pro", interval: "year" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(updated.status).toBe(200);
+    const pastDue = await lookupMember("buyer@example.com");
+    expect(pastDue.available && pastDue.member).toMatchObject({
+      status: "past_due",
+      active: false,
+      plan: "pro",
+    });
+
+    const deleted = await postWebhook(
+      JSON.stringify({
+        id: "evt_pg_deleted",
+        type: "customer.subscription.deleted",
+        data: {
+          object: {
+            id: "sub_pg",
+            customer: "cus_pg",
+            status: "canceled",
+            metadata: { plan: "pro", interval: "year" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(deleted.status).toBe(200);
+    const revoked = await lookupMember("buyer@example.com");
+    expect(revoked.available && revoked.member).toMatchObject({
+      status: "canceled",
+      active: false,
+      plan: "pro",
+    });
+    expect(redisState.hashes.size).toBe(0);
+  });
+
+  it("sends the welcome and founder alert once when Stripe retries the same event", async () => {
+    const payload = JSON.stringify({
+      id: "evt_retry_once",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_retry",
+          customer_details: { email: "buyer@example.com" },
+          customer: "cus_retry",
+          subscription: "sub_retry",
+          amount_total: 900,
+          currency: "usd",
+          metadata: { plan: "pro", interval: "month", src: "pricing" },
+        },
+      },
+    });
+
+    const first = await postWebhook(payload, secret);
+    const second = await postWebhook(payload, secret);
+    expect(first.status).toBe(200);
+    expect(second.status).toBe(200);
+    expect(await second.json()).toMatchObject({ received: true, duplicate: true });
+    expect(sendMemberWelcomeEmail).toHaveBeenCalledTimes(1);
+    expect(sendNotificationEmail).toHaveBeenCalledTimes(1);
+    expect(membershipTestEvents()).toHaveLength(1);
+  });
+
+  it("returns 500 and skips the welcome email when the membership write fails", async () => {
+    setMembershipDbFailWrites(true);
+    const payload = JSON.stringify({
+      id: "evt_persist_fail",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_fail",
+          customer_details: { email: "buyer@example.com" },
+          customer: "cus_fail",
+          subscription: "sub_fail",
+          amount_total: 4900,
+          currency: "usd",
+          metadata: { plan: "pro", interval: "year", src: "header" },
+        },
+      },
+    });
+
+    const failed = await postWebhook(payload, secret);
+    expect(failed.status).toBe(500);
+    expect(sendMemberWelcomeEmail).not.toHaveBeenCalled();
+    expect(sendNotificationEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: expect.stringContaining("WARNING: membership was NOT recorded in Postgres"),
+      }),
+    );
+    expect(membershipTestEvents()).toHaveLength(0);
+    const missing = await lookupMember("buyer@example.com");
+    expect(missing).toEqual({ available: true, member: null });
+
+    setMembershipDbFailWrites(false);
+    sendNotificationEmail.mockClear();
+    const retried = await postWebhook(payload, secret);
+    expect(retried.status).toBe(200);
+    expect(sendMemberWelcomeEmail).toHaveBeenCalledTimes(1);
+    expect(sendNotificationEmail).toHaveBeenCalledTimes(1);
+    const granted = await lookupMember("buyer@example.com");
+    expect(granted.available && granted.member?.active).toBe(true);
   });
 });
