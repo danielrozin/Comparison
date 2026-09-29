@@ -13,7 +13,13 @@
  * to resolve live — runtime filter drops anything dead.
  */
 export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
-  "how-to-get-a-cashiers-check": ["bank-of-america-vs-chase", "chase-vs-bank-of-america"],
+  // ROO-119: canonical finance compares (banks + money transfer). The
+  // retired alias chase-vs-bank-of-america folds onto bank-of-america-vs-chase.
+  "how-to-get-a-cashiers-check": [
+    "bank-of-america-vs-chase",
+    "capital-one-vs-chase",
+    "revolut-vs-wise",
+  ],
   // nav-apps: maps/waze compares currently 404 live — leave empty; soft CTA only
   "best-navigation-apps-2026-google-maps-waze-and-apple-maps-compared": [
     "google-maps-vs-waze",
