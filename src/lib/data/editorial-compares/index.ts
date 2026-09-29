@@ -5,6 +5,7 @@ import { WHATSAPP_VS_TELEGRAM } from "./whatsapp-vs-telegram";
 import { IPHONE_17_VS_17_PRO_VS_16_PRO } from "./iphone-17-vs-iphone-17-pro-vs-iphone-16-pro";
 import { CARHARTT_VS_DICKIES } from "./carhartt-vs-dickies";
 import { SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA } from "./samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra";
+import { IPHONE_16E_VS_IPHONE_17E } from "./iphone-16e-vs-iphone-17e";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -27,6 +28,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [IPHONE_17_VS_17_PRO_VS_16_PRO.slug]: IPHONE_17_VS_17_PRO_VS_16_PRO,
   [CARHARTT_VS_DICKIES.slug]: CARHARTT_VS_DICKIES,
   [SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA.slug]: SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA,
+  [IPHONE_16E_VS_IPHONE_17E.slug]: IPHONE_16E_VS_IPHONE_17E,
 };
 
 /**
