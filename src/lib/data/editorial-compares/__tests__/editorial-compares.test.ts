@@ -590,7 +590,7 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
 
   it("cites the fetched spec pages and only links sitemap-backed compares", () => {
     const sources = page().citationStats?.sources ?? [];
-    expect(sources).toHaveLength(5);
+    expect(sources).toHaveLength(7);
     expect(page().citationStats?.lastResearched).toBe("2026-09-29");
     for (const source of sources) {
       expect(source.name).toMatch(/2026-09-29/);
@@ -603,6 +603,8 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
       "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
       "https://www.geeky-gadgets.com/galaxy-s26-ultra-vs-z-fold-7/",
       "https://www.samsung.com/us/support/warranty/",
+      "https://www.samsung.com/us/smartphones/galaxy-s26-ultra/",
+      "https://www.androidauthority.com/samsung-galaxy-z-fold-7-drops-s-pen-support-3575176/",
     ]);
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
@@ -614,5 +616,14 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
     expect(pageText(page())).toContain("IP68");
     expect(pageText(page())).toContain("11:44h");
     expect(pageText(page())).toContain("16:23h");
+    expect(pageText(page())).toContain("S Pen");
+    expect(pageText(page())).toContain("Not supported");
+    expect(pageText(page())).toContain("Built-in S Pen");
+    expect(pageText(page())).not.toMatch(/Air Actions|Bluetooth/i);
+    const pen = page().attributes.find((attr) => attr.slug === "s-pen");
+    expect(pen?.values.find((value) => value.entityId === "samsung-galaxy-s26-ultra")?.winner).toBe(
+      true
+    );
+    expect(page().quickAnswer?.winnerName).toBeNull();
   });
 });

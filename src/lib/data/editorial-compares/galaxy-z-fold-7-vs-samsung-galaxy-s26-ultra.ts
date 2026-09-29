@@ -18,6 +18,9 @@ const GSMARENA_FOLD = "https://www.gsmarena.com/samsung_galaxy_z_fold7-13826.php
 const GSMARENA_S26 = "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php";
 const GEEKY = "https://www.geeky-gadgets.com/galaxy-s26-ultra-vs-z-fold-7/";
 const SAMSUNG_WARRANTY = "https://www.samsung.com/us/support/warranty/";
+const SAMSUNG_S26 = "https://www.samsung.com/us/smartphones/galaxy-s26-ultra/";
+const ANDROID_AUTHORITY =
+  "https://www.androidauthority.com/samsung-galaxy-z-fold-7-drops-s-pen-support-3575176/";
 
 const FETCHED = "2026-09-29";
 const PUBLISHED = "2026-09-29T00:00:00Z";
@@ -63,7 +66,7 @@ const EXPERT_ANALYSIS = `The Galaxy S26 Ultra suits a 4-5 year keep. The Galaxy 
 
 Spec table. Caption: Galaxy Z Fold 7 vs Galaxy S26 Ultra. Source note: the rows in the comparison table are GSMArena listings fetched on 29 September 2026, from the compare page (idPhone1=13826, idPhone2=14320) and each phone's spec page. Geeky Gadgets is a qualitative summary, not a spec sheet. Samsung's US warranty page is cited only for warranty wording.
 
-Sources fetched on 29 September 2026: GSMArena compare, GSMArena Z Fold 7, GSMArena Galaxy S26 Ultra, Geeky Gadgets (article dated 24 April 2026), and Samsung's US warranty page.
+Sources fetched on 29 September 2026: GSMArena compare, GSMArena Z Fold 7, GSMArena Galaxy S26 Ultra, Geeky Gadgets (article dated 24 April 2026), Samsung's US warranty page, Samsung's US Galaxy S26 Ultra page, and Android Authority (9 July 2025).
 
 Screens and body
 
@@ -87,7 +90,7 @@ Both spec pages say up to 7 major OS updates. The Fold 7 launched on Android 16 
 
 Who should buy which
 
-Keep the S26 Ultra if you want one phone for 4-5 years and you care about ingress protection, battery, charging speed, and the longer telephoto. Geeky Gadgets makes the same split: the slab for durability, camera, and battery; the foldable for the large screen and multitasking.
+Keep the S26 Ultra if you want one phone for 4-5 years and you care about ingress protection, battery, charging speed, and the longer telephoto. Geeky Gadgets makes the same split: the slab for durability, camera, and battery; the foldable for the large screen and multitasking. Samsung's US S26 Ultra page says the phone has a built-in S Pen, and Samsung told Android Authority the Fold 7 does not support the S Pen because the digitizer was removed to make it thinner.
 
 Buy the Z Fold 7 only if that inner 8.0-inch screen is the point. You are accepting IP48 instead of IP68, a smaller battery, slower charging, and a hinge. Samsung's US warranty page does not publish a hinge-cycle count. It says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Check that page for the coverage that applies to your country and purchase date.`;
 
@@ -121,6 +124,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
         "GSMArena active-use score 11:44h, against 16:23h",
         "10MP 3x telephoto and 12MP ultrawide, with no 5x periscope",
         "A hinge needs extra care. No hinge-cycle count is published on the spec pages cited here",
+        "No S Pen support. Samsung removed the digitizer to make it thinner",
       ],
       bestFor: "Best for the inner foldable screen",
     },
@@ -138,6 +142,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
         "Snapdragon 8 Elite Gen 5 (GSMArena)",
         "200MP main, 50MP 5x periscope, and 50MP ultrawide",
         "GSMArena active-use score 16:23h",
+        "Built-in S Pen (Samsung)",
         "Up to 7 major OS updates, starting from a March 2026 release",
       ],
       cons: [
@@ -184,6 +189,12 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       entityAValue: "Up to 7 major OS updates",
       entityBValue: "Up to 7 major OS updates, from a later launch",
       winner: "tie",
+    },
+    {
+      label: "S Pen",
+      entityAValue: "Not supported",
+      entityBValue: "Built-in S Pen",
+      winner: "b",
     },
   ],
   attributes: [
@@ -273,6 +284,16 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       "Android 16, One UI 8, up to 7 major OS updates",
       "Android 16, upgradable to Android 17, One UI 9, up to 7 major OS updates"
     ),
+    textAttr(
+      "s-pen",
+      "S Pen",
+      "S Pen · Samsung, Android Authority, GSMArena, fetched 2026-09-29",
+      FOLD,
+      S26,
+      "Not supported",
+      "Built-in S Pen",
+      "b"
+    ),
   ],
   faqs: FAQS,
   relatedComparisons: [
@@ -297,8 +318,8 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       "GSMArena lists the Fold 7 at IP48, 4,400 mAh, and an 11:44h active-use score, and the S26 Ultra at IP68, 5,000 mAh, and a 16:23h active-use score. Both have a 200MP main camera and up to 7 major OS updates.",
   },
   citationStats: {
-    sourceCount: 5,
-    dataPointCount: 9,
+    sourceCount: 7,
+    dataPointCount: 10,
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
@@ -309,6 +330,11 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       { name: "GSMArena — Galaxy S26 Ultra (fetched 2026-09-29)", url: GSMARENA_S26 },
       { name: "Geeky Gadgets — S26 Ultra vs Z Fold 7 (24 Apr 2026, fetched 2026-09-29)", url: GEEKY },
       { name: "Samsung US — warranty (fetched 2026-09-29)", url: SAMSUNG_WARRANTY },
+      { name: "Samsung US — Galaxy S26 Ultra (fetched 2026-09-29)", url: SAMSUNG_S26 },
+      {
+        name: "Android Authority — Fold 7 drops S Pen support (9 Jul 2025, fetched 2026-09-29)",
+        url: ANDROID_AUTHORITY,
+      },
     ],
   },
   resources: [
@@ -331,7 +357,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       label: "GSMArena Galaxy S26 Ultra",
       url: GSMARENA_S26,
       description:
-        "Fetched 2026-09-29. 6.9-inch, 214 g, 7.9 mm, IP68, Snapdragon 8 Elite Gen 5, 5,000 mAh, 60W / 25W, active-use 16:23h.",
+        "Fetched 2026-09-29. 6.9-inch, 214 g, 7.9 mm, IP68, Snapdragon 8 Elite Gen 5, 5,000 mAh, 60W / 25W, active-use 16:23h. Body line lists Stylus separately from Armor Aluminum 2.",
     },
     {
       type: "external",
@@ -346,6 +372,20 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       url: SAMSUNG_WARRANTY,
       description:
         "Fetched 2026-09-29. Standard 12-month wording. Galaxy Z Fold5 and newer may have limited international warranty service. No hinge-cycle count.",
+    },
+    {
+      type: "external",
+      label: "Samsung Galaxy S26 Ultra",
+      url: SAMSUNG_S26,
+      description:
+        "Fetched 2026-09-29. Samsung's FAQ: Yes, Galaxy S26 Ultra has a built-in S Pen.",
+    },
+    {
+      type: "external",
+      label: "Android Authority on Fold 7 S Pen support",
+      url: ANDROID_AUTHORITY,
+      description:
+        "Fetched 2026-09-29. Published 9 July 2025. Samsung confirmed to Android Authority that the Fold 7 does not support the S Pen, because the digitizer was removed to make it thinner.",
     },
   ],
   metaTitle: "Fold 7 vs S26 Ultra: Which to Keep? | A Versus B",
