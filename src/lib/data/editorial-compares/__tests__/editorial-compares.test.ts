@@ -445,3 +445,86 @@ describe("ROO-121 iPhone 16e vs iPhone 17e", () => {
     expect(pageText(page())).toContain("Ceramic Shield 2");
   });
 });
+
+const GO_SLUG = "polaroid-go-gen-2-vs-fujifilm-instax-mini";
+const GO_FAQS = [
+  "Is Instax Mini better than the Polaroid Go Gen 2?",
+  "Why would you buy the Polaroid Go Gen 2?",
+  "How much does the film cost?",
+  "Should you buy the Instax Mini 12 or the Mini 13?",
+  "Is the Polaroid Go Gen 2 good outdoors?",
+];
+const GO_QUICK_ANSWER =
+  "An Instax Mini is the easier start. That means the Mini 12, or the Mini 13 if that is the camera on the shelf: cheaper film in the reviews cited here, more consistent prints, and simple one-button shooting. The Polaroid Go Gen 2 is for people who want the Polaroid look and tiny square prints, and who accept a higher cost per shot and less predictable exposure. Digital Camera World lists both camera bodies at a US$79.99 RRP and says the Go still leans toward overexposing outdoors. This page does not crown a winner.";
+
+describe("ROO-122 Polaroid Go Gen 2 vs Instax Mini", () => {
+  const page = () => getEditorialComparison(GO_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(GO_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(GO_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual([
+      "polaroid-go-gen-2",
+      "fujifilm-instax-mini",
+    ]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best for the Polaroid look and tiny square prints",
+      "Best easy start: cheaper film and more consistent prints",
+    ]);
+    expect(page().shortAnswer).toBe(GO_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(GO_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(GO_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-09-29T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/\$77|£72|\$93/);
+    expect(pageText(page())).not.toMatch(/Generation 3 (weighs|costs|has a)/i);
+  });
+
+  it("keeps five FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(5);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(GO_FAQS);
+    expect(faqQuestions(page())).toEqual(GO_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(GO_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites reviewer prices and does not invent related product pages", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(4);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-29");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-29/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.digitalcameraworld.com/reviews/polaroid-go-generation-2-review",
+      "https://uk.pcmag.com/cameras-1/152230/polaroid-go-generation-2",
+      "https://www.pcmag.com/reviews/fujifilm-instax-mini-12",
+      "https://www.pcmag.com/picks/the-best-instant-cameras",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().relatedComparisons).toEqual([]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("reviewer-cited");
+    expect(pageText(page())).toContain("wallet-size");
+    expect(pageText(page())).toContain("US$79.99");
+  });
+});
