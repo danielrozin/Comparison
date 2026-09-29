@@ -31,6 +31,13 @@ describe("pricingHref", () => {
   it("falls back to direct when the src is blank", () => {
     expect(pricingHref("  ")).toBe("/pricing?src=direct");
   });
+
+  it("appends placement only when one is passed", () => {
+    expect(pricingHref("compare-japan-vs-china", "under-verdict-pro")).toBe(
+      "/pricing?src=compare-japan-vs-china&placement=under-verdict-pro",
+    );
+    expect(pricingHref("blog")).toBe("/pricing?src=blog");
+  });
 });
 
 describe("SoftPricingLine", () => {
@@ -52,6 +59,46 @@ describe("SoftPricingLine", () => {
     expect(trackPricingCtaClick).toHaveBeenCalledWith(
       "blog-how-to-get-a-cashiers-check",
       "soft-line",
+    );
+  });
+
+  it("defaults placement to soft-line and leaves it off the href", () => {
+    const { container } = render(<SoftPricingLine src="compare-japan-vs-china" />);
+    const link = within(container).getByRole("link", { name: /See Pro pricing/i });
+
+    expect(link).toHaveAttribute("href", "/pricing?src=compare-japan-vs-china");
+    expect(link.getAttribute("href")).not.toContain("placement=");
+    fireEvent.click(link);
+    expect(trackPricingCtaClick).toHaveBeenCalledWith(
+      "compare-japan-vs-china",
+      "soft-line",
+    );
+  });
+
+  it("records under-verdict-pro on the href and the click", () => {
+    const copy =
+      "Want a follow-up on price, country, or the tool you actually use? Pro builds it within 24 hours — $49/year.";
+    const { container } = render(
+      <SoftPricingLine
+        src="compare-japan-vs-china"
+        placement="under-verdict-pro"
+        lead=""
+        label={copy}
+      />,
+    );
+    const link = within(container).getByRole("link", { name: copy });
+
+    expect(link).toHaveAttribute(
+      "href",
+      "/pricing?src=compare-japan-vs-china&placement=under-verdict-pro",
+    );
+    expect(link).toHaveTextContent(copy);
+    expect(container).not.toHaveTextContent("See Pro pricing");
+    expect(container).not.toHaveTextContent("Need a matchup");
+    fireEvent.click(link);
+    expect(trackPricingCtaClick).toHaveBeenCalledWith(
+      "compare-japan-vs-china",
+      "under-verdict-pro",
     );
   });
 

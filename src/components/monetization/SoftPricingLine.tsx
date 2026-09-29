@@ -4,10 +4,16 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { trackPricingCtaClick } from "@/lib/utils/analytics";
 
-/** `/pricing?src=` for a lander. Empty src falls back to `direct`. */
-export function pricingHref(src: string): string {
+/**
+ * `/pricing?src=` for a lander. Empty src falls back to `direct`.
+ * Pass `placement` only when that control should show up on the URL.
+ * Leave it off for the default soft line so existing hrefs stay `/pricing?src=…`.
+ */
+export function pricingHref(src: string, placement?: string): string {
   const value = src.trim() || "direct";
-  return `/pricing?src=${encodeURIComponent(value)}`;
+  const base = `/pricing?src=${encodeURIComponent(value)}`;
+  if (!placement) return base;
+  return `${base}&placement=${encodeURIComponent(placement)}`;
 }
 
 /**
@@ -19,15 +25,18 @@ export function TrackedPricingLink({
   placement = "soft-line",
   className,
   children,
+  href,
 }: {
   src: string;
   placement?: string;
   className?: string;
   children: ReactNode;
+  /** Set when the href needs `&placement=` as well as `?src=`. */
+  href?: string;
 }) {
   return (
     <Link
-      href={pricingHref(src)}
+      href={href ?? pricingHref(src)}
       onClick={() => trackPricingCtaClick(src.trim() || "direct", placement)}
       className={className}
     >
@@ -44,6 +53,12 @@ export interface SoftPricingLineProps {
   lead?: string;
   label?: string;
   className?: string;
+  /**
+   * Which control fired `pricing_cta_click`. Defaults to `soft-line` so
+   * existing landers keep the same event and the same `/pricing?src=` href.
+   * Any other value is also written to `&placement=` on the href.
+   */
+  placement?: string;
 }
 
 /**
@@ -56,16 +71,20 @@ export function SoftPricingLine({
   lead = "Need a matchup we haven't published?",
   label = "See Pro pricing",
   className = "",
+  placement = "soft-line",
 }: SoftPricingLineProps) {
   const onDark = tone === "onDark";
+  // Default soft-line href stays `/pricing?src=` with no placement query.
+  const href = placement === "soft-line" ? undefined : pricingHref(src, placement);
   return (
     <p
       className={`text-sm ${onDark ? "text-primary-100" : "text-text-secondary"} ${className}`.trim()}
     >
-      {lead}{" "}
+      {lead ? `${lead} ` : null}
       <TrackedPricingLink
         src={src}
-        placement="soft-line"
+        placement={placement}
+        href={href}
         className={
           onDark
             ? "font-semibold text-white underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded"
