@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { comparisonPageSchema } from "@/lib/seo/schema";
+import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
 import { findSelfContradictions } from "@/lib/services/numeric-claim-guard";
 import { isDegenerateComparisonSlug } from "@/lib/utils/slugify";
 import type { ComparisonPageData } from "@/types";
@@ -359,5 +360,88 @@ describe("ROO-115 Galaxy S24 Ultra vs Galaxy S25 Ultra", () => {
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
       "iphone-16-pro-vs-galaxy-s25-ultra",
     ]);
+  });
+});
+
+const E16_SLUG = "iphone-16e-vs-iphone-17e";
+const E16_FAQS = [
+  "Is the iPhone 17e worth it over the iPhone 16e?",
+  "Is 256GB enough, or should you get the 512GB iPhone 16e?",
+  "Is the iPhone 17e camera better than the iPhone 16e?",
+  "Does MagSafe matter on the iPhone 17e?",
+  "Which should you buy if you are coming from an iPhone 8?",
+];
+const E16_QUICK_ANSWER =
+  "Buy the iPhone 17e 256GB unless you already know you need more than 256GB. It has the A19 chip, MagSafe up to 15W, Ceramic Shield 2, and it launched a year after the 16e. Pick the iPhone 16e 512GB only if that extra storage matters more than MagSafe and the newer chip, and a live price check shows it is close to the 17e. Both have a 6.1-inch Super Retina XDR display, one 48MP Fusion camera, and up to 26 hours of video playback. Both launched at a $599 starting price. This page does not crown a winner.";
+
+describe("ROO-121 iPhone 16e vs iPhone 17e", () => {
+  const page = () => getEditorialComparison(E16_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(E16_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(E16_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual(["iphone-16e", "iphone-17e"]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best if you need 512GB and the live price is close",
+      "Best for most people, including an upgrade from an iPhone 8",
+    ]);
+    expect(page().shortAnswer).toBe(E16_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(E16_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(E16_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-09-29T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/Geekbench/i);
+    expect(pageText(page())).not.toMatch(/3242|3627|7976|9249|23888|37146/);
+    expect(pageText(page())).not.toMatch(/25W/);
+  });
+
+  it("keeps five FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(5);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(E16_FAQS);
+    expect(faqQuestions(page())).toEqual(E16_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(E16_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites the fetched pages and only links sitemap-backed compares", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(3);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-29");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-29/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.macrumors.com/guide/iphone-16e-vs-17e/",
+      "https://appleinsider.com/inside/iphone-17e/vs/iphone-17e-vs-iphone-16e-apples-low-end-compared",
+      "https://www.apple.com/iphone-17e/",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "iphone-17-vs-iphone-17-pro-vs-iphone-16-pro",
+      "iphone-16-pro-vs-iphone-16-pro-max",
+    ]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("15W");
+    expect(pageText(page())).toContain("7.5W");
+    expect(pageText(page())).toContain("Ceramic Shield 2");
   });
 });
