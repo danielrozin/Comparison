@@ -18,6 +18,13 @@ import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
+import { BlogInlineCompareCtas } from "@/components/blog/BlogInlineCompareCtas";
+import {
+  CASHIERS_CHECK_BLOG_SLUG,
+  CASHIERS_CHECK_SOURCE_PAGE,
+  selectCashiersCheckCompareLinks,
+  splitHtmlAfterIntro,
+} from "@/lib/data/cashiers-check-blog-cta";
 import { BLOG_COMPARE_SOFT_HREF } from "@/lib/data/blog-compare-constants";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
 
@@ -410,6 +417,15 @@ export default async function BlogPostPage({
   const comparisonTitles = article.relatedComparisonSlugs?.length
     ? await getComparisonTitlesBySlugs(article.relatedComparisonSlugs)
     : {};
+
+  // ROO-119: this lander only. Links sit under the intro and use the same
+  // live-slug list as the hero CTA. Other posts keep a single content block.
+  const cashiersCheckLinks =
+    slug === CASHIERS_CHECK_BLOG_SLUG
+      ? selectCashiersCheckCompareLinks(article.relatedComparisonSlugs ?? [])
+      : [];
+  const cashiersCheckParts =
+    cashiersCheckLinks.length >= 2 ? splitHtmlAfterIntro(renderedContent) : null;
 
   const articleUrl = `${SITE_URL}/blog/${slug}`;
   const extras = getBlogSchemaExtras(slug);
@@ -929,10 +945,27 @@ export default async function BlogPostPage({
           <div className={`flex gap-8 items-start ${toc.length >= 2 ? "xl:grid xl:grid-cols-[1fr_220px]" : ""}`}>
             <article id="blog-article-body" className="min-w-0 flex-1">
               <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
-                <div
-                  className="prose-custom"
-                  dangerouslySetInnerHTML={{ __html: renderedContent }}
-                />
+                {cashiersCheckParts ? (
+                  <>
+                    <div
+                      className="prose-custom"
+                      dangerouslySetInnerHTML={{ __html: cashiersCheckParts.lead }}
+                    />
+                    <BlogInlineCompareCtas
+                      sourcePage={CASHIERS_CHECK_SOURCE_PAGE}
+                      links={cashiersCheckLinks}
+                    />
+                    <div
+                      className="prose-custom"
+                      dangerouslySetInnerHTML={{ __html: cashiersCheckParts.rest }}
+                    />
+                  </>
+                ) : (
+                  <div
+                    className="prose-custom"
+                    dangerouslySetInnerHTML={{ __html: renderedContent }}
+                  />
+                )}
               </div>
 
           {/* Ad: after article content */}
