@@ -727,6 +727,9 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
     expect(pageText(page())).toContain("₹1,19,999");
     expect(pageText(page())).toContain("₹1,54,999");
     expect(pageText(page())).toContain("₹99,900");
+    expect(pageText(page())).not.toMatch(/MRP ₹|₹1,29,999|₹1,39,999|₹1,49,999|₹1,69,999|₹1,74,999|₹1,89,999/);
+    expect((page().resources ?? []).map((resource) => resource.description).join("\n")).not.toMatch(/not live yet/);
+    expect((page().resources ?? []).map((resource) => resource.url).join("\n")).not.toMatch(/\/entity\//);
     expect(page().faqs[0]?.answer).toBe(page().quickAnswer?.keyFact?.replace(/^Can you get any of these under ₹1 lakh\? /, ""));
     expect(pageText(page())).not.toMatch(/₹99,999|₹139,999|\$849/);
     expect(pageText(page())).toContain("15:23h");
