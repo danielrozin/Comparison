@@ -1,8 +1,10 @@
 /**
  * Compare template SEO:
  *  - noindex entity pages are not linked from the hero, Explore More, or JSON-LD
+ *  - a dropped /entity URL does not leave a ProfilePage with no @id and no url
  *  - indexable entity pages keep those links
  *  - an editorial compare emits exactly one ClaimReview
+ *  - a compare page emits exactly one FAQPage
  */
 import { beforeAll, describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
@@ -100,6 +102,40 @@ function collectTypes(node: unknown, types: string[] = []): string[] {
   }
   for (const child of Object.values(record)) collectTypes(child, types);
   return types;
+}
+
+function collectNodes(
+  node: unknown,
+  match: (record: Record<string, unknown>) => boolean,
+  found: Record<string, unknown>[] = [],
+): Record<string, unknown>[] {
+  if (Array.isArray(node)) {
+    for (const item of node) collectNodes(item, match, found);
+    return found;
+  }
+  if (!node || typeof node !== "object") return found;
+  const record = node as Record<string, unknown>;
+  if (match(record)) found.push(record);
+  for (const child of Object.values(record)) collectNodes(child, match, found);
+  return found;
+}
+
+function faqPages(documents: unknown[]): Record<string, unknown>[] {
+  return documents.flatMap((doc) =>
+    collectNodes(doc, (record) => {
+      const type = record["@type"];
+      return type === "FAQPage" || (Array.isArray(type) && type.includes("FAQPage"));
+    }),
+  );
+}
+
+function questionNames(faq: Record<string, unknown>): string[] {
+  const main = faq.mainEntity;
+  const questions = Array.isArray(main) ? main : main ? [main] : [];
+  return questions.map((question) => {
+    const record = question as Record<string, unknown>;
+    return typeof record.name === "string" ? record.name : "";
+  });
 }
 
 function renderCompareSurface(page: ComparisonPageData) {
@@ -206,6 +242,145 @@ describe("compare template entity links", () => {
       name: "Alpha Widget",
     });
   });
+
+  it("removes mainEntityOfPage when the noindex /entity URL is the only content left", () => {
+    const stripped = stripNoindexEntityPageUrls(
+      {
+        "@type": "Product",
+        name: "Alpha Widget",
+        url: "https://www.aversusb.net/entity/alpha-widget",
+        mainEntityOfPage: {
+          "@type": "ProfilePage",
+          "@id": "https://www.aversusb.net/entity/alpha-widget#profilepage",
+          url: "https://www.aversusb.net/entity/alpha-widget",
+        },
+        subjectOf: {
+          "@type": "Article",
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget",
+          },
+        },
+      },
+      [entity("alpha-widget", "Alpha Widget", "draft")],
+    );
+
+    expect(stripped).toEqual({
+      "@type": "Product",
+      name: "Alpha Widget",
+      subjectOf: {
+        "@type": "Article",
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget",
+        },
+      },
+    });
+    expect(JSON.stringify(stripped)).not.toContain('{"@type":"ProfilePage"}');
+  });
+
+  it("drops empty ProfilePage mainEntityOfPage objects from a noindex compare", () => {
+    const { documents } = renderCompareSurface(comparison("draft"));
+    const pages = documents.flatMap((doc) =>
+      collectNodes(doc, (record) => "mainEntityOfPage" in record).map(
+        (record) => record.mainEntityOfPage as Record<string, unknown>,
+      ),
+    );
+
+    expect(pages.length).toBeGreaterThan(0);
+    expect(pages.every((page) => page["@type"] !== "ProfilePage")).toBe(true);
+    expect(pages.some((page) => page["@type"] === "WebPage")).toBe(true);
+    expect(JSON.stringify(documents)).not.toContain('{"@type":"ProfilePage"}');
+  });
+
+  it("keeps ProfilePage mainEntityOfPage when the entity page is indexable", () => {
+    const { documents } = renderCompareSurface(comparison("published"));
+    const pages = documents.flatMap((doc) =>
+      collectNodes(doc, (record) => "mainEntityOfPage" in record).map(
+        (record) => record.mainEntityOfPage as Record<string, unknown>,
+      ),
+    );
+    const json = JSON.stringify(pages);
+
+    expect(pages.some((page) => page["@type"] === "ProfilePage")).toBe(true);
+    expect(json).toContain("/entity/alpha-widget");
+    expect(json).toContain("/entity/beta-widget");
+  });
+
+  it("drops a hasPart ProfilePage that lost both @id and url", () => {
+    const stripped = stripNoindexEntityPageUrls(
+      {
+        "@type": "Article",
+        hasPart: [
+          {
+            "@type": "FAQPage",
+            "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget#faq",
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://www.aversusb.net/entity/alpha-widget#profilepage",
+            url: "https://www.aversusb.net/entity/alpha-widget",
+            name: "Alpha Widget — Comparisons & Profile",
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://www.aversusb.net/entity/beta-widget#profilepage",
+            url: "https://www.aversusb.net/entity/beta-widget",
+            name: "Beta Widget — Comparisons & Profile",
+          },
+        ],
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget",
+        },
+      },
+      [
+        entity("alpha-widget", "Alpha Widget", "draft"),
+        entity("beta-widget", "Beta Widget", "draft"),
+      ],
+    );
+
+    expect(stripped).toEqual({
+      "@type": "Article",
+      hasPart: [
+        {
+          "@type": "FAQPage",
+          "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget#faq",
+        },
+      ],
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget",
+      },
+    });
+  });
+
+  it("emits no ProfilePage without an @id anywhere in a noindex compare", () => {
+    const { documents } = renderCompareSurface(comparison("draft"));
+    const profiles = documents.flatMap((doc) =>
+      collectNodes(doc, (record) => {
+        const type = record["@type"];
+        return type === "ProfilePage" || (Array.isArray(type) && type.includes("ProfilePage"));
+      }),
+    );
+    const hasParts = documents.flatMap((doc) =>
+      collectNodes(doc, (record) => Array.isArray(record.hasPart)).flatMap(
+        (record) => record.hasPart as Record<string, unknown>[],
+      ),
+    );
+
+    expect(profiles.filter((profile) => !profile["@id"])).toEqual([]);
+    expect(hasParts.some((part) => part["@type"] === "ProfilePage")).toBe(false);
+    expect(hasParts.length).toBeGreaterThan(0);
+    expect(JSON.stringify(documents)).not.toContain("Comparisons & Profile");
+    expect(
+      documents.flatMap((doc) =>
+        collectNodes(doc, (record) => record.mainEntityOfPage != null).map(
+          (record) => record.mainEntityOfPage as Record<string, unknown>,
+        ),
+      ).some((page) => page["@type"] === "WebPage"),
+    ).toBe(true);
+  });
 });
 
 describe("editorial compare ClaimReview", () => {
@@ -239,5 +414,87 @@ describe("editorial compare ClaimReview", () => {
     expect(types).toContain("FAQPage");
     expect(types).toContain("BreadcrumbList");
     expect(types).toContain("Product");
+    expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+  });
+});
+
+describe("compare FAQPage", () => {
+  it("emits one FAQPage on an ordinary compare such as marvel-vs-dc", () => {
+    const page = comparison("published");
+    const { documents } = renderCompareSurface(page);
+    const faqs = faqPages(documents);
+
+    expect(faqs).toHaveLength(1);
+    expect(faqs[0]["@id"]).toBe(
+      "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget#faq",
+    );
+    expect(questionNames(faqs[0])).toEqual(page.faqs.map((faq) => faq.question));
+  });
+
+  it("emits one FAQPage on an editorial compare and keeps each question once", () => {
+    const page = IPHONE_16E_VS_IPHONE_17E;
+    const { documents } = renderCompareSurface(page);
+    const faqs = faqPages(documents);
+    const names = questionNames(faqs[0]);
+
+    expect(faqs).toHaveLength(1);
+    expect(names).toEqual(page.faqs.map((faq) => faq.question));
+    expect(new Set(names.map((name) => name.trim().toLowerCase())).size).toBe(names.length);
+  });
+
+  it("merges questions from two FAQPage nodes and keeps the first answer", () => {
+    const page = comparison("published");
+    const url = "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget";
+    page.schemaMarkup = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "FAQPage",
+          "@id": `${url}#faq`,
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Which widget?",
+              acceptedAnswer: { "@type": "Answer", text: "Alpha." },
+            },
+            {
+              "@type": "Question",
+              name: "Where is it made?",
+              acceptedAnswer: { "@type": "Answer", text: "Ohio." },
+            },
+          ],
+        },
+        {
+          "@type": "FAQPage",
+          "@id": `${url}#faq`,
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Which widget?",
+              acceptedAnswer: { "@type": "Answer", text: "Duplicate." },
+            },
+            {
+              "@type": "Question",
+              name: "Does it fold?",
+              acceptedAnswer: { "@type": "Answer", text: "No." },
+            },
+          ],
+        },
+      ],
+    };
+
+    const { documents, types } = renderCompareSurface(page);
+    const faqs = faqPages(documents);
+    const questions = (faqs[0].mainEntity as Record<string, unknown>[]) ?? [];
+
+    expect(faqs).toHaveLength(1);
+    expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+    expect(questionNames(faqs[0])).toEqual([
+      "Which widget?",
+      "Where is it made?",
+      "Does it fold?",
+    ]);
+    expect((questions[0].acceptedAnswer as Record<string, unknown>).text).toBe("Alpha.");
+    expect(JSON.stringify(documents).match(/"@type":"FAQPage"/g)).toHaveLength(1);
   });
 });
