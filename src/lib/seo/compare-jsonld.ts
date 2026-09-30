@@ -93,18 +93,25 @@ function walk(value: unknown, blocked: Set<string>): unknown {
   for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
     const walked = walk(child, blocked);
     if (walked === undefined) continue;
-    // Dropping the /entity URL from mainEntityOfPage used to leave
-    // {"@type":"ProfilePage"} with no @id and no url. Remove the object.
-    if (key === "mainEntityOfPage" && isEmptyProfilePage(walked)) continue;
     next[key] = walked;
   }
+  // Stripping a noindex /entity URL used to leave
+  // {"@type":"ProfilePage","name":"… — Comparisons & Profile"} in hasPart,
+  // and {"@type":"ProfilePage"} under mainEntityOfPage. Drop that node
+  // wherever it sits: hasPart, mainEntityOfPage, about, mentions, or a nested array.
+  if (isEmptyProfilePage(next)) return undefined;
   return next;
+}
+
+function isProfilePageType(type: unknown): boolean {
+  if (type === "ProfilePage") return true;
+  return Array.isArray(type) && type.includes("ProfilePage");
 }
 
 function isEmptyProfilePage(value: unknown): boolean {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
   const obj = value as Record<string, unknown>;
-  if (obj["@type"] !== "ProfilePage") return false;
+  if (!isProfilePageType(obj["@type"])) return false;
   return !obj["@id"] && !obj.url;
 }
 

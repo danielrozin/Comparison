@@ -1,7 +1,7 @@
 /**
  * Compare template SEO:
  *  - noindex entity pages are not linked from the hero, Explore More, or JSON-LD
- *  - a dropped /entity URL does not leave an empty ProfilePage mainEntityOfPage
+ *  - a dropped /entity URL does not leave a ProfilePage with no @id and no url
  *  - indexable entity pages keep those links
  *  - an editorial compare emits exactly one ClaimReview
  *  - a compare page emits exactly one FAQPage
@@ -305,6 +305,81 @@ describe("compare template entity links", () => {
     expect(pages.some((page) => page["@type"] === "ProfilePage")).toBe(true);
     expect(json).toContain("/entity/alpha-widget");
     expect(json).toContain("/entity/beta-widget");
+  });
+
+  it("drops a hasPart ProfilePage that lost both @id and url", () => {
+    const stripped = stripNoindexEntityPageUrls(
+      {
+        "@type": "Article",
+        hasPart: [
+          {
+            "@type": "FAQPage",
+            "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget#faq",
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://www.aversusb.net/entity/alpha-widget#profilepage",
+            url: "https://www.aversusb.net/entity/alpha-widget",
+            name: "Alpha Widget — Comparisons & Profile",
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://www.aversusb.net/entity/beta-widget#profilepage",
+            url: "https://www.aversusb.net/entity/beta-widget",
+            name: "Beta Widget — Comparisons & Profile",
+          },
+        ],
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget",
+        },
+      },
+      [
+        entity("alpha-widget", "Alpha Widget", "draft"),
+        entity("beta-widget", "Beta Widget", "draft"),
+      ],
+    );
+
+    expect(stripped).toEqual({
+      "@type": "Article",
+      hasPart: [
+        {
+          "@type": "FAQPage",
+          "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget#faq",
+        },
+      ],
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget",
+      },
+    });
+  });
+
+  it("emits no ProfilePage without an @id anywhere in a noindex compare", () => {
+    const { documents } = renderCompareSurface(comparison("draft"));
+    const profiles = documents.flatMap((doc) =>
+      collectNodes(doc, (record) => {
+        const type = record["@type"];
+        return type === "ProfilePage" || (Array.isArray(type) && type.includes("ProfilePage"));
+      }),
+    );
+    const hasParts = documents.flatMap((doc) =>
+      collectNodes(doc, (record) => Array.isArray(record.hasPart)).flatMap(
+        (record) => record.hasPart as Record<string, unknown>[],
+      ),
+    );
+
+    expect(profiles.filter((profile) => !profile["@id"])).toEqual([]);
+    expect(hasParts.some((part) => part["@type"] === "ProfilePage")).toBe(false);
+    expect(hasParts.length).toBeGreaterThan(0);
+    expect(JSON.stringify(documents)).not.toContain("Comparisons & Profile");
+    expect(
+      documents.flatMap((doc) =>
+        collectNodes(doc, (record) => record.mainEntityOfPage != null).map(
+          (record) => record.mainEntityOfPage as Record<string, unknown>,
+        ),
+      ).some((page) => page["@type"] === "WebPage"),
+    ).toBe(true);
   });
 });
 
