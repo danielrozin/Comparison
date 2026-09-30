@@ -12,6 +12,7 @@ import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { IPHONE_16E_VS_IPHONE_17E } from "@/lib/data/editorial-compares/iphone-16e-vs-iphone-17e";
+import { BRAVE_VS_CHROME } from "@/lib/data/editorial-compares/brave-vs-chrome";
 import { assembleCompareJsonLd, stripNoindexEntityPageUrls } from "@/lib/seo/compare-jsonld";
 import { entityPageRobotsStatus, isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
 
@@ -415,6 +416,13 @@ describe("editorial compare ClaimReview", () => {
     expect(types).toContain("BreadcrumbList");
     expect(types).toContain("Product");
     expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+  });
+
+  it("keeps the brand suffix off the visible H1", () => {
+    const { container } = renderCompareSurface(BRAVE_VS_CHROME);
+    expect(container.querySelector("#comparison-hero-heading")?.textContent).toBe(
+      "Brave vs Chrome: It Depends on Use",
+    );
   });
 });
 
