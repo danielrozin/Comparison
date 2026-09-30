@@ -628,6 +628,102 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
   });
 });
 
+const ULTRA3_SLUG = "iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
+const ULTRA3_FAQS = [
+  "Can the iPhone 17 Pro fit a budget of ₹1 lakh?",
+  "Is the Galaxy S25 Ultra still worth buying after the S26 Ultra?",
+  "Will the Galaxy S26 Ultra fit under ₹1 lakh?",
+  "Which is better for telephoto and video, the iPhone 17 Pro or a Galaxy Ultra?",
+  "Which has the better battery, iPhone 17 Pro, S25 Ultra, or S26 Ultra?",
+  "Should an iPhone 13 owner switch to Samsung?",
+];
+const ULTRA3_QUICK_ANSWER =
+  "If the cap is ₹1 lakh, GSMArena's price line fetched on 30 September 2026 lists the Galaxy S25 Ultra at ₹99,999 and the Galaxy S26 Ultra at ₹139,999. That site does not list a rupee price for the iPhone 17 Pro. Check a live India listing before you buy. Both Ultras have a 200MP main camera, a 3x telephoto, a 5x periscope, and a 5,000 mAh battery. The iPhone 17 Pro has a triple 48MP camera with a 4x telephoto, and Apple rates it for up to 33 hours of video playback. This page does not crown a winner.";
+
+describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
+  const page = () => getEditorialComparison(ULTRA3_SLUG)!;
+
+  it("publishes the 3-way slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(ULTRA3_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(ULTRA3_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual([
+      "iphone-17-pro",
+      "samsung-galaxy-s25-ultra",
+      "samsung-galaxy-s26-ultra",
+    ]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best if you need the 4x telephoto and Pro video formats",
+      "Best listed fit for a budget of about ₹1 lakh",
+      "Best if the newer Ultra is worth the higher listed price",
+    ]);
+    expect(page().shortAnswer).toBe(ULTRA3_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(ULTRA3_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(ULTRA3_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-09-30T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/Big Billion|exchange|trade-in price/i);
+    expect(pageText(page())).not.toMatch(/AnTuTu|Geekbench/i);
+  });
+
+  it("keeps six FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(6);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(ULTRA3_FAQS);
+    expect(faqQuestions(page())).toEqual(ULTRA3_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(ULTRA3_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites the fetched spec pages and only links sitemap-backed compares", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(4);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-30");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-30/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.gsmarena.com/apple_iphone_17_pro-14049.php",
+      "https://www.gsmarena.com/samsung_galaxy_s25_ultra-13322.php",
+      "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
+      "https://support.apple.com/en-us/125090",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "iphone-17-vs-samsung-s26",
+      "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
+    ]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("₹99,999");
+    expect(pageText(page())).toContain("₹139,999");
+    expect(pageText(page())).toContain("15:23h");
+    expect(pageText(page())).toContain("14:49h");
+    expect(pageText(page())).toContain("16:23h");
+    expect(pageText(page())).not.toMatch(/Big Billion Days/);
+    const score = page().attributes.find((attr) => attr.slug === "active-use");
+    expect(score?.values.find((value) => value.entityId === "samsung-galaxy-s26-ultra")?.winner).toBe(
+      true
+    );
+    expect(page().quickAnswer?.winnerName).toBeNull();
+  });
+});
 const AIR_SLUG = "iphone-17-vs-iphone-air";
 const AIR_FAQS = [
   "Is the iPhone Air better than the iPhone 17?",
