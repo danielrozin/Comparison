@@ -1274,7 +1274,7 @@ const SOLAR_FAQS = [
   "Are these simple 800 W plug-in balcony kits?",
 ];
 const SOLAR_QUICK_ANSWER =
-  "Choose the EcoFlow STREAM 5000 if you want the higher published output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not say either system is legal to plug in. Check current local rules and VDE requirements. This page does not crown a winner.";
+  "Choose the EcoFlow STREAM 5000 if you want the higher published output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
 
 describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
   const page = () => getEditorialComparison(SOLAR_SLUG)!;
@@ -1302,9 +1302,15 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
     expect(description.length).toBeGreaterThanOrEqual(70);
     expect(description.length).toBeLessThanOrEqual(160);
     expect(findSelfContradictions(page())).toEqual([]);
-    expect(pageText(page())).toContain("does not say either system is legal to plug in");
-    expect(pageText(page())).toContain("VDE");
-    expect(pageText(page())).not.toMatch(/feed-in limit of \d+/i);
+    const legalClaim = /Marktstammdatenregister|VDE|electrician|legal to plug in|local rules allow|feed-in|simplified connection|circuit adaptation/i;
+    expect(pageText(page())).not.toMatch(legalClaim);
+    expect((page().resources ?? []).map((resource) => `${resource.label} ${resource.description}`).join("\n")).not.toMatch(legalClaim);
+    expect(page().expertAnalysis ?? "").toContain(
+      "Check your local rules and your utility before feeding power back to the grid."
+    );
+    expect(
+      (pageText(page()).match(/Check your local rules and your utility before feeding power back to the grid\./g) ?? [])
+    ).toHaveLength(1);
   });
 
   it("keeps six FAQs and copies the same answer text into FAQPage JSON-LD", () => {
@@ -1325,7 +1331,7 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites manufacturer pages and links the live brand hubs", () => {
+  it("cites manufacturer pages and does not link noindex entity hubs", () => {
     const sources = page().citationStats?.sources ?? [];
     expect(sources).toHaveLength(6);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
@@ -1342,11 +1348,8 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
       "https://eu.ecoflow.com/products/stream-series-solar-battery",
       "https://github.com/anker-charging/ha-anker-solix-official/blob/main/README.md",
     ]);
-    expect(page().resources?.map((resource) => resource.url)).toEqual([
-      ...urls,
-      "/entity/anker-solix",
-      "/entity/ecoflow-stream",
-    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().resources?.map((resource) => resource.url).join("\n")).not.toMatch(/\/entity\//);
     expect(page().relatedComparisons).toEqual([]);
     expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("IP66");
@@ -1358,15 +1361,3 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
     expect(page().quickAnswer?.winnerName).toBeNull();
   });
 });
-const MAPS_APPLE_SLUG = "google-maps-vs-apple-maps";
-const MAPS_APPLE_FAQS = [
-  "Should I use Apple Maps or Google Maps on an iPhone?",
-  "Does Apple Maps work on Android?",
-  "Can I download Apple Maps or Google Maps for offline use?",
-  "Which app is better for transit, walking, and lane guidance?",
-  "Do Apple Maps and Google Maps route electric cars to chargers?",
-  "Which app is more private?",
-];
-const MAPS_APPLE_QUICK_ANSWER =
-  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple's privacy page says Apple does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. This page does not crown a winner.";
-
