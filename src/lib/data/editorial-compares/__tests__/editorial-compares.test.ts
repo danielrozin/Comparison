@@ -630,15 +630,15 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
 
 const ULTRA3_SLUG = "iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
 const ULTRA3_FAQS = [
-  "Can the iPhone 17 Pro fit a budget of ₹1 lakh?",
+  "Can you get any of these under ₹1 lakh?",
   "Is the Galaxy S25 Ultra still worth buying after the S26 Ultra?",
-  "Will the Galaxy S26 Ultra fit under ₹1 lakh?",
+  "What does the Galaxy S26 Ultra add over the S25 Ultra?",
   "Which is better for telephoto and video, the iPhone 17 Pro or a Galaxy Ultra?",
   "Which has the better battery, iPhone 17 Pro, S25 Ultra, or S26 Ultra?",
   "Should an iPhone 13 owner switch to Samsung?",
 ];
 const ULTRA3_QUICK_ANSWER =
-  "Choose by camera, battery, and how you will use the phone, then compare a live India price with your ₹1 lakh cap. Both Ultras have a 200MP main camera, a 3x telephoto, a 5x periscope, and a 5,000 mAh battery. The iPhone 17 Pro has a triple 48MP camera with a 4x telephoto, and Apple rates it for up to 33 hours of video playback. This page does not crown a winner.";
+  "iPhone 17 Pro vs Galaxy S25 Ultra vs Galaxy S26 Ultra. Both Ultras have a 200MP camera with 3x and 5x. The 17 Pro has a 4x telephoto. No winner is crowned.";
 
 describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
   const page = () => getEditorialComparison(ULTRA3_SLUG)!;
@@ -662,11 +662,16 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
     expect(page().quickAnswer?.tldr).toBe(ULTRA3_QUICK_ANSWER);
     expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(ULTRA3_SLUG);
     expect(page().metadata.updatedAt).toBe("2026-09-30T00:00:00Z");
+    expect(page().title).toBe("iPhone 17 Pro vs Galaxy S25 Ultra vs Galaxy S26 Ultra");
     const title = buildPageTitle(page().metadata.metaTitle);
     const description = clampDescription(page().metadata.metaDescription);
+    expect(title).toBe("iPhone 17 Pro vs S25 Ultra vs S26 Ultra | A Versus B");
     expect(title.length).toBeLessThanOrEqual(60);
     expect(description.length).toBeGreaterThanOrEqual(70);
     expect(description.length).toBeLessThanOrEqual(160);
+    expect(description).not.toMatch(/₹1 lakh|under ₹1/i);
+    expect(page().verdict).not.toMatch(/₹1 lakh|under ₹1/i);
+    expect(page().expertAnalysis).not.toMatch(/₹1 lakh|under ₹1/i);
     expect(findSelfContradictions(page())).toEqual([]);
     expect(pageText(page())).not.toMatch(/Big Billion|exchange|trade-in price/i);
     expect(pageText(page())).not.toMatch(/AnTuTu|Geekbench/i);
@@ -692,7 +697,6 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
 
   it("cites the fetched spec pages and only links sitemap-backed compares", () => {
     const sources = page().citationStats?.sources ?? [];
-    expect(sources).toHaveLength(7);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
       expect(source.name).toMatch(/2026-09-30/);
@@ -707,15 +711,23 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
       "https://www.samsung.com/in/smartphones/galaxy-s25-ultra/buy/",
       "https://www.samsung.com/in/smartphones/galaxy-s26-ultra/buy/",
       "https://www.apple.com/in/shop/buy-iphone/iphone-17-pro",
+      "https://www.apple.com/in/shop/buy-iphone/iphone-17",
     ]);
-    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(sources).toHaveLength(8);
+    expect(page().resources?.map((resource) => resource.url)).toEqual([
+      ...urls,
+      "/compare/iphone-17-vs-iphone-air",
+    ]);
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
       "iphone-17-vs-samsung-s26",
       "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
+      "iphone-17-vs-iphone-air",
     ]);
     expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("₹1,19,999");
     expect(pageText(page())).toContain("₹1,54,999");
+    expect(pageText(page())).toContain("₹99,900");
+    expect(page().faqs[0]?.answer).toBe(page().quickAnswer?.keyFact?.replace(/^Can you get any of these under ₹1 lakh\? /, ""));
     expect(pageText(page())).not.toMatch(/₹99,999|₹139,999|\$849/);
     expect(pageText(page())).toContain("15:23h");
     expect(pageText(page())).toContain("14:49h");
