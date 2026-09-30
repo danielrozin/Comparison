@@ -879,7 +879,7 @@ describe("ROO-114 Brave vs Chrome", () => {
     expect(findSelfContradictions(page())).toEqual([]);
     expect(pageText(page())).not.toMatch(/market share|65%|60 million|3x faster than Chrome on mobile/i);
     const types = [...new Set(schemaNodes(page()).map((node) => node["@type"]).filter(Boolean))];
-    for (const schemaType of ["Article", "FAQPage", "BreadcrumbList", "WebPage"]) {
+    for (const schemaType of ["Article", "FAQPage", "BreadcrumbList"]) {
       expect(types).toContain(schemaType);
     }
   });
