@@ -81,6 +81,22 @@ export function slugInResults(slug: string | null, results: { slug: string }[]):
   return results.some((result) => result.slug === slug);
 }
 
+/**
+ * True or false only when `results` were fetched for this exact query.
+ * A previous query's rows, or a fetch that has not settled yet, are unknown.
+ */
+export function canonicalSlugExists(args: {
+  slug: string | null;
+  query: string;
+  results: { slug: string }[];
+  resultsQuery: string | null;
+}): boolean | null {
+  if (!args.slug) return false;
+  if (args.resultsQuery == null) return null;
+  if (normalizeQuery(args.resultsQuery) !== normalizeQuery(args.query)) return null;
+  return slugInResults(args.slug, args.results);
+}
+
 export function currentSourcePage(): string {
   if (typeof window === "undefined") return "";
   return new URLSearchParams(window.location.search).get("source_page") ?? "";

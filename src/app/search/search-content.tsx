@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { parseComparisonQuery } from "@/lib/parse-comparison-query";
 import { suggestExistingComparison } from "@/lib/search/did-you-mean";
+import { compareSlugForQuery } from "@/lib/search/resolve-search-destination";
 import { lastSearchAttachment, normalizeQuery, readLastSearch, searchIdFor } from "@/lib/search/search-session";
 import { trackPickedResult, trackSubmittedQuery } from "@/lib/search/track-search";
 import { DidYouMean } from "@/components/search/DidYouMean";
@@ -199,10 +200,12 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
   const locallySubmitted = useRef<string | null>(null);
   const [searchQuery, setSearchQuery] = useState(query);
   const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
+  const [fetchedFor, setFetchedFor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [compareWith, setCompareWith] = useState("");
   const [trending, setTrending] = useState<{ slug: string; title: string }[]>([]);
   const parsedQuery = parseComparisonQuery(query);
+  const immediateSlug = compareSlugForQuery(query, null);
   const faq = searchFaqQuestions(generationEnabled);
 
   useEffect(() => {
@@ -217,39 +220,42 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
   }, []);
 
   useEffect(() => {
+    setSearchQuery(query);
+    setFetchedFor(null);
     if (!query) {
       trackSearchPageOpened(sourcePage);
+      setResults([]);
+      setLoading(false);
       return;
     }
+
     const normalized = normalizeQuery(query);
     const stored = readLastSearch();
     const arrivedFromThisPage = locallySubmitted.current === normalized;
-    if (!arrivedFromThisPage) {
+    const noteArrival = (
+      destination: "compare" | "search_page",
+      rows: { slug: string }[],
+      resultsQuery: string | null,
+    ) => {
+      if (arrivedFromThisPage) return;
       if (!stored || stored.query_normalized !== normalized) {
         const surface = surfaceParam === "not_found_form" ? "not_found_form" : "url";
         trackSubmittedQuery({
           query,
           surface,
-          destination: parsedQuery.parsed && parsedQuery.slug ? "compare" : "search_page",
-          results: [],
-          dropdownCount: 0,
+          destination,
+          results: rows,
+          resultsQuery,
+          dropdownCount: rows.length,
         });
       } else {
         trackSearchParsed(query, parsedQuery.slug, parsedQuery.parsed);
       }
-    }
-    if (parsedQuery.parsed && parsedQuery.slug) {
-      router.replace(`/compare/${parsedQuery.slug}`);
-    }
-  }, [query, parsedQuery.parsed, parsedQuery.slug, router, sourcePage, surfaceParam]);
+    };
 
-  useEffect(() => {
-    setSearchQuery(query);
-    if (!query || (parsedQuery.parsed && parsedQuery.slug)) {
-      if (!query) {
-        setResults([]);
-        setLoading(false);
-      }
+    if (immediateSlug) {
+      noteArrival("compare", [], null);
+      router.replace(`/compare/${immediateSlug}`);
       return;
     }
 
@@ -275,8 +281,19 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
       .then((data) => {
         if (cancelled) return;
         const items = Array.isArray(data?.results) ? data.results : [];
+        const confirmed = compareSlugForQuery(query, {
+          query,
+          slugs: items.map((item: { slug?: string }) => item.slug || "").filter(Boolean),
+        });
+        if (confirmed) {
+          noteArrival("compare", items, query);
+          router.replace(`/compare/${confirmed}`);
+          return;
+        }
         setResults(items);
+        setFetchedFor(query);
         setLoading(false);
+        noteArrival("search_page", items, query);
         recordShown(items.length, items.slice(0, 5).map((item: { slug?: string }) => item.slug || ""));
         trackComparisonSearch(query, items.length > 0 ? "results" : "no_results", items.length, "search_page");
       })
@@ -284,7 +301,9 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
         if (cancelled) return;
         // A failed search is an empty result, not a page crash.
         setResults([]);
+        setFetchedFor(query);
         setLoading(false);
+        noteArrival("search_page", [], query);
         recordShown(0, []);
         trackComparisonSearch(query, "no_results", 0, "search_page");
       });
@@ -292,23 +311,26 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
     return () => {
       cancelled = true;
     };
-  }, [query, parsedQuery.parsed, parsedQuery.slug]);
+  }, [query, immediateSlug, parsedQuery.slug, parsedQuery.parsed, router, sourcePage, surfaceParam]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    const parsed = parseComparisonQuery(searchQuery);
+    const sameQuery = fetchedFor != null && normalizeQuery(fetchedFor) === normalizeQuery(searchQuery);
+    const settled = sameQuery ? { query: fetchedFor, slugs: results.map((item) => item.slug) } : null;
+    const compareSlug = compareSlugForQuery(searchQuery, settled);
     locallySubmitted.current = normalizeQuery(searchQuery);
-    if (parsed.parsed && parsed.slug) {
+    if (compareSlug) {
       trackSubmittedQuery({
         query: searchQuery,
         surface: "search_page",
         destination: "compare",
-        results,
-        dropdownCount: results.length,
+        results: sameQuery ? results : [],
+        resultsQuery: sameQuery ? fetchedFor : null,
+        dropdownCount: sameQuery ? results.length : 0,
       });
-      router.push(`/compare/${parsed.slug}`);
+      router.push(`/compare/${compareSlug}`);
       return;
     }
 
@@ -316,8 +338,9 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
       query: searchQuery,
       surface: "search_page",
       destination: "search_page",
-      results,
-      dropdownCount: results.length,
+      results: sameQuery ? results : [],
+      resultsQuery: sameQuery ? fetchedFor : null,
+      dropdownCount: sameQuery ? results.length : 0,
     });
     router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
   };
@@ -345,7 +368,7 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
     router.push(`/compare/${slug}`);
   }
 
-  const suggestion = query && !(parsedQuery.parsed && parsedQuery.slug)
+  const suggestion = query && !immediateSlug
     ? suggestExistingComparison(query, results)
     : null;
 

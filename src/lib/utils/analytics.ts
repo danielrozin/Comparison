@@ -314,7 +314,7 @@ export function trackFunnelStep(step: string, page: string, value?: number) {
   trackEvent("funnel_step", { step, page, ...(value !== undefined ? { value } : {}) });
 }
 
-type CaptureValue = string | number | boolean | string[];
+type CaptureValue = string | number | boolean | string[] | null;
 
 function captureClient(
   eventName: string,
@@ -325,6 +325,7 @@ function captureClient(
   if (options?.ga !== false) {
     const gaParams: Record<string, string | number> = {};
     for (const [key, value] of Object.entries(params)) {
+      if (value === null) continue;
       if (typeof value === "boolean") gaParams[key] = value ? 1 : 0;
       else if (Array.isArray(value)) gaParams[key] = value.join(",");
       else gaParams[key] = value;
@@ -366,7 +367,8 @@ export interface SearchSubmittedProps {
   surface: SearchSurface;
   parsed: boolean;
   parsed_slug: string | null;
-  canonical_slug_exists: boolean;
+  /** False when the slug is not in this query's results. Null when those results are not in yet. */
+  canonical_slug_exists: boolean | null;
   destination: SearchDestination;
   dropdown_result_count: number;
   source_page?: string;

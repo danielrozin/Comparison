@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { parseComparisonQuery } from "@/lib/parse-comparison-query";
+import { bindFlushOnPageHide } from "@/lib/search/flush-on-page-hide";
 import { suggestExistingComparison } from "@/lib/search/did-you-mean";
+import { compareSlugForQuery, settledSearchResults } from "@/lib/search/resolve-search-destination";
 import { normalizeQuery, searchIdFor } from "@/lib/search/search-session";
 import { trackPickedResult, trackSubmittedQuery } from "@/lib/search/track-search";
 import { trackSearchResultsShown, type SearchResultsShownProps } from "@/lib/utils/analytics";
@@ -21,6 +22,7 @@ export function SearchOverlay() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [resultsQuery, setResultsQuery] = useState<string | null>(null);
   const [popular, setPopular] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
@@ -40,6 +42,8 @@ export function SearchOverlay() {
     firedShown.current.add(key);
     trackSearchResultsShown(pending);
   }, []);
+
+  useEffect(() => bindFlushOnPageHide(flushShown), [flushShown]);
   const priorFocusRef = useRef<HTMLElement | null>(null);
   const router = useRouter();
 
@@ -126,8 +130,9 @@ export function SearchOverlay() {
   // Live search
   useEffect(() => {
     if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    setResults([]);
+    setResultsQuery(null);
     if (!query.trim() || query.trim().length < 2) {
-      setResults([]);
       setLoading(false);
       return;
     }
@@ -142,6 +147,7 @@ export function SearchOverlay() {
           if (cancelled) return;
           const next: SearchResult[] = d.results || [];
           setResults(next);
+          setResultsQuery(requested);
           setLoading(false);
           pendingShown.current = {
             search_id: searchIdFor(requested),
@@ -178,6 +184,7 @@ export function SearchOverlay() {
     e.preventDefault();
     if (!query.trim()) return;
     flushShown();
+    const settled = settledSearchResults(query, resultsQuery, results);
     if (activeIdx >= 0 && items[activeIdx]) {
       if (!pickLock.current) {
         pickLock.current = true;
@@ -186,7 +193,8 @@ export function SearchOverlay() {
           query,
           surface: "overlay",
           destination: "dropdown_item",
-          results: results,
+          results: settled ? results : [],
+          resultsQuery: settled?.query ?? null,
           dropdownCount: items.length,
         });
         trackPickedResult({
@@ -202,25 +210,26 @@ export function SearchOverlay() {
       close();
       return;
     }
-    const parsed = parseComparisonQuery(query);
-    const known = query.trim().length >= 2 ? results : [];
-    if (parsed.parsed && parsed.slug) {
+    const compareSlug = compareSlugForQuery(query, settled);
+    if (compareSlug) {
       trackSubmittedQuery({
         query,
         surface: "overlay",
         destination: "compare",
-        results: known,
-        dropdownCount: known.length,
+        results: settled ? results : [],
+        resultsQuery: settled?.query ?? null,
+        dropdownCount: settled?.slugs.length ?? 0,
         legacyResultType: "comparison",
       });
-      router.push(`/compare/${parsed.slug}`);
+      router.push(`/compare/${compareSlug}`);
     } else {
       trackSubmittedQuery({
         query,
         surface: "overlay",
         destination: "search_page",
-        results: known,
-        dropdownCount: known.length,
+        results: settled ? results : [],
+        resultsQuery: settled?.query ?? null,
+        dropdownCount: settled?.slugs.length ?? 0,
         legacyResultType: "general",
       });
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
@@ -242,7 +251,8 @@ export function SearchOverlay() {
         query,
         surface: "overlay",
         destination: "dropdown_item",
-        results: results,
+        results: settledSearchResults(query, resultsQuery, results) ? results : [],
+        resultsQuery: settledSearchResults(query, resultsQuery, results)?.query ?? null,
         dropdownCount: items.length,
       });
       trackPickedResult({

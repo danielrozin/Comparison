@@ -12,11 +12,11 @@ import {
   type SearchResultKind,
 } from "@/lib/utils/analytics";
 import {
+  canonicalSlugExists,
   currentSourcePage,
   normalizeQuery,
   rememberSearch,
   searchIdFor,
-  slugInResults,
   type SearchDestination,
   type SearchSurface,
 } from "@/lib/search/search-session";
@@ -27,6 +27,11 @@ export function trackSubmittedQuery(args: {
   destination: SearchDestination;
   /** Live rows already fetched for this query. Used for canonical_slug_exists. */
   results: { slug: string }[];
+  /**
+   * The query those rows belong to. Null when the dropdown has not settled
+   * for the text being submitted (including a previous query's rows).
+   */
+  resultsQuery: string | null;
   dropdownCount: number;
   /** When set, also fires the legacy comparison_search_performed event. */
   legacyResultType?: string;
@@ -47,7 +52,12 @@ export function trackSubmittedQuery(args: {
     surface: args.surface,
     parsed: parsed.parsed,
     parsed_slug: parsed.slug,
-    canonical_slug_exists: slugInResults(parsed.slug, args.results),
+    canonical_slug_exists: canonicalSlugExists({
+      slug: parsed.slug,
+      query: raw,
+      results: args.results,
+      resultsQuery: args.resultsQuery,
+    }),
     destination: args.destination,
     dropdown_result_count: args.dropdownCount,
     source_page: currentSourcePage(),

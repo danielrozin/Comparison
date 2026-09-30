@@ -3,7 +3,9 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { parseComparisonQuery } from "@/lib/parse-comparison-query";
+import { bindFlushOnPageHide } from "@/lib/search/flush-on-page-hide";
 import { suggestExistingComparison } from "@/lib/search/did-you-mean";
+import { compareSlugForQuery, settledSearchResults } from "@/lib/search/resolve-search-destination";
 import { normalizeQuery, searchIdFor } from "@/lib/search/search-session";
 import { trackPickedResult, trackSubmittedQuery } from "@/lib/search/track-search";
 import { trackSearchResultsShown, type SearchResultsShownProps } from "@/lib/utils/analytics";
@@ -41,6 +43,7 @@ export function SearchBox() {
   const [query, setQuery] = useState("");
   const [popular, setPopular] = useState<PopularComparison[]>([]);
   const [liveResults, setLiveResults] = useState<SearchResult[]>([]);
+  const [resultsQuery, setResultsQuery] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -64,6 +67,8 @@ export function SearchBox() {
     trackSearchResultsShown(pending);
   }, []);
 
+  useEffect(() => bindFlushOnPageHide(flushShown), [flushShown]);
+
   // Cycle typing suggestions — paused when user prefers reduced motion
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -84,8 +89,11 @@ export function SearchBox() {
   // Live search with debounce
   useEffect(() => {
     if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    // Drop the previous query's rows immediately so Enter cannot treat them
+    // as the answer for the text that is on screen now.
+    setLiveResults([]);
+    setResultsQuery(null);
     if (!query.trim() || query.trim().length < 2) {
-      setLiveResults([]);
       setIsSearching(false);
       return;
     }
@@ -100,6 +108,7 @@ export function SearchBox() {
           if (cancelled) return;
           const results: SearchResult[] = data.results || [];
           setLiveResults(results);
+          setResultsQuery(requested);
           setIsSearching(false);
           pendingShown.current = {
             search_id: searchIdFor(requested),
@@ -150,6 +159,7 @@ export function SearchBox() {
 
       // If an item is keyboard-selected, navigate to it. The keydown handler
       // may also call this; pickLock keeps the events to one search id.
+      const settled = settledSearchResults(query, resultsQuery, liveResults);
       if (activeIndex >= 0 && allItems[activeIndex]) {
         if (pickLock.current) return;
         pickLock.current = true;
@@ -158,7 +168,8 @@ export function SearchBox() {
           query,
           surface: "home",
           destination: "dropdown_item",
-          results: liveResults,
+          results: settled ? liveResults : [],
+          resultsQuery: settled?.query ?? null,
           dropdownCount: allItems.length,
         });
         trackPickedResult({
@@ -173,18 +184,18 @@ export function SearchBox() {
         return;
       }
 
-      const parsed = parseComparisonQuery(query);
-      const knownResults = query.trim().length >= 2 ? liveResults : [];
-      if (parsed.parsed && parsed.slug) {
+      const compareSlug = compareSlugForQuery(query, settled);
+      if (compareSlug) {
         trackSubmittedQuery({
           query,
           surface: "home",
           destination: "compare",
-          results: knownResults,
-          dropdownCount: knownResults.length,
+          results: settled ? liveResults : [],
+          resultsQuery: settled?.query ?? null,
+          dropdownCount: settled?.slugs.length ?? 0,
           legacyResultType: "comparison",
         });
-        router.push(`/compare/${parsed.slug}`);
+        router.push(`/compare/${compareSlug}`);
         return;
       }
 
@@ -192,13 +203,14 @@ export function SearchBox() {
         query,
         surface: "home",
         destination: "search_page",
-        results: knownResults,
-        dropdownCount: knownResults.length,
+        results: settled ? liveResults : [],
+        resultsQuery: settled?.query ?? null,
+        dropdownCount: settled?.slugs.length ?? 0,
         legacyResultType: "general",
       });
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     },
-    [query, router, activeIndex, allItems, liveResults, flushShown]
+    [query, router, activeIndex, allItems, liveResults, resultsQuery, flushShown]
   );
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -223,7 +235,8 @@ export function SearchBox() {
         query,
         surface: "home",
         destination: "dropdown_item",
-        results: liveResults,
+        results: settledSearchResults(query, resultsQuery, liveResults) ? liveResults : [],
+        resultsQuery: settledSearchResults(query, resultsQuery, liveResults)?.query ?? null,
         dropdownCount: allItems.length,
       });
       trackPickedResult({
@@ -437,7 +450,8 @@ export function SearchBox() {
                       query,
                       surface: "home",
                       destination: "search_page",
-                      results: liveResults,
+                      results: settledSearchResults(query, resultsQuery, liveResults) ? liveResults : [],
+                      resultsQuery,
                       dropdownCount: liveResults.length,
                     });
                     setShowDropdown(false);
@@ -464,7 +478,8 @@ export function SearchBox() {
           {/* "Will compare" preview when A vs B detected */}
           {(() => {
             const parsed = parseComparisonQuery(query);
-            if (parsed.parsed && parsed.entityA && parsed.entityB) {
+            const willOpenCompare = compareSlugForQuery(query, settledSearchResults(query, resultsQuery, liveResults));
+            if (willOpenCompare && parsed.entityA && parsed.entityB) {
               return (
                 <div className="px-4 py-4">
                   <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">Create this comparison</p>
