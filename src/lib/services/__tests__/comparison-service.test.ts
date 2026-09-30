@@ -150,6 +150,17 @@ describe('Comparison Service (mock-data fallback)', () => {
     })
 
     // ROO-18: hub/site search must never surface these known stale /compare 404s.
+    it('resolves separator and qualifier queries onto live pages', async () => {
+      const messi = await searchComparisons('messi x ronaldo', 5)
+      expect(messi.map((row) => row.slug)).toContain('messi-vs-ronaldo')
+
+      const japan = await searchComparisons('japan vs china in economic terms', 5)
+      expect(japan.map((row) => row.slug)).toContain('japan-vs-china')
+
+      const stays = await searchComparisons('vrbo vs airbnb: for hosts', 5)
+      expect(stays.map((row) => row.slug)).toContain('airbnb-vs-vrbo')
+    })
+
     it('never returns known dead compare slugs from smoke (ROO-18)', async () => {
       const results = await searchComparisons('iphone', 50)
       const slugs = results.map((r) => r.slug)

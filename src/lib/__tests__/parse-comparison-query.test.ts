@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   canRequestComparisonSlug,
+  canonicalComparisonSlug,
   canonicalRequestedComparisonSlug,
   parseComparisonQuery,
 } from "@/lib/parse-comparison-query";
@@ -71,6 +72,53 @@ describe("parseComparisonQuery", () => {
   it("does not build a 3-way slug when the query already contains vs", () => {
     expect(parseComparisonQuery("Thailand vs Vietnam vs Laos").parsed).toBe(false);
   });
+
+  it("records x as a candidate separator and keeps a trailing X on one side", () => {
+    expect(parseComparisonQuery("messi x ronaldo").slug).toBe("messi-vs-ronaldo");
+    expect(parseComparisonQuery("messi x ronaldo").separator).toBe("x");
+    expect(parseComparisonQuery("Messi × Ronaldo").slug).toBe("messi-vs-ronaldo");
+    expect(parseComparisonQuery("spy x family").separator).toBe("x");
+    expect(parseComparisonQuery("spy x family").slug).toBe("family-vs-spy");
+    expect(parseComparisonQuery("hunter x hunter").parsed).toBe(false);
+    expect(parseComparisonQuery("iPhone X vs Samsung").separator).toBe("standard");
+    expect(parseComparisonQuery("iPhone X vs Samsung").slug).not.toBe("iphone-vs-samsung");
+  });
+
+  it("maps hbo to the live hbo-max page", () => {
+    expect(parseComparisonQuery("hbo vs netflix").slug).toBe("hbo-max-vs-netflix");
+    expect(parseComparisonQuery("HBO Max vs Netflix").slug).toBe("hbo-max-vs-netflix");
+  });
+
+  it("drops a trailing colon or 'in … terms' qualifier so the live page matches", () => {
+    expect(parseComparisonQuery("vrbo vs airbnb: for hosts").slug).toBe("airbnb-vs-vrbo");
+    expect(parseComparisonQuery("vrbo vs airbnb: for hosts, which is more profitable?").slug).toBe(
+      "airbnb-vs-vrbo",
+    );
+    expect(parseComparisonQuery("japan vs china in economic terms").slug).toBe("japan-vs-china");
+  });
+
+  it("keeps real 'for' titles and only strips an allowlisted intent", () => {
+    expect(parseComparisonQuery("Forza vs Need for Speed").slug).toBe("forza-vs-need-for-speed");
+    expect(parseComparisonQuery("Goodwill Letter vs Pay for Delete").slug).toBe(
+      "goodwill-letter-vs-pay-for-delete",
+    );
+    // Seven words a side is past main's limit, so this is not a guessed URL.
+    expect(
+      parseComparisonQuery("Dawn of the Planet of the Apes vs War for the Planet of the Apes").parsed,
+    ).toBe(false);
+    expect(parseComparisonQuery("Thailand vs Vietnam for travel?").slug).toBe("thailand-vs-vietnam");
+    expect(parseComparisonQuery("vrbo vs airbnb for hosts").slug).toBe("airbnb-vs-vrbo");
+    expect(parseComparisonQuery("Hotels vs Resorts for school supplies").slug).toContain("school");
+  });
+
+  it("does not parse a side longer than main's five-word limit", () => {
+    const raw = "tesla model 3 grande autonomie 2026 vs byd seal";
+    expect(parseComparisonQuery(raw).parsed).toBe(false);
+    const relaxed = parseComparisonQuery(raw, { maxSideWords: 8, maxSideChars: 80 });
+    expect(relaxed.parsed).toBe(true);
+    expect(relaxed.slug).toContain("byd-seal");
+    expect(relaxed.slug).toContain("tesla");
+  });
 });
 
 describe("canRequestComparisonSlug", () => {
@@ -85,5 +133,11 @@ describe("canRequestComparisonSlug", () => {
     expect(canonicalRequestedComparisonSlug("hulu-vs-netflix-inc")).toBe("netflix-vs-hulu");
     expect(canRequestComparisonSlug("netflix-vs-hulu")).toBe(true);
     expect(canonicalRequestedComparisonSlug("vietnam-vs-thailand")).toBe("thailand-vs-vietnam");
+  });
+
+  it("does not rewrite hbo inside compare URL routing", () => {
+    expect(canonicalComparisonSlug("hbo", "netflix")).toBe("hbo-vs-netflix");
+    expect(canonicalRequestedComparisonSlug("hbo-vs-netflix")).toBe("hbo-vs-netflix");
+    expect(parseComparisonQuery("hbo vs netflix").slug).toBe("hbo-max-vs-netflix");
   });
 });

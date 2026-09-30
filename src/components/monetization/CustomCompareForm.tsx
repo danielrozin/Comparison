@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { canonicalComparisonSlug } from "@/lib/parse-comparison-query";
+import { lastSearchAttachment } from "@/lib/search/search-session";
+import { trackMatchupRequested } from "@/lib/utils/analytics";
 
 /**
  * Asks for the two sides plus the checkout email, then posts to the gate.
@@ -11,9 +14,12 @@ import Link from "next/link";
 export function CustomCompareForm({
   initialA = "",
   initialB = "",
+  requestSlug = "",
 }: {
   initialA?: string;
   initialB?: string;
+  /** Slug from /custom-compare?slug=, when the visitor came from a missing page. */
+  requestSlug?: string;
 }) {
   const [entityA, setEntityA] = useState(initialA);
   const [entityB, setEntityB] = useState(initialB);
@@ -32,6 +38,15 @@ export function CustomCompareForm({
     setUpgradeUrl(null);
     setBillingUrl(null);
     setSuccess(null);
+
+    const attachment = lastSearchAttachment();
+    trackMatchupRequested({
+      slug: requestSlug || canonicalComparisonSlug(entityA, entityB) || "",
+      cta: "request_form",
+      from_search: attachment.from_search,
+      search_id: attachment.search_id,
+      query_raw: attachment.query_raw,
+    });
 
     try {
       const res = await fetch("/api/custom-compare", {

@@ -3,8 +3,13 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { parseComparisonQuery } from "@/lib/parse-comparison-query";
-import { trackSearchParsed } from "@/lib/utils/analytics";
+import { bindFlushOnPageHide } from "@/lib/search/flush-on-page-hide";
+import { suggestExistingComparison } from "@/lib/search/did-you-mean";
+import { compareSlugForQuery, settledSearchResults } from "@/lib/search/resolve-search-destination";
+import { normalizeQuery, searchIdFor } from "@/lib/search/search-session";
+import { trackPickedResult, trackSubmittedQuery } from "@/lib/search/track-search";
+import { trackSearchResultsShown, type SearchResultsShownProps } from "@/lib/utils/analytics";
+import { DidYouMean } from "@/components/search/DidYouMean";
 import { CategoryIcon } from "@/lib/utils/category-icons";
 
 interface SearchResult {
@@ -17,6 +22,7 @@ export function SearchOverlay() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [resultsQuery, setResultsQuery] = useState<string | null>(null);
   const [popular, setPopular] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
@@ -24,15 +30,31 @@ export function SearchOverlay() {
   const listboxRef = useRef<HTMLUListElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+  const pendingShown = useRef<SearchResultsShownProps | null>(null);
+  const firedShown = useRef(new Set<string>());
+  const pickLock = useRef(false);
+
+  const flushShown = useCallback(() => {
+    const pending = pendingShown.current;
+    if (!pending) return;
+    const key = `overlay:${normalizeQuery(pending.query_raw)}`;
+    if (firedShown.current.has(key)) return;
+    firedShown.current.add(key);
+    trackSearchResultsShown(pending);
+  }, []);
+
+  useEffect(() => bindFlushOnPageHide(flushShown), [flushShown]);
   const priorFocusRef = useRef<HTMLElement | null>(null);
   const router = useRouter();
 
   const close = useCallback(() => {
+    flushShown();
     setOpen(false);
     setQuery("");
     setResults([]);
     setActiveIdx(-1);
-  }, []);
+    pickLock.current = false;
+  }, [flushShown]);
 
   // ⌘K / Ctrl+K / forward-slash global shortcut + custom event from Header
   useEffect(() => {
@@ -108,19 +130,42 @@ export function SearchOverlay() {
   // Live search
   useEffect(() => {
     if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    setResults([]);
+    setResultsQuery(null);
     if (!query.trim() || query.trim().length < 2) {
-      setResults([]);
       setLoading(false);
       return;
     }
     setLoading(true);
+    let cancelled = false;
+    const requested = query.trim();
     searchTimeout.current = setTimeout(() => {
-      fetch(`/api/search?q=${encodeURIComponent(query.trim())}&limit=8`)
+      const started = performance.now();
+      fetch(`/api/search?q=${encodeURIComponent(requested)}&limit=8`)
         .then((r) => r.json())
-        .then((d) => { setResults(d.results || []); setLoading(false); })
-        .catch(() => setLoading(false));
+        .then((d) => {
+          if (cancelled) return;
+          const next: SearchResult[] = d.results || [];
+          setResults(next);
+          setResultsQuery(requested);
+          setLoading(false);
+          pendingShown.current = {
+            search_id: searchIdFor(requested),
+            query_raw: requested,
+            surface: "overlay",
+            result_count: next.length,
+            top_slugs: next.slice(0, 5).map((result) => result.slug),
+            latency_ms: Math.round(performance.now() - started),
+          };
+        })
+        .catch(() => {
+          if (!cancelled) setLoading(false);
+        });
     }, 260);
-    return () => { if (searchTimeout.current) clearTimeout(searchTimeout.current); };
+    return () => {
+      cancelled = true;
+      if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    };
   }, [query]);
 
   useEffect(() => { setActiveIdx(-1); }, [results, query]);
@@ -133,20 +178,60 @@ export function SearchOverlay() {
   }, [activeIdx]);
 
   const items = query.trim().length >= 2 ? results : popular;
+  const suggestion = query.trim().length >= 2 ? suggestExistingComparison(query, results) : null;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!query.trim()) return;
+    flushShown();
+    const settled = settledSearchResults(query, resultsQuery, results);
     if (activeIdx >= 0 && items[activeIdx]) {
-      router.push(`/compare/${items[activeIdx].slug}`);
+      if (!pickLock.current) {
+        pickLock.current = true;
+        const item = items[activeIdx];
+        trackSubmittedQuery({
+          query,
+          surface: "overlay",
+          destination: "dropdown_item",
+          results: settled ? results : [],
+          resultsQuery: settled?.query ?? null,
+          dropdownCount: items.length,
+        });
+        trackPickedResult({
+          query,
+          surface: "overlay",
+          slug: item.slug,
+          position: activeIdx + 1,
+          resultCount: items.length,
+          resultKind: "comparison",
+        });
+        router.push(`/compare/${item.slug}`);
+      }
       close();
       return;
     }
-    const parsed = parseComparisonQuery(query);
-    trackSearchParsed(query.trim(), parsed.slug, parsed.parsed);
-    if (parsed.parsed && parsed.slug) {
-      router.push(`/compare/${parsed.slug}`);
+    const compareSlug = compareSlugForQuery(query, settled);
+    if (compareSlug) {
+      trackSubmittedQuery({
+        query,
+        surface: "overlay",
+        destination: "compare",
+        results: settled ? results : [],
+        resultsQuery: settled?.query ?? null,
+        dropdownCount: settled?.slugs.length ?? 0,
+        legacyResultType: "comparison",
+      });
+      router.push(`/compare/${compareSlug}`);
     } else {
+      trackSubmittedQuery({
+        query,
+        surface: "overlay",
+        destination: "search_page",
+        results: settled ? results : [],
+        resultsQuery: settled?.query ?? null,
+        dropdownCount: settled?.slugs.length ?? 0,
+        legacyResultType: "general",
+      });
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     }
     close();
@@ -158,7 +243,27 @@ export function SearchOverlay() {
     if (e.key === "ArrowUp") { e.preventDefault(); setActiveIdx((p) => Math.max(p - 1, -1)); }
     if (e.key === "Enter" && activeIdx >= 0 && items[activeIdx]) {
       e.preventDefault();
-      router.push(`/compare/${items[activeIdx].slug}`);
+      if (pickLock.current) return;
+      pickLock.current = true;
+      flushShown();
+      const item = items[activeIdx];
+      trackSubmittedQuery({
+        query,
+        surface: "overlay",
+        destination: "dropdown_item",
+        results: settledSearchResults(query, resultsQuery, results) ? results : [],
+        resultsQuery: settledSearchResults(query, resultsQuery, results)?.query ?? null,
+        dropdownCount: items.length,
+      });
+      trackPickedResult({
+        query,
+        surface: "overlay",
+        slug: item.slug,
+        position: activeIdx + 1,
+        resultCount: items.length,
+        resultKind: "comparison",
+      });
+      router.push(`/compare/${item.slug}`);
       close();
     }
   }
@@ -262,6 +367,25 @@ export function SearchOverlay() {
               </kbd>
             </div>
 
+            {suggestion && (
+              <DidYouMean
+                title={suggestion.title}
+                href={`/compare/${suggestion.slug}`}
+                onSelect={() => {
+                  flushShown();
+                  trackPickedResult({
+                    query,
+                    surface: "overlay",
+                    slug: suggestion.slug,
+                    position: 1,
+                    resultCount: results.length,
+                    resultKind: "comparison",
+                  });
+                  close();
+                }}
+              />
+            )}
+
             <ul ref={listboxRef} id="search-listbox" role="listbox" aria-label="Search suggestions" className="max-h-72 overflow-y-auto">
               {items.map((item, idx) => {
                 const parts = item.title.match(/^(.+?)\s+vs\.?\s+(.+)$/i);
@@ -281,7 +405,18 @@ export function SearchOverlay() {
                   <li key={item.slug} id={`search-option-${idx}`} role="option" aria-selected={isActive}>
                     <Link
                       href={`/compare/${item.slug}`}
-                      onClick={close}
+                      onClick={() => {
+                        flushShown();
+                        trackPickedResult({
+                          query,
+                          surface: "overlay",
+                          slug: item.slug,
+                          position: idx + 1,
+                          resultCount: items.length,
+                          resultKind: "comparison",
+                        });
+                        close();
+                      }}
                       onMouseEnter={() => setActiveIdx(idx)}
                       className={`flex items-center gap-3 px-4 py-3 transition-all duration-100 border-l-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${
                         isActive

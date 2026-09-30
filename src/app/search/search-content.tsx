@@ -1,11 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { parseComparisonQuery } from "@/lib/parse-comparison-query";
+import { suggestExistingComparison } from "@/lib/search/did-you-mean";
+import { compareSlugForQuery } from "@/lib/search/resolve-search-destination";
+import { lastSearchAttachment, normalizeQuery, readLastSearch, searchIdFor } from "@/lib/search/search-session";
+import { trackPickedResult, trackSubmittedQuery } from "@/lib/search/track-search";
+import { DidYouMean } from "@/components/search/DidYouMean";
 import { slugify } from "@/lib/utils/slugify";
-import { trackComparisonSearch, trackSearchParsed } from "@/lib/utils/analytics";
+import {
+  trackComparisonSearch,
+  trackMatchupRequested,
+  trackSearchPageOpened,
+  trackSearchParsed,
+  trackSearchResultsShown,
+} from "@/lib/utils/analytics";
 import { saveSearchContext } from "@/lib/utils/recently-viewed";
 
 const SEARCH_PAGE_URL = "https://aversusb.net/search";
@@ -184,13 +195,23 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
   const searchParams = useSearchParams();
   const router = useRouter();
   const query = searchParams?.get("q") || "";
+  const surfaceParam = searchParams?.get("surface") || "";
+  const sourcePage = searchParams?.get("source_page") || "";
+  const locallySubmitted = useRef<string | null>(null);
   const [searchQuery, setSearchQuery] = useState(query);
   const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
+  const [fetchedFor, setFetchedFor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [compareWith, setCompareWith] = useState("");
   const [trending, setTrending] = useState<{ slug: string; title: string }[]>([]);
   const parsedQuery = parseComparisonQuery(query);
+  const immediateSlug = compareSlugForQuery(query, null);
   const faq = searchFaqQuestions(generationEnabled);
+  // Next's router is stable. The search-page test returns a new object on
+  // every render, and this effect writes state, so depending on `router`
+  // itself retriggers the fetch forever.
+  const routerRef = useRef(router);
+  routerRef.current = router;
 
   useEffect(() => {
     fetch("/api/v1/trending?limit=8")
@@ -204,26 +225,59 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
   }, []);
 
   useEffect(() => {
-    if (!query) return;
-    trackSearchParsed(query, parsedQuery.slug, parsedQuery.parsed);
-    if (parsedQuery.parsed && parsedQuery.slug) {
-      router.replace(`/compare/${parsedQuery.slug}`);
-    }
-  }, [query, parsedQuery.parsed, parsedQuery.slug, router]);
-
-  useEffect(() => {
     setSearchQuery(query);
-    if (!query || (parsedQuery.parsed && parsedQuery.slug)) {
-      if (!query) {
-        setResults([]);
-        setLoading(false);
+    setFetchedFor(null);
+    if (!query) {
+      trackSearchPageOpened(sourcePage);
+      setResults([]);
+      setLoading(false);
+      return;
+    }
+
+    const normalized = normalizeQuery(query);
+    const stored = readLastSearch();
+    const arrivedFromThisPage = locallySubmitted.current === normalized;
+    const noteArrival = (
+      destination: "compare" | "search_page",
+      rows: { slug: string }[],
+      resultsQuery: string | null,
+    ) => {
+      if (arrivedFromThisPage) return;
+      if (!stored || stored.query_normalized !== normalized) {
+        const surface = surfaceParam === "not_found_form" ? "not_found_form" : "url";
+        trackSubmittedQuery({
+          query,
+          surface,
+          destination,
+          results: rows,
+          resultsQuery,
+          dropdownCount: rows.length,
+        });
+      } else {
+        trackSearchParsed(query, parsedQuery.slug, parsedQuery.parsed);
       }
+    };
+
+    if (immediateSlug) {
+      noteArrival("compare", [], null);
+      routerRef.current.replace(`/compare/${immediateSlug}`);
       return;
     }
 
     let cancelled = false;
     saveSearchContext(query);
     setLoading(true);
+    const started = performance.now();
+    const recordShown = (count: number, slugs: string[]) => {
+      trackSearchResultsShown({
+        search_id: searchIdFor(query),
+        query_raw: query,
+        surface: "search_page",
+        result_count: count,
+        top_slugs: slugs,
+        latency_ms: Math.round(performance.now() - started),
+      });
+    };
     fetch(`/api/search?q=${encodeURIComponent(query)}`)
       .then((r) => {
         if (!r.ok) throw new Error(`search failed: ${r.status}`);
@@ -232,36 +286,96 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
       .then((data) => {
         if (cancelled) return;
         const items = Array.isArray(data?.results) ? data.results : [];
+        const confirmed = compareSlugForQuery(query, {
+          query,
+          slugs: items.map((item: { slug?: string }) => item.slug || "").filter(Boolean),
+        });
+        if (confirmed) {
+          noteArrival("compare", items, query);
+          routerRef.current.replace(`/compare/${confirmed}`);
+          return;
+        }
         setResults(items);
+        setFetchedFor(query);
         setLoading(false);
-        trackComparisonSearch(query, items.length > 0 ? "results" : "no_results");
+        noteArrival("search_page", items, query);
+        recordShown(items.length, items.slice(0, 5).map((item: { slug?: string }) => item.slug || ""));
+        trackComparisonSearch(query, items.length > 0 ? "results" : "no_results", items.length, "search_page");
       })
       .catch(() => {
         if (cancelled) return;
         // A failed search is an empty result, not a page crash.
         setResults([]);
+        setFetchedFor(query);
         setLoading(false);
-        trackComparisonSearch(query, "no_results");
+        noteArrival("search_page", [], query);
+        recordShown(0, []);
+        trackComparisonSearch(query, "no_results", 0, "search_page");
       });
 
     return () => {
       cancelled = true;
     };
-  }, [query, parsedQuery.parsed, parsedQuery.slug]);
+  }, [query, immediateSlug, parsedQuery.slug, parsedQuery.parsed, sourcePage, surfaceParam]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    const parsed = parseComparisonQuery(searchQuery);
-    if (parsed.parsed && parsed.slug) {
-      trackSearchParsed(searchQuery.trim(), parsed.slug, true);
-      router.push(`/compare/${parsed.slug}`);
+    const sameQuery = fetchedFor != null && normalizeQuery(fetchedFor) === normalizeQuery(searchQuery);
+    const settled = sameQuery ? { query: fetchedFor, slugs: results.map((item) => item.slug) } : null;
+    const compareSlug = compareSlugForQuery(searchQuery, settled);
+    locallySubmitted.current = normalizeQuery(searchQuery);
+    if (compareSlug) {
+      trackSubmittedQuery({
+        query: searchQuery,
+        surface: "search_page",
+        destination: "compare",
+        results: sameQuery ? results : [],
+        resultsQuery: sameQuery ? fetchedFor : null,
+        dropdownCount: sameQuery ? results.length : 0,
+      });
+      router.push(`/compare/${compareSlug}`);
       return;
     }
 
+    trackSubmittedQuery({
+      query: searchQuery,
+      surface: "search_page",
+      destination: "search_page",
+      results: sameQuery ? results : [],
+      resultsQuery: sameQuery ? fetchedFor : null,
+      dropdownCount: sameQuery ? results.length : 0,
+    });
     router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
   };
+
+  function createComparison() {
+    const other = compareWith.trim();
+    if (!other) return;
+    const slug = `${slugify(query)}-vs-${slugify(other)}`;
+    const attachment = lastSearchAttachment();
+    trackMatchupRequested({
+      slug,
+      cta: "create_on_search",
+      from_search: attachment.from_search,
+      search_id: attachment.search_id,
+      query_raw: attachment.query_raw || query,
+    });
+    trackPickedResult({
+      query,
+      surface: "search_page",
+      slug,
+      position: results.length + 1,
+      resultCount: results.length,
+      resultKind: "create_new",
+    });
+    router.push(`/compare/${slug}`);
+  }
+
+  const suggestion = query && !immediateSlug
+    ? suggestExistingComparison(query, results)
+    : null;
 
   return (
     <div>
@@ -354,17 +468,43 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
         </div>
       ) : query && results.length > 0 ? (
         <div className="space-y-3">
+          {suggestion && (
+            <DidYouMean
+              title={suggestion.title}
+              href={`/compare/${suggestion.slug}`}
+              onSelect={() =>
+                trackPickedResult({
+                  query,
+                  surface: "search_page",
+                  slug: suggestion.slug,
+                  position: 1,
+                  resultCount: results.length,
+                  resultKind: "comparison",
+                })
+              }
+            />
+          )}
           <p className="text-sm text-text-secondary mb-4">
             {results.length} result{results.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
           </p>
           <ul role="list" className="space-y-3 list-none" aria-label="Search results">
-          {results.map((result) => {
+          {results.map((result, index) => {
             const title = result.title || "Comparison";
             const parts = title.split(/\s+vs\.?\s+/i);
             return (
               <li key={result.slug}>
               <Link
                 href={`/compare/${result.slug}?from=${encodeURIComponent(query)}`}
+                onClick={() =>
+                  trackPickedResult({
+                    query,
+                    surface: "search_page",
+                    slug: result.slug,
+                    position: index + 1,
+                    resultCount: results.length,
+                    resultKind: "comparison",
+                  })
+                }
                 className="flex items-center gap-4 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
               >
                 <div className="relative flex flex-shrink-0">
@@ -396,6 +536,22 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
       ) : query ? (
         <div className="space-y-8">
           {/* No exact match — never throw. Show the raw query and a way to create one. */}
+          {suggestion && (
+            <DidYouMean
+              title={suggestion.title}
+              href={`/compare/${suggestion.slug}`}
+              onSelect={() =>
+                trackPickedResult({
+                  query,
+                  surface: "search_page",
+                  slug: suggestion.slug,
+                  position: 1,
+                  resultCount: results.length,
+                  resultKind: "comparison",
+                })
+              }
+            />
+          )}
           <div className="text-center py-8 bg-surface-alt rounded-xl px-4">
             <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
               <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -425,18 +581,12 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
                   onChange={(e) => setCompareWith(e.target.value)}
                   className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/60 focus:border-primary-500 outline-none w-56"
                   onKeyDown={(e) => {
-                    if (e.key === "Enter" && compareWith.trim()) {
-                      router.push(`/compare/${slugify(query)}-vs-${slugify(compareWith.trim())}`);
-                    }
+                    if (e.key === "Enter") createComparison();
                   }}
                 />
                 <button
                   type="button"
-                  onClick={() => {
-                    if (compareWith.trim()) {
-                      router.push(`/compare/${slugify(query)}-vs-${slugify(compareWith.trim())}`);
-                    }
-                  }}
+                  onClick={createComparison}
                   className="inline-block px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg transition-all duration-150 hover:shadow-md hover:scale-105 active:scale-95"
                 >
                   Create this comparison

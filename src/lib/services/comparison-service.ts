@@ -29,6 +29,7 @@ import {
   type SaveOrigin,
 } from "@/lib/generation/promotion";
 import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
+import { parsedEntityTokens, parsedSlugForQuery } from "@/lib/search/did-you-mean";
 import { REDIRECTED_COMPARE_SLUGS, isRedirectedCompareSlug } from "@/lib/redirects/compare-redirects";
 import { submitComparisonToIndexNow } from "@/lib/seo/indexnow";
 import { resolveComparisonDescription } from "@/lib/seo/metadata";
@@ -727,29 +728,60 @@ async function getRelatedFromDb(
  * iphone-vs-android, oneplus-vs-iphone) surfaced as `/compare/*` 404s from
  * hub `/blog` → `/search` and the global search overlay.
  */
+type SearchRow = { slug: string; title: string; category: string; viewCount: number };
+
+function searchMatchRank(slug: string, exactSlug: string | null, tokens: string[] | null): number {
+  if (exactSlug && slug === exactSlug) return 3;
+  if (tokens && tokens.length > 0 && tokens.every((token) => slug.includes(token))) return 2;
+  return 1;
+}
+
+function orderSearchRows(rows: SearchRow[], exactSlug: string | null, tokens: string[] | null, limit: number): SearchRow[] {
+  const seen = new Set<string>();
+  return [...rows]
+    .sort((a, b) => {
+      const rank = searchMatchRank(b.slug, exactSlug, tokens) - searchMatchRank(a.slug, exactSlug, tokens);
+      if (rank !== 0) return rank;
+      return b.viewCount - a.viewCount;
+    })
+    .filter((row) => {
+      if (seen.has(row.slug)) return false;
+      seen.add(row.slug);
+      return true;
+    })
+    .slice(0, limit);
+}
+
 export async function searchComparisons(
   query: string,
   limit: number = 20
-): Promise<{ slug: string; title: string; category: string; viewCount: number }[]> {
-  const searchCacheKey = `search:${query.toLowerCase().trim()}:${limit}`;
-  const cached = await getFromCache<{ slug: string; title: string; category: string; viewCount: number }[]>(searchCacheKey);
+): Promise<SearchRow[]> {
+  const searchCacheKey = `search:v2:${query.toLowerCase().trim()}:${limit}`;
+  const cached = await getFromCache<SearchRow[]>(searchCacheKey);
   if (cached) return cached;
+
+  const exactSlug = parsedSlugForQuery(query);
+  const tokens = parsedEntityTokens(query);
 
   const prisma = getPrismaClient();
   if (prisma) {
     try {
       const lower = query.toLowerCase();
+      const or: Prisma.ComparisonWhereInput[] = [
+        { title: { contains: lower, mode: "insensitive" as const } },
+        { slug: { contains: lower.replace(/\s+/g, "-") } },
+        { category: { contains: lower, mode: "insensitive" as const } },
+      ];
+      // Parsed queries ("messi x ronaldo", "hbo vs netflix") do not appear as
+      // a substring of the live title. Match the canonical slug and any live
+      // page that contains both entity tokens.
+      if (exactSlug) or.push({ slug: exactSlug });
+      if (tokens) {
+        or.push({ AND: tokens.map((token) => ({ slug: { contains: token } })) });
+      }
       const rows = await prisma.comparison.findMany({
         where: canonicalComparisonWhere({
-          AND: [
-            {
-              OR: [
-                { title: { contains: lower, mode: "insensitive" as const } },
-                { slug: { contains: lower.replace(/\s+/g, "-") } },
-                { category: { contains: lower, mode: "insensitive" as const } },
-              ],
-            },
-          ],
+          AND: [{ OR: or }],
         }),
         select: {
           slug: true,
@@ -760,17 +792,32 @@ export async function searchComparisons(
         orderBy: { viewCount: "desc" },
         take: limit,
       });
-      if (rows.length > 0) {
-        const mapped = rows.map(
-          (r: { slug: string; title: string; category: string | null; viewCount: number }) => ({
-            slug: r.slug,
-            title: r.title,
-            category: r.category || "general",
-            viewCount: r.viewCount,
-          })
-        );
-        await setCache(searchCacheKey, mapped, CACHE_TTL_SEARCH);
-        return mapped;
+      const mapped: SearchRow[] = rows.map(
+        (r: { slug: string; title: string; category: string | null; viewCount: number }) => ({
+          slug: r.slug,
+          title: r.title,
+          category: r.category || "general",
+          viewCount: r.viewCount,
+        })
+      );
+      if (exactSlug && !mapped.some((row) => row.slug === exactSlug)) {
+        const exact = await prisma.comparison.findFirst({
+          where: canonicalComparisonWhere({ AND: [{ slug: exactSlug }] }),
+          select: { slug: true, title: true, category: true, viewCount: true },
+        });
+        if (exact) {
+          mapped.push({
+            slug: exact.slug,
+            title: exact.title,
+            category: exact.category || "general",
+            viewCount: exact.viewCount,
+          });
+        }
+      }
+      if (mapped.length > 0) {
+        const ordered = orderSearchRows(mapped, exactSlug, tokens, limit);
+        await setCache(searchCacheKey, ordered, CACHE_TTL_SEARCH);
+        return ordered;
       }
     } catch (e) {
       console.warn("Prisma query failed for searchComparisons, falling back to mock:", e);
@@ -788,10 +835,13 @@ export async function searchComparisons(
     if (!comp) continue;
     const titleLower = comp.title.toLowerCase();
     const catLower = (comp.category || "").toLowerCase();
+    const bothTokens = tokens ? tokens.every((token) => slug.includes(token)) : false;
     if (
       titleLower.includes(lower) ||
       catLower.includes(lower) ||
       slug.includes(lower.replace(/\s+/g, "-")) ||
+      slug === exactSlug ||
+      bothTokens ||
       comp.entities.some((e) => e.name.toLowerCase().includes(lower))
     ) {
       results.push({
@@ -803,14 +853,34 @@ export async function searchComparisons(
     }
   }
 
+  if (exactSlug && !results.some((row) => row.slug === exactSlug)) {
+    const exact = getMockComparison(exactSlug);
+    if (exact && !isRedirectedCompareSlug(exactSlug)) {
+      results.push({
+        slug: exact.slug,
+        title: exact.title,
+        category: exact.category || "general",
+        viewCount: exact.metadata.viewCount,
+      });
+    }
+  }
+
   results.sort((a, b) => {
-    const aExact = a.title.toLowerCase().includes(lower) ? 1 : 0;
-    const bExact = b.title.toLowerCase().includes(lower) ? 1 : 0;
-    if (aExact !== bExact) return bExact - aExact;
+    const rank = searchMatchRank(b.slug, exactSlug, tokens) - searchMatchRank(a.slug, exactSlug, tokens);
+    if (rank !== 0) return rank;
+    const aTitle = a.title.toLowerCase().includes(lower) ? 1 : 0;
+    const bTitle = b.title.toLowerCase().includes(lower) ? 1 : 0;
+    if (aTitle !== bTitle) return bTitle - aTitle;
     return b.viewCount - a.viewCount;
   });
-
-  const finalResults = results.slice(0, limit);
+  const seen = new Set<string>();
+  const finalResults = results
+    .filter((row) => {
+      if (seen.has(row.slug)) return false;
+      seen.add(row.slug);
+      return true;
+    })
+    .slice(0, limit);
   await setCache(searchCacheKey, finalResults, CACHE_TTL_SEARCH);
   return finalResults;
 }
