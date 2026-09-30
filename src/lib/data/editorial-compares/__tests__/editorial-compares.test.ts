@@ -1263,3 +1263,101 @@ describe("ROO-114 Chrome vs Safari", () => {
     expect(page().keyDifferences.every((row) => row.winner === "tie")).toBe(true);
   });
 });
+
+const SOLAR_SLUG = "anker-solix-solarbank-4-pro-vs-ecoflow-stream-5000";
+const SOLAR_FAQS = [
+  "Does the Solarbank 4 Pro or the STREAM 5000 have more storage?",
+  "Which system can feed more power into the home?",
+  "Which is better for outdoor mounting?",
+  "Do they accept the same solar input?",
+  "Which works with Home Assistant?",
+  "Are these simple 800 W plug-in balcony kits?",
+];
+const SOLAR_QUICK_ANSWER =
+  "Choose the EcoFlow STREAM 5000 if you want the higher published output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
+
+describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
+  const page = () => getEditorialComparison(SOLAR_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(SOLAR_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(SOLAR_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual([
+      "anker-solix-solarbank-4-pro",
+      "ecoflow-stream-5000",
+    ]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best if IP66 and Home Assistant matter more than output",
+      "Best if you want the higher published output",
+    ]);
+    expect(page().shortAnswer).toBe(SOLAR_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(SOLAR_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(SOLAR_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-09-30T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    const legalClaim = /Marktstammdatenregister|VDE|electrician|legal to plug in|local rules allow|feed-in|simplified connection|circuit adaptation/i;
+    expect(pageText(page())).not.toMatch(legalClaim);
+    expect((page().resources ?? []).map((resource) => `${resource.label} ${resource.description}`).join("\n")).not.toMatch(legalClaim);
+    expect(page().expertAnalysis ?? "").toContain(
+      "Check your local rules and your utility before feeding power back to the grid."
+    );
+    expect(
+      (pageText(page()).match(/Check your local rules and your utility before feeding power back to the grid\./g) ?? [])
+    ).toHaveLength(1);
+  });
+
+  it("keeps six FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(6);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(SOLAR_FAQS);
+    expect(faqQuestions(page())).toEqual(SOLAR_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(SOLAR_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites manufacturer pages and does not link noindex entity hubs", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(6);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-30");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-30/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.ankersolix.com/de/products/ae103",
+      "https://cdn.shopify.com/s/files/1/0901/2612/3357/files/Datasheet_20260610_AE103_DE.pdf",
+      "https://www.ecoflow.com/eu/stream-series-plug-and-play-solar-battery/specs",
+      "https://www.ecoflow.com/eu/stream-series-plug-and-play-solar-battery/support",
+      "https://eu.ecoflow.com/products/stream-series-solar-battery",
+      "https://github.com/anker-charging/ha-anker-solix-official/blob/main/README.md",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().resources?.map((resource) => resource.url).join("\n")).not.toMatch(/\/entity\//);
+    expect(page().relatedComparisons).toEqual([]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("IP66");
+    expect(pageText(page())).toContain("IP65");
+    expect(pageText(page())).toContain("45.4 kg");
+    expect(pageText(page())).toContain("50 kg");
+    const output = page().attributes.find((attr) => attr.slug === "ongrid");
+    expect(output?.values.find((value) => value.entityId === "ecoflow-stream-5000")?.winner).toBe(true);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+  });
+});
