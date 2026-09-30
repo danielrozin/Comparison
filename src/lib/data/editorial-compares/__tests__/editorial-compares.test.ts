@@ -686,7 +686,7 @@ describe("ROO-130 iPhone Air vs iPhone 17", () => {
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites Apple and GSMArena and links the other Air hub", () => {
+  it("cites Apple and GSMArena and links the indexable iPhone Air hub", () => {
     const sources = page().citationStats?.sources ?? [];
     expect(sources).toHaveLength(6);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
@@ -705,7 +705,7 @@ describe("ROO-130 iPhone Air vs iPhone 17", () => {
     ]);
     expect(page().resources?.map((resource) => resource.url)).toEqual([
       ...urls,
-      "/entity/iphone-17-air",
+      "/entity/iphone-air",
     ]);
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
       "iphone-17-vs-iphone-17-pro-vs-iphone-16-pro",

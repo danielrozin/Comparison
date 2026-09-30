@@ -3,11 +3,10 @@ import type { EditorialComparison } from "./types";
 
 /**
  * ROO-130 — iPhone 17 vs iPhone Air.
- * Apple's product name is iPhone Air. The live hub with that name is
- * /entity/iphone-air. /entity/iphone-17-air is a separate hub titled
- * "iPhone 17 Air", so this compare uses iphone-air and also links that hub.
- * Both /compare/iphone-17-vs-iphone-air and /compare/iphone-17-vs-iphone-17-air
- * returned 404 on 2026-09-30.
+ * Apple's product name is iPhone Air. The canonical hub is
+ * /entity/iphone-air, which was index, follow on 30 September 2026.
+ * /entity/iphone-17-air is a different hub and was noindex, nofollow, so
+ * this page does not link it.
  * Specs checked against Apple's spec pages and GSMArena, fetched 2026-09-30.
  * No page-level winner. No invented benchmark.
  */
@@ -99,9 +98,7 @@ Who should buy which
 
 Choose the iPhone 17 if you are leaving an iPhone 13 and you want a reliable everyday phone: two rear cameras, the higher video-playback rating, and the larger battery. The chip difference is not a reason to pick the Air for photos and social apps. This page has no benchmark that says otherwise.
 
-Choose the iPhone Air if you have held the 5.64 mm titanium phone and that is why you are upgrading. You are accepting one rear camera, 3,149 mAh, and Apple's 27-hour video-playback rating.
-
-The site also has a hub titled iPhone 17 Air. Apple's name for this phone is iPhone Air, so this page uses the iPhone Air hub.`;
+Choose the iPhone Air if you have held the 5.64 mm titanium phone and that is why you are upgrading. You are accepting one rear camera, 3,149 mAh, and Apple's 27-hour video-playback rating.`;
 
 const SPEC_APPLE = "Specs · Apple, fetched 2026-09-30";
 const SPEC_GSM = "Specs · GSMArena, fetched 2026-09-30";
@@ -354,10 +351,9 @@ export const IPHONE_17_VS_IPHONE_AIR: EditorialComparison = buildEditorialCompar
     },
     {
       type: "blog",
-      label: "iPhone 17 Air hub",
-      url: "/entity/iphone-17-air",
-      description:
-        "Separate AversusB hub titled iPhone 17 Air. This compare uses Apple's name, iPhone Air, and the iphone-air hub.",
+      label: "iPhone Air hub",
+      url: "/entity/iphone-air",
+      description: "AversusB hub for the iPhone Air.",
     },
   ],
   metaTitle: "iPhone Air vs iPhone 17 | A Versus B",
