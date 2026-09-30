@@ -9,6 +9,7 @@ import { IPHONE_16E_VS_IPHONE_17E } from "./iphone-16e-vs-iphone-17e";
 import { POLAROID_GO_GEN_2_VS_INSTAX_MINI } from "./polaroid-go-gen-2-vs-fujifilm-instax-mini";
 import { GALAXY_Z_FOLD_7_VS_S26_ULTRA } from "./galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra";
 import { GOOGLE_MAPS_VS_APPLE_MAPS } from "./google-maps-vs-apple-maps";
+import { GOOGLE_MAPS_VS_WAZE } from "./google-maps-vs-waze";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -35,6 +36,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [POLAROID_GO_GEN_2_VS_INSTAX_MINI.slug]: POLAROID_GO_GEN_2_VS_INSTAX_MINI,
   [GALAXY_Z_FOLD_7_VS_S26_ULTRA.slug]: GALAXY_Z_FOLD_7_VS_S26_ULTRA,
   [GOOGLE_MAPS_VS_APPLE_MAPS.slug]: GOOGLE_MAPS_VS_APPLE_MAPS,
+  [GOOGLE_MAPS_VS_WAZE.slug]: GOOGLE_MAPS_VS_WAZE,
 };
 
 /**
