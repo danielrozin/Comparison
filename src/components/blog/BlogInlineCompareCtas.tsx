@@ -4,16 +4,19 @@ import { TrackedCompareLink } from "@/components/home/HomeCompareCTA";
 import type { CashiersCheckCompareLink } from "@/lib/data/cashiers-check-blog-cta";
 
 /**
- * ROO-119 — compact compare links under a blog intro.
+ * ROO-119 — compact compare links under a lander intro.
  * Reuses TrackedCompareLink so the click fires `related_comparison_click`
  * (`source_page`, `target_page`) and the href carries `?source_page=`.
+ * `heading` defaults to the cashier's-check label; other landers pass their own.
  */
 export function BlogInlineCompareCtas({
   sourcePage,
   links,
+  heading = "Compare banks and money-transfer apps",
 }: {
   sourcePage: string;
   links: readonly CashiersCheckCompareLink[];
+  heading?: string;
 }) {
   if (links.length === 0) return null;
 
@@ -24,7 +27,7 @@ export function BlogInlineCompareCtas({
       className="my-6 rounded-xl border border-primary-200 bg-primary-50/60 p-4"
     >
       <p className="text-sm font-semibold text-text">
-        Compare banks and money-transfer apps
+        {heading}
       </p>
       <ul className="mt-2 flex flex-col gap-2 list-none m-0 p-0">
         {links.map((link) => (
