@@ -20,10 +20,10 @@ export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
     "capital-one-vs-chase",
     "revolut-vs-wise",
   ],
-  // ROO-127: Maps/Waze/Apple Maps compares 404. Live travel + platform pages.
+  // ROO-127: editorial Maps compares are the live canonicals. Android vs iOS stays.
   "best-navigation-apps-2026-google-maps-waze-and-apple-maps-compared": [
-    "lyft-vs-uber",
-    "google-flights-vs-kayak",
+    "google-maps-vs-waze",
+    "google-maps-vs-apple-maps",
     "android-vs-ios",
   ],
   // ROO-127: 14" vs 16" Pro weight guide, plus Air and Mac vs Windows.
