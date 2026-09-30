@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CATEGORIES } from "@/lib/utils/constants";
 import { CategoryIcon } from "@/lib/utils/category-icons";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
+import { isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
 
 // Category affinity map (synced with internal-linking-engine.ts)
 const RELATED_CATEGORIES: Record<string, string[]> = {
@@ -27,7 +28,7 @@ const RELATED_CATEGORIES: Record<string, string[]> = {
 interface InternalLinksProps {
   currentSlug: string;
   category: string | null;
-  entities: { name: string; slug: string }[];
+  entities: { name: string; slug: string; status?: string | null }[];
   relatedComparisons: { slug: string; title: string; category: string | null }[];
 }
 
@@ -88,19 +89,30 @@ export function InternalLinks({
               }
             />
             <ul aria-label="Entity pages" className="space-y-2">
-              {entities.map((entity) => (
-                <li key={entity.slug}>
-                  <Link
-                    href={`/entity/${entity.slug}`}
-                    className="group flex items-center justify-between gap-2 text-sm text-text hover:text-primary-700 min-h-11 sm:min-h-0 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
-                  >
-                    <span>All about <span className="font-medium">{entity.name}</span></span>
-                    <svg className="w-3.5 h-3.5 text-text-secondary/40 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </li>
-              ))}
+              {entities.map((entity) => {
+                const entityHref = isEntityPageIndexable(entity.status)
+                  ? `/entity/${entity.slug}`
+                  : null;
+                return (
+                  <li key={entity.slug}>
+                    {entityHref ? (
+                      <Link
+                        href={entityHref}
+                        className="group flex items-center justify-between gap-2 text-sm text-text hover:text-primary-700 min-h-11 sm:min-h-0 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+                      >
+                        <span>All about <span className="font-medium">{entity.name}</span></span>
+                        <svg className="w-3.5 h-3.5 text-text-secondary/40 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    ) : (
+                      <span className="flex items-center min-h-11 sm:min-h-0 py-1 px-1 text-sm text-text">
+                        <span className="font-medium">{entity.name}</span>
+                      </span>
+                    )}
+                  </li>
+                );
+              })}
               {entities.map((entity) => (
                 <li key={`alt-${entity.slug}`}>
                   <Link

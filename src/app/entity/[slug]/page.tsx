@@ -10,6 +10,7 @@ import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/ent
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { prisma } from "@/lib/db/prisma";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { entityPageRobotsStatus, isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -47,7 +48,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // component will call notFound() for these slugs, which is the definitive gate.
   let dbMetaTitle: string | null = null;
   let dbMetaDescription: string | null = null;
-  let entityStatus: string = "published"; // optimistic; notFound() gates the render
+  let lookupFailed = false;
+  let rawStatus: string | null = null;
   try {
     const entity = await prisma.entity.findUnique({
       where: { slug },
@@ -55,10 +57,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     });
     dbMetaTitle = entity?.metaTitle ?? null;
     dbMetaDescription = entity?.metaDescription ?? null;
-    entityStatus = entity?.status ?? "draft";
+    rawStatus = entity?.status ?? null;
   } catch {
     // DB unavailable (build-time / offline) — fall through to generated defaults.
+    lookupFailed = true;
   }
+  // Shared with /compare/[slug]. A missing row is draft (noindex). A failed
+  // lookup stays published, matching the previous optimistic default.
+  const entityStatus = entityPageRobotsStatus({ lookupFailed, status: rawStatus });
 
   const description =
     dbMetaDescription ||
@@ -78,7 +84,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
-    robots: entityStatus === "published"
+    robots: isEntityPageIndexable(entityStatus)
       ? {
           index: true,
           follow: true,
