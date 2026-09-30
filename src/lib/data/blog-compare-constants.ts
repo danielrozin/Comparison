@@ -20,18 +20,23 @@ export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
     "capital-one-vs-chase",
     "revolut-vs-wise",
   ],
-  // nav-apps: maps/waze compares currently 404 live — leave empty; soft CTA only
+  // ROO-127: Maps/Waze/Apple Maps compares 404. Live travel + platform pages.
   "best-navigation-apps-2026-google-maps-waze-and-apple-maps-compared": [
-    "google-maps-vs-waze",
-    "apple-maps-vs-waze",
+    "lyft-vs-uber",
+    "google-flights-vs-kayak",
+    "android-vs-ios",
   ],
+  // ROO-127: 14" vs 16" Pro weight guide, plus Air and Mac vs Windows.
   "macbook-pro-weight-2025-2026-complete-specs-comparison-guide": [
+    "macbook-pro-14-vs-macbook-pro-16",
     "macbook-air-vs-macbook-pro",
     "mac-vs-windows",
   ],
+  // ROO-127: which Air, the Windows ultraportable, and the Pro step-up.
   "macbook-air-weight-comparison-2025-2026-which-model-is-right-for-you": [
+    "macbook-air-m3-vs-macbook-air-m4",
+    "dell-xps-13-vs-macbook-air",
     "macbook-air-vs-macbook-pro",
-    "mac-vs-windows",
   ],
   "mercedes-benz-alternatives-in-2026-best-luxury-cars-brands-to-consider": [
     "bmw-vs-mercedes",

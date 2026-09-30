@@ -21,6 +21,13 @@ vi.mock("@/lib/utils/analytics", () => ({
 }));
 
 import { BlogInlineCompareCtas } from "../BlogInlineCompareCtas";
+import {
+  MACBOOK_AIR_WEIGHT_BLOG_SLUG,
+  MACBOOK_PRO_WEIGHT_BLOG_SLUG,
+  NAVIGATION_APPS_BLOG_SLUG,
+  ORGANIC_LANDER_COMPARES,
+  selectOrganicLanderCompare,
+} from "@/lib/data/organic-lander-compare-ctas";
 
 const LINKS = selectCashiersCheckCompareLinks(
   CASHIERS_CHECK_COMPARE_LINKS.map((link) => link.slug),
@@ -38,6 +45,7 @@ describe("BlogInlineCompareCtas", () => {
     const view = within(container);
 
     expect(view.getByRole("navigation", { name: "Related comparisons" })).toBeTruthy();
+    expect(view.getByText("Compare banks and money-transfer apps")).toBeTruthy();
     expect(view.queryByText(/winner/i)).toBeNull();
 
     for (const link of LINKS) {
@@ -95,5 +103,73 @@ describe("cashier's check compare targets", () => {
     expect(parts!.lead).toContain("safest forms of payment");
     expect(parts!.lead).not.toContain("<h2");
     expect(parts!.rest.trim().startsWith("<h2")).toBe(true);
+  });
+});
+
+describe("ROO-127 organic lander compare targets", () => {
+  it("uses three canonical slugs that match the blog fallbacks", () => {
+    expect(ORGANIC_LANDER_COMPARES).toHaveLength(3);
+    for (const lander of ORGANIC_LANDER_COMPARES) {
+      expect(lander.links).toHaveLength(3);
+      expect(BLOG_COMPARE_FALLBACKS[lander.blogSlug]).toEqual(
+        lander.links.map((link) => link.slug),
+      );
+      expect(lander.sourcePage).toBe(`/blog/${lander.blogSlug}`);
+      for (const link of lander.links) {
+        expect(isRedirectedCompareSlug(link.slug)).toBe(false);
+        expect(link.label.startsWith("Compare ")).toBe(true);
+        expect(link.label).not.toMatch(/winner|which is better|which wins/i);
+      }
+    }
+  });
+
+  it("drops a slug the live filter did not keep", () => {
+    const picked = selectOrganicLanderCompare(MACBOOK_AIR_WEIGHT_BLOG_SLUG, [
+      "macbook-air-m3-vs-macbook-air-m4",
+      "macbook-air-vs-macbook-pro",
+    ]);
+    expect(picked?.links.map((link) => link.slug)).toEqual([
+      "macbook-air-m3-vs-macbook-air-m4",
+      "macbook-air-vs-macbook-pro",
+    ]);
+    expect(selectOrganicLanderCompare("unrelated-post", ["mac-vs-windows"])).toBeNull();
+  });
+
+  it("links each live compare with the full blog path and records the click", () => {
+    for (const lander of ORGANIC_LANDER_COMPARES) {
+      const selected = selectOrganicLanderCompare(
+        lander.blogSlug,
+        lander.links.map((link) => link.slug),
+      );
+      expect(selected).not.toBeNull();
+      const { container } = render(
+        <BlogInlineCompareCtas
+          sourcePage={selected!.sourcePage}
+          links={selected!.links}
+          heading={selected!.heading}
+        />,
+      );
+      const view = within(container);
+      expect(view.getByText(lander.heading)).toBeTruthy();
+
+      for (const link of selected!.links) {
+        const anchor = view.getByRole("link", { name: link.label });
+        expect(anchor).toHaveAttribute(
+          "href",
+          `/compare/${link.slug}?source_page=${encodeURIComponent(lander.sourcePage)}`,
+        );
+        fireEvent.click(anchor);
+        expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
+          lander.sourcePage,
+          link.slug,
+        );
+      }
+    }
+
+    expect([
+      MACBOOK_PRO_WEIGHT_BLOG_SLUG,
+      MACBOOK_AIR_WEIGHT_BLOG_SLUG,
+      NAVIGATION_APPS_BLOG_SLUG,
+    ]).toEqual(ORGANIC_LANDER_COMPARES.map((lander) => lander.blogSlug));
   });
 });
