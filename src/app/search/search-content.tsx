@@ -207,6 +207,11 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
   const parsedQuery = parseComparisonQuery(query);
   const immediateSlug = compareSlugForQuery(query, null);
   const faq = searchFaqQuestions(generationEnabled);
+  // Next's router is stable. The search-page test returns a new object on
+  // every render, and this effect writes state, so depending on `router`
+  // itself retriggers the fetch forever.
+  const routerRef = useRef(router);
+  routerRef.current = router;
 
   useEffect(() => {
     fetch("/api/v1/trending?limit=8")
@@ -255,7 +260,7 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
 
     if (immediateSlug) {
       noteArrival("compare", [], null);
-      router.replace(`/compare/${immediateSlug}`);
+      routerRef.current.replace(`/compare/${immediateSlug}`);
       return;
     }
 
@@ -287,7 +292,7 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
         });
         if (confirmed) {
           noteArrival("compare", items, query);
-          router.replace(`/compare/${confirmed}`);
+          routerRef.current.replace(`/compare/${confirmed}`);
           return;
         }
         setResults(items);
@@ -311,7 +316,7 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
     return () => {
       cancelled = true;
     };
-  }, [query, immediateSlug, parsedQuery.slug, parsedQuery.parsed, router, sourcePage, surfaceParam]);
+  }, [query, immediateSlug, parsedQuery.slug, parsedQuery.parsed, sourcePage, surfaceParam]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
