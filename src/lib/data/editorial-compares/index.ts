@@ -10,6 +10,7 @@ import { POLAROID_GO_GEN_2_VS_INSTAX_MINI } from "./polaroid-go-gen-2-vs-fujifil
 import { GALAXY_Z_FOLD_7_VS_S26_ULTRA } from "./galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra";
 import { GOOGLE_MAPS_VS_APPLE_MAPS } from "./google-maps-vs-apple-maps";
 import { GOOGLE_MAPS_VS_WAZE } from "./google-maps-vs-waze";
+import { BRAVE_VS_CHROME } from "./brave-vs-chrome";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -37,6 +38,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [GALAXY_Z_FOLD_7_VS_S26_ULTRA.slug]: GALAXY_Z_FOLD_7_VS_S26_ULTRA,
   [GOOGLE_MAPS_VS_APPLE_MAPS.slug]: GOOGLE_MAPS_VS_APPLE_MAPS,
   [GOOGLE_MAPS_VS_WAZE.slug]: GOOGLE_MAPS_VS_WAZE,
+  [BRAVE_VS_CHROME.slug]: BRAVE_VS_CHROME,
 };
 
 /**
