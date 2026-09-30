@@ -2,9 +2,9 @@
  * ROO-114 — compare links for /browser-comparison-2026.
  *
  * Rendered with BlogInlineCompareCtas (ROO-119), which uses TrackedCompareLink.
- * Each slug was checked live: HTTP 200, no redirect, and a self rel=canonical.
- * brave-vs-chrome and chrome-vs-safari 404, so Brave is the live
- * brave-vs-duckduckgo page instead.
+ * Three hero slots. Brave vs Chrome is first. Chrome vs Firefox stays.
+ * Firefox vs Safari keeps the last slot. Chrome vs Safari is live, but a
+ * fourth link would grow the block, so Brave vs DuckDuckGo is dropped.
  */
 
 export const BROWSER_COMPARISON_SOURCE_PAGE = "/browser-comparison-2026";
@@ -22,7 +22,7 @@ export interface BrowserCompareLink {
  * Labels stay descriptive and do not declare a winner.
  */
 export const BROWSER_COMPARISON_COMPARE_LINKS: readonly BrowserCompareLink[] = [
+  { slug: "brave-vs-chrome", label: "Compare Brave vs Chrome" },
   { slug: "chrome-vs-firefox", label: "Compare Chrome vs Firefox" },
   { slug: "firefox-vs-safari", label: "Compare Firefox vs Safari" },
-  { slug: "brave-vs-duckduckgo", label: "Compare Brave vs DuckDuckGo" },
 ];
