@@ -2,6 +2,7 @@ import type React from "react";
 import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
 import { AffiliateButton } from "./AffiliateButton";
 import { HeroShareButton } from "./HeroShareButton";
 
@@ -153,13 +154,17 @@ function EntityCard({
       {isWinner && <WinnerBadge />}
       <EntityAvatar entity={entity} variant={variant} />
       <h3 className="text-base sm:text-xl font-bold text-white mb-1">
-        <Link
-          href={`/entity/${entity.slug}`}
-          className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-900 rounded"
-          title={`All comparisons featuring ${entity.name}`}
-        >
-          {entity.name}
-        </Link>
+        {isEntityPageIndexable(entity.status) ? (
+          <Link
+            href={`/entity/${entity.slug}`}
+            className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-900 rounded"
+            title={`All comparisons featuring ${entity.name}`}
+          >
+            {entity.name}
+          </Link>
+        ) : (
+          entity.name
+        )}
       </h3>
       {entity.shortDesc && (
         <p className="text-xs sm:text-sm text-primary-100/80 leading-snug line-clamp-3">{entity.shortDesc}</p>

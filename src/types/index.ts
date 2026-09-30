@@ -73,6 +73,13 @@ export interface ComparisonEntityData {
   cons: string[];
   bestFor: string | null;
   affiliateLinks?: AffiliateLink[];
+  /**
+   * Entity row status. Compare pages link to `/entity/{slug}` only when
+   * `isEntityPageIndexable(status)` is true — the same robots predicate as
+   * the entity page. Unset means the caller has not resolved it (treated as
+   * not indexable, so a missing lookup cannot emit a noindex URL).
+   */
+  status?: string | null;
 }
 
 export interface ComparisonAttribute {

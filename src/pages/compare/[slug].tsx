@@ -20,7 +20,9 @@ import {
   resolveHtmlSuffixCompareRedirect,
 } from "@/lib/redirects/html-suffix-compare";
 import { resolveUsChinaGdpRedirect } from "@/lib/redirects/us-china-gdp-cluster";
-import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, claimReviewSchema, webPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { videoObjectSchema, selfHostedVideoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { assembleCompareJsonLd } from "@/lib/seo/compare-jsonld";
+import { resolveEntityPageStatuses } from "@/lib/seo/entity-page-indexable";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -331,22 +333,6 @@ function isoDuration(seconds?: number | null): string | undefined {
   return `PT${m ? `${m}M` : ""}${s ? `${s}S` : m ? "" : "0S"}`;
 }
 
-// DAN-1285: append a VideoObject node into an existing @graph JSON-LD document
-// (editorial schemaMarkup or the multi-entity @graph) without disturbing its
-// other nodes. The node's @context is stripped since it lives inside @graph.
-function appendVideoToGraph(
-  doc: Record<string, unknown>,
-  video: Record<string, unknown> | null,
-): Record<string, unknown> {
-  if (!video) return doc;
-  const { ["@context"]: _ctx, ...videoNode } = video;
-  if (Array.isArray(doc["@graph"])) {
-    return { ...doc, "@graph": [...(doc["@graph"] as unknown[]), videoNode] };
-  }
-  // Not a @graph document — wrap the existing doc and the video into one.
-  return jsonLdGraph([doc, video]);
-}
-
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const slug = String(params?.slug || "");
 
@@ -502,7 +488,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 
   const voteData = await getComparisonVotes(comparison.id);
-  const schemas = comparisonPageSchema(comparison, voteData);
   const videoMeta = getVideoMetadata(slug);
 
   // DAN-1656: SmartReview aggregations are fetched here (server-side) — the
@@ -534,7 +519,15 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     imageUrl: entitiesWithImages[i]?.imageUrl || e.imageUrl,
   }));
 
-  const enrichedComparison = { ...comparison, entities: mergedEntities } as Comparison;
+  // Same robots status the entity page uses. Only published entities may be
+  // linked from this template (anchors and JSON-LD). A missing row is draft.
+  const entityStatusBySlug = await resolveEntityPageStatuses(mergedEntities.map((entity) => entity.slug));
+  const mergedEntitiesWithStatus = mergedEntities.map((entity) => ({
+    ...entity,
+    status: entityStatusBySlug.get(entity.slug) ?? "draft",
+  }));
+
+  const enrichedComparison = { ...comparison, entities: mergedEntitiesWithStatus } as Comparison;
 
   // Fallback to trending if fewer than 3 related comparisons
   let sidebarComparisons = enrichedComparison.relatedComparisons;
@@ -624,35 +617,16 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       })
     : selfHostedVideo;
 
-  let jsonLd: string;
-  if (enrichedComparison.schemaMarkup) {
-    jsonLd = JSON.stringify(appendVideoToGraph(enrichedComparison.schemaMarkup, videoNode));
-  } else if (isMultiEntity) {
-    jsonLd = JSON.stringify(appendVideoToGraph(schemas[0], videoNode));
-  } else {
-    jsonLd = JSON.stringify(
-      jsonLdGraph([
-        ...schemas,
-        webPageSchema({
-          title: enrichedComparison.metadata.metaTitle ?? enrichedComparison.title,
-          description: enrichedComparison.metadata.metaDescription ?? fallbackDescription,
-          url: `${SITE_URL}/compare/${slug}`,
-          datePublished: enrichedComparison.metadata.publishedAt ?? undefined,
-          dateModified: enrichedComparison.metadata.updatedAt ?? undefined,
-          keywords: [
-            ...enrichedComparison.entities.map((e) => e.name),
-            "comparison",
-            "versus",
-            ...(enrichedComparison.category ? [enrichedComparison.category] : []),
-          ].join(", "),
-          // mainEntity — bidirectional WebPage↔Article graph edge (HB322 fix).
-          mainEntity: { "@type": "Article", "@id": `${SITE_URL}/compare/${slug}#article` },
-          speakableCssSelector: ["h1", "#hero-tldr", "#short-answer", "#video", "#verdict", "#key-differences", "#comparison-table", "#key-facts", "#expert-analysis", "#faq"],
-        }),
-        videoNode,
-      ])
-    );
-  }
+  // JSON-LD assembly lives in compare-jsonld.ts: editorial schemaMarkup,
+  // multi-entity @graph, or the 2-entity graph, then the entity-page
+  // indexability gate and a single ClaimReview.
+  const assembledJsonLd = assembleCompareJsonLd({
+    comparison: enrichedComparison,
+    voteData,
+    videoNode,
+    fallbackDescription,
+  });
+  const jsonLd = JSON.stringify(assembledJsonLd.document);
 
   // buildPageTitle strips any pre-existing brand suffix / redundant "| Comparison"
   // segment, then appends the brand once (DAN-1145 Bug 1 + Bug 2); clampDescription
@@ -706,26 +680,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       .map((c) => `${SITE_URL}/compare/${c.slug}`),
   };
 
-  // ClaimReview schema — only for 2-entity comparisons with a clear verdict winner
-  const claimReviewJsonLd: string | null =
-    !isMultiEntity && enrichedComparison.verdict && entityA && entityB && enrichedComparison.shortAnswer
-      ? JSON.stringify(
-          claimReviewSchema({
-            slug,
-            title: enrichedComparison.title,
-            entityA,
-            entityB,
-            verdict: enrichedComparison.verdict,
-            shortAnswer: enrichedComparison.shortAnswer,
-            datePublished: enrichedComparison.metadata.publishedAt
-              ? new Date(enrichedComparison.metadata.publishedAt).toISOString().slice(0, 10)
-              : undefined,
-            dateModified: enrichedComparison.metadata.updatedAt
-              ? new Date(enrichedComparison.metadata.updatedAt).toISOString().slice(0, 10)
-              : undefined,
-          })
-        )
-      : null;
+  // Second script only when the main document has no ClaimReview of its own.
+  // Editorial pages already carry the fuller node inside the @graph.
+  const claimReviewJsonLd: string | null = assembledJsonLd.claimReview
+    ? JSON.stringify(assembledJsonLd.claimReview)
+    : null;
 
   // JSON-sanitize: getStaticProps forbids `undefined` in props.
   const props: Props = JSON.parse(
@@ -1271,7 +1230,7 @@ export default function ComparisonPage(props: Props) {
       <InternalLinks
         currentSlug={comparison.slug}
         category={comparison.category}
-        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug, status: e.status }))}
         relatedComparisons={comparison.relatedComparisons}
       />
 
@@ -1524,7 +1483,7 @@ function MultiEntityLayout({
       <InternalLinks
         currentSlug={comparison.slug}
         category={comparison.category}
-        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug, status: e.status }))}
         relatedComparisons={comparison.relatedComparisons}
       />
 
