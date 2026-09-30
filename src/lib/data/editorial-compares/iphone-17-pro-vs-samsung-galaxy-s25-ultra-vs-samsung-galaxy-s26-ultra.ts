@@ -40,12 +40,12 @@ const FAQS = [
   {
     question: "Is the Galaxy S25 Ultra still worth buying after the S26 Ultra?",
     answer:
-      "Yes if you want the same Ultra camera set: a 200MP main camera, a 10MP 3x telephoto, a 50MP 5x periscope, and a 50MP ultrawide. The S26 Ultra adds Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India buy page, fetched on 30 September 2026, showed the Galaxy S25 Ultra 256GB at ₹1,19,999. This page does not pick a phone from price.",
+      "Yes if you want the same Ultra camera set: a 200MP main camera, a 10MP 3x telephoto, a 50MP 5x periscope, and a 50MP ultrawide. The S26 Ultra adds Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India buy page, fetched on 30 September 2026, showed the S25 Ultra 256GB | 12GB at ₹1,19,999, with an MRP of ₹1,29,999, and the 512GB | 12GB model at ₹1,39,999, with an MRP of ₹1,49,999. The 1TB option did not show a price. This page does not pick a phone from price.",
   },
   {
     question: "What does the Galaxy S26 Ultra add over the S25 Ultra?",
     answer:
-      "Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India buy page, fetched on 30 September 2026, showed the Galaxy S26 Ultra 256GB at ₹1,54,999.",
+      "Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India buy page, fetched on 30 September 2026, showed the S26 Ultra 256GB | 12GB at ₹1,54,999, with an MRP of ₹1,69,999, and the 512GB | 12GB model at ₹1,74,999, with an MRP of ₹1,89,999. The 1TB | 16GB option did not show a price.",
   },
   {
     question: "Which is better for telephoto and video, the iPhone 17 Pro or a Galaxy Ultra?",
@@ -76,7 +76,7 @@ Source note: the comparison table uses GSMArena listings fetched on 30 September
 
 Price
 
-Samsung's India buy page for the Galaxy S25 Ultra showed ₹1,19,999 for 256GB. The Galaxy S26 Ultra page showed ₹1,54,999 for 256GB. Apple's India buy page for the iPhone 17 Pro redirected to the current lineup and did not list that phone. These are the selling prices on those pages on 30 September 2026. Check a live listing. This page does not pick a phone from price.
+Samsung's India buy page for the Galaxy S25 Ultra showed ₹1,19,999 for 256GB | 12GB, with an MRP of ₹1,29,999, and ₹1,39,999 for 512GB | 12GB, with an MRP of ₹1,49,999. The 1TB option did not show a price. The Galaxy S26 Ultra page showed ₹1,54,999 for 256GB | 12GB, with an MRP of ₹1,69,999, and ₹1,74,999 for 512GB | 12GB, with an MRP of ₹1,89,999. The 1TB | 16GB option did not show a price. Apple's India buy page for the iPhone 17 Pro redirected to the current lineup and did not list that phone. These are the figures on those pages on 30 September 2026. Check a live listing. This page does not pick a phone from price.
 
 Screens, weight, and chips
 
@@ -202,8 +202,8 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
     {
       label: "Official India price, 256GB",
       entityAValue: "No price on Apple India",
-      entityBValue: "₹1,19,999",
-      values: ["No price on Apple India", "₹1,19,999", "₹1,54,999"],
+      entityBValue: "₹1,19,999, MRP ₹1,29,999",
+      values: ["No price on Apple India", "₹1,19,999, MRP ₹1,29,999", "₹1,54,999, MRP ₹1,69,999"],
       winnerIndex: "tie",
     },
     {
@@ -284,8 +284,8 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
       "Samsung India buy pages and Apple India, fetched 2026-09-30. Check a live listing",
       [
         cell(PRO, "No price listed on apple.com/in"),
-        cell(S25, "256GB ₹1,19,999"),
-        cell(S26, "256GB ₹1,54,999"),
+        cell(S25, "256GB ₹1,19,999 (MRP ₹1,29,999). 512GB ₹1,39,999 (MRP ₹1,49,999). 1TB price not shown"),
+        cell(S26, "256GB ₹1,54,999 (MRP ₹1,69,999). 512GB ₹1,74,999 (MRP ₹1,89,999). 1TB price not shown"),
       ]
     ),
   ],
@@ -367,14 +367,14 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
       label: "Samsung India Galaxy S25 Ultra buy",
       url: SAMSUNG_S25,
       description:
-        "Fetched 2026-09-30. Galaxy S25 Ultra 256GB selling price ₹1,19,999. Check a live listing.",
+        "Fetched 2026-09-30. 256GB | 12GB ₹1,19,999, MRP ₹1,29,999. 512GB | 12GB ₹1,39,999, MRP ₹1,49,999. 1TB price not shown. Check a live listing.",
     },
     {
       type: "external",
       label: "Samsung India Galaxy S26 Ultra buy",
       url: SAMSUNG_S26,
       description:
-        "Fetched 2026-09-30. Galaxy S26 Ultra 256GB selling price ₹1,54,999. Check a live listing.",
+        "Fetched 2026-09-30. 256GB | 12GB ₹1,54,999, MRP ₹1,69,999. 512GB | 12GB ₹1,74,999, MRP ₹1,89,999. 1TB price not shown. Check a live listing.",
     },
     {
       type: "external",
