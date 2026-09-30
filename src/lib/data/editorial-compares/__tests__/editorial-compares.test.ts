@@ -628,6 +628,97 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
   });
 });
 
+const AIR_SLUG = "iphone-17-vs-iphone-air";
+const AIR_FAQS = [
+  "Is the iPhone Air better than the iPhone 17?",
+  "Should I upgrade from an iPhone 13 to the iPhone Air or the iPhone 17?",
+  "Does the iPhone Air have a better chip than the iPhone 17?",
+  "Which is thinner and lighter, iPhone Air or iPhone 17?",
+  "Which has the better camera for Instagram, iPhone Air or iPhone 17?",
+  "Which has better battery life, iPhone Air or iPhone 17?",
+];
+const AIR_QUICK_ANSWER =
+  "Choose the iPhone 17 for the more complete everyday phone if you are coming from an iPhone 13. Apple rates it for up to 30 hours of video playback, against up to 27 hours on the iPhone Air, and it adds a 48MP ultrawide. Choose the iPhone Air only if the 5.64 mm, 165 gram titanium body is why you are upgrading. It has one 48MP rear camera. GSMArena lists 3,692 mAh for the iPhone 17 and 3,149 mAh for the iPhone Air. This page does not crown a winner.";
+
+describe("ROO-130 iPhone Air vs iPhone 17", () => {
+  const page = () => getEditorialComparison(AIR_SLUG)!;
+
+  it("publishes the iPhone Air slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(AIR_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(AIR_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual(["iphone-17", "iphone-air"]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best everyday upgrade from an iPhone 13",
+      "Best if the thin titanium body is the reason",
+    ]);
+    expect(page().shortAnswer).toBe(AIR_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(AIR_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(AIR_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-09-30T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/Geekbench|AnTuTu/i);
+    expect(pageText(page())).toContain("iPhone Air");
+    expect(pageText(page())).not.toMatch(/iPhone 17 Air is 5\.64/);
+  });
+
+  it("keeps six FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(6);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(AIR_FAQS);
+    expect(faqQuestions(page())).toEqual(AIR_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(AIR_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites Apple and GSMArena and links the other Air hub", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(4);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-30");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-30/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.apple.com/iphone-17/specs/",
+      "https://www.apple.com/iphone-air/specs/",
+      "https://www.gsmarena.com/apple_iphone_17-14050.php",
+      "https://www.gsmarena.com/apple_iphone_17_air-13502.php",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual([
+      ...urls,
+      "/entity/iphone-17-air",
+    ]);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "iphone-17-vs-iphone-17-pro-vs-iphone-16-pro",
+      "iphone-16e-vs-iphone-17e",
+    ]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("5.64 mm");
+    expect(pageText(page())).toContain("7.95 mm");
+    expect(pageText(page())).toContain("3,149 mAh");
+    expect(pageText(page())).toContain("3,692 mAh");
+    const camera = page().attributes.find((attr) => attr.slug === "camera");
+    expect(camera?.values.find((value) => value.entityId === "iphone-17")?.winner).toBe(true);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+  });
+});
 const MAPS_APPLE_SLUG = "google-maps-vs-apple-maps";
 const MAPS_APPLE_FAQS = [
   "Should I use Apple Maps or Google Maps on an iPhone?",

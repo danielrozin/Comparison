@@ -11,6 +11,7 @@ import { GALAXY_Z_FOLD_7_VS_S26_ULTRA } from "./galaxy-z-fold-7-vs-samsung-galax
 import { GOOGLE_MAPS_VS_APPLE_MAPS } from "./google-maps-vs-apple-maps";
 import { GOOGLE_MAPS_VS_WAZE } from "./google-maps-vs-waze";
 import { BRAVE_VS_CHROME } from "./brave-vs-chrome";
+import { IPHONE_17_VS_IPHONE_AIR } from "./iphone-17-vs-iphone-air";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -39,6 +40,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [GOOGLE_MAPS_VS_APPLE_MAPS.slug]: GOOGLE_MAPS_VS_APPLE_MAPS,
   [GOOGLE_MAPS_VS_WAZE.slug]: GOOGLE_MAPS_VS_WAZE,
   [BRAVE_VS_CHROME.slug]: BRAVE_VS_CHROME,
+  [IPHONE_17_VS_IPHONE_AIR.slug]: IPHONE_17_VS_IPHONE_AIR,
 };
 
 /**
