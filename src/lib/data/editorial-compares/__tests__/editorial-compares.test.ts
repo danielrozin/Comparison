@@ -842,3 +842,104 @@ describe("ROO-127 Google Maps vs Waze", () => {
     expect(offline?.values.find((value) => value.entityId === "google-maps")?.winner).toBe(true);
   });
 });
+
+const BRAVE_SLUG = "brave-vs-chrome";
+const BRAVE_FAQS = [
+  "Is Brave more private than Chrome?",
+  "Does Brave block ads without an extension?",
+  "Can I install Chrome extensions in Brave?",
+  "What is Brave Rewards and BAT?",
+  "Does Brave sync like Chrome?",
+];
+const BRAVE_QUICK_ANSWER =
+  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave's homepage says Brave is 3x faster than Chrome, and the same page also says websites load 3x-6x faster. Those are Brave's claims, not a lab result on this page. This page does not crown a winner.";
+
+describe("ROO-114 Brave vs Chrome", () => {
+  const page = () => getEditorialComparison(BRAVE_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(BRAVE_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(BRAVE_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual(["brave", "chrome"]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best if you want ads and trackers blocked before you add an extension",
+      "Best if you want Google sign-in sync and the Chrome Web Store as Google ships it",
+    ]);
+    expect(page().shortAnswer).toBe(BRAVE_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(BRAVE_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(BRAVE_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-09-30T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/market share|65%|60 million|3x faster than Chrome on mobile/i);
+    const types = [...new Set(schemaNodes(page()).map((node) => node["@type"]).filter(Boolean))];
+    for (const schemaType of ["Article", "FAQPage", "BreadcrumbList"]) {
+      expect(types).toContain(schemaType);
+    }
+  });
+
+  it("keeps five FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(5);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(BRAVE_FAQS);
+    expect(faqQuestions(page())).toEqual(BRAVE_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(BRAVE_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites the fetched pages and links the live browser hub and compares", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(12);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-30");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-30/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://brave.com/",
+      "https://brave.com/shields/",
+      "https://brave.com/privacy-features/",
+      "https://brave.com/features/",
+      "https://brave.com/learn/using-chrome-extensions-in-brave/",
+      "https://www.google.com/chrome/",
+      "https://opensource.google.com/projects/chromium",
+      "https://support.google.com/chrome/answer/185277",
+      "https://support.google.com/chrome/answer/95647",
+      "https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3",
+      "https://developer.chrome.com/docs/extensions/develop/migrate/mv2-deprecation-timeline",
+      "https://developer.chrome.com/release-notes/139",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual([
+      ...urls,
+      "/browser-comparison-2026",
+    ]);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "chrome-vs-safari",
+      "chrome-vs-firefox",
+      "firefox-vs-safari",
+    ]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("It depends");
+    expect(pageText(page())).toContain("Chromium");
+    expect(pageText(page())).toContain("Shields");
+    expect(pageText(page())).toContain("Manifest V3");
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().keyDifferences.every((row) => row.winner === "tie")).toBe(true);
+  });
+});
