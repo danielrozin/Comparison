@@ -638,7 +638,7 @@ const ULTRA3_FAQS = [
   "Should an iPhone 13 owner switch to Samsung?",
 ];
 const ULTRA3_QUICK_ANSWER =
-  "If the cap is ₹1 lakh, GSMArena's price line fetched on 30 September 2026 lists the Galaxy S25 Ultra at ₹99,999 and the Galaxy S26 Ultra at ₹139,999. That site does not list a rupee price for the iPhone 17 Pro. Check a live India listing before you buy. Both Ultras have a 200MP main camera, a 3x telephoto, a 5x periscope, and a 5,000 mAh battery. The iPhone 17 Pro has a triple 48MP camera with a 4x telephoto, and Apple rates it for up to 33 hours of video playback. This page does not crown a winner.";
+  "Choose by camera, battery, and how you will use the phone, then compare a live India price with your ₹1 lakh cap. Both Ultras have a 200MP main camera, a 3x telephoto, a 5x periscope, and a 5,000 mAh battery. The iPhone 17 Pro has a triple 48MP camera with a 4x telephoto, and Apple rates it for up to 33 hours of video playback. This page does not crown a winner.";
 
 describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
   const page = () => getEditorialComparison(ULTRA3_SLUG)!;
@@ -655,8 +655,8 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
     expect(page().quickAnswer?.winnerName).toBeNull();
     expect(page().entities.map((entity) => entity.bestFor)).toEqual([
       "Best if you need the 4x telephoto and Pro video formats",
-      "Best listed fit for a budget of about ₹1 lakh",
-      "Best if the newer Ultra is worth the higher listed price",
+      "Best if you want the Ultra cameras on the current model",
+      "Best if you want the newer chip and the longer active-use score",
     ]);
     expect(page().shortAnswer).toBe(ULTRA3_QUICK_ANSWER);
     expect(page().quickAnswer?.tldr).toBe(ULTRA3_QUICK_ANSWER);
@@ -692,7 +692,7 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
 
   it("cites the fetched spec pages and only links sitemap-backed compares", () => {
     const sources = page().citationStats?.sources ?? [];
-    expect(sources).toHaveLength(4);
+    expect(sources).toHaveLength(7);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
       expect(source.name).toMatch(/2026-09-30/);
@@ -704,6 +704,9 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
       "https://www.gsmarena.com/samsung_galaxy_s25_ultra-13322.php",
       "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
       "https://support.apple.com/en-us/125090",
+      "https://www.samsung.com/in/smartphones/galaxy-s25-ultra/buy/",
+      "https://www.samsung.com/in/smartphones/galaxy-s26-ultra/buy/",
+      "https://www.apple.com/in/shop/buy-iphone/iphone-17-pro",
     ]);
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
@@ -711,8 +714,9 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
       "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
     ]);
     expect(pageText(page())).toContain("Source note:");
-    expect(pageText(page())).toContain("₹99,999");
-    expect(pageText(page())).toContain("₹139,999");
+    expect(pageText(page())).toContain("₹1,19,999");
+    expect(pageText(page())).toContain("₹1,54,999");
+    expect(pageText(page())).not.toMatch(/₹99,999|₹139,999|\$849/);
     expect(pageText(page())).toContain("15:23h");
     expect(pageText(page())).toContain("14:49h");
     expect(pageText(page())).toContain("16:23h");
