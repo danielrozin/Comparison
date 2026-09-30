@@ -73,14 +73,14 @@ export const ORGANIC_LANDER_COMPARES: readonly OrganicLanderCompare[] = [
   {
     blogSlug: NAVIGATION_APPS_BLOG_SLUG,
     sourcePage: `/blog/${NAVIGATION_APPS_BLOG_SLUG}`,
-    heading: "Compare travel apps and platforms",
-    // Google Maps, Waze, and Apple Maps compares 404. These are the live
-    // pages closest to getting around and the phone platforms the post covers.
+    heading: "Compare navigation apps",
+    // Maps compares are published editorial pages. Android vs iOS stays
+    // because Apple Maps is iPhone-only and the other two run on both.
     links: [
-      { slug: "lyft-vs-uber", label: "Compare Uber vs Lyft" },
+      { slug: "google-maps-vs-waze", label: "Compare Google Maps vs Waze" },
       {
-        slug: "google-flights-vs-kayak",
-        label: "Compare Google Flights vs Kayak",
+        slug: "google-maps-vs-apple-maps",
+        label: "Compare Google Maps vs Apple Maps",
       },
       { slug: "android-vs-ios", label: "Compare Android vs iOS" },
     ],
