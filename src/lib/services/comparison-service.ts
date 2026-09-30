@@ -41,13 +41,14 @@ import {
 } from "@/lib/data/editorial-compares";
 import { applyEditorialAeoOverlay } from "@/lib/data/editorial-aeo-overlays";
 
+import { Prisma } from "@prisma/client";
 import { getRedis } from "./redis";
+import { getPrisma } from "@/lib/db/prisma";
 
-// Lazy-import prisma to avoid crash when DATABASE_URL is not set
+// `getPrisma` already returns null when DATABASE_URL is missing. The try/catch
+// stays so a thrown client still degrades to mock data instead of crashing.
 function getPrismaClient() {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { getPrisma } = require("@/lib/db/prisma");
     return getPrisma();
   } catch {
     return null;
@@ -375,12 +376,13 @@ function finalizeComparisonPage(data: ComparisonPageData): ComparisonPageData {
 export async function getComparisonBySlug(
   slug: string
 ): Promise<ComparisonPageData | null> {
-  // Check cache first
-  const cacheKey = `comparison:${slug}`;
+  const editorial = getEditorialComparison(slug);
+  // Editorial pages used to share `comparison:${slug}` with the DB transform.
+  // A publish that left legacy attribute rows in Postgres cached that mix for
+  // the TTL. The pack key is separate so a deploy does not keep serving it.
+  const cacheKey = editorial ? `comparison:editorial-pack:${slug}` : `comparison:${slug}`;
   const cached = await getFromCache<ComparisonPageData>(cacheKey);
   if (cached) return cached;
-
-  const editorial = getEditorialComparison(slug);
 
   const prisma = getPrismaClient();
   if (prisma) {
@@ -390,11 +392,18 @@ export async function getComparisonBySlug(
         include: COMPARISON_INCLUDE,
       });
       if (row) {
-        // ROO-27: an archived/draft row for a reviewed editorial slug must
-        // not win over the in-repo published pack (those rows were thin 404s).
-        // Internal callers still see every other archived row below.
-        if (editorial && row.status !== "published") {
-          const result = finalizeComparisonPage({ ...editorial });
+        // In-repo editorial pack wins over a published legacy row. The DB
+        // status is only the linkability signal (see getUnlinkableCompareSlugs).
+        // Keep the row id and view count so votes and comments stay attached.
+        if (editorial) {
+          const result = finalizeComparisonPage({
+            ...editorial,
+            id: row.id,
+            metadata: {
+              ...editorial.metadata,
+              viewCount: row.viewCount ?? editorial.metadata.viewCount,
+            },
+          });
           await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
           return result;
         }
@@ -832,14 +841,18 @@ export async function getComparisonsByCategory(
     try {
       const [rows, total] = await Promise.all([
         prisma.comparison.findMany({
-          where: canonicalComparisonWhere({ category: { equals: category, mode: "insensitive" } }),
+          where: canonicalComparisonWhere({
+            category: { equals: category, mode: "insensitive" as const },
+          }),
           select: { slug: true, title: true, category: true },
           orderBy: { viewCount: "desc" },
           skip: offset,
           take: limit,
         }),
         prisma.comparison.count({
-          where: canonicalComparisonWhere({ category: { equals: category, mode: "insensitive" } }),
+          where: canonicalComparisonWhere({
+            category: { equals: category, mode: "insensitive" as const },
+          }),
         }),
       ]);
       if (rows.length > 0 || total > 0) {
@@ -860,6 +873,78 @@ export async function getComparisonsByCategory(
     comparisons: comparisons.slice(offset, offset + limit),
     total: comparisons.length,
   };
+}
+
+/**
+ * Attribute slugs the editorial pack stores for this entity, across every
+ * in-repo compare that includes it. A shared entity (Chrome on both
+ * brave-vs-chrome and chrome-vs-safari) keeps the union, so publishing one
+ * page does not delete the other page's rows.
+ */
+function editorialAttributeSlugsForEntity(entitySlug: string): string[] {
+  const slugs = new Set<string>();
+  for (const page of listEditorialComparisons()) {
+    if (!page.entities.some((entity) => entity.slug === entitySlug)) continue;
+    for (const attribute of page.attributes) slugs.add(attribute.slug);
+  }
+  return [...slugs];
+}
+
+/**
+ * Delete auto-generated attribute values that are not in the editorial pack.
+ * Idempotent: a second publish deletes nothing new. Entities that also appear
+ * on a non-editorial comparison are skipped so that page's scorecard stays.
+ */
+async function deleteStaleEditorialAttributeValues(
+  prisma: {
+    comparisonEntity: {
+      findMany: (args: {
+        where: {
+          entityId: { in: string[] };
+          comparison: { slug: { not: string } };
+        };
+        select: { entityId: true; comparison: { select: { slug: true } } };
+      }) => Promise<{ entityId: string; comparison: { slug: string } }[]>;
+    };
+    attributeValue: {
+      deleteMany: (args: {
+        where: { entityId: string; attribute: { slug: { notIn: string[] } } };
+      }) => Promise<unknown>;
+    };
+  },
+  data: ComparisonPageData,
+  entityIdMap: Map<string, string>,
+): Promise<void> {
+  const dbIds = data.entities
+    .map((entity) => entityIdMap.get(entity.id))
+    .filter((id): id is string => Boolean(id));
+  if (dbIds.length === 0) return;
+
+  const shares = await prisma.comparisonEntity.findMany({
+    where: {
+      entityId: { in: dbIds },
+      comparison: { slug: { not: data.slug } },
+    },
+    select: { entityId: true, comparison: { select: { slug: true } } },
+  });
+  const sharedWithNonEditorial = new Set(
+    shares
+      .filter((row) => !isEditorialCompareSlug(row.comparison.slug))
+      .map((row) => row.entityId),
+  );
+
+  for (const entity of data.entities) {
+    const dbId = entityIdMap.get(entity.id);
+    if (!dbId || sharedWithNonEditorial.has(dbId)) continue;
+    const keep = editorialAttributeSlugsForEntity(entity.slug);
+    if (keep.length === 0) continue;
+    await prisma.attributeValue.deleteMany({
+      where: {
+        entityId: dbId,
+        attribute: { slug: { notIn: keep } },
+      },
+    });
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -994,6 +1079,21 @@ export async function saveComparison(
         isAutoGenerated: data.metadata.isAutoGenerated,
         isHumanReviewed: data.metadata.isHumanReviewed,
         viewCount: data.metadata.viewCount || 0,
+        // Editorial republish replaces stored JSON-LD and the content blob.
+        // Leaving the previous auto-generated schemaMarkup in place kept a
+        // second FAQ/ClaimReview graph on the row after the pack upsert.
+        ...(isEditorialCompareSlug(data.slug)
+          ? {
+              content: {
+                expertAnalysis: data.expertAnalysis ?? null,
+                quickAnswer: data.quickAnswer ?? null,
+                citationStats: data.citationStats ?? null,
+              } as Prisma.InputJsonValue,
+              schemaMarkup: data.schemaMarkup
+                ? (data.schemaMarkup as Prisma.InputJsonValue)
+                : Prisma.DbNull,
+            }
+          : {}),
         // Only a visitor request may change lifecycle status. A batch upsert
         // must not un-archive a row DAN-1886 already hid.
         ...(origin === "user"
@@ -1087,6 +1187,14 @@ export async function saveComparison(
       }
     }
 
+    // Editorial slugs replace entity attribute rows. Upsert alone left the
+    // previous auto-generated Privacy Rating / Market Share / score values
+    // on the entity, and the compare page merged them back in. Entities that
+    // also belong to a non-editorial comparison are left untouched.
+    if (isEditorialCompareSlug(data.slug)) {
+      await deleteStaleEditorialAttributeValues(prisma, data, entityIdMap);
+    }
+
     // Create FAQ records
     for (const faq of data.faqs) {
       await prisma.fAQ.create({
@@ -1118,6 +1226,7 @@ export async function saveComparison(
 
     // Invalidate cached comparison and trending list
     await invalidateCache(`comparison:${data.slug}`);
+    await invalidateCache(`comparison:editorial-pack:${data.slug}`);
     await invalidateCache(`trending:10`);
 
     // IndexNow only for pages we are willing to have crawled. Provisional
@@ -1220,8 +1329,9 @@ export async function getLatestComparisons(
             title: r.title,
             category: r.category || "general",
             viewCount: r.viewCount,
-            imageA: r.entities[0]?.entity?.imageUrl || null,
-            imageB: r.entities[1]?.entity?.imageUrl || null,
+            entityImages: r.entities
+              .map((e) => e.entity.imageUrl)
+              .filter((url): url is string => Boolean(url)),
           })
         );
         await setCache(cacheKey, result, CACHE_TTL_TRENDING);

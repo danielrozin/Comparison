@@ -3,6 +3,7 @@ import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
+import { SITE_NAME } from "@/lib/utils/constants";
 import { AffiliateButton } from "./AffiliateButton";
 import { HeroShareButton } from "./HeroShareButton";
 
@@ -253,6 +254,14 @@ function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
   );
 }
 
+/** Brand suffix belongs on `<title>` (`buildPageTitle`), not the visible H1. */
+function visibleCompareHeading(raw: string): string {
+  const suffix = ` | ${SITE_NAME}`;
+  return raw.toLowerCase().endsWith(suffix.toLowerCase())
+    ? raw.slice(0, raw.length - suffix.length).trim()
+    : raw;
+}
+
 export function ComparisonHero({ comparison }: { comparison: ComparisonPageData }) {
   const entityA = comparison.entities[0];
   const entityB = comparison.entities[1];
@@ -294,7 +303,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* Title */}
         <h1 id="comparison-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-white mb-2 sm:mb-3 leading-tight motion-safe:animate-slide-up">
-          {comparison.metadata?.metaTitle || comparison.title}
+          {visibleCompareHeading(comparison.metadata?.metaTitle || comparison.title)}
         </h1>
 
         {/* Author + Last Updated — E-E-A-T attribution always visible */}

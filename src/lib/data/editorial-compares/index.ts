@@ -107,8 +107,13 @@ export function listEditorialCompareSitemapEntries(): {
 }
 
 /**
- * Fill AEO fields the DB transform may omit (quickAnswer lives in `content`
- * JSON and is not always mapped). Never overwrite a published row's scorecard.
+ * The in-repo editorial pack is the whole page. A legacy DB row for the same
+ * slug must not contribute attributes, scores, ratings, a verdict, a winner,
+ * FAQs, or related links. The row's status stays a linkability signal in
+ * `filterLiveCompareSlugs` / `getUnlinkableCompareSlugs` and is not copied here.
+ *
+ * The database id and view count are kept when the caller already loaded them,
+ * so likes, comments, and votes stay attached to that row.
  */
 export function mergeEditorialEnrichment(
   published: ComparisonPageData,
@@ -116,11 +121,11 @@ export function mergeEditorialEnrichment(
 ): ComparisonPageData {
   if (!editorial) return published;
   return {
-    ...published,
-    quickAnswer: published.quickAnswer ?? editorial.quickAnswer,
-    expertAnalysis: published.expertAnalysis ?? editorial.expertAnalysis,
-    citationStats: published.citationStats ?? editorial.citationStats,
-    faqs: published.faqs.length >= editorial.faqs.length ? published.faqs : editorial.faqs,
-    shortAnswer: published.shortAnswer ?? editorial.shortAnswer,
+    ...editorial,
+    id: published.id || editorial.id,
+    metadata: {
+      ...editorial.metadata,
+      viewCount: published.metadata?.viewCount ?? editorial.metadata.viewCount,
+    },
   };
 }
