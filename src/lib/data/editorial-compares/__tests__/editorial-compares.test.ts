@@ -729,3 +729,116 @@ describe("ROO-127 Google Maps vs Apple Maps", () => {
     expect(android?.values.find((value) => value.entityId === "google-maps")?.winner).toBe(true);
   });
 });
+const MAPS_WAZE_SLUG = "google-maps-vs-waze";
+const MAPS_WAZE_FAQS = [
+  "Should I use Waze or Google Maps for driving?",
+  "Can Google Maps or Waze navigate offline?",
+  "Do Google Maps and Waze work on CarPlay and Android Auto?",
+  "Does Waze support transit, bicycle, or truck lanes?",
+  "Which app keeps more of my location data?",
+];
+const MAPS_WAZE_QUICK_ANSWER =
+  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze's About page says that without an internet connection you cannot locate or navigate a route. This page does not crown a winner.";
+
+describe("ROO-127 Google Maps vs Waze", () => {
+  const page = () => getEditorialComparison(MAPS_WAZE_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(MAPS_WAZE_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(MAPS_WAZE_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual(["google-maps", "waze"]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best for offline areas and for transit, walking, or cycling",
+      "Best for driver reports when you can stay online",
+    ]);
+    expect(page().shortAnswer).toBe(MAPS_WAZE_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(MAPS_WAZE_QUICK_ANSWER);
+    const sentences = MAPS_WAZE_QUICK_ANSWER.split(/(?<=[.!?])\s+/);
+    expect(sentences[0]).toMatch(/depends/i);
+    expect(sentences[1]).toMatch(/Waze/);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(
+      MAPS_WAZE_SLUG
+    );
+    expect(page().metadata.updatedAt).toBe("2026-09-30T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/\b(2\s*billion|150\s*million)\b/i);
+    expect(pageText(page())).not.toMatch(/battery\s*\/\s*hour|%\s*battery/i);
+  });
+
+  it("keeps five FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(5);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(MAPS_WAZE_FAQS);
+    expect(faqQuestions(page())).toEqual(MAPS_WAZE_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(MAPS_WAZE_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites the fetched help pages and only links the planned compares", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(14);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-30");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-30/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://support.google.com/maps/answer/6291838?co=GENIE.Platform%3DiOS&hl=en",
+      "https://support.google.com/maps/answer/6291838?hl=en",
+      "https://support.google.com/maps/answer/144339?hl=en&co=GENIE.Platform%3DiOS",
+      "https://support.google.com/maps/answer/3273406?hl=en",
+      "https://support.google.com/maps/answer/9432062?hl=en",
+      "https://support.google.com/androidauto/answer/6348322?hl=en",
+      "https://support.google.com/maps/answer/14788580?hl=en",
+      "https://support.google.com/maps/answer/6258979?hl=en",
+      "https://support.google.com/waze/answer/6071177?hl=en",
+      "https://support.google.com/waze/answer/6071125?hl=en",
+      "https://support.google.com/waze/answer/13739290?hl=en",
+      "https://support.google.com/waze/answer/15113302?hl=en",
+      "https://support.google.com/waze/answer/9123774?hl=en",
+      "https://support.google.com/waze/answer/7052890?hl=en",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "google-maps-vs-apple-maps",
+      "android-vs-ios",
+    ]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("180 million");
+    expect(pageText(page())).toContain("does not cache reports");
+    expect(pageText(page())).toContain("submits it when you reconnect");
+    const claimSurfaces = [
+      pageText(page()),
+      page().metadata.metaDescription,
+      ...page().keyDifferences.flatMap((row) => [row.label, row.entityAValue, row.entityBValue]),
+      ...(page().citationStats?.sources ?? []).map((source) => source.name),
+      ...(page().resources ?? []).flatMap((resource) => [resource.label, resource.description]),
+    ].join("\n");
+    expect(claimSurfaces).not.toMatch(
+      /parked-car|parked car|walking ETA|Walking stops at|walking directions beyond|No walking route/i
+    );
+    expect(sources.map((source) => source.name)).toContain(
+      "Waze Help — find parking (fetched 2026-09-30)"
+    );
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    const offline = page().attributes.find((attr) => attr.slug === "offline-navigation");
+    expect(offline?.values.find((value) => value.entityId === "google-maps")?.winner).toBe(true);
+  });
+});
