@@ -1412,11 +1412,9 @@ export async function resolveCanonicalComparisonSlugs(
     //
     // ROO-27: reviewed editorial slugs are catalog pages even before the
     // prod-DB publish workflow runs. They are an allowlist, not fixtures.
-    // An archived or draft DB row must not hide them: getComparisonBySlug
-    // already serves the in-repo pack in that case. Redirect sources stay out.
     const live = new Set<string>(rows.map((r: { slug: string }) => r.slug));
     for (const slug of unique) {
-      if (isEditorialCompareSlug(slug) && !isRedirectedCompareSlug(slug)) live.add(slug);
+      if (isEditorialCompareSlug(slug) && !unlinkable.has(slug)) live.add(slug);
     }
     return live;
   } catch (e) {
