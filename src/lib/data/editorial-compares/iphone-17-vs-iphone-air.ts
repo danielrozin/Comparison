@@ -17,6 +17,8 @@ const AIR = "iphone-air";
 
 const APPLE_17 = "https://www.apple.com/iphone-17/specs/";
 const APPLE_AIR = "https://www.apple.com/iphone-air/specs/";
+const APPLE_IN_17 = "https://www.apple.com/in/shop/buy-iphone/iphone-17";
+const APPLE_IN_AIR = "https://www.apple.com/in/shop/buy-iphone/iphone-air";
 const GSMARENA_17 = "https://www.gsmarena.com/apple_iphone_17-14050.php";
 const GSMARENA_AIR = "https://www.gsmarena.com/apple_iphone_17_air-13502.php";
 
@@ -35,7 +37,7 @@ const FAQS = [
   {
     question: "Should I upgrade from an iPhone 13 to the iPhone Air or the iPhone 17?",
     answer:
-      "For most people in that spot, the iPhone 17. It is the phone with two rear cameras and the higher video-playback rating, which is what helps group shots and a longer day. Pick the Air only when the 5.64 mm body is the reason to upgrade and you can accept the single rear camera and the smaller battery. This page does not quote a sale price. Check a live listing.",
+      "For most people in that spot, the iPhone 17. It is the phone with two rear cameras and the higher video-playback rating, which is what helps group shots and a longer day. Pick the Air only when the 5.64 mm body is the reason to upgrade and you can accept the single rear camera and the smaller battery. On Apple's India buy pages, fetched on 30 September 2026, the iPhone 17 256GB is ₹99,900 and the iPhone Air 256GB is ₹1,49,900. At 512GB the same pages list ₹1,24,900 and ₹1,74,900. The iPhone 17 is the lower price at both of those storage tiers. Apple calls the listed price the MRP, inclusive of all taxes. Check a live listing.",
   },
   {
     question: "Does the iPhone Air have a better chip than the iPhone 17?",
@@ -63,13 +65,13 @@ const VERDICT = `Best everyday upgrade from an iPhone 13: iPhone 17. Dual 48MP r
 
 Best if thinness is the reason: iPhone Air. Apple lists 5.64 mm and 165 grams, in titanium. You give up the ultrawide and take the smaller battery. Apple rates video playback at up to 27 hours, and GSMArena lists 3,149 mAh.
 
-GSMArena's price line on 30 September 2026 is ₹119,900 for the Air and ₹124,900 for the iPhone 17. That is not a live store price. Check a current listing if cost decides it.
+On Apple's India buy pages, fetched on 30 September 2026, the iPhone 17 256GB is ₹99,900 and the iPhone Air 256GB is ₹1,49,900. The iPhone 17 is also lower at 512GB: ₹1,24,900 against ₹1,74,900. The Air 1TB is ₹2,24,900. Apple calls these listed prices the MRP, inclusive of all taxes. Check a live listing.
 
 There is no single winner on this page.`;
 
 const EXPERT_ANALYSIS = `The iPhone 17 is the better everyday upgrade from an iPhone 13 unless the ultra-thin body is the reason you are buying. The iPhone Air is that thin phone, and the spec sheet shows what you give up to get it. This page does not crown a winner.
 
-Source note: size, display, chip, cameras, and Apple's video-playback hours are from Apple's iPhone 17 and iPhone Air spec pages, fetched on 30 September 2026. Battery capacity, RAM, and GSMArena's active-use scores and price line are from GSMArena's iPhone 17 and iPhone Air pages, fetched the same day. GSMArena lists the Air's thickness as 5.6 mm and the iPhone 17's as 8 mm. Apple lists 5.64 mm and 7.95 mm, and those are the figures used here. Apple's spec pages do not list RAM or a milliamp-hour capacity.
+Source note: size, display, chip, cameras, and Apple's video-playback hours are from Apple's iPhone 17 and iPhone Air spec pages, fetched on 30 September 2026. Battery capacity, RAM, and GSMArena's active-use scores are from GSMArena's iPhone 17 and iPhone Air pages, fetched the same day. Rupee prices are from Apple's India buy pages, fetched the same day, and GSMArena is not used for a rupee price. GSMArena lists the Air's thickness as 5.6 mm and the iPhone 17's as 8 mm. Apple lists 5.64 mm and 7.95 mm, and those are the figures used here. Apple's spec pages do not list RAM or a milliamp-hour capacity.
 
 Body and display
 
@@ -91,7 +93,7 @@ Software and price
 
 GSMArena lists both phones as iOS 26, upgradable to iOS 27. Apple's spec pages, fetched on 30 September 2026, list "iPhone with iOS 27" in the box. This page does not guess which software a specific unit ships with beyond those two lines.
 
-GSMArena's price line that day is ₹119,900 for the iPhone Air and ₹124,900 for the iPhone 17. The Air is the lower figure on that line. It is not a live Apple, Flipkart, or Amazon price, and a lower listed line does not make the Air the better phone. Check a current listing before you decide on cost. This page does not quote a discount.
+Apple's India buy page for the iPhone 17 lists ₹99,900 for 256GB and ₹1,24,900 for 512GB. The iPhone Air buy page lists ₹1,49,900 for 256GB, ₹1,74,900 for 512GB, and ₹2,24,900 for 1TB. Both pages were fetched on 30 September 2026, and both call the listed price the MRP, inclusive of all taxes. At 256GB and at 512GB, the iPhone 17 is the lower price. A lower price does not make it the better phone, and the Air's 1TB option has no iPhone 17 match on that page. Check a live listing before you decide on cost. This page does not quote a discount.
 
 Who should buy which
 
@@ -260,12 +262,13 @@ export const IPHONE_17_VS_IPHONE_AIR: EditorialComparison = buildEditorialCompar
     ),
     textAttr(
       "price",
-      "GSMArena price line",
-      "Price line · GSMArena, fetched 2026-09-30. Not a live store price",
+      "Apple India price",
+      "MRP · Apple India buy pages, fetched 2026-09-30. Check a live listing",
       IPHONE_17,
       AIR,
-      "₹124,900",
-      "₹119,900"
+      "256GB ₹99,900. 512GB ₹1,24,900",
+      "256GB ₹1,49,900. 512GB ₹1,74,900. 1TB ₹2,24,900",
+      "a"
     ),
   ],
   faqs: FAQS,
@@ -291,7 +294,7 @@ export const IPHONE_17_VS_IPHONE_AIR: EditorialComparison = buildEditorialCompar
       "Apple rates video playback at up to 30 hours on the iPhone 17 and up to 27 hours on the iPhone Air. GSMArena lists 3,692 mAh and 3,149 mAh. The Air is 5.64 mm and 165 grams.",
   },
   citationStats: {
-    sourceCount: 4,
+    sourceCount: 6,
     dataPointCount: 8,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -300,6 +303,8 @@ export const IPHONE_17_VS_IPHONE_AIR: EditorialComparison = buildEditorialCompar
     sources: [
       { name: "Apple — iPhone 17 specs (fetched 2026-09-30)", url: APPLE_17 },
       { name: "Apple — iPhone Air specs (fetched 2026-09-30)", url: APPLE_AIR },
+      { name: "Apple India — iPhone 17 buy (fetched 2026-09-30)", url: APPLE_IN_17 },
+      { name: "Apple India — iPhone Air buy (fetched 2026-09-30)", url: APPLE_IN_AIR },
       { name: "GSMArena — iPhone 17 (fetched 2026-09-30)", url: GSMARENA_17 },
       { name: "GSMArena — iPhone Air (fetched 2026-09-30)", url: GSMARENA_AIR },
     ],
@@ -321,17 +326,31 @@ export const IPHONE_17_VS_IPHONE_AIR: EditorialComparison = buildEditorialCompar
     },
     {
       type: "external",
+      label: "Apple India iPhone 17 buy",
+      url: APPLE_IN_17,
+      description:
+        "Fetched 2026-09-30. 256GB ₹99,900. 512GB ₹1,24,900. Listed price is the MRP, inclusive of all taxes. Check a live listing.",
+    },
+    {
+      type: "external",
+      label: "Apple India iPhone Air buy",
+      url: APPLE_IN_AIR,
+      description:
+        "Fetched 2026-09-30. 256GB ₹1,49,900. 512GB ₹1,74,900. 1TB ₹2,24,900. Listed price is the MRP, inclusive of all taxes. Check a live listing.",
+    },
+    {
+      type: "external",
       label: "GSMArena iPhone 17",
       url: GSMARENA_17,
       description:
-        "Fetched 2026-09-30. 3,692 mAh, 8GB RAM, active-use 14:59h. Price line ₹124,900. Thickness listed as 8 mm.",
+        "Fetched 2026-09-30. 3,692 mAh, 8GB RAM, active-use 14:59h. Thickness listed as 8 mm. Not used for a rupee price.",
     },
     {
       type: "external",
       label: "GSMArena iPhone Air",
       url: GSMARENA_AIR,
       description:
-        "Fetched 2026-09-30. 3,149 mAh, 12GB RAM, active-use 12:44h. Price line ₹119,900. Thickness listed as 5.6 mm.",
+        "Fetched 2026-09-30. 3,149 mAh, 12GB RAM, active-use 12:44h. Thickness listed as 5.6 mm. Not used for a rupee price.",
     },
     {
       type: "blog",

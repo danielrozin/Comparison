@@ -688,7 +688,7 @@ describe("ROO-130 iPhone Air vs iPhone 17", () => {
 
   it("cites Apple and GSMArena and links the other Air hub", () => {
     const sources = page().citationStats?.sources ?? [];
-    expect(sources).toHaveLength(4);
+    expect(sources).toHaveLength(6);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
       expect(source.name).toMatch(/2026-09-30/);
@@ -698,6 +698,8 @@ describe("ROO-130 iPhone Air vs iPhone 17", () => {
     expect(urls).toEqual([
       "https://www.apple.com/iphone-17/specs/",
       "https://www.apple.com/iphone-air/specs/",
+      "https://www.apple.com/in/shop/buy-iphone/iphone-17",
+      "https://www.apple.com/in/shop/buy-iphone/iphone-air",
       "https://www.gsmarena.com/apple_iphone_17-14050.php",
       "https://www.gsmarena.com/apple_iphone_17_air-13502.php",
     ]);
@@ -714,6 +716,9 @@ describe("ROO-130 iPhone Air vs iPhone 17", () => {
     expect(pageText(page())).toContain("7.95 mm");
     expect(pageText(page())).toContain("3,149 mAh");
     expect(pageText(page())).toContain("3,692 mAh");
+    expect(pageText(page())).toContain("₹99,900");
+    expect(pageText(page())).toContain("₹1,49,900");
+    expect(pageText(page())).not.toMatch(/₹119,900|₹124,900/);
     const camera = page().attributes.find((attr) => attr.slug === "camera");
     expect(camera?.values.find((value) => value.entityId === "iphone-17")?.winner).toBe(true);
     expect(page().quickAnswer?.winnerName).toBeNull();
