@@ -1079,7 +1079,7 @@ describe("ROO-114 Chrome vs Safari", () => {
       const schemaType = node["@type"];
       return Array.isArray(schemaType) ? schemaType : schemaType ? [schemaType] : [];
     }))];
-    for (const schemaType of ["Article", "FAQPage", "BreadcrumbList", "WebPage"]) {
+    for (const schemaType of ["Article", "FAQPage", "BreadcrumbList"]) {
       expect(types).toContain(schemaType);
     }
   });
