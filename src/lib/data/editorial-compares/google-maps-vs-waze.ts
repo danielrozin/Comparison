@@ -58,9 +58,9 @@ const FAQS = [
       "Yes, on the help pages fetched for this comparison. Google Maps has a CarPlay article, and the Android navigation article mentions Android Auto for 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze has its own Android Auto article and its own CarPlay article. The CarPlay article says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
   },
   {
-    question: "Does Waze have walking or transit directions?",
+    question: "Does Waze support transit, bicycle, or truck lanes?",
     answer:
-      "Not in the way Google Maps documents them. Waze's About page says Waze was created for private cars, motorcycles, and taxis, and that it does not currently support navigating in lanes dedicated to public transportation, bicycles, or trucks. The parking article says Waze does not support walking directions beyond an ETA to your parked car. Google's iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle. It also says not every city has transit directions, because the local agency has to add its routes.",
+      "Not for transit lanes. Waze's About page says Waze was created for private cars, motorcycles, and taxis, and that it does not currently support navigating in lanes dedicated to public transportation, bicycles, or trucks. Google's iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle. It also says not every city has transit directions, because the local agency has to add its routes.",
   },
   {
     question: "Which app keeps more of my location data?",
@@ -87,7 +87,7 @@ Google Maps can guide a drive from a downloaded area. The iPhone, iPad, and Andr
 
 Direction modes
 
-Google Maps documents more than driving. The iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle. Transit is not in every city. Waze's About page says the app was created for private cars, motorcycles, and taxis, and that it does not currently support navigating in lanes dedicated to public transportation, bicycles, or trucks. The parking article says Waze does not support walking directions beyond an ETA to your parked car.
+Google Maps documents more than driving. The iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle. Transit is not in every city. Waze's About page says the app was created for private cars, motorcycles, and taxis, and that it does not currently support navigating in lanes dedicated to public transportation, bicycles, or trucks.
 
 Driver reports
 
@@ -164,7 +164,6 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
       ],
       cons: [
         "Without an internet connection you cannot locate or navigate a route",
-        "No walking directions beyond an ETA to your parked car",
         "Does not currently support navigating in public-transport, bicycle, or truck lanes",
         "Waze on CarPlay is a limited version of the phone app",
         "The phone needs GPS and a cellular connection",
@@ -188,7 +187,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     {
       label: "Beyond driving",
       entityAValue: "Transit, walking, and cycling are documented",
-      entityBValue: "No walking route beyond a parked-car ETA",
+      entityBValue: "No public-transport, bicycle, or truck lanes",
       winner: "a",
     },
     {
@@ -228,7 +227,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
       MAPS,
       WAZE,
       "Driving, transit, walking, cycling, rideshare, flight, motorcycle. Transit is not in every city.",
-      "Driving. No public-transport, bicycle, or truck lanes. Walking stops at a parked-car ETA.",
+      "Private cars, motorcycles, and taxis. No public-transport, bicycle, or truck lanes.",
       "a"
     ),
     textAttr(
@@ -339,7 +338,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
       { name: "Waze Help — report road hazards (fetched 2026-09-30)", url: WAZE_HAZARD },
       { name: "Waze Help — Android Auto (fetched 2026-09-30)", url: WAZE_AA },
       { name: "Waze Help — Apple CarPlay (fetched 2026-09-30)", url: WAZE_CARPLAY },
-      { name: "Waze Help — parking and walking ETA (fetched 2026-09-30)", url: WAZE_PARKING },
+      { name: "Waze Help — find parking (fetched 2026-09-30)", url: WAZE_PARKING },
     ],
   },
   resources: [
@@ -436,10 +435,10 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     },
     {
       type: "external",
-      label: "Waze parking",
+      label: "Waze find parking",
       url: WAZE_PARKING,
       description:
-        "Fetched 2026-09-30. Walking directions stop at an ETA to the parked car.",
+        "Fetched 2026-09-30. Find a parking lot, add one as a stop, or mark where you parked.",
     },
   ],
   metaTitle: "Google Maps vs Waze: Which to Use? | A Versus B",

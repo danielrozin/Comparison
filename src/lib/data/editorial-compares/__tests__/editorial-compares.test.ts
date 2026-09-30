@@ -734,7 +734,7 @@ const MAPS_WAZE_FAQS = [
   "Should I use Waze or Google Maps for driving?",
   "Can Google Maps or Waze navigate offline?",
   "Do Google Maps and Waze work on CarPlay and Android Auto?",
-  "Does Waze have walking or transit directions?",
+  "Does Waze support transit, bicycle, or truck lanes?",
   "Which app keeps more of my location data?",
 ];
 const MAPS_WAZE_QUICK_ANSWER =
@@ -824,6 +824,19 @@ describe("ROO-127 Google Maps vs Waze", () => {
     expect(pageText(page())).toContain("180 million");
     expect(pageText(page())).toContain("does not cache reports");
     expect(pageText(page())).toContain("submits it when you reconnect");
+    const claimSurfaces = [
+      pageText(page()),
+      page().metadata.metaDescription,
+      ...page().keyDifferences.flatMap((row) => [row.label, row.entityAValue, row.entityBValue]),
+      ...(page().citationStats?.sources ?? []).map((source) => source.name),
+      ...(page().resources ?? []).flatMap((resource) => [resource.label, resource.description]),
+    ].join("\n");
+    expect(claimSurfaces).not.toMatch(
+      /parked-car|parked car|walking ETA|Walking stops at|walking directions beyond|No walking route/i
+    );
+    expect(sources.map((source) => source.name)).toContain(
+      "Waze Help — find parking (fetched 2026-09-30)"
+    );
     expect(page().quickAnswer?.winnerName).toBeNull();
     const offline = page().attributes.find((attr) => attr.slug === "offline-navigation");
     expect(offline?.values.find((value) => value.entityId === "google-maps")?.winner).toBe(true);
