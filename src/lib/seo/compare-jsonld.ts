@@ -92,9 +92,20 @@ function walk(value: unknown, blocked: Set<string>): unknown {
   const next: Record<string, unknown> = {};
   for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
     const walked = walk(child, blocked);
-    if (walked !== undefined) next[key] = walked;
+    if (walked === undefined) continue;
+    // Dropping the /entity URL from mainEntityOfPage used to leave
+    // {"@type":"ProfilePage"} with no @id and no url. Remove the object.
+    if (key === "mainEntityOfPage" && isEmptyProfilePage(walked)) continue;
+    next[key] = walked;
   }
   return next;
+}
+
+function isEmptyProfilePage(value: unknown): boolean {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const obj = value as Record<string, unknown>;
+  if (obj["@type"] !== "ProfilePage") return false;
+  return !obj["@id"] && !obj.url;
 }
 
 function appendVideoToGraph(
@@ -192,10 +203,148 @@ function singleClaimReview(
   return { document, claimReview: null };
 }
 
+function isFaqPageType(type: unknown): boolean {
+  if (type === "FAQPage") return true;
+  return Array.isArray(type) && type.includes("FAQPage");
+}
+
+function isFaqPageNode(value: unknown): value is Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  return isFaqPageType((value as Record<string, unknown>)["@type"]);
+}
+
+function collectFaqPages(node: unknown, found: Record<string, unknown>[]): void {
+  if (Array.isArray(node)) {
+    for (const item of node) collectFaqPages(item, found);
+    return;
+  }
+  if (!isFaqPageNode(node) && (!node || typeof node !== "object")) return;
+  if (isFaqPageNode(node)) {
+    found.push(node);
+    return;
+  }
+  for (const child of Object.values(node as Record<string, unknown>)) collectFaqPages(child, found);
+}
+
+function questionsOf(node: Record<string, unknown>): Record<string, unknown>[] {
+  const main = node.mainEntity;
+  if (Array.isArray(main)) {
+    return main.filter((item): item is Record<string, unknown> => !!item && typeof item === "object" && !Array.isArray(item));
+  }
+  if (main && typeof main === "object" && !Array.isArray(main)) return [main as Record<string, unknown>];
+  return [];
+}
+
+function questionKey(question: Record<string, unknown>): string {
+  const name = typeof question.name === "string" ? question.name : typeof question.text === "string" ? question.text : "";
+  return name.trim().toLowerCase();
+}
+
+function uniqueQuestions(nodes: Record<string, unknown>[]): Record<string, unknown>[] {
+  const seen = new Set<string>();
+  const questions: Record<string, unknown>[] = [];
+  for (const node of nodes) {
+    for (const question of questionsOf(node)) {
+      const key = questionKey(question);
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      questions.push(question);
+    }
+  }
+  return questions;
+}
+
+function reindexQuestions(questions: Record<string, unknown>[], faqId: string): Record<string, unknown>[] {
+  const base = faqId.replace(/#faq$/, "");
+  if (!base || base === faqId) return questions;
+  return questions.map((question, index) => {
+    const n = index + 1;
+    const answer = question.acceptedAnswer;
+    return {
+      ...question,
+      "@id": `${base}#q${n}`,
+      url: `${base}#q${n}`,
+      ...(answer && typeof answer === "object" && !Array.isArray(answer)
+        ? { acceptedAnswer: { ...(answer as Record<string, unknown>), "@id": `${base}#a${n}` } }
+        : {}),
+    };
+  });
+}
+
+function rewriteFaqTree(
+  value: unknown,
+  keeper: Record<string, unknown>,
+  keeperId: unknown,
+  mergedQuestions: Record<string, unknown>[] | null,
+): unknown {
+  if (Array.isArray(value)) {
+    const next: unknown[] = [];
+    for (const item of value) {
+      if (isFaqPageNode(item)) {
+        if (item === keeper) {
+          next.push(rewriteFaqTree(item, keeper, keeperId, mergedQuestions));
+        } else if (keeperId && questionsOf(item).length === 0) {
+          // hasPart stub: keep the graph edge, but do not emit a second FAQPage.
+          next.push({ "@id": keeperId });
+        }
+        continue;
+      }
+      next.push(rewriteFaqTree(item, keeper, keeperId, mergedQuestions));
+    }
+    return next;
+  }
+  if (!value || typeof value !== "object") return value;
+  if (value === keeper) {
+    const next: Record<string, unknown> = {};
+    for (const [key, child] of Object.entries(keeper)) {
+      if (key === "mainEntity" && mergedQuestions) {
+        next[key] = mergedQuestions;
+        continue;
+      }
+      const walked = rewriteFaqTree(child, keeper, keeperId, mergedQuestions);
+      if (walked !== undefined) next[key] = walked;
+    }
+    return next;
+  }
+  if (isFaqPageNode(value)) {
+    return keeperId ? { "@id": keeperId } : undefined;
+  }
+  const next: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    const walked = rewriteFaqTree(child, keeper, keeperId, mergedQuestions);
+    if (walked !== undefined) next[key] = walked;
+  }
+  return next;
+}
+
+/**
+ * One FAQPage per compare document. The Article hasPart stub and the full
+ * FAQPage node (and a second full node inside editorial schemaMarkup) share
+ * `#faq`. Questions from every source are merged, and a repeated question
+ * keeps the first answer.
+ */
+export function dedupeFaqPages<T>(document: T): T {
+  if (!document || typeof document !== "object") return document;
+  const faqNodes: Record<string, unknown>[] = [];
+  collectFaqPages(document, faqNodes);
+  if (faqNodes.length <= 1) return document;
+
+  const ranked = [...faqNodes].sort((a, b) => schemaCompleteness(b) - schemaCompleteness(a));
+  const keeper = ranked[0];
+  const others = faqNodes.filter((node) => node !== keeper);
+  const merged = uniqueQuestions([keeper, ...others]);
+  const mergedQuestions =
+    merged.length !== questionsOf(keeper).length
+      ? reindexQuestions(merged, typeof keeper["@id"] === "string" ? keeper["@id"] : "")
+      : null;
+  return rewriteFaqTree(document, keeper, keeper["@id"], mergedQuestions) as T;
+}
+
 /**
  * JSON-LD for `/compare/[slug]`. Mirrors the previous getStaticProps
  * branches (editorial schemaMarkup, multi-entity @graph, 2-entity graph)
- * then applies the entity-page indexability gate and ClaimReview dedupe.
+ * then applies the entity-page indexability gate, FAQPage dedupe, and
+ * ClaimReview dedupe.
  */
 export function assembleCompareJsonLd(args: {
   comparison: ComparisonPageData;
@@ -247,6 +396,7 @@ export function assembleCompareJsonLd(args: {
   }
 
   document = stripNoindexEntityPageUrls(document, comparison.entities);
+  document = dedupeFaqPages(document);
 
   const entityA = comparison.entities[0]?.name || "";
   const entityB = comparison.entities[1]?.name || "";
