@@ -627,3 +627,105 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
     expect(page().quickAnswer?.winnerName).toBeNull();
   });
 });
+
+const MAPS_APPLE_SLUG = "google-maps-vs-apple-maps";
+const MAPS_APPLE_FAQS = [
+  "Should I use Apple Maps or Google Maps on an iPhone?",
+  "Does Apple Maps work on Android?",
+  "Can I download Apple Maps or Google Maps for offline use?",
+  "Which app is better for transit, walking, and lane guidance?",
+  "Do Apple Maps and Google Maps route electric cars to chargers?",
+  "Which app is more private?",
+];
+const MAPS_APPLE_QUICK_ANSWER =
+  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple's privacy page says Apple does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. This page does not crown a winner.";
+
+describe("ROO-127 Google Maps vs Apple Maps", () => {
+  const page = () => getEditorialComparison(MAPS_APPLE_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(MAPS_APPLE_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(MAPS_APPLE_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual(["google-maps", "apple-maps"]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best when you need Android or an offline driving area",
+      "Best built-in app on an iPhone",
+    ]);
+    expect(page().shortAnswer).toBe(MAPS_APPLE_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(MAPS_APPLE_QUICK_ANSWER);
+    const sentences = MAPS_APPLE_QUICK_ANSWER.split(/(?<=[.!?])\s+/);
+    expect(sentences[0]).toMatch(/depends/i);
+    expect(sentences[1]).toMatch(/Apple Maps/);
+    expect(sentences[1]).toMatch(/Google Maps/);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(
+      MAPS_APPLE_SLUG
+    );
+    expect(page().metadata.updatedAt).toBe("2026-09-30T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/\b(billion|million users|stars)\b/i);
+  });
+
+  it("keeps six FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(6);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(MAPS_APPLE_FAQS);
+    expect(faqQuestions(page())).toEqual(MAPS_APPLE_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(MAPS_APPLE_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites the fetched Apple and Google pages and links the companion compare", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(15);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-30");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-30/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.apple.com/maps/",
+      "https://www.apple.com/legal/privacy/data/en/apple-maps/",
+      "https://support.apple.com/en-us/105084",
+      "https://support.apple.com/guide/iphone/get-driving-directions-ipha84a94043/ios",
+      "https://support.apple.com/guide/iphone/get-transit-directions-ipha44f57caa/26",
+      "https://support.apple.com/guide/iphone/set-up-electric-vehicle-routing-iphc5e3a4b4b/ios",
+      "https://support.google.com/maps/answer/6291838?co=GENIE.Platform%3DiOS&hl=en",
+      "https://support.google.com/maps/answer/6291838?hl=en",
+      "https://support.google.com/maps/answer/144339?hl=en&co=GENIE.Platform%3DiOS",
+      "https://support.google.com/maps/answer/3273406?hl=en",
+      "https://support.google.com/maps/answer/9432062?hl=en",
+      "https://support.google.com/androidauto/answer/6348322?hl=en",
+      "https://support.google.com/maps/answer/14788580?hl=en",
+      "https://support.google.com/maps/answer/9773205?hl=en",
+      "https://support.google.com/maps/answer/6258979?hl=en",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "google-maps-vs-waze",
+      "android-vs-ios",
+    ]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("random identifier");
+    expect(pageText(page())).toContain("does not mention Android");
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    const android = page().attributes.find((attr) => attr.slug === "platforms");
+    expect(android?.values.find((value) => value.entityId === "google-maps")?.winner).toBe(true);
+  });
+});
