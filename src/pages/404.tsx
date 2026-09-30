@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { OnDemandComparison } from "@/components/comparison/OnDemandComparison";
 import { isUserGenerationEnabled } from "@/lib/generation/user-generation-guard";
@@ -8,6 +8,8 @@ import {
   canonicalRequestedComparisonSlug,
   entityLabelFromSlug,
 } from "@/lib/parse-comparison-query";
+import { lastSearchAttachment } from "@/lib/search/search-session";
+import { trackCompareMissingViewed, trackMatchupRequested, type MatchupCta } from "@/lib/utils/analytics";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 
 /**
@@ -35,6 +37,33 @@ export default function PagesNotFound({
 }) {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>({ kind: "pending" });
+  const reportedMissing = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (mode.kind === "pending") return;
+    const slug = mode.kind === "build" ? mode.slug : mode.compareSlug;
+    if (!slug) return;
+    const key = `${mode.kind}:${slug}`;
+    if (reportedMissing.current === key) return;
+    reportedMissing.current = key;
+    const attachment = lastSearchAttachment();
+    let referrerPath = "";
+    try {
+      if (document.referrer) referrerPath = new URL(document.referrer).pathname;
+    } catch {
+      referrerPath = "";
+    }
+    trackCompareMissingViewed({
+      slug,
+      canonical_slug: canonicalRequestedComparisonSlug(slug) ?? "",
+      mode: mode.kind,
+      generation_enabled: generationEnabled,
+      from_search: attachment.from_search,
+      search_id: attachment.search_id,
+      query_raw: attachment.query_raw,
+      referrer_path: referrerPath,
+    });
+  }, [mode, generationEnabled]);
 
   useLayoutEffect(() => {
     let cancelled = false;
@@ -125,12 +154,14 @@ export default function PagesNotFound({
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
             href="/search"
+            onClick={() => trackMissingCta("search", mode.compareSlug)}
             className="inline-flex items-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700"
           >
             Search comparisons
           </Link>
           <Link
             href="/contact"
+            onClick={() => trackMissingCta("contact", mode.compareSlug)}
             className="inline-flex items-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-text hover:bg-surface-alt"
           >
             Contact us
@@ -158,12 +189,14 @@ function RequestComparison({ slug }: { slug: string | null }) {
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link
           href={href}
+          onClick={() => trackMissingCta("request", slug)}
           className="inline-flex items-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700"
         >
           Request this comparison
         </Link>
         <Link
           href="/pricing?src=missing-compare"
+          onClick={() => trackMissingCta("pricing", slug)}
           className="inline-flex items-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-text hover:bg-surface-alt"
         >
           See Pro pricing
@@ -171,6 +204,17 @@ function RequestComparison({ slug }: { slug: string | null }) {
       </div>
     </div>
   );
+}
+
+function trackMissingCta(cta: MatchupCta, slug: string | null) {
+  const attachment = lastSearchAttachment();
+  trackMatchupRequested({
+    slug: slug ?? "",
+    cta,
+    from_search: attachment.from_search,
+    search_id: attachment.search_id,
+    query_raw: attachment.query_raw,
+  });
 }
 
 async function pairIsHidden(slug: string): Promise<boolean> {

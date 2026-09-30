@@ -3,7 +3,11 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { parseComparisonQuery } from "@/lib/parse-comparison-query";
-import { trackComparisonSearch, trackSearchParsed } from "@/lib/utils/analytics";
+import { suggestExistingComparison } from "@/lib/search/did-you-mean";
+import { normalizeQuery, searchIdFor } from "@/lib/search/search-session";
+import { trackPickedResult, trackSubmittedQuery } from "@/lib/search/track-search";
+import { trackSearchResultsShown, type SearchResultsShownProps } from "@/lib/utils/analytics";
+import { DidYouMean } from "@/components/search/DidYouMean";
 import Link from "next/link";
 import { CategoryIcon } from "@/lib/utils/category-icons";
 
@@ -47,6 +51,18 @@ export function SearchBox() {
   const listboxId = "search-listbox";
   const router = useRouter();
   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+  const pendingShown = useRef<SearchResultsShownProps | null>(null);
+  const firedShown = useRef(new Set<string>());
+  const pickLock = useRef(false);
+
+  const flushShown = useCallback(() => {
+    const pending = pendingShown.current;
+    if (!pending) return;
+    const key = `home:${normalizeQuery(pending.query_raw)}`;
+    if (firedShown.current.has(key)) return;
+    firedShown.current.add(key);
+    trackSearchResultsShown(pending);
+  }, []);
 
   // Cycle typing suggestions — paused when user prefers reduced motion
   useEffect(() => {
@@ -74,16 +90,32 @@ export function SearchBox() {
       return;
     }
     setIsSearching(true);
+    let cancelled = false;
+    const requested = query.trim();
     searchTimeout.current = setTimeout(() => {
-      fetch(`/api/search?q=${encodeURIComponent(query.trim())}&limit=8`)
+      const started = performance.now();
+      fetch(`/api/search?q=${encodeURIComponent(requested)}&limit=8`)
         .then((r) => r.json())
         .then((data) => {
-          setLiveResults(data.results || []);
+          if (cancelled) return;
+          const results: SearchResult[] = data.results || [];
+          setLiveResults(results);
           setIsSearching(false);
+          pendingShown.current = {
+            search_id: searchIdFor(requested),
+            query_raw: requested,
+            surface: "home",
+            result_count: results.length,
+            top_slugs: results.slice(0, 5).map((result) => result.slug),
+            latency_ms: Math.round(performance.now() - started),
+          };
         })
-        .catch(() => setIsSearching(false));
+        .catch(() => {
+          if (!cancelled) setIsSearching(false);
+        });
     }, 280);
     return () => {
+      cancelled = true;
       if (searchTimeout.current) clearTimeout(searchTimeout.current);
     };
   }, [query]);
@@ -113,26 +145,60 @@ export function SearchBox() {
     (e: React.FormEvent) => {
       e.preventDefault();
       if (!query.trim()) return;
+      flushShown();
       setShowDropdown(false);
 
-      // If an item is keyboard-selected, navigate to it
+      // If an item is keyboard-selected, navigate to it. The keydown handler
+      // may also call this; pickLock keeps the events to one search id.
       if (activeIndex >= 0 && allItems[activeIndex]) {
-        router.push(`/compare/${allItems[activeIndex].slug}`);
+        if (pickLock.current) return;
+        pickLock.current = true;
+        const item = allItems[activeIndex];
+        trackSubmittedQuery({
+          query,
+          surface: "home",
+          destination: "dropdown_item",
+          results: liveResults,
+          dropdownCount: allItems.length,
+        });
+        trackPickedResult({
+          query,
+          surface: "home",
+          slug: item.slug,
+          position: activeIndex + 1,
+          resultCount: allItems.length,
+          resultKind: "comparison",
+        });
+        router.push(`/compare/${item.slug}`);
         return;
       }
 
       const parsed = parseComparisonQuery(query);
-      trackSearchParsed(query.trim(), parsed.slug, parsed.parsed);
+      const knownResults = query.trim().length >= 2 ? liveResults : [];
       if (parsed.parsed && parsed.slug) {
-        trackComparisonSearch(query.trim(), "comparison");
+        trackSubmittedQuery({
+          query,
+          surface: "home",
+          destination: "compare",
+          results: knownResults,
+          dropdownCount: knownResults.length,
+          legacyResultType: "comparison",
+        });
         router.push(`/compare/${parsed.slug}`);
         return;
       }
 
-      trackComparisonSearch(query.trim(), "general");
+      trackSubmittedQuery({
+        query,
+        surface: "home",
+        destination: "search_page",
+        results: knownResults,
+        dropdownCount: knownResults.length,
+        legacyResultType: "general",
+      });
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     },
-    [query, router, activeIndex, allItems]
+    [query, router, activeIndex, allItems, liveResults, flushShown]
   );
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -149,13 +215,33 @@ export function SearchBox() {
       setActiveIndex(-1);
     } else if (e.key === "Enter" && activeIndex >= 0 && allItems[activeIndex]) {
       e.preventDefault();
-      router.push(`/compare/${allItems[activeIndex].slug}`);
+      if (pickLock.current) return;
+      pickLock.current = true;
+      flushShown();
+      const item = allItems[activeIndex];
+      trackSubmittedQuery({
+        query,
+        surface: "home",
+        destination: "dropdown_item",
+        results: liveResults,
+        dropdownCount: allItems.length,
+      });
+      trackPickedResult({
+        query,
+        surface: "home",
+        slug: item.slug,
+        position: activeIndex + 1,
+        resultCount: allItems.length,
+        resultKind: "comparison",
+      });
+      router.push(`/compare/${item.slug}`);
       setShowDropdown(false);
     }
   }
 
   const showingLive = query.trim().length >= 2;
   const hasResults = allItems.length > 0;
+  const suggestion = showingLive ? suggestExistingComparison(query, liveResults) : null;
 
   return (
     <div ref={wrapperRef} className="relative">
@@ -198,7 +284,11 @@ export function SearchBox() {
               setShowDropdown(true);
               setIsFocused(true);
             }}
-            onBlur={() => setIsFocused(false)}
+            onBlur={() => {
+              setIsFocused(false);
+              flushShown();
+              pickLock.current = false;
+            }}
             onKeyDown={handleKeyDown}
             placeholder={`Try "${TYPING_SUGGESTIONS[suggestionIndex]}"`}
             className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-text text-base sm:text-lg placeholder:text-text-secondary/50 border-2 border-transparent focus:border-primary-300 focus:ring-4 focus:ring-primary-300/60 outline-none transition-all duration-200"
@@ -227,12 +317,7 @@ export function SearchBox() {
 
       {/* Dropdown */}
       {showDropdown && hasResults && (
-        <div
-          id={listboxId}
-          role="listbox"
-          aria-label="Search suggestions"
-          className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-border/80 overflow-hidden z-50 animate-slide-up"
-        >
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-border/80 overflow-hidden z-50 animate-slide-up">
           {/* Header — aria-hidden: non-option content must not appear inside role="listbox" */}
           <div aria-hidden="true" className="px-4 py-2.5 border-b border-border/50 flex items-center justify-between bg-surface-alt/60">
             <p className="text-xs font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
@@ -257,7 +342,26 @@ export function SearchBox() {
             </kbd>
           </div>
 
-          <div className="max-h-72 overflow-y-auto">
+          {suggestion && (
+            <DidYouMean
+              title={suggestion.title}
+              href={`/compare/${suggestion.slug}`}
+              onSelect={() => {
+                flushShown();
+                trackPickedResult({
+                  query,
+                  surface: "home",
+                  slug: suggestion.slug,
+                  position: 1,
+                  resultCount: liveResults.length,
+                  resultKind: "comparison",
+                });
+                setShowDropdown(false);
+              }}
+            />
+          )}
+
+          <div id={listboxId} role="listbox" aria-label="Search suggestions" className="max-h-72 overflow-y-auto">
             {allItems.map((item, idx) => {
               const parts = formatTitle(item.title);
               const isActive = idx === activeIndex;
@@ -280,7 +384,18 @@ export function SearchBox() {
                   role="option"
                   aria-selected={isActive}
                   href={`/compare/${item.slug}`}
-                  onClick={() => setShowDropdown(false)}
+                  onClick={() => {
+                    flushShown();
+                    trackPickedResult({
+                      query,
+                      surface: "home",
+                      slug: item.slug,
+                      position: idx + 1,
+                      resultCount: allItems.length,
+                      resultKind: "comparison",
+                    });
+                    setShowDropdown(false);
+                  }}
                   className={`flex items-center gap-3 px-4 py-3 transition-all duration-100 border-l-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${
                     isActive
                       ? "bg-primary-50/80 border-l-primary-500"
@@ -317,6 +432,14 @@ export function SearchBox() {
                 <button
                   type="button"
                   onClick={() => {
+                    flushShown();
+                    trackSubmittedQuery({
+                      query,
+                      surface: "home",
+                      destination: "search_page",
+                      results: liveResults,
+                      dropdownCount: liveResults.length,
+                    });
                     setShowDropdown(false);
                     router.push(`/search?q=${encodeURIComponent(query.trim())}`);
                   }}

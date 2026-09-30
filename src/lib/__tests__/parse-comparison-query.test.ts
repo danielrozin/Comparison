@@ -71,6 +71,33 @@ describe("parseComparisonQuery", () => {
   it("does not build a 3-way slug when the query already contains vs", () => {
     expect(parseComparisonQuery("Thailand vs Vietnam vs Laos").parsed).toBe(false);
   });
+
+  it("treats x and × as separators and keeps xbox as one name", () => {
+    expect(parseComparisonQuery("messi x ronaldo").slug).toBe("messi-vs-ronaldo");
+    expect(parseComparisonQuery("Messi × Ronaldo").slug).toBe("messi-vs-ronaldo");
+    expect(parseComparisonQuery("iPhone X vs Samsung").parsed).toBe(true);
+    expect(parseComparisonQuery("iPhone X vs Samsung").slug).not.toBe("iphone-vs-samsung");
+  });
+
+  it("maps hbo to the live hbo-max page", () => {
+    expect(parseComparisonQuery("hbo vs netflix").slug).toBe("hbo-max-vs-netflix");
+    expect(parseComparisonQuery("HBO Max vs Netflix").slug).toBe("hbo-max-vs-netflix");
+  });
+
+  it("drops a trailing colon or 'in … terms' qualifier so the live page matches", () => {
+    expect(parseComparisonQuery("vrbo vs airbnb: for hosts").slug).toBe("airbnb-vs-vrbo");
+    expect(parseComparisonQuery("vrbo vs airbnb: for hosts, which is more profitable?").slug).toBe(
+      "airbnb-vs-vrbo",
+    );
+    expect(parseComparisonQuery("japan vs china in economic terms").slug).toBe("japan-vs-china");
+  });
+
+  it("parses a side longer than five words", () => {
+    const parsed = parseComparisonQuery("tesla model 3 grande autonomie 2026 vs byd seal");
+    expect(parsed.parsed).toBe(true);
+    expect(parsed.slug).toContain("byd-seal");
+    expect(parsed.slug).toContain("tesla");
+  });
 });
 
 describe("canRequestComparisonSlug", () => {

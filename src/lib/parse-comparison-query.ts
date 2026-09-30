@@ -35,8 +35,22 @@ const TRAILING_QUALIFIERS: RegExp[] = [
   /\s+what(?:'s| is)\s+better\b[\s\S]*$/i,
   /\s+which\s+should\s+i\b[\s\S]*$/i,
   /\s+for\s+(?:travel|tourists?|tourism|families|kids|children|beginners|students|work|business|gaming|school)\b[\s\S]*$/i,
+  // "japan vs china in economic terms" → japan vs china. Anchored at the
+  // end so a later "vs" (a third side) is left for the 3-way guard.
+  /\s+in\s+(?:[\p{L}\p{N}'’-]+\s+){0,6}terms(?:\s*[?？!！]+)?\s*$/iu,
   /\s+in\s+20[2-3]\d\s*$/i,
+  // "vrbo vs airbnb for hosts" — only when "for …" is a trailing clause.
+  /\s+for\s+(?!.{0,80}\b(?:vs\.?|versus|against|compared)\b)[\s\S]+$/i,
 ];
+
+/**
+ * Search-only entity aliases. These are not in ENTITY_ALIASES because that
+ * map feeds rivalry studies; folding "hbo" into "hbo-max" there would change
+ * published counts. Here it only picks the live comparison URL.
+ */
+const SEARCH_ENTITY_ALIASES: Readonly<Record<string, string>> = {
+  hbo: "hbo-max",
+};
 
 /** A whole side that is not an entity name. */
 const STOP_SIDES = new Set([
@@ -98,13 +112,46 @@ const PAIR_PATTERNS: RegExp[] = [
   /^(.+?)\s+compared\s+(?:to|with)\s+(.+)$/i,
   /^(.+?)\s+(?:vs\.?|versus|against)\s+(.+)$/i,
   /^(.+?)\s+v\.?\s+(.+)$/i,
+  // "messi x ronaldo" / "messi × ronaldo". Whitespace is required so "xbox"
+  // and "iphone x" (as one side of a vs query) stay intact.
+  /^(.+?)\s+(?:x|×|✕)\s+(.+)$/i,
   /^(.+?)\s+[-–—]\s+(.+)$/,
   /^(.{2,40}?)\s+or\s+(.{2,40})$/i,
 ];
 
+function hasComparisonSeparator(text: string): boolean {
+  return /\b(?:vs\.?|versus|compared\s+(?:to|with)|against)\b/i.test(text) || /\s(?:x|×|✕)\s/i.test(text);
+}
+
 function stripIntent(input: string): { text: string; intent: string | null } {
   let text = input.trim().replace(/\s+/g, " ");
   const parts: string[] = [];
+
+  // "vrbo vs airbnb: for hosts, which is more profitable?" The colon (or a
+  // trailing comma clause) is intent, not part of either name.
+  const colon = text.search(/[:：]/);
+  if (colon > 0) {
+    const before = text.slice(0, colon).trim();
+    const after = text.slice(colon + 1).trim();
+    if (after && hasComparisonSeparator(before)) {
+      parts.push(after);
+      text = before;
+    }
+  }
+  const comma = text.lastIndexOf(",");
+  if (comma > 0) {
+    const before = text.slice(0, comma).trim();
+    const after = text.slice(comma + 1).trim();
+    if (
+      after &&
+      hasComparisonSeparator(before) &&
+      /^(?:for|which|what|who|in)\b/i.test(after)
+    ) {
+      parts.push(after);
+      text = before;
+    }
+  }
+
   for (let i = 0; i < 6; i++) {
     let removed = false;
     for (const pattern of TRAILING_QUALIFIERS) {
@@ -122,15 +169,17 @@ function stripIntent(input: string): { text: string; intent: string | null } {
 }
 
 function hasInnerSeparator(side: string): boolean {
-  return /\b(?:vs\.?|versus|compared\s+(?:to|with)|against)\b/i.test(side);
+  return hasComparisonSeparator(side);
 }
 
 function looksLikeEntitySide(side: string): boolean {
   const trimmed = side.trim();
-  if (trimmed.length < 2 || trimmed.length > 60) return false;
+  // Eight words covers "tesla model 3 grande autonomie 2026" without
+  // treating a whole sentence as an entity name.
+  if (trimmed.length < 2 || trimmed.length > 80) return false;
   if (hasInnerSeparator(trimmed)) return false;
   const words = trimmed.split(/\s+/).filter(Boolean);
-  if (words.length < 1 || words.length > 5) return false;
+  if (words.length < 1 || words.length > 8) return false;
   const tokens = words.map((word) => word.toLowerCase().replace(/[^a-z0-9]/g, ""));
   if (tokens.every((token) => STOP_SIDES.has(token))) return false;
   if (!/^[\p{L}\p{N}]/u.test(trimmed)) return false;
@@ -174,9 +223,14 @@ function pairFromText(text: string): [string, string] | null {
  * (`comparisonSlug`), keyword-suffix stripping, and the compare redirect map.
  * Returns null for a self-comparison or anything that is not exactly two entities.
  */
+function resolveEntitySlug(name: string): string {
+  const slug = canonicalSlug(slugify(name));
+  return SEARCH_ENTITY_ALIASES[slug] ?? slug;
+}
+
 export function canonicalComparisonSlug(entityA: string, entityB: string): string | null {
-  const a = canonicalSlug(slugify(entityA));
-  const b = canonicalSlug(slugify(entityB));
+  const a = resolveEntitySlug(entityA);
+  const b = resolveEntitySlug(entityB);
   if (!a || !b || a.length < 2 || b.length < 2 || a === b) return null;
   let slug = comparisonSlug(a, b);
   const consolidated = getConsolidatedCompareSlug(slug);

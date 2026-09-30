@@ -11,6 +11,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { isKnownCrawlerUserAgent } from "@/lib/generation/crawler-ua";
+import { lastSearchAttachment } from "@/lib/search/search-session";
 import {
   trackCompareNotFound,
   trackGenerationRequested,
@@ -47,7 +48,8 @@ export function OnDemandComparison({
   const title = `We're building your comparison of ${entityA} vs ${entityB}`;
 
   useEffect(() => {
-    trackCompareNotFound(slug, "compare_page");
+    const attachment = lastSearchAttachment();
+    trackCompareNotFound(slug, "compare_page", attachment);
   }, [slug]);
 
   useEffect(() => {
@@ -86,7 +88,8 @@ export function OnDemandComparison({
 
     async function generate() {
       const started = Date.now();
-      trackGenerationRequested(slug, "compare_page", 0);
+      const attachment = lastSearchAttachment();
+      trackGenerationRequested(slug, "compare_page", 0, attachment);
       const deadline = started + 70000;
 
       while (!cancelled && Date.now() < deadline) {

@@ -1,19 +1,34 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 
-const state = vi.hoisted(() => ({ q: "osticket" }));
+const state = vi.hoisted(() => ({ q: "osticket", surface: "", sourcePage: "" }));
 const trackComparisonSearch = vi.hoisted(() => vi.fn());
 const trackSearchParsed = vi.hoisted(() => vi.fn());
+const trackSearchSubmitted = vi.hoisted(() => vi.fn());
+const trackSearchResultsShown = vi.hoisted(() => vi.fn());
+const trackSearchResultClicked = vi.hoisted(() => vi.fn());
+const trackMatchupRequested = vi.hoisted(() => vi.fn());
+const trackSearchPageOpened = vi.hoisted(() => vi.fn());
 const replace = vi.hoisted(() => vi.fn());
 
 vi.mock("next/navigation", () => ({
-  useSearchParams: () => new URLSearchParams({ q: state.q }),
+  useSearchParams: () => {
+    const params = new URLSearchParams({ q: state.q });
+    if (state.surface) params.set("surface", state.surface);
+    if (state.sourcePage) params.set("source_page", state.sourcePage);
+    return params;
+  },
   useRouter: () => ({ push: vi.fn(), replace }),
 }));
 
 vi.mock("@/lib/utils/analytics", () => ({
   trackComparisonSearch: (...args: unknown[]) => trackComparisonSearch(...args),
   trackSearchParsed: (...args: unknown[]) => trackSearchParsed(...args),
+  trackSearchSubmitted: (...args: unknown[]) => trackSearchSubmitted(...args),
+  trackSearchResultsShown: (...args: unknown[]) => trackSearchResultsShown(...args),
+  trackSearchResultClicked: (...args: unknown[]) => trackSearchResultClicked(...args),
+  trackMatchupRequested: (...args: unknown[]) => trackMatchupRequested(...args),
+  trackSearchPageOpened: (...args: unknown[]) => trackSearchPageOpened(...args),
 }));
 
 vi.mock("@/lib/utils/recently-viewed", () => ({
@@ -49,8 +64,16 @@ function installFetch(options: { results?: unknown; fail?: boolean }) {
 describe("Search page (ROO-82)", () => {
   beforeEach(() => {
     state.q = "osticket";
+    state.surface = "";
+    state.sourcePage = "";
+    sessionStorage.clear();
     trackComparisonSearch.mockClear();
     trackSearchParsed.mockClear();
+    trackSearchSubmitted.mockClear();
+    trackSearchResultsShown.mockClear();
+    trackSearchResultClicked.mockClear();
+    trackMatchupRequested.mockClear();
+    trackSearchPageOpened.mockClear();
     replace.mockClear();
     installFetch({ results: [] });
   });
@@ -73,8 +96,24 @@ describe("Search page (ROO-82)", () => {
     // FAQ used to index the breadcrumb node and crash the whole page.
     expect(screen.getByText("How does search work on A Versus B?")).toBeInTheDocument();
     await waitFor(() => {
-      expect(trackComparisonSearch).toHaveBeenCalledWith("osticket", "no_results");
+      expect(trackComparisonSearch).toHaveBeenCalledWith("osticket", "no_results", 0, "search_page");
     });
+    expect(trackSearchSubmitted).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query_raw: "osticket",
+        surface: "url",
+        parsed: false,
+        destination: "search_page",
+        canonical_slug_exists: false,
+      }),
+    );
+    expect(trackSearchResultsShown).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query_raw: "osticket",
+        surface: "search_page",
+        result_count: 0,
+      }),
+    );
     expect(screen.queryByText("Something went wrong")).not.toBeInTheDocument();
   });
 
@@ -89,8 +128,24 @@ describe("Search page (ROO-82)", () => {
     render(<SearchContent generationEnabled={false} />);
     expect(await screen.findByRole("heading", { name: /No exact match for “osticket”/ })).toBeInTheDocument();
     await waitFor(() => {
-      expect(trackComparisonSearch).toHaveBeenCalledWith("osticket", "no_results");
+      expect(trackComparisonSearch).toHaveBeenCalledWith("osticket", "no_results", 0, "search_page");
     });
+    expect(trackSearchSubmitted).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query_raw: "osticket",
+        surface: "url",
+        parsed: false,
+        destination: "search_page",
+        canonical_slug_exists: false,
+      }),
+    );
+    expect(trackSearchResultsShown).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query_raw: "osticket",
+        surface: "search_page",
+        result_count: 0,
+      }),
+    );
   });
 
   it("lists matches without the no-match heading", async () => {
@@ -104,7 +159,7 @@ describe("Search page (ROO-82)", () => {
     );
     expect(screen.queryByRole("heading", { name: /No exact match/ })).not.toBeInTheDocument();
     await waitFor(() => {
-      expect(trackComparisonSearch).toHaveBeenCalledWith("osticket", "results");
+      expect(trackComparisonSearch).toHaveBeenCalledWith("osticket", "results", 1, "search_page");
     });
   });
 
@@ -123,5 +178,36 @@ describe("Search page (ROO-82)", () => {
       expect(replace).toHaveBeenCalledWith("/compare/thailand-vs-vietnam");
     });
     expect(trackSearchParsed).toHaveBeenCalledWith("Vietnam vs Thailand", "thailand-vs-vietnam", true);
+    expect(trackSearchSubmitted).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query_raw: "Vietnam vs Thailand",
+        surface: "url",
+        parsed: true,
+        parsed_slug: "thailand-vs-vietnam",
+        destination: "compare",
+      }),
+    );
+  });
+
+  it("attributes a not-found form submit and an empty landing", async () => {
+    state.q = "";
+    state.sourcePage = "blog-hub";
+    const { unmount } = render(<SearchContent generationEnabled={false} />);
+    await waitFor(() => {
+      expect(trackSearchPageOpened).toHaveBeenCalledWith("blog-hub");
+    });
+    expect(trackSearchSubmitted).not.toHaveBeenCalled();
+    unmount();
+
+    state.q = "osticket";
+    state.surface = "not_found_form";
+    state.sourcePage = "";
+    sessionStorage.clear();
+    render(<SearchContent generationEnabled={false} />);
+    await waitFor(() => {
+      expect(trackSearchSubmitted).toHaveBeenCalledWith(
+        expect.objectContaining({ surface: "not_found_form", query_raw: "osticket" }),
+      );
+    });
   });
 });

@@ -47,7 +47,7 @@ export default async function CustomComparePage({
           .
         </p>
         <div className="bg-white border border-border rounded-xl p-6 shadow-sm">
-          <CustomCompareForm initialA={initialA} initialB={initialB} />
+          <CustomCompareForm initialA={initialA} initialB={initialB} requestSlug={params.slug || ""} />
         </div>
       </div>
     </HubShell>
