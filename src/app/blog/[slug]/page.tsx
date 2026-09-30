@@ -25,6 +25,7 @@ import {
   selectCashiersCheckCompareLinks,
   splitHtmlAfterIntro,
 } from "@/lib/data/cashiers-check-blog-cta";
+import { selectOrganicLanderCompare } from "@/lib/data/organic-lander-compare-ctas";
 import { BLOG_COMPARE_SOFT_HREF } from "@/lib/data/blog-compare-constants";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
 
@@ -418,14 +419,22 @@ export default async function BlogPostPage({
     ? await getComparisonTitlesBySlugs(article.relatedComparisonSlugs)
     : {};
 
-  // ROO-119: this lander only. Links sit under the intro and use the same
-  // live-slug list as the hero CTA. Other posts keep a single content block.
-  const cashiersCheckLinks =
+  // ROO-119 / ROO-127: a few landers get compare links under the intro.
+  // Links use the same live-slug list as the hero CTA. Other posts keep a
+  // single content block.
+  const liveCompareSlugs = article.relatedComparisonSlugs ?? [];
+  const inlineCompare =
     slug === CASHIERS_CHECK_BLOG_SLUG
-      ? selectCashiersCheckCompareLinks(article.relatedComparisonSlugs ?? [])
-      : [];
-  const cashiersCheckParts =
-    cashiersCheckLinks.length >= 2 ? splitHtmlAfterIntro(renderedContent) : null;
+      ? {
+          sourcePage: CASHIERS_CHECK_SOURCE_PAGE,
+          heading: undefined as string | undefined,
+          links: selectCashiersCheckCompareLinks(liveCompareSlugs),
+        }
+      : selectOrganicLanderCompare(slug, liveCompareSlugs);
+  const inlineParts =
+    inlineCompare && inlineCompare.links.length >= 2
+      ? splitHtmlAfterIntro(renderedContent)
+      : null;
 
   const articleUrl = `${SITE_URL}/blog/${slug}`;
   const extras = getBlogSchemaExtras(slug);
@@ -945,19 +954,20 @@ export default async function BlogPostPage({
           <div className={`flex gap-8 items-start ${toc.length >= 2 ? "xl:grid xl:grid-cols-[1fr_220px]" : ""}`}>
             <article id="blog-article-body" className="min-w-0 flex-1">
               <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
-                {cashiersCheckParts ? (
+                {inlineParts && inlineCompare ? (
                   <>
                     <div
                       className="prose-custom"
-                      dangerouslySetInnerHTML={{ __html: cashiersCheckParts.lead }}
+                      dangerouslySetInnerHTML={{ __html: inlineParts.lead }}
                     />
                     <BlogInlineCompareCtas
-                      sourcePage={CASHIERS_CHECK_SOURCE_PAGE}
-                      links={cashiersCheckLinks}
+                      sourcePage={inlineCompare.sourcePage}
+                      links={inlineCompare.links}
+                      heading={inlineCompare.heading}
                     />
                     <div
                       className="prose-custom"
-                      dangerouslySetInnerHTML={{ __html: cashiersCheckParts.rest }}
+                      dangerouslySetInnerHTML={{ __html: inlineParts.rest }}
                     />
                   </>
                 ) : (

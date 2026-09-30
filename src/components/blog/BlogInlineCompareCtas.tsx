@@ -1,19 +1,26 @@
 "use client";
 
 import { TrackedCompareLink } from "@/components/home/HomeCompareCTA";
-import type { CashiersCheckCompareLink } from "@/lib/data/cashiers-check-blog-cta";
+
+export interface BlogInlineCompareLink {
+  slug: string;
+  label: string;
+}
 
 /**
- * ROO-119 — compact compare links under a blog intro.
+ * ROO-119 / ROO-127 — compact compare links under a blog intro.
  * Reuses TrackedCompareLink so the click fires `related_comparison_click`
  * (`source_page`, `target_page`) and the href carries `?source_page=`.
  */
 export function BlogInlineCompareCtas({
   sourcePage,
   links,
+  heading = "Compare banks and money-transfer apps",
 }: {
   sourcePage: string;
-  links: readonly CashiersCheckCompareLink[];
+  links: readonly BlogInlineCompareLink[];
+  /** Visible label above the links. Cashier's check keeps the default. */
+  heading?: string;
 }) {
   if (links.length === 0) return null;
 
@@ -23,9 +30,7 @@ export function BlogInlineCompareCtas({
       data-testid="blog-inline-compare-ctas"
       className="my-6 rounded-xl border border-primary-200 bg-primary-50/60 p-4"
     >
-      <p className="text-sm font-semibold text-text">
-        Compare banks and money-transfer apps
-      </p>
+      <p className="text-sm font-semibold text-text">{heading}</p>
       <ul className="mt-2 flex flex-col gap-2 list-none m-0 p-0">
         {links.map((link) => (
           <li key={link.slug}>
