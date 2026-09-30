@@ -1039,3 +1039,106 @@ describe("ROO-114 Brave vs Chrome", () => {
     expect(page().keyDifferences.every((row) => row.winner === "tie")).toBe(true);
   });
 });
+
+const SAFARI_SLUG = "chrome-vs-safari";
+const SAFARI_FAQS = [
+  "Is Safari more private than Chrome?",
+  "Is Safari better for battery life than Chrome?",
+  "Can I use Chrome extensions in Safari?",
+  "Does Safari work on Windows or Android?",
+  "Does Safari sync across iPhone, iPad, and Mac?",
+];
+const SAFARI_QUICK_ANSWER =
+  "It depends on the devices you actually use. Pick Safari when you stay on Apple devices and want Intelligent Tracking Prevention on by default, and pick Chrome when you also need Windows, Linux, ChromeOS, or Android. Safari extensions come from the App Store, and Chrome extensions come from the Chrome Web Store on desktop. Apple says Safari is up to 5 hours longer than Chrome for streaming video. That figure is Apple's August 2026 test, labelled here as Apple's claim, not a result measured for this page. This page does not crown a winner.";
+
+describe("ROO-114 Chrome vs Safari", () => {
+  const page = () => getEditorialComparison(SAFARI_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(SAFARI_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(SAFARI_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual(["chrome", "safari"]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best if you also browse on Windows, Android, Linux, or ChromeOS",
+      "Best if you stay on Apple devices and want tracking prevention on by default",
+    ]);
+    expect(page().shortAnswer).toBe(SAFARI_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(SAFARI_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(SAFARI_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-09-30T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/market share|65%|50-100%|2×|2x battery/i);
+    const types = [...new Set(schemaNodes(page()).flatMap((node) => {
+      const schemaType = node["@type"];
+      return Array.isArray(schemaType) ? schemaType : schemaType ? [schemaType] : [];
+    }))];
+    for (const schemaType of ["Article", "FAQPage", "BreadcrumbList", "WebPage"]) {
+      expect(types).toContain(schemaType);
+    }
+  });
+
+  it("keeps five FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(5);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(SAFARI_FAQS);
+    expect(faqQuestions(page())).toEqual(SAFARI_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(SAFARI_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites the fetched pages and links the live browser hub and compares", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(11);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-30");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-30/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.google.com/chrome/",
+      "https://opensource.google.com/projects/chromium",
+      "https://support.google.com/chrome/answer/185277",
+      "https://support.google.com/chrome/answer/95647",
+      "https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3",
+      "https://developer.chrome.com/docs/extensions/develop/migrate/mv2-deprecation-timeline",
+      "https://developer.chrome.com/release-notes/139",
+      "https://www.apple.com/safari/",
+      "https://www.apple.com/privacy/features/",
+      "https://www.apple.com/legal/privacy/data/en/safari/",
+      "https://support.apple.com/guide/icloud/what-you-can-do-with-icloud-and-safari-mm9b8da4f328/icloud",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual([
+      ...urls,
+      "/browser-comparison-2026",
+    ]);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "brave-vs-chrome",
+      "chrome-vs-firefox",
+      "firefox-vs-safari",
+    ]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("It depends");
+    expect(pageText(page())).toContain("WebKit");
+    expect(pageText(page())).toContain("Chromium");
+    expect(pageText(page())).toContain("Intelligent Tracking Prevention");
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().keyDifferences.every((row) => row.winner === "tie")).toBe(true);
+  });
+});
