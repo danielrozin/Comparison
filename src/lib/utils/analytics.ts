@@ -27,7 +27,8 @@ import {
  *
  * Same name: pricing_cta_click, checkout_clicked, checkout_canceled,
  * checkout_thanks_viewed, related_comparison_click, comparison_generated,
- * ux_study_banner_shown, pricing_viewed.
+ * ux_study_banner_shown, pricing_viewed, custom_compare_viewed,
+ * custom_compare_gated, custom_compare_error.
  * Different PostHog name: affiliate_click, comparison_vote, newsletter_signup,
  * share_click, comparison_search, comparison_view, comment_submission,
  * track_comparison_submit, verdict_feedback_vote_up/down,
@@ -54,6 +55,9 @@ const ALREADY_CAPTURED_IN_POSTHOG = new Set([
   "search_result_clicked",
   "compare_missing_viewed",
   "matchup_requested",
+  "custom_compare_viewed",
+  "custom_compare_gated",
+  "custom_compare_error",
   "search_page_opened",
   "comparison_search_performed",
   "comparison_view",
@@ -319,7 +323,7 @@ type CaptureValue = string | number | boolean | string[] | null;
 function captureClient(
   eventName: string,
   params: Record<string, CaptureValue>,
-  options?: { ga?: boolean },
+  options?: { ga?: boolean; sendInstantly?: boolean },
 ) {
   if (typeof window === "undefined" || isAutomatedClient()) return;
   if (options?.ga !== false) {
@@ -333,7 +337,13 @@ function captureClient(
     trackEvent(eventName, gaParams);
   }
   if (!analyticsAllowed()) return;
-  posthog.capture(eventName, params);
+  // Bouncers often leave before the default flush. send_instantly keeps a
+  // page-view or a failed submit from disappearing with the tab.
+  posthog.capture(
+    eventName,
+    params,
+    options?.sendInstantly ? { send_instantly: true } : undefined,
+  );
 }
 
 export function trackComparisonSearch(
@@ -489,6 +499,35 @@ export function trackMatchupRequested(props: MatchupRequestedProps) {
     search_id: props.search_id,
     query_raw: props.query_raw,
   });
+}
+
+/** `/custom-compare` mounted in a real browser. Bots are dropped by captureClient. */
+export function trackCustomCompareViewed() {
+  captureClient("custom_compare_viewed", { page: "/custom-compare" }, { sendInstantly: true });
+}
+
+/**
+ * The form refused the submit because the email is not an active member.
+ * `reason` is the API code (`upgrade_required`).
+ */
+export function trackCustomCompareGated(reason: string) {
+  captureClient(
+    "custom_compare_gated",
+    { page: "/custom-compare", reason },
+    { sendInstantly: true },
+  );
+}
+
+/**
+ * The form could not finish: membership store down, network, validation, or quota.
+ * `reason` is the API code, or `network` when the request never returned.
+ */
+export function trackCustomCompareError(reason: string) {
+  captureClient(
+    "custom_compare_error",
+    { page: "/custom-compare", reason },
+    { sendInstantly: true },
+  );
 }
 
 /** Empty /search opened from a blog or home link (no query typed yet). */
