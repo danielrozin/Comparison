@@ -43,6 +43,15 @@ function allStrings(node: unknown, out: string[] = []): string[] {
   return out;
 }
 
+/**
+ * `dateModified` is `new Date().toISOString()`. The fallback count is 167, so a
+ * timestamp whose milliseconds are `.167` makes `includes("167")` true even when
+ * the schema was built with a different count. Drop those clock strings.
+ */
+function corpusClaimStrings(node: unknown): string[] {
+  return allStrings(node).filter((s) => !/^\d{4}-\d{2}-\d{2}T/.test(s));
+}
+
 const BUILDERS = [
   ["organizationSchema", organizationSchema],
   ["dataCatalogSchema", dataCatalogSchema],
@@ -51,7 +60,7 @@ const BUILDERS = [
 
 describe("corpus count in site-wide JSON-LD", () => {
   it.each(BUILDERS)("%s defaults to the canonical count, not an invented literal", (_name, build) => {
-    const strings = allStrings(build());
+    const strings = corpusClaimStrings(build());
     // The two numbers the site used to claim. Neither was ever true.
     expect(strings.some((s) => s.includes("491"))).toBe(false);
     expect(strings.some((s) => s.includes("500+"))).toBe(false);
@@ -59,7 +68,7 @@ describe("corpus count in site-wide JSON-LD", () => {
   });
 
   it.each(BUILDERS)("%s reports the count it is given, so a live DB count wins", (_name, build) => {
-    const strings = allStrings(build(1234));
+    const strings = corpusClaimStrings(build(1234));
     expect(strings.some((s) => s.includes("1234"))).toBe(true);
     expect(strings.some((s) => s.includes(String(CANONICAL_COMPARISON_COUNT_FALLBACK)))).toBe(false);
   });
