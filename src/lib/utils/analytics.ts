@@ -338,12 +338,13 @@ function captureClient(
   }
   if (!analyticsAllowed()) return;
   // Bouncers often leave before the default flush. send_instantly keeps a
-  // page-view or a failed submit from disappearing with the tab.
-  posthog.capture(
-    eventName,
-    params,
-    options?.sendInstantly ? { send_instantly: true } : undefined,
-  );
+  // page-view or a failed submit from disappearing with the tab. Omit the
+  // third argument otherwise so existing capture assertions stay two-arg.
+  if (options?.sendInstantly) {
+    posthog.capture(eventName, params, { send_instantly: true });
+    return;
+  }
+  posthog.capture(eventName, params);
 }
 
 export function trackComparisonSearch(
