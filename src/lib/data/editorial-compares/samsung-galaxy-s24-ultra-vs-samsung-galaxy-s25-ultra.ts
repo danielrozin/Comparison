@@ -3,7 +3,7 @@ import type { EditorialComparison } from "./types";
 
 /**
  * ROO-115 — Galaxy S24 Ultra vs Galaxy S25 Ultra.
- * Specs below were checked against pages fetched on 2026-09-28.
+ * Specs below were checked against sources on 2026-09-28.
  * GSMArena compare (idPhone1=13322 is the S25 Ultra, idPhone2=12771 is the S24 Ultra),
  * Digital Trends (updated February 10, 2025), Samsung's US S25 Ultra page, and
  * Samsung's Levant S24 Ultra page. The Reddit summary is from the Arctic Shift

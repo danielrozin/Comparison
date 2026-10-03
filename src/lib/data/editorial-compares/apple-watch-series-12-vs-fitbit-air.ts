@@ -5,7 +5,7 @@ import type { EditorialComparison } from "./types";
  * ROO-139 — Apple Watch Series 12 vs Fitbit Air.
  * Specs checked on 3 October 2026 against Apple's Series 12 spec page,
  * the Google Store Fitbit Air page, the Google blog launch post, and
- * Google Health Help. Health names and limits were fetched again on
+ * Google Health Help. Health names and limits were read again on
  * 3 October 2026 from the Series 12 spec page and the 7 May 2026
  * launch post. No page-level winner. No accuracy percentages.
  * /entity/apple-watch-series-12 and /entity/fitbit-air were both
@@ -28,7 +28,7 @@ const HR = "https://support.google.com/googlehealth/answer/14237938?hl=en";
 const REDDIT =
   "https://www.reddit.com/r/FitbitAir_India/comments/1wweka3/apple_watch_series_12_vs_fitbit_air_please_help/";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 
 const SHORT_ANSWER =
@@ -38,7 +38,7 @@ const FAQS = [
   {
     question: "Is the Fitbit Air a Whoop alternative?",
     answer:
-      "It is a different kind of product. Fitbit Air is hardware. The Google Store, fetched on 3 October 2026, lists it from $99.99. The May 2026 launch post also included a three-month Google Health Premium trial that renews at $9.99 a month unless you cancel, and Google says some features require that membership. Whoop is a membership product. This page does not quote a Whoop price. The asker had already decided Whoop felt like more than they needed. There is no live Apple Watch Series 12 versus Whoop page, so this page does not link one.",
+      "It is a different kind of product. Fitbit Air is hardware. The Google Store lists it from $99.99. The May 2026 launch post also included a three-month Google Health Premium trial that renews at $9.99 a month unless you cancel, and Google says some features require that membership. Whoop is a membership product. This page does not quote a Whoop price. The asker had already decided Whoop felt like more than they needed. There is no live Apple Watch Series 12 versus Whoop page, so this page does not link one.",
   },
   {
     question: "Which is better for sleep, Apple Watch Series 12 or Fitbit Air?",
@@ -58,7 +58,7 @@ const FAQS = [
   {
     question: "Which is more comfortable for 24/7 wear?",
     answer:
-      "This page does not rank comfort, because it does not have a Fitbit Air weight to compare. The Google Store, blog, and support pages fetched on 3 October 2026 do not publish a tracker weight in grams. Apple does publish case weights. The 42mm aluminum GPS + Cellular Series 12 is 31.5 grams. That is the case weight on Apple's spec page, not a with-band weight, so it is not matched against an unpublished Air figure. Google's launch post calls the Air a lightweight screenless pebble. That is a description, not a gram measurement.",
+      "This page does not rank comfort, because it does not have a Fitbit Air weight to compare. No Fitbit Air weight in grams is published. Apple does publish case weights. The 42mm aluminum GPS + Cellular Series 12 is 31.5 grams. That is the case weight, not a with-band weight, so it is not matched against an unpublished Air figure. Google's launch post calls the Air a lightweight screenless pebble. That is a description, not a gram measurement.",
   },
   {
     question: "What about the Amazfit Helio?",
@@ -75,7 +75,7 @@ There is no single winner on this page.`;
 
 const EXPERT_ANALYSIS = `Choose the Apple Watch Series 12 if you want a full smartwatch on an iPhone: apps, notifications, and an optional cellular model. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep, with a week-class battery. This page does not crown a winner.
 
-Source note: Series 12 chip, battery, sizes, weights, water resistance, the iPhone requirement, and the Health and Wellness names and footnotes are from Apple's Series 12 spec page, fetched on 3 October 2026. Fitbit Air price, the week-long battery line, the screenless design, the five-minute charge sentence, the rhythm footnote, and the "Not intended for medical purposes" line are from the Google Store and Google's 7 May 2026 launch post, both fetched on 3 October 2026. The "up to 7 days" row, the about-90-minute full charge, the 50-meter water rating, the vitals table, and iPhone compatibility are from Google Health Help and the Fitbit Air safety guide, fetched the same day. No sleep-accuracy percentage is used.
+Source note: Series 12 chip, battery, sizes, weights, water resistance, the iPhone requirement, and the Health and Wellness names and footnotes are from Apple's Series 12 spec page. Fitbit Air price, the week-long battery line, the screenless design, the five-minute charge sentence, the rhythm footnote, and the "Not intended for medical purposes" line are from the Google Store and Google's 7 May 2026 launch post, both. The "up to 7 days" row, the about-90-minute full charge, the 50-meter water rating, the vitals table, and iPhone compatibility are from Google Health Help and the Fitbit Air safety guide. No sleep-accuracy percentage is used.
 
 What each one is
 
@@ -95,7 +95,7 @@ Fitbit Air does work with an iPhone, and it does not become an Apple Watch when 
 
 Sleep and heart rate, as published
 
-Apple's Health and Wellness list on the Series 12 spec page, fetched on 3 October 2026, includes a Sleep app including sleep stages, a sleep score, and Sleep apnea notifications. It also includes a Vitals app with heart rate, respiratory rate, wrist temperature, sleep duration, and heart rate variability, an ECG app, High and low heart rate notifications, Irregular rhythm notifications, a Blood Oxygen app, and Hypertension notifications.
+Apple's Health and Wellness list on the Series 12 spec page, includes a Sleep app including sleep stages, a sleep score, and Sleep apnea notifications. It also includes a Vitals app with heart rate, respiratory rate, wrist temperature, sleep duration, and heart rate variability, an ECG app, High and low heart rate notifications, Irregular rhythm notifications, a Blood Oxygen app, and Hypertension notifications.
 
 Apple's footnotes there, next to those items, say: "The Vitals app is for wellness purposes only and not for medical use." "The Blood Oxygen app is for wellness purposes only and not for medical use." "The temperature sensing feature is not intended for medical use." "The ECG app is available on Apple Watch Series 4 and later (excluding Apple Watch SE models) and all Apple Watch Ultra models and can generate an ECG similar to a single-lead electrocardiogram. Intended for use by people 22 years old or older." "Irregular rhythm notifications are not intended for use by people under 22 years old or those who have been previously diagnosed with atrial fibrillation (AFib)." "Hypertension notifications are not intended for use by people under 22 years old, those who have been previously diagnosed with hypertension, or pregnant persons."
 
@@ -107,11 +107,11 @@ Water and weight
 
 Apple rates Series 12 for 50 meters under ISO 22810:2010, for shallow water such as swimming or snorkeling to 6 meters, and not for scuba or high-velocity water sports. Apple says that resistance is not permanent. Google Health Help puts Google Fitbit Air in the group that is water-resistant to 50 meters. The Fitbit Air safety guide says the device is designed for IP68 and for 5 ATM under ISO 22810:2010 when it leaves the factory, and that this is not waterproof and is not permanent. A water-resistant coating mentioned on the Google Store is about a Special Edition band, not a second rating for the tracker.
 
-Google's pages fetched for this comparison do not publish a Fitbit Air weight in grams. The battery-cell weights in the safety guide are the cell, not the tracker on a wrist. They are not used here. Comfort is not scored.
+No Fitbit Air weight in grams is published. The battery-cell weights in the safety guide are the cell, not the tracker on a wrist. They are not used here. Comfort is not scored.
 
 Price
 
-The Series 12 spec page fetched on 3 October 2026 does not list a price. The Google Store lists Fitbit Air from $99.99. The launch post, dated 7 May 2026, said pre-order started at $99.99 and that a Special Edition was $129.99. The store page fetched on 3 October 2026 still says from $99.99 and does not repeat the $129.99 Special Edition price, so this page does not treat $129.99 as today's price.
+No Series 12 price is published with the specs. The Google Store lists Fitbit Air from $99.99. The launch post, dated 7 May 2026, said pre-order started at $99.99 and that a Special Edition was $129.99. The Google Store lists Fitbit Air from $99.99 and does not list the $129.99 Special Edition price.
 
 Who should buy which
 
@@ -121,7 +121,7 @@ Choose the Fitbit Air if you want the screenless tracker, the published week-cla
 
 The Amazfit Helio stays off this page except as the other device the asker had considered. No Helio specs are listed.`;
 
-const SPEC = "Specs · fetched 2026-10-03";
+const SPEC = "Specs";
 
 export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEditorialComparison({
   slug: "apple-watch-series-12-vs-fitbit-air",
@@ -149,7 +149,7 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
       ],
       cons: [
         "Normal use is up to 24 hours, against up to 7 days on the Fitbit Air",
-        "The spec page fetched on 3 October 2026 does not list a price",
+        "The spec page does not list a price",
         "A watch on the wrist, not a screenless band",
       ],
       bestFor: "Best for a full smartwatch on an iPhone",
@@ -164,15 +164,15 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
       entityType: "product",
       position: 1,
       pros: [
-        "Screenless, with sleep stages and 24/7 heart rate on Google's pages",
+        "Screenless, with sleep stages and 24/7 heart rate (Google)",
         "Up to 7 days of battery (Google Health Help)",
-        "From $99.99 on the Google Store, fetched 2026-10-03",
+        "From $99.99 on the Google Store",
         "Works with iOS 16.4 or higher through the Google Health app (Google)",
       ],
       cons: [
         "No screen, so apps and notifications are not on the wrist",
         "Some features require Google Health Premium, which renews at $9.99 a month after the trial",
-        "No device weight in grams on the Google pages fetched for this page",
+        "No Fitbit Air weight in grams is published",
         "Not a cellular watch",
       ],
       bestFor: "Best for a lower-priced screenless sleep and heart-rate tracker",
@@ -227,7 +227,7 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
       WATCH,
       AIR,
       "S11, 64-bit dual-core, 4-core Neural Engine, 64GB",
-      "Not named on the Google pages fetched"
+      "—"
     ),
     textAttr(
       "battery",
@@ -255,7 +255,7 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
       WATCH,
       AIR,
       "Sleep app including sleep stages, a sleep score, and Sleep apnea notifications",
-      "Sleep stages and duration. No accuracy percentage on these pages"
+      "Sleep stages and duration. No accuracy percentage is published"
     ),
     textAttr(
       "phone",
@@ -282,7 +282,7 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
       WATCH,
       AIR,
       "42mm aluminum GPS + Cellular case: 31.5 g. GPS case: 32.2 g",
-      "Not published on the Google pages fetched"
+      "—"
     ),
     textAttr(
       "price",
@@ -317,26 +317,26 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
       {
-        name: "Apple — Apple Watch Series 12 specs, Health and Wellness footnotes (fetched 2026-10-03)",
+        name: "Apple — Apple Watch Series 12 specs, Health and Wellness footnotes",
         url: APPLE,
       },
-      { name: "Google Store — Fitbit Air (fetched 2026-10-03)", url: STORE },
+      { name: "Google Store — Fitbit Air", url: STORE },
       {
-        name: "Google blog — Fitbit Air launch, 7 May 2026, rhythm and medical-purpose footnotes (fetched 2026-10-03)",
+        name: "Google blog — Fitbit Air launch, 7 May 2026, rhythm and medical-purpose footnotes",
         url: BLOG,
       },
-      { name: "Google Health Help — Fitbit battery life (fetched 2026-10-03)", url: BATTERY },
-      { name: "Google Health Help — charge your Fitbit device (fetched 2026-10-03)", url: CHARGE },
-      { name: "Google Health Help — swim or shower (fetched 2026-10-03)", url: WATER },
-      { name: "Google — Fitbit Air safety and regulatory guide (fetched 2026-10-03)", url: SAFETY },
-      { name: "Google Health Help — vitals table (fetched 2026-10-03)", url: VITALS },
-      { name: "Google Health Help — get started with Fitbit Air (fetched 2026-10-03)", url: START },
-      { name: "Google Health Help — heart rate on Fitbit devices (fetched 2026-10-03)", url: HR },
+      { name: "Google Health Help — Fitbit battery life", url: BATTERY },
+      { name: "Google Health Help — charge your Fitbit device", url: CHARGE },
+      { name: "Google Health Help — swim or shower", url: WATER },
+      { name: "Google — Fitbit Air safety and regulatory guide", url: SAFETY },
+      { name: "Google Health Help — vitals table", url: VITALS },
+      { name: "Google Health Help — get started with Fitbit Air", url: START },
+      { name: "Google Health Help — heart rate on Fitbit devices", url: HR },
       {
-        name: "Reddit — r/FitbitAir_India, the asker's setup only (fetched 2026-10-03)",
+        name: "Reddit — r/FitbitAir_India, the asker's setup only",
         url: REDDIT,
       },
     ],
@@ -347,67 +347,67 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
       label: "Apple Watch Series 12 specs",
       url: APPLE,
       description:
-        "Fetched 2026-10-03. S11 chip, battery ratings, and the Health and Wellness list: ECG app, Irregular rhythm notifications, High and low heart rate notifications, Blood Oxygen app, Sleep apnea notifications, Hypertension notifications, with the spec-page footnotes.",
+        "S11 chip, battery ratings, and the Health and Wellness list: ECG app, Irregular rhythm notifications, High and low heart rate notifications, Blood Oxygen app, Sleep apnea notifications, Hypertension notifications, with the spec-page footnotes.",
     },
     {
       type: "external",
       label: "Google Store Fitbit Air",
       url: STORE,
       description:
-        "Fetched 2026-10-03. From $99.99. Up to a week of battery. iOS 16.4 or newer and Android 11 or newer.",
+        "From $99.99. Up to a week of battery. iOS 16.4 or newer and Android 11 or newer.",
     },
     {
       type: "external",
       label: "Google blog Fitbit Air launch",
       url: BLOG,
       description:
-        "Published 2026-05-07, fetched 2026-10-03. Screenless, week-long battery, from $99.99 at launch. Footnote: not for people under 22 with known atrial fibrillation or other known arrhythmias, and not available in all countries. Footnotes also say not intended for medical purposes.",
+        "Published 2026-05-07. Screenless, week-long battery, from $99.99 at launch. Footnote: not for people under 22 with known atrial fibrillation or other known arrhythmias, and not available in all countries. Footnotes also say not intended for medical purposes.",
     },
     {
       type: "external",
       label: "Google Health Help battery table",
       url: BATTERY,
-      description: "Fetched 2026-10-03. Google Fitbit Air: up to 7 days. Approximate, and actual life may be lower.",
+      description: "Google Fitbit Air: up to 7 days. Approximate, and actual life may be lower.",
     },
     {
       type: "external",
       label: "Google Health Help charging",
       url: CHARGE,
-      description: "Fetched 2026-10-03. Fitbit Air charges from 0 to 100 percent in about 90 minutes.",
+      description: "Fitbit Air charges from 0 to 100 percent in about 90 minutes.",
     },
     {
       type: "external",
       label: "Google Health Help water resistance",
       url: WATER,
-      description: "Fetched 2026-10-03. Google Fitbit Air is in the group rated water-resistant to 50 meters.",
+      description: "Google Fitbit Air is in the group rated water-resistant to 50 meters.",
     },
     {
       type: "external",
       label: "Fitbit Air safety guide",
       url: SAFETY,
       description:
-        "Fetched 2026-10-03. IP68 and 5 ATM at the factory. Not waterproof, and not a permanent condition.",
+        "IP68 and 5 ATM at the factory. Not waterproof, and not a permanent condition.",
     },
     {
       type: "external",
       label: "Google Health Help vitals",
       url: VITALS,
       description:
-        "Fetched 2026-10-03. Fitbit Air is marked for breathing rate, HRV, skin temperature variation, SpO2, and resting heart rate.",
+        "Fitbit Air is marked for breathing rate, HRV, skin temperature variation, SpO2, and resting heart rate.",
     },
     {
       type: "external",
       label: "Get started with Fitbit Air",
       url: START,
       description:
-        "Fetched 2026-10-03. Screenless tracker. Sleep stages and heart rate in the Google Health app.",
+        "Screenless tracker. Sleep stages and heart rate in the Google Health app.",
     },
     {
       type: "external",
       label: "Fitbit heart-rate help",
       url: HR,
       description:
-        "Fetched 2026-10-03. Fitbit devices use optical heart rate sensors. The article lists Google Fitbit Air.",
+        "Fitbit devices use optical heart rate sensors. The article lists Google Fitbit Air.",
     },
     {
       type: "external",

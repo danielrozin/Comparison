@@ -23,7 +23,7 @@ const FORMATS = "https://help.kobo.com/hc/en-us/articles/360017763713-File-forma
 const LIBRARY = "https://help.kobo.com/hc/en-us/articles/360017677053-Borrow-eBooks-from-the-public-library-using-your-Kobo-eReader";
 const LIBBY = "https://help.kobo.com/hc/en-us/articles/4477058367895-About-the-Libby-app";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const SPEC = "Lineup";
 
@@ -205,7 +205,7 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
       { name: "Amazon — 2026 Kindle lineup", url: LINEUP },
       { name: "Amazon — Kindle Colorsoft", url: COLORSOFT },

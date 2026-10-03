@@ -9,7 +9,7 @@ import type {
  * Scorecard replacements for DB-backed NBA pages whose live attributes still
  * print a 2025-26 LeBron line of 28.3 points per game.
  *
- * Fetched 2026-10-03:
+ * As of 2026-10-03:
  * - https://www.basketball-reference.com/players/j/jamesle01.html
  * - https://www.basketball-reference.com/players/j/jordami01.html
  * - https://www.basketball-reference.com/players/b/bryanko01.html
@@ -55,7 +55,7 @@ export interface SeasonScorecard {
   clearSchemaMarkup: true;
 }
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const AS_OF = "October 3, 2026";
 const UPDATED_AT = "2026-10-03T00:00:00Z";
 
@@ -64,8 +64,8 @@ const JORDAN_BBR = "https://www.basketball-reference.com/players/j/jordami01.htm
 const KOBE_BBR = "https://www.basketball-reference.com/players/b/bryanko01.html";
 const SIGNING = "https://www.nba.com/news/lebron-james-free-agency-sixers-2026";
 
-const CAREER = `Career · Basketball-Reference, fetched ${FETCHED}`;
-const LAST_SEASON = `2025-26 regular season · Basketball-Reference, fetched ${FETCHED}`;
+const CAREER = `Career · Basketball-Reference`;
+const LAST_SEASON = `2025-26 regular season · Basketball-Reference`;
 const THIS_SEASON = `2026-27 season · Stats as of ${AS_OF}`;
 
 const LEBRON_2526 = "20.9 points, 6.1 rebounds, 7.2 assists in 60 games";
@@ -83,9 +83,9 @@ function sources(
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: entries.map((entry) => ({
-      name: `${entry.name} (fetched ${FETCHED})`,
+      name: `${entry.name}`,
       url: entry.url,
     })),
   };
@@ -129,7 +129,7 @@ const LEBRON_JORDAN_FAQS = [
 
 const LEBRON_JORDAN_ANALYSIS = `LeBron James averaged 20.9 points, 6.1 rebounds, and 7.2 assists in 60 games in the 2025-26 regular season. His career line through that season is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. Michael Jordan's career line is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games, totaling 32,292 points, with 6 championships and 6 Finals MVPs. LeBron has 4 championships, 4 Finals MVPs, and 10 Finals appearances. He signed with the Philadelphia 76ers in July 2026, and 2026-27 is his 24th season. This page does not pick a winner.
 
-Source note: the career totals and the 2025-26 per-game line are from Basketball-Reference, fetched ${AS_OF}. The signing, the 24th season, and the same 20.9 and 26.8 lines are from NBA.com's story updated July 27, 2026. ${LEBRON_BBR} ${JORDAN_BBR} ${SIGNING}
+Source note: the career totals and the 2025-26 per-game line are from Basketball-Reference. The signing, the 24th season, and the same 20.9 and 26.8 lines are from NBA.com's story updated July 27, 2026. ${LEBRON_BBR} ${JORDAN_BBR} ${SIGNING}
 
 2026-27 season. Stats as of ${AS_OF}. LeBron's team is the Philadelphia 76ers. NBA.com says he announced the move on social media Friday, that it became official on Sunday, and that he had told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. The 76ers post is dated July 27, 2026. He said, "I believe I can help make the Philadelphia 76ers a championship team and I am so excited to energize a new fan base and start this incredible journey one last time." NBA.com also writes that he was the first player to log 23 seasons and will add at least one more this season, and that he turns 42 on December 30. Basketball-Reference has no 2026-27 game log. Its 2026-27 table is labeled a projection, and this page does not quote it. Jordan has no 2026-27 season.
 
@@ -179,7 +179,7 @@ const KOBE_LEBRON_FAQS = [
 
 const KOBE_LEBRON_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games and 33,643 points. LeBron James's career line through 2025-26 is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games and 43,440 points. LeBron's 2025-26 regular-season line was 20.9 points, 6.1 rebounds, and 7.2 assists in 60 games. He signed with the Philadelphia 76ers in July 2026, and 2026-27 is his 24th season. This page does not pick a winner.
 
-Source note: career totals and the 2025-26 line are from Basketball-Reference, fetched ${AS_OF}. The signing and the 24th season are from NBA.com's story updated July 27, 2026, which also prints the 20.9 and 26.8 lines. ${KOBE_BBR} ${LEBRON_BBR} ${SIGNING}
+Source note: career totals and the 2025-26 line are from Basketball-Reference. The signing and the 24th season are from NBA.com's story updated July 27, 2026, which also prints the 20.9 and 26.8 lines. ${KOBE_BBR} ${LEBRON_BBR} ${SIGNING}
 
 2026-27 season. Stats as of ${AS_OF}. LeBron's team is the Philadelphia 76ers. NBA.com says he announced the move on social media Friday, that it became official on Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. The 76ers post is dated July 27, 2026. NBA.com writes that he logged 23 seasons and will add at least one more this season. Basketball-Reference has no 2026-27 game log, and its 2026-27 table is a projection this page does not quote. Kobe has no 2026-27 season.
 
@@ -482,13 +482,13 @@ export const NBA_SEASON_OVERLAYS: Record<
         type: "external",
         label: "Basketball-Reference: LeBron James",
         url: LEBRON_BBR,
-        description: `Fetched ${FETCHED}. 2025-26: 20.9 points, 6.1 rebounds, 7.2 assists in 60 games. Career: 26.8, 7.5, and 7.4 in 1,622 games, 43,440 points. 2026-27 row is a projection and is not used.`,
+        description: `2025-26: 20.9 points, 6.1 rebounds, 7.2 assists in 60 games. Career: 26.8, 7.5, and 7.4 in 1,622 games, 43,440 points. 2026-27 row is a projection and is not used.`,
       },
       {
         type: "external",
         label: "Basketball-Reference: Michael Jordan",
         url: JORDAN_BBR,
-        description: `Fetched ${FETCHED}. 15 seasons, 1,072 games, 30.1 points, 6.2 rebounds, 5.3 assists, 32,292 points, 6 championships, 6 Finals MVPs.`,
+        description: `15 seasons, 1,072 games, 30.1 points, 6.2 rebounds, 5.3 assists, 32,292 points, 6 championships, 6 Finals MVPs.`,
       },
       {
         type: "external",
@@ -609,13 +609,13 @@ export const NBA_SEASON_OVERLAYS: Record<
         type: "external",
         label: "Basketball-Reference: Kobe Bryant",
         url: KOBE_BBR,
-        description: `Fetched ${FETCHED}. 20 seasons, 1,346 games, 25.0 points, 5.2 rebounds, 4.7 assists, 33,643 points, 5 championships.`,
+        description: `20 seasons, 1,346 games, 25.0 points, 5.2 rebounds, 4.7 assists, 33,643 points, 5 championships.`,
       },
       {
         type: "external",
         label: "Basketball-Reference: LeBron James",
         url: LEBRON_BBR,
-        description: `Fetched ${FETCHED}. 2025-26: 20.9 points, 6.1 rebounds, 7.2 assists in 60 games. Career: 26.8, 7.5, and 7.4. 2026-27 row is a projection and is not used.`,
+        description: `2025-26: 20.9 points, 6.1 rebounds, 7.2 assists in 60 games. Career: 26.8, 7.5, and 7.4. 2026-27 row is a projection and is not used.`,
       },
       {
         type: "external",

@@ -3,7 +3,7 @@ import type { EditorialComparison } from "./types";
 
 /**
  * ROO-120 — Galaxy Z Fold 7 vs Galaxy S26 Ultra.
- * Specs below were checked against pages fetched on 2026-09-29.
+ * Specs below were checked against sources on 2026-09-29.
  * GSMArena compare (idPhone1=13826 is the Z Fold 7, idPhone2=14320 is the S26 Ultra),
  * each phone's GSMArena spec page, and Geeky Gadgets (24 April 2026).
  * No page-level winner. No hinge-cycle count: the spec pages do not publish one.
@@ -22,7 +22,7 @@ const SAMSUNG_S26 = "https://www.samsung.com/us/smartphones/galaxy-s26-ultra/";
 const ANDROID_AUTHORITY =
   "https://www.androidauthority.com/samsung-galaxy-z-fold-7-drops-s-pen-support-3575176/";
 
-const FETCHED = "2026-09-29";
+const SOURCE_DATE = "2026-09-29";
 const PUBLISHED = "2026-09-29T00:00:00Z";
 
 const SHORT_ANSWER =
@@ -37,7 +37,7 @@ const FAQS = [
   {
     question: "How durable is the Galaxy Z Fold 7 hinge?",
     answer:
-      "GSMArena's published ingress rating for the Z Fold 7 is IP48: dust larger than 1 mm, and immersion up to 1.5 m for 30 minutes. The S26 Ultra is listed as IP68, dust tight, with the same 1.5 m / 30 minute water line. The GSMArena spec pages fetched on 29 September 2026 do not publish a hinge open-close count, and this page does not invent one. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. No hinge-cycle rating is published for Fold 7.",
+      "GSMArena's published ingress rating for the Z Fold 7 is IP48: dust larger than 1 mm, and immersion up to 1.5 m for 30 minutes. The S26 Ultra is listed as IP68, dust tight, with the same 1.5 m / 30 minute water line. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. No hinge-cycle rating is published for Fold 7.",
   },
   {
     question: "Does the Galaxy Z Fold 7 have the better camera?",
@@ -64,9 +64,9 @@ There is no single winner on this page.`;
 
 const EXPERT_ANALYSIS = `The Galaxy S26 Ultra suits a 4-5 year keep. The Galaxy Z Fold 7 is the pick only if the inner foldable screen and multitasking are why you are buying. This page does not crown one phone.
 
-Spec table. Caption: Galaxy Z Fold 7 vs Galaxy S26 Ultra. Source note: the rows in the comparison table are GSMArena listings fetched on 29 September 2026, from the compare page (idPhone1=13826, idPhone2=14320) and each phone's spec page. Geeky Gadgets is a qualitative summary, not a spec sheet. Samsung's US warranty page is cited only for warranty wording.
+Spec table. Caption: Galaxy Z Fold 7 vs Galaxy S26 Ultra. Source note: the rows in the comparison table are GSMArena listings, from the compare page (idPhone1=13826, idPhone2=14320) and each phone's spec page. Geeky Gadgets is a qualitative summary, not a spec sheet. Samsung's US warranty page is cited only for warranty wording.
 
-Sources fetched on 29 September 2026: GSMArena compare, GSMArena Z Fold 7, GSMArena Galaxy S26 Ultra, Geeky Gadgets (article dated 24 April 2026), Samsung's US warranty page, Samsung's US Galaxy S26 Ultra page, and Android Authority (9 July 2025).
+Sources: GSMArena compare, GSMArena Z Fold 7, GSMArena Galaxy S26 Ultra, Geeky Gadgets (article dated 24 April 2026), Samsung's US warranty page, Samsung's US Galaxy S26 Ultra page, and Android Authority (9 July 2025).
 
 Screens and body
 
@@ -201,7 +201,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "displays",
       "Displays",
-      "Specs · GSMArena, fetched 2026-09-29",
+      "Specs · GSMArena",
       FOLD,
       S26,
       "8.0-inch inner, 6.5-inch cover, 120Hz, 2600 nits peak",
@@ -210,7 +210,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "body",
       "Weight and thickness",
-      "Specs · GSMArena, fetched 2026-09-29",
+      "Specs · GSMArena",
       FOLD,
       S26,
       "215 g, 4.2 mm unfolded, 8.9 mm folded",
@@ -219,7 +219,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "ingress",
       "Ingress rating",
-      "Specs · GSMArena, fetched 2026-09-29",
+      "Specs · GSMArena",
       FOLD,
       S26,
       "IP48 (dust larger than 1 mm; 1.5 m for 30 min)",
@@ -229,7 +229,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "chip",
       "Chip",
-      "Specs · GSMArena, fetched 2026-09-29",
+      "Specs · GSMArena",
       FOLD,
       S26,
       "Snapdragon 8 Elite",
@@ -239,7 +239,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "battery",
       "Battery and charging",
-      "Specs · GSMArena, fetched 2026-09-29",
+      "Specs · GSMArena",
       FOLD,
       S26,
       "4,400 mAh, 25W wired, 15W wireless",
@@ -249,7 +249,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "active-use",
       "Active-use score",
-      "Specs · GSMArena, fetched 2026-09-29",
+      "Specs · GSMArena",
       FOLD,
       S26,
       "11:44h (GSMArena)",
@@ -259,7 +259,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "main-camera",
       "Main camera",
-      "Specs · GSMArena, fetched 2026-09-29",
+      "Specs · GSMArena",
       FOLD,
       S26,
       "200MP",
@@ -268,7 +268,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "other-cameras",
       "Other rear cameras",
-      "Specs · GSMArena, fetched 2026-09-29",
+      "Specs · GSMArena",
       FOLD,
       S26,
       "10MP 3x telephoto, 12MP ultrawide",
@@ -278,7 +278,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "os-updates",
       "OS updates",
-      "Specs · GSMArena, fetched 2026-09-29",
+      "Specs · GSMArena",
       FOLD,
       S26,
       "Android 16, One UI 8, up to 7 major OS updates",
@@ -287,7 +287,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     textAttr(
       "s-pen",
       "S Pen",
-      "S Pen · Samsung, Android Authority, GSMArena, fetched 2026-09-29",
+      "S Pen · Samsung, Android Authority, GSMArena",
       FOLD,
       S26,
       "Not supported",
@@ -323,16 +323,16 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: "GSMArena — Z Fold 7 vs S26 Ultra (fetched 2026-09-29)", url: GSMARENA_COMPARE },
-      { name: "GSMArena — Galaxy Z Fold 7 (fetched 2026-09-29)", url: GSMARENA_FOLD },
-      { name: "GSMArena — Galaxy S26 Ultra (fetched 2026-09-29)", url: GSMARENA_S26 },
-      { name: "Geeky Gadgets — S26 Ultra vs Z Fold 7 (24 Apr 2026, fetched 2026-09-29)", url: GEEKY },
-      { name: "Samsung US — warranty (fetched 2026-09-29)", url: SAMSUNG_WARRANTY },
-      { name: "Samsung US — Galaxy S26 Ultra (fetched 2026-09-29)", url: SAMSUNG_S26 },
+      { name: "GSMArena — Z Fold 7 vs S26 Ultra", url: GSMARENA_COMPARE },
+      { name: "GSMArena — Galaxy Z Fold 7", url: GSMARENA_FOLD },
+      { name: "GSMArena — Galaxy S26 Ultra", url: GSMARENA_S26 },
+      { name: "Geeky Gadgets — S26 Ultra vs Z Fold 7 (24 Apr 2026)", url: GEEKY },
+      { name: "Samsung US — warranty", url: SAMSUNG_WARRANTY },
+      { name: "Samsung US — Galaxy S26 Ultra", url: SAMSUNG_S26 },
       {
-        name: "Android Authority — Fold 7 drops S Pen support (9 Jul 2025, fetched 2026-09-29)",
+        name: "Android Authority — Fold 7 drops S Pen support (9 Jul 2025)",
         url: ANDROID_AUTHORITY,
       },
     ],
@@ -343,49 +343,49 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       label: "GSMArena spec compare",
       url: GSMARENA_COMPARE,
       description:
-        "Fetched 2026-09-29. Displays, weight, thickness, IP rating, chip, cameras, battery, charging, OS updates, and active-use scores.",
+        "Displays, weight, thickness, IP rating, chip, cameras, battery, charging, OS updates, and active-use scores.",
     },
     {
       type: "external",
       label: "GSMArena Galaxy Z Fold 7",
       url: GSMARENA_FOLD,
       description:
-        "Fetched 2026-09-29. 8.0-inch inner, 6.5-inch cover, 215 g, 4.2 mm / 8.9 mm, IP48, Snapdragon 8 Elite, 4,400 mAh, active-use 11:44h.",
+        "8.0-inch inner, 6.5-inch cover, 215 g, 4.2 mm / 8.9 mm, IP48, Snapdragon 8 Elite, 4,400 mAh, active-use 11:44h.",
     },
     {
       type: "external",
       label: "GSMArena Galaxy S26 Ultra",
       url: GSMARENA_S26,
       description:
-        "Fetched 2026-09-29. 6.9-inch, 214 g, 7.9 mm, IP68, Snapdragon 8 Elite Gen 5, 5,000 mAh, 60W / 25W, active-use 16:23h. Body line lists Stylus separately from Armor Aluminum 2.",
+        "6.9-inch, 214 g, 7.9 mm, IP68, Snapdragon 8 Elite Gen 5, 5,000 mAh, 60W / 25W, active-use 16:23h. Body line lists Stylus separately from Armor Aluminum 2.",
     },
     {
       type: "external",
       label: "Geeky Gadgets comparison",
       url: GEEKY,
       description:
-        "Article dated 24 April 2026, fetched 2026-09-29. Qualitative split: slab for durability, camera, and battery; foldable for the large screen.",
+        "Article dated 24 April 2026. Qualitative split: slab for durability, camera, and battery; foldable for the large screen.",
     },
     {
       type: "external",
       label: "Samsung US warranty",
       url: SAMSUNG_WARRANTY,
       description:
-        "Fetched 2026-09-29. Standard 12-month wording. Galaxy Z Fold5 and newer may have limited international warranty service. No hinge-cycle count.",
+        "Standard 12-month wording. Galaxy Z Fold5 and newer may have limited international warranty service. No hinge-cycle count.",
     },
     {
       type: "external",
       label: "Samsung Galaxy S26 Ultra",
       url: SAMSUNG_S26,
       description:
-        "Fetched 2026-09-29. Samsung's FAQ: Yes, Galaxy S26 Ultra has a built-in S Pen.",
+        "Samsung's FAQ: Yes, Galaxy S26 Ultra has a built-in S Pen.",
     },
     {
       type: "external",
       label: "Android Authority on Fold 7 S Pen support",
       url: ANDROID_AUTHORITY,
       description:
-        "Fetched 2026-09-29. Published 9 July 2025. Samsung confirmed to Android Authority that the Fold 7 does not support the S Pen, because the digitizer was removed to make it thinner.",
+        "Published 9 July 2025. Samsung confirmed to Android Authority that the Fold 7 does not support the S Pen, because the digitizer was removed to make it thinner.",
     },
   ],
   metaTitle: "Fold 7 vs S26 Ultra: Which to Keep? | A Versus B",

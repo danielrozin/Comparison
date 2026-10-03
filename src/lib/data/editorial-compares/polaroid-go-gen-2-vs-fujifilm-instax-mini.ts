@@ -3,7 +3,7 @@ import type { EditorialComparison } from "./types";
 
 /**
  * ROO-122 — Polaroid Go Generation 2 vs Fujifilm Instax Mini.
- * Checked against pages fetched on 2026-09-29. Film and camera prices are the
+ * Checked against sources on 2026-09-29. Film and camera prices are the
  * reviewers' cited figures, not a live shelf price. No Polaroid Go Generation 3
  * specs. No page-level winner.
  */
@@ -16,7 +16,7 @@ const PCMAG_UK = "https://uk.pcmag.com/cameras-1/152230/polaroid-go-generation-2
 const PCMAG_12 = "https://www.pcmag.com/reviews/fujifilm-instax-mini-12";
 const PCMAG_BEST = "https://www.pcmag.com/picks/the-best-instant-cameras";
 
-const FETCHED = "2026-09-29";
+const SOURCE_DATE = "2026-09-29";
 const PUBLISHED = "2026-09-29T00:00:00Z";
 
 const SHORT_ANSWER =
@@ -58,9 +58,9 @@ There is no single winner on this page.`;
 
 const EXPERT_ANALYSIS = `An Instax Mini gives you the easier start. The Polaroid Go Gen 2 is the camera for the Polaroid look and tiny square prints, if you accept the higher cost per shot and the less predictable exposure. This page does not crown one camera.
 
-Spec table. Caption: Polaroid Go Gen 2 vs Instax Mini. Source note: the rows are reviewer-cited figures fetched on 29 September 2026 from Digital Camera World, PCMag UK, PCMag's Instax Mini 12 review, and PCMag's instant-camera roundup. They are not a live store price.
+Spec table. Caption: Polaroid Go Gen 2 vs Instax Mini. Source note: the rows are reviewer-cited figures from Digital Camera World, PCMag UK, PCMag's Instax Mini 12 review, and PCMag's instant-camera roundup. They are not a live store price.
 
-Sources fetched on 29 September 2026: Digital Camera World (published 26 October 2024), PCMag UK (updated 8 May 2024), PCMag's Instax Mini 12 review (2 March 2023), and PCMag's best instant cameras roundup (updated 6 July 2026).
+Sources: Digital Camera World (published 26 October 2024), PCMag UK (updated 8 May 2024), PCMag's Instax Mini 12 review (2 March 2023), and PCMag's best instant cameras roundup (updated 6 July 2026).
 
 Prints
 
@@ -176,7 +176,7 @@ export const POLAROID_GO_GEN_2_VS_INSTAX_MINI: EditorialComparison = buildEditor
     textAttr(
       "prints",
       "Prints",
-      "Reviewer-cited · fetched 2026-09-29",
+      "Reviewer-cited",
       GO,
       INSTAX,
       "Square Go film. Image area about 1.8 inches square (PCMag UK)",
@@ -185,7 +185,7 @@ export const POLAROID_GO_GEN_2_VS_INSTAX_MINI: EditorialComparison = buildEditor
     textAttr(
       "body-price",
       "Camera price (reviewer-cited)",
-      "Reviewer-cited · fetched 2026-09-29",
+      "Reviewer-cited",
       GO,
       INSTAX,
       "US$79.99 RRP (Digital Camera World, PCMag UK). Not a live price",
@@ -194,7 +194,7 @@ export const POLAROID_GO_GEN_2_VS_INSTAX_MINI: EditorialComparison = buildEditor
     textAttr(
       "film-cost",
       "Film cost (reviewer-cited)",
-      "Reviewer-cited · fetched 2026-09-29",
+      "Reviewer-cited",
       GO,
       INSTAX,
       "About US$1.24 a shot (Digital Camera World) or US$1.25 (PCMag UK)",
@@ -203,7 +203,7 @@ export const POLAROID_GO_GEN_2_VS_INSTAX_MINI: EditorialComparison = buildEditor
     textAttr(
       "exposure",
       "Exposure",
-      "Reviewer-cited · fetched 2026-09-29",
+      "Reviewer-cited",
       GO,
       INSTAX,
       "Leans toward overexposing outdoors (Digital Camera World). Meter can run too dark or too bright (PCMag UK)",
@@ -213,7 +213,7 @@ export const POLAROID_GO_GEN_2_VS_INSTAX_MINI: EditorialComparison = buildEditor
     textAttr(
       "features",
       "Features",
-      "Reviewer-cited · fetched 2026-09-29",
+      "Reviewer-cited",
       GO,
       INSTAX,
       "Double exposure, self-timer, USB-C, internal battery",
@@ -238,12 +238,12 @@ export const POLAROID_GO_GEN_2_VS_INSTAX_MINI: EditorialComparison = buildEditor
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: "Digital Camera World — Polaroid Go Gen 2 (26 Oct 2024, fetched 2026-09-29)", url: DCW },
-      { name: "PCMag UK — Polaroid Go Gen 2 (updated 8 May 2024, fetched 2026-09-29)", url: PCMAG_UK },
-      { name: "PCMag — Instax Mini 12 (2 Mar 2023, fetched 2026-09-29)", url: PCMAG_12 },
-      { name: "PCMag — best instant cameras (updated 6 Jul 2026, fetched 2026-09-29)", url: PCMAG_BEST },
+      { name: "Digital Camera World — Polaroid Go Gen 2 (26 Oct 2024)", url: DCW },
+      { name: "PCMag UK — Polaroid Go Gen 2 (updated 8 May 2024)", url: PCMAG_UK },
+      { name: "PCMag — Instax Mini 12 (2 Mar 2023)", url: PCMAG_12 },
+      { name: "PCMag — best instant cameras (updated 6 Jul 2026)", url: PCMAG_BEST },
     ],
   },
   resources: [
@@ -252,28 +252,28 @@ export const POLAROID_GO_GEN_2_VS_INSTAX_MINI: EditorialComparison = buildEditor
       label: "Digital Camera World Go Gen 2 review",
       url: DCW,
       description:
-        "Fetched 2026-09-29. US$79.99 RRP for the Go and the Mini 12, US$1.24 vs US$0.79 a shot, square film, outdoor overexposure, double exposure, self-timer, USB-C.",
+        "US$79.99 RRP for the Go and the Mini 12, US$1.24 vs US$0.79 a shot, square film, outdoor overexposure, double exposure, self-timer, USB-C.",
     },
     {
       type: "external",
       label: "PCMag UK Go Gen 2 review",
       url: PCMAG_UK,
       description:
-        "Fetched 2026-09-29. Updated 8 May 2024. US$1.25 a Go photo, US$0.70 an Instax Mini picture, USB-C, internal battery, self-timer, double exposure.",
+        "Updated 8 May 2024. US$1.25 a Go photo, US$0.70 an Instax Mini picture, USB-C, internal battery, self-timer, double exposure.",
     },
     {
       type: "external",
       label: "PCMag Instax Mini 12 review",
       url: PCMAG_12,
       description:
-        "Fetched 2026-09-29. Published 2 March 2023. One-button, selfie mirror, close-up mode, AA batteries, color packs about $7.50 for 10.",
+        "Published 2 March 2023. One-button, selfie mirror, close-up mode, AA batteries, color packs about $7.50 for 10.",
     },
     {
       type: "external",
       label: "PCMag best instant cameras",
       url: PCMAG_BEST,
       description:
-        "Fetched 2026-09-29. Updated 6 July 2026. Names the Instax Mini 13 as the current entry-level pick.",
+        "Updated 6 July 2026. Names the Instax Mini 13 as the current entry-level pick.",
     },
   ],
   metaTitle: "Go Gen 2 vs Instax Mini: Which Camera? | A Versus B",

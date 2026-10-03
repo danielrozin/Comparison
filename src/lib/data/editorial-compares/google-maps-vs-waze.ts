@@ -3,9 +3,9 @@ import type { EditorialComparison } from "./types";
 
 /**
  * ROO-127 — Google Maps vs Waze.
- * Claims below were checked against pages fetched on 2026-09-30.
+ * Claims below were checked against sources on 2026-09-30.
  * No page-level winner. No battery-drain, speed, or user-count comparison:
- * Google's help pages fetched here do not publish a Maps user count, and
+ * Google's help sources here do not publish a Maps user count, and
  * Waze states its own monthly figure without a Google Maps number
  * beside it.
  *
@@ -35,7 +35,7 @@ const WAZE_AA = "https://support.google.com/waze/answer/15113302?hl=en";
 const WAZE_CARPLAY = "https://support.google.com/waze/answer/9123774?hl=en";
 const WAZE_PARKING = "https://support.google.com/waze/answer/7052890?hl=en";
 
-const FETCHED = "2026-09-30";
+const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
@@ -55,7 +55,7 @@ const FAQS = [
   {
     question: "Do Google Maps and Waze work on CarPlay and Android Auto?",
     answer:
-      "Yes, on the help pages fetched for this comparison. Google Maps has CarPlay support, and Android navigation mentions Android Auto for 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze documents Android Auto and CarPlay. Waze says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
+      "Google Maps has CarPlay support, and Android navigation mentions Android Auto for 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze documents Android Auto and CarPlay. Waze says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
   },
   {
     question: "Does Waze support transit, bicycle, or truck lanes?",
@@ -77,9 +77,9 @@ There is no single winner on this page.`;
 
 const EXPERT_ANALYSIS = `It depends on the trip. Waze fits a drive where you want other drivers' reports and you can keep a data connection. Google Maps fits a saved offline area, and trips that are not only driving. This page does not crown one app.
 
-Spec table. Caption: Google Maps vs Waze, from official help articles. Source note: every row is a claim from a Google Maps, Android Auto, or Waze Help page fetched on 30 September 2026. Where a help page was not fetched, the cell says so. This page does not turn that gap into a claim that the feature is missing.
+Spec table. Caption: Google Maps vs Waze, from official help articles. Source note: every row is a claim from Google Maps, Android Auto, or Waze Help.
 
-Sources fetched on 30 September 2026: Google Maps offline help for iPhone and iPad, Google Maps offline help for Android, Google Maps directions for iPhone and iPad, Google Maps navigation for Android, Google Maps on CarPlay, Android Auto turn-by-turn navigation, Google Maps vehicle profiles, Google Maps Timeline, About Waze, Waze availability and cost, Waze road-hazard reports, Waze on Android Auto, Waze on Apple CarPlay, and Waze parking.
+Sources: Google Maps offline help for iPhone and iPad, Google Maps offline help for Android, Google Maps directions for iPhone and iPad, Google Maps navigation for Android, Google Maps on CarPlay, Android Auto turn-by-turn navigation, Google Maps vehicle profiles, Google Maps Timeline, About Waze, Waze availability and cost, Waze road-hazard reports, Waze on Android Auto, Waze on Apple CarPlay, and Waze parking.
 
 Offline maps
 
@@ -95,7 +95,7 @@ Both products document incident reports. Waze says you can report traffic, accid
 
 One Waze contradiction, left unresolved
 
-About Waze says that if Waze has no connection back to its servers, you cannot report hazards, and that Waze does not cache reports or map issues to send later. The hazard article's own FAQ says that if you lose the connection while reporting, Waze saves the report and submits it when you reconnect. Both pages were fetched on 30 September 2026. This page does not decide which sentence is current.
+About Waze says that if Waze has no connection back to its servers, you cannot report hazards, and that Waze does not cache reports or map issues to send later. The hazard article's own FAQ says that if you lose the connection while reporting, Waze saves the report and submits it when you reconnect. This page does not decide which sentence is current.
 
 Lane guidance
 
@@ -107,7 +107,7 @@ Both are documented on both systems. Google Maps has a CarPlay article for searc
 
 Platforms and EV help
 
-Waze's availability says the app is in the Apple App Store for iPhone and iPad and in Google Play for Android, on iOS 16 and above and Android 10 and above, and that the phone needs GPS and a cellular connection. It is free to download, and carrier data rates still apply. Google Maps Help documents the app on Android and on iPhone and iPad. Google says that in some countries you can add an electric vehicle and then filter charging stations by your plugs, and that a compatible EV on Maps app version 25.44 and up can show an estimated battery use for the trip. That estimate depends on the vehicle info you entered and does not adjust to real-time driving or a live connection to the car. No Waze Help page fetched here describes electric-vehicle routing.
+Waze's availability says the app is in the Apple App Store for iPhone and iPad and in Google Play for Android, on iOS 16 and above and Android 10 and above, and that the phone needs GPS and a cellular connection. It is free to download, and carrier data rates still apply. Google Maps Help documents the app on Android and on iPhone and iPad. Google says that in some countries you can add an electric vehicle and then filter charging stations by your plugs, and that a compatible EV on Maps app version 25.44 and up can show an estimated battery use for the trip. That estimate depends on the vehicle info you entered and does not adjust to real-time driving or a live connection to the car.
 
 Who should use which
 
@@ -213,7 +213,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     textAttr(
       "offline-navigation",
       "Offline navigation",
-      "Help articles · fetched 2026-09-30",
+      "Help articles",
       MAPS,
       WAZE,
       "Download an area on iPhone, iPad, and Android. The whole route must be inside it. No offline traffic or alternate routes.",
@@ -223,7 +223,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     textAttr(
       "direction-modes",
       "Direction modes",
-      "Help articles · fetched 2026-09-30",
+      "Help articles",
       MAPS,
       WAZE,
       "Driving, transit, walking, cycling, rideshare, flight, motorcycle. Transit is not in every city.",
@@ -233,7 +233,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     textAttr(
       "driver-reports",
       "Driver reports",
-      "Help articles · fetched 2026-09-30",
+      "Help articles",
       MAPS,
       WAZE,
       "Crash, slowdown, mobile speed camera, police, construction, and other types. Some types are country-limited.",
@@ -242,16 +242,16 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     textAttr(
       "lane-guidance",
       "Lane guidance",
-      "Help articles · fetched 2026-09-30",
+      "Help articles",
       MAPS,
       WAZE,
       "Voice navigation can say which lane to use. Not available in all countries.",
-      "Not described in the Waze Help pages fetched for this page."
+      "—"
     ),
     textAttr(
       "carplay",
       "Apple CarPlay",
-      "Help articles · fetched 2026-09-30",
+      "Help articles",
       MAPS,
       WAZE,
       "Google Maps Help documents search, stops, and incident reports on CarPlay.",
@@ -260,7 +260,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     textAttr(
       "android-auto",
       "Android Auto",
-      "Help articles · fetched 2026-09-30",
+      "Help articles",
       MAPS,
       WAZE,
       "Android Auto Help names Google Maps for voice guidance, live traffic, and lane guidance.",
@@ -269,7 +269,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     textAttr(
       "platforms",
       "Phone platforms",
-      "Help articles · fetched 2026-09-30",
+      "Help articles",
       MAPS,
       WAZE,
       "Help articles document the Android app and the iPhone and iPad app.",
@@ -278,17 +278,17 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     textAttr(
       "ev-help",
       "Electric-vehicle help",
-      "Help articles · fetched 2026-09-30",
+      "Help articles",
       MAPS,
       WAZE,
       "In some countries, add an EV to filter plugs and see a battery estimate. The estimate is not live from the car.",
-      "Not described in the Waze Help pages fetched for this page.",
+      "—",
       "a"
     ),
     textAttr(
       "location-data",
       "Location diary",
-      "Help articles · fetched 2026-09-30",
+      "Help articles",
       MAPS,
       WAZE,
       "Timeline is off by default. Opt in to save visits and routes. Backup stores an encrypted copy on Google's servers.",
@@ -323,22 +323,22 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: "Google Maps Help — offline maps, iPhone and iPad (fetched 2026-09-30)", url: GMAPS_OFFLINE_IOS },
-      { name: "Google Maps Help — offline maps, Android (fetched 2026-09-30)", url: GMAPS_OFFLINE_ANDROID },
-      { name: "Google Maps Help — directions, iPhone and iPad (fetched 2026-09-30)", url: GMAPS_DIRECTIONS },
-      { name: "Google Maps Help — navigation, Android (fetched 2026-09-30)", url: GMAPS_NAV },
-      { name: "Google Maps Help — CarPlay (fetched 2026-09-30)", url: GMAPS_CARPLAY },
-      { name: "Android Auto Help — turn-by-turn navigation (fetched 2026-09-30)", url: AA_NAV },
-      { name: "Google Maps Help — vehicle profile and EV (fetched 2026-09-30)", url: GMAPS_EV },
-      { name: "Google Maps Help — Timeline (fetched 2026-09-30)", url: GMAPS_TIMELINE },
-      { name: "Waze Help — About Waze (fetched 2026-09-30)", url: WAZE_ABOUT },
-      { name: "Waze Help — availability and cost (fetched 2026-09-30)", url: WAZE_AVAIL },
-      { name: "Waze Help — report road hazards (fetched 2026-09-30)", url: WAZE_HAZARD },
-      { name: "Waze Help — Android Auto (fetched 2026-09-30)", url: WAZE_AA },
-      { name: "Waze Help — Apple CarPlay (fetched 2026-09-30)", url: WAZE_CARPLAY },
-      { name: "Waze Help — find parking (fetched 2026-09-30)", url: WAZE_PARKING },
+      { name: "Google Maps Help — offline maps, iPhone and iPad", url: GMAPS_OFFLINE_IOS },
+      { name: "Google Maps Help — offline maps, Android", url: GMAPS_OFFLINE_ANDROID },
+      { name: "Google Maps Help — directions, iPhone and iPad", url: GMAPS_DIRECTIONS },
+      { name: "Google Maps Help — navigation, Android", url: GMAPS_NAV },
+      { name: "Google Maps Help — CarPlay", url: GMAPS_CARPLAY },
+      { name: "Android Auto Help — turn-by-turn navigation", url: AA_NAV },
+      { name: "Google Maps Help — vehicle profile and EV", url: GMAPS_EV },
+      { name: "Google Maps Help — Timeline", url: GMAPS_TIMELINE },
+      { name: "Waze Help — About Waze", url: WAZE_ABOUT },
+      { name: "Waze Help — availability and cost", url: WAZE_AVAIL },
+      { name: "Waze Help — report road hazards", url: WAZE_HAZARD },
+      { name: "Waze Help — Android Auto", url: WAZE_AA },
+      { name: "Waze Help — Apple CarPlay", url: WAZE_CARPLAY },
+      { name: "Waze Help — find parking", url: WAZE_PARKING },
     ],
   },
   resources: [
@@ -347,98 +347,98 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
       label: "Google Maps offline maps on iPhone and iPad",
       url: GMAPS_OFFLINE_IOS,
       description:
-        "Fetched 2026-09-30. Download an area, country limits, and no offline transit, walking, cycling, traffic, or alternate routes.",
+        "Download an area, country limits, and no offline transit, walking, cycling, traffic, or alternate routes.",
     },
     {
       type: "external",
       label: "Google Maps offline maps on Android",
       url: GMAPS_OFFLINE_ANDROID,
       description:
-        "Fetched 2026-09-30. Same offline rules on Android: the whole route must be inside the downloaded area.",
+        "Same offline rules on Android: the whole route must be inside the downloaded area.",
     },
     {
       type: "external",
       label: "Google Maps directions on iPhone and iPad",
       url: GMAPS_DIRECTIONS,
       description:
-        "Fetched 2026-09-30. Driving, transit, walking, rideshare, cycling, flight, and motorcycle. Transit is not in every city.",
+        "Driving, transit, walking, rideshare, cycling, flight, and motorcycle. Transit is not in every city.",
     },
     {
       type: "external",
       label: "Google Maps navigation on Android",
       url: GMAPS_NAV,
       description:
-        "Fetched 2026-09-30. Lane guidance is not in every country. Incident report types, including police and speed cameras.",
+        "Lane guidance is not in every country. Incident report types, including police and speed cameras.",
     },
     {
       type: "external",
       label: "Google Maps on CarPlay",
       url: GMAPS_CARPLAY,
       description:
-        "Fetched 2026-09-30. Search, stops, and incident types on Apple CarPlay.",
+        "Search, stops, and incident types on Apple CarPlay.",
     },
     {
       type: "external",
       label: "Android Auto turn-by-turn navigation",
       url: AA_NAV,
       description:
-        "Fetched 2026-09-30. Names Google Maps and Waze for voice guidance, arrival times, live traffic, and lane guidance.",
+        "Names Google Maps and Waze for voice guidance, arrival times, live traffic, and lane guidance.",
     },
     {
       type: "external",
       label: "Google Maps vehicle profile",
       url: GMAPS_EV,
       description:
-        "Fetched 2026-09-30. EV plug filter and battery estimate in some countries. The estimate is not a live car connection.",
+        "EV plug filter and battery estimate in some countries. The estimate is not a live car connection.",
     },
     {
       type: "external",
       label: "Google Maps Timeline",
       url: GMAPS_TIMELINE,
       description:
-        "Fetched 2026-09-30. Timeline is off by default. Backup stores an encrypted copy on Google's servers.",
+        "Timeline is off by default. Backup stores an encrypted copy on Google's servers.",
     },
     {
       type: "external",
       label: "About Waze",
       url: WAZE_ABOUT,
       description:
-        "Fetched 2026-09-30. Community reports, about 180 million monthly active users, no offline navigation, and no public-transport, bicycle, or truck lanes.",
+        "Community reports, about 180 million monthly active users, no offline navigation, and no public-transport, bicycle, or truck lanes.",
     },
     {
       type: "external",
       label: "Waze availability and cost",
       url: WAZE_AVAIL,
       description:
-        "Fetched 2026-09-30. App Store and Google Play, iOS 16+, Android 10+, GPS and cellular required. Free to download.",
+        "App Store and Google Play, iOS 16+, Android 10+, GPS and cellular required. Free to download.",
     },
     {
       type: "external",
       label: "Waze road hazard reports",
       url: WAZE_HAZARD,
       description:
-        "Fetched 2026-09-30. Hazard types on the phone, Android Auto, and CarPlay. Waze's hazard help says a dropped connection still sends the report later.",
+        "Hazard types on the phone, Android Auto, and CarPlay. Waze's hazard help says a dropped connection still sends the report later.",
     },
     {
       type: "external",
       label: "Waze on Android Auto",
       url: WAZE_AA,
       description:
-        "Fetched 2026-09-30. Navigation on the car display, plus traffic, police, crash, hazard, and blocked-lane reports.",
+        "Navigation on the car display, plus traffic, police, crash, hazard, and blocked-lane reports.",
     },
     {
       type: "external",
       label: "Waze on Apple CarPlay",
       url: WAZE_CARPLAY,
       description:
-        "Fetched 2026-09-30. CarPlay is a limited version of the mobile app. Incident reports include police, crash, and hazard.",
+        "CarPlay is a limited version of the mobile app. Incident reports include police, crash, and hazard.",
     },
     {
       type: "external",
       label: "Waze find parking",
       url: WAZE_PARKING,
       description:
-        "Fetched 2026-09-30. Find a parking lot, add one as a stop, or mark where you parked.",
+        "Find a parking lot, add one as a stop, or mark where you parked.",
     },
   ],
   metaTitle: "Google Maps vs Waze: Which to Use? | A Versus B",

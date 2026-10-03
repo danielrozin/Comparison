@@ -4,7 +4,7 @@ import type { EditorialComparison } from "./types";
 /**
  * Lillard vs Morant. Career lines are the Basketball-Reference per-game and
  * totals tables. The trade is the NBA.com story updated June 30, 2026. The
- * October 21 game is the NBA.com games page. Fetched 2026-10-03.
+ * October 21 game is the NBA.com games page. 2026-10-03.
  * No prediction. The 2026-27 projection table is not quoted.
  */
 
@@ -16,13 +16,13 @@ const MORANT_URL = "https://www.basketball-reference.com/players/m/moranja01.htm
 const TRADE = "https://www.nba.com/news/blazers-grizzlies-ja-morant-trade";
 const SCHEDULE = "https://www.nba.com/games?date=2026-10-21";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const AS_OF = "October 3, 2026";
 
-const CAREER_CAT = `Career per game · Basketball-Reference, fetched ${FETCHED}`;
+const CAREER_CAT = `Career per game · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
-const SCHEDULE_CAT = `Schedule · NBA.com games page, fetched ${FETCHED}`;
+const SCHEDULE_CAT = `Schedule · NBA.com games page`;
 
 const SHORT_ANSWER =
   "On the Basketball-Reference per-game table, Damian Lillard's career line is 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Ja Morant's is 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games. Both are listed with the Portland Trail Blazers. NBA.com's story, updated June 30, 2026, says Portland and Memphis agreed on a trade Monday that sent Morant to Portland. That Monday was June 29, 2026. Stats as of October 3, 2026, there is no 2026-27 regular-season game log. This page does not predict the season.";
@@ -31,7 +31,7 @@ const FAQS = [
   {
     question: "Where are Damian Lillard and Ja Morant listed for 2026-27?",
     answer:
-      "Basketball-Reference lists both with the Portland Trail Blazers, fetched October 3, 2026. NBA.com's story, updated June 30, 2026, says the Trail Blazers and Grizzlies agreed on a trade Monday. Portland received Ja Morant. Memphis received Jerami Grant and Kris Murray. The story lists Damian Lillard on Portland's roster with Jrue Holiday and Scoot Henderson. The Blazers' post and the Grizzlies' post on that story are dated June 30, 2026.",
+      "Basketball-Reference lists both with the Portland Trail Blazers. NBA.com's story, updated June 30, 2026, says the Trail Blazers and Grizzlies agreed on a trade Monday. Portland received Ja Morant. Memphis received Jerami Grant and Kris Murray. The story lists Damian Lillard on Portland's roster with Jrue Holiday and Scoot Henderson. The Blazers' post and the Grizzlies' post on that story are dated June 30, 2026.",
   },
   {
     question: "What day was the Morant trade?",
@@ -68,7 +68,7 @@ const VERDICT = `Career per game: Lillard 25.1 points, 4.3 rebounds, and 6.7 ass
 
 const EXPERT_ANALYSIS = `Damian Lillard's career line on the per-game table is 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Ja Morant's is 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games. Basketball-Reference lists both with the Portland Trail Blazers. This page does not predict 2026-27.
 
-Source note: the per-game rows, totals, team fields, and the 2025-26 injury note are from Basketball-Reference, fetched ${AS_OF}. The trade is from NBA.com's story updated June 30, 2026. The October 21 game is from NBA.com's games page. ${LILLARD_URL} ${MORANT_URL} ${TRADE} ${SCHEDULE}
+Source note: the per-game rows, totals, team fields, and the 2025-26 injury note are from Basketball-Reference. The trade is from NBA.com's story updated June 30, 2026. The October 21 game is from NBA.com's games page. ${LILLARD_URL} ${MORANT_URL} ${TRADE} ${SCHEDULE}
 
 2026-27 season. Stats as of ${AS_OF}. No regular-season game log is on either player page, so this page does not quote a 2026-27 scoring line. Morant's page has a table labeled 2026-27 Projection, and this page does not quote it. NBA.com lists Phoenix at Portland on October 21, 2026, at 10:00 pm ET. That is the schedule. It is not a statement that Lillard is in the lineup. His 2025-26 per-game row says he did not play, injured (Achilles). The June 30 story lists him on Portland's current roster. This page does not add a health clearance or a return date the sources do not print.
 
@@ -210,12 +210,12 @@ const BUILT = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: `Basketball-Reference — Damian Lillard (fetched ${FETCHED})`, url: LILLARD_URL },
-      { name: `Basketball-Reference — Ja Morant (fetched ${FETCHED})`, url: MORANT_URL },
-      { name: `NBA.com — Morant trade (fetched ${FETCHED})`, url: TRADE },
-      { name: `NBA.com — games on October 21, 2026 (fetched ${FETCHED})`, url: SCHEDULE },
+      { name: `Basketball-Reference — Damian Lillard`, url: LILLARD_URL },
+      { name: `Basketball-Reference — Ja Morant`, url: MORANT_URL },
+      { name: `NBA.com — Morant trade`, url: TRADE },
+      { name: `NBA.com — games on October 21, 2026`, url: SCHEDULE },
     ],
   },
   resources: [
@@ -223,13 +223,13 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Damian Lillard",
       url: LILLARD_URL,
-      description: `Fetched ${FETCHED}. Career 25.1 points, 4.3 rebounds, 6.7 assists in 900 games. 2025-26: did not play, injured (Achilles). Team: Portland Trail Blazers.`,
+      description: `Career 25.1 points, 4.3 rebounds, 6.7 assists in 900 games. 2025-26: did not play, injured (Achilles). Team: Portland Trail Blazers.`,
     },
     {
       type: "external",
       label: "Basketball-Reference: Ja Morant",
       url: MORANT_URL,
-      description: `Fetched ${FETCHED}. Career 22.4 points, 4.6 rebounds, 7.4 assists in 327 games. 2025-26: 19.5 points and 8.1 assists in 20 games. Team: Portland Trail Blazers.`,
+      description: `Career 22.4 points, 4.6 rebounds, 7.4 assists in 327 games. 2025-26: 19.5 points and 8.1 assists in 20 games. Team: Portland Trail Blazers.`,
     },
     {
       type: "external",
@@ -241,7 +241,7 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "NBA.com games for October 21, 2026",
       url: SCHEDULE,
-      description: `Fetched ${FETCHED}. Phoenix at Portland, 10:00 pm ET, game 0022600092. Schedule fact only.`,
+      description: `Phoenix at Portland, 10:00 pm ET, game 0022600092. Schedule fact only.`,
     },
   ],
   metaTitle: "Lillard vs Morant: Careers and 2026-27",

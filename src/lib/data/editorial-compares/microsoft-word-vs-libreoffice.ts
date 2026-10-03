@@ -24,7 +24,7 @@ const REQUIREMENTS = "https://www.libreoffice.org/get-help/system-requirements/"
 const OTHER = "https://www.libreoffice.org/download-other/";
 const GUIDE = "https://books.libreoffice.org/en/GS262/GS26202-GettingStartedWithWriter.html";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const SPEC = "Product";
 
@@ -201,7 +201,7 @@ export const MICROSOFT_WORD_VS_LIBREOFFICE: EditorialComparison = buildEditorial
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
       { name: "Microsoft — Microsoft 365 plan comparison", url: M365 },
       { name: "Microsoft — free Word, Excel, and PowerPoint for the web", url: FREE_WEB },

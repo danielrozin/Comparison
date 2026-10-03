@@ -23,11 +23,11 @@ const WEMBY = "victor-wembanyama";
 const FLAGG_URL = "https://www.basketball-reference.com/players/f/flaggco01.html";
 const WEMBY_URL = "https://www.basketball-reference.com/players/w/wembavi01.html";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 
-const CAREER_CAT = "Career · Basketball-Reference per-game tables, fetched 2026-10-03";
-const HONOR_CAT = "Accolades · Basketball-Reference, fetched 2026-10-03";
+const CAREER_CAT = "Career · Basketball-Reference per-game tables";
+const HONOR_CAT = "Accolades · Basketball-Reference";
 const SEASON_CAT = "2026-27 season · Stats as of October 3, 2026";
 
 const SHORT_ANSWER =
@@ -40,17 +40,17 @@ const FAQS = [
   {
     question: "Is Cooper Flagg the reigning Rookie of the Year?",
     answer:
-      "Basketball-Reference lists a 2025-26 Rookie of the Year honor on Cooper Flagg's page, and the per-game row is marked ROY-1. He plays for the Dallas Mavericks. The 2026-27 season had not started on October 3, 2026, so that 2025-26 award is the latest Rookie of the Year on his page.",
+      "Basketball-Reference lists a 2025-26 Rookie of the Year honor for Cooper Flagg, and the per-game row is marked ROY-1. He plays for the Dallas Mavericks. The 2026-27 season had not started on October 3, 2026, so that 2025-26 award is the latest Rookie of the Year Basketball-Reference lists for him. Stats as of October 3, 2026.",
   },
   {
     question: "What are Victor Wembanyama's career averages?",
     answer:
-      "Through three seasons on the Basketball-Reference per-game table, fetched October 3, 2026: 181 games, 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks. Field goal percentage .484, three-point percentage .342, free throw percentage .817. Career totals there: 4,238 points, 1,997 rebounds, 641 assists, and 627 blocks.",
+      "Through three seasons, Basketball-Reference lists 181 games, 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks. Field goal percentage .484, three-point percentage .342, free throw percentage .817. Career totals there: 4,238 points, 1,997 rebounds, 641 assists, and 627 blocks.",
   },
   {
     question: "Which honors does Basketball-Reference list for Wembanyama?",
     answer:
-      "The honors line on his page, fetched October 3, 2026, is: 2x All-Star, 3x blocks champ, 2025-26 All-NBA, 2023-24 Rookie of the Year, 2023-24 All-Rookie, 2x All-Defensive, 2025-26 Defensive Player of the Year, and 2025-26 Western Conference Finals MVP. His 2025-26 regular-season row also lists MVP-3.",
+      "Basketball-Reference lists these honors for Wembanyama: 2x All-Star, 3x blocks champ, 2025-26 All-NBA, 2023-24 Rookie of the Year, 2023-24 All-Rookie, 2x All-Defensive, 2025-26 Defensive Player of the Year, and 2025-26 Western Conference Finals MVP. His 2025-26 regular-season row also lists MVP-3.",
   },
   {
     question: "What did Cooper Flagg average as a rookie?",
@@ -60,12 +60,12 @@ const FAQS = [
   {
     question: "Have Flagg and Wembanyama played in 2026-27?",
     answer:
-      "Neither Basketball-Reference player page fetched October 3, 2026 shows a 2026-27 game log. Basketball-Reference does print a 2026-27 projection table for each player. This page does not quote those projection rows. Stats as of October 3, 2026.",
+      "Basketball-Reference has no 2026-27 game log for Cooper Flagg or Victor Wembanyama. Basketball-Reference also has a 2026-27 projection table for each player. Those rows are not quoted here. Stats as of October 3, 2026.",
   },
   {
-    question: "Does this page say who is the better player?",
+    question: "Does this comparison say who is the better player?",
     answer:
-      "No. It lists the honors and the career lines Basketball-Reference printed on October 3, 2026. Flagg's latest listed Rookie of the Year is 2025-26. Wembanyama's listed Rookie of the Year is 2023-24, and his page also lists the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Those are different awards in different seasons. This page does not turn them into a prediction.",
+      "No. It lists the honors and the career lines from Basketball-Reference. Stats as of October 3, 2026. Flagg's latest listed Rookie of the Year is 2025-26. Wembanyama's listed Rookie of the Year is 2023-24, and Basketball-Reference also lists the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Those are different awards in different seasons. This page does not turn them into a prediction.",
   },
 ];
 
@@ -73,11 +73,11 @@ const VERDICT = `Cooper Flagg: Dallas Mavericks, 2025-26 Rookie of the Year. Roo
 
 Victor Wembanyama: San Antonio Spurs. Career line: 23.4 points, 11.0 rebounds, 3.5 assists, 3.5 blocks in 181 games. Listed honors include 2025-26 Defensive Player of the Year and 2025-26 Western Conference Finals MVP.
 
-2026-27, stats as of October 3, 2026: no game log on either page. There is no page-level winner.`;
+2026-27, stats as of October 3, 2026: Basketball-Reference has no game log for either player. There is no winner.`;
 
 const EXPERT_ANALYSIS = `Cooper Flagg is the Dallas Mavericks forward Basketball-Reference lists as the 2025-26 Rookie of the Year. Victor Wembanyama is the San Antonio Spurs big man with three seasons, a career line of 23.4 points, 11.0 rebounds, and 3.5 blocks, and the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Stats as of October 3, 2026, neither player had a 2026-27 game log. This page does not pick a winner.
 
-Source note: Flagg's team, draft, rookie line, and 2025-26 Rookie of the Year are from his Basketball-Reference player page, fetched October 3, 2026. Wembanyama's team, career line, playoff line, and honors are from his Basketball-Reference player page, fetched the same day. Projection tables on both pages are not used.
+Source note: Flagg's team, draft, rookie line, and 2025-26 Rookie of the Year are from Basketball-Reference. Wembanyama's team, career line, playoff line, and honors are from Basketball-Reference. Projection tables are not used.
 
 Cooper Flagg
 
@@ -89,7 +89,7 @@ He is 7-4 and 235 pounds, born January 4, 2004, in Le Chesnay, France. Team: San
 
 2026-27 season
 
-Stats as of October 3, 2026. The regular season had not started. Neither player page showed a 2026-27 game log. Each page does show a 2026-27 projection table. Those rows are not quoted here. The career lines above are the completed seasons on the per-game tables.`;
+Stats as of October 3, 2026. The regular season had not started. Basketball-Reference has no 2026-27 game log for either player. Basketball-Reference also has a 2026-27 projection table for each player. Those rows are not quoted here. The career lines above are the completed seasons on the per-game tables.`;
 
 const built = buildEditorialComparison({
   slug: "flagg-vs-wembanyama",
@@ -115,7 +115,7 @@ const built = buildEditorialComparison({
         "Drafted first overall by Dallas in 2025. Debut October 22, 2025",
       ],
       cons: [
-        "One NBA season on the Basketball-Reference page fetched October 3, 2026",
+        "One NBA season (2025-26)",
         "Three-point percentage .295 on that rookie row",
         "No 2026-27 game log as of October 3, 2026",
       ],
@@ -262,14 +262,14 @@ const built = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
       {
-        name: "Basketball-Reference — Cooper Flagg (fetched 2026-10-03)",
+        name: "Basketball-Reference — Cooper Flagg",
         url: FLAGG_URL,
       },
       {
-        name: "Basketball-Reference — Victor Wembanyama (fetched 2026-10-03)",
+        name: "Basketball-Reference — Victor Wembanyama",
         url: WEMBY_URL,
       },
     ],
@@ -280,14 +280,14 @@ const built = buildEditorialComparison({
       label: "Basketball-Reference: Cooper Flagg",
       url: FLAGG_URL,
       description:
-        "Fetched 2026-10-03. Dallas. 2025-26 Rookie of the Year. 70 games, 21.0 points, 6.7 rebounds, 4.5 assists. No 2026-27 game log quoted.",
+        "Dallas. 2025-26 Rookie of the Year. 70 games, 21.0 points, 6.7 rebounds, 4.5 assists. No 2026-27 game log quoted.",
     },
     {
       type: "external",
       label: "Basketball-Reference: Victor Wembanyama",
       url: WEMBY_URL,
       description:
-        "Fetched 2026-10-03. Spurs. Career 181 games, 23.4 points, 11.0 rebounds, 3.5 blocks. 2025-26 Defensive Player of the Year and Western Conference Finals MVP.",
+        "Spurs. Career 181 games, 23.4 points, 11.0 rebounds, 3.5 blocks. 2025-26 Defensive Player of the Year and Western Conference Finals MVP.",
     },
     {
       type: "blog",

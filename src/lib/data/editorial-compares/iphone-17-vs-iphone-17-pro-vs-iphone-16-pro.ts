@@ -3,16 +3,16 @@ import type { EditorialComparison } from "./types";
 
 /**
  * ROO-92 — iPhone 17 vs 17 Pro vs 16 Pro.
- * Every figure is from an Apple, AppleInsider, or GSMArena page fetched
+ * Every figure is from Apple, AppleInsider, or GSMArena, as of
  * 2026-09-26. Community notes summarize the Reddit thread without quotes.
  *
  * AVAILABILITY — re-check this at publish time before the "mostly refurbished
  * or third-party" lines stay in the page.
  * Checked 2026-09-26:
- *   https://www.apple.com/iphone-17-pro/specs/ → 301 https://www.apple.com/iphone/
- *   https://www.apple.com/iphone-17/specs/     → 200
- *   https://www.apple.com/iphone/compare/      → still lists iPhone 18 Pro,
- *     iPhone 17 Pro, iPhone 17, and iPhone 16 Pro (older models stay in that tool)
+ * https://www.apple.com/iphone-17-pro/specs/ → 301 https://www.apple.com/iphone/
+ * https://www.apple.com/iphone-17/specs/ → 200
+ * https://www.apple.com/iphone/compare/ → still lists iPhone 18 Pro,
+ * iPhone 17 Pro, iPhone 17, and iPhone 16 Pro (older models stay in that tool)
  * If the 17 Pro specs URL loads on its own again, or Apple sells the 17 Pro
  * new on apple.com/iphone/, delete those availability lines before publish.
  */
@@ -261,10 +261,10 @@ export const IPHONE_17_VS_17_PRO_VS_16_PRO: EditorialComparison = buildEditorial
     ]),
   ],
   faqs: FAQS,
-  // Checked 2026-09-26. Do not add "iPhone 18 Pro vs iPhone 17 Pro" until a
-  // page exists. Both /compare/iphone-18-pro-vs-iphone-17-pro and
-  // /compare/iphone-17-pro-vs-iphone-18-pro returned 404, and neither slug is
-  // in this repo. Do not create that page from this file.
+ // Checked 2026-09-26. Do not add "iPhone 18 Pro vs iPhone 17 Pro" until a
+ // page exists. Both /compare/iphone-18-pro-vs-iphone-17-pro and
+ // /compare/iphone-17-pro-vs-iphone-18-pro returned 404, and neither slug is
+ // in this repo. Do not create that page from this file.
   relatedComparisons: [
     {
       slug: "iphone-17-pro-vs-pro-max",

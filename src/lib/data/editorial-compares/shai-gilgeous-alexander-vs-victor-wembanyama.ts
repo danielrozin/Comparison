@@ -5,7 +5,7 @@ import type { EditorialComparison } from "./types";
  * Shai Gilgeous-Alexander vs Victor Wembanyama. Career lines, 2025-26
  * regular-season lines, and accolades are from Basketball-Reference player
  * pages. The 2026 West finals are from the 2026 playoff index. The October 20
- * game is a schedule fact from NBA.com. Fetched 2026-10-03. Projection rows
+ * game is a schedule fact from NBA.com. Projection rows
  * are not quoted. No winner and no prediction.
  */
 
@@ -17,12 +17,12 @@ const WEMBY_URL = "https://www.basketball-reference.com/players/w/wembavi01.html
 const PLAYOFFS = "https://www.basketball-reference.com/playoffs/NBA_2026.html";
 const SCHEDULE = "https://www.nba.com/games?date=2026-10-20";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const AS_OF = "October 3, 2026";
 
-const CAREER = `Career · Basketball-Reference, fetched ${FETCHED}`;
-const LAST = `2025-26 regular season · Basketball-Reference, fetched ${FETCHED}`;
+const CAREER = `Career · Basketball-Reference`;
+const LAST = `2025-26 regular season · Basketball-Reference`;
 const THIS = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
@@ -71,7 +71,7 @@ MVPs: SGA in 2024-25 and 2025-26. 2026 West finals: Spurs beat the Thunder 4-3.
 
 const EXPERT_ANALYSIS = `Shai Gilgeous-Alexander's career line is 25.3 points, 4.7 rebounds, and 5.3 assists in 530 games. Victor Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 assists in 181 games. SGA was MVP in 2024-25 and 2025-26. In the 2026 West finals, the Spurs beat the Thunder 4-3. This page does not pick a winner.
 
-Source note: career totals, the 2025-26 regular-season lines, and the accolades are from the two Basketball-Reference player pages, fetched ${AS_OF}. The West finals are from Basketball-Reference's 2026 playoff index, fetched the same day. The October 20 game is from NBA.com's games page. ${SGA_URL} ${WEMBY_URL} ${PLAYOFFS} ${SCHEDULE}
+Source note: career totals, the 2025-26 regular-season lines, and the accolades are from the two Basketball-Reference player pages. The West finals are from Basketball-Reference's 2026 playoff index. The October 20 game is from NBA.com's games page. ${SGA_URL} ${WEMBY_URL} ${PLAYOFFS} ${SCHEDULE}
 
 2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log. Both 2026-27 tables on Basketball-Reference are labeled projections, and this page does not quote them. NBA.com lists Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. That is the schedule. It is not a prediction.
 
@@ -182,7 +182,7 @@ const BUILT = buildEditorialComparison({
     textAttr(
       "wcf",
       "2026 West finals",
-      `2026 playoffs · Basketball-Reference, fetched ${FETCHED}`,
+      `2026 playoffs · Basketball-Reference`,
       SGA,
       WEMBY,
       "Thunder lost to the Spurs 4-3",
@@ -228,12 +228,12 @@ const BUILT = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: `Basketball-Reference — Shai Gilgeous-Alexander (fetched ${FETCHED})`, url: SGA_URL },
-      { name: `Basketball-Reference — Victor Wembanyama (fetched ${FETCHED})`, url: WEMBY_URL },
-      { name: `Basketball-Reference — 2026 NBA playoffs (fetched ${FETCHED})`, url: PLAYOFFS },
-      { name: `NBA.com — games on October 20, 2026 (fetched ${FETCHED})`, url: SCHEDULE },
+      { name: `Basketball-Reference — Shai Gilgeous-Alexander`, url: SGA_URL },
+      { name: `Basketball-Reference — Victor Wembanyama`, url: WEMBY_URL },
+      { name: `Basketball-Reference — 2026 NBA playoffs`, url: PLAYOFFS },
+      { name: `NBA.com — games on October 20, 2026`, url: SCHEDULE },
     ],
   },
   resources: [
@@ -241,25 +241,25 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Shai Gilgeous-Alexander",
       url: SGA_URL,
-      description: `Fetched ${FETCHED}. Career 25.3 / 4.7 / 5.3 in 530 games. 2025-26: 31.1 points in 68 games. MVP-1 in 2024-25 and 2025-26. 2026-27 row is a projection and is not used.`,
+      description: `Career 25.3 / 4.7 / 5.3 in 530 games. 2025-26: 31.1 points in 68 games. MVP-1 in 2024-25 and 2025-26. 2026-27 row is a projection and is not used.`,
     },
     {
       type: "external",
       label: "Basketball-Reference: Victor Wembanyama",
       url: WEMBY_URL,
-      description: `Fetched ${FETCHED}. Career 23.4 points, 11.0 rebounds, 3.5 blocks in 181 games. 2025-26: 25.0 points, 11.5 rebounds, 3.1 blocks. 2026-27 row is a projection and is not used.`,
+      description: `Career 23.4 points, 11.0 rebounds, 3.5 blocks in 181 games. 2025-26: 25.0 points, 11.5 rebounds, 3.1 blocks. 2026-27 row is a projection and is not used.`,
     },
     {
       type: "external",
       label: "Basketball-Reference 2026 playoffs",
       url: PLAYOFFS,
-      description: `Fetched ${FETCHED}. West finals: Spurs over Thunder 4-3. Game 7 on May 30, San Antonio 111 at Oklahoma City 103.`,
+      description: `West finals: Spurs over Thunder 4-3. Game 7 on May 30, San Antonio 111 at Oklahoma City 103.`,
     },
     {
       type: "external",
       label: "NBA.com games for October 20, 2026",
       url: SCHEDULE,
-      description: `Fetched ${FETCHED}. Oklahoma City at San Antonio, 9:30 pm ET. Schedule fact only.`,
+      description: `Oklahoma City at San Antonio, 9:30 pm ET. Schedule fact only.`,
     },
     {
       type: "blog",

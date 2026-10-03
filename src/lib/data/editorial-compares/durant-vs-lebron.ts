@@ -4,7 +4,7 @@ import type { EditorialComparison } from "./types";
 /**
  * Durant vs LeBron. Career and 2025-26 lines are Basketball-Reference.
  * The July 2026 76ers signing is the NBA.com story updated July 27, 2026.
- * Fetched 2026-10-03. Projection rows and reported contract dollars are
+ * Projection rows and reported contract dollars are
  * not quoted. No prediction.
  */
 
@@ -15,12 +15,12 @@ const DURANT_URL = "https://www.basketball-reference.com/players/d/duranke01.htm
 const LEBRON_URL = "https://www.basketball-reference.com/players/j/jamesle01.html";
 const SIGNING = "https://www.nba.com/news/lebron-james-free-agency-sixers-2026";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const AS_OF = "October 3, 2026";
 
-const CAREER_CAT = `Career per game · Basketball-Reference, fetched ${FETCHED}`;
-const RECENT_CAT = `2025-26 regular season · Basketball-Reference, fetched ${FETCHED}`;
+const CAREER_CAT = `Career per game · Basketball-Reference`;
+const RECENT_CAT = `2025-26 regular season · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
@@ -45,7 +45,7 @@ const FAQS = [
   {
     question: "Where is each player listed for 2026-27?",
     answer:
-      "Basketball-Reference lists Durant with the Houston Rockets and LeBron with the Philadelphia 76ers, fetched October 3, 2026. NBA.com's story, updated July 27, 2026, says LeBron announced the move on social media Friday and that it became official on Sunday. His posts on that story are dated July 24, 2026. He told the Lakers on June 30 that he would not return. The story says he logged 23 seasons and will add at least one more this season.",
+      "Basketball-Reference lists Durant with the Houston Rockets and LeBron with the Philadelphia 76ers. NBA.com's story, updated July 27, 2026, says LeBron announced the move on social media Friday and that it became official on Sunday. His posts on that story are dated July 24, 2026. He told the Lakers on June 30 that he would not return. The story says he logged 23 seasons and will add at least one more this season.",
   },
   {
     question: "Does this page predict 2026-27?",
@@ -64,7 +64,7 @@ Championships on the honors lists: Durant 2. LeBron 4.
 
 const EXPERT_ANALYSIS = `Kevin Durant's career line is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games, totaling 32,597 points. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. In 2025-26 Durant averaged 26.0 points in 78 games and LeBron averaged 20.9 points in 60 games. This page does not pick a winner.
 
-Source note: the career rows, the 2025-26 lines, and the team fields are from Basketball-Reference, fetched ${AS_OF}. The signing and the line that 2026-27 adds at least one season after 23 are from NBA.com's story updated July 27, 2026. ${DURANT_URL} ${LEBRON_URL} ${SIGNING}
+Source note: the career rows, the 2025-26 lines, and the team fields are from Basketball-Reference. The signing and the line that 2026-27 adds at least one season after 23 are from NBA.com's story updated July 27, 2026. ${DURANT_URL} ${LEBRON_URL} ${SIGNING}
 
 2026-27 season. Stats as of ${AS_OF}. Durant's team field is the Houston Rockets. LeBron's is the Philadelphia 76ers. NBA.com says LeBron announced the move Friday, that it became official Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. Neither page has a 2026-27 game log. Tables labeled 2026-27 Projection are not quoted.
 
@@ -198,11 +198,11 @@ const BUILT = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: `Basketball-Reference — Kevin Durant (fetched ${FETCHED})`, url: DURANT_URL },
-      { name: `Basketball-Reference — LeBron James (fetched ${FETCHED})`, url: LEBRON_URL },
-      { name: `NBA.com — LeBron signs with the 76ers (fetched ${FETCHED})`, url: SIGNING },
+      { name: `Basketball-Reference — Kevin Durant`, url: DURANT_URL },
+      { name: `Basketball-Reference — LeBron James`, url: LEBRON_URL },
+      { name: `NBA.com — LeBron signs with the 76ers`, url: SIGNING },
     ],
   },
   resources: [
@@ -210,13 +210,13 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Kevin Durant",
       url: DURANT_URL,
-      description: `Fetched ${FETCHED}. Career 27.1 points, 6.9 rebounds, 4.4 assists in 1,201 games. 2025-26: 26.0 points in 78 games. Team: Houston Rockets.`,
+      description: `Career 27.1 points, 6.9 rebounds, 4.4 assists in 1,201 games. 2025-26: 26.0 points in 78 games. Team: Houston Rockets.`,
     },
     {
       type: "external",
       label: "Basketball-Reference: LeBron James",
       url: LEBRON_URL,
-      description: `Fetched ${FETCHED}. Career 26.8 points, 7.5 rebounds, 7.4 assists in 1,622 games. 2025-26: 20.9 points in 60 games. Team: Philadelphia 76ers.`,
+      description: `Career 26.8 points, 7.5 rebounds, 7.4 assists in 1,622 games. 2025-26: 20.9 points in 60 games. Team: Philadelphia 76ers.`,
     },
     {
       type: "external",

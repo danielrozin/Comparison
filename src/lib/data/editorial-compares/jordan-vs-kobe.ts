@@ -3,7 +3,7 @@ import type { EditorialComparison } from "./types";
 
 /**
  * Jordan vs Kobe. Career lines, honors, and the death date are
- * Basketball-Reference. Fetched 2026-10-03. No 2026-27 game log exists
+ * Basketball-Reference. No 2026-27 game log exists
  * for either player. No prediction.
  */
 
@@ -13,11 +13,11 @@ const KOBE = "kobe-bryant";
 const JORDAN_URL = "https://www.basketball-reference.com/players/j/jordami01.html";
 const KOBE_URL = "https://www.basketball-reference.com/players/b/bryanko01.html";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const AS_OF = "October 3, 2026";
 
-const CAREER_CAT = `Career per game · Basketball-Reference, fetched ${FETCHED}`;
+const CAREER_CAT = `Career per game · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
@@ -66,11 +66,11 @@ Championships on the honors lists: Jordan 6. Kobe 5.
 
 const EXPERT_ANALYSIS = `Michael Jordan's career line is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games, totaling 32,292 points. Kobe Bryant's is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games, totaling 33,643 points. Jordan won 6 championships. Kobe won 5. This page does not pick a winner.
 
-Source note: every counting line and honor on this page is from the two Basketball-Reference player pages, fetched ${AS_OF}. ${JORDAN_URL} ${KOBE_URL}
+Source note: every counting line and honor on this page is from the two Basketball-Reference player pages. ${JORDAN_URL} ${KOBE_URL}
 
 2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log, so this page does not quote one and does not quote a projection. Jordan played 15 seasons. Kobe played 20.
 
-The honors lists, fetched the same day, also show Jordan with 6 Finals MVPs, 5 MVPs, 10 scoring titles, and 14 All-Star selections, and Kobe with 2 Finals MVPs, the 2007-08 MVP, and 18 All-Star selections. Chicago accounts for 13 of Jordan's years on the per-game split, at 31.5 points per game. Washington accounts for 2 years, at 21.2.`;
+The honors lists, also show Jordan with 6 Finals MVPs, 5 MVPs, 10 scoring titles, and 14 All-Star selections, and Kobe with 2 Finals MVPs, the 2007-08 MVP, and 18 All-Star selections. Chicago accounts for 13 of Jordan's years on the per-game split, at 31.5 points per game. Washington accounts for 2 years, at 21.2.`;
 
 const BUILT = buildEditorialComparison({
   slug: "jordan-vs-kobe",
@@ -191,10 +191,10 @@ const BUILT = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: `Basketball-Reference — Michael Jordan (fetched ${FETCHED})`, url: JORDAN_URL },
-      { name: `Basketball-Reference — Kobe Bryant (fetched ${FETCHED})`, url: KOBE_URL },
+      { name: `Basketball-Reference — Michael Jordan`, url: JORDAN_URL },
+      { name: `Basketball-Reference — Kobe Bryant`, url: KOBE_URL },
     ],
   },
   resources: [
@@ -202,13 +202,13 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Michael Jordan",
       url: JORDAN_URL,
-      description: `Fetched ${FETCHED}. Career 30.1 points, 6.2 rebounds, 5.3 assists in 1,072 games. Honors: 6 championships, 6 Finals MVPs, 5 MVPs.`,
+      description: `Career 30.1 points, 6.2 rebounds, 5.3 assists in 1,072 games. Honors: 6 championships, 6 Finals MVPs, 5 MVPs.`,
     },
     {
       type: "external",
       label: "Basketball-Reference: Kobe Bryant",
       url: KOBE_URL,
-      description: `Fetched ${FETCHED}. Career 25.0 points, 5.2 rebounds, 4.7 assists in 1,346 games. Honors: 5 championships, 2 Finals MVPs.`,
+      description: `Career 25.0 points, 5.2 rebounds, 4.7 assists in 1,346 games. Honors: 5 championships, 2 Finals MVPs.`,
     },
     {
       type: "blog",

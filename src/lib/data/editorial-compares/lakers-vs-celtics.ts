@@ -3,7 +3,7 @@ import type { EditorialComparison } from "./types";
 
 /**
  * Lakers vs Celtics. Franchise headers, the Lakers head-to-head row, and
- * the Finals series list are Basketball-Reference. Fetched 2026-10-03.
+ * the Finals series list are Basketball-Reference. 2026-10-03.
  * The head-to-head table is not captioned regular season. No prediction.
  */
 
@@ -15,13 +15,13 @@ const BOS_URL = "https://www.basketball-reference.com/teams/BOS/";
 const H2H = "https://www.basketball-reference.com/teams/LAL/head2head.html";
 const SERIES = "https://www.basketball-reference.com/playoffs/series.html";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const AS_OF = "October 3, 2026";
 
-const FRANCHISE_CAT = `Franchise header · Basketball-Reference, fetched ${FETCHED}`;
-const H2H_CAT = `Head-to-head · Basketball-Reference Lakers table, fetched ${FETCHED}`;
-const FINALS_CAT = `Finals series · Basketball-Reference playoff series history, fetched ${FETCHED}`;
+const FRANCHISE_CAT = `Franchise header · Basketball-Reference`;
+const H2H_CAT = `Head-to-head · Basketball-Reference Lakers table`;
+const FINALS_CAT = `Finals series · Basketball-Reference playoff series history`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
@@ -31,7 +31,7 @@ const FAQS = [
   {
     question: "How many championships does each franchise header list?",
     answer:
-      "Fetched October 3, 2026, the Lakers header lists 17 championships, 66 playoff appearances, a 3,653-2,515 record, a .592 winning percentage, and 79 seasons from 1948-49 through 2026-27. The names on that header are Los Angeles Lakers and Minneapolis Lakers. The Celtics header lists 18 championships, 63 playoff appearances, a 3,751-2,527 record, a .597 winning percentage, and 81 seasons from 1946-47 through 2026-27.",
+      "The Lakers header lists 17 championships, 66 playoff appearances, a 3,653-2,515 record, a .592 winning percentage, and 79 seasons from 1948-49 through 2026-27. The names on that header are Los Angeles Lakers and Minneapolis Lakers. The Celtics header lists 18 championships, 63 playoff appearances, a 3,751-2,527 record, a .597 winning percentage, and 81 seasons from 1946-47 through 2026-27.",
   },
   {
     question: "What is the Lakers' record against the Celtics?",
@@ -70,7 +70,7 @@ Finals series on the playoff series table: 12 meetings. Celtics won 9. Lakers wo
 
 const EXPERT_ANALYSIS = `The Celtics franchise header lists 18 championships. The Lakers header lists 17. In the 12 Finals series on Basketball-Reference's playoff series table, the Celtics won 9 and the Lakers won 3. On the Lakers head-to-head table, the Lakers are 135-169 against Boston in 304 games. This page does not predict 2026-27.
 
-Source note: the headers are the Lakers and Celtics franchise pages. The 304-game row is the Lakers head-to-head page. The 12 Finals series are filtered from the playoff series history table to rows whose series is Finals and whose two teams are the Celtics and the Lakers, including Minneapolis in 1959. All four pages were fetched ${AS_OF}. ${LAL_URL} ${BOS_URL} ${H2H} ${SERIES}
+Source note: the headers are the Lakers and Celtics franchise pages. The 304-game row is the Lakers head-to-head page. The 12 Finals series are filtered from the playoff series history table to rows whose series is Finals and whose two teams are the Celtics and the Lakers, including Minneapolis in 1959. ${LAL_URL} ${BOS_URL} ${H2H} ${SERIES}
 
 2026-27 season. Stats as of ${AS_OF}. Both headers run through 2026-27. This page does not quote a 2026-27 meeting, a score, or a projection. The latest Finals row between them is 2010.
 
@@ -197,12 +197,12 @@ const BUILT = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: `Basketball-Reference — Lakers franchise (fetched ${FETCHED})`, url: LAL_URL },
-      { name: `Basketball-Reference — Celtics franchise (fetched ${FETCHED})`, url: BOS_URL },
-      { name: `Basketball-Reference — Lakers head-to-head (fetched ${FETCHED})`, url: H2H },
-      { name: `Basketball-Reference — playoff series history (fetched ${FETCHED})`, url: SERIES },
+      { name: `Basketball-Reference — Lakers franchise`, url: LAL_URL },
+      { name: `Basketball-Reference — Celtics franchise`, url: BOS_URL },
+      { name: `Basketball-Reference — Lakers head-to-head`, url: H2H },
+      { name: `Basketball-Reference — playoff series history`, url: SERIES },
     ],
   },
   resources: [
@@ -210,25 +210,25 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference Lakers franchise",
       url: LAL_URL,
-      description: `Fetched ${FETCHED}. 17 championships, 66 playoff appearances, 3,653-2,515, 79 seasons from 1948-49 through 2026-27. Names include Minneapolis Lakers.`,
+      description: `17 championships, 66 playoff appearances, 3,653-2,515, 79 seasons from 1948-49 through 2026-27. Names include Minneapolis Lakers.`,
     },
     {
       type: "external",
       label: "Basketball-Reference Celtics franchise",
       url: BOS_URL,
-      description: `Fetched ${FETCHED}. 18 championships, 63 playoff appearances, 3,751-2,527, 81 seasons from 1946-47 through 2026-27.`,
+      description: `18 championships, 63 playoff appearances, 3,751-2,527, 81 seasons from 1946-47 through 2026-27.`,
     },
     {
       type: "external",
       label: "Basketball-Reference Lakers head-to-head",
       url: H2H,
-      description: `Fetched ${FETCHED}. Boston row: 304 games, Lakers 135 wins, 169 losses, 104.4 points scored per game, 106.7 allowed. Not labeled regular season.`,
+      description: `Boston row: 304 games, Lakers 135 wins, 169 losses, 104.4 points scored per game, 106.7 allowed. Not labeled regular season.`,
     },
     {
       type: "external",
       label: "Basketball-Reference playoff series history",
       url: SERIES,
-      description: `Fetched ${FETCHED}. 12 Finals series. Celtics won 9. Lakers won 3. Latest: 2010, Lakers 4, Celtics 3.`,
+      description: `12 Finals series. Celtics won 9. Lakers won 3. Latest: 2010, Lakers 4, Celtics 3.`,
     },
   ],
   metaTitle: "Lakers vs Celtics: Rivalry History",

@@ -3,7 +3,7 @@ import type { EditorialComparison } from "./types";
 
 /**
  * Joel Embiid vs Nikola Jokic. Career lines, the 2025-26 regular season, and
- * the honors lists are from Basketball-Reference. Fetched 2026-10-03.
+ * the honors lists are from Basketball-Reference. 2026-10-03.
  * Projection rows are not quoted. No winner and no prediction.
  */
 
@@ -13,12 +13,12 @@ const JOKIC = "nikola-jokic";
 const EMBIID_URL = "https://www.basketball-reference.com/players/e/embiijo01.html";
 const JOKIC_URL = "https://www.basketball-reference.com/players/j/jokicni01.html";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const AS_OF = "October 3, 2026";
 
-const CAREER = `Career · Basketball-Reference, fetched ${FETCHED}`;
-const LAST = `2025-26 regular season · Basketball-Reference, fetched ${FETCHED}`;
+const CAREER = `Career · Basketball-Reference`;
+const LAST = `2025-26 regular season · Basketball-Reference`;
 const THIS = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
@@ -28,7 +28,7 @@ const FAQS = [
   {
     question: "What are Joel Embiid's and Nikola Jokic's career lines?",
     answer:
-      "Embiid, in 10 seasons and 490 games: 13,544 points, at 27.6 points, 10.8 rebounds, and 3.7 assists per game. Jokic, in 11 seasons and 810 games: 18,009 points, at 22.2 points, 11.1 rebounds, and 7.5 assists per game. Both lines are the Basketball-Reference career rows, fetched October 3, 2026.",
+      "Embiid, in 10 seasons and 490 games: 13,544 points, at 27.6 points, 10.8 rebounds, and 3.7 assists per game. Jokic, in 11 seasons and 810 games: 18,009 points, at 22.2 points, 11.1 rebounds, and 7.5 assists per game. Both lines are the Basketball-Reference career rows.",
   },
   {
     question: "What did Embiid and Jokic average in 2025-26?",
@@ -67,7 +67,7 @@ MVPs: Embiid in 2022-23. Jokic in 2020-21, 2021-22, and 2023-24. Jokic also won 
 
 const EXPERT_ANALYSIS = `Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games. Embiid was MVP in 2022-23. Jokic was MVP in 2020-21, 2021-22, and 2023-24. This page does not pick a winner.
 
-Source note: career totals, the 2025-26 regular-season lines, and the honors lists are from the two Basketball-Reference player pages, fetched ${AS_OF}. ${EMBIID_URL} ${JOKIC_URL}
+Source note: career totals, the 2025-26 regular-season lines, and the honors lists are from the two Basketball-Reference player pages. ${EMBIID_URL} ${JOKIC_URL}
 
 2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log. Both 2026-27 tables on Basketball-Reference are labeled projections, and this page does not quote them.
 
@@ -202,10 +202,10 @@ const BUILT = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: `Basketball-Reference — Joel Embiid (fetched ${FETCHED})`, url: EMBIID_URL },
-      { name: `Basketball-Reference — Nikola Jokic (fetched ${FETCHED})`, url: JOKIC_URL },
+      { name: `Basketball-Reference — Joel Embiid`, url: EMBIID_URL },
+      { name: `Basketball-Reference — Nikola Jokic`, url: JOKIC_URL },
     ],
   },
   resources: [
@@ -213,13 +213,13 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Joel Embiid",
       url: EMBIID_URL,
-      description: `Fetched ${FETCHED}. Career 27.6 / 10.8 / 3.7 in 490 games. 2025-26: 26.9 points in 38 games. 2022-23 MVP. 2026-27 row is a projection and is not used.`,
+      description: `Career 27.6 / 10.8 / 3.7 in 490 games. 2025-26: 26.9 points in 38 games. 2022-23 MVP. 2026-27 row is a projection and is not used.`,
     },
     {
       type: "external",
       label: "Basketball-Reference: Nikola Jokic",
       url: JOKIC_URL,
-      description: `Fetched ${FETCHED}. Career 22.2 / 11.1 / 7.5 in 810 games. MVP-1 in 2020-21, 2021-22, and 2023-24. 2026-27 row is a projection and is not used.`,
+      description: `Career 22.2 / 11.1 / 7.5 in 810 games. MVP-1 in 2020-21, 2021-22, and 2023-24. 2026-27 row is a projection and is not used.`,
     },
   ],
   metaTitle: "Embiid vs Jokic: Careers and 2026-27",
