@@ -80,6 +80,14 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "oklahoma-city-thunder-vs-san-antonio-spurs": "oklahoma-city-thunder-vs-spurs",
   "new-york-knicks-vs-san-antonio-spurs": "knicks-vs-spurs",
   "san-antonio-spurs-vs-new-york-knicks": "knicks-vs-spurs",
+  // Confirmed 2026-10-03: both 404. Destination is the new alphabetical page.
+  "curry-vs-lebron": "lebron-james-vs-stephen-curry",
+  "stephen-curry-vs-lebron-james": "lebron-james-vs-stephen-curry",
+  // Confirmed 2026-10-03: all three 404. Alphabetical shell is jordan-vs-kobe
+  // ('j' < 'k'). Long names are different tokens, so they need the map.
+  "kobe-vs-jordan": "jordan-vs-kobe",
+  "kobe-bryant-vs-michael-jordan": "jordan-vs-kobe",
+  "michael-jordan-vs-kobe-bryant": "jordan-vs-kobe",
   "14-inch-vs-16-inch-macbook-pro": "macbook-pro-14-vs-16-inch",
   "japan-vs-china-economy-comparison-2026": "china-vs-japan-economy-comparison-2026",
   "cristiano-ronaldo-vs-neymar-career-stats-comparison-2026":

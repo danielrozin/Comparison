@@ -270,8 +270,23 @@ describe("COMPARE_REDIRECTS", () => {
       expect(COMPARE_REDIRECTS.some((redirect) => redirect.source === "/compare/lebron-vs-jordan")).toBe(
         false
       );
-      expect(getConsolidatedCompareSlug("curry-vs-lebron")).toBeNull();
-      expect(getConsolidatedCompareSlug("kobe-vs-jordan")).toBeNull();
+    });
+
+    it("301s Curry and Kobe 404s to the new career pages in one hop", () => {
+      const cases: [string, string][] = [
+        ["curry-vs-lebron", "lebron-james-vs-stephen-curry"],
+        ["stephen-curry-vs-lebron-james", "lebron-james-vs-stephen-curry"],
+        ["kobe-vs-jordan", "jordan-vs-kobe"],
+        ["kobe-bryant-vs-michael-jordan", "jordan-vs-kobe"],
+        ["michael-jordan-vs-kobe-bryant", "jordan-vs-kobe"],
+      ];
+      for (const [from, to] of cases) {
+        expect(getConsolidatedCompareSlug(from)).toBe(to);
+        const hit = COMPARE_REDIRECTS.find((redirect) => redirect.source === `/compare/${from}`);
+        expect(hit?.destination).toBe(`/compare/${to}`);
+        expect(hit?.statusCode).toBe(301);
+        expect(getConsolidatedCompareSlug(to)).toBeNull();
+      }
     });
 
     it("301s SGA and Sixers short aliases straight to the live pages", () => {
