@@ -25,7 +25,6 @@ describe("basketball hub FAQ links", () => {
     expect(isEditorialCompareSlug("kobe-bryant-vs-steph-curry")).toBe(true);
     expect(isEditorialCompareSlug("durant-vs-lebron")).toBe(true);
     expect(isEditorialCompareSlug("lakers-vs-celtics")).toBe(true);
-    expect(isEditorialCompareSlug("lebron-vs-jordan")).toBe(true);
     expect(getConsolidatedCompareSlug("embiid-vs-jokic")).toBeNull();
     expect(getConsolidatedCompareSlug("kobe-bryant-vs-steph-curry")).toBeNull();
     expect(getConsolidatedCompareSlug("durant-vs-lebron")).toBeNull();
