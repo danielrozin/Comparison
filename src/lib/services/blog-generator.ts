@@ -12,6 +12,7 @@ import { checkBlogDedup, recordDedupRejection } from "./dedup-gate";
 import { submitToIndexNow } from "@/lib/seo/indexnow";
 import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { embedText } from "./embeddings";
+import { findRepoBlogArticle, listRepoBlogArticles } from "@/lib/data/nba-season-preview-blog";
 
 export interface BlogArticle {
   id?: string;
@@ -244,7 +245,7 @@ export async function getBlogBySlug(
 ): Promise<BlogArticle | null> {
   const prisma = getPrismaClient();
   if (!prisma) {
-    return MOCK_BLOG_ARTICLES.find((a) => a.slug === slug) || null;
+    return findRepoBlogArticle(slug) ?? MOCK_BLOG_ARTICLES.find((a) => a.slug === slug) ?? null;
   }
 
   try {
@@ -274,6 +275,15 @@ export async function getBlogBySlug(
     }
   } catch (e) {
     console.error("Failed to get blog article:", e);
+  }
+
+  // Repo posts ship with the app. A later DB upsert for the same slug wins above.
+  const repoArticle = findRepoBlogArticle(slug);
+  if (repoArticle) {
+    if (repoArticle.publishedAt && new Date(repoArticle.publishedAt).getTime() > Date.now()) {
+      return null;
+    }
+    return repoArticle;
   }
 
   // Fallback to mock articles when DB returns null or query fails
@@ -659,6 +669,27 @@ const MOCK_BLOG_ARTICLES: BlogArticle[] = [
   },
 ];
 
+async function repoArticlesMissingFromDb(
+  prisma: NonNullable<ReturnType<typeof getPrismaClient>>,
+  status: string,
+  category?: string,
+): Promise<BlogArticle[]> {
+  const now = Date.now();
+  const candidates = listRepoBlogArticles().filter((article) => {
+    if (article.status !== status) return false;
+    if (category && article.category !== category) return false;
+    if (article.publishedAt && new Date(article.publishedAt).getTime() > now) return false;
+    return true;
+  });
+  if (candidates.length === 0) return [];
+  const rows = await prisma.blogArticle.findMany({
+    where: { slug: { in: candidates.map((article) => article.slug) } },
+    select: { slug: true },
+  });
+  const present = new Set(rows.map((row: { slug: string }) => row.slug));
+  return candidates.filter((article) => !present.has(article.slug));
+}
+
 export async function listBlogArticles(params: {
   category?: string;
   limit?: number;
@@ -669,7 +700,9 @@ export async function listBlogArticles(params: {
   if (!prisma) {
     // Fallback to mock blog articles
     const { category, limit = 12, offset = 0 } = params;
-    let filtered = MOCK_BLOG_ARTICLES.filter((a) => a.status === "published");
+    let filtered = [...listRepoBlogArticles(), ...MOCK_BLOG_ARTICLES].filter(
+      (a) => a.status === "published",
+    );
     if (category) filtered = filtered.filter((a) => a.category === category);
     return {
       articles: filtered.slice(offset, offset + limit),
@@ -694,8 +727,8 @@ export async function listBlogArticles(params: {
     ]);
 
     if (total > 0) {
-      return {
-        articles: articles.map(
+      const extras = await repoArticlesMissingFromDb(prisma, status, category);
+      const mapped = articles.map(
           (a: {
             id: string;
             slug: string;
@@ -731,8 +764,20 @@ export async function listBlogArticles(params: {
             updatedAt: a.updatedAt,
             viewCount: a.viewCount,
           })
-        ),
-        total,
+        );
+      const merged =
+        offset === 0 && extras.length > 0
+          ? [...extras, ...mapped]
+              .sort((a, b) => {
+                const da = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+                const db = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+                return db - da;
+              })
+              .slice(0, limit)
+          : mapped;
+      return {
+        articles: merged,
+        total: total + extras.length,
       };
     }
   } catch (e) {
@@ -742,7 +787,7 @@ export async function listBlogArticles(params: {
   // Fallback to mock articles when DB is empty or query fails
   const { category: cat, limit: lim = 12, offset: off = 0 } = params;
   const now = Date.now();
-  let filtered = MOCK_BLOG_ARTICLES.filter(
+  let filtered = [...listRepoBlogArticles(), ...MOCK_BLOG_ARTICLES].filter(
     (a) => a.status === "published" && (!a.publishedAt || new Date(a.publishedAt).getTime() <= now)
   );
   if (cat) filtered = filtered.filter((a) => a.category === cat);

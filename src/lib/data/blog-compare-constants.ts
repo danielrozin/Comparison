@@ -76,6 +76,22 @@ export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
     "signal-vs-whatsapp",
     "whatsapp-vs-telegram",
   ],
+  // 2026-27 NBA season preview. Canonical compare slugs only.
+  "2026-27-nba-season-preview-10-debates": [
+    "lebron-vs-jordan",
+    "knicks-vs-76ers",
+    "shai-gilgeous-alexander-vs-victor-wembanyama",
+    "oklahoma-city-thunder-vs-spurs",
+    "knicks-vs-spurs",
+    "flagg-vs-wembanyama",
+    "damian-lillard-vs-ja-morant",
+    "lebron-james-vs-stephen-curry",
+    "cooper-flagg-vs-kon-knueppel",
+    "lakers-vs-celtics",
+    "kobe-bryant-vs-lebron-james",
+    "jordan-vs-kobe",
+    "durant-vs-lebron",
+  ],
 };
 
 /** Soft explore target when no live compare slugs remain. */
