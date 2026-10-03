@@ -43,7 +43,7 @@ const FAQS = [
   {
     question: "Can I install Chrome extensions in Brave?",
     answer:
-      "Brave's guide, published 2 June 2025 and still current on 30 September 2026, says an extension from the Chrome Web Store works in Brave, and that you click Add to Brave. Brave says it cannot vouch for how a third-party extension handles your data. The same guide says Brave will keep supporting some Manifest V2 extensions, and that Manifest V3 extensions work in Brave as they do in Chrome. Chrome's timeline, last updated 9 September 2026, says Manifest V2 extensions are disabled for every Chrome user as of Chrome 138 on 24 July 2025, and that they stop working on Chrome 139 and later.",
+      "Brave's guide, published 2 June 2025, says an extension from the Chrome Web Store works in Brave, and that you click Add to Brave. Brave says it cannot vouch for how a third-party extension handles your data. The same guide says Brave will keep supporting some Manifest V2 extensions, and that Manifest V3 extensions work in Brave as they do in Chrome. Chrome's timeline, last updated 9 September 2026, says Manifest V2 extensions are disabled for every Chrome user as of Chrome 138 on 24 July 2025, and that they stop working on Chrome 139 and later.",
   },
   {
     question: "What is Brave Rewards and BAT?",
@@ -195,7 +195,7 @@ export const BRAVE_VS_CHROME: EditorialComparison = buildEditorialComparison({
     {
       label: "Rewards",
       entityAValue: "Optional BAT",
-      entityBValue: "Not offered",
+      entityBValue: "Not offered on the Chrome pages fetched",
       winner: "tie",
     },
   ],
@@ -252,7 +252,7 @@ export const BRAVE_VS_CHROME: EditorialComparison = buildEditorialComparison({
       BRAVE,
       CHROME,
       "Optional BAT (Brave)",
-      "Not offered by Chrome"
+      "Not offered on the Chrome pages fetched"
     ),
     textAttr(
       "speed",

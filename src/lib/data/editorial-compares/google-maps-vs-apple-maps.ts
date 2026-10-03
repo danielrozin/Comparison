@@ -52,7 +52,7 @@ const FAQS = [
   {
     question: "Does Apple Maps work on Android?",
     answer:
-      "Apple says Maps works across Apple devices. Apple does not mention an Android app or Android Auto. Google Maps Help documents the app on Android and on iPhone and iPad, and Android Auto Help names Google Maps for voice-guided navigation. A missing mention is not a lab test. The comparison reports what Apple and Google document.",
+      "Apple says Maps works across Apple devices. The Apple Maps copy fetched on 30 September 2026 does not mention an Android app or Android Auto. Google Maps Help documents the app on Android and on iPhone and iPad, and Android Auto Help names Google Maps for voice-guided navigation. This page does not treat a missing mention as a lab test. It reports what those sources say.",
   },
   {
     question: "Can I download Apple Maps or Google Maps for offline use?",
@@ -67,7 +67,7 @@ const FAQS = [
   {
     question: "Do Apple Maps and Google Maps route electric cars to chargers?",
     answer:
-      "Both describe charging help, for some cars and places. Apple's iPhone guide says EV routing is on select vehicles and in select areas. Maps can track the charge, look at elevation, and add charging stations, with real-time availability for select providers and countries. You can set it up through CarPlay or a car maker's app. Google's phone says that in some countries you can add an EV, filter stations by your plugs, and see a battery estimate on Maps app version 25.44 and up. That estimate uses the vehicle info you entered. It does not adjust to real-time driving or a live connection to the car. A separate article, only for Google Maps built into the car, says charging stops can be added automatically if you will not reach the destination. Do not read the car-built-in article as a promise about the phone app.",
+      "Both describe charging help, for some cars and places. Apple's iPhone guide says EV routing is on select vehicles and in select areas. Maps can track the charge, look at elevation, and add charging stations, with real-time availability for select providers and countries. You can set it up through CarPlay or a car maker's app. Google says that in some countries you can add an EV, filter stations by your plugs, and see a battery estimate on Maps app version 25.44 and up. That estimate uses the vehicle info you entered. It does not adjust to real-time driving or a live connection to the car. A separate article, only for Google Maps built into the car, says charging stops can be added automatically if you will not reach the destination. Do not read the car-built-in article as a promise about the phone app.",
   },
   {
     question: "Which app is more private?",
@@ -76,7 +76,7 @@ const FAQS = [
   },
 ];
 
-const VERDICT = `Best on an iPhone, if you want the built-in app and Apple's privacy wording: Apple Maps. Offline maps in select areas include walking, cycling, and transit. It says Apple does not collect personal data associated with Maps usage, and it still sends the route under a random identifier.
+const VERDICT = `Best on an iPhone, if you want the built-in app and Apple's privacy wording: Apple Maps. Offline maps in select areas include walking, cycling, and transit. Apple says it does not collect personal data associated with Maps usage, and it still sends the route under a random identifier.
 
 Best when you need Android, or a saved offline driving area on either phone: Google Maps. Help articles document the Android app, Android Auto, and downloadable areas. Timeline stays off until you opt in.
 
@@ -90,7 +90,7 @@ Sources fetched on 30 September 2026: Apple Maps, Apple Maps and Privacy (dated 
 
 Where the apps run
 
-Apple says Maps works across your Apple devices, and it describes CarPlay as Maps behind the wheel. It says Maps is available in over two hundred regions, and that some features are not available in every country. Apple does not mention Android or Android Auto. Google Maps Help documents the app on Android and on iPhone and iPad. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app. Google Maps also has its own CarPlay article.
+Apple says Maps works across your Apple devices, and it describes CarPlay as Maps behind the wheel. It says Maps is available in over two hundred regions, and that some features are not available in every country. The fetched page does not mention Android or Android Auto. Google Maps Help documents the app on Android and on iPhone and iPad. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app. Google Maps also has its own CarPlay article.
 
 Offline maps
 
@@ -166,7 +166,7 @@ export const GOOGLE_MAPS_VS_APPLE_MAPS: EditorialComparison = buildEditorialComp
         "Privacy page: no personal data associated with Maps usage, and no sign-in required",
       ],
       cons: [
-        "Apple Maps does not mention an Android app",
+        "The Maps page fetched here does not mention an Android app",
         "Offline maps do not sync between devices and exist only in select areas",
         "Spoken turn-by-turn directions are not available in every country",
         "EV routing is limited to select vehicles and areas",
@@ -185,7 +185,7 @@ export const GOOGLE_MAPS_VS_APPLE_MAPS: EditorialComparison = buildEditorialComp
     {
       label: "Android",
       entityAValue: "Documented on Android and in Android Auto Help",
-      entityBValue: "Not mentioned by Apple Maps",
+      entityBValue: "Not mentioned on the Apple Maps page fetched here",
       winner: "a",
     },
     {
@@ -338,7 +338,7 @@ export const GOOGLE_MAPS_VS_APPLE_MAPS: EditorialComparison = buildEditorialComp
       label: "Apple Maps",
       url: APPLE_MAPS,
       description:
-        "Fetched 2026-09-30. Works across Apple devices, CarPlay, lane guidance, EV charging stops, transit, and coverage in over two hundred regions. Apple does not mention Android.",
+        "Fetched 2026-09-30. Works across Apple devices, CarPlay, lane guidance, EV charging stops, transit, and coverage in over two hundred regions. The Maps copy fetched here does not mention Android.",
     },
     {
       type: "external",

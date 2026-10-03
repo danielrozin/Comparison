@@ -50,12 +50,12 @@ const FAQS = [
   {
     question: "Can Google Maps or Waze navigate offline?",
     answer:
-      "Google Maps can, with limits. The iPhone, iPad, and Android help articles say you can download an area and use it when the connection is slow or gone, as long as the whole route is inside that area. They also say offline transit, bicycling, and walking directions are unavailable, and an offline drive has no traffic info or alternate routes. Some countries cannot download offline maps. Waze says Waze assumes a data connection, and that without internet you cannot locate or navigate a route. Two Waze articles disagree about a report if the connection drops while you are reporting: About Waze says reports are not cached to send later, and the hazard says the report is saved and sent when you reconnect. This page does not choose between those two sentences.",
+      "Google Maps can, with limits. The iPhone, iPad, and Android help articles say you can download an area and use it when the connection is slow or gone, as long as the whole route is inside that area. They also say offline transit, bicycling, and walking directions are unavailable, and an offline drive has no traffic info or alternate routes. Some countries cannot download offline maps. Waze says Waze assumes a data connection, and that without internet you cannot locate or navigate a route. Two Waze articles disagree about a report if the connection drops while you are reporting: About Waze says reports are not cached to send later, and Waze's hazard help says the report is saved and sent when you reconnect. This page does not choose between those two sentences.",
   },
   {
     question: "Do Google Maps and Waze work on CarPlay and Android Auto?",
     answer:
-      "Yes. Google Maps has CarPlay support, and Android navigation mentions Android Auto for 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze documents Android Auto and CarPlay. Waze says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
+      "Yes, on the help pages fetched for this comparison. Google Maps has CarPlay support, and Android navigation mentions Android Auto for 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze documents Android Auto and CarPlay. Waze says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
   },
   {
     question: "Does Waze support transit, bicycle, or truck lanes?",
@@ -91,7 +91,7 @@ Google Maps documents more than driving. The iPhone and iPad directions article 
 
 Driver reports
 
-Both products document incident reports. Waze says you can report traffic, accidents, police traps, blocked roads, weather, and more, and that the maps are powered by users. Waze states about 180 million monthly active users. That figure is Waze's, as of 30 September 2026. This comparison does not pair it with a Google Maps user count, because Google does not publish one in the cited sources. The hazard article lists construction, a car on the shoulder, a broken traffic light, a pothole, and an object, and it documents the same report flow on Android Auto and CarPlay. Google's Android navigation article lists crash, slowdown, mobile speed camera, police, construction, lane closure, an object on the road, a flooded road, low visibility, and an unplowed road, and says some incidents can only be reported in certain countries. The CarPlay article lists a similar set, without the word crash.
+Both products document incident reports. Waze says you can report traffic, accidents, police traps, blocked roads, weather, and more, and that the maps are powered by users. Waze reports about 180 million monthly active users. This comparison does not pair it with a Google Maps user count, because the Google sources cited here do not publish one. The hazard article lists construction, a car on the shoulder, a broken traffic light, a pothole, and an object, and it documents the same report flow on Android Auto and CarPlay. Google's Android navigation article lists crash, slowdown, mobile speed camera, police, construction, lane closure, an object on the road, a flooded road, low visibility, and an unplowed road, and says some incidents can only be reported in certain countries. The CarPlay article lists a similar set, without the word crash.
 
 One Waze contradiction, left unresolved
 
@@ -107,7 +107,7 @@ Both are documented on both systems. Google Maps has a CarPlay article for searc
 
 Platforms and EV help
 
-Waze's availability says the app is in the Apple App Store for iPhone and iPad and in Google Play for Android, on iOS 16 and above and Android 10 and above, and that the phone needs GPS and a cellular connection. It is free to download, and carrier data rates still apply. Google Maps Help documents the app on Android and on iPhone and iPad. The vehicle-profile says that in some countries you can add an electric vehicle and then filter charging stations by your plugs, and that a compatible EV on Maps app version 25.44 and up can show an estimated battery use for the trip. That estimate depends on the vehicle info you entered and does not adjust to real-time driving or a live connection to the car. No Waze Help page fetched here describes electric-vehicle routing.
+Waze's availability says the app is in the Apple App Store for iPhone and iPad and in Google Play for Android, on iOS 16 and above and Android 10 and above, and that the phone needs GPS and a cellular connection. It is free to download, and carrier data rates still apply. Google Maps Help documents the app on Android and on iPhone and iPad. Google says that in some countries you can add an electric vehicle and then filter charging stations by your plugs, and that a compatible EV on Maps app version 25.44 and up can show an estimated battery use for the trip. That estimate depends on the vehicle info you entered and does not adjust to real-time driving or a live connection to the car. No Waze Help page fetched here describes electric-vehicle routing.
 
 Who should use which
 
@@ -417,7 +417,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
       label: "Waze road hazard reports",
       url: WAZE_HAZARD,
       description:
-        "Fetched 2026-09-30. Hazard types on the phone, Android Auto, and CarPlay. This says a dropped connection still sends the report later.",
+        "Fetched 2026-09-30. Hazard types on the phone, Android Auto, and CarPlay. Waze's hazard help says a dropped connection still sends the report later.",
     },
     {
       type: "external",

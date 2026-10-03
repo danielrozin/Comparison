@@ -74,7 +74,8 @@ describe("Kindle vs Kobo", () => {
       expect(text).toContain(fileType);
     }
     expect(text).not.toMatch(/\bDOCX?\b|lowest hardware price|does not print|doesn't print|page does not/i);
-    expect(text).not.toMatch(/7-inch Paperwhite|7" Paperwhite|IPX8/);
+    expect(text).toContain("Waterproof (IPX8)");
+    expect(text).not.toMatch(/7-inch Paperwhite|7" Paperwhite/);
     expect(readerText(page())).not.toMatch(
       /no published|not described as|is published|is stated|described as/i,
     );

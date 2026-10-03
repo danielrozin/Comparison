@@ -13,6 +13,7 @@ const KINDLE = "amazon-kindle";
 const KOBO = "rakuten-kobo";
 
 const LINEUP = "https://www.aboutamazon.com/news/devices/new-kindle-lineup-2026";
+const COLORSOFT = "https://www.amazon.com/Amazon-Kindle-Colorsoft/dp/B0CGVSKR1G";
 const SCRIBE = "https://www.aboutamazon.com/news/devices/new-amazon-kindle-scribe-color";
 const SEND = "https://www.amazon.com/gp/help/customer/display.html?nodeId=200767340";
 const KINDLE_LIBRARY = "https://www.amazon.com/gp/help/customer/display.html?nodeId=GUWACXF9HENBXTQP";
@@ -43,7 +44,7 @@ const FAQS = [
   {
     question: "Which current models are waterproof?",
     answer:
-      "Kindle Paperwhite is waterproof and has an adjustable warm light. Libra Colour, Clara Colour, Clara BW, and Sage are waterproof. Elipsa 2E is not waterproof.",
+      "Kindle Paperwhite is waterproof and has an adjustable warm light. Amazon lists Kindle Colorsoft as Waterproof (IPX8). Libra Colour, Clara Colour, Clara BW, and Sage are waterproof. Elipsa 2E is not waterproof.",
   },
   {
     question: "Which lineup has a color screen?",
@@ -184,7 +185,7 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
     textAttr("notes", "Handwriting", SPEC, KINDLE, KOBO, "Kindle Scribe: 11-inch, 5.4 mm, 400 g, pen included", "Libra Colour and Sage take a Kobo Stylus. Elipsa 2E includes Stylus 2, 10.3-inch, $399.99"),
     textAttr("epub", "EPUB", SPEC, KINDLE, KOBO, "Send to Kindle accepts EPUB, plus HTML, RTF, TXT, JPEG, GIF, PNG, BMP, and PDF. Web upload 200 MB or smaller", "EPUB, EPUB2, and EPUB3 on the eReader"),
     textAttr("library", "Public library", SPEC, KINDLE, KOBO, "Eligible US public-library books through OverDrive. Checkout is on the library website", "Built-in Libby browsing and borrowing on listed models, in listed countries"),
-    textAttr("water", "Waterproof", SPEC, KINDLE, KOBO, "Paperwhite is waterproof", "Libra Colour, Clara Colour, Clara BW, and Sage"),
+    textAttr("water", "Waterproof", SPEC, KINDLE, KOBO, "Paperwhite is waterproof. Colorsoft is Waterproof (IPX8)", "Libra Colour, Clara Colour, Clara BW, and Sage"),
     textAttr("battery", "Battery", SPEC, KINDLE, KOBO, "6-inch Kindle up to 6 weeks. Paperwhite up to 12 weeks", "Kobo rates battery life in weeks"),
   ],
   faqs: FAQS,
@@ -199,7 +200,7 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
       "Kindle from $149.99 with up to 6 weeks, Paperwhite up to 12 weeks, Kobo Clara BW $159.99, Libra Colour $259.99.",
   },
   citationStats: {
-    sourceCount: 9,
+    sourceCount: 10,
     dataPointCount: 9,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -207,6 +208,7 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
     lastResearched: FETCHED,
     sources: [
       { name: "Amazon — 2026 Kindle lineup", url: LINEUP },
+      { name: "Amazon — Kindle Colorsoft", url: COLORSOFT },
       { name: "Amazon — Kindle Scribe", url: SCRIBE },
       { name: "Amazon Help — Send to Kindle file types", url: SEND },
       { name: "Amazon Help — public library books on Kindle", url: KINDLE_LIBRARY },
@@ -224,6 +226,13 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
       url: LINEUP,
       description:
         "6-inch Kindle from $149.99, Paperwhite from $199.99 and waterproof with up to 12 weeks, Colorsoft from $289.99.",
+    },
+    {
+      type: "external",
+      label: "Amazon Kindle Colorsoft",
+      url: COLORSOFT,
+      description:
+        "Kindle Colorsoft is Waterproof (IPX8), tested for immersion in 2 meters of fresh water for 60 minutes.",
     },
     {
       type: "external",

@@ -249,7 +249,7 @@ const built = buildEditorialComparison({
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "Each club won one of the two Finals recorded as of October 3, 2026. The head-to-head table is a history line, not a pick.",
+      "Knicks won the 2026 Finals and Spurs won the 1999 Finals. The head-to-head table is a history line, not a pick.",
     keyFact:
       "2026 Finals: Knicks 4-1. 1999 Finals: Spurs 4-1. Head-to-head fetched October 3, 2026: 107 games, Knicks 47 wins, Spurs 60 wins.",
   },

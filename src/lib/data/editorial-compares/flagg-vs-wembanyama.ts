@@ -60,7 +60,7 @@ const FAQS = [
   {
     question: "Have Flagg and Wembanyama played in 2026-27?",
     answer:
-      "As of October 3, 2026, neither player had a 2026-27 game log. Basketball-Reference does print a 2026-27 projection table for each player. This page does not quote those projection rows. Stats as of October 3, 2026.",
+      "Neither Basketball-Reference player page fetched October 3, 2026 shows a 2026-27 game log. Basketball-Reference does print a 2026-27 projection table for each player. This page does not quote those projection rows. Stats as of October 3, 2026.",
   },
   {
     question: "Does this page say who is the better player?",
@@ -115,7 +115,7 @@ const built = buildEditorialComparison({
         "Drafted first overall by Dallas in 2025. Debut October 22, 2025",
       ],
       cons: [
-        "One NBA season logged as of October 3, 2026",
+        "One NBA season on the Basketball-Reference page fetched October 3, 2026",
         "Three-point percentage .295 on that rookie row",
         "No 2026-27 game log as of October 3, 2026",
       ],

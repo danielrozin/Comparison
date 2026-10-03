@@ -70,7 +70,7 @@ Carhartt lists the B01 as 12-ounce, firm-hand, 100% cotton ringspun duck canvas.
 
 Fit and sizing
 
-Carhartt calls the B01 its most generous cut. The loose fit is meant to give free movement, with a roomy fit through the hips and thigh and cuffs that fit easily over work boots. It says the high rise sits slightly above the waist, with a generous fit in the seat and thigh, and a straight leg opening. Gear Patrol’s hands-on is a separate finding: that reviewer found the B01 very wide and long in the inseam, and suggested ordering one inseam shorter than usual. Dickies describes the 874 as a high rise, relaxed through the seat and thigh, with a straight leg that tapers slightly. Gear Patrol found the Dickies Loose Fit Double Knee looser than a slim pant but straighter than the B01.
+Carhartt calls the B01 its most generous cut. The loose fit is meant to give free movement, with a roomy fit through the hips and thigh and cuffs that fit easily over work boots. Carhartt says the high rise sits slightly above the waist, with a generous fit in the seat and thigh, and a straight leg opening. Gear Patrol’s hands-on is a separate finding: that reviewer found the B01 very wide and long in the inseam, and suggested ordering one inseam shorter than usual. Dickies describes the 874 as a high rise, relaxed through the seat and thigh, with a straight leg that tapers slightly. Gear Patrol found the Dickies Loose Fit Double Knee looser than a slim pant but straighter than the B01.
 
 Construction
 

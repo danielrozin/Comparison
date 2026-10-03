@@ -33,7 +33,7 @@ const FAQS = [
   {
     question: "Is 256GB enough, or should you get the 512GB iPhone 16e?",
     answer:
-      "256GB is the 17e says that is twice the 16e's starting storage. AppleInsider lists the 16e at 128GB, 256GB, and 512GB, and the 17e at 256GB and 512GB only. Buy the 16e 512GB only if you know you need more than 256GB and the live price is close to the 17e. AppleInsider's 2 March 2026 article lists launch prices, not today's price: 16e 512GB at $899 and 17e 256GB at $599. Those figures can be out of date. Check the current price before you decide.",
+      "256GB is the 17e's starting storage. Apple says that is twice the 16e's starting storage. AppleInsider lists the 16e at 128GB, 256GB, and 512GB, and the 17e at 256GB and 512GB only. Buy the 16e 512GB only if you know you need more than 256GB and the live price is close to the 17e. AppleInsider's 2 March 2026 article lists launch prices, not today's price: 16e 512GB at $899 and 17e 256GB at $599. Those figures can be out of date. Check the current price before you decide.",
   },
   {
     question: "Is the iPhone 17e camera better than the iPhone 16e?",

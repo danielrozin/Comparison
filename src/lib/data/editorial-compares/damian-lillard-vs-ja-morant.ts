@@ -56,7 +56,7 @@ const FAQS = [
   {
     question: "When do the Trail Blazers play the Suns?",
     answer:
-      "NBA.com's games page for October 21, 2026 lists Phoenix at Portland at 10:00 pm ET, regular season, game 0022600092. Both teams are shown at 0-0. That is a schedule fact for the teams. NBA.com does not say Lillard is playing that night. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and this page does not quote a projection.",
+      "NBA.com's games page for October 21, 2026 lists Phoenix at Portland at 10:00 pm ET, regular season, game 0022600092. Both teams are shown at 0-0. That is a schedule fact for the teams. His 2025-26 per-game row says he did not play, injured (Achilles). Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and this page does not quote a projection.",
   },
 ];
 

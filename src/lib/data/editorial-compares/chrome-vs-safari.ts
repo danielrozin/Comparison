@@ -38,7 +38,7 @@ const FAQS = [
   {
     question: "Is Safari better for battery life than Chrome?",
     answer:
-      "Apple says Safari is up to 5 hours longer than Chrome for streaming video, and up to 18 hours of video streaming. Footnote 3 says Apple ran that test in August 2026 on a 15-inch MacBook Air with an M5 chip, prerelease Safari 27.0, and Chrome v151, streaming 1080p on battery. It says Safari was 35% faster on average at loading frequently visited websites than Chrome, and footnote 2 ties that line to an Apple test of 12 websites on the same kind of Mac. This page did not re-run either test. Google's Chrome page names Energy Saver and Memory Saver and does not publish an hour count against Safari.",
+      "Apple says Safari is up to 5 hours longer than Chrome for streaming video, and up to 18 hours of video streaming. Footnote 3 says Apple ran that test in August 2026 on a 15-inch MacBook Air with an M5 chip, prerelease Safari 27.0, and Chrome v151, streaming 1080p on battery. Apple also says Safari was 35% faster on average at loading frequently visited websites than Chrome, and footnote 2 ties that line to an Apple test of 12 websites on the same kind of Mac. This page did not re-run either test. Google's Chrome page names Energy Saver and Memory Saver and does not publish an hour count against Safari.",
   },
   {
     question: "Can I use Chrome extensions in Safari?",
