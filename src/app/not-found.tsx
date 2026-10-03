@@ -25,7 +25,6 @@ export default async function NotFound() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <meta name="robots" content="noindex, nofollow" />
       <NotFoundViewTracker />
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">

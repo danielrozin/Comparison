@@ -1,9 +1,11 @@
 /**
+ * Lives outside src/pages so next build does not treat this file as a route.
  * The missing-compare 404 puts a real title, a search box, and live
  * popular comparisons in the first HTML. None of that waits for hydration.
  */
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -21,7 +23,7 @@ vi.mock("next/link", () => ({
     ...rest
   }: {
     href: string;
-    children?: unknown;
+    children?: ReactNode;
     onClick?: () => void;
   }) => (
     <a href={href} {...rest}>
@@ -45,7 +47,7 @@ vi.mock("@/lib/seo/resolve-internal-links", () => ({
   filterLiveCompareSlugs: (...args: unknown[]) => filterLiveCompareSlugs(...args),
 }));
 
-import PagesNotFound, { MISSING_COMPARE_TITLE, getStaticProps } from "../404";
+import PagesNotFound, { MISSING_COMPARE_TITLE, getStaticProps } from "@/pages/404";
 
 const popular = [
   { slug: "usa-vs-china", label: "USA vs China" },
@@ -78,8 +80,8 @@ describe("generic app 404", () => {
   it("records not_found_viewed and is noindex", () => {
     const source = readFileSync(path.resolve(process.cwd(), "src/app/not-found.tsx"), "utf8");
     expect(source).toContain("NotFoundViewTracker");
-    expect(source).toContain('content="noindex, nofollow"');
     expect(source).toContain("index: false");
+    expect(source).not.toContain('content="noindex, nofollow"');
   });
 });
 
