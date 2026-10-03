@@ -5,9 +5,11 @@ import { startBillingPortal } from "@/lib/monetization/billing-portal";
  * POST /api/billing-portal
  *
  * Body: { email }
- * Always returns the same message for a known member, an unknown email, and
- * a member whose Stripe subscription is not AversusB. The portal URL is not
- * in this response. Active AversusB members get a one-time link by email.
+ * Always returns the same message for a known member, an unknown email, a
+ * rate limit, and a member whose Stripe subscription is not AversusB. The
+ * portal URL is not in this response. Eligible members get a one-time link
+ * by email after this response is sent. Canceled members are eligible when
+ * the subscription is AversusB.
  */
 export async function POST(request: NextRequest) {
   let body: { email?: string };

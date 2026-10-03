@@ -80,13 +80,13 @@ GSMArena lists the S24 Ultra at 232 g or 233 g and the S25 Ultra at 218 g. Digit
 
 Samsung names the chips Snapdragon 8 Gen 3 for Galaxy on the S24 Ultra and Snapdragon 8 Elite for Galaxy on the S25 Ultra. GSMArena's compare lists those same chipsets.
 
-Cameras match on three modules. Both have a 200MP main camera, a 10MP 3x telephoto, and a 50MP 5x periscope (Digital Trends and GSMArena). Samsung's S24 Ultra page lists a 12MP ultrawide. Samsung's S25 Ultra page lists an upgraded 50MP ultrawide. That ultrawide is the clear hardware gap.
+Cameras match on three modules. Both have a 200MP main camera, a 10MP 3x telephoto, and a 50MP 5x periscope (Digital Trends and GSMArena). Samsung lists a 12MP ultrawide for the S24 Ultra. Samsung lists an upgraded 50MP ultrawide for the S25 Ultra. That ultrawide is the clear hardware gap.
 
 Battery and daily use
 
 Both phones use a 5,000 mAh battery, 45W wired charging, and 15W wireless charging (GSMArena and Digital Trends). GSMArena also lists 65% in 30 minutes on wired charging for both, and 4.5W reverse wireless for both. The S25 Ultra is Qi2 Ready, which Digital Trends says still needs a compatible magnetic case.
 
-Samsung's S24 Ultra page calls 5,000 mAh the typical capacity, lists a 4,855 mAh rated capacity, and claims up to 30 hours of video playback. Samsung's S25 Ultra page lists 5,000 mAh and claims up to 31 hours of video playback. Those hour figures are Samsung's claims, not a lab result on this page. Digital Trends called the battery round a tie: in that review, both phones were described as lasting through two days of use, with the same 45W charging.
+Samsung's S24 Ultra page calls 5,000 mAh the typical capacity, lists a 4,855 mAh rated capacity, and claims up to 30 hours of video playback. Samsung lists 5,000 mAh for the S25 Ultra and claims up to 31 hours of video playback. Those hour figures are Samsung's claims, not a lab result on this page. Digital Trends called the battery round a tie: in that review, both phones were described as lasting through two days of use, with the same 45W charging.
 
 Camera
 

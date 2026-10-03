@@ -74,7 +74,7 @@ Apple says the 17e's C1X modem is up to twice as fast as the C1 modem in the 16e
 
 Display, camera, and video playback
 
-AppleInsider lists both phones with a 6.1-inch Super Retina XDR display at 2,532 by 1,170 pixels. Apple's 17e page lists the same 6.1-inch Super Retina XDR display. Both have one 48MP Fusion rear camera. AppleInsider says the 2x telephoto view is a crop of that sensor. Both are rated for up to 26 hours of video playback. Apple's page states that figure for the 17e. AppleInsider's table states it for both, under video playback time.
+AppleInsider lists both phones with a 6.1-inch Super Retina XDR display at 2,532 by 1,170 pixels. Apple lists the same 6.1-inch Super Retina XDR display for the 17e. Both have one 48MP Fusion rear camera. AppleInsider says the 2x telephoto view is a crop of that sensor. Both are rated for up to 26 hours of video playback. Apple's page states that figure for the 17e. AppleInsider's table states it for both, under video playback time.
 
 MacRumors lists Ceramic Shield front glass on the 16e and Ceramic Shield 2 on the 17e. Apple says Ceramic Shield 2 has 3x better scratch resistance than the iPhone 16e. That multiplier is Apple's claim.
 

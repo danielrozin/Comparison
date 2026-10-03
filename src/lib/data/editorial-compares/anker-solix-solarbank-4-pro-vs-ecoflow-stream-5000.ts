@@ -30,22 +30,22 @@ const FAQS = [
   {
     question: "Does the Solarbank 4 Pro or the STREAM 5000 have more storage?",
     answer:
-      "The published pack size is the same: 5,024 Wh. Anker's datasheet lists LiFePO4 and 5,024 Wh. EcoFlow's specs page lists 5,024 Wh, and EcoFlow's product FAQ says the cells are lithium iron phosphate (LiFePO4). Storage size alone does not separate them.",
+      "The published pack size is the same: 5,024 Wh. Anker's datasheet lists LiFePO4 and 5,024 Wh. EcoFlow's specs list 5,024 Wh, and EcoFlow's product FAQ says the cells are lithium iron phosphate (LiFePO4). Storage size alone does not separate them.",
   },
   {
     question: "Which system can feed more power into the home?",
     answer:
-      "The EcoFlow STREAM 5000, on the published upper settings. EcoFlow's specs page lists on-grid output of 800 W/3,000 W and off-grid output of 3,000 W. Anker's datasheet lists on-grid output settings of 600, 790, 800, and 2,500 W, and off-grid output of 2,500 W.",
+      "The EcoFlow STREAM 5000, on the published upper settings. EcoFlow's specs list on-grid output of 800 W/3,000 W and off-grid output of 3,000 W. Anker's datasheet lists on-grid output settings of 600, 790, 800, and 2,500 W, and off-grid output of 2,500 W.",
   },
   {
     question: "Which is better for outdoor mounting?",
     answer:
-      "Anker's datasheet lists IP66. EcoFlow's specs page lists IP65. Those are the published codes. This page does not add a hose test of its own. EcoFlow's support page says the STREAM 5000 can be used indoors or outdoors and recommends a ventilated, cool, shaded place.",
+      "Anker's datasheet lists IP66. EcoFlow's specs list IP65. Those are the published codes. This page does not add a hose test of its own. EcoFlow's support page says the STREAM 5000 can be used indoors or outdoors and recommends a ventilated, cool, shaded place.",
   },
   {
     question: "Do they accept the same solar input?",
     answer:
-      "Both publish 5,000 W of PV across four MPPTs, 1,250 W per tracker, and a maximum PV voltage of 60 V. Anker's datasheet also lists an MPPT voltage range of 16 to 50 V. EcoFlow's specs page lists the PV input voltage as a 60 V maximum and does not print that 16 to 50 V range.",
+      "Both publish 5,000 W of PV across four MPPTs, 1,250 W per tracker, and a maximum PV voltage of 60 V. Anker's datasheet also lists an MPPT voltage range of 16 to 50 V. EcoFlow's specs list the PV input voltage as a 60 V maximum and does not print that 16 to 50 V range.",
   },
   {
     question: "Which works with Home Assistant?",
@@ -59,7 +59,7 @@ const FAQS = [
   },
 ];
 
-const VERDICT = `Higher published output: EcoFlow STREAM 5000. On-grid and off-grid output are listed up to 3,000 W, and the specs page lists 45.4 kg.
+const VERDICT = `Higher published output: EcoFlow STREAM 5000. On-grid and off-grid output are listed up to 3,000 W, and the specs list 45.4 kg.
 
 Weather rating and Home Assistant: Anker SOLIX Solarbank 4 Pro. The datasheet lists IP66, 50 kg, and on-grid settings up to 2,500 W. Anker's Home Assistant README includes this model.
 
@@ -73,15 +73,15 @@ Source note: output, ingress rating, weight, and warranty below come from Anker'
 
 Battery and solar input
 
-Anker's datasheet lists a LiFePO4 battery, 5,024 Wh, and a single-device rated power of 2,500 W. EcoFlow's specs page lists 5,024 Wh. EcoFlow's product FAQ says the cells are lithium iron phosphate (LiFePO4). Both publish 5,000 W of PV input, four MPPTs, and 1,250 W per tracker. Both list a maximum PV voltage of 60 V. Anker also lists an MPPT operating range of 16 to 50 V.
+Anker's datasheet lists a LiFePO4 battery, 5,024 Wh, and a single-device rated power of 2,500 W. EcoFlow's specs list 5,024 Wh. EcoFlow's product FAQ says the cells are lithium iron phosphate (LiFePO4). Both publish 5,000 W of PV input, four MPPTs, and 1,250 W per tracker. Both list a maximum PV voltage of 60 V. Anker also lists an MPPT operating range of 16 to 50 V.
 
 On-grid and off-grid output
 
-Anker's datasheet lists on-grid AC output settings of 600 W, 790 W, 800 W, and 2,500 W, and off-grid output of 2,500 W. AC charge power is 2,500 W. EcoFlow's specs page lists grid-tied output of 800 W/3,000 W, off-grid output of 3,000 W, AC charging input of 3,000 W, and a maximum charge into the main-unit battery of 2,500 W.
+Anker's datasheet lists on-grid AC output settings of 600 W, 790 W, 800 W, and 2,500 W, and off-grid output of 2,500 W. AC charge power is 2,500 W. EcoFlow's specs list grid-tied output of 800 W/3,000 W, off-grid output of 3,000 W, AC charging input of 3,000 W, and a maximum charge into the main-unit battery of 2,500 W.
 
 Cycles, warranty, weather, and weight
 
-Anker's product page lists 10,000 cycles. The datasheet lists a 10-year warranty and a 15-year product lifespan. It does not print a capacity-retention percentage next to the cycle count. EcoFlow's specs page lists 10,000 cycles and a 10-year warranty. EcoFlow's product FAQ says that cycle life is to 60% retention. Anker's datasheet lists IP66 and 50 kg. EcoFlow's specs page lists IP65 and 45.4 kg. The product FAQ also says 45.4 kg, plus or minus 0.5 kg, for the bare unit.
+Anker lists 10,000 cycles. The datasheet lists a 10-year warranty and a 15-year product lifespan. It does not print a capacity-retention percentage next to the cycle count. EcoFlow's specs list 10,000 cycles and a 10-year warranty. EcoFlow's product FAQ says that cycle life is to 60% retention. Anker's datasheet lists IP66 and 50 kg. EcoFlow's specs list IP65 and 45.4 kg. The product FAQ also says 45.4 kg, plus or minus 0.5 kg, for the bare unit.
 
 Expansion
 

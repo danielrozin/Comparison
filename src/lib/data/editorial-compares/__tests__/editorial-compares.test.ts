@@ -1702,3 +1702,369 @@ describe("NBA batch 2: Spurs vs Thunder, Knicks vs Spurs, Flagg vs Wembanyama", 
     ]);
   });
 });
+
+const WATCH_AIR_SLUG = "apple-watch-series-12-vs-fitbit-air";
+const WATCH_AIR_FAQS = [
+  "Is the Fitbit Air a Whoop alternative?",
+  "Which is better for sleep, Apple Watch Series 12 or Fitbit Air?",
+  "Do you need cellular on the Apple Watch Series 12?",
+  "Does the Fitbit Air work with an iPhone?",
+  "Which is more comfortable for 24/7 wear?",
+  "What about the Amazfit Helio?",
+];
+const WATCH_AIR_QUICK_ANSWER =
+  "Choose the Apple Watch Series 12 if you want a full smartwatch: apps, notifications, and an optional cellular model, on an iPhone. Apple rates it for up to 24 hours of normal use, up to 38 hours in Low Power Mode, and up to 10 hours of workout tracking, and lists an S11 chip. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep. Google rates it for up to 7 days and the Google Store lists it from $99.99. This page does not crown a winner.";
+
+describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
+  const page = () => getEditorialComparison(WATCH_AIR_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(WATCH_AIR_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(WATCH_AIR_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().schemaMarkup).toBeUndefined();
+    expect(page().entities.map((entity) => entity.slug)).toEqual([
+      "apple-watch-series-12",
+      "fitbit-air",
+    ]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best for a full smartwatch on an iPhone",
+      "Best for a lower-priced screenless sleep and heart-rate tracker",
+    ]);
+    expect(page().shortAnswer).toBe(WATCH_AIR_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(WATCH_AIR_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(WATCH_AIR_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/Geekbench|AnTuTu|% accurate|accuracy of \d/i);
+    expect(pageText(page())).not.toMatch(/\b12\s*g(?:rams)?\b/i);
+    const types = schemaNodes(page()).map((node) => node["@type"]).filter(Boolean);
+    expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    for (const schemaType of ["Article", "FAQPage", "BreadcrumbList"]) {
+      expect(types).toContain(schemaType);
+    }
+  });
+
+  it("keeps six FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(6);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(WATCH_AIR_FAQS);
+    expect(faqQuestions(page())).toEqual(WATCH_AIR_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(WATCH_AIR_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites Apple and Google and does not link noindex entity hubs", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(11);
+    expect(page().citationStats?.lastResearched).toBe("2026-10-03");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-10-03/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.apple.com/apple-watch-series-12/specs/",
+      "https://store.google.com/product/google_fitbit_air",
+      "https://blog.google/products-and-platforms/devices/fitbit/fitbit-air/",
+      "https://support.google.com/googlehealth/answer/14226518?hl=en",
+      "https://support.google.com/googlehealth/answer/14195042?hl=en",
+      "https://support.google.com/googlehealth/answer/14236707?hl=en",
+      "https://support.google.com/product-documentation/answer/17050752?hl=en",
+      "https://support.google.com/googlehealth/answer/14236917?hl=en",
+      "https://support.google.com/googlehealth/answer/17033101?hl=en",
+      "https://support.google.com/googlehealth/answer/14237938?hl=en",
+      "https://www.reddit.com/r/FitbitAir_India/comments/1wweka3/apple_watch_series_12_vs_fitbit_air_please_help/",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().resources?.map((resource) => resource.url).join("\n")).not.toMatch(/\/entity\//);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual(["apple-watch-vs-fitbit"]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("S11");
+    expect(pageText(page())).toContain("up to 7 days");
+    expect(pageText(page())).toContain("$99.99");
+    expect(pageText(page())).not.toContain("$129.99 is today's");
+    const battery = page().attributes.find((attr) => attr.slug === "battery");
+    expect(battery?.values.find((value) => value.entityId === "fitbit-air")?.winner).toBe(true);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+  });
+
+  it("lists both vendors' published heart items and quotes their own limits", () => {
+    const text = pageText(page());
+    const sleep = page().faqs.find((faq) => faq.question.startsWith("Which is better for sleep"));
+    expect(sleep?.answer).toContain("Sleep apnea notifications");
+    expect(sleep?.answer).toContain("Not intended for medical purposes");
+    expect(sleep?.answer).toContain("The temperature sensing feature is not intended for medical use.");
+    for (const item of [
+      "ECG app",
+      "Irregular rhythm notifications",
+      "High and low heart rate notifications",
+      "Blood Oxygen app",
+      "Sleep apnea notifications",
+      "Hypertension notifications",
+      "heart rhythm monitoring with Afib alerts",
+    ]) {
+      expect(text).toContain(item);
+    }
+    expect(text).toContain(
+      "Not intended for use by people under 22 years old with known atrial fibrillation or other known arrhythmias. Not available in all countries."
+    );
+    expect(text).toContain(
+      "Irregular rhythm notifications are not intended for use by people under 22 years old or those who have been previously diagnosed with atrial fibrillation (AFib)."
+    );
+    expect(text).toContain(
+      "Hypertension notifications are not intended for use by people under 22 years old, those who have been previously diagnosed with hypertension, or pregnant persons."
+    );
+    expect(text).toContain("The temperature sensing feature is not intended for medical use.");
+    expect(text).toContain("launch-post footnotes also say \"Not intended for medical purposes.\"");
+    expect(text).not.toMatch(/\b(detects?|detect signs|screens for|diagnoses|screening)\b/i);
+    const heartHelp = page().resources?.find((resource) => resource.url.includes("14237938"));
+    expect(heartHelp?.description ?? "").not.toMatch(/Not intended for medical purposes/);
+    expect(page().expertAnalysis ?? "").toContain(
+      "The heart-rate help article is the source only for the optical-sensor sentence below."
+    );
+  });
+});
+
+const NBA_BATCH3_SLUGS = [
+  "damian-lillard-vs-ja-morant",
+  "lebron-james-vs-stephen-curry",
+  "jordan-vs-kobe",
+] as const;
+
+describe("NBA batch 3 compares", () => {
+  it("publishes the three slugs with no winner, six FAQs, and a dated season block", () => {
+    for (const slug of NBA_BATCH3_SLUGS) {
+      expect(isEditorialCompareSlug(slug)).toBe(true);
+      expect(isDegenerateComparisonSlug(slug)).toBe(false);
+      const page = getEditorialComparison(slug)!;
+      expect(page.metadata.status).toBe("published");
+      expect(page.schemaMarkup).toBeUndefined();
+      expect(page.quickAnswer?.winnerName).toBeNull();
+      expect(page.quickAnswer?.tldr).toBe(page.shortAnswer);
+      expect(page.faqs).toHaveLength(6);
+      expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
+      expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+      expect(pageText(page)).toContain("Stats as of October 3, 2026");
+      expect(pageText(page)).toContain("Source note:");
+      expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
+      expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
+      const description = clampDescription(page.metadata.metaDescription);
+      expect(description.length).toBeGreaterThanOrEqual(70);
+      expect(description.length).toBeLessThanOrEqual(160);
+      expect(findSelfContradictions(page)).toEqual([]);
+      const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
+      expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+      expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(slug);
+      expect(getConsolidatedCompareSlug(slug)).toBeNull();
+    }
+  });
+
+  it("keeps Lillard vs Morant on fetched lines and does not link noindex hubs", () => {
+    const page = getEditorialComparison("damian-lillard-vs-ja-morant")!;
+    expect(pageText(page)).toContain("25.1");
+    expect(pageText(page)).toContain("22.4");
+    expect(pageText(page)).toContain("June 29, 2026");
+    expect(pageText(page)).toContain("10:00 pm ET");
+    expect(pageText(page)).not.toMatch(/final season|healthy/i);
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).not.toMatch(/\/entity\/damian-lillard|\/entity\/ja-morant/);
+  });
+
+  it("keeps LeBron vs Curry on fetched lines and does not link the noindex Curry hub", () => {
+    const page = getEditorialComparison("lebron-james-vs-stephen-curry")!;
+    expect(pageText(page)).toContain("20.9");
+    expect(pageText(page)).toContain("26.6");
+    expect(pageText(page)).toContain("43,440");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).toContain("/entity/lebron-james");
+    expect(urls).not.toMatch(/\/entity\/stephen-curry/);
+    expect(getConsolidatedCompareSlug("curry-vs-lebron")).toBe("lebron-james-vs-stephen-curry");
+    expect(getConsolidatedCompareSlug("stephen-curry-vs-lebron-james")).toBe(
+      "lebron-james-vs-stephen-curry"
+    );
+  });
+
+  it("keeps Jordan vs Kobe on the alphabetical slug and maps the 404 aliases", () => {
+    const page = getEditorialComparison("jordan-vs-kobe")!;
+    expect(pageText(page)).toContain("30.1");
+    expect(pageText(page)).toContain("33,643");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).toContain("/entity/michael-jordan");
+    expect(urls).toContain("/entity/kobe-bryant");
+    for (const from of [
+      "kobe-vs-jordan",
+      "kobe-bryant-vs-michael-jordan",
+      "michael-jordan-vs-kobe-bryant",
+    ]) {
+      expect(getConsolidatedCompareSlug(from)).toBe("jordan-vs-kobe");
+    }
+  });
+});
+
+const NBA_BATCH4_SLUGS = [
+  "cooper-flagg-vs-kon-knueppel",
+  "lakers-vs-celtics",
+  "durant-vs-lebron",
+] as const;
+
+describe("NBA batch 4 compares", () => {
+  it("publishes the three slugs with no winner, a dated season block, and no internal-history FAQ", () => {
+    for (const slug of NBA_BATCH4_SLUGS) {
+      expect(isEditorialCompareSlug(slug)).toBe(true);
+      expect(isDegenerateComparisonSlug(slug)).toBe(false);
+      const page = getEditorialComparison(slug)!;
+      expect(page.metadata.status).toBe("published");
+      expect(page.schemaMarkup).toBeUndefined();
+      expect(page.quickAnswer?.winnerName).toBeNull();
+      expect(page.quickAnswer?.tldr).toBe(page.shortAnswer);
+      expect(page.faqs).toHaveLength(slug === "durant-vs-lebron" ? 5 : 6);
+      expect(page.faqs.map((faq) => faq.question)).not.toContain(
+        "Why does the basketball hub mention this comparison?",
+      );
+      expect(pageText(page)).not.toMatch(/returned 404|redirects here|Index, follow/);
+      expect((page.resources ?? []).map((resource) => resource.description ?? "").join("\n")).not.toMatch(
+        /404|redirect|Index, follow|noindex/,
+      );
+      expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
+      expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+      expect(pageText(page)).toContain("Stats as of October 3, 2026");
+      expect(pageText(page)).toContain("Source note:");
+      expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
+      expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
+      const description = clampDescription(page.metadata.metaDescription);
+      expect(description.length).toBeGreaterThanOrEqual(70);
+      expect(description.length).toBeLessThanOrEqual(160);
+      expect(findSelfContradictions(page)).toEqual([]);
+      const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
+      expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+      expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(slug);
+      expect(getConsolidatedCompareSlug(slug)).toBeNull();
+    }
+  });
+
+  it("keeps Flagg vs Knueppel on the rookie lines and does not link noindex hubs", () => {
+    const page = getEditorialComparison("cooper-flagg-vs-kon-knueppel")!;
+    expect(pageText(page)).toContain("21.0");
+    expect(pageText(page)).toContain("18.5");
+    expect(pageText(page)).toContain("ROY-2");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).not.toMatch(/\/entity\/cooper-flagg|\/entity\/kon-knueppel|\/entity\/dallas-mavericks|\/entity\/charlotte-hornets/);
+  });
+
+  it("keeps Lakers vs Celtics on the series table and does not link noindex team hubs", () => {
+    const page = getEditorialComparison("lakers-vs-celtics")!;
+    expect(pageText(page)).toContain("18 championships");
+    expect(pageText(page)).toContain("135-169");
+    expect(pageText(page)).toContain("2010");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).not.toMatch(/\/entity\/los-angeles-lakers|\/entity\/boston-celtics/);
+  });
+
+  it("keeps Durant vs LeBron on the career lines and links only indexable hubs", () => {
+    const page = getEditorialComparison("durant-vs-lebron")!;
+    expect(pageText(page)).toContain("27.1");
+    expect(pageText(page)).toContain("20.9");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).toContain("/entity/kevin-durant");
+    expect(urls).toContain("/entity/lebron-james");
+    expect(getConsolidatedCompareSlug("durant-vs-lebron")).toBeNull();
+    expect(getConsolidatedCompareSlug("lebron-vs-durant")).toBe("durant-vs-lebron");
+  });
+});
+
+const NBA_BATCH_5 = [
+  {
+    slug: "embiid-vs-jokic",
+    title: "Embiid vs Jokic: Careers and 2026-27",
+    entities: ["joel-embiid", "nikola-jokic"],
+  },
+  {
+    slug: "kobe-bryant-vs-steph-curry",
+    title: "Kobe vs Curry: Career Comparison",
+    entities: ["kobe-bryant", "stephen-curry"],
+  },
+] as const;
+
+describe("NBA batch 5: Embiid vs Jokic, Kobe vs Curry", () => {
+  it("publishes the hub slugs with no page-level winner", () => {
+    expect(sortComparisonSlug("jokic-vs-embiid")).toBe("embiid-vs-jokic");
+    expect(sortComparisonSlug("steph-curry-vs-kobe-bryant")).toBe("kobe-bryant-vs-steph-curry");
+    for (const item of NBA_BATCH_5) {
+      const page = getEditorialComparison(item.slug)!;
+      expect(isEditorialCompareSlug(item.slug)).toBe(true);
+      expect(page.metadata.status).toBe("published");
+      expect(page.schemaMarkup).toBeUndefined();
+      expect(page.entities.map((entity) => entity.slug)).toEqual([...item.entities]);
+      expect(page.quickAnswer?.winnerName).toBeNull();
+      expect(page.shortAnswer).toBe(page.quickAnswer?.tldr);
+      expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+      expect(page.faqs).toHaveLength(6);
+      expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
+      expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(item.slug);
+      expect(getConsolidatedCompareSlug(item.slug)).toBeNull();
+      const title = buildPageTitle(page.metadata.metaTitle || page.title);
+      const description = clampDescription(page.metadata.metaDescription);
+      expect(title, item.slug).toBe(`${item.title} | A Versus B`);
+      expect(title.length, title).toBeLessThanOrEqual(60);
+      expect(description.length, description).toBeGreaterThanOrEqual(70);
+      expect(description.length, description).toBeLessThanOrEqual(160);
+      expect(findSelfContradictions(page)).toEqual([]);
+      const text = pageText(page);
+      expect(text).toContain("Stats as of October 3, 2026");
+      expect(text).toContain("Source note:");
+      expect(text).not.toMatch(/will win|predicted winner|odds/i);
+      const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
+      expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    }
+  });
+
+  it("keeps Embiid and Jokic on the fetched career lines and does not link noindex hubs", () => {
+    const page = getEditorialComparison("embiid-vs-jokic")!;
+    const text = pageText(page);
+    expect(text).toContain("27.6");
+    expect(text).toContain("22.2");
+    expect(text).toContain("2022-23");
+    expect(text).toContain("2020-21");
+    expect(text).toContain("13,544");
+    expect(text).toContain("18,009");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).not.toMatch(/\/entity\/(joel-embiid|nikola-jokic|philadelphia-76ers|denver-nuggets)/);
+    expect(getConsolidatedCompareSlug("jokic-vs-embiid")).toBe("embiid-vs-jokic");
+    expect(getConsolidatedCompareSlug("joel-embiid-vs-nikola-jokic")).toBe("embiid-vs-jokic");
+  });
+
+  it("keeps Kobe and Curry on the fetched career lines and links only the indexable hub", () => {
+    const page = getEditorialComparison("kobe-bryant-vs-steph-curry")!;
+    const text = pageText(page);
+    expect(text).toContain("25.0");
+    expect(text).toContain("24.8");
+    expect(text).toContain("33,643");
+    expect(text).toContain("January 26, 2020");
+    expect(text).toContain("26.6");
+    const urls = page.resources?.map((resource) => resource.url) ?? [];
+    expect(urls).toContain("/entity/kobe-bryant");
+    expect(urls.join("\n")).not.toMatch(/\/entity\/(stephen-curry|steph-curry|golden-state-warriors|los-angeles-lakers)/);
+    expect(getConsolidatedCompareSlug("steph-curry-vs-kobe-bryant")).toBe("kobe-bryant-vs-steph-curry");
+    expect(getConsolidatedCompareSlug("kobe-bryant-vs-stephen-curry")).toBe("kobe-bryant-vs-steph-curry");
+  });
+});

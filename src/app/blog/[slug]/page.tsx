@@ -27,6 +27,11 @@ import {
 } from "@/lib/data/cashiers-check-blog-cta";
 import { selectOrganicLanderCompare } from "@/lib/data/organic-lander-compare-ctas";
 import { BLOG_COMPARE_SOFT_HREF } from "@/lib/data/blog-compare-constants";
+import {
+  NBA_SEASON_PREVIEW_BLOG_SLUG,
+  NBA_SEASON_PREVIEW_SOURCE_PAGE,
+  splitHtmlAtCompareCtas,
+} from "@/lib/data/nba-season-preview-blog";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
 
 // ---------- Tag-type inference ----------
@@ -435,6 +440,11 @@ export default async function BlogPostPage({
     inlineCompare && inlineCompare.links.length >= 2
       ? splitHtmlAfterIntro(renderedContent)
       : null;
+  const sectionCtas =
+    slug === NBA_SEASON_PREVIEW_BLOG_SLUG
+      ? splitHtmlAtCompareCtas(renderedContent)
+      : null;
+  const liveCompareSlugSet = new Set(liveCompareSlugs);
 
   const articleUrl = `${SITE_URL}/blog/${slug}`;
   const extras = getBlogSchemaExtras(slug);
@@ -954,7 +964,28 @@ export default async function BlogPostPage({
           <div className={`flex gap-8 items-start ${toc.length >= 2 ? "xl:grid xl:grid-cols-[1fr_220px]" : ""}`}>
             <article id="blog-article-body" className="min-w-0 flex-1">
               <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
-                {inlineParts && inlineCompare ? (
+                {sectionCtas?.some((part) => part.kind === "cta") ? (
+                  <>
+                    {sectionCtas.map((part, index) =>
+                      part.kind === "html" ? (
+                        part.html.trim() ? (
+                          <div
+                            key={`html-${index}`}
+                            className="prose-custom"
+                            dangerouslySetInnerHTML={{ __html: part.html }}
+                          />
+                        ) : null
+                      ) : liveCompareSlugSet.has(part.slug) ? (
+                        <BlogInlineCompareCtas
+                          key={`cta-${part.slug}-${index}`}
+                          sourcePage={NBA_SEASON_PREVIEW_SOURCE_PAGE}
+                          heading={part.label}
+                          links={[{ slug: part.slug, label: "See the comparison" }]}
+                        />
+                      ) : null,
+                    )}
+                  </>
+                ) : inlineParts && inlineCompare ? (
                   <>
                     <div
                       className="prose-custom"

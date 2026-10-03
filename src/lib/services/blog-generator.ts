@@ -5,6 +5,7 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
+import { Prisma } from "@prisma/client";
 import { getPrisma } from "@/lib/db/prisma";
 import { searchTavily } from "./tavily-service";
 import { BLOG_CATEGORIES, validateBlogCategory } from "@/lib/utils/categories";
@@ -12,6 +13,7 @@ import { checkBlogDedup, recordDedupRejection } from "./dedup-gate";
 import { submitToIndexNow } from "@/lib/seo/indexnow";
 import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { embedText } from "./embeddings";
+import { findRepoBlogArticle, listRepoBlogArticles } from "@/lib/data/nba-season-preview-blog";
 
 export interface BlogArticle {
   id?: string;
@@ -27,6 +29,8 @@ export interface BlogArticle {
   sourceQuery?: string;
   sourceImpressions?: number;
   status?: string;
+  /** Word count from the listing query. The listing does not load `content`. */
+  contentWordCount?: number;
   publishedAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -239,12 +243,34 @@ function clampPublishedAt<T extends { publishedAt: Date | string | null; created
   return article;
 }
 
+/**
+ * Sort a merged repo + database list once, then slice one page.
+ * Paginating the database query first and splicing repo posts onto page 1
+ * drops the boundary database post: it is pushed off page 1 and page 2's
+ * skip still starts after a full database page.
+ */
+export function paginateMergedBlogArticles<T extends { publishedAt?: Date | string | null }>(
+  articles: T[],
+  offset: number,
+  limit: number,
+): { articles: T[]; total: number } {
+  const sorted = [...articles].sort((a, b) => {
+    const left = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+    const right = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+    return right - left;
+  });
+  return {
+    articles: sorted.slice(offset, offset + limit),
+    total: sorted.length,
+  };
+}
+
 export async function getBlogBySlug(
   slug: string
 ): Promise<BlogArticle | null> {
   const prisma = getPrismaClient();
   if (!prisma) {
-    return MOCK_BLOG_ARTICLES.find((a) => a.slug === slug) || null;
+    return findRepoBlogArticle(slug) ?? MOCK_BLOG_ARTICLES.find((a) => a.slug === slug) ?? null;
   }
 
   try {
@@ -274,6 +300,15 @@ export async function getBlogBySlug(
     }
   } catch (e) {
     console.error("Failed to get blog article:", e);
+  }
+
+  // Repo posts ship with the app. A later DB upsert for the same slug wins above.
+  const repoArticle = findRepoBlogArticle(slug);
+  if (repoArticle) {
+    if (repoArticle.publishedAt && new Date(repoArticle.publishedAt).getTime() > Date.now()) {
+      return null;
+    }
+    return repoArticle;
   }
 
   // Fallback to mock articles when DB returns null or query fails
@@ -659,29 +694,186 @@ const MOCK_BLOG_ARTICLES: BlogArticle[] = [
   },
 ];
 
+type DbBlogRow = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  content?: string;
+  category: string | null;
+  tags?: string[];
+  metaTitle: string | null;
+  metaDescription: string | null;
+  relatedComparisonSlugs: string[];
+  status: string;
+  publishedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  viewCount: number;
+};
+
+/** Card, feed, and sitemap fields. `content` and `titleEmbedding` stay off this list. */
+const BLOG_LIST_SELECT = {
+  id: true,
+  slug: true,
+  title: true,
+  excerpt: true,
+  category: true,
+  tags: true,
+  metaTitle: true,
+  metaDescription: true,
+  relatedComparisonSlugs: true,
+  status: true,
+  publishedAt: true,
+  createdAt: true,
+  updatedAt: true,
+  viewCount: true,
+} as const;
+
+function mapDbBlogArticle(row: DbBlogRow): BlogArticle {
+  return clampPublishedAt({
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    excerpt: row.excerpt || "",
+    content: row.content ?? "",
+    category: row.category || "",
+    tags: row.tags || [],
+    metaTitle: row.metaTitle || row.title,
+    metaDescription: row.metaDescription || "",
+    relatedComparisonSlugs: row.relatedComparisonSlugs || [],
+    status: row.status,
+    publishedAt: row.publishedAt,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+    viewCount: row.viewCount,
+  });
+}
+
+/** Minutes shown on listing cards. Uses the stored word count when the body was not loaded. */
+export function blogReadMinutes(article: {
+  content?: string;
+  contentWordCount?: number;
+}): number {
+  const fromBody = article.content?.trim()
+    ? article.content.trim().split(/\s+/).filter(Boolean).length
+    : 0;
+  const words = fromBody > 0 ? fromBody : article.contentWordCount ?? 0;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+async function attachContentWordCounts(
+  prisma: { $queryRaw?: (query: Prisma.Sql) => Promise<{ slug: string; words: number }[]> },
+  articles: BlogArticle[],
+): Promise<BlogArticle[]> {
+  const slugs = articles.filter((article) => !article.content.trim()).map((article) => article.slug);
+  if (slugs.length === 0 || typeof prisma.$queryRaw !== "function") return articles;
+  try {
+    // POSIX class, not E'\s+'. In a Postgres E-string \s is the letter s.
+    const rows = await prisma.$queryRaw(
+      Prisma.sql`
+        SELECT slug,
+          CASE
+            WHEN content IS NULL OR btrim(content) = '' THEN 0
+            ELSE cardinality(regexp_split_to_array(btrim(content), '[[:space:]]+'))
+          END::int AS words
+        FROM blog_articles
+        WHERE slug IN (${Prisma.join(slugs)})
+      `,
+    );
+    const bySlug = new Map(rows.map((row) => [row.slug, Number(row.words)]));
+    return articles.map((article) =>
+      bySlug.has(article.slug)
+        ? { ...article, contentWordCount: bySlug.get(article.slug) }
+        : article,
+    );
+  } catch (error) {
+    console.warn("Blog listing word count failed:", error);
+    return articles;
+  }
+}
+
+async function repoArticlesMissingFromDb(
+  prisma: NonNullable<ReturnType<typeof getPrismaClient>>,
+  status: string,
+  category?: string,
+): Promise<BlogArticle[]> {
+  const now = Date.now();
+  const candidates = listRepoBlogArticles().filter((article) => {
+    if (article.status !== status) return false;
+    if (category && article.category !== category) return false;
+    if (article.publishedAt && new Date(article.publishedAt).getTime() > now) return false;
+    return true;
+  });
+  if (candidates.length === 0) return [];
+  const rows = await prisma.blogArticle.findMany({
+    where: { slug: { in: candidates.map((article) => article.slug) } },
+    select: { slug: true },
+  });
+  const present = new Set(rows.map((row: { slug: string }) => row.slug));
+  return candidates.filter((article) => !present.has(article.slug));
+}
+
 export async function listBlogArticles(params: {
   category?: string;
   limit?: number;
   offset?: number;
   status?: string;
+  /** API clients that return the markdown body. Listing pages leave this off. */
+  includeContent?: boolean;
+  /**
+   * Word counts for the read-time label. Only /blog cards and the home
+   * cards display that label. Sitemaps and feeds leave this off.
+   */
+  includeReadTime?: boolean;
 }): Promise<{ articles: BlogArticle[]; total: number }> {
   const prisma = getPrismaClient();
   if (!prisma) {
     // Fallback to mock blog articles
     const { category, limit = 12, offset = 0 } = params;
-    let filtered = MOCK_BLOG_ARTICLES.filter((a) => a.status === "published");
+    let filtered = [...listRepoBlogArticles(), ...MOCK_BLOG_ARTICLES].filter(
+      (a) => a.status === "published",
+    );
     if (category) filtered = filtered.filter((a) => a.category === category);
-    return {
-      articles: filtered.slice(offset, offset + limit),
-      total: filtered.length,
-    };
+    return paginateMergedBlogArticles(filtered, offset, limit);
   }
 
-  const { category, limit = 12, offset = 0, status = "published" } = params;
+  const {
+    category,
+    limit = 12,
+    offset = 0,
+    status = "published",
+    includeContent = false,
+    includeReadTime = false,
+  } = params;
+  const countWords = includeReadTime && !includeContent;
 
   try {
     const where: Record<string, unknown> = { status };
     if (category) where.category = category;
+    const select = includeContent ? { ...BLOG_LIST_SELECT, content: true } : BLOG_LIST_SELECT;
+
+    const extras = await repoArticlesMissingFromDb(prisma, status, category);
+    if (extras.length > 0) {
+      // Load the whole matching set, merge, sort once, then paginate.
+      // The select omits the markdown body unless a caller asked for it.
+      const rows = await prisma.blogArticle.findMany({
+        where,
+        orderBy: { publishedAt: "desc" },
+        select,
+      });
+      const bySlug = new Map<string, BlogArticle>();
+      for (const extra of extras) bySlug.set(extra.slug, extra);
+      for (const row of rows) {
+        bySlug.set(row.slug, mapDbBlogArticle(row));
+      }
+      const page = paginateMergedBlogArticles([...bySlug.values()], offset, limit);
+      if (!countWords) return page;
+      return {
+        ...page,
+        articles: await attachContentWordCounts(prisma, page.articles),
+      };
+    }
 
     const [articles, total] = await Promise.all([
       prisma.blogArticle.findMany({
@@ -689,49 +881,15 @@ export async function listBlogArticles(params: {
         orderBy: { publishedAt: "desc" },
         take: limit,
         skip: offset,
+        select,
       }),
       prisma.blogArticle.count({ where }),
     ]);
 
     if (total > 0) {
+      const mapped = articles.map(mapDbBlogArticle);
       return {
-        articles: articles.map(
-          (a: {
-            id: string;
-            slug: string;
-            title: string;
-            excerpt: string | null;
-            content: string;
-            category: string | null;
-            tags: string[];
-            metaTitle: string | null;
-            metaDescription: string | null;
-            relatedComparisonSlugs: string[];
-            sourceQuery: string | null;
-            sourceImpressions: number | null;
-            status: string;
-            publishedAt: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
-            viewCount: number;
-          }) => clampPublishedAt({
-            id: a.id,
-            slug: a.slug,
-            title: a.title,
-            excerpt: a.excerpt || "",
-            content: a.content,
-            category: a.category || "",
-            tags: a.tags || [],
-            metaTitle: a.metaTitle || a.title,
-            metaDescription: a.metaDescription || "",
-            relatedComparisonSlugs: a.relatedComparisonSlugs || [],
-            status: a.status,
-            publishedAt: a.publishedAt,
-            createdAt: a.createdAt,
-            updatedAt: a.updatedAt,
-            viewCount: a.viewCount,
-          })
-        ),
+        articles: countWords ? await attachContentWordCounts(prisma, mapped) : mapped,
         total,
       };
     }
@@ -742,7 +900,7 @@ export async function listBlogArticles(params: {
   // Fallback to mock articles when DB is empty or query fails
   const { category: cat, limit: lim = 12, offset: off = 0 } = params;
   const now = Date.now();
-  let filtered = MOCK_BLOG_ARTICLES.filter(
+  let filtered = [...listRepoBlogArticles(), ...MOCK_BLOG_ARTICLES].filter(
     (a) => a.status === "published" && (!a.publishedAt || new Date(a.publishedAt).getTime() <= now)
   );
   if (cat) filtered = filtered.filter((a) => a.category === cat);
