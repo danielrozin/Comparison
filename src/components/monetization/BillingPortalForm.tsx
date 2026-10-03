@@ -33,7 +33,7 @@ export function BillingPortalForm({ linkInvalid = false }: { linkInvalid?: boole
       setMessage(
         typeof data.message === "string"
           ? data.message
-          : "If that email has an active membership, we sent a one-time link to manage billing."
+          : "If we can manage billing for that email, we sent a one-time link. It expires in 15 minutes and works once."
       );
     } catch {
       setError("Could not send a billing link. Please try again.");

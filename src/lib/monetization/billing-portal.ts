@@ -1,20 +1,23 @@
 /**
  * Stripe Customer Portal for "Manage billing".
  *
- * There is no member login. The page used to take an email and return a
- * portal URL, which let anyone who knew a customer email open that
- * customer's portal on the shared Stripe account. The page now always
- * answers with the same sentence. Only an active AversusB member, whose
+ * There is no member login. The page always answers with the same sentence.
+ * A one-time link is emailed only when the address is a pro_members row whose
  * Stripe subscription is tagged metadata.app=aversusb or priced with an
- * AversusB price, is emailed a one-time link. That link is what creates
- * the portal session.
+ * AversusB price. Canceled and past-due rows are included: the portal is how
+ * those customers see invoices or replace a card. The price check is the gate.
  *
- * This module only GETs the subscription and, after the link is redeemed,
- * POSTs a billing portal session for that AversusB customer. It does not
- * create, edit, or archive Products or Prices.
+ * Tokens are rows in Postgres (`billing_portal_tokens`). Production does not
+ * configure Redis, so a Redis key cannot be redeemed.
+ *
+ * The browser response does not wait for Stripe or for the email. Those run
+ * after the response, so a member is not slower than a stranger. This module
+ * GETs the subscription and, after the link is redeemed, POSTs a billing
+ * portal session for that AversusB customer. It does not create, edit, or
+ * archive Products or Prices.
  */
 
-import crypto from "node:crypto";
+import { after } from "next/server";
 import { SITE_URL } from "@/lib/utils/constants";
 import { BILLING_PORTAL_PATH } from "@/lib/monetization/welcome-email";
 import { lookupMember, normalizeMemberEmail, type MemberRecord } from "@/lib/monetization/members";
@@ -23,13 +26,25 @@ import {
   subscriptionBelongsToAversusB,
   type SubscriptionOwnership,
 } from "@/lib/monetization/stripe-app";
-import { getRedis } from "@/lib/services/redis";
 import { sendOutreachEmail } from "@/lib/services/email";
+import {
+  BILLING_PORTAL_LINK_LIMIT,
+  consumeBillingPortalToken,
+  countRecentBillingLinks,
+  deleteBillingPortalToken,
+  issueBillingPortalToken,
+} from "@/lib/monetization/billing-portal-tokens";
 
 export const BILLING_PORTAL_GENERIC_MESSAGE =
-  "If that email has an active AversusB membership, we sent a one-time link to manage billing. The link expires in 15 minutes and works once.";
+  "If we can manage billing for that email, we sent a one-time link. It expires in 15 minutes and works once.";
 
-const LINK_TTL_SECONDS = 15 * 60;
+/**
+ * Member and non-member answers both wait at least this long, so a fast
+ * database "no" is not obviously faster than a database "yes". Stripe and
+ * the email are not part of this wait: they run after the response.
+ * Tests set BILLING_PORTAL_MIN_RESPONSE_MS=0.
+ */
+export const BILLING_PORTAL_RESPONSE_FLOOR_MS = 300;
 
 export type BillingPortalResult =
   | { ok: true; message: string }
@@ -41,8 +56,45 @@ export type BillingPortalRedeemResult =
 
 const GENERIC: BillingPortalResult = { ok: true, message: BILLING_PORTAL_GENERIC_MESSAGE };
 
-function tokenKey(token: string): string {
-  return `monetization:billing-portal-token:${token}`;
+const UNAVAILABLE: BillingPortalResult = {
+  ok: false,
+  status: 503,
+  code: "unavailable",
+  error: "We could not look up billing just now. Please try again in a minute.",
+};
+
+function responseFloorMs(): number {
+  const raw = process.env.BILLING_PORTAL_MIN_RESPONSE_MS;
+  if (raw == null || raw === "") return BILLING_PORTAL_RESPONSE_FLOOR_MS;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed < 0) return BILLING_PORTAL_RESPONSE_FLOOR_MS;
+  return parsed;
+}
+
+async function withResponseFloor<T>(started: number, result: T): Promise<T> {
+  const wait = responseFloorMs() - (Date.now() - started);
+  if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
+  return result;
+}
+
+/**
+ * Schedule work that must not change how long the HTTP response takes.
+ * Inside a Next.js request, `after` runs once the response is flushed.
+ * Unit tests have no request store, so the work runs before this returns
+ * and the tests can see the email.
+ */
+async function runAfterResponse(task: () => Promise<void>): Promise<void> {
+  const guarded = () =>
+    task().catch((err) => {
+      console.error("[billing-portal] follow-up failed:", err);
+    });
+  try {
+    after(guarded);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    if (!message.includes("outside a request scope")) throw err;
+    await guarded();
+  }
 }
 
 function ownedPrices(): Set<string> {
@@ -81,8 +133,12 @@ function subscriptionIsOurs(subscription: StripeSubscription, storedCustomer: st
   return true;
 }
 
-async function memberMayOpenPortal(member: MemberRecord): Promise<boolean> {
-  if (!member.active || !member.stripeCustomer || !member.stripeSubscription) return false;
+/** Any stored member with a Stripe identity. Status is not the gate. */
+function memberHasBillingIdentity(member: MemberRecord): boolean {
+  return Boolean(member.stripeCustomer && member.stripeSubscription);
+}
+
+async function subscriptionIsAversusB(member: MemberRecord): Promise<boolean> {
   const secret = (process.env.STRIPE_SECRET_KEY ?? "").trim();
   if (!secret) {
     console.error("[billing-portal] STRIPE_SECRET_KEY is not set");
@@ -93,18 +149,15 @@ async function memberMayOpenPortal(member: MemberRecord): Promise<boolean> {
   return subscriptionIsOurs(subscription, member.stripeCustomer);
 }
 
-async function issueBillingLink(email: string): Promise<void> {
-  const redis = getRedis();
-  if (!redis) {
-    console.error("[billing-portal] redis unavailable; not issuing a link");
+async function sendBillingLink(email: string, stripeCustomerId: string): Promise<void> {
+  const issued = await issueBillingPortalToken(email, stripeCustomerId);
+  if (!issued) {
+    console.info("[billing-portal] link rate limit");
     return;
   }
-  const token = crypto.randomBytes(32).toString("base64url");
-  const key = tokenKey(token);
-  await redis.set(key, email, { ex: LINK_TTL_SECONDS });
-  const link = `${SITE_URL}/api/billing-portal/redeem?token=${encodeURIComponent(token)}`;
+  const link = `${SITE_URL}/api/billing-portal/redeem?token=${encodeURIComponent(issued.raw)}`;
   const text = [
-    "Use this one-time link to update your card or cancel A Versus B.",
+    "Use this one-time link to update your card, see invoices, or cancel A Versus B.",
     "It expires in 15 minutes and works once.",
     "",
     link,
@@ -115,42 +168,47 @@ async function issueBillingLink(email: string): Promise<void> {
     to: email,
     subject: "Manage your A Versus B billing",
     text,
-    html: `<p>Use this one-time link to update your card or cancel A Versus B. It expires in 15 minutes and works once.</p><p><a href="${link}">Manage billing</a></p><p>If you did not ask for this, you can ignore this email.</p>`,
+    html: `<p>Use this one-time link to update your card, see invoices, or cancel A Versus B. It expires in 15 minutes and works once.</p><p><a href="${link}">Manage billing</a></p><p>If you did not ask for this, you can ignore this email.</p>`,
     tags: [{ name: "type", value: "billing_portal" }],
   });
   if (!result.success) {
     console.error("[billing-portal] link email failed:", result.error ?? "unknown");
-    try {
-      await redis.del(key);
-    } catch {
-      // The token expires on its own. The HTTP response stays generic.
-    }
+    await deleteBillingPortalToken(issued.raw);
   }
 }
 
+async function deliverBillingLink(email: string, member: MemberRecord): Promise<void> {
+  if (!(await subscriptionIsAversusB(member))) return;
+  await sendBillingLink(email, member.stripeCustomer);
+}
+
 export async function startBillingPortal(emailRaw: string): Promise<BillingPortalResult> {
+  const started = Date.now();
   const email = normalizeMemberEmail(emailRaw);
-  if (!email) return GENERIC;
+  if (!email) return withResponseFloor(started, GENERIC);
 
   const lookup = await lookupMember(email);
-  if (!lookup.available) {
-    return {
-      ok: false,
-      status: 503,
-      code: "unavailable",
-      error: "We could not look up billing just now. Please try again in a minute.",
-    };
-  }
-  if (!lookup.member || !(await memberMayOpenPortal(lookup.member))) {
-    return GENERIC;
+  if (!lookup.available) return withResponseFloor(started, UNAVAILABLE);
+
+  // Same token-table read for members and strangers, before the response.
+  let recent = 0;
+  try {
+    recent = await countRecentBillingLinks(email);
+  } catch (err) {
+    console.error("[billing-portal] link count failed:", err);
+    return withResponseFloor(started, UNAVAILABLE);
   }
 
-  try {
-    await issueBillingLink(email);
-  } catch (err) {
-    console.error("[billing-portal] could not send link:", err);
+  const member = lookup.member;
+  if (member && memberHasBillingIdentity(member) && recent < BILLING_PORTAL_LINK_LIMIT) {
+    // Stripe and the email happen after the response so they cannot make
+    // a member slower than a stranger.
+    await runAfterResponse(() => deliverBillingLink(email, member));
+  } else if (member && memberHasBillingIdentity(member)) {
+    console.info("[billing-portal] link rate limit");
   }
-  return GENERIC;
+
+  return withResponseFloor(started, GENERIC);
 }
 
 async function createPortalSession(customerId: string, secret: string): Promise<string | null> {
@@ -176,8 +234,12 @@ export async function redeemBillingPortal(tokenRaw: string): Promise<BillingPort
   if (!token || token.length > 200) {
     return { ok: false, status: 400, code: "invalid", error: "This link is invalid or has expired." };
   }
-  const redis = getRedis();
-  if (!redis) {
+
+  let consumed;
+  try {
+    consumed = await consumeBillingPortalToken(token);
+  } catch (err) {
+    console.error("[billing-portal] token consume failed:", err);
     return {
       ok: false,
       status: 503,
@@ -185,17 +247,11 @@ export async function redeemBillingPortal(tokenRaw: string): Promise<BillingPort
       error: "Billing management is not available just now. Request a new link in a minute.",
     };
   }
-
-  const key = tokenKey(token);
-  const stored = await redis.get<string>(key);
-  const email = typeof stored === "string" ? normalizeMemberEmail(stored) : null;
-  if (!email) {
+  if (!consumed) {
     return { ok: false, status: 400, code: "invalid", error: "This link is invalid or has expired." };
   }
-  // One-time: drop the token before calling Stripe so a second click cannot reuse it.
-  await redis.del(key);
 
-  const lookup = await lookupMember(email);
+  const lookup = await lookupMember(consumed.email);
   if (!lookup.available) {
     return {
       ok: false,
@@ -204,7 +260,12 @@ export async function redeemBillingPortal(tokenRaw: string): Promise<BillingPort
       error: "We could not look up billing just now. Request a new link in a minute.",
     };
   }
-  if (!lookup.member || !(await memberMayOpenPortal(lookup.member))) {
+  if (
+    !lookup.member ||
+    !memberHasBillingIdentity(lookup.member) ||
+    lookup.member.stripeCustomer !== consumed.stripeCustomerId ||
+    !(await subscriptionIsAversusB(lookup.member))
+  ) {
     return { ok: false, status: 400, code: "invalid", error: "This link is invalid or has expired." };
   }
 
@@ -219,7 +280,7 @@ export async function redeemBillingPortal(tokenRaw: string): Promise<BillingPort
   }
 
   try {
-    const url = await createPortalSession(lookup.member.stripeCustomer, secret);
+    const url = await createPortalSession(consumed.stripeCustomerId, secret);
     if (!url) {
       return {
         ok: false,
