@@ -3,8 +3,8 @@ import type { EditorialComparison } from "./types";
 
 /**
  * Coinbase vs Binance, checked 3 October 2026.
- * Coinbase: the pricing and fees disclosures, and the about page.
- * Binance: the about page, the ADGM transition announcement, the spot-fee
+ * Coinbase: the pricing and fees disclosures.
+ * Binance: the ADGM transition announcement, the spot-fee
  * calculation article, and the BNB fee-discount article.
  * No page-level winner.
  */
@@ -163,7 +163,7 @@ export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison
   ],
   attributes: [
     textAttr("listing", "Company", SPEC, COINBASE, BINANCE, "NASDAQ: COIN. Brian Armstrong, Co-Founder and CEO. 4,300+ employees as of 30 June 2026", "Launched July 2017 by Changpeng Zhao. Yi He and Richard Teng are Co-CEOs"),
-    textAttr("scale", "Scale", SPEC, COINBASE, BINANCE, "As of 30 June 2026: 10.3% crypto trading volume market share, $246 billion assets on platform, 100+ countries. Also reports 245,000 ecosystem partners", "Binance reports $65 billion average daily volume and 300 billion spot transactions in 2022"),
+    textAttr("scale", "Scale", SPEC, COINBASE, BINANCE, "As of 30 June 2026: 10.3% crypto trading volume market share, $246 billion assets on platform, 100+ countries. Also reports 245,000 ecosystem partners", "—"),
     textAttr("spot", "Trade price", SPEC, COINBASE, BINANCE, "Simple buy or sell includes a spread. Fee varies and is shown on the preview. Simple limit order: 1% execution fee, and a Coinbase fee that may be 1.875%", "Regular-user spot example 0.1%, in the asset you receive. VIP level can change the rate"),
     textAttr("discount", "Discount", SPEC, COINBASE, BINANCE, "Coinbase One can zero trading fees. The 1% limit-order fee still applies. A spread can remain", "25% off spot and margin with BNB, until further notice. Futures discount up to 10%"),
     textAttr("storage", "Holding crypto", SPEC, COINBASE, BINANCE, "Hosted balance storage is free. User-to-user primary balance transfer is free", "From 5 January 2026, Nest Clearing and Custody Limited safeguards user digital assets"),
