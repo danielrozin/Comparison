@@ -48,11 +48,6 @@ const FAQS = [
       "Basketball-Reference lists Durant with the Houston Rockets and LeBron with the Philadelphia 76ers, fetched October 3, 2026. NBA.com's story, updated July 27, 2026, says LeBron announced the move on social media Friday and that it became official on Sunday. His posts on that story are dated July 24, 2026. He told the Lakers on June 30 that he would not return. The story says he logged 23 seasons and will add at least one more this season.",
   },
   {
-    question: "Why does the basketball hub mention this comparison?",
-    answer:
-      "The sports basketball FAQ names Kevin Durant vs LeBron in its answer about popular comparisons. On October 3, 2026 that sentence was plain text, and /compare/durant-vs-lebron returned 404. This page is that slug. It is alphabetical, so the reverse /compare/lebron-vs-durant is the order that redirects here.",
-  },
-  {
     question: "Does this page predict 2026-27?",
     answer:
       "No. Stats as of October 3, 2026, neither player page has a 2026-27 regular-season game log. Tables labeled 2026-27 Projection are not quoted. Reported contract dollars in the signing story are labeled as reports, so they are not used. This page does not pick a winner.",
@@ -233,13 +228,13 @@ const BUILT = buildEditorialComparison({
       type: "blog",
       label: "Kevin Durant hub",
       url: "/entity/kevin-durant",
-      description: "AversusB hub. Index, follow on October 3, 2026.",
+      description: "Kevin Durant player hub.",
     },
     {
       type: "blog",
       label: "LeBron James hub",
       url: "/entity/lebron-james",
-      description: "AversusB hub. Index, follow on October 3, 2026.",
+      description: "LeBron James player hub.",
     },
   ],
   metaTitle: "Durant vs LeBron: Careers and 2026-27",
