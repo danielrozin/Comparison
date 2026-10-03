@@ -77,7 +77,9 @@ A simple buy or sell includes a spread in the quoted price. The separate Coinbas
 
 Binance
 
-Changpeng Zhao launched Binance in July 2017. Yi He is Co-CEO and Co-Founder. Richard Teng is Co-CEO. Binance says Binance Exchange is regulated by the ADGM FSRA. Customer support runs 24/7 in 40 languages.
+Changpeng Zhao launched Binance in July 2017. Yi He is Co-CEO and Co-Founder. Richard Teng is Co-CEO. Customer support runs 24/7 in 40 languages.
+
+Binance says Binance Exchange is regulated by the ADGM FSRA.
 
 Binance says that from 5 January 2026 at 08:00 UTC, spot and derivative exchange activity is provided by Nest Exchange Limited, clearing and custody by Nest Clearing and Custody Limited, and off-exchange services such as OTC, Convert, and Earn by Nest Trading Limited.
 
@@ -158,20 +160,13 @@ export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison
       entityBValue: "25% off spot and margin fees when paying with BNB",
       winner: "tie",
     },
-    {
-      label: "Regulatory status (company statement)",
-      entityAValue: "NASDAQ: COIN. Fees not applicable in all regions",
-      entityBValue: "Binance says Binance Exchange is regulated by the ADGM FSRA",
-      winner: "tie",
-    },
   ],
   attributes: [
     textAttr("listing", "Company", SPEC, COINBASE, BINANCE, "NASDAQ: COIN. Brian Armstrong, Co-Founder and CEO. 4,300+ employees as of 30 June 2026", "Launched July 2017 by Changpeng Zhao. Yi He and Richard Teng are Co-CEOs"),
-    textAttr("scale", "Scale", SPEC, COINBASE, BINANCE, "As of 30 June 2026: 10.3% crypto trading volume market share, $246 billion assets on platform, 100+ countries. Also reports 245,000 ecosystem partners", "Binance says Binance Exchange is regulated by the ADGM FSRA. Support 24/7 in 40 languages"),
+    textAttr("scale", "Scale", SPEC, COINBASE, BINANCE, "As of 30 June 2026: 10.3% crypto trading volume market share, $246 billion assets on platform, 100+ countries. Also reports 245,000 ecosystem partners", "Binance reports $65 billion average daily volume and 300 billion spot transactions in 2022"),
     textAttr("spot", "Trade price", SPEC, COINBASE, BINANCE, "Simple buy or sell includes a spread. Fee varies and is shown on the preview. Simple limit order: 1% execution fee, and a Coinbase fee that may be 1.875%", "Regular-user spot example 0.1%, in the asset you receive. VIP level can change the rate"),
     textAttr("discount", "Discount", SPEC, COINBASE, BINANCE, "Coinbase One can zero trading fees. The 1% limit-order fee still applies. A spread can remain", "25% off spot and margin with BNB, until further notice. Futures discount up to 10%"),
     textAttr("storage", "Holding crypto", SPEC, COINBASE, BINANCE, "Hosted balance storage is free. User-to-user primary balance transfer is free", "From 5 January 2026, Nest Clearing and Custody Limited safeguards user digital assets"),
-    textAttr("regulator", "Named oversight", SPEC, COINBASE, BINANCE, "Fee disclosures are not applicable in all regions", "Binance says Binance Exchange is regulated by the ADGM FSRA. Nest Exchange Limited runs spot and derivatives from 5 January 2026"),
   ],
   faqs: FAQS,
   relatedComparisons: [],
