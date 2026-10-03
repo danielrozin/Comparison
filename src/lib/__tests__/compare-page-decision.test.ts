@@ -116,17 +116,17 @@ describe("on-demand canonical redirects do not loop live pages", () => {
   });
 
   it("does not redirect a missing pair to a sorted slug that is not live", () => {
+    // Invented pairs. Live NBA slugs such as lebron-vs-durant now 301 at the edge.
     expect(step("stapler-vs-banana", new Set())).toEqual({ type: "shell" });
     expect(step("banana-vs-stapler", new Set())).toEqual({ type: "shell" });
-    expect(step("lebron-vs-durant", new Set())).toEqual({ type: "shell" });
-    expect(step("jokic-vs-embiid", new Set())).toEqual({ type: "shell" });
-    expect(step("steph-curry-vs-kobe-bryant", new Set())).toEqual({ type: "shell" });
+    expect(step("zzz-test-a-vs-zzz-test-b", new Set())).toEqual({ type: "shell" });
+    expect(step("zzz-test-b-vs-zzz-test-a", new Set())).toEqual({ type: "shell" });
   });
 
   it("redirects to the sorted slug only when that page is live", () => {
-    const live = new Set(["durant-vs-lebron"]);
-    expect(step("lebron-vs-durant", live)).toEqual({ type: "redirect", to: "durant-vs-lebron" });
-    expect(step("durant-vs-lebron", live)).toEqual({ type: "render" });
+    const live = new Set(["banana-vs-stapler"]);
+    expect(step("stapler-vs-banana", live)).toEqual({ type: "redirect", to: "banana-vs-stapler" });
+    expect(step("banana-vs-stapler", live)).toEqual({ type: "render" });
   });
 
   it("keeps reversed-slug redirects that land on a live page", () => {

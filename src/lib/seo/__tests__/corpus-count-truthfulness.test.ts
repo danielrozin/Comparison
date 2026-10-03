@@ -13,7 +13,10 @@
 import { describe, it, expect } from "vitest";
 import { organizationSchema, dataCatalogSchema, webSiteSchema } from "../schema";
 import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
-import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
+import {
+  NEVER_PUBLISHED_ALIASES,
+  REDIRECTED_COMPARE_SLUGS,
+} from "@/lib/redirects/compare-redirects";
 
 /**
  * The live sweep these tests are pinned to: every /compare/ URL in sitemap/1.xml was
@@ -100,10 +103,33 @@ describe("CANONICAL_COMPARISON_COUNT_FALLBACK", () => {
     // stayed at 468 and shipped an overstated corpus in every page's JSON-LD. The
     // consolidation map is the only static thing that moves in lockstep with the catalog,
     // so tie the ceiling to it: retiring more slugs must lower the number we advertise.
-    const retiredSinceSweep = REDIRECTED_COMPARE_SLUGS.length - REDIRECTS_AT_LAST_SWEEP;
+    //
+    // A redirect source that was never a published page (NEVER_PUBLISHED_ALIASES)
+    // does not shrink the catalog. Leave those out of this tally. A real retired
+    // page stays in.
+    const retiredSinceSweep = retiredCatalogSlugs().length - REDIRECTS_AT_LAST_SWEEP;
     expect(retiredSinceSweep).toBeGreaterThanOrEqual(0); // slugs are retired, never un-retired
     expect(CANONICAL_COMPARISON_COUNT_FALLBACK).toBeLessThanOrEqual(
       CATALOG_AT_LAST_SWEEP - retiredSinceSweep
     );
   });
+
+  it("counts a real retired page and leaves never-published aliases out", () => {
+    // notion-vs-clickup was a published ordering duplicate. Folding it into
+    // clickup-vs-notion retired a catalog page, so the ceiling must still drop.
+    expect(REDIRECTED_COMPARE_SLUGS).toContain("notion-vs-clickup");
+    expect(NEVER_PUBLISHED_ALIASES.has("notion-vs-clickup")).toBe(false);
+    expect(retiredCatalogSlugs()).toContain("notion-vs-clickup");
+
+    expect(NEVER_PUBLISHED_ALIASES.size).toBeGreaterThan(0);
+    for (const alias of NEVER_PUBLISHED_ALIASES) {
+      expect(REDIRECTED_COMPARE_SLUGS, alias).toContain(alias);
+      expect(retiredCatalogSlugs(), alias).not.toContain(alias);
+    }
+  });
 });
+
+/** Redirect sources that used to be catalog pages. Never-published aliases are excluded. */
+function retiredCatalogSlugs(): string[] {
+  return REDIRECTED_COMPARE_SLUGS.filter((slug) => !NEVER_PUBLISHED_ALIASES.has(slug));
+}

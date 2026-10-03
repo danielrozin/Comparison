@@ -453,7 +453,13 @@ export function getConsolidatedCompareSlug(slug: string): string | null {
  * in this list so `canonicalComparisonWhere()` matches the edge redirect table
  * (a published row that later appears as an alias must not re-enter the sitemap).
  * They do not lower CANONICAL_COMPARISON_COUNT_FALLBACK.
+ *
+ * NEVER_PUBLISHED_ALIASES are in this list for the same sitemap reason.
+ * corpus-count-truthfulness leaves them out of the retired-page tally.
+ * Add a never-published alias to that set instead of lowering the fallback.
  */
+export { NEVER_PUBLISHED_ALIASES } from "./not-found-cleanup-redirects";
+
 export const REDIRECTED_COMPARE_SLUGS: string[] = COMPARE_REDIRECTS.map((r) =>
   r.source.replace("/compare/", ""),
 );

@@ -15,3 +15,18 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
   "macbook-air-vs-macbook-pro-difference-2026-specs":
     "macbook-air-vs-macbook-pro-differences-2026-specs-battery-performance",
 };
+
+/**
+ * Redirect sources that were never published catalog pages.
+ *
+ * They still 301, and they stay in REDIRECTED_COMPARE_SLUGS so the sitemap
+ * matches the edge table. The corpus ceiling treats every other redirect
+ * source as a retired page and lowers the advertised count. These URLs
+ * were always 404s, so they must not shrink CANONICAL_COMPARISON_COUNT_FALLBACK.
+ *
+ * Add a slug here when a later batch 301s a URL that never had a published
+ * row. PR #338 (kindle-vs-kobo and the Thunder aliases) uses this same set.
+ */
+export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
+  ...Object.keys(NOT_FOUND_CLEANUP_CONSOLIDATIONS),
+]);

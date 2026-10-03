@@ -157,13 +157,13 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
   })
 
   it('404s a missing pair at the requested URL instead of 301ing to a dead sorted slug', async () => {
+    // Invented pairs. The NBA slugs this used to list are live pages now,
+    // and their reversed forms 301 to those pages.
     for (const slug of [
-      'lebron-vs-durant',
-      'durant-vs-lebron',
-      'jokic-vs-embiid',
-      'embiid-vs-jokic',
-      'steph-curry-vs-kobe-bryant',
-      'kobe-bryant-vs-steph-curry',
+      'stapler-vs-banana',
+      'banana-vs-stapler',
+      'zzz-test-a-vs-zzz-test-b',
+      'zzz-test-b-vs-zzz-test-a',
     ]) {
       const result = await run(slug)
       expect(result, slug).toMatchObject({ notFound: true })
@@ -174,13 +174,13 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
 
   it('301s to the sorted slug only when that page is live', async () => {
     getComparisonBySlug.mockImplementation(async (slug: string) =>
-      slug === 'durant-vs-lebron' ? comparison(slug, 'published') : null
+      slug === 'banana-vs-stapler' ? comparison(slug, 'published') : null
     )
 
-    expect(await run('lebron-vs-durant')).toMatchObject({
-      redirect: { destination: '/compare/durant-vs-lebron', statusCode: 301 },
+    expect(await run('stapler-vs-banana')).toMatchObject({
+      redirect: { destination: '/compare/banana-vs-stapler', statusCode: 301 },
     })
-    const live = await run('durant-vs-lebron')
+    const live = await run('banana-vs-stapler')
     expect(live).toHaveProperty('props')
     expect(live).not.toHaveProperty('redirect')
     expect(generateComparison).not.toHaveBeenCalled()
