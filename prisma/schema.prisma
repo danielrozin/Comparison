@@ -1128,6 +1128,21 @@ model ProcessedStripeEvent {
   @@map("processed_stripe_events")
 }
 
+/// One-time billing-portal links. Redis is not configured in production, so
+/// the token lives here next to `pro_members`. Only the sha256 of the 32
+/// random bytes is stored. The raw token is in the email.
+model BillingPortalToken {
+  tokenHash        String    @id @map("token_hash")
+  email            String
+  stripeCustomerId String    @map("stripe_customer_id")
+  expiresAt        DateTime  @map("expires_at")
+  usedAt           DateTime? @map("used_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  @@index([email, createdAt])
+  @@map("billing_portal_tokens")
+}
+
 /// Pro custom-compare quota. One row per member email per calendar month.
 /// `pair_keys` holds the distinct matchups already counted this month.
 model ProCustomCompareUsage {

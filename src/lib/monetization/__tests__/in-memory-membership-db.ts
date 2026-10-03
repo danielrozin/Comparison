@@ -33,6 +33,15 @@ interface EventRow {
   createdAt: Date;
 }
 
+interface BillingTokenRow {
+  tokenHash: string;
+  email: string;
+  stripeCustomerId: string;
+  expiresAt: Date;
+  usedAt: Date | null;
+  createdAt: Date;
+}
+
 function uniqueError(): Error {
   const err = new Error("Unique constraint failed");
   (err as Error & { code: string }).code = "P2002";
@@ -43,6 +52,7 @@ function createDb() {
   const members: MemberRow[] = [];
   const usage: UsageRow[] = [];
   const events: EventRow[] = [];
+  const billingTokens: BillingTokenRow[] = [];
   let seq = 0;
   const state = { enabled: true, failWrites: false };
 
@@ -165,6 +175,47 @@ function createDb() {
         return { ...row, pairKeys: [...row.pairKeys] };
       },
     },
+    billingPortalToken: {
+      async create({
+        data,
+      }: {
+        data: {
+          tokenHash: string;
+          email: string;
+          stripeCustomerId: string;
+          expiresAt: Date;
+        };
+      }) {
+        if (billingTokens.some((row) => row.tokenHash === data.tokenHash)) throw uniqueError();
+        const row: BillingTokenRow = {
+          tokenHash: data.tokenHash,
+          email: data.email,
+          stripeCustomerId: data.stripeCustomerId,
+          expiresAt: data.expiresAt,
+          usedAt: null,
+          createdAt: new Date(),
+        };
+        billingTokens.push(row);
+        return { ...row };
+      },
+      async count({
+        where,
+      }: {
+        where?: { email?: string; createdAt?: { gte?: Date } };
+      }) {
+        const since = where?.createdAt?.gte?.getTime() ?? 0;
+        return billingTokens.filter((row) => {
+          if (where?.email && row.email !== where.email) return false;
+          return row.createdAt.getTime() >= since;
+        }).length;
+      },
+      async delete({ where }: { where: { tokenHash: string } }) {
+        const index = billingTokens.findIndex((row) => row.tokenHash === where.tokenHash);
+        if (index < 0) throw new Error("record not found");
+        const [row] = billingTokens.splice(index, 1);
+        return { ...row };
+      },
+    },
     comparisonRequest: {
       async upsert() {
         return { id: "req" };
@@ -189,6 +240,24 @@ function createDb() {
       row.updatedAt = new Date();
       return 1;
     },
+    /**
+     * Atomic billing-link redeem. Marks used_at only when the hash matches
+     * an unused, unexpired row, then returns that row.
+     */
+    async $queryRaw(query: TemplateStringsArray, ...values: unknown[]) {
+      const sql = Array.isArray(query) ? query.join(" ") : String(query);
+      if (!sql.includes("billing_portal_tokens") || !sql.includes("RETURNING")) {
+        throw new Error(`unexpected raw sql: ${sql}`);
+      }
+      const tokenHash = String(values[0] ?? "");
+      const now = new Date();
+      const row = billingTokens.find(
+        (item) => item.tokenHash === tokenHash && item.usedAt == null && item.expiresAt > now
+      );
+      if (!row) return [];
+      row.usedAt = now;
+      return [{ email: row.email, stripe_customer_id: row.stripeCustomerId }];
+    },
     $transaction: async <T>(fn: (tx: unknown) => Promise<T>): Promise<T> => fn(undefined),
   };
   client.$transaction = (fn) => fn(client);
@@ -198,11 +267,13 @@ function createDb() {
     members,
     usage,
     events,
+    billingTokens,
     state,
     reset() {
       members.splice(0, members.length);
       usage.splice(0, usage.length);
       events.splice(0, events.length);
+      billingTokens.splice(0, billingTokens.length);
       state.enabled = true;
       state.failWrites = false;
     },
@@ -237,4 +308,8 @@ export function membershipTestEvents() {
 
 export function membershipTestUsage() {
   return db.usage;
+}
+
+export function membershipTestBillingTokens() {
+  return db.billingTokens;
 }
