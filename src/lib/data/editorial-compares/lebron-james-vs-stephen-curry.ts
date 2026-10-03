@@ -4,7 +4,7 @@ import type { EditorialComparison } from "./types";
 /**
  * LeBron vs Curry. Career and 2025-26 lines are Basketball-Reference.
  * The July 2026 76ers signing and the 24th-season line are the NBA.com
- * story updated July 27, 2026. Fetched 2026-10-03. No prediction.
+ * story updated July 27, 2026. No prediction.
  * Projection rows and reported contract dollars are not quoted.
  */
 
@@ -15,12 +15,12 @@ const LEBRON_URL = "https://www.basketball-reference.com/players/j/jamesle01.htm
 const CURRY_URL = "https://www.basketball-reference.com/players/c/curryst01.html";
 const SIGNING = "https://www.nba.com/news/lebron-james-free-agency-sixers-2026";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const AS_OF = "October 3, 2026";
 
-const CAREER_CAT = `Career per game · Basketball-Reference, fetched ${FETCHED}`;
-const RECENT_CAT = `2025-26 regular season · Basketball-Reference, fetched ${FETCHED}`;
+const CAREER_CAT = `Career per game · Basketball-Reference`;
+const RECENT_CAT = `2025-26 regular season · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: "How many championships does each player have?",
     answer:
-      "LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. Curry won 4 NBA championships and 2 MVPs, made 12 All-Star teams, and was 2021-22 Finals MVP. Basketball-Reference is the source, fetched October 3, 2026. This page does not turn those honors into a ranking.",
+      "LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. Curry won 4 NBA championships and 2 MVPs, made 12 All-Star teams, and was 2021-22 Finals MVP. Basketball-Reference is the source. This page does not turn those honors into a ranking.",
   },
   {
     question: "Where is LeBron listed for 2026-27?",
@@ -50,7 +50,7 @@ const FAQS = [
   {
     question: "Where is Stephen Curry listed?",
     answer:
-      "Basketball-Reference lists the Golden State Warriors. Experience on that page is 17 years. The 2025-26 awards cell is All-Star. Stats as of October 3, 2026, his page has no 2026-27 regular-season game log. A table on the page is labeled 2026-27 Projection, and this page does not quote it.",
+      "Basketball-Reference lists the Golden State Warriors. Experience there is 17 years. The 2025-26 awards cell is All-Star. Basketball-Reference has no 2026-27 regular-season game log for Curry. A table is labeled 2026-27 Projection, and this comparison does not quote it.",
   },
   {
     question: "Does this page predict 2026-27?",
@@ -65,11 +65,11 @@ const VERDICT = `Career per game: LeBron 26.8 points, 7.5 rebounds, and 7.4 assi
 
 Championships on the honors lists: 4 and 4.
 
-2026-27 season: LeBron is listed with the 76ers. Curry is listed with the Warriors. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
+2026-27 season: Basketball-Reference lists LeBron with the 76ers. Basketball-Reference lists Curry with the Warriors. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
 
 const EXPERT_ANALYSIS = `LeBron James's career line is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. Stephen Curry's is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games, totaling 26,528 points. In 2025-26 LeBron averaged 20.9 points in 60 games and Curry averaged 26.6 points in 43 games. This page does not pick a winner.
 
-Source note: the career rows, the 2025-26 lines, and the team fields are from Basketball-Reference, fetched ${AS_OF}. The signing and the line that 2026-27 adds at least one season after 23 are from NBA.com's story updated July 27, 2026, which also prints the 20.9 and 26.8 figures. ${LEBRON_URL} ${CURRY_URL} ${SIGNING}
+Source note: the career rows, the 2025-26 lines, and the team fields are from Basketball-Reference. The signing and the line that 2026-27 adds at least one season after 23 are from NBA.com's story updated July 27, 2026, which also prints the 20.9 and 26.8 figures. ${LEBRON_URL} ${CURRY_URL} ${SIGNING}
 
 2026-27 season. Stats as of ${AS_OF}. LeBron's team on Basketball-Reference is the Philadelphia 76ers. Curry's is the Golden State Warriors. NBA.com says LeBron announced the move Friday, that it became official Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. He said he believes he can help make the 76ers a championship team. That is his statement. NBA.com writes that he logged 23 seasons and will add at least one more this season. Neither player page has a 2026-27 game log. Tables labeled 2026-27 Projection are not quoted.
 
@@ -191,7 +191,7 @@ const BUILT = buildEditorialComparison({
     winnerReason:
       "No page-level winner and no 2026-27 prediction. The career rows and the 2025-26 lines are finished results.",
     keyFact:
-      "LeBron 26.8 points in 1,622 games and 20.9 in 2025-26. Curry 24.8 points in 1,069 games and 26.6 in 2025-26. LeBron is listed with the 76ers. Curry is listed with the Warriors.",
+      "LeBron 26.8 points in 1,622 games and 20.9 in 2025-26. Curry 24.8 points in 1,069 games and 26.6 in 2025-26. Basketball-Reference lists LeBron with the 76ers. Basketball-Reference lists Curry with the Warriors.",
   },
   citationStats: {
     sourceCount: 3,
@@ -199,11 +199,11 @@ const BUILT = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: `Basketball-Reference — LeBron James (fetched ${FETCHED})`, url: LEBRON_URL },
-      { name: `Basketball-Reference — Stephen Curry (fetched ${FETCHED})`, url: CURRY_URL },
-      { name: `NBA.com — LeBron signs with the 76ers (fetched ${FETCHED})`, url: SIGNING },
+      { name: `Basketball-Reference — LeBron James`, url: LEBRON_URL },
+      { name: `Basketball-Reference — Stephen Curry`, url: CURRY_URL },
+      { name: `NBA.com — LeBron signs with the 76ers`, url: SIGNING },
     ],
   },
   resources: [
@@ -211,13 +211,13 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: LeBron James",
       url: LEBRON_URL,
-      description: `Fetched ${FETCHED}. Career 26.8 points, 7.5 rebounds, 7.4 assists in 1,622 games. 2025-26: 20.9 points in 60 games. Team: Philadelphia 76ers.`,
+      description: `Career 26.8 points, 7.5 rebounds, 7.4 assists in 1,622 games. 2025-26: 20.9 points in 60 games. Team: Philadelphia 76ers.`,
     },
     {
       type: "external",
       label: "Basketball-Reference: Stephen Curry",
       url: CURRY_URL,
-      description: `Fetched ${FETCHED}. Career 24.8 points, 4.7 rebounds, 6.3 assists in 1,069 games. 2025-26: 26.6 points in 43 games. Team: Golden State Warriors.`,
+      description: `Career 24.8 points, 4.7 rebounds, 6.3 assists in 1,069 games. 2025-26: 26.6 points in 43 games. Team: Golden State Warriors.`,
     },
     {
       type: "external",

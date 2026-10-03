@@ -422,12 +422,11 @@ describe("ROO-121 iPhone 16e vs iPhone 17e", () => {
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites the fetched pages and only links sitemap-backed compares", () => {
+  it("cites the cited sources and only links sitemap-backed compares", () => {
     const sources = page().citationStats?.sources ?? [];
     expect(sources).toHaveLength(3);
     expect(page().citationStats?.lastResearched).toBe("2026-09-29");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-29/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -512,7 +511,6 @@ describe("ROO-122 Polaroid Go Gen 2 vs Instax Mini", () => {
     expect(sources).toHaveLength(4);
     expect(page().citationStats?.lastResearched).toBe("2026-09-29");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-29/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -568,7 +566,9 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
     expect(description.length).toBeGreaterThanOrEqual(70);
     expect(description.length).toBeLessThanOrEqual(160);
     expect(findSelfContradictions(page())).toEqual([]);
-    expect(pageText(page())).not.toMatch(/\d[\d,]*\s*(hinge|fold)[- ]cycles/i);
+    expect(pageText(page())).toContain(
+      "Samsung Display says the Fold 7's foldable panel passed a 500,000-fold test verified by Bureau Veritas"
+    );
     expect(pageText(page())).not.toMatch(/AnTuTu|Geekbench/i);
   });
 
@@ -590,12 +590,11 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites the fetched spec pages and only links sitemap-backed compares", () => {
+  it("cites the cited spec sources and only links sitemap-backed compares", () => {
     const sources = page().citationStats?.sources ?? [];
-    expect(sources).toHaveLength(7);
+    expect(sources).toHaveLength(8);
     expect(page().citationStats?.lastResearched).toBe("2026-09-29");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-29/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -604,6 +603,7 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
       "https://www.gsmarena.com/samsung_galaxy_z_fold7-13826.php",
       "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
       "https://www.geeky-gadgets.com/galaxy-s26-ultra-vs-z-fold-7/",
+      "https://www.samsungdisplay.com/eng/media/news/detail/ssdsNews-250722.jsp",
       "https://www.samsung.com/us/support/warranty/",
       "https://www.samsung.com/us/smartphones/galaxy-s26-ultra/",
       "https://www.androidauthority.com/samsung-galaxy-z-fold-7-drops-s-pen-support-3575176/",
@@ -697,11 +697,10 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites the fetched spec pages and only links sitemap-backed compares", () => {
+  it("cites the cited spec sources and only links sitemap-backed compares", () => {
     const sources = page().citationStats?.sources ?? [];
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-30/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -814,7 +813,6 @@ describe("ROO-130 iPhone Air vs iPhone 17", () => {
     expect(sources).toHaveLength(6);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-30/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -857,7 +855,7 @@ const MAPS_APPLE_FAQS = [
   "Which app is more private?",
 ];
 const MAPS_APPLE_QUICK_ANSWER =
-  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple's privacy page says Apple does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. This page does not crown a winner.";
+  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple says it does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. This page does not crown a winner.";
 
 describe("ROO-127 Google Maps vs Apple Maps", () => {
   const page = () => getEditorialComparison(MAPS_APPLE_SLUG)!;
@@ -909,12 +907,11 @@ describe("ROO-127 Google Maps vs Apple Maps", () => {
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites the fetched Apple and Google pages and links the companion compare", () => {
+  it("cites the cited Apple and Google sources and links the companion compare", () => {
     const sources = page().citationStats?.sources ?? [];
     expect(sources).toHaveLength(15);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-30/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -942,7 +939,7 @@ describe("ROO-127 Google Maps vs Apple Maps", () => {
     ]);
     expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("random identifier");
-    expect(pageText(page())).toContain("does not mention Android");
+    expect(pageText(page())).toContain("iPhone, iPad, Mac, Apple Watch, HomePod, and CarPlay");
     expect(page().quickAnswer?.winnerName).toBeNull();
     const android = page().attributes.find((attr) => attr.slug === "platforms");
     expect(android?.values.find((value) => value.entityId === "google-maps")?.winner).toBe(true);
@@ -957,7 +954,7 @@ const MAPS_WAZE_FAQS = [
   "Which app keeps more of my location data?",
 ];
 const MAPS_WAZE_QUICK_ANSWER =
-  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze's About page says that without an internet connection you cannot locate or navigate a route. This page does not crown a winner.";
+  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. This page does not crown a winner.";
 
 describe("ROO-127 Google Maps vs Waze", () => {
   const page = () => getEditorialComparison(MAPS_WAZE_SLUG)!;
@@ -1009,12 +1006,11 @@ describe("ROO-127 Google Maps vs Waze", () => {
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites the fetched help pages and only links the planned compares", () => {
+  it("cites the cited help and only links the planned compares", () => {
     const sources = page().citationStats?.sources ?? [];
     expect(sources).toHaveLength(14);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-30/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -1054,7 +1050,7 @@ describe("ROO-127 Google Maps vs Waze", () => {
       /parked-car|parked car|walking ETA|Walking stops at|walking directions beyond|No walking route/i
     );
     expect(sources.map((source) => source.name)).toContain(
-      "Waze Help — find parking (fetched 2026-09-30)"
+      "Waze Help — find parking"
     );
     expect(page().quickAnswer?.winnerName).toBeNull();
     const offline = page().attributes.find((attr) => attr.slug === "offline-navigation");
@@ -1071,7 +1067,7 @@ const BRAVE_FAQS = [
   "Does Brave sync like Chrome?",
 ];
 const BRAVE_QUICK_ANSWER =
-  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave's homepage says Brave is 3x faster than Chrome, and the same page also says websites load 3x-6x faster. Those are Brave's claims, not a lab result on this page. This page does not crown a winner.";
+  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a lab result on this page. This page does not crown a winner.";
 
 describe("ROO-114 Brave vs Chrome", () => {
   const page = () => getEditorialComparison(BRAVE_SLUG)!;
@@ -1121,12 +1117,11 @@ describe("ROO-114 Brave vs Chrome", () => {
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites the fetched pages and links the live browser hub and compares", () => {
+  it("cites the cited sources and links the live browser hub and compares", () => {
     const sources = page().citationStats?.sources ?? [];
     expect(sources).toHaveLength(12);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-30/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -1225,12 +1220,11 @@ describe("ROO-114 Chrome vs Safari", () => {
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites the fetched pages and links the live browser hub and compares", () => {
+  it("cites the cited sources and links the live browser hub and compares", () => {
     const sources = page().citationStats?.sources ?? [];
     expect(sources).toHaveLength(11);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-30/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -1276,7 +1270,7 @@ const SOLAR_FAQS = [
   "Are these simple 800 W plug-in balcony kits?",
 ];
 const SOLAR_QUICK_ANSWER =
-  "Choose the EcoFlow STREAM 5000 if you want the higher published output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
+  "Choose the EcoFlow STREAM 5000 if you want the higher rated output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
 
 describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
   const page = () => getEditorialComparison(SOLAR_SLUG)!;
@@ -1292,7 +1286,7 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
     expect(page().quickAnswer?.winnerName).toBeNull();
     expect(page().entities.map((entity) => entity.bestFor)).toEqual([
       "Best if IP66 and Home Assistant matter more than output",
-      "Best if you want the higher published output",
+      "Best if you want the higher rated output",
     ]);
     expect(page().shortAnswer).toBe(SOLAR_QUICK_ANSWER);
     expect(page().quickAnswer?.tldr).toBe(SOLAR_QUICK_ANSWER);
@@ -1338,7 +1332,6 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
     expect(sources).toHaveLength(6);
     expect(page().citationStats?.lastResearched).toBe("2026-09-30");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-09-30/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -1374,7 +1367,7 @@ const PRO_GEN_FAQS = [
   "How does a trade-in change the iPhone 17 Pro versus 18 Pro price?",
 ];
 const PRO_GEN_QUICK_ANSWER =
-  "Choose the iPhone 18 Pro if you keep a phone for years and want Apple's newest Pro chip and battery ratings. Apple lists an A20 Pro chip, up to 36 hours of video playback, and up to 24 hours of typical use. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Apple Support lists an A19 Pro chip and up to 33 hours of video playback, and that page does not list a typical-use hour. This page does not crown a winner.";
+  "Choose the iPhone 18 Pro if you keep a phone for years and want Apple's newest Pro chip and battery ratings. Apple lists an A20 Pro chip, up to 36 hours of video playback, and up to 24 hours of typical use. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Apple Support lists an A19 Pro chip and up to 33 hours of video playback, and Apple Support does not include a typical-use hour. This page does not crown a winner.";
 
 describe("ROO-138 iPhone 17 Pro vs iPhone 18 Pro", () => {
   const page = () => getEditorialComparison(PRO_GEN_SLUG)!;
@@ -1435,7 +1428,6 @@ describe("ROO-138 iPhone 17 Pro vs iPhone 18 Pro", () => {
     expect(sources).toHaveLength(5);
     expect(page().citationStats?.lastResearched).toBe("2026-10-03");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-10-03/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
@@ -1506,7 +1498,7 @@ describe("NBA 2026-27 new compares", () => {
     }
   });
 
-  it("keeps Knicks vs 76ers on fetched results and does not link the noindex 76ers hub", () => {
+  it("keeps Knicks vs 76ers on the cited results and does not link the noindex 76ers hub", () => {
     const page = getEditorialComparison("knicks-vs-76ers")!;
     expect(page.entities.map((entity) => entity.slug)).toEqual([
       "new-york-knicks",
@@ -1533,7 +1525,7 @@ describe("NBA 2026-27 new compares", () => {
     }
   });
 
-  it("keeps SGA vs Wembanyama on fetched lines and does not link noindex player hubs", () => {
+  it("keeps SGA vs Wembanyama on the cited lines and does not link noindex player hubs", () => {
     const page = getEditorialComparison("shai-gilgeous-alexander-vs-victor-wembanyama")!;
     expect(page.entities.map((entity) => entity.slug)).toEqual([
       "shai-gilgeous-alexander",
@@ -1599,7 +1591,7 @@ const NBA_BATCH_2 = [
       "Which honors does Basketball-Reference list for Wembanyama?",
       "What did Cooper Flagg average as a rookie?",
       "Have Flagg and Wembanyama played in 2026-27?",
-      "Does this page say who is the better player?",
+      "Does this comparison say who is the better player?",
     ],
   },
 ] as const;
@@ -1670,7 +1662,7 @@ describe("NBA batch 2: Spurs vs Thunder, Knicks vs Spurs, Flagg vs Wembanyama", 
     expect(october?.values.every((value) => value.winner !== true)).toBe(true);
   });
 
-  it("records both Finals and the fetched head-to-head on the Knicks page", () => {
+  it("records both Finals and the cited head-to-head on the Knicks page", () => {
     const page = getEditorialComparison("knicks-vs-spurs")!;
     const text = pageText(page);
     expect(text).toContain("4-1");
@@ -1743,7 +1735,9 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
     expect(description.length).toBeLessThanOrEqual(160);
     expect(findSelfContradictions(page())).toEqual([]);
     expect(pageText(page())).not.toMatch(/Geekbench|AnTuTu|% accurate|accuracy of \d/i);
-    expect(pageText(page())).not.toMatch(/\b12\s*g(?:rams)?\b/i);
+    expect(pageText(page())).toContain(
+      "Google lists Fitbit Air at 5.2 g without the band and 12 g with the band."
+    );
     const types = schemaNodes(page()).map((node) => node["@type"]).filter(Boolean);
     expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
     expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
@@ -1772,16 +1766,16 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
 
   it("cites Apple and Google and does not link noindex entity hubs", () => {
     const sources = page().citationStats?.sources ?? [];
-    expect(sources).toHaveLength(11);
+    expect(sources).toHaveLength(12);
     expect(page().citationStats?.lastResearched).toBe("2026-10-03");
     for (const source of sources) {
-      expect(source.name).toMatch(/2026-10-03/);
       expect(source.url).toMatch(/^https:\/\//);
     }
     const urls = sources.map((source) => source.url);
     expect(urls).toEqual([
       "https://www.apple.com/apple-watch-series-12/specs/",
       "https://store.google.com/product/google_fitbit_air",
+      "https://store.google.com/product/google_fitbit_air_specs",
       "https://blog.google/products-and-platforms/devices/fitbit/fitbit-air/",
       "https://support.google.com/googlehealth/answer/14226518?hl=en",
       "https://support.google.com/googlehealth/answer/14195042?hl=en",
@@ -1877,7 +1871,7 @@ describe("NBA batch 3 compares", () => {
     }
   });
 
-  it("keeps Lillard vs Morant on fetched lines and does not link noindex hubs", () => {
+  it("keeps Lillard vs Morant on the cited lines and does not link noindex hubs", () => {
     const page = getEditorialComparison("damian-lillard-vs-ja-morant")!;
     expect(pageText(page)).toContain("25.1");
     expect(pageText(page)).toContain("22.4");
@@ -1888,7 +1882,7 @@ describe("NBA batch 3 compares", () => {
     expect(urls).not.toMatch(/\/entity\/damian-lillard|\/entity\/ja-morant/);
   });
 
-  it("keeps LeBron vs Curry on fetched lines and does not link the noindex Curry hub", () => {
+  it("keeps LeBron vs Curry on the cited lines and does not link the noindex Curry hub", () => {
     const page = getEditorialComparison("lebron-james-vs-stephen-curry")!;
     expect(pageText(page)).toContain("20.9");
     expect(pageText(page)).toContain("26.6");
@@ -2038,7 +2032,7 @@ describe("NBA batch 5: Embiid vs Jokic, Kobe vs Curry", () => {
     }
   });
 
-  it("keeps Embiid and Jokic on the fetched career lines and does not link noindex hubs", () => {
+  it("keeps Embiid and Jokic on the cited career lines and does not link noindex hubs", () => {
     const page = getEditorialComparison("embiid-vs-jokic")!;
     const text = pageText(page);
     expect(text).toContain("27.6");
@@ -2053,7 +2047,7 @@ describe("NBA batch 5: Embiid vs Jokic, Kobe vs Curry", () => {
     expect(getConsolidatedCompareSlug("joel-embiid-vs-nikola-jokic")).toBe("embiid-vs-jokic");
   });
 
-  it("keeps Kobe and Curry on the fetched career lines and links only the indexable hub", () => {
+  it("keeps Kobe and Curry on the cited career lines and links only the indexable hub", () => {
     const page = getEditorialComparison("kobe-bryant-vs-steph-curry")!;
     const text = pageText(page);
     expect(text).toContain("25.0");

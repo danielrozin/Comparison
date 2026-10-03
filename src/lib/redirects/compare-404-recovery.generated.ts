@@ -78,6 +78,19 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
     "oklahoma-city-thunder-vs-spurs",
   "san-antonio-spurs-vs-oklahoma-city-thunder": "oklahoma-city-thunder-vs-spurs",
   "oklahoma-city-thunder-vs-san-antonio-spurs": "oklahoma-city-thunder-vs-spurs",
+  // Short and reversed Thunder/Spurs names. Confirmed 2026-10-03: each is a
+  // 404, or a 301 whose alphabetical shell lands on a 404. Both orders are
+  // sources so the shell cannot insert a hop.
+  "thunder-vs-spurs": "oklahoma-city-thunder-vs-spurs",
+  "spurs-vs-thunder": "oklahoma-city-thunder-vs-spurs",
+  "okc-vs-spurs": "oklahoma-city-thunder-vs-spurs",
+  "spurs-vs-okc": "oklahoma-city-thunder-vs-spurs",
+  "okc-thunder-vs-spurs": "oklahoma-city-thunder-vs-spurs",
+  "spurs-vs-okc-thunder": "oklahoma-city-thunder-vs-spurs",
+  "thunder-vs-san-antonio-spurs": "oklahoma-city-thunder-vs-spurs",
+  "san-antonio-spurs-vs-thunder": "oklahoma-city-thunder-vs-spurs",
+  "okc-vs-san-antonio-spurs": "oklahoma-city-thunder-vs-spurs",
+  "san-antonio-spurs-vs-okc": "oklahoma-city-thunder-vs-spurs",
   "new-york-knicks-vs-san-antonio-spurs": "knicks-vs-spurs",
   "san-antonio-spurs-vs-new-york-knicks": "knicks-vs-spurs",
   // Batch 3 name orders and -match-player-stats forms. Confirmed 2026-10-03
@@ -316,6 +329,15 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "stephen-curry-vs-kobe-bryant-match-player-stats": "kobe-bryant-vs-steph-curry",
   "stephen-curry-match-player-stats-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
   "14-inch-vs-16-inch-macbook-pro": "macbook-pro-14-vs-16-inch",
+  // Kindle vs Kobo name orders. Confirmed 2026-10-03: each is a 404, or a 301
+  // whose alphabetical shell lands on a 404. The canonical is the new page.
+  "kobo-vs-kindle": "kindle-vs-kobo",
+  "amazon-kindle-vs-kobo": "kindle-vs-kobo",
+  "kobo-vs-amazon-kindle": "kindle-vs-kobo",
+  "amazon-kindle-vs-rakuten-kobo": "kindle-vs-kobo",
+  "rakuten-kobo-vs-amazon-kindle": "kindle-vs-kobo",
+  "kindle-vs-rakuten-kobo": "kindle-vs-kobo",
+  "rakuten-kobo-vs-kindle": "kindle-vs-kobo",
   "japan-vs-china-economy-comparison-2026": "china-vs-japan-economy-comparison-2026",
   "cristiano-ronaldo-vs-neymar-career-stats-comparison-2026":
     "neymar-vs-cristiano-ronaldo-career-stats-comparison-2026",

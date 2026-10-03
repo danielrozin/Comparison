@@ -3,16 +3,16 @@ import type { EditorialComparison } from "./types";
 
 /**
  * ROO-92 — iPhone 17 vs 17 Pro vs 16 Pro.
- * Every figure is from an Apple, AppleInsider, or GSMArena page fetched
+ * Every figure is from Apple, AppleInsider, or GSMArena, as of
  * 2026-09-26. Community notes summarize the Reddit thread without quotes.
  *
  * AVAILABILITY — re-check this at publish time before the "mostly refurbished
  * or third-party" lines stay in the page.
  * Checked 2026-09-26:
- *   https://www.apple.com/iphone-17-pro/specs/ → 301 https://www.apple.com/iphone/
- *   https://www.apple.com/iphone-17/specs/     → 200
- *   https://www.apple.com/iphone/compare/      → still lists iPhone 18 Pro,
- *     iPhone 17 Pro, iPhone 17, and iPhone 16 Pro (older models stay in that tool)
+ * https://www.apple.com/iphone-17-pro/specs/ → 301 https://www.apple.com/iphone/
+ * https://www.apple.com/iphone-17/specs/ → 200
+ * https://www.apple.com/iphone/compare/ → still lists iPhone 18 Pro,
+ * iPhone 17 Pro, iPhone 17, and iPhone 16 Pro (older models stay in that tool)
  * If the 17 Pro specs URL loads on its own again, or Apple sells the 17 Pro
  * new on apple.com/iphone/, delete those availability lines before publish.
  */
@@ -47,7 +47,7 @@ const FAQS = [
   {
     question: "Is the 17 Pro worth it over the 17?",
     answer:
-      "Yes if you will use the longer telephoto, want USB 3 transfers for large video files, or want the higher video-playback rating. Apple rates the iPhone 17 Pro for up to 33 hours of video playback and the iPhone 17 for up to 30 hours. The 17 Pro has USB 3 up to 10Gb/s and a 48MP Fusion Telephoto at 100 mm (4x) that also enables a 12MP optical-quality 8x at 200 mm. The iPhone 17 has USB 2 up to 480Mb/s and no separate telephoto lens (Apple lists a 12MP optical-quality 2x at 52 mm from the main camera). Launch prices were $799 for the iPhone 17 and $1,099 for the iPhone 17 Pro. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase: apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs page still loaded.",
+      "Yes if you will use the longer telephoto, want USB 3 transfers for large video files, or want the higher video-playback rating. Apple rates the iPhone 17 Pro for up to 33 hours of video playback and the iPhone 17 for up to 30 hours. The 17 Pro has USB 3 up to 10Gb/s and a 48MP Fusion Telephoto at 100 mm (4x) that also enables a 12MP optical-quality 8x at 200 mm. The iPhone 17 has USB 2 up to 480Mb/s and no separate telephoto lens (Apple lists a 12MP optical-quality 2x at 52 mm from the main camera). Launch prices were $799 for the iPhone 17 and $1,099 for the iPhone 17 Pro. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase: apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs URL still loaded.",
   },
   {
     question: "Is the 16 Pro better than the 17?",
@@ -62,12 +62,12 @@ const FAQS = [
   {
     question: "Should I buy the 18 Pro instead?",
     answer:
-      "Apple says iPhone 18 Pro availability began September 18, 2026, starting at $1,199. That is $100 more than the iPhone 17 Pro launch price of $1,099. The iPhone 17 launched at $799. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs page still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. This page does not compare iPhone 18 Pro camera or battery specs. If the budget is tight, the iPhone 17 is the value pick among the three phones here.",
+      "Apple says iPhone 18 Pro availability began September 18, 2026, starting at $1,199. That is $100 more than the iPhone 17 Pro launch price of $1,099. The iPhone 17 launched at $799. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs URL still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. This comparison does not cover iPhone 18 Pro camera or battery specs. If the budget is tight, the iPhone 17 is the value pick among the three phones here.",
   },
   {
     question: "Is buying refurbished safe?",
     answer:
-      "Apple sells Certified Refurbished iPhones. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase, because apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/ and the iPhone 17 specs page still loaded. Check battery health and the warranty before you buy. This page does not list refurbished prices.",
+      "Apple sells Certified Refurbished iPhones. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase, because apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/ and the iPhone 17 specs URL still loaded. Check battery health and the warranty before you buy. Refurbished prices are not part of this comparison.",
   },
   {
     question: "Which lasts the most years?",
@@ -80,9 +80,9 @@ const VERDICT = `Best value: iPhone 17. It launched at $799, uses the A19 chip, 
 
 Best for video: iPhone 17 Pro. Apple lists a 48MP Fusion Telephoto at 100 mm (4x) that also enables a 12MP optical-quality 8x at 200 mm, USB 3 up to 10Gb/s, and up to 33 hours of video playback. It launched at $1,099.
 
-Refurbished or third-party: iPhone 17 Pro and iPhone 16 Pro. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs page still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. The 16 Pro still has a 12MP 120 mm (5x) telephoto and USB 3 up to 10Gb/s, but it uses the A18 Pro, shipped with iOS 18, and is rated for up to 27 hours of video playback. Choose the 16 Pro only when a refurbished unit is clearly cheaper. It launched at $999.
+Refurbished or third-party: iPhone 17 Pro and iPhone 16 Pro. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs URL still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. The 16 Pro still has a 12MP 120 mm (5x) telephoto and USB 3 up to 10Gb/s, but it uses the A18 Pro, shipped with iOS 18, and is rated for up to 27 hours of video playback. Choose the 16 Pro only when a refurbished unit is clearly cheaper. It launched at $999.
 
-What about the iPhone 18 Pro? Apple says availability began September 18, 2026, starting at $1,199, which is $100 more than the 17 Pro launch price. Apple’s compare page still lists the iPhone 17 Pro next to the iPhone 18 Pro, the same way it still lists older iPhones. The 17 Pro figures here are from Apple Support, not from a live apple.com/iphone-17-pro/specs/ page.`;
+What about the iPhone 18 Pro? Apple says availability began September 18, 2026, starting at $1,199, which is $100 more than the 17 Pro launch price. Apple’s compare tool still lists the iPhone 17 Pro next to the iPhone 18 Pro, the same way it still lists older iPhones. The 17 Pro figures here are from Apple Support, not from a live apple.com/iphone-17-pro/specs/ URL.`;
 
 const EXPERT_ANALYSIS = `This page answers which of the iPhone 17, iPhone 17 Pro, and iPhone 16 Pro to buy when you are upgrading from an older phone and care about battery life, staying on updates, and video — including if you might buy refurbished. There is no single winner.
 
@@ -92,25 +92,25 @@ Apple rates video playback at up to 30 hours on the iPhone 17, up to 33 hours on
 
 Camera and video
 
-The iPhone 17 spec page does not list a separate telephoto lens. Its longer reach is a 12MP optical-quality 2x at 52 mm from the main camera. The iPhone 16 Pro has a 12MP 5x telephoto at 120 mm. The iPhone 17 Pro has a 48MP Fusion Telephoto at 100 mm (4x) and a 12MP optical-quality 8x at 200 mm. AppleInsider summarizes that 17 Pro camera as a 48MP telephoto with 8x optical-quality zoom. For moving footage off the phone, the 17 Pro and 16 Pro are USB 3 up to 10Gb/s. The iPhone 17 is USB 2 up to 480Mb/s.
+Apple does not give the iPhone 17 a separate telephoto lens. Its longer reach is a 12MP optical-quality 2x at 52 mm from the main camera. The iPhone 16 Pro has a 12MP 5x telephoto at 120 mm. The iPhone 17 Pro has a 48MP Fusion Telephoto at 100 mm (4x) and a 12MP optical-quality 8x at 200 mm. AppleInsider summarizes that 17 Pro camera as a 48MP telephoto with 8x optical-quality zoom. For moving footage off the phone, the 17 Pro and 16 Pro are USB 3 up to 10Gb/s. The iPhone 17 is USB 2 up to 480Mb/s.
 
 Buying refurbished
 
-As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs page still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. Apple’s compare page still lists the 17 Pro beside the 18 Pro, the same way it still lists older iPhones, so the missing specs URL is the lineup signal, not the compare tool dropping the name. Apple’s Certified Refurbished iPhone store is the place to start. Check battery health and the warranty on the unit you are offered. This page does not list refurbished prices, and it does not name third-party sellers.
+As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs URL still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. Apple’s compare tool still lists the 17 Pro beside the 18 Pro, the same way it still lists older iPhones, so the missing specs URL is the lineup signal, not the compare tool dropping the name. Apple’s Certified Refurbished iPhone store is the place to start. Check battery health and the warranty on the unit you are offered. Refurbished prices are not part of this comparison, and it does not name third-party sellers.
 
 Who should buy which
 
-Choose the iPhone 17 if you want battery life, a later software start, and solid video without the Pro launch price of $1,099. It launched at $799, and its specs page still loaded on September 26, 2026.
+Choose the iPhone 17 if you want battery life, a later software start, and solid video without the Pro launch price of $1,099. It launched at $799, and its specs URL still loaded on September 26, 2026.
 
-Choose the iPhone 17 Pro if you shoot a lot of video and want the longer telephoto, USB 3 transfers, and the 33-hour video-playback rating. Plan on a refurbished or third-party unit. Apple no longer keeps a 17 Pro specs page.
+Choose the iPhone 17 Pro if you shoot a lot of video and want the longer telephoto, USB 3 transfers, and the 33-hour video-playback rating. Plan on a refurbished or third-party unit. Apple no longer keeps a 17 Pro specs URL.
 
-Choose the iPhone 16 Pro only when a refurbished unit is clearly cheaper. You still get a 120 mm 5x telephoto and USB 3, on the older A18 Pro and an iOS 18 launch. It is the same kind of buy as the 17 Pro now: refurbished or third-party, not a current Apple specs page.
+Choose the iPhone 16 Pro only when a refurbished unit is clearly cheaper. You still get a 120 mm 5x telephoto and USB 3, on the older A18 Pro and an iOS 18 launch. It is the same kind of buy as the 17 Pro now: refurbished or third-party, not a current Apple specs URL.
 
 Community verdict
 
 On the r/AppleWhatShouldIBuy thread asking about the iPhone 17, 17 Pro, and 16 Pro, opinions split by job rather than by a single winner. Several comments lean toward the 17 Pro. Some treat the iPhone 17 as the best value. Some say the gap between the 16 Pro and the 17 Pro is small. This is a summary of that thread, not a quote and not a vote count.
 
-All three phones are a 6.3-inch OLED display with ProMotion up to 120Hz on Apple’s spec pages. GSMArena’s three-way compare lists the same 6.3-inch 120Hz OLED size for each.`;
+Apple lists a 6.3-inch OLED display with ProMotion up to 120Hz on all three phones. GSMArena’s three-way compare lists the same 6.3-inch 120Hz OLED size for each.`;
 
 const cell = (entityId: string, text: string, winner?: boolean) => ({
   entityId,
@@ -261,10 +261,10 @@ export const IPHONE_17_VS_17_PRO_VS_16_PRO: EditorialComparison = buildEditorial
     ]),
   ],
   faqs: FAQS,
-  // Checked 2026-09-26. Do not add "iPhone 18 Pro vs iPhone 17 Pro" until a
-  // page exists. Both /compare/iphone-18-pro-vs-iphone-17-pro and
-  // /compare/iphone-17-pro-vs-iphone-18-pro returned 404, and neither slug is
-  // in this repo. Do not create that page from this file.
+ // Checked 2026-09-26. Do not add "iPhone 18 Pro vs iPhone 17 Pro" until a
+ // page exists. Both /compare/iphone-18-pro-vs-iphone-17-pro and
+ // /compare/iphone-17-pro-vs-iphone-18-pro returned 404, and neither slug is
+ // in this repo. Do not create that page from this file.
   relatedComparisons: [
     {
       slug: "iphone-17-pro-vs-pro-max",

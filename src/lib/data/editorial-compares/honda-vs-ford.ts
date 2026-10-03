@@ -27,7 +27,7 @@ const FORD_POWER = "https://www.ford.com/powertrains/";
 const IIHS_HONDA = "https://www.iihs.org/ratings/top-safety-picks/2026/all/honda";
 const IIHS_FORD = "https://www.iihs.org/ratings/top-safety-picks/2026/all/ford";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const SPEC = "Lineup";
 
@@ -197,7 +197,7 @@ export const HONDA_VS_FORD: EditorialComparison = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
       { name: "Honda — about", url: HONDA_ABOUT },
       { name: "Honda — history", url: HONDA_HISTORY },

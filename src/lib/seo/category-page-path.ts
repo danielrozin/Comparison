@@ -71,7 +71,7 @@ export const UNKNOWN_CATEGORY_404_REWRITE = "/category/__not-a-category__";
 
 /**
  * A real category with a subcategory that is not in the map, such as
- * `/category/products/ereaders`. Top-level unknowns (`/category/foo`) and
+ * `/category/products/not-a-subcategory`. Top-level unknowns (`/category/foo`) and
  * redirect sources (`/category/gaming`) are not included: those already
  * 404 or 301 without this rewrite.
  */

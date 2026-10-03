@@ -3,7 +3,7 @@ import type { EditorialComparison } from "./types";
 
 /**
  * Flagg vs Knueppel. Rookie lines, draft info, and honors are
- * Basketball-Reference. Fetched 2026-10-03. The 2026-27 projection
+ * Basketball-Reference. The 2026-27 projection
  * tables are not quoted. No prediction.
  */
 
@@ -13,11 +13,11 @@ const KNUEPPEL = "kon-knueppel";
 const FLAGG_URL = "https://www.basketball-reference.com/players/f/flaggco01.html";
 const KNUEPPEL_URL = "https://www.basketball-reference.com/players/k/knuepko01.html";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const AS_OF = "October 3, 2026";
 
-const ROOKIE_CAT = `2025-26 per game · Basketball-Reference, fetched ${FETCHED}`;
+const ROOKIE_CAT = `2025-26 per game · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
@@ -47,7 +47,7 @@ const FAQS = [
   {
     question: "Where is each player listed for 2026-27?",
     answer:
-      "Basketball-Reference lists Flagg with the Dallas Mavericks and Knueppel with the Charlotte Hornets, fetched October 3, 2026. Each info box says experience of 1 year. Stats as of October 3, 2026, neither page has a 2026-27 regular-season game log.",
+      "Basketball-Reference lists Flagg with the Dallas Mavericks and Knueppel with the Charlotte Hornets. Each info box says experience of 1 year. Stats as of October 3, 2026, neither page has a 2026-27 regular-season game log.",
   },
   {
     question: "Does this page use the 2026-27 projection?",
@@ -64,7 +64,7 @@ Honors: Flagg won 2025-26 Rookie of the Year. Knueppel finished second in that v
 
 const EXPERT_ANALYSIS = `Cooper Flagg averaged 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games as a rookie. Kon Knueppel averaged 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games. Flagg won 2025-26 Rookie of the Year. Knueppel did not. This page does not predict 2026-27.
 
-Source note: the per-game rows, totals, draft lines, and honors are from the two Basketball-Reference player pages, fetched ${AS_OF}. ${FLAGG_URL} ${KNUEPPEL_URL}
+Source note: the per-game rows, totals, draft lines, and honors are from the two Basketball-Reference player pages. ${FLAGG_URL} ${KNUEPPEL_URL}
 
 2026-27 season. Stats as of ${AS_OF}. Flagg's team field is the Dallas Mavericks. Knueppel's is the Charlotte Hornets. Neither page has a 2026-27 regular-season game log. Each page has a table labeled 2026-27 Projection, and this page does not quote it.
 
@@ -184,10 +184,10 @@ const BUILT = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: `Basketball-Reference — Cooper Flagg (fetched ${FETCHED})`, url: FLAGG_URL },
-      { name: `Basketball-Reference — Kon Knueppel (fetched ${FETCHED})`, url: KNUEPPEL_URL },
+      { name: `Basketball-Reference — Cooper Flagg`, url: FLAGG_URL },
+      { name: `Basketball-Reference — Kon Knueppel`, url: KNUEPPEL_URL },
     ],
   },
   resources: [
@@ -195,13 +195,13 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Cooper Flagg",
       url: FLAGG_URL,
-      description: `Fetched ${FETCHED}. 2025-26: 21.0 points, 6.7 rebounds, 4.5 assists in 70 games. Honors: 2025-26 Rookie of the Year. Team: Dallas Mavericks.`,
+      description: `2025-26: 21.0 points, 6.7 rebounds, 4.5 assists in 70 games. Honors: 2025-26 Rookie of the Year. Team: Dallas Mavericks.`,
     },
     {
       type: "external",
       label: "Basketball-Reference: Kon Knueppel",
       url: KNUEPPEL_URL,
-      description: `Fetched ${FETCHED}. 2025-26: 18.5 points, 5.3 rebounds, 3.4 assists in 81 games. Awards cell ROY-2. Honors: 2025-26 All-Rookie. Team: Charlotte Hornets.`,
+      description: `2025-26: 18.5 points, 5.3 rebounds, 3.4 assists in 81 games. Awards cell ROY-2. Honors: 2025-26 All-Rookie. Team: Charlotte Hornets.`,
     },
   ],
   metaTitle: "Flagg vs Knueppel: Rookie Seasons",

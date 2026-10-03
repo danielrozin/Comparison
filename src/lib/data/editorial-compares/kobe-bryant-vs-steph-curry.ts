@@ -4,7 +4,7 @@ import type { EditorialComparison } from "./types";
 /**
  * Kobe Bryant vs Stephen Curry. Career lines and honors lists are from
  * Basketball-Reference. Curry's 2025-26 line is from the same page.
- * Fetched 2026-10-03. Curry's projection row is not quoted. No winner
+ * Curry's projection row is not quoted. No winner
  * and no prediction.
  */
 
@@ -14,12 +14,12 @@ const CURRY = "stephen-curry";
 const KOBE_URL = "https://www.basketball-reference.com/players/b/bryanko01.html";
 const CURRY_URL = "https://www.basketball-reference.com/players/c/curryst01.html";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const AS_OF = "October 3, 2026";
 
-const CAREER = `Career · Basketball-Reference, fetched ${FETCHED}`;
-const LAST = `2025-26 regular season · Basketball-Reference, fetched ${FETCHED}`;
+const CAREER = `Career · Basketball-Reference`;
+const LAST = `2025-26 regular season · Basketball-Reference`;
 
 const SHORT_ANSWER =
   "Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships and the 2007-08 MVP. Curry won 4 championships and MVPs in 2014-15 and 2015-16. Stats as of October 3, 2026, Curry has no 2026-27 regular-season game log. This page does not pick a winner.";
@@ -28,7 +28,7 @@ const FAQS = [
   {
     question: "What are Kobe Bryant's and Stephen Curry's career lines?",
     answer:
-      "Kobe, in 20 seasons and 1,346 games: 33,643 points, at 25.0 points, 5.2 rebounds, and 4.7 assists per game. Curry, in 17 seasons and 1,069 games: 26,528 points, at 24.8 points, 4.7 rebounds, and 6.3 assists per game. Both lines are the Basketball-Reference career rows, fetched October 3, 2026.",
+      "Kobe, in 20 seasons and 1,346 games: 33,643 points, at 25.0 points, 5.2 rebounds, and 4.7 assists per game. Curry, in 17 seasons and 1,069 games: 26,528 points, at 24.8 points, 4.7 rebounds, and 6.3 assists per game. Both lines are the Basketball-Reference career rows.",
   },
   {
     question: "How many championships does each player have?",
@@ -67,7 +67,7 @@ Championships: Kobe 5, Curry 4. MVPs: Kobe in 2007-08. Curry in 2014-15 and 2015
 
 const EXPERT_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships. Curry won 4. This page does not pick a winner.
 
-Source note: career totals, Curry's 2025-26 regular-season line, and the honors lists are from the two Basketball-Reference player pages, fetched ${AS_OF}. ${KOBE_URL} ${CURRY_URL}
+Source note: career totals, Curry's 2025-26 regular-season line, and the honors lists are from the two Basketball-Reference player pages. ${KOBE_URL} ${CURRY_URL}
 
 2026-27 season. Stats as of ${AS_OF}. Curry has no 2026-27 regular-season game log. The 2026-27 table on his page is labeled a projection, and this page does not quote it.
 
@@ -194,10 +194,10 @@ const BUILT = buildEditorialComparison({
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: `Basketball-Reference — Kobe Bryant (fetched ${FETCHED})`, url: KOBE_URL },
-      { name: `Basketball-Reference — Stephen Curry (fetched ${FETCHED})`, url: CURRY_URL },
+      { name: `Basketball-Reference — Kobe Bryant`, url: KOBE_URL },
+      { name: `Basketball-Reference — Stephen Curry`, url: CURRY_URL },
     ],
   },
   resources: [
@@ -205,13 +205,13 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Kobe Bryant",
       url: KOBE_URL,
-      description: `Fetched ${FETCHED}. Career 25.0 / 5.2 / 4.7 in 1,346 games, 33,643 points. 5 championships and the 2007-08 MVP.`,
+      description: `Career 25.0 / 5.2 / 4.7 in 1,346 games, 33,643 points. 5 championships and the 2007-08 MVP.`,
     },
     {
       type: "external",
       label: "Basketball-Reference: Stephen Curry",
       url: CURRY_URL,
-      description: `Fetched ${FETCHED}. Career 24.8 / 4.7 / 6.3 in 1,069 games. 2025-26: 26.6 points in 43 games. MVP-1 in 2014-15 and 2015-16. 2026-27 row is a projection and is not used.`,
+      description: `Career 24.8 / 4.7 / 6.3 in 1,069 games. 2025-26: 26.6 points in 43 games. MVP-1 in 2014-15 and 2015-16. 2026-27 row is a projection and is not used.`,
     },
     {
       type: "blog",

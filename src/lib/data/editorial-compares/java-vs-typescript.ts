@@ -20,7 +20,7 @@ const TS_HOME = "https://www.typescriptlang.org/";
 const TS_HANDBOOK = "https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html";
 const TS_LICENSE = "https://github.com/microsoft/TypeScript/blob/main/LICENSE.txt";
 
-const FETCHED = "2026-10-03";
+const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const SPEC = "Language";
 
@@ -252,7 +252,7 @@ export const JAVA_VS_TYPESCRIPT: EditorialComparison = buildEditorialComparison(
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
       { name: "Oracle — Java Language Specification, Java SE 27", url: JLS },
       { name: "OpenJDK — JDK 27", url: JDK27 },

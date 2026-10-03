@@ -4,7 +4,7 @@ import type { EditorialComparison } from "./types";
 /**
  * ROO-129 — Anker SOLIX Solarbank 4 Pro vs EcoFlow STREAM 5000.
  * Output, IP rating, weight, and warranty are from Anker's datasheet
- * (linked on ankersolix.com) and EcoFlow's EU specs page, fetched 2026-09-30.
+ * (linked on ankersolix.com) and EcoFlow's EU specs page, 2026-09-30.
  * No page-level winner. Spec rows only. One neutral install line:
  * check local rules and the utility before feeding power back to the grid.
  */
@@ -20,46 +20,46 @@ const ECO_SUPPORT = "https://www.ecoflow.com/eu/stream-series-plug-and-play-sola
 const ECO_PRODUCT = "https://eu.ecoflow.com/products/stream-series-solar-battery";
 const ANKER_HA = "https://github.com/anker-charging/ha-anker-solix-official/blob/main/README.md";
 
-const FETCHED = "2026-09-30";
+const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "Choose the EcoFlow STREAM 5000 if you want the higher published output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
+  "Choose the EcoFlow STREAM 5000 if you want the higher rated output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
 
 const FAQS = [
   {
     question: "Does the Solarbank 4 Pro or the STREAM 5000 have more storage?",
     answer:
-      "The published pack size is the same: 5,024 Wh. Anker's datasheet lists LiFePO4 and 5,024 Wh. EcoFlow's specs list 5,024 Wh, and EcoFlow's product FAQ says the cells are lithium iron phosphate (LiFePO4). Storage size alone does not separate them.",
+      "The stated pack size is the same: 5,024 Wh. Anker lists LiFePO4 and 5,024 Wh. EcoFlow lists 5,024 Wh, and EcoFlow says the cells are lithium iron phosphate (LiFePO4). Storage size alone does not separate them.",
   },
   {
     question: "Which system can feed more power into the home?",
     answer:
-      "The EcoFlow STREAM 5000, on the published upper settings. EcoFlow's specs list on-grid output of 800 W/3,000 W and off-grid output of 3,000 W. Anker's datasheet lists on-grid output settings of 600, 790, 800, and 2,500 W, and off-grid output of 2,500 W.",
+      "The EcoFlow STREAM 5000, on the upper settings each company states. EcoFlow lists on-grid output of 800 W/3,000 W and off-grid output of 3,000 W. Anker lists on-grid output settings of 600, 790, 800, and 2,500 W, and off-grid output of 2,500 W.",
   },
   {
     question: "Which is better for outdoor mounting?",
     answer:
-      "Anker's datasheet lists IP66. EcoFlow's specs list IP65. Those are the published codes. This page does not add a hose test of its own. EcoFlow's support page says the STREAM 5000 can be used indoors or outdoors and recommends a ventilated, cool, shaded place.",
+      "Anker lists IP66. EcoFlow lists IP65. Those are the codes each company states. This page does not add a hose test of its own. EcoFlow says the STREAM 5000 can be used indoors or outdoors and recommends a ventilated, cool, shaded place.",
   },
   {
     question: "Do they accept the same solar input?",
     answer:
-      "Both publish 5,000 W of PV across four MPPTs, 1,250 W per tracker, and a maximum PV voltage of 60 V. Anker's datasheet also lists an MPPT voltage range of 16 to 50 V. EcoFlow's specs list the PV input voltage as a 60 V maximum and does not print that 16 to 50 V range.",
+      "Both list 5,000 W of PV across four MPPTs, 1,250 W per tracker, and a maximum PV voltage of 60 V. Anker also lists an MPPT voltage range of 16 to 50 V. EcoFlow lists the PV input voltage as a 60 V maximum and does not give that 16 to 50 V range.",
   },
   {
     question: "Which works with Home Assistant?",
     answer:
-      "Anker's official Home Assistant README lists the Solarbank 4 E5000 Pro, over local Modbus TCP. EcoFlow's STREAM specs page and support page, fetched on 30 September 2026, do not document a Home Assistant integration or an open local API. Check the current docs before you buy, because that can change.",
+      "Anker's official Home Assistant README lists the Solarbank 4 E5000 Pro, over local Modbus TCP. Check the current docs before you buy, because that can change.",
   },
   {
     question: "Are these simple 800 W plug-in balcony kits?",
     answer:
-      "No. Both are about 5 kWh storage systems with multi-kilowatt inverter settings. 800 W is one published on-grid setting on each sheet, not the whole product.",
+      "No. Both are about 5 kWh storage systems with multi-kilowatt inverter settings. 800 W is one stated on-grid setting for each product, not the whole product.",
   },
 ];
 
-const VERDICT = `Higher published output: EcoFlow STREAM 5000. On-grid and off-grid output are listed up to 3,000 W, and the specs list 45.4 kg.
+const VERDICT = `Higher rated output: EcoFlow STREAM 5000. EcoFlow lists on-grid and off-grid output up to 3,000 W, and lists 45.4 kg.
 
 Weather rating and Home Assistant: Anker SOLIX Solarbank 4 Pro. The datasheet lists IP66, 50 kg, and on-grid settings up to 2,500 W. Anker's Home Assistant README includes this model.
 
@@ -67,39 +67,39 @@ Same storage on the spec sheets: 5,024 Wh LiFePO4, 5,000 W PV, four MPPTs.
 
 There is no single winner on this page.`;
 
-const EXPERT_ANALYSIS = `The EcoFlow STREAM 5000 is the pick when the higher published inverter output is the point. The Anker SOLIX Solarbank 4 Pro is the pick when IP66 and the documented Home Assistant integration matter more than that extra output. This page does not crown a winner.
+const EXPERT_ANALYSIS = `The EcoFlow STREAM 5000 is the pick when the higher rated inverter output is the point. The Anker SOLIX Solarbank 4 Pro is the pick when IP66 and the documented Home Assistant integration matter more than that extra output. This page does not crown a winner.
 
-Source note: output, ingress rating, weight, and warranty below come from Anker's datasheet linked on the German Solarbank 4 E5000 Pro product page, and from EcoFlow's EU specs page, both fetched on 30 September 2026. Cycle life and expansion for Anker come from that product page. EcoFlow chemistry, the 60% retention note, and expansion come from EcoFlow's product FAQ. Home Assistant support comes from Anker's official integration README.
+Source note: output, ingress rating, weight, and warranty below come from Anker's datasheet for the German Solarbank 4 E5000 Pro and from EcoFlow's EU specs. Cycle life and expansion for Anker come from the German Solarbank listing. EcoFlow chemistry, the 60% retention note, and expansion come from EcoFlow's product FAQ. Home Assistant support comes from Anker's official integration README.
 
 Battery and solar input
 
-Anker's datasheet lists a LiFePO4 battery, 5,024 Wh, and a single-device rated power of 2,500 W. EcoFlow's specs list 5,024 Wh. EcoFlow's product FAQ says the cells are lithium iron phosphate (LiFePO4). Both publish 5,000 W of PV input, four MPPTs, and 1,250 W per tracker. Both list a maximum PV voltage of 60 V. Anker also lists an MPPT operating range of 16 to 50 V.
+Anker lists a LiFePO4 battery, 5,024 Wh, and a single-device rated power of 2,500 W. EcoFlow lists 5,024 Wh. EcoFlow says the cells are lithium iron phosphate (LiFePO4). Both list 5,000 W of PV input, four MPPTs, and 1,250 W per tracker. Both list a maximum PV voltage of 60 V. Anker also lists an MPPT operating range of 16 to 50 V.
 
 On-grid and off-grid output
 
-Anker's datasheet lists on-grid AC output settings of 600 W, 790 W, 800 W, and 2,500 W, and off-grid output of 2,500 W. AC charge power is 2,500 W. EcoFlow's specs list grid-tied output of 800 W/3,000 W, off-grid output of 3,000 W, AC charging input of 3,000 W, and a maximum charge into the main-unit battery of 2,500 W.
+Anker lists on-grid AC output settings of 600 W, 790 W, 800 W, and 2,500 W, and off-grid output of 2,500 W. AC charge power is 2,500 W. EcoFlow lists grid-tied output of 800 W/3,000 W, off-grid output of 3,000 W, AC charging input of 3,000 W, and a maximum charge into the main-unit battery of 2,500 W.
 
 Cycles, warranty, weather, and weight
 
-Anker lists 10,000 cycles. The datasheet lists a 10-year warranty and a 15-year product lifespan. It does not print a capacity-retention percentage next to the cycle count. EcoFlow's specs list 10,000 cycles and a 10-year warranty. EcoFlow's product FAQ says that cycle life is to 60% retention. Anker's datasheet lists IP66 and 50 kg. EcoFlow's specs list IP65 and 45.4 kg. The product FAQ also says 45.4 kg, plus or minus 0.5 kg, for the bare unit.
+Anker lists 10,000 cycles. Anker lists a 10-year warranty and a 15-year product lifespan. It does not give a capacity-retention percentage next to the cycle count. EcoFlow lists 10,000 cycles and a 10-year warranty. EcoFlow says that cycle life is to 60% retention. Anker lists IP66 and 50 kg. EcoFlow lists IP65 and 45.4 kg. EcoFlow also says 45.4 kg, plus or minus 0.5 kg, for the bare unit.
 
 Expansion
 
-Anker's product page says the main unit is 5,024 Wh and can take five BP5000 expansion batteries, up to 30 kWh total. EcoFlow's product FAQ says one host can stack up to two expansion batteries, to 15 kWh, and a system can include up to six hosts, to 90 kWh. Those are the published ceilings. They are different ecosystems, so a pack from one does not fit the other.
+Anker says the main unit is 5,024 Wh and can take five BP5000 expansion batteries, up to 30 kWh total. EcoFlow says one host can stack up to two expansion batteries, to 15 kWh, and a system can include up to six hosts, to 90 kWh. Those are the ceilings each company states. They are different ecosystems, so a pack from one does not fit the other.
 
 Home Assistant
 
-Anker's official Home Assistant README lists the Solarbank 4 E5000 Pro for every firmware version it covers, using local Modbus TCP. EcoFlow's specs and support pages fetched on 30 September 2026 do not document that kind of integration.
+Anker's official Home Assistant README lists the Solarbank 4 E5000 Pro for every firmware version it covers, using local Modbus TCP.
 
 Who should buy which
 
-Choose the STREAM 5000 if the published 3,000 W on-grid and off-grid ceiling, and the 45.4 kg weight, are what you are buying for.
+Choose the STREAM 5000 if the stated 3,000 W on-grid and off-grid ceiling, and the 45.4 kg weight, are what you are buying for.
 
 Choose the Solarbank 4 Pro if IP66 and the Home Assistant integration matter more than the output gap, and 2,500 W on-grid is enough.
 
 Check your local rules and your utility before feeding power back to the grid.`;
 
-const SPEC = "Specs · manufacturer pages, fetched 2026-09-30";
+const SPEC = "Specs · manufacturer pages";
 
 export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison = buildEditorialComparison({
   slug: "anker-solix-solarbank-4-pro-vs-ecoflow-stream-5000",
@@ -129,7 +129,7 @@ export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison =
       cons: [
         "On-grid and off-grid output top out at 2,500 W, against 3,000 W on the STREAM 5000",
         "50 kg, against 45.4 kg on EcoFlow's specs page",
-        "The 10,000-cycle line is on the product page, not in the datasheet's retention note",
+        "The 10,000-cycle line is not paired with a retention percentage in the datasheet",
       ],
       bestFor: "Best if IP66 and Home Assistant matter more than output",
     },
@@ -150,16 +150,15 @@ export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison =
       ],
       cons: [
         "IP65, against IP66 on the Solarbank 4 Pro",
-        "EcoFlow's fetched specs and support pages do not document a Home Assistant integration",
       ],
-      bestFor: "Best if you want the higher published output",
+      bestFor: "Best if you want the higher rated output",
     },
   ],
   keyDifferences: [
     {
       label: "Who it is for",
       entityAValue: "IP66 and Home Assistant",
-      entityBValue: "Higher published output",
+      entityBValue: "Higher rated output",
       winner: "tie",
     },
     {
@@ -189,7 +188,7 @@ export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison =
     {
       label: "Home Assistant",
       entityAValue: "Listed in Anker's official integration",
-      entityBValue: "Not documented on the EcoFlow pages fetched",
+      entityBValue: "—",
       winner: "a",
     },
   ],
@@ -228,18 +227,18 @@ export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison =
     textAttr(
       "cycles",
       "Cycles and warranty",
-      "Cycles and warranty · Anker product page and datasheet, EcoFlow specs and FAQ, fetched 2026-09-30",
+      "Cycles and warranty · Anker listing and datasheet, EcoFlow specs and FAQ",
       ANKER,
       ECO,
-      "10,000 cycles (product page); 10-year warranty and 15-year lifespan (datasheet)",
+      "10,000 cycles (Anker listing); 10-year warranty and 15-year lifespan (datasheet)",
       "10,000 cycles to 60% retention; 10-year warranty"
     ),
     textAttr("ingress", "Ingress rating", SPEC, ANKER, ECO, "IP66", "IP65", "a"),
     textAttr("weight", "Weight", SPEC, ANKER, ECO, "50 kg", "45.4 kg", "b"),
     textAttr(
       "expansion",
-      "Published expansion",
-      "Expansion · manufacturer product pages, fetched 2026-09-30",
+      "Expansion",
+      "Expansion · manufacturer specs",
       ANKER,
       ECO,
       "Main unit plus 5 BP5000 packs, up to 30 kWh",
@@ -248,11 +247,11 @@ export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison =
     textAttr(
       "home-assistant",
       "Home Assistant",
-      "Home Assistant · Anker README, fetched 2026-09-30",
+      "Home Assistant · Anker README",
       ANKER,
       ECO,
-      "Solarbank 4 E5000 Pro is listed",
-      "Not documented on the EcoFlow pages fetched",
+      "Anker lists the Solarbank 4 E5000 Pro",
+      "—",
       "a"
     ),
   ],
@@ -263,7 +262,7 @@ export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison =
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "EcoFlow STREAM 5000 for the higher published output. Anker SOLIX Solarbank 4 Pro for IP66 and Home Assistant.",
+      "EcoFlow STREAM 5000 for the higher rated output. Anker SOLIX Solarbank 4 Pro for IP66 and Home Assistant.",
     keyFact:
       "Both list 5,024 Wh and 5,000 W of PV across four MPPTs. Anker's on-grid settings top out at 2,500 W and IP66. EcoFlow lists up to 3,000 W and IP65.",
   },
@@ -273,14 +272,14 @@ export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison =
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: "Anker SOLIX — Solarbank 4 E5000 Pro (fetched 2026-09-30)", url: ANKER_PAGE },
-      { name: "Anker SOLIX — Solarbank 4 E5000 Pro datasheet (fetched 2026-09-30)", url: ANKER_DATASHEET },
-      { name: "EcoFlow — STREAM series specs (fetched 2026-09-30)", url: ECO_SPECS },
-      { name: "EcoFlow — STREAM series support (fetched 2026-09-30)", url: ECO_SUPPORT },
-      { name: "EcoFlow — STREAM series product FAQ (fetched 2026-09-30)", url: ECO_PRODUCT },
-      { name: "Anker — official Home Assistant README (fetched 2026-09-30)", url: ANKER_HA },
+      { name: "Anker SOLIX — Solarbank 4 E5000 Pro", url: ANKER_PAGE },
+      { name: "Anker SOLIX — Solarbank 4 E5000 Pro datasheet", url: ANKER_DATASHEET },
+      { name: "EcoFlow — STREAM series specs", url: ECO_SPECS },
+      { name: "EcoFlow — STREAM series support", url: ECO_SUPPORT },
+      { name: "EcoFlow — STREAM series product FAQ", url: ECO_PRODUCT },
+      { name: "Anker — official Home Assistant README", url: ANKER_HA },
     ],
   },
   resources: [
@@ -289,42 +288,42 @@ export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison =
       label: "Anker SOLIX Solarbank 4 E5000 Pro",
       url: ANKER_PAGE,
       description:
-        "Fetched 2026-09-30. German product page. 5,024 Wh, IP66, 50 kg, 10,000 cycles, and expansion up to 30 kWh with five BP5000 packs.",
+        "5,024 Wh, IP66, 50 kg, 10,000 cycles, and expansion up to 30 kWh with five BP5000 packs.",
     },
     {
       type: "external",
       label: "Anker datasheet (Datasheet_20260610_AE103_DE.pdf)",
       url: ANKER_DATASHEET,
       description:
-        "Fetched 2026-09-30 from the product page. On-grid 600/790/800/2,500 W, off-grid 2,500 W, IP66, 50 kg, 10-year warranty, 15-year lifespan.",
+        "On-grid 600/790/800/2,500 W, off-grid 2,500 W, IP66, 50 kg, 10-year warranty, 15-year lifespan.",
     },
     {
       type: "external",
       label: "EcoFlow STREAM specs",
       url: ECO_SPECS,
       description:
-        "Fetched 2026-09-30. 5,024 Wh, 800 W/3,000 W grid-tied, 3,000 W off-grid, IP65, 45.4 kg, 10-year warranty.",
+        "5,024 Wh, 800 W/3,000 W grid-tied, 3,000 W off-grid, IP65, 45.4 kg, 10-year warranty.",
     },
     {
       type: "external",
       label: "EcoFlow STREAM support",
       url: ECO_SUPPORT,
       description:
-        "Fetched 2026-09-30. The STREAM 5000 can be used indoors or outdoors. The page recommends a ventilated, cool, shaded place.",
+        "The STREAM 5000 can be used indoors or outdoors. EcoFlow recommends a ventilated, cool, shaded place.",
     },
     {
       type: "external",
       label: "EcoFlow STREAM product FAQ",
       url: ECO_PRODUCT,
       description:
-        "Fetched 2026-09-30. LiFePO4, 10,000 cycles to 60% retention, 45.4 kg plus or minus 0.5 kg, expansion to 15 kWh and 90 kWh.",
+        "LiFePO4, 10,000 cycles to 60% retention, 45.4 kg plus or minus 0.5 kg, expansion to 15 kWh and 90 kWh.",
     },
     {
       type: "external",
       label: "Anker Solix official Home Assistant integration",
       url: ANKER_HA,
       description:
-        "Fetched 2026-09-30. README lists the Solarbank 4 E5000 Pro. Local Modbus TCP. Developed by Anker Innovations.",
+        "README lists the Solarbank 4 E5000 Pro. Local Modbus TCP. Developed by Anker Innovations.",
     },
   ],
   metaTitle: "Solarbank 4 Pro vs STREAM 5000 | A Versus B",

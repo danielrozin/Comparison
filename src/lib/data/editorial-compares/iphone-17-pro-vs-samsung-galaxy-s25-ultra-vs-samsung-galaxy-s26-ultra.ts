@@ -3,7 +3,7 @@ import type { EditorialComparison } from "./types";
 
 /**
  * ROO-128 — iPhone 17 Pro vs Galaxy S25 Ultra vs Galaxy S26 Ultra.
- * Specs checked against pages fetched on 2026-09-30.
+ * Specs checked against sources on 2026-09-30.
  * Three-way compares are already supported (see the iPhone 17 / 17 Pro / 16 Pro page).
  * No page-level winner. Rupee prices come only from apple.com/in and samsung.com/in.
  * Apple's India buy URL for the iPhone 17 Pro did not list that phone on 2026-09-30.
@@ -23,14 +23,14 @@ const AIR_COMPARE = "/compare/iphone-17-vs-iphone-air";
 const SAMSUNG_S25 = "https://www.samsung.com/in/smartphones/galaxy-s25-ultra/buy/";
 const SAMSUNG_S26 = "https://www.samsung.com/in/smartphones/galaxy-s26-ultra/buy/";
 
-const FETCHED = "2026-09-30";
+const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
   "iPhone 17 Pro vs Galaxy S25 Ultra vs Galaxy S26 Ultra. Both Ultras have a 200MP camera with 3x and 5x. The 17 Pro has a 4x telephoto. No winner is crowned.";
 
 const BUDGET_ANSWER =
-  "No. None of these three qualifies. Samsung India lists the Galaxy S25 Ultra 256GB at ₹1,19,999 and the Galaxy S26 Ultra 256GB at ₹1,54,999, fetched on 30 September 2026. Apple India no longer lists an iPhone 17 Pro price. The iPhone 17 256GB is ₹99,900 on https://www.apple.com/in/shop/buy-iphone/iphone-17, fetched the same day. See /compare/iphone-17-vs-iphone-air.";
+  "No. None of these three qualifies. Samsung India lists the Galaxy S25 Ultra 256GB at ₹1,19,999 and the Galaxy S26 Ultra 256GB at ₹1,54,999. Apple India no longer lists an iPhone 17 Pro price. The iPhone 17 256GB is ₹99,900 on https://www.apple.com/in/shop/buy-iphone/iphone-17. See /compare/iphone-17-vs-iphone-air.";
 
 const FAQS = [
   {
@@ -40,12 +40,12 @@ const FAQS = [
   {
     question: "Is the Galaxy S25 Ultra still worth buying after the S26 Ultra?",
     answer:
-      "Yes if you want the same Ultra camera set: a 200MP main camera, a 10MP 3x telephoto, a 50MP 5x periscope, and a 50MP ultrawide. The S26 Ultra adds Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India buy page, fetched on 30 September 2026, showed the S25 Ultra 256GB | 12GB at ₹1,19,999 and the 512GB | 12GB model at ₹1,39,999. The 1TB option did not show a price. This page does not pick a phone from price.",
+      "Yes if you want the same Ultra camera set: a 200MP main camera, a 10MP 3x telephoto, a 50MP 5x periscope, and a 50MP ultrawide. The S26 Ultra adds Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India store showed the S25 Ultra 256GB | 12GB at ₹1,19,999 and the 512GB | 12GB model at ₹1,39,999. The 1TB option did not show a price. This page does not pick a phone from price.",
   },
   {
     question: "What does the Galaxy S26 Ultra add over the S25 Ultra?",
     answer:
-      "Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India buy page, fetched on 30 September 2026, showed the S26 Ultra 256GB | 12GB at ₹1,54,999 and the 512GB | 12GB model at ₹1,74,999. The 1TB | 16GB option did not show a price.",
+      "Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India store showed the S26 Ultra 256GB | 12GB at ₹1,54,999 and the 512GB | 12GB model at ₹1,74,999. The 1TB | 16GB option did not show a price.",
   },
   {
     question: "Which is better for telephoto and video, the iPhone 17 Pro or a Galaxy Ultra?",
@@ -55,7 +55,7 @@ const FAQS = [
   {
     question: "Which has the better battery, iPhone 17 Pro, S25 Ultra, or S26 Ultra?",
     answer:
-      "On GSMArena's active-use scores, the S26 Ultra is 16:23h, the iPhone 17 Pro is 15:23h, and the S25 Ultra is 14:49h. Both Ultras are 5,000 mAh. GSMArena lists the 17 Pro at 3,998 mAh for the nano-SIM version and 4,252 mAh for the eSIM-only version. Apple Support rates the 17 Pro for up to 33 hours of video playback. That Apple figure is a different test, and these Galaxy spec pages do not publish an equivalent video-playback hour rating.",
+      "On GSMArena's active-use scores, the S26 Ultra is 16:23h, the iPhone 17 Pro is 15:23h, and the S25 Ultra is 14:49h. Both Ultras are 5,000 mAh. GSMArena lists the 17 Pro at 3,998 mAh for the nano-SIM version and 4,252 mAh for the eSIM-only version. Apple Support rates the 17 Pro for up to 33 hours of video playback. That Apple figure is a different test, and Samsung does not give an equivalent video-playback hour for these Galaxy phones in the figures used here.",
   },
   {
     question: "Should an iPhone 13 owner switch to Samsung?",
@@ -72,11 +72,11 @@ There is no single winner on this page.`;
 
 const EXPERT_ANALYSIS = `Choose the Galaxy S25 Ultra or the Galaxy S26 Ultra for the Ultra zoom cameras and the 5,000 mAh battery. Choose the iPhone 17 Pro when the 4x telephoto and Apple's Pro video formats matter. This page does not crown a winner.
 
-Source note: the comparison table uses GSMArena listings fetched on 30 September 2026, from each phone's spec page. Apple Support is cited for the iPhone 17 Pro's size, the 100 mm telephoto, ProRes, and the 33-hour video-playback rating. Rupee prices are from Samsung's India buy pages and from the absence of an iPhone 17 Pro price on Apple's India buy page, fetched the same day. GSMArena is not used for a rupee price. Check a live listing.
+Source note: GSMArena lists the comparison table. Apple Support lists the iPhone 17 Pro's size, the 100 mm telephoto, ProRes, and the 33-hour video-playback rating. Rupee prices are from Samsung's India store. Apple's India store did not show an iPhone 17 Pro price. GSMArena is not used for a rupee price. Check a live listing.
 
 Price
 
-Samsung's India buy page for the Galaxy S25 Ultra showed ₹1,19,999 for 256GB | 12GB and ₹1,39,999 for 512GB | 12GB. The 1TB option did not show a price. The Galaxy S26 Ultra page showed ₹1,54,999 for 256GB | 12GB and ₹1,74,999 for 512GB | 12GB. The 1TB | 16GB option did not show a price. Apple's India buy page for the iPhone 17 Pro redirected to the current lineup and did not list that phone. These are the figures on those pages on 30 September 2026. Check a live listing. This page does not pick a phone from price.
+Samsung's India store for the Galaxy S25 Ultra showed ₹1,19,999 for 256GB | 12GB and ₹1,39,999 for 512GB | 12GB. The 1TB option did not show a price. Samsung's India store for the Galaxy S26 Ultra showed ₹1,54,999 for 256GB | 12GB and ₹1,74,999 for 512GB | 12GB. The 1TB | 16GB option did not show a price. Apple's India store for the iPhone 17 Pro redirected to the current lineup and did not show that phone. These are the figures from 30 September 2026. Check a live listing. This page does not pick a phone from price.
 
 Screens, weight, and chips
 
@@ -88,7 +88,7 @@ The iPhone 17 Pro rear system is three 48MP cameras: a main, a 100 mm (4x) peris
 
 Battery and software
 
-Both Ultras are 5,000 mAh. The S25 Ultra charges at 45W wired. The S26 Ultra charges at 60W wired and 25W wireless. GSMArena does not list a wired watt number for the 17 Pro. It lists PD3.2 and 50% in 20 minutes, plus 25W wireless MagSafe. The 17 Pro battery is market-dependent: 3,998 mAh on the nano-SIM version and 4,252 mAh on the eSIM-only version. This page does not assign one of those to India. GSMArena's active-use scores are 16:23h for the S26 Ultra, 15:23h for the 17 Pro, and 14:49h for the S25 Ultra. Apple's 33-hour video-playback rating is a separate claim and is not a GSMArena score.
+Both Ultras are 5,000 mAh. The S25 Ultra charges at 45W wired. The S26 Ultra charges at 60W wired and 25W wireless. GSMArena does not give a wired watt number for the 17 Pro. It lists PD3.2 and 50% in 20 minutes, plus 25W wireless MagSafe. The 17 Pro battery is market-dependent: 3,998 mAh on the nano-SIM version and 4,252 mAh on the eSIM-only version. This page does not assign one of those to India. GSMArena's active-use scores are 16:23h for the S26 Ultra, 15:23h for the 17 Pro, and 14:49h for the S25 Ultra. Apple's 33-hour video-playback rating is a separate claim and is not a GSMArena score.
 
 GSMArena lists up to 7 major OS updates for both Ultras. The S25 Ultra line is Android 15 and One UI 8. The S26 Ultra line is Android 16, upgradable to Android 17, and One UI 9, and it was released 6 March 2026. The 17 Pro line is iOS 26, upgradable to iOS 27. GSMArena does not publish a year count for Apple updates, so this page does not invent one.
 
@@ -106,7 +106,7 @@ const cell = (entityId: string, text: string, winner?: boolean) => ({
   winner,
 });
 
-const SPEC = "Specs · GSMArena, fetched 2026-09-30";
+const SPEC = "Specs · GSMArena";
 
 export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buildEditorialComparison({
   slug: "iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra",
@@ -134,7 +134,7 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
         "GSMArena active-use score 15:23h",
       ],
       cons: [
-        "Apple's India buy page did not list a price on 30 September 2026",
+        "Apple's India store did not show a price on 30 September 2026",
         "3,998 mAh (nano-SIM) or 4,252 mAh (eSIM-only), against 5,000 mAh on both Ultras",
         "One telephoto step (4x), not a separate 3x and 5x",
         "GSMArena lists wired charging as 50% in 20 minutes, not a watt number",
@@ -238,7 +238,7 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
       cell(S25, "6.9-inch Dynamic LTPO AMOLED 2X, 120Hz"),
       cell(S26, "6.9-inch Dynamic LTPO AMOLED 2X, 120Hz"),
     ]),
-    textAttrN("body", "Weight and thickness", "Body · Apple Support and GSMArena, fetched 2026-09-30", [
+    textAttrN("body", "Weight and thickness", "Body · Apple Support and GSMArena", [
       cell(PRO, "206 g, 8.75 mm (Apple Support; GSMArena lists 8.8 mm)"),
       cell(S25, "218 g, 8.2 mm"),
       cell(S26, "214 g, 7.9 mm"),
@@ -268,7 +268,7 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
       cell(S25, "200MP main, 10MP 3x, 50MP 5x, 50MP ultrawide"),
       cell(S26, "200MP main, 10MP 3x, 50MP 5x, 50MP ultrawide"),
     ]),
-    textAttrN("video", "Video formats", "Video · Apple Support and GSMArena, fetched 2026-09-30", [
+    textAttrN("video", "Video formats", "Video · Apple Support and GSMArena", [
       cell(PRO, "ProRes, ProRes RAW, and Apple Log 2 (GSMArena); up to 33 hours video playback (Apple)"),
       cell(S25, "8K, 4K, HDR10+ (GSMArena)"),
       cell(S26, "8K, 4K, HDR10+ (GSMArena)"),
@@ -281,7 +281,7 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
     textAttrN(
       "price",
       "Official India price",
-      "Samsung India buy pages and Apple India, fetched 2026-09-30. Check a live listing",
+      "Samsung India buy pages and Apple India. Check a live listing",
       [
         cell(PRO, "No price listed on apple.com/in"),
         cell(S25, "256GB ₹1,19,999. 512GB ₹1,39,999. 1TB price not shown"),
@@ -321,16 +321,16 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
-    lastResearched: FETCHED,
+    lastResearched: SOURCE_DATE,
     sources: [
-      { name: "GSMArena — iPhone 17 Pro (fetched 2026-09-30)", url: GSMARENA_PRO },
-      { name: "GSMArena — Galaxy S25 Ultra (fetched 2026-09-30)", url: GSMARENA_S25 },
-      { name: "GSMArena — Galaxy S26 Ultra (fetched 2026-09-30)", url: GSMARENA_S26 },
-      { name: "Apple Support — iPhone 17 Pro specs (fetched 2026-09-30)", url: APPLE_PRO },
-      { name: "Samsung India — Galaxy S25 Ultra buy (fetched 2026-09-30)", url: SAMSUNG_S25 },
-      { name: "Samsung India — Galaxy S26 Ultra buy (fetched 2026-09-30)", url: SAMSUNG_S26 },
-      { name: "Apple India — iPhone 17 Pro buy (fetched 2026-09-30)", url: APPLE_IN_PRO },
-      { name: "Apple India — iPhone 17 buy (fetched 2026-09-30)", url: APPLE_IN_17 },
+      { name: "GSMArena — iPhone 17 Pro", url: GSMARENA_PRO },
+      { name: "GSMArena — Galaxy S25 Ultra", url: GSMARENA_S25 },
+      { name: "GSMArena — Galaxy S26 Ultra", url: GSMARENA_S26 },
+      { name: "Apple Support — iPhone 17 Pro specs", url: APPLE_PRO },
+      { name: "Samsung India — Galaxy S25 Ultra buy", url: SAMSUNG_S25 },
+      { name: "Samsung India — Galaxy S26 Ultra buy", url: SAMSUNG_S26 },
+      { name: "Apple India — iPhone 17 Pro buy", url: APPLE_IN_PRO },
+      { name: "Apple India — iPhone 17 buy", url: APPLE_IN_17 },
     ],
   },
   resources: [
@@ -339,56 +339,56 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
       label: "GSMArena iPhone 17 Pro",
       url: GSMARENA_PRO,
       description:
-        "Fetched 2026-09-30. A19 Pro, triple 48MP with 4x, 3,998 or 4,252 mAh, active-use 15:23h, ProRes and Apple Log 2. Not used for a rupee price.",
+        "A19 Pro, triple 48MP with 4x, 3,998 or 4,252 mAh, active-use 15:23h, ProRes and Apple Log 2. Not used for a rupee price.",
     },
     {
       type: "external",
       label: "GSMArena Galaxy S25 Ultra",
       url: GSMARENA_S25,
       description:
-        "Fetched 2026-09-30. 6.9-inch, 218 g, Snapdragon 8 Elite, 5,000 mAh, 45W, active-use 14:49h, up to 7 OS updates. Not used for a rupee price.",
+        "6.9-inch, 218 g, Snapdragon 8 Elite, 5,000 mAh, 45W, active-use 14:49h, up to 7 OS updates. Not used for a rupee price.",
     },
     {
       type: "external",
       label: "GSMArena Galaxy S26 Ultra",
       url: GSMARENA_S26,
       description:
-        "Fetched 2026-09-30. 214 g, 7.9 mm, Snapdragon 8 Elite Gen 5, 5,000 mAh, 60W, active-use 16:23h. Not used for a rupee price.",
+        "214 g, 7.9 mm, Snapdragon 8 Elite Gen 5, 5,000 mAh, 60W, active-use 16:23h. Not used for a rupee price.",
     },
     {
       type: "external",
       label: "Apple Support iPhone 17 Pro",
       url: APPLE_PRO,
       description:
-        "Fetched 2026-09-30. 206 g, 8.75 mm, 48MP telephoto at 100 mm (4x), ProRes, and up to 33 hours of video playback.",
+        "206 g, 8.75 mm, 48MP telephoto at 100 mm (4x), ProRes, and up to 33 hours of video playback.",
     },
     {
       type: "external",
       label: "Samsung India Galaxy S25 Ultra buy",
       url: SAMSUNG_S25,
       description:
-        "Fetched 2026-09-30. 256GB | 12GB ₹1,19,999. 512GB | 12GB ₹1,39,999. 1TB price not shown. Check a live listing.",
+        "256GB | 12GB ₹1,19,999. 512GB | 12GB ₹1,39,999. 1TB price not shown. Check a live listing.",
     },
     {
       type: "external",
       label: "Samsung India Galaxy S26 Ultra buy",
       url: SAMSUNG_S26,
       description:
-        "Fetched 2026-09-30. 256GB | 12GB ₹1,54,999. 512GB | 12GB ₹1,74,999. 1TB price not shown. Check a live listing.",
+        "256GB | 12GB ₹1,54,999. 512GB | 12GB ₹1,74,999. 1TB price not shown. Check a live listing.",
     },
     {
       type: "external",
       label: "Apple India iPhone 17 Pro buy",
       url: APPLE_IN_PRO,
       description:
-        "Fetched 2026-09-30. The URL redirected to the current iPhone lineup and did not list an iPhone 17 Pro price.",
+        "The URL redirected to the current iPhone lineup and did not show an iPhone 17 Pro price.",
     },
     {
       type: "external",
       label: "Apple India iPhone 17 buy",
       url: APPLE_IN_17,
       description:
-        "Fetched 2026-09-30. iPhone 17 256GB ₹99,900. 512GB ₹1,24,900. Listed price is the MRP, inclusive of all taxes.",
+        "iPhone 17 256GB ₹99,900. 512GB ₹1,24,900. Listed price is the MRP, inclusive of all taxes.",
     },
     {
       type: "blog",

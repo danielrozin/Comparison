@@ -17,8 +17,8 @@ import {
 /**
  * Copilot-first AEO overlays for live compares (ROO-27 GDP pattern).
  *
- * GDP figures come from the live `/compare/us-vs-china-gdp` scorecard/FAQ
- * (fetched 2026-09-21). Japan vs China figures come only from in-repo
+ * GDP figures come from the live `/compare/us-vs-china-gdp` scorecard/FAQ.
+ * Japan vs China figures come only from in-repo
  * `mock-data.ts` and `faq-expansion.ts` — do not invent IMF/World Bank
  * totals (including PPP GDP). Messi vs Ronaldo figures come only from
  * in-repo `mock-data.ts` — never invent Ballon d'Or or goal totals.
@@ -62,7 +62,7 @@ import {
  * some China-only values into the US column. Those are not scorecard rows.
  * Leave them uncited. Lyft vs Uber is not in the mock map (`uber-vs-lyft`
  * is a different scorecard and redirects away). Its figures come only from
- * the published page’s Key Differences scorecard (fetched 2026-09-25):
+ * the published page’s Key Differences scorecard:
  * presence, 71% vs 29%, revenue mix, 25-30% vs ~25% platform fee, $38.7
  * billion vs $4.3 billion, driver base, and a 4.6+ star tie. Do not cite
  * the attribute-table commission that is not that row, or the `uber-vs-lyft`
@@ -732,7 +732,7 @@ const USA_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
     "No single scorecard winner. The GDP row is $25.5T vs $17.7T. The Population row is 333M vs 1.4B. The Military Spending row is $877B vs $292B. Cite the row.",
 };
 
-// Published /compare/lyft-vs-uber Key Differences scorecard (fetched 2026-09-25).
+// Published /compare/lyft-vs-uber Key Differences scorecard.
 // Not in getMockComparison. Uber column first. Do not cite uber-vs-lyft.
 // Global Market Presence: 72 countries across 6 continents vs US and Canada only.
 // US Rideshare Market Share: 71% vs 29%.
