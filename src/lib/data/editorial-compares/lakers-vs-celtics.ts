@@ -25,7 +25,7 @@ const FINALS_CAT = `Finals series · Basketball-Reference playoff series history
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "The Lakers franchise header lists 17 championships, 66 playoff appearances, and a 3,653-2,515 record across 79 seasons. The Celtics header lists 18 championships, 63 playoff appearances, and a 3,751-2,527 record across 81 seasons. On the Lakers head-to-head table the Lakers are 135-169 against Boston in 304 games. The playoff series table lists 12 Finals meetings, and the Celtics won 9 of them. Stats as of October 3, 2026, this page does not quote a 2026-27 game and does not predict one.";
+  "The Lakers franchise header lists 17 championships, 66 playoff appearances, and a 3,653-2,515 record across 79 seasons. The Celtics header lists 18 championships, 63 playoff appearances, and a 3,751-2,527 record across 81 seasons. On the Lakers head-to-head table the Lakers are 135-169 against Boston in 304 games. They have played 12 Finals, and the Celtics won 9 of them (Basketball-Reference). Stats as of October 3, 2026, this page does not quote a 2026-27 game and does not predict one.";
 
 const FAQS = [
   {
@@ -41,7 +41,7 @@ const FAQS = [
   {
     question: "How many times have they met in the Finals?",
     answer:
-      "The playoff series history table lists 12 Finals series between the Celtics and the Lakers, including the 1959 series against the Minneapolis Lakers. The Celtics won 9. The Lakers won 3: 2010, 4-3; 1987, 4-2; and 1985, 4-2. Celtics wins on that table are 2008, 4-2; 1984, 4-3; 1969, 4-3; 1968, 4-2; 1966, 4-3; 1965, 4-1; 1963, 4-2; 1962, 4-3; and 1959, 4-0.",
+      "There have been 12 Finals series between the Celtics and the Lakers, including the 1959 series against the Minneapolis Lakers (Basketball-Reference). The Celtics won 9. The Lakers won 3: 2010, 4-3; 1987, 4-2; and 1985, 4-2. Celtics wins on that table are 2008, 4-2; 1984, 4-3; 1969, 4-3; 1968, 4-2; 1966, 4-3; 1965, 4-1; 1963, 4-2; 1962, 4-3; and 1959, 4-0.",
   },
   {
     question: "Which Finals is the most recent on that table?",

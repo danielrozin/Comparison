@@ -103,7 +103,6 @@ const BUILT = buildEditorialComparison({
       ],
       cons: [
         "Career assists are 4.7 per game. Curry's career mark is 6.3",
-        "No 2025-26 or 2026-27 game log",
       ],
       bestFor: "The career point total and the five championships",
     },

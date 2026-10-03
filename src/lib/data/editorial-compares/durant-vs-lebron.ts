@@ -30,7 +30,7 @@ const FAQS = [
   {
     question: "What are Durant's and LeBron's career scoring lines?",
     answer:
-      "Durant's per-game career row is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games over 18 years. The totals table lists 32,597 points. LeBron's per-game career row is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games over 23 years. The totals table lists 43,440 points. Career shooting is .503 / .392 / .882 for Durant and .507 / .348 / .737 for LeBron, field goals, threes, and free throws.",
+      "Durant's per-game career row is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games over 18 years. Career points total 32,597 (Basketball-Reference). LeBron's per-game career row is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games over 23 years. Career points total 43,440 (Basketball-Reference). Career shooting is .503 / .392 / .882 for Durant and .507 / .348 / .737 for LeBron, field goals, threes, and free throws.",
   },
   {
     question: "What did each average in 2025-26?",
@@ -68,7 +68,7 @@ Source note: the career rows, the 2025-26 lines, and the team fields are from Ba
 
 2026-27 season. Stats as of ${AS_OF}. Durant's team field is the Houston Rockets. LeBron's is the Philadelphia 76ers. NBA.com says LeBron announced the move Friday, that it became official Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. Neither page has a 2026-27 game log. Tables labeled 2026-27 Projection are not quoted.
 
-Honors on the same pages: Durant 2 championships, 2 Finals MVPs, the 2013-14 MVP, 4 scoring titles, and 16 All-Star selections. LeBron 4 championships, 4 Finals MVPs, 4 MVPs, and 22 All-Star selections. Durant's info box lists 18 years and a 2007 debut. LeBron's lists 23 years and a 2003 debut.`;
+Honors on the same pages: Durant 2 championships, 2 Finals MVPs, the 2013-14 MVP, 4 scoring titles, and 16 All-Star selections. LeBron 4 championships, 4 Finals MVPs, 4 MVPs, and 22 All-Star selections. Durant played 18 years and debuted in 2007. LeBron played 23 years and debuted in 2003 (Basketball-Reference).`;
 
 const BUILT = buildEditorialComparison({
   slug: "durant-vs-lebron",

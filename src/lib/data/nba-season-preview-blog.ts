@@ -36,6 +36,8 @@ export const NBA_PREVIEW_MORE_DEBATES: readonly NbaPreviewCompareLink[] = [
   { slug: "kobe-bryant-vs-lebron-james", label: "Kobe vs LeBron" },
   { slug: "jordan-vs-kobe", label: "Jordan vs Kobe" },
   { slug: "durant-vs-lebron", label: "Durant vs LeBron" },
+  { slug: "embiid-vs-jokic", label: "Embiid vs Jokic" },
+  { slug: "kobe-bryant-vs-steph-curry", label: "Kobe vs Curry" },
 ];
 
 export const NBA_PREVIEW_COMPARE_SLUGS: readonly string[] = [
@@ -80,6 +82,8 @@ const DEBATE_BODIES: readonly string[] = [
 const MORE = `## More debates
 
 Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games, with 33,643 points, 5 championships, 2 Finals MVPs, and 18 All-Star teams (Basketball-Reference). Jordan's career line is 30.1 points in 1,072 games with 6 championships (Basketball-Reference). Stats as of October 3, 2026: Kevin Durant's career line is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games and 32,597 points, with 2 championships, he averaged 26.0 points in 78 games in 2025-26 for Houston, LeBron's career point total through 2025-26 is 43,440, and these rows do not include a 2026-27 game log (Basketball-Reference).
+
+Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games and 13,544 points, and he won the 2022-23 MVP. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games and 18,009 points, with MVPs in 2020-21, 2021-22, and 2023-24 and the 2023 championship (Basketball-Reference). Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games and 26,528 points, with 4 championships and MVPs in 2014-15 and 2015-16 (Basketball-Reference). Stats as of October 3, 2026: Embiid averaged 26.9 points, 7.7 rebounds, and 3.9 assists in 38 games, Jokic averaged 27.7 points, 12.9 rebounds, and 10.7 assists in 65 games, Curry averaged 26.6 points, 3.6 rebounds, and 4.7 assists in 43 games, and none of these rows include a 2026-27 game log (Basketball-Reference).
 
 ${NBA_PREVIEW_MORE_DEBATES.map(compareCta).join("\n")}
 `;

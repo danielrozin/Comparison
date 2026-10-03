@@ -91,6 +91,8 @@ export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
     "kobe-bryant-vs-lebron-james",
     "jordan-vs-kobe",
     "durant-vs-lebron",
+    "embiid-vs-jokic",
+    "kobe-bryant-vs-steph-curry",
   ],
 };
 
