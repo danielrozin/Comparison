@@ -1980,6 +1980,6 @@ describe("NBA batch 4 compares", () => {
     expect(urls).toContain("/entity/kevin-durant");
     expect(urls).toContain("/entity/lebron-james");
     expect(getConsolidatedCompareSlug("durant-vs-lebron")).toBeNull();
-    expect(getConsolidatedCompareSlug("lebron-vs-durant")).toBeNull();
+    expect(getConsolidatedCompareSlug("lebron-vs-durant")).toBe("durant-vs-lebron");
   });
 });
