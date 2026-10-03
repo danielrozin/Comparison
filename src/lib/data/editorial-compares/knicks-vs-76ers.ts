@@ -256,7 +256,7 @@ const BUILT = buildEditorialComparison({
       type: "blog",
       label: "New York Knicks hub",
       url: "/entity/new-york-knicks",
-      description: "AversusB hub. Index, follow on October 3, 2026.",
+      description: "New York Knicks team hub.",
     },
   ],
   metaTitle: "Knicks vs 76ers: Rivalry and 2026-27",

@@ -294,7 +294,7 @@ const built = buildEditorialComparison({
       label: "San Antonio Spurs hub",
       url: "/entity/san-antonio-spurs",
       description:
-        "AversusB hub for Wembanyama's team. Index, follow on October 3, 2026. The player hubs were noindex.",
+        "San Antonio Spurs team hub.",
     },
   ],
   metaTitle: "Flagg vs Wembanyama: Careers | A Versus B",
