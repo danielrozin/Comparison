@@ -34,6 +34,9 @@ describe("2026-27 NBA season preview blog", () => {
     expect(NBA_SEASON_PREVIEW_ARTICLE.content).not.toMatch(/final season/i);
     expect(NBA_SEASON_PREVIEW_ARTICLE.content).not.toMatch(/\bhealthy\b/i);
     expect(NBA_SEASON_PREVIEW_ARTICLE.content).toContain("Stats as of October 3, 2026");
+    expect(NBA_SEASON_PREVIEW_ARTICLE.content).toContain(
+      "26.9 points, 7.7 rebounds, and 3.9 assists in 38 games in 2025-26",
+    );
     expect(NBA_SEASON_PREVIEW_ARTICLE.content).toContain("Achilles");
   });
 
