@@ -319,4 +319,14 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "japan-vs-china-economy-comparison-2026": "china-vs-japan-economy-comparison-2026",
   "cristiano-ronaldo-vs-neymar-career-stats-comparison-2026":
     "neymar-vs-cristiano-ronaldo-career-stats-comparison-2026",
+  // Honda vs Ford name orders. Confirmed 2026-10-03: each was a 404, or a 301
+  // whose shell landed on a 404. Both orders are sources so the alphabetical
+  // shell cannot insert a hop. honda-vs-ford itself is not a redirect source.
+  "ford-vs-honda": "honda-vs-ford",
+  "honda-motor-vs-ford-motor": "honda-vs-ford",
+  "ford-motor-vs-honda-motor": "honda-vs-ford",
+  "honda-motor-company-vs-ford-motor-company": "honda-vs-ford",
+  "ford-motor-company-vs-honda-motor-company": "honda-vs-ford",
+  "honda-vs-ford-motor": "honda-vs-ford",
+  "ford-motor-vs-honda": "honda-vs-ford",
 };

@@ -29,4 +29,12 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
  */
 export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
   ...Object.keys(NOT_FOUND_CLEANUP_CONSOLIDATIONS),
+  // Honda vs Ford. These 404s 301 in compare-404-recovery.generated.ts.
+  "ford-vs-honda",
+  "honda-motor-vs-ford-motor",
+  "ford-motor-vs-honda-motor",
+  "honda-motor-company-vs-ford-motor-company",
+  "ford-motor-company-vs-honda-motor-company",
+  "honda-vs-ford-motor",
+  "ford-motor-vs-honda",
 ]);
