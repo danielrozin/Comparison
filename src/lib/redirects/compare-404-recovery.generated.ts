@@ -324,4 +324,18 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "typescript-vs-java": "java-vs-typescript",
   "ts-vs-java": "java-vs-typescript",
   "java-vs-ts": "java-vs-typescript",
+  // Microsoft Word vs LibreOffice Writer name orders. Confirmed 2026-10-03:
+  // each is a 404, or a 301 whose alphabetical shell lands on a 404. Both
+  // orders are sources so the shell cannot insert a hop.
+  "libreoffice-vs-microsoft-word": "microsoft-word-vs-libreoffice",
+  "word-vs-libreoffice": "microsoft-word-vs-libreoffice",
+  "libreoffice-vs-word": "microsoft-word-vs-libreoffice",
+  "ms-word-vs-libreoffice-writer": "microsoft-word-vs-libreoffice",
+  "libreoffice-writer-vs-ms-word": "microsoft-word-vs-libreoffice",
+  "microsoft-word-vs-libreoffice-writer": "microsoft-word-vs-libreoffice",
+  "libreoffice-writer-vs-microsoft-word": "microsoft-word-vs-libreoffice",
+  "ms-word-vs-libreoffice": "microsoft-word-vs-libreoffice",
+  "libreoffice-vs-ms-word": "microsoft-word-vs-libreoffice",
+  "word-vs-libreoffice-writer": "microsoft-word-vs-libreoffice",
+  "libreoffice-writer-vs-word": "microsoft-word-vs-libreoffice",
 };
