@@ -343,7 +343,7 @@ export const IPHONE_17_PRO_VS_IPHONE_18_PRO: EditorialComparison = buildEditoria
       type: "blog",
       label: "iPhone 17 Pro hub",
       url: "/entity/iphone-17-pro",
-      description: "AversusB hub for the iPhone 17 Pro. Index, follow on 3 October 2026.",
+      description: "iPhone 17 Pro hub.",
     },
   ],
   metaTitle: "iPhone 17 Pro vs iPhone 18 Pro | A Versus B",
