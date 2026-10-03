@@ -59,7 +59,7 @@ const FAQS = [
   {
     question: "Which older Knicks-76ers playoff series does this page include?",
     answer:
-      "Only the 2026 Eastern Conference semifinals, because that series is on the Basketball-Reference pages fetched October 3, 2026. This page does not list earlier series from other sites. The Knicks franchise header on the head-to-head page lists 3 championships, 81 seasons, a 3,078-3,191 record, and 47 playoff appearances. It does not break those championships into a series list.",
+      "Only the 2026 Eastern Conference semifinals, because that series is on the Basketball-Reference pages fetched October 3, 2026. This page does not list earlier series from other sites. The Knicks franchise header lists 3 championships, 81 seasons, a 3,078-3,191 record, and 47 playoff appearances. It does not break those championships into a series list.",
   },
 ];
 
@@ -77,7 +77,7 @@ Source note: the 481-game row is from the Knicks head-to-head page on Basketball
 
 2026-27 season. Stats as of ${AS_OF}. No regular-season game log is on Basketball-Reference for this matchup, so this page does not quote a 2026-27 scoring line or a projection. NBA.com lists Philadelphia at New York on October 20, 2026, at 7:00 pm ET. That is the schedule. It is not a pick. LeBron's move is a roster fact: NBA.com says he announced it Friday, that it became official on Sunday, that his posts are dated July 24, 2026, and that the 76ers' post is dated July 27, 2026. The story says the 76ers went 45-37 and were swept by the Knicks in the second round.
 
-Head-to-head. The Knicks row against the 76ers is 481 games, 214 wins, 267 losses, a .445 win percentage, 103.6 points scored per game, and 104.4 points allowed per game. The Knicks franchise header on that page lists 81 seasons from 1946-47 through 2026-27, a 3,078-3,191 record, 47 playoff appearances, and 3 championships. This page does not turn the 3 into a claim about how many of those titles came in 2026. The 2026 title is stated from the playoff index, which names the Knicks the league champion.
+Head-to-head. The Knicks row against the 76ers is 481 games, 214 wins, 267 losses, a .445 win percentage, 103.6 points scored per game, and 104.4 points allowed per game. The Knicks franchise header lists 81 seasons from 1946-47 through 2026-27, a 3,078-3,191 record, 47 playoff appearances, and 3 championships. This page does not turn the 3 into a claim about how many of those titles came in 2026. The 2026 title is stated from the playoff index, which names the Knicks the league champion.
 
 2026 playoffs. The East semifinals were a sweep. May 4, Philadelphia 98 at New York 137. May 6, Philadelphia 102 at New York 108. May 8, New York 108 at Philadelphia 94. May 10, New York 144 at Philadelphia 114. Brunson's series line is 29.0 points, 2.8 rebounds, and 6.0 assists in 4 games. The 76ers' first-round series on the same index was a 4-3 win over the Celtics. The Finals were Knicks over Spurs, 4-1, and Brunson was Finals MVP at 32.6 points, 4.2 rebounds, and 4.6 assists. Earlier Knicks-76ers playoff series are not on the pages fetched for this article, so they are not listed.
 

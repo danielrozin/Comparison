@@ -42,7 +42,7 @@ const FAQS = [
   {
     question: "What happened in the 2026 Western Conference finals?",
     answer:
-      "The Spurs beat the Thunder 4-3. Basketball-Reference's 2026 playoff page lists that series, including Game 7 on May 30, 2026: San Antonio 111 at Oklahoma City 103. Wembanyama's accolades include 2025-26 West finals MVP. SGA's accolades include 2024-25 West finals MVP, 2024-25 Finals MVP, and the 2025 championship. The 2026 league champion on that page is the Knicks, not the Thunder.",
+      "The Spurs beat the Thunder 4-3. Basketball-Reference's 2026 playoff index includes that series, including Game 7 on May 30, 2026: San Antonio 111 at Oklahoma City 103. Wembanyama's accolades include 2025-26 West finals MVP. SGA's accolades include 2024-25 West finals MVP, 2024-25 Finals MVP, and the 2025 championship. The 2026 league champion on that index is the Knicks, not the Thunder.",
   },
   {
     question: "What did each player average in the 2025-26 playoffs?",

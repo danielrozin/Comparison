@@ -66,7 +66,7 @@ const EXPERT_ANALYSIS = `This page compares Carhartt and Dickies work pants, foc
 
 Fabric
 
-Carhartt’s product page lists the B01 as 12-ounce, firm-hand, 100% cotton ringspun duck canvas. Dickies’ Original 874 product page lists 8.5 oz, 65% polyester / 35% cotton, non-stretch twill. Gear Patrol’s August 2021 hands-on says Dickies’ blended twill is not nearly as durable as that cotton duck, and that the twill resists stains and wrinkles except in extreme cases. Firm-hand, in that review, means tougher to the touch. The fabric weight itself is from Carhartt and Dickies, not from the 2021 review.
+Carhartt lists the B01 as 12-ounce, firm-hand, 100% cotton ringspun duck canvas. Dickies lists the Original 874 as 8.5 oz, 65% polyester / 35% cotton, non-stretch twill. Gear Patrol’s August 2021 hands-on says Dickies’ blended twill is not nearly as durable as that cotton duck, and that the twill resists stains and wrinkles except in extreme cases. Firm-hand, in that review, means tougher to the touch. The fabric weight itself is from Carhartt and Dickies, not from the 2021 review.
 
 Fit and sizing
 
@@ -74,7 +74,7 @@ Carhartt calls the B01 its most generous cut. The loose fit is meant to give fre
 
 Construction
 
-Carhartt says the B01 has double-layer knees with openings for adding knee pads and cleaning out debris, and that the pant is compatible with the Carhartt Knee Pad. The same page lists multiple tool and utility pockets with a left-leg hammer loop, and heavy-hauling reinforced back pockets for hand tools and more. Origin on that page is “Imported or Made in USA of Imported Parts.” The Dickies Double Knee, in Gear Patrol’s review, is two layers of twill seamed together and has no slots for knee pads. The 874 page lists reinforced seams and welt back pockets. It does not describe a double knee.
+Carhartt says the B01 has double-layer knees with openings for adding knee pads and cleaning out debris, and that the pant is compatible with the Carhartt Knee Pad. Carhartt lists multiple tool and utility pockets with a left-leg hammer loop, and heavy-hauling reinforced back pockets for hand tools and more. Origin on that page is “Imported or Made in USA of Imported Parts.” The Dickies Double Knee, in Gear Patrol’s review, is two layers of twill seamed together and has no slots for knee pads. Dickies lists reinforced seams and welt back pockets on the 874. It does not describe a double knee.
 
 What owners report
 

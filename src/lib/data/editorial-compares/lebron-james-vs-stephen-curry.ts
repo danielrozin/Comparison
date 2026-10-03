@@ -38,9 +38,9 @@ const FAQS = [
       "LeBron, with the Lakers: 60 games, 20.9 points, 6.1 rebounds, and 7.2 assists. Curry, with the Warriors: 43 games, 26.6 points, 3.6 rebounds, and 4.7 assists. NBA.com's signing story, updated July 27, 2026, prints the same 20.9, 6.1, and 7.2 line for LeBron and the same 26.8 career points average.",
   },
   {
-    question: "How many championships does each honors list show?",
+    question: "How many championships does each player have?",
     answer:
-      "LeBron's honors list shows 4 NBA championships, 4 Finals MVPs, 4 MVPs, and 22 All-Star selections. Curry's shows 4 NBA championships, 2 MVPs, 12 All-Star selections, and 2021-22 Finals MVP. Those are the lists on the player pages fetched October 3, 2026. This page does not turn the lists into a ranking.",
+      "LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. Curry won 4 NBA championships and 2 MVPs, made 12 All-Star teams, and was 2021-22 Finals MVP. Basketball-Reference is the source, fetched October 3, 2026. This page does not turn those honors into a ranking.",
   },
   {
     question: "Where is LeBron listed for 2026-27?",

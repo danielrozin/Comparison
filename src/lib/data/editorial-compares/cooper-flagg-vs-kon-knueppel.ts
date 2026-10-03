@@ -21,18 +21,18 @@ const ROOKIE_CAT = `2025-26 per game · Basketball-Reference, fetched ${FETCHED}
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "Cooper Flagg's 2025-26 line is 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games for Dallas. Kon Knueppel's is 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games for Charlotte. Flagg's honors list shows 2025-26 Rookie of the Year. Knueppel's awards cell reads ROY-2 and his honors list shows 2025-26 All-Rookie. Stats as of October 3, 2026, neither page has a 2026-27 regular-season game log. This page does not predict the season.";
+  "Cooper Flagg's 2025-26 line is 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games for Dallas. Kon Knueppel's is 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games for Charlotte. Flagg won 2025-26 Rookie of the Year. Knueppel finished second in that vote and made 2025-26 All-Rookie. Stats as of October 3, 2026, neither player has a 2026-27 regular-season game log. This page does not predict the season.";
 
 const FAQS = [
   {
     question: "What did Cooper Flagg average as a rookie?",
     answer:
-      "The 2025-26 per-game row is 70 games, all starts, 33.5 minutes, 21.0 points, 6.7 rebounds, 4.5 assists, 1.2 steals, and 0.9 blocks. Shooting is .468 from the field, .295 from three, and .827 from the line. The totals table lists 1,473 points. The awards cell is ROY-1. The honors list shows 2025-26 Rookie of the Year and 2025-26 All-Rookie.",
+      "The 2025-26 per-game line is 70 games, all starts, 33.5 minutes, 21.0 points, 6.7 rebounds, 4.5 assists, 1.2 steals, and 0.9 blocks. Shooting is .468 from the field, .295 from three, and .827 from the line. He scored 1,473 points. He won 2025-26 Rookie of the Year and made 2025-26 All-Rookie.",
   },
   {
     question: "What did Kon Knueppel average as a rookie?",
     answer:
-      "The 2025-26 per-game row is 81 games, 80 starts, 31.5 minutes, 18.5 points, 5.3 rebounds, 3.4 assists, 0.7 steals, and 0.2 blocks. Shooting is .475 from the field, .425 from three, and .863 from the line. The totals table lists 1,498 points. The awards cell is ROY-2. The honors list shows 2025-26 All-Rookie and does not list Rookie of the Year.",
+      "The 2025-26 per-game line is 81 games, 80 starts, 31.5 minutes, 18.5 points, 5.3 rebounds, 3.4 assists, 0.7 steals, and 0.2 blocks. Shooting is .475 from the field, .425 from three, and .863 from the line. He scored 1,498 points. He finished second in Rookie of the Year voting, made 2025-26 All-Rookie, and did not win Rookie of the Year.",
   },
   {
     question: "Where were they drafted?",
@@ -58,11 +58,11 @@ const FAQS = [
 
 const VERDICT = `2025-26 per game: Flagg 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games. Knueppel 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games.
 
-Honors: Flagg's list shows 2025-26 Rookie of the Year. Knueppel's awards cell reads ROY-2, and his list shows 2025-26 All-Rookie.
+Honors: Flagg won 2025-26 Rookie of the Year. Knueppel finished second in that vote and made 2025-26 All-Rookie.
 
 2026-27 season: Flagg is listed with Dallas. Knueppel is listed with Charlotte. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
 
-const EXPERT_ANALYSIS = `Cooper Flagg averaged 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games as a rookie. Kon Knueppel averaged 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games. Flagg's honors list shows 2025-26 Rookie of the Year. Knueppel's does not. This page does not predict 2026-27.
+const EXPERT_ANALYSIS = `Cooper Flagg averaged 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games as a rookie. Kon Knueppel averaged 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games. Flagg won 2025-26 Rookie of the Year. Knueppel did not. This page does not predict 2026-27.
 
 Source note: the per-game rows, totals, draft lines, and honors are from the two Basketball-Reference player pages, fetched ${AS_OF}. ${FLAGG_URL} ${KNUEPPEL_URL}
 

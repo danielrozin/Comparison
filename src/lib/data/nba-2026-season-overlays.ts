@@ -153,7 +153,7 @@ const KOBE_LEBRON_FAQS = [
   {
     question: "What is Kobe's career line?",
     answer:
-      "Basketball-Reference lists 20 seasons, 1,346 games, 33,643 points, 7,047 rebounds, and 6,306 assists. The per-game line is 25.0 points, 5.2 rebounds, and 4.7 assists, with shooting of 44.7% from the field, 32.9% from three, and 83.7% from the line. Accolades on that page: 5 championships, 2 Finals MVPs, the 2007-08 MVP, 18 All-Star selections, 15 All-NBA selections, and the 2020 Hall of Fame. The page lists January 26, 2020 as the date of death.",
+      "Basketball-Reference lists 20 seasons, 1,346 games, 33,643 points, 7,047 rebounds, and 6,306 assists. The per-game line is 25.0 points, 5.2 rebounds, and 4.7 assists, with shooting of 44.7% from the field, 32.9% from three, and 83.7% from the line. Accolades: 5 championships, 2 Finals MVPs, the 2007-08 MVP, 18 All-Star selections, 15 All-NBA selections, and the 2020 Hall of Fame. He died on January 26, 2020.",
   },
   {
     question: "Did LeBron sign with the 76ers?",
@@ -181,7 +181,7 @@ const KOBE_LEBRON_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebo
 
 Source note: career totals and the 2025-26 line are from Basketball-Reference, fetched ${AS_OF}. The signing and the 24th season are from NBA.com's story updated July 27, 2026, which also prints the 20.9 and 26.8 lines. ${KOBE_BBR} ${LEBRON_BBR} ${SIGNING}
 
-2026-27 season. Stats as of ${AS_OF}. LeBron's team is the Philadelphia 76ers. NBA.com says he announced the move on social media Friday, that it became official on Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. The 76ers post is dated July 27, 2026. NBA.com writes that he logged 23 seasons and will add at least one more this season. Basketball-Reference has no 2026-27 game log, and its 2026-27 table is a projection this page does not quote. Kobe has no 2026-27 season. Basketball-Reference lists his death as January 26, 2020.
+2026-27 season. Stats as of ${AS_OF}. LeBron's team is the Philadelphia 76ers. NBA.com says he announced the move on social media Friday, that it became official on Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. The 76ers post is dated July 27, 2026. NBA.com writes that he logged 23 seasons and will add at least one more this season. Basketball-Reference has no 2026-27 game log, and its 2026-27 table is a projection this page does not quote. Kobe has no 2026-27 season.
 
 Career. Kobe: 20 years, 1,346 games, 33,643 points, 7,047 rebounds, 6,306 assists, 25.0 points, 5.2 rebounds, and 4.7 assists per game. LeBron through 2025-26: 23 years, 1,622 games, 43,440 points, 12,095 rebounds, 12,016 assists, 26.8 points, 7.5 rebounds, and 7.4 assists per game. Kobe shot 44.7% from the field, 32.9% from three, and 83.7% from the line for his career.
 
@@ -581,7 +581,7 @@ export const NBA_SEASON_OVERLAYS: Record<
           "33,643 career points",
         ],
         cons: [
-          "Career ended after 20 seasons. Basketball-Reference lists January 26, 2020 as the date of death",
+          "Career ended after the 2015-16 season",
           "1 MVP. LeBron has 4 through 2025-26",
           "No 2026-27 season",
         ],
@@ -609,7 +609,7 @@ export const NBA_SEASON_OVERLAYS: Record<
         type: "external",
         label: "Basketball-Reference: Kobe Bryant",
         url: KOBE_BBR,
-        description: `Fetched ${FETCHED}. 20 seasons, 1,346 games, 25.0 points, 5.2 rebounds, 4.7 assists, 33,643 points, 5 championships. Death listed as January 26, 2020.`,
+        description: `Fetched ${FETCHED}. 20 seasons, 1,346 games, 25.0 points, 5.2 rebounds, 4.7 assists, 33,643 points, 5 championships.`,
       },
       {
         type: "external",
