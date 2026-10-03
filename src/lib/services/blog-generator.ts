@@ -769,12 +769,13 @@ async function attachContentWordCounts(
   const slugs = articles.filter((article) => !article.content.trim()).map((article) => article.slug);
   if (slugs.length === 0 || typeof prisma.$queryRaw !== "function") return articles;
   try {
+    // POSIX class, not E'\s+'. In a Postgres E-string \s is the letter s.
     const rows = await prisma.$queryRaw(
       Prisma.sql`
         SELECT slug,
           CASE
             WHEN content IS NULL OR btrim(content) = '' THEN 0
-            ELSE cardinality(regexp_split_to_array(btrim(content), E'\\s+'))
+            ELSE cardinality(regexp_split_to_array(btrim(content), '[[:space:]]+'))
           END::int AS words
         FROM blog_articles
         WHERE slug IN (${Prisma.join(slugs)})
@@ -820,6 +821,11 @@ export async function listBlogArticles(params: {
   status?: string;
   /** API clients that return the markdown body. Listing pages leave this off. */
   includeContent?: boolean;
+  /**
+   * Word counts for the read-time label. Only /blog cards and the home
+   * cards display that label. Sitemaps and feeds leave this off.
+   */
+  includeReadTime?: boolean;
 }): Promise<{ articles: BlogArticle[]; total: number }> {
   const prisma = getPrismaClient();
   if (!prisma) {
@@ -832,7 +838,15 @@ export async function listBlogArticles(params: {
     return paginateMergedBlogArticles(filtered, offset, limit);
   }
 
-  const { category, limit = 12, offset = 0, status = "published", includeContent = false } = params;
+  const {
+    category,
+    limit = 12,
+    offset = 0,
+    status = "published",
+    includeContent = false,
+    includeReadTime = false,
+  } = params;
+  const countWords = includeReadTime && !includeContent;
 
   try {
     const where: Record<string, unknown> = { status };
@@ -854,7 +868,7 @@ export async function listBlogArticles(params: {
         bySlug.set(row.slug, mapDbBlogArticle(row));
       }
       const page = paginateMergedBlogArticles([...bySlug.values()], offset, limit);
-      if (includeContent) return page;
+      if (!countWords) return page;
       return {
         ...page,
         articles: await attachContentWordCounts(prisma, page.articles),
@@ -875,7 +889,7 @@ export async function listBlogArticles(params: {
     if (total > 0) {
       const mapped = articles.map(mapDbBlogArticle);
       return {
-        articles: includeContent ? mapped : await attachContentWordCounts(prisma, mapped),
+        articles: countWords ? await attachContentWordCounts(prisma, mapped) : mapped,
         total,
       };
     }

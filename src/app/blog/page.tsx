@@ -37,6 +37,7 @@ const loadPublishedBlogList = cache((category: string | undefined, page: number)
     limit: BLOG_LIST_PAGE_SIZE,
     offset: (page - 1) * BLOG_LIST_PAGE_SIZE,
     status: "published",
+    includeReadTime: true,
   }),
 );
 

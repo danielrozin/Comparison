@@ -71,11 +71,33 @@ export function categoryHubCount(
   return dbTotal + added;
 }
 
+/**
+ * Stale standings page. The basketball keyword `thunder` would otherwise
+ * turn it into an 18th hub card. Leave it out until it is refreshed or 301'd.
+ */
+export const BASKETBALL_HUB_EXCLUDED_SLUGS = [
+  "houston-rockets-vs-oklahoma-city-thunder-match-player-stats",
+] as const;
+
+const BASKETBALL_HUB_EXCLUDED = new Set<string>(BASKETBALL_HUB_EXCLUDED_SLUGS);
+
+/** Other subcategory hubs stay at 16. Basketball has 17 canonical cards. */
+export const SUBCATEGORY_PAGE_SIZE = 16;
+export const BASKETBALL_SUBCATEGORY_PAGE_SIZE = 24;
+
+export function subcategoryPageSize(categorySlug: string, subcategorySlug: string): number {
+  if (categorySlug === "sports" && subcategorySlug === "basketball") {
+    return BASKETBALL_SUBCATEGORY_PAGE_SIZE;
+  }
+  return SUBCATEGORY_PAGE_SIZE;
+}
+
 export function comparisonsForSubcategory<T extends { slug: string; title: string }>(
   comparisons: T[],
   subcat: SubcategoryDef,
 ): T[] {
   return comparisons.filter((comp) => {
+    if (subcat.slug === "basketball" && BASKETBALL_HUB_EXCLUDED.has(comp.slug)) return false;
     const lower = `${comp.title} ${comp.slug}`.toLowerCase();
     return subcat.keywords.some((keyword) => lower.includes(keyword.toLowerCase()));
   });

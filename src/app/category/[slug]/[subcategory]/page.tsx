@@ -7,6 +7,7 @@ import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import {
   comparisonsForSubcategory,
   mergeEditorialCategoryComparisons,
+  subcategoryPageSize,
 } from "@/lib/categories/hub-comparisons";
 import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { faqAnswerPlainText, faqAnswerSegments, getSubcategoryFaqs } from "@/lib/data/subcategory-faqs";
@@ -15,8 +16,6 @@ import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
 import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-
-const ITEMS_PER_PAGE = 16;
 
 /** Turn [label](/path) marks in an FAQ answer into real links. Other answers stay text. */
 function FaqAnswerText({ answer }: { answer: string }) {
@@ -178,8 +177,9 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
   const filtered = filterByRating(subcatComparisons, ratingFilter);
   const sorted = sortComparisons(filtered, sort);
   const total = sorted.length;
-  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-  const paginated = sorted.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  const pageSize = subcategoryPageSize(slug, subcategory);
+  const totalPages = Math.ceil(total / pageSize);
+  const paginated = sorted.slice((page - 1) * pageSize, page * pageSize);
 
   const subcatUrl = `${SITE_URL}/category/${slug}/${subcategory}`;
   const subcatOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`${subcat.name} Comparisons`)}&type=category`;

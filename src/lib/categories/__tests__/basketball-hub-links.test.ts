@@ -3,6 +3,8 @@ import {
   categoryHubCount,
   comparisonsForSubcategory,
   mergeEditorialCategoryComparisons,
+  subcategoryPageSize,
+  SUBCATEGORY_PAGE_SIZE,
 } from "@/lib/categories/hub-comparisons";
 import { isRedirectedCompareSlug } from "@/lib/redirects/compare-redirects";
 import { CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
@@ -62,5 +64,39 @@ describe("basketball category hub links", () => {
     expect(slugs.some((slug) => isRedirectedCompareSlug(slug))).toBe(false);
     expect(merged.map((item) => item.slug)).not.toContain("brave-vs-chrome");
     expect(categoryHubCount(dbRows.length, dbRows, merged)).toBeGreaterThan(dbRows.length);
+  });
+
+  it("drops the stale Rockets vs Thunder standings slug and fits the 17 canonicals on page 1", () => {
+    const rockets = "houston-rockets-vs-oklahoma-city-thunder-match-player-stats";
+    const dbRows = [
+      { slug: "lebron-vs-jordan", title: "LeBron vs Jordan", category: "sports" },
+      { slug: "nfl-vs-nba-revenue", title: "NFL vs NBA Revenue", category: "sports" },
+      { slug: "nfl-vs-nba-viewership", title: "NFL vs NBA Viewership", category: "sports" },
+      { slug: "kobe-vs-lebron", title: "Kobe vs LeBron", category: "sports" },
+      {
+        slug: rockets,
+        title: "Rockets vs Thunder 2026 | Current Standings",
+        category: "sports",
+      },
+    ];
+
+    const merged = mergeEditorialCategoryComparisons("sports", dbRows);
+    expect(merged.map((item) => item.slug)).toContain(rockets);
+
+    const basketball = comparisonsForSubcategory(merged, BASKETBALL!);
+    const slugs = basketball.map((item) => item.slug);
+    expect(slugs).not.toContain(rockets);
+    expect(slugs).toHaveLength(17);
+    for (const slug of CLUSTER) expect(slugs).toContain(slug);
+    expect(slugs).toContain("nfl-vs-nba-revenue");
+    expect(slugs).toContain("nfl-vs-nba-viewership");
+
+    const pageSize = subcategoryPageSize("sports", "basketball");
+    expect(pageSize).toBe(24);
+    expect(subcategoryPageSize("technology", "smartphones")).toBe(SUBCATEGORY_PAGE_SIZE);
+    expect(SUBCATEGORY_PAGE_SIZE).toBe(16);
+    const page1 = basketball.slice(0, pageSize);
+    expect(page1.map((item) => item.slug)).toEqual(slugs);
+    expect(basketball.slice(pageSize)).toEqual([]);
   });
 });

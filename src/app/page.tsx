@@ -63,7 +63,7 @@ export default async function HomePage() {
     getTrendingComparisons(10),
     getLatestComparisons(8),
     getTotalComparisonsCount(),
-    listBlogArticles({ limit: 3, status: "published" }),
+    listBlogArticles({ limit: 3, status: "published", includeReadTime: true }),
   ]);
   const blogArticles = blogResult.articles;
 

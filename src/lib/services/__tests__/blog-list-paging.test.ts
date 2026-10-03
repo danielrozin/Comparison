@@ -107,7 +107,16 @@ describe("merged blog list paging", () => {
       sqlValues(query).map((slug) => ({ slug, words: 400 })),
     );
 
-    const page1 = await listBlogArticles({ limit: 12, offset: 0, status: "published" });
+    const page1 = await listBlogArticles({
+      limit: 12,
+      offset: 0,
+      status: "published",
+      includeReadTime: true,
+    });
+    const sql = String(mocks.queryRaw.mock.calls[0][0].text ?? mocks.queryRaw.mock.calls[0][0].sql);
+    expect(sql).toContain("[[:space:]]+");
+    expect(sql).not.toMatch(/E'\\s/);
+    expect(sql).not.toMatch(/\\s/);
     const counted = sqlValues(mocks.queryRaw.mock.calls[0][0]);
     expect(counted).toEqual(DB_POSTS.slice(0, 11).map((post) => post.slug));
     expect(counted).not.toContain(NBA_SEASON_PREVIEW_BLOG_SLUG);
@@ -128,6 +137,31 @@ describe("merged blog list paging", () => {
     const withBody = mocks.findMany.mock.calls.at(-1)?.[0]?.select;
     expect(withBody.content).toBe(true);
     expect(withBody.titleEmbedding).toBeUndefined();
+  });
+
+  it("does not count words for sitemap and feed listings", async () => {
+    await listBlogArticles({ limit: 500, status: "published" });
+    await listBlogArticles({ status: "published", limit: 200, offset: 0 });
+    await listBlogArticles({ limit: 50, status: "published" });
+    await listBlogArticles({ limit: 30, status: "published" });
+    expect(mocks.queryRaw).not.toHaveBeenCalled();
+
+    const { readFileSync } = await import("node:fs");
+    const paths = [
+      "src/app/sitemap.ts",
+      "src/app/sitemap/images.xml/route.ts",
+      "src/app/sitemap/news.xml/route.ts",
+      "src/app/feed/route.ts",
+      "src/app/feed/atom/route.ts",
+      "src/app/feed/json/route.ts",
+    ];
+    for (const path of paths) {
+      const source = readFileSync(path, "utf8");
+      expect(source, path).not.toMatch(/includeReadTime/);
+      expect(source, path).toMatch(/listBlogArticles\(/);
+    }
+    expect(readFileSync("src/app/blog/page.tsx", "utf8")).toMatch(/includeReadTime:\s*true/);
+    expect(readFileSync("src/app/page.tsx", "utf8")).toMatch(/includeReadTime:\s*true/);
   });
 
   it("uses the body when it is already in memory and the stored count otherwise", () => {
