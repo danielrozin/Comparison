@@ -16,6 +16,9 @@ export const MACBOOK_AIR_WEIGHT_BLOG_SLUG =
  */
 export const NAVIGATION_APPS_BLOG_SLUG =
   "best-navigation-apps-2026-google-maps-waze-and-apple-maps-compared";
+/** Live article. Tank-vs-tank compares 404; these are the published army pages. */
+export const BEST_TANKS_BLOG_SLUG =
+  "best-tanks-world-2026-abrams-vs-t-90-vs-leopard";
 
 export interface OrganicCompareLink {
   slug: string;
@@ -83,6 +86,27 @@ export const ORGANIC_LANDER_COMPARES: readonly OrganicLanderCompare[] = [
         label: "Compare Google Maps vs Apple Maps",
       },
       { slug: "android-vs-ios", label: "Compare Android vs iOS" },
+    ],
+  },
+  {
+    blogSlug: BEST_TANKS_BLOG_SLUG,
+    sourcePage: `/blog/${BEST_TANKS_BLOG_SLUG}`,
+    heading: "Compare militaries and armed forces",
+    // No live Abrams / T-90 / Leopard page. These three are published,
+    // self-canonical army compares the live-slug filter still returns.
+    links: [
+      {
+        slug: "us-military-vs-china-military",
+        label: "Compare US Military vs China Military",
+      },
+      {
+        slug: "russia-vs-usa",
+        label: "Compare Russia vs United States",
+      },
+      {
+        slug: "marines-vs-army",
+        label: "Compare US Marines vs US Army",
+      },
     ],
   },
 ];
