@@ -14,14 +14,14 @@ import { getStaticProps } from "@/pages/compare/[slug]";
 
 type Ctx = Parameters<typeof getStaticProps>[0];
 
-const HELD_FOR_333 = ["embiid-vs-jokic", "kobe-bryant-vs-steph-curry"];
-
 describe("2026-27 NBA season preview blog", () => {
   it("publishes ten debate CTAs plus the more-debates links", () => {
     expect(NBA_SEASON_PREVIEW_ARTICLE.title).toBe("2026-27 NBA season preview: 10 debates");
     expect(NBA_SEASON_PREVIEW_ARTICLE.slug).toBe(NBA_SEASON_PREVIEW_BLOG_SLUG);
     expect(NBA_PREVIEW_DEBATES).toHaveLength(10);
-    expect(NBA_PREVIEW_MORE_DEBATES).toHaveLength(3);
+    expect(NBA_PREVIEW_MORE_DEBATES).toHaveLength(5);
+    expect(NBA_PREVIEW_COMPARE_SLUGS).toContain("embiid-vs-jokic");
+    expect(NBA_PREVIEW_COMPARE_SLUGS).toContain("kobe-bryant-vs-steph-curry");
 
     const markers = splitHtmlAtCompareCtas(NBA_SEASON_PREVIEW_ARTICLE.content).filter(
       (part) => part.kind === "cta",
@@ -30,9 +30,6 @@ describe("2026-27 NBA season preview blog", () => {
       ...NBA_PREVIEW_COMPARE_SLUGS,
     ]);
 
-    for (const slug of HELD_FOR_333) {
-      expect(NBA_SEASON_PREVIEW_ARTICLE.content).not.toContain(slug);
-    }
     expect(NBA_SEASON_PREVIEW_ARTICLE.content).not.toMatch(/\/entity\//);
     expect(NBA_SEASON_PREVIEW_ARTICLE.content).not.toMatch(/final season/i);
     expect(NBA_SEASON_PREVIEW_ARTICLE.content).not.toMatch(/\bhealthy\b/i);

@@ -34,7 +34,7 @@ const H2H_CAT =
 const SEASON_CAT = "2026-27 season · Stats as of October 3, 2026";
 
 const SHORT_ANSWER =
-  "The New York Knicks beat the San Antonio Spurs 4-1 in the 2026 NBA Finals. The Spurs beat the Knicks 4-1 in the 1999 NBA Finals. Basketball-Reference's Knicks head-to-head table, fetched October 3, 2026, lists 107 games against San Antonio, with New York at 47 wins and San Antonio at 60. The Spurs table lists the same 107 games. This page does not pick a future winner.";
+  "The New York Knicks beat the San Antonio Spurs 4-1 in the 2026 NBA Finals. The Spurs beat the Knicks 4-1 in the 1999 NBA Finals. Basketball-Reference's Knicks head-to-head table, fetched October 3, 2026, lists 107 games against San Antonio, with New York at 47 wins and San Antonio at 60. The Spurs head-to-head count is the same 107 games (Basketball-Reference). This page does not pick a future winner.";
 
 const META_DESCRIPTION =
   "Knicks beat the Spurs 4-1 in the 2026 Finals. Spurs beat the Knicks 4-1 in 1999. Head-to-head fetched October 3, 2026: 107 games, Knicks 47 wins, Spurs 60.";
@@ -53,7 +53,7 @@ const FAQS = [
   {
     question: "What is the Knicks vs Spurs head-to-head record?",
     answer:
-      "On the Knicks head-to-head table fetched October 3, 2026, San Antonio is 107 games, with New York at 47 wins and 60 losses, a .439 win percentage, 104.1 points scored per game, and 106.6 points allowed per game. The Spurs head-to-head table lists the same 107 games, with San Antonio at 60 wins and 47 losses. Both pages head the franchise at seasons 1946-47 to 2026-27. The opponent table is not captioned regular season or playoffs.",
+      "On the Knicks head-to-head table fetched October 3, 2026, San Antonio is 107 games, with New York at 47 wins and 60 losses, a .439 win percentage, 104.1 points scored per game, and 106.6 points allowed per game. San Antonio's head-to-head count is the same 107 games, with San Antonio at 60 wins and 47 losses (Basketball-Reference). Both pages head the franchise at seasons 1946-47 to 2026-27. The opponent table is not captioned regular season or playoffs.",
   },
   {
     question: "How many times have the Knicks and the Spurs met in the NBA Finals?",

@@ -30,7 +30,7 @@ const FAQS = [
   {
     question: "What are LeBron's and Curry's career scoring lines?",
     answer:
-      "LeBron's per-game career row is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games over 23 years. The totals table lists 43,440 points. Curry's per-game career row is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games over 17 years. The totals table lists 26,528 points. Career shooting is .507 / .348 / .737 for LeBron and .471 / .422 / .912 for Curry, field goals, threes, and free throws.",
+      "LeBron's per-game career row is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games over 23 years. Career points total 43,440 (Basketball-Reference). Curry's per-game career row is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games over 17 years. Career points total 26,528 (Basketball-Reference). Career shooting is .507 / .348 / .737 for LeBron and .471 / .422 / .912 for Curry, field goals, threes, and free throws.",
   },
   {
     question: "What did each average in 2025-26?",

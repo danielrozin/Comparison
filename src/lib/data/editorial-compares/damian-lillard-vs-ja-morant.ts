@@ -41,7 +41,7 @@ const FAQS = [
   {
     question: "What are their career scoring lines?",
     answer:
-      "Lillard's per-game career row is 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games over 13 years. The totals table lists 22,598 points. Morant's per-game career row is 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games over 7 years. The totals table lists 7,331 points. Shooting on those per-game rows is .439 / .371 / .899 for Lillard and .466 / .311 / .773 for Morant, field goals, threes, and free throws.",
+      "Lillard's per-game career row is 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games over 13 years. Career points total 22,598 (Basketball-Reference). Morant's per-game career row is 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games over 7 years. Career points total 7,331 (Basketball-Reference). Shooting on those per-game rows is .439 / .371 / .899 for Lillard and .466 / .311 / .773 for Morant, field goals, threes, and free throws.",
   },
   {
     question: "Did Lillard play in 2025-26?",

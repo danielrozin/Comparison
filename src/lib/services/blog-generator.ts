@@ -240,6 +240,28 @@ function clampPublishedAt<T extends { publishedAt: Date | string | null; created
   return article;
 }
 
+/**
+ * Sort a merged repo + database list once, then slice one page.
+ * Paginating the database query first and splicing repo posts onto page 1
+ * drops the boundary database post: it is pushed off page 1 and page 2's
+ * skip still starts after a full database page.
+ */
+export function paginateMergedBlogArticles<T extends { publishedAt?: Date | string | null }>(
+  articles: T[],
+  offset: number,
+  limit: number,
+): { articles: T[]; total: number } {
+  const sorted = [...articles].sort((a, b) => {
+    const left = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+    const right = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+    return right - left;
+  });
+  return {
+    articles: sorted.slice(offset, offset + limit),
+    total: sorted.length,
+  };
+}
+
 export async function getBlogBySlug(
   slug: string
 ): Promise<BlogArticle | null> {
@@ -669,6 +691,44 @@ const MOCK_BLOG_ARTICLES: BlogArticle[] = [
   },
 ];
 
+type DbBlogRow = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  content: string;
+  category: string | null;
+  tags: string[];
+  metaTitle: string | null;
+  metaDescription: string | null;
+  relatedComparisonSlugs: string[];
+  status: string;
+  publishedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  viewCount: number;
+};
+
+function mapDbBlogArticle(row: DbBlogRow): BlogArticle {
+  return clampPublishedAt({
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    excerpt: row.excerpt || "",
+    content: row.content,
+    category: row.category || "",
+    tags: row.tags || [],
+    metaTitle: row.metaTitle || row.title,
+    metaDescription: row.metaDescription || "",
+    relatedComparisonSlugs: row.relatedComparisonSlugs || [],
+    status: row.status,
+    publishedAt: row.publishedAt,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+    viewCount: row.viewCount,
+  });
+}
+
 async function repoArticlesMissingFromDb(
   prisma: NonNullable<ReturnType<typeof getPrismaClient>>,
   status: string,
@@ -704,10 +764,7 @@ export async function listBlogArticles(params: {
       (a) => a.status === "published",
     );
     if (category) filtered = filtered.filter((a) => a.category === category);
-    return {
-      articles: filtered.slice(offset, offset + limit),
-      total: filtered.length,
-    };
+    return paginateMergedBlogArticles(filtered, offset, limit);
   }
 
   const { category, limit = 12, offset = 0, status = "published" } = params;
@@ -715,6 +772,21 @@ export async function listBlogArticles(params: {
   try {
     const where: Record<string, unknown> = { status };
     if (category) where.category = category;
+
+    const extras = await repoArticlesMissingFromDb(prisma, status, category);
+    if (extras.length > 0) {
+      // Load the whole matching set, merge, sort once, then paginate.
+      const rows = await prisma.blogArticle.findMany({
+        where,
+        orderBy: { publishedAt: "desc" },
+      });
+      const bySlug = new Map<string, BlogArticle>();
+      for (const extra of extras) bySlug.set(extra.slug, extra);
+      for (const row of rows) {
+        bySlug.set(row.slug, mapDbBlogArticle(row));
+      }
+      return paginateMergedBlogArticles([...bySlug.values()], offset, limit);
+    }
 
     const [articles, total] = await Promise.all([
       prisma.blogArticle.findMany({
@@ -727,57 +799,9 @@ export async function listBlogArticles(params: {
     ]);
 
     if (total > 0) {
-      const extras = await repoArticlesMissingFromDb(prisma, status, category);
-      const mapped = articles.map(
-          (a: {
-            id: string;
-            slug: string;
-            title: string;
-            excerpt: string | null;
-            content: string;
-            category: string | null;
-            tags: string[];
-            metaTitle: string | null;
-            metaDescription: string | null;
-            relatedComparisonSlugs: string[];
-            sourceQuery: string | null;
-            sourceImpressions: number | null;
-            status: string;
-            publishedAt: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
-            viewCount: number;
-          }) => clampPublishedAt({
-            id: a.id,
-            slug: a.slug,
-            title: a.title,
-            excerpt: a.excerpt || "",
-            content: a.content,
-            category: a.category || "",
-            tags: a.tags || [],
-            metaTitle: a.metaTitle || a.title,
-            metaDescription: a.metaDescription || "",
-            relatedComparisonSlugs: a.relatedComparisonSlugs || [],
-            status: a.status,
-            publishedAt: a.publishedAt,
-            createdAt: a.createdAt,
-            updatedAt: a.updatedAt,
-            viewCount: a.viewCount,
-          })
-        );
-      const merged =
-        offset === 0 && extras.length > 0
-          ? [...extras, ...mapped]
-              .sort((a, b) => {
-                const da = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-                const db = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
-                return db - da;
-              })
-              .slice(0, limit)
-          : mapped;
       return {
-        articles: merged,
-        total: total + extras.length,
+        articles: articles.map(mapDbBlogArticle),
+        total,
       };
     }
   } catch (e) {

@@ -27,12 +27,12 @@ const FAQS = [
   {
     question: "What is Michael Jordan's career scoring line?",
     answer:
-      "The per-game career row is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games. Minutes per game on that row are 38.3. Shooting is .497 from the field, .327 from three, and .835 from the line. The totals table lists 32,292 points. The info box lists a 15-year career, a 1984 debut, and Hall of Fame induction as a player in 2009.",
+      "The per-game career row is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games. Minutes per game on that row are 38.3. Shooting is .497 from the field, .327 from three, and .835 from the line. Career points total 32,292. The career ran 15 years, with a 1984 debut and Hall of Fame induction as a player in 2009 (Basketball-Reference).",
   },
   {
     question: "What is Kobe Bryant's career scoring line?",
     answer:
-      "The per-game career row is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Minutes per game on that row are 36.1. Shooting is .447 from the field, .329 from three, and .837 from the line. The totals table lists 33,643 points. The info box lists a 20-year career and a 1996 debut.",
+      "The per-game career row is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Minutes per game on that row are 36.1. Shooting is .447 from the field, .329 from three, and .837 from the line. Career points total 33,643. The career ran 20 years, with a 1996 debut (Basketball-Reference).",
   },
   {
     question: "How many championships does each player have?",

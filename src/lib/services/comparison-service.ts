@@ -1512,9 +1512,16 @@ export async function resolveCanonicalComparisonSlugs(
     //
     // ROO-27: reviewed editorial slugs are catalog pages even before the
     // prod-DB publish workflow runs. They are an allowlist, not fixtures.
+    //
+    // A stale or unpublished DB row must not suppress that allowlist. The
+    // compare page prefers the editorial pack, so /compare/<slug> still
+    // returns 200 while getUnlinkableCompareSlugs would drop the blog CTA.
+    // Redirect sources stay out: those URLs 301 and are not the page.
     const live = new Set<string>(rows.map((r: { slug: string }) => r.slug));
     for (const slug of unique) {
-      if (isEditorialCompareSlug(slug) && !unlinkable.has(slug)) live.add(slug);
+      if (isEditorialCompareSlug(slug) && !isRedirectedCompareSlug(slug)) {
+        live.add(slug);
+      }
     }
     return live;
   } catch (e) {
