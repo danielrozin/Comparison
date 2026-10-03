@@ -1918,3 +1918,75 @@ describe("NBA batch 3 compares", () => {
     }
   });
 });
+
+const NBA_BATCH4_SLUGS = [
+  "cooper-flagg-vs-kon-knueppel",
+  "lakers-vs-celtics",
+  "durant-vs-lebron",
+] as const;
+
+describe("NBA batch 4 compares", () => {
+  it("publishes the three slugs with no winner, a dated season block, and no internal-history FAQ", () => {
+    for (const slug of NBA_BATCH4_SLUGS) {
+      expect(isEditorialCompareSlug(slug)).toBe(true);
+      expect(isDegenerateComparisonSlug(slug)).toBe(false);
+      const page = getEditorialComparison(slug)!;
+      expect(page.metadata.status).toBe("published");
+      expect(page.schemaMarkup).toBeUndefined();
+      expect(page.quickAnswer?.winnerName).toBeNull();
+      expect(page.quickAnswer?.tldr).toBe(page.shortAnswer);
+      expect(page.faqs).toHaveLength(slug === "durant-vs-lebron" ? 5 : 6);
+      expect(page.faqs.map((faq) => faq.question)).not.toContain(
+        "Why does the basketball hub mention this comparison?",
+      );
+      expect(pageText(page)).not.toMatch(/returned 404|redirects here|Index, follow/);
+      expect((page.resources ?? []).map((resource) => resource.description ?? "").join("\n")).not.toMatch(
+        /404|redirect|Index, follow|noindex/,
+      );
+      expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
+      expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+      expect(pageText(page)).toContain("Stats as of October 3, 2026");
+      expect(pageText(page)).toContain("Source note:");
+      expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
+      expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
+      const description = clampDescription(page.metadata.metaDescription);
+      expect(description.length).toBeGreaterThanOrEqual(70);
+      expect(description.length).toBeLessThanOrEqual(160);
+      expect(findSelfContradictions(page)).toEqual([]);
+      const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
+      expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+      expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(slug);
+      expect(getConsolidatedCompareSlug(slug)).toBeNull();
+    }
+  });
+
+  it("keeps Flagg vs Knueppel on the rookie lines and does not link noindex hubs", () => {
+    const page = getEditorialComparison("cooper-flagg-vs-kon-knueppel")!;
+    expect(pageText(page)).toContain("21.0");
+    expect(pageText(page)).toContain("18.5");
+    expect(pageText(page)).toContain("ROY-2");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).not.toMatch(/\/entity\/cooper-flagg|\/entity\/kon-knueppel|\/entity\/dallas-mavericks|\/entity\/charlotte-hornets/);
+  });
+
+  it("keeps Lakers vs Celtics on the series table and does not link noindex team hubs", () => {
+    const page = getEditorialComparison("lakers-vs-celtics")!;
+    expect(pageText(page)).toContain("18 championships");
+    expect(pageText(page)).toContain("135-169");
+    expect(pageText(page)).toContain("2010");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).not.toMatch(/\/entity\/los-angeles-lakers|\/entity\/boston-celtics/);
+  });
+
+  it("keeps Durant vs LeBron on the career lines and links only indexable hubs", () => {
+    const page = getEditorialComparison("durant-vs-lebron")!;
+    expect(pageText(page)).toContain("27.1");
+    expect(pageText(page)).toContain("20.9");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).toContain("/entity/kevin-durant");
+    expect(urls).toContain("/entity/lebron-james");
+    expect(getConsolidatedCompareSlug("durant-vs-lebron")).toBeNull();
+    expect(getConsolidatedCompareSlug("lebron-vs-durant")).toBe("durant-vs-lebron");
+  });
+});
