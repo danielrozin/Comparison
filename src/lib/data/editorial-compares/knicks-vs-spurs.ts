@@ -238,6 +238,11 @@ const built = buildEditorialComparison({
       title: "Kobe Bryant vs LeBron James",
       category: "sports",
     },
+    {
+      slug: "knicks-vs-76ers",
+      title: "Knicks vs 76ers: Rivalry and 2026-27",
+      category: "sports",
+    },
   ],
   expertAnalysis: EXPERT_ANALYSIS,
   quickAnswer: {

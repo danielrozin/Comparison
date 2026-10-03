@@ -241,6 +241,11 @@ const built = buildEditorialComparison({
       title: "Kobe Bryant vs LeBron James",
       category: "sports",
     },
+    {
+      slug: "shai-gilgeous-alexander-vs-victor-wembanyama",
+      title: "Shai Gilgeous-Alexander vs Wembanyama",
+      category: "sports",
+    },
   ],
   expertAnalysis: EXPERT_ANALYSIS,
   quickAnswer: {
