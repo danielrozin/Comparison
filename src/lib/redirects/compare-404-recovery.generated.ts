@@ -348,6 +348,14 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "libreoffice-vs-ms-word": "microsoft-word-vs-libreoffice",
   "word-vs-libreoffice-writer": "microsoft-word-vs-libreoffice",
   "libreoffice-writer-vs-word": "microsoft-word-vs-libreoffice",
+  // Coinbase vs Binance name orders. Confirmed 2026-10-03: each URL 404s.
+  // coinbase-vs-binance itself is the new page, not a redirect source.
+  // Binance.US slugs are a different company and are not redirected here.
+  "binance-vs-coinbase": "coinbase-vs-binance",
+  "coinbase-exchange-vs-binance": "coinbase-vs-binance",
+  "binance-vs-coinbase-exchange": "coinbase-vs-binance",
+  "coinbase-vs-binance-exchange": "coinbase-vs-binance",
+  "binance-exchange-vs-coinbase": "coinbase-vs-binance",
   // Venmo vs Zelle. venmo-vs-zelle is the alphabetical survivor and is not a
   // redirect source.
   "zelle-vs-venmo": "venmo-vs-zelle",
