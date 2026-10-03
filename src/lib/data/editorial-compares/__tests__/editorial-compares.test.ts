@@ -1990,3 +1990,81 @@ describe("NBA batch 4 compares", () => {
     expect(getConsolidatedCompareSlug("lebron-vs-durant")).toBe("durant-vs-lebron");
   });
 });
+
+const NBA_BATCH_5 = [
+  {
+    slug: "embiid-vs-jokic",
+    title: "Embiid vs Jokic: Careers and 2026-27",
+    entities: ["joel-embiid", "nikola-jokic"],
+  },
+  {
+    slug: "kobe-bryant-vs-steph-curry",
+    title: "Kobe vs Curry: Career Comparison",
+    entities: ["kobe-bryant", "stephen-curry"],
+  },
+] as const;
+
+describe("NBA batch 5: Embiid vs Jokic, Kobe vs Curry", () => {
+  it("publishes the hub slugs with no page-level winner", () => {
+    expect(sortComparisonSlug("jokic-vs-embiid")).toBe("embiid-vs-jokic");
+    expect(sortComparisonSlug("steph-curry-vs-kobe-bryant")).toBe("kobe-bryant-vs-steph-curry");
+    for (const item of NBA_BATCH_5) {
+      const page = getEditorialComparison(item.slug)!;
+      expect(isEditorialCompareSlug(item.slug)).toBe(true);
+      expect(page.metadata.status).toBe("published");
+      expect(page.schemaMarkup).toBeUndefined();
+      expect(page.entities.map((entity) => entity.slug)).toEqual([...item.entities]);
+      expect(page.quickAnswer?.winnerName).toBeNull();
+      expect(page.shortAnswer).toBe(page.quickAnswer?.tldr);
+      expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+      expect(page.faqs).toHaveLength(6);
+      expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
+      expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(item.slug);
+      expect(getConsolidatedCompareSlug(item.slug)).toBeNull();
+      const title = buildPageTitle(page.metadata.metaTitle || page.title);
+      const description = clampDescription(page.metadata.metaDescription);
+      expect(title, item.slug).toBe(`${item.title} | A Versus B`);
+      expect(title.length, title).toBeLessThanOrEqual(60);
+      expect(description.length, description).toBeGreaterThanOrEqual(70);
+      expect(description.length, description).toBeLessThanOrEqual(160);
+      expect(findSelfContradictions(page)).toEqual([]);
+      const text = pageText(page);
+      expect(text).toContain("Stats as of October 3, 2026");
+      expect(text).toContain("Source note:");
+      expect(text).not.toMatch(/will win|predicted winner|odds/i);
+      const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
+      expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    }
+  });
+
+  it("keeps Embiid and Jokic on the fetched career lines and does not link noindex hubs", () => {
+    const page = getEditorialComparison("embiid-vs-jokic")!;
+    const text = pageText(page);
+    expect(text).toContain("27.6");
+    expect(text).toContain("22.2");
+    expect(text).toContain("2022-23");
+    expect(text).toContain("2020-21");
+    expect(text).toContain("13,544");
+    expect(text).toContain("18,009");
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).not.toMatch(/\/entity\/(joel-embiid|nikola-jokic|philadelphia-76ers|denver-nuggets)/);
+    expect(getConsolidatedCompareSlug("jokic-vs-embiid")).toBe("embiid-vs-jokic");
+    expect(getConsolidatedCompareSlug("joel-embiid-vs-nikola-jokic")).toBe("embiid-vs-jokic");
+  });
+
+  it("keeps Kobe and Curry on the fetched career lines and links only the indexable hub", () => {
+    const page = getEditorialComparison("kobe-bryant-vs-steph-curry")!;
+    const text = pageText(page);
+    expect(text).toContain("25.0");
+    expect(text).toContain("24.8");
+    expect(text).toContain("33,643");
+    expect(text).toContain("January 26, 2020");
+    expect(text).toContain("26.6");
+    const urls = page.resources?.map((resource) => resource.url) ?? [];
+    expect(urls).toContain("/entity/kobe-bryant");
+    expect(urls.join("\n")).not.toMatch(/\/entity\/(stephen-curry|steph-curry|golden-state-warriors|los-angeles-lakers)/);
+    expect(getConsolidatedCompareSlug("steph-curry-vs-kobe-bryant")).toBe("kobe-bryant-vs-steph-curry");
+    expect(getConsolidatedCompareSlug("kobe-bryant-vs-stephen-curry")).toBe("kobe-bryant-vs-steph-curry");
+  });
+});
