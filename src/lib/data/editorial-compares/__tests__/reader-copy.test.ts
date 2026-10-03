@@ -4,7 +4,10 @@ import { NBA_SEASON_PREVIEW_ARTICLE } from "@/lib/data/nba-season-preview-blog";
 import { getEditorialComparison, listEditorialCompareSlugs } from "../index";
 
 const CRAWL = /Index, follow|returned 404/;
-const SOURCE_PROCESS = /date of death|page lists|list shows|info box lists|table lists|on that table/i;
+// "is published", "is stated", and "described as" also mark source talk, but they
+// already appear as product wording on galaxy-z-fold-7, knicks-vs-76ers, and the
+// S24 Ultra vs S25 Ultra page. Kindle vs Kobo rejects those three on its own test.
+const SOURCE_PROCESS = /date of death|page lists|list shows|info box lists|table lists|on that table|no published|not described as/i;
 
 /** The only death mention allowed on the Kobe vs Curry page. */
 const ALLOWED_DEATH_MENTION =
@@ -12,7 +15,7 @@ const ALLOWED_DEATH_MENTION =
 
 /** Reader copy Product asked the blog to pass, including the #333 review bans. */
 const BLOG_BANNED =
-  /Index, follow|returned 404|date of death|page lists|list shows|the page says|honors list shows|info box lists|table lists|on that table/;
+  /Index, follow|returned 404|date of death|page lists|list shows|the page says|honors list shows|info box lists|table lists|on that table|no published|not described as/i;
 
 function readerText(value: unknown): string {
   const parts: string[] = [];

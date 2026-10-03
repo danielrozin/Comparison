@@ -10,6 +10,25 @@ import { getEditorialComparison, listEditorialCompareSitemapEntries } from "../i
 
 const SLUG = "kindle-vs-kobo";
 
+function readerText(value: unknown): string {
+  const parts: string[] = [];
+  const visit = (node: unknown) => {
+    if (typeof node === "string") {
+      parts.push(node);
+      return;
+    }
+    if (Array.isArray(node)) {
+      for (const item of node) visit(item);
+      return;
+    }
+    if (node && typeof node === "object") {
+      for (const item of Object.values(node)) visit(item);
+    }
+  };
+  visit(value);
+  return parts.join("\n");
+}
+
 describe("Kindle vs Kobo", () => {
   const page = () => getEditorialComparison(SLUG)!;
 
@@ -51,6 +70,9 @@ describe("Kindle vs Kobo", () => {
     }
     expect(text).not.toMatch(/\bDOCX?\b|lowest hardware price|does not print|doesn't print|page does not/i);
     expect(text).not.toMatch(/7-inch Paperwhite|7" Paperwhite|IPX8/);
+    expect(readerText(page())).not.toMatch(
+      /no published|not described as|is published|is stated|described as/i,
+    );
     expect(page().citationStats?.sources.map((source) => source.url)).toEqual(
       page().resources?.map((resource) => resource.url),
     );
