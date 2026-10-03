@@ -1,0 +1,156 @@
+/**
+ * JSON stored on `comparisons.content` for a visitor-requested page.
+ *
+ * The quality gate reads citation sources and attribute rows from the
+ * comparison object in memory. Previously only editorial updates wrote
+ * `content`, so a reload lost every Tavily source (source count 0) and the
+ * page rendered whatever attribute values already hung off the shared entity
+ * — Kayak the travel site, in the canoe-vs-kayak case.
+ */
+
+import type { CitationStats, ComparisonAttribute, QuickAnswerTLDR } from "@/types";
+import { distinctSources, type CitationSource } from "@/lib/generation/citation-sources";
+
+export interface PromotionAttemptState {
+  attempts: number;
+  lastAttemptAt: string | null;
+  lastReasons: string[];
+}
+
+export interface StoredComparisonContent {
+  expertAnalysis: string | null;
+  quickAnswer: QuickAnswerTLDR | null;
+  citationStats: CitationStats | null;
+  /** Present only after a user-generation save. Empty array means "none", not "fall back to the entity". */
+  attributes?: ComparisonAttribute[];
+  promotion: PromotionAttemptState;
+}
+
+export function readPromotionState(content: unknown): PromotionAttemptState {
+  const record = asRecord(content);
+  const promotion = asRecord(record?.promotion);
+  const reasons = Array.isArray(promotion?.lastReasons)
+    ? promotion.lastReasons.filter((reason): reason is string => typeof reason === "string")
+    : [];
+  return {
+    attempts: typeof promotion?.attempts === "number" && Number.isFinite(promotion.attempts)
+      ? promotion.attempts
+      : 0,
+    lastAttemptAt: typeof promotion?.lastAttemptAt === "string" ? promotion.lastAttemptAt : null,
+    lastReasons: reasons,
+  };
+}
+
+/**
+ * Attribute rows saved with this comparison. `undefined` means the row has no
+ * snapshot (older pages, editorial pages) and the caller should keep using
+ * entity attribute values. An empty array is a real snapshot.
+ */
+export function readSnapshotAttributes(content: unknown): ComparisonAttribute[] | undefined {
+  const record = asRecord(content);
+  if (!record || !Array.isArray(record.attributes)) return undefined;
+  return record.attributes.filter(isAttributeSnapshot) as ComparisonAttribute[];
+}
+
+export function remapAttributeEntityIds(
+  attributes: ComparisonAttribute[],
+  entityIdMap: ReadonlyMap<string, string>,
+): ComparisonAttribute[] {
+  return attributes.map((attribute) => ({
+    ...attribute,
+    values: attribute.values.map((value) => ({
+      ...value,
+      entityId: entityIdMap.get(value.entityId) ?? value.entityId,
+    })),
+  }));
+}
+
+export function buildUserComparisonContent(input: {
+  expertAnalysis?: string | null;
+  quickAnswer?: QuickAnswerTLDR | null;
+  citationStats?: CitationStats | null;
+  attributes: ComparisonAttribute[];
+  entityIdMap: ReadonlyMap<string, string>;
+  promoted: boolean;
+  reasons: string[];
+  now?: Date;
+}): StoredComparisonContent {
+  const now = input.now ?? new Date();
+  return toJson({
+    expertAnalysis: input.expertAnalysis ?? null,
+    quickAnswer: input.quickAnswer ?? null,
+    citationStats: input.citationStats ?? null,
+    attributes: remapAttributeEntityIds(input.attributes, input.entityIdMap),
+    promotion: {
+      attempts: input.promoted ? 0 : 1,
+      lastAttemptAt: now.toISOString(),
+      lastReasons: input.promoted ? [] : input.reasons,
+    },
+  });
+}
+
+/**
+ * Record one recheck. Keeps the attribute snapshot from the original save.
+ * Does not copy attribute rows loaded from the shared entity.
+ */
+export function withRecheckResult(
+  previous: unknown,
+  input: {
+    citationStats: CitationStats | null;
+    reasons: string[];
+    now: Date;
+  },
+): StoredComparisonContent {
+  const record = asRecord(previous);
+  const state = readPromotionState(previous);
+  const next: StoredComparisonContent = {
+    expertAnalysis: typeof record?.expertAnalysis === "string" ? record.expertAnalysis : null,
+    quickAnswer:
+      record?.quickAnswer && typeof record.quickAnswer === "object"
+        ? (record.quickAnswer as QuickAnswerTLDR)
+        : null,
+    citationStats: input.citationStats,
+    promotion: {
+      attempts: state.attempts + 1,
+      lastAttemptAt: input.now.toISOString(),
+      lastReasons: input.reasons,
+    },
+  };
+  if (Array.isArray(record?.attributes)) {
+    next.attributes = readSnapshotAttributes(previous) ?? [];
+  }
+  return toJson(next);
+}
+
+export function mergeCitationStats(
+  previous: CitationStats | null | undefined,
+  added: CitationSource[],
+  now: Date,
+): CitationStats {
+  const sources = distinctSources([...(previous?.sources ?? []), ...added]);
+  return {
+    sourceCount: sources.length,
+    dataPointCount: previous?.dataPointCount ?? sources.length,
+    reviewsAnalyzed: previous?.reviewsAnalyzed ?? null,
+    preferencePercent: previous?.preferencePercent ?? null,
+    preferenceEntity: previous?.preferenceEntity ?? null,
+    lastResearched: now.toISOString(),
+    sources,
+  };
+}
+
+/** Prisma JSON rejects `undefined`. A round trip drops those keys. */
+function toJson<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
+function asRecord(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  return value as Record<string, unknown>;
+}
+
+function isAttributeSnapshot(value: unknown): boolean {
+  if (!value || typeof value !== "object") return false;
+  const row = value as { name?: unknown; values?: unknown };
+  return typeof row.name === "string" && Array.isArray(row.values);
+}

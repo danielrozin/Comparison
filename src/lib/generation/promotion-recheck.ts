@@ -1,0 +1,263 @@
+/**
+ * Recheck provisional visitor comparisons and promote the ones that pass.
+ *
+ * GENERATION_FREEZE does not apply here. That flag keeps the net-new cron
+ * jobs paused. This job only re-reads pages that a visitor already requested.
+ * It runs only when PROMOTION_RECHECK_ENABLED=true.
+ *
+ * Spend: Tavily is used to fill a source list that is still under 2. This job
+ * does not call Anthropic. PROMOTION_RECHECK_ANTHROPIC_CAP defaults to 0 and
+ * `anthropicCallsAllowed` is the only gate a future repair call may pass.
+ */
+
+import type { ComparisonPageData } from "@/types";
+import { citationSourcesFromResults } from "@/lib/generation/citation-sources";
+import {
+  mergeCitationStats,
+  readPromotionState,
+  withRecheckResult,
+} from "@/lib/generation/comparison-content";
+import { captureGenerationLifecycle } from "@/lib/generation/generation-events";
+import {
+  assessUserGenerationPromotion,
+  userGenerationSourceCount,
+  MIN_USER_GENERATION_SOURCES,
+} from "@/lib/generation/promotion";
+import { warmCacheForPaths, warmCacheForSlug } from "@/lib/services/cache-warming";
+import {
+  applyProvisionalPromotion,
+  getComparisonBySlug,
+  listProvisionalUserComparisons,
+} from "@/lib/services/comparison-service";
+import { enrichComparisonData } from "@/lib/services/tavily-service";
+
+export const DEFAULT_PROMOTION_RECHECK_BATCH = 10;
+export const DEFAULT_PROMOTION_MAX_ATTEMPTS = 5;
+export const DEFAULT_PROMOTION_TAVILY_CAP = 6;
+export const DEFAULT_PROMOTION_ANTHROPIC_CAP = 0;
+
+export interface PromotionRecheckLimits {
+  batch: number;
+  maxAttempts: number;
+  tavilyCap: number;
+  anthropicCap: number;
+}
+
+export interface PromotionRecheckReport {
+  enabled: boolean;
+  processed: number;
+  deferred: number;
+  promoted: string[];
+  failed: { slug: string; reasons: string[]; attempt: number }[];
+  tavilyCalls: number;
+  anthropicCalls: number;
+}
+
+export function isPromotionRecheckEnabled(): boolean {
+  return (process.env.PROMOTION_RECHECK_ENABLED ?? "").toLowerCase() === "true";
+}
+
+export function promotionRecheckLimitsFromEnv(): PromotionRecheckLimits {
+  return {
+    batch: positiveInt(process.env.PROMOTION_RECHECK_BATCH, DEFAULT_PROMOTION_RECHECK_BATCH),
+    maxAttempts: positiveInt(process.env.PROMOTION_RECHECK_MAX_ATTEMPTS, DEFAULT_PROMOTION_MAX_ATTEMPTS),
+    tavilyCap: nonNegativeInt(process.env.PROMOTION_RECHECK_TAVILY_CAP, DEFAULT_PROMOTION_TAVILY_CAP),
+    anthropicCap: nonNegativeInt(
+      process.env.PROMOTION_RECHECK_ANTHROPIC_CAP,
+      DEFAULT_PROMOTION_ANTHROPIC_CAP,
+    ),
+  };
+}
+
+/** False at the default cap of 0, so a recheck run cannot spend Anthropic credits. */
+export function anthropicCallsAllowed(used: number, cap: number): boolean {
+  return used < cap;
+}
+
+export interface PromotionCandidate {
+  slug: string;
+  content: unknown;
+}
+
+export function eligiblePromotionCandidates(
+  rows: PromotionCandidate[],
+  maxAttempts: number,
+): PromotionCandidate[] {
+  return rows.filter((row) => readPromotionState(row.content).attempts < maxAttempts);
+}
+
+export interface PromotionRecheckDeps {
+  loadCandidates: () => Promise<PromotionCandidate[]>;
+  loadComparison: (slug: string) => Promise<ComparisonPageData | null>;
+  enrich: (entityA: string, entityB: string) => Promise<{ name: string; url?: string }[]>;
+  save: (input: {
+    slug: string;
+    status: "published" | "provisional";
+    contentScore: number;
+    content: unknown;
+  }) => Promise<boolean>;
+  revalidate: (slug: string, promoted: boolean) => Promise<void>;
+  log: (
+    event: "generation_promoted" | "generation_promotion_failed",
+    properties: { slug: string; reasons: string[]; attempt: number },
+  ) => Promise<void>;
+  limits: PromotionRecheckLimits;
+  now: () => Date;
+}
+
+export async function runPromotionRecheck(deps: PromotionRecheckDeps): Promise<PromotionRecheckReport> {
+  const report: PromotionRecheckReport = {
+    enabled: true,
+    processed: 0,
+    deferred: 0,
+    promoted: [],
+    failed: [],
+    tavilyCalls: 0,
+    anthropicCalls: 0,
+  };
+
+  // Consult the Anthropic budget and then leave it unused. This job does not
+  // regenerate copy. The default cap is 0, so a future call site cannot spend
+  // credits until the cap is raised and a prompt is added on purpose.
+  void anthropicCallsAllowed(report.anthropicCalls, deps.limits.anthropicCap);
+
+  const rows = eligiblePromotionCandidates(await deps.loadCandidates(), deps.limits.maxAttempts);
+
+  for (const row of rows) {
+    if (report.processed >= deps.limits.batch) break;
+
+    const comparison = await deps.loadComparison(row.slug);
+    if (!comparison || (comparison.entities?.length ?? 0) < 2) {
+      await recordOutcome(deps, report, row, {
+        reasons: ["comparison could not be loaded"],
+        score: 0,
+        citationStats: comparison?.citationStats ?? null,
+        pass: false,
+      });
+      continue;
+    }
+
+    let citationStats = comparison.citationStats ?? null;
+    const preview = assessUserGenerationPromotion(comparison);
+    // Sources cannot repair a table that does not compare both sides. Skip
+    // Tavily on those rows so a polluted entity (Kayak.com metrics on `kayak`)
+    // does not spend a search on every retry.
+    const attributesBlockPromotion = preview.reasons.some(
+      (reason) => reason.includes("substantive attributes") || reason.includes("content-depth score"),
+    );
+    const needsSources = userGenerationSourceCount(comparison) < MIN_USER_GENERATION_SOURCES;
+    if (needsSources && !attributesBlockPromotion) {
+      if (report.tavilyCalls >= deps.limits.tavilyCap) {
+        report.deferred += 1;
+        continue;
+      }
+      const [entityA, entityB] = comparison.entities;
+      const added = await deps.enrich(entityA.name, entityB.name);
+      report.tavilyCalls += 1;
+      citationStats = mergeCitationStats(citationStats, added, deps.now());
+    }
+
+    const decision = needsSources && !attributesBlockPromotion
+      ? assessUserGenerationPromotion({ ...comparison, citationStats })
+      : preview;
+    await recordOutcome(deps, report, row, {
+      reasons: decision.reasons,
+      score: decision.score,
+      citationStats,
+      pass: decision.pass,
+    });
+  }
+
+  return report;
+}
+
+async function recordOutcome(
+  deps: PromotionRecheckDeps,
+  report: PromotionRecheckReport,
+  row: PromotionCandidate,
+  outcome: {
+    pass: boolean;
+    reasons: string[];
+    score: number;
+    citationStats: ComparisonPageData["citationStats"] | null;
+  },
+): Promise<void> {
+  const now = deps.now();
+  const content = withRecheckResult(row.content, {
+    citationStats: outcome.citationStats ?? null,
+    reasons: outcome.pass ? [] : outcome.reasons,
+    now,
+  });
+  const status = outcome.pass ? "published" : "provisional";
+  const saved = await deps.save({
+    slug: row.slug,
+    status,
+    contentScore: outcome.score,
+    content,
+  });
+  report.processed += 1;
+  if (!saved) {
+    report.failed.push({
+      slug: row.slug,
+      reasons: ["could not save the recheck"],
+      attempt: content.promotion.attempts,
+    });
+    return;
+  }
+  await deps.revalidate(row.slug, outcome.pass);
+  if (outcome.pass) {
+    report.promoted.push(row.slug);
+    await deps.log("generation_promoted", {
+      slug: row.slug,
+      reasons: [],
+      attempt: content.promotion.attempts,
+    });
+    return;
+  }
+  report.failed.push({
+    slug: row.slug,
+    reasons: outcome.reasons,
+    attempt: content.promotion.attempts,
+  });
+  await deps.log("generation_promotion_failed", {
+    slug: row.slug,
+    reasons: outcome.reasons,
+    attempt: content.promotion.attempts,
+  });
+}
+
+export async function executePromotionRecheck(): Promise<PromotionRecheckReport> {
+  const limits = promotionRecheckLimitsFromEnv();
+  return runPromotionRecheck({
+    limits,
+    now: () => new Date(),
+    loadCandidates: () => listProvisionalUserComparisons(Math.max(limits.batch * 5, 50)),
+    loadComparison: (slug) => getComparisonBySlug(slug),
+    enrich: async (entityA, entityB) => {
+      const enrichment = await enrichComparisonData(entityA, entityB, true);
+      return citationSourcesFromResults(enrichment.sources);
+    },
+    save: (input) => applyProvisionalPromotion(input),
+    revalidate: async (slug, promoted) => {
+      if (promoted) {
+        await warmCacheForPaths([`/compare/${slug}`, "/sitemap/1.xml"]);
+        return;
+      }
+      await warmCacheForSlug(slug);
+    },
+    log: (event, properties) => captureGenerationLifecycle(event, properties),
+  });
+}
+
+function positiveInt(raw: string | undefined, fallback: number): number {
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed < 1) return fallback;
+  return Math.floor(parsed);
+}
+
+function nonNegativeInt(raw: string | undefined, fallback: number): number {
+  if (raw === undefined || raw.trim() === "") return fallback;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed < 0) return fallback;
+  return Math.floor(parsed);
+}

@@ -1,0 +1,86 @@
+import { describe, expect, it } from "vitest";
+import {
+  buildUserComparisonContent,
+  readPromotionState,
+  readSnapshotAttributes,
+  withRecheckResult,
+} from "@/lib/generation/comparison-content";
+import type { ComparisonAttribute } from "@/types";
+
+const attributes: ComparisonAttribute[] = [
+  {
+    id: "attr-length",
+    slug: "length",
+    name: "Length",
+    unit: "ft",
+    category: "Size",
+    dataType: "number",
+    higherIsBetter: null,
+    values: [
+      { entityId: "gen-ent-0-5", valueText: "16 ft", valueNumber: 16, valueBoolean: null },
+      { entityId: "gen-ent-1-9", valueText: "12 ft", valueNumber: 12, valueBoolean: null },
+    ],
+  },
+];
+
+describe("user comparison content", () => {
+  it("stores sources and remaps attribute values onto the database entity ids", () => {
+    const content = buildUserComparisonContent({
+      citationStats: {
+        sourceCount: 2,
+        dataPointCount: 4,
+        reviewsAnalyzed: null,
+        preferencePercent: null,
+        preferenceEntity: null,
+        lastResearched: "2026-10-03T00:00:00.000Z",
+        sources: [
+          { name: "rei.com", url: "https://rei.com/canoe" },
+          { name: "wikipedia.org", url: "https://en.wikipedia.org/wiki/Canoe" },
+        ],
+      },
+      attributes,
+      entityIdMap: new Map([
+        ["gen-ent-0-5", "db-canoe"],
+        ["gen-ent-1-9", "db-kayak"],
+      ]),
+      promoted: false,
+      reasons: ["only 0 sources (need 2)"],
+      now: new Date("2026-10-03T17:00:00.000Z"),
+    });
+
+    expect(content.citationStats?.sourceCount).toBe(2);
+    expect(content.attributes?.[0].values.map((value) => value.entityId)).toEqual(["db-canoe", "db-kayak"]);
+    expect(content.promotion.attempts).toBe(1);
+    expect(readSnapshotAttributes(content)).toHaveLength(1);
+  });
+
+  it("keeps the original attribute snapshot when a recheck only adds sources", () => {
+    const previous = buildUserComparisonContent({
+      attributes,
+      entityIdMap: new Map([
+        ["gen-ent-0-5", "db-canoe"],
+        ["gen-ent-1-9", "db-kayak"],
+      ]),
+      promoted: false,
+      reasons: ["only 0 sources (need 2)"],
+      now: new Date("2026-10-03T17:00:00.000Z"),
+    });
+    const next = withRecheckResult(previous, {
+      citationStats: {
+        sourceCount: 2,
+        dataPointCount: 2,
+        reviewsAnalyzed: null,
+        preferencePercent: null,
+        preferenceEntity: null,
+        lastResearched: "2026-10-03T21:00:00.000Z",
+        sources: [{ name: "nps.gov", url: "https://nps.gov/canoe" }],
+      },
+      reasons: [],
+      now: new Date("2026-10-03T21:00:00.000Z"),
+    });
+    expect(next.attributes?.[0].values[0].entityId).toBe("db-canoe");
+    expect(next.promotion.attempts).toBe(2);
+    expect(readPromotionState(next).attempts).toBe(2);
+    expect(next.citationStats?.sources).toHaveLength(1);
+  });
+});

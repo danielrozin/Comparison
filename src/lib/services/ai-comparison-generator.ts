@@ -6,7 +6,8 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import type { ComparisonPageData, CitationStats, QuickAnswerTLDR } from "@/types";
-import { enrichComparisonData, type TavilyResult } from "./tavily-service";
+import { citationSourcesFromResults, distinctSources } from "@/lib/generation/citation-sources";
+import { enrichComparisonData } from "./tavily-service";
 import { fetchEntityImages } from "@/lib/services/image-service";
 import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { COMPARISON_CATEGORIES, validateComparisonCategory } from "@/lib/utils/categories";
@@ -172,13 +173,7 @@ export async function generateComparison(
       try {
         const enrichment = await enrichComparisonData(entityA, entityB, true);
         tavilyContext = enrichment.context;
-        tavilySources = enrichment.sources.map((s) => {
-          try {
-            return { name: new URL(s.url).hostname.replace(/^www\./, ""), url: s.url };
-          } catch {
-            return { name: s.title || "web source", url: s.url };
-          }
-        });
+        tavilySources = citationSourcesFromResults(enrichment.sources);
       } catch (err) {
         console.warn("Tavily enrichment failed, proceeding without:", err);
       }
@@ -235,9 +230,15 @@ export async function generateComparison(
       return { success: false, comparison: null, error: "Failed to parse AI response as JSON", errorStage: "parse" };
     }
 
+    // One stamp for every generated id. Calling Date.now() again for each
+    // attribute value used to miss the entity id whenever the millisecond
+    // rolled over, and saveComparison then dropped every value.
+    const generatedAt = Date.now();
+    const entityIds = [`gen-ent-0-${generatedAt}`, `gen-ent-1-${generatedAt}`];
+
     // Transform into ComparisonPageData
     const comparison: ComparisonPageData = {
-      id: `gen-${Date.now()}`,
+      id: `gen-${generatedAt}`,
       slug,
       title: data.title || `${entityA} vs ${entityB}`,
       shortAnswer: data.shortAnswer || null,
@@ -250,7 +251,7 @@ export async function generateComparison(
       verdict: data.verdict || null,
       category: validateComparisonCategory(data.category || "", data.title || `${entityA} vs ${entityB}`, entityA, entityB),
       entities: (data.entities || []).map((e: Record<string, unknown>, idx: number) => ({
-        id: `gen-ent-${idx}-${Date.now()}`,
+        id: entityIds[idx] ?? `gen-ent-${idx}-${generatedAt}`,
         slug: String(e.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/g, ""),
         name: String(e.name || ""),
         shortDesc: String(e.shortDesc || ""),
@@ -262,7 +263,7 @@ export async function generateComparison(
         bestFor: e.bestFor ? String(e.bestFor) : null,
       })),
       attributes: (data.attributes || []).map((attr: Record<string, unknown>, idx: number) => ({
-        id: `gen-attr-${idx}-${Date.now()}`,
+        id: `gen-attr-${idx}-${generatedAt}`,
         slug: String(attr.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
         name: String(attr.name || ""),
         unit: attr.unit ? String(attr.unit) : null,
@@ -271,14 +272,14 @@ export async function generateComparison(
         higherIsBetter: typeof attr.higherIsBetter === "boolean" ? attr.higherIsBetter : null,
         values: [
           {
-            entityId: `gen-ent-0-${Date.now()}`,
+            entityId: entityIds[0],
             valueText: attr.entityAValue ? String(attr.entityAValue) : null,
             valueNumber: typeof attr.entityANumber === "number" ? attr.entityANumber : null,
             valueBoolean: null,
             winner: attr.winner === "a" ? true : attr.winner === "b" ? false : undefined,
           },
           {
-            entityId: `gen-ent-1-${Date.now()}`,
+            entityId: entityIds[1],
             valueText: attr.entityBValue ? String(attr.entityBValue) : null,
             valueNumber: typeof attr.entityBNumber === "number" ? attr.entityBNumber : null,
             valueBoolean: null,
@@ -380,13 +381,7 @@ function buildCitationStats(
   tavilySources: { name: string; url?: string }[]
 ): CitationStats {
   const aiStats = (data.citationStats || {}) as Record<string, unknown>;
-  // Deduplicate sources by hostname
-  const seen = new Set<string>();
-  const uniqueSources = tavilySources.filter((s) => {
-    if (seen.has(s.name)) return false;
-    seen.add(s.name);
-    return true;
-  });
+  const uniqueSources = distinctSources(tavilySources);
 
   return {
     sourceCount: uniqueSources.length,
@@ -513,13 +508,7 @@ export async function generateMultiComparison(
       try {
         const enrichment = await enrichComparisonData(names[0], names[1], true);
         tavilyContext = enrichment.context;
-        tavilySources = enrichment.sources.map((s) => {
-          try {
-            return { name: new URL(s.url).hostname.replace(/^www\./, ""), url: s.url };
-          } catch {
-            return { name: s.title || "web source", url: s.url };
-          }
-        });
+        tavilySources = citationSourcesFromResults(enrichment.sources);
       } catch (err) {
         console.warn("Tavily enrichment failed, proceeding without:", err);
       }
