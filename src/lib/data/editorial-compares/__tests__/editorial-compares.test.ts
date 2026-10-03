@@ -1547,9 +1547,14 @@ describe("NBA 2026-27 new compares", () => {
     expect(urls).not.toMatch(/\/entity\/shai-gilgeous-alexander|\/entity\/victor-wembanyama/);
     expect(urls).toContain("/entity/oklahoma-city-thunder");
     expect(urls).toContain("/entity/san-antonio-spurs");
+    expect(getConsolidatedCompareSlug("sga-vs-wembanyama")).toBe(
+      "shai-gilgeous-alexander-vs-victor-wembanyama"
+    );
+    expect(getConsolidatedCompareSlug("wembanyama-vs-sga")).toBe(
+      "shai-gilgeous-alexander-vs-victor-wembanyama"
+    );
     for (const slug of [
       "victor-wembanyama-vs-shai-gilgeous-alexander",
-      "sga-vs-wembanyama",
       "wembanyama-vs-shai",
     ]) {
       expect(getConsolidatedCompareSlug(slug)).toBeNull();
