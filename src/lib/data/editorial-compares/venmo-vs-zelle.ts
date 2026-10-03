@@ -15,6 +15,8 @@ const ZELLE = "zelle";
 const VENMO_FEES = "https://venmo.com/legal/fees/";
 const VENMO_PAY_LIMITS = "https://help.venmo.com/cs/articles/personal-profile-payment-limits-vhel188";
 const VENMO_BANK_LIMITS = "https://help.venmo.com/cs/articles/personal-profile-bank-transfer-limits-vhel314";
+const VENMO_CANCEL = "https://help.venmo.com/cs/articles/cancel-payment-vhel148";
+const VENMO_PENDING = "https://help.venmo.com/cs/articles/my-personal-venmo-payment-is-pending-vhel276";
 const ZELLE_FEES = "https://www.zelle.com/faq/are-there-any-fees-send-money-using-zelle";
 const ZELLE_LIMITS = "https://www.zelle.com/faq/there-limit-how-much-money-i-can-send-or-receive";
 const ZELLE_DATA = "https://www.zelle.com/data-center";
@@ -23,8 +25,11 @@ const FETCHED = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 const SPEC = "Payments";
 
+const ZELLE_FEE_SURVEY =
+  "Zelle reports that, based on a Q1 2026 survey of financial institutions offering Zelle, 99.40% of linked consumer checking and savings accounts don't charge a fee to send, receive, or request money.";
+
 const SHORT_ANSWER =
-  "PayPal provides Venmo, and Venmo accounts are issued by PayPal, Inc. Sending to a Venmo or U.S. PayPal account is $0 from a balance, debit card, or bank, and 3% from a credit card. An unverified personal profile can send $299.99 in a rolling week. Zelle is from Early Warning Services. Zelle says consumers typically pay no fee to send or receive, and that the bank or credit union sets the limit. A Q1 2026 survey found no such fee on 99.40% of linked consumer saving and checking accounts. There is no winner.";
+  "PayPal provides Venmo, and Venmo accounts are issued by PayPal, Inc. Sending to a Venmo or U.S. PayPal account is $0 from a balance, debit card, or bank, and 3% from a credit card. An unverified personal profile can send $299.99 in a rolling week. Zelle is from Early Warning Services. Zelle says consumers typically pay no fee to send or receive, and that the bank or credit union sets the limit. There is no winner.";
 
 const FAQS = [
   {
@@ -40,7 +45,8 @@ const FAQS = [
   {
     question: "What does Zelle charge?",
     answer:
-      "Zelle says consumers typically pay no fee to send or receive money, and that a person should confirm with their bank or credit union that it does not charge a fee. A Q1 2026 survey of financial institutions that offer Zelle found that 99.40% of consumer saving and checking accounts linked to Zelle do not charge a fee to send, receive, or request money.",
+      "Zelle says consumers typically pay no fee to send or receive money, and that a person should confirm with their bank or credit union that it does not charge a fee. " +
+      ZELLE_FEE_SURVEY,
   },
   {
     question: "What limit does Zelle publish?",
@@ -50,18 +56,20 @@ const FAQS = [
   {
     question: "Can a payment be canceled?",
     answer:
-      "Zelle says a payment to someone who is already enrolled cannot be reversed, and it cannot be canceled. A payment can be canceled only when the recipient has not enrolled. If that recipient does not enroll within 14 days, the payment expires and the funds return. Venmo does not state a cancel window for a personal payment.",
+      "Zelle says a payment to someone who is already enrolled cannot be reversed, and it cannot be canceled. A payment can be canceled only when the recipient has not enrolled. If that recipient does not enroll within 14 days, the payment expires and the funds return. Venmo says a sent payment cannot be canceled. A pending payment to an unregistered recipient can be canceled, and it expires after 30 days if it is not claimed.",
   },
   {
     question: "How do the published fees and limits differ?",
     answer:
-      "Venmo publishes a $0 fee to send from a balance, debit card, or bank, a 3.00% fee to send from a credit card, and its own weekly dollar limits. Zelle says a consumer send or receive is typically free, and that the dollar limit comes from the bank or credit union. A Q1 2026 survey found no Zelle fee on 99.40% of linked consumer saving and checking accounts. There is no winner.",
+      "Venmo publishes a $0 fee to send from a balance, debit card, or bank, a 3.00% fee to send from a credit card, and its own weekly dollar limits. Zelle says a consumer send or receive is typically free, and that the dollar limit comes from the bank or credit union. " +
+      ZELLE_FEE_SURVEY +
+      " There is no winner.",
   },
 ];
 
 const VERDICT = `Venmo, provided by PayPal: $0 to send from a balance, debit card, or bank to a Venmo or U.S. PayPal account. 3.00% from a credit card. An unverified personal profile can send $299.99 in a rolling week. With identity verification, Venmo says it is possible to send up to $60,000 per week.
 
-Zelle, from Early Warning Services: consumers typically pay no fee to send or receive. A Q1 2026 survey found that 99.40% of linked consumer saving and checking accounts had no fee to send, receive, or request. The dollar limit is set by the bank or credit union. Zelle does not publish one.
+Zelle, from Early Warning Services: consumers typically pay no fee to send or receive. The dollar limit is set by the bank or credit union. Zelle does not publish one.
 
 There is no single winner.`;
 
@@ -69,13 +77,13 @@ const EXPERT_ANALYSIS = `Venmo and Zelle both move money between people. Venmo p
 
 Who provides the service
 
-PayPal provides the Venmo service. Venmo accounts are issued by PayPal, Inc. PayPal is not a bank, does not take deposits, and is not FDIC insured. Early Warning Services is the company behind Zelle. Zelle says its stand-alone app is no longer accessible. Zelle is available in over 2,400 bank and credit union apps. The sender and the recipient need U.S. bank accounts and an eligible checking or savings account.
+PayPal provides the Venmo service. Venmo accounts are issued by PayPal, Inc. PayPal is not a bank, does not take deposits, and is not FDIC insured. If money was added by Direct Deposit or cash-a-check, or cryptocurrency was bought or received, Venmo says those U.S. dollar funds are placed at Program Banks and, subject to certain conditions, may be eligible for pass-through FDIC insurance up to applicable limits. That insurance protects against the failure of a Program Bank, not the failure of PayPal. Other Venmo funds and all cryptocurrencies are not held in FDIC-insured deposits. Early Warning Services is the company behind Zelle. Zelle says its stand-alone app is no longer accessible. Zelle is available in over 2,400 bank and credit union apps. The sender and the recipient need U.S. bank accounts and an eligible checking or savings account.
 
 Sending and receiving
 
 Sending from a Venmo balance, debit card, or bank to a Venmo account or a U.S. PayPal account is $0. Sending that way from a credit card is 3.00%. A personal payment received from a Venmo user is $0 unless the sender marks it as goods and services, which carries a 2.99% seller transaction fee. Sending to an eligible non-U.S. PayPal account is 5.00%, with a minimum fee of $0.99 and a maximum fee of $4.99, plus another 3.00% when the funding source is a credit card.
 
-Zelle sends to an email address or a U.S. mobile number through a bank or credit union app or online banking. Money sent to an enrolled person is typically available within minutes. Zelle says consumers typically pay no fee to send or receive, and that the bank or credit union should be asked whether it adds a fee. The Q1 2026 survey figure is 99.40% of linked consumer saving and checking accounts with no fee to send, receive, or request.
+Zelle sends to an email address or a U.S. mobile number through a bank or credit union app or online banking. Money sent to an enrolled person is typically available within minutes. Zelle says consumers typically pay no fee to send or receive, and that the bank or credit union should be asked whether it adds a fee. ${ZELLE_FEE_SURVEY}
 
 Moving money out
 
@@ -91,7 +99,7 @@ Zelle does not publish a dollar sending or receiving limit. It directs people to
 
 Canceling
 
-Zelle says a payment cannot be reversed once the recipient is enrolled, and it can be canceled only before enrollment. If the recipient does not enroll within 14 days, the payment expires and the funds return. Venmo does not state a cancel window for a personal payment.
+Zelle says a payment cannot be reversed once the recipient is enrolled, and it can be canceled only before enrollment. If the recipient does not enroll within 14 days, the payment expires and the funds return. Venmo says a sent payment cannot be canceled. A pending payment to an unregistered recipient can be canceled, and it expires after 30 days if it is not claimed.
 
 There is no winner. The published difference is who sets the fee and the dollar limit: Venmo publishes both, and Zelle says the bank or credit union does.`;
 
@@ -136,7 +144,6 @@ export const VENMO_VS_ZELLE: EditorialComparison = buildEditorialComparison({
       position: 1,
       pros: [
         "Zelle says consumers typically pay no fee to send or receive",
-        "Q1 2026 survey: 99.40% of linked consumer saving and checking accounts had no send, receive, or request fee",
         "Money to an enrolled person is typically available within minutes",
         "Available in over 2,400 bank and credit union apps",
       ],
@@ -176,7 +183,7 @@ export const VENMO_VS_ZELLE: EditorialComparison = buildEditorialComparison({
     },
     {
       label: "Cancel an enrolled payment",
-      entityAValue: "Venmo does not state a cancel window for a personal payment",
+      entityAValue: "A sent payment cannot be canceled. A pending payment to an unregistered recipient can be canceled and expires after 30 days",
       entityBValue: "Cannot be reversed or canceled once the recipient is enrolled",
       winner: "tie",
     },
@@ -188,7 +195,7 @@ export const VENMO_VS_ZELLE: EditorialComparison = buildEditorialComparison({
       SPEC,
       VENMO,
       ZELLE,
-      "PayPal provides the Venmo service. Venmo accounts are issued by PayPal, Inc. PayPal is not a bank and is not FDIC insured",
+      "PayPal provides the Venmo service. Venmo accounts are issued by PayPal, Inc.",
       "Early Warning Services. Available in over 2,400 bank and credit union apps. The stand-alone app is no longer accessible",
     ),
     textAttr(
@@ -198,7 +205,7 @@ export const VENMO_VS_ZELLE: EditorialComparison = buildEditorialComparison({
       VENMO,
       ZELLE,
       "$0 from a balance, debit card, or bank to a Venmo or U.S. PayPal account. 3.00% from a credit card. Non-U.S. PayPal: 5.00% (minimum $0.99, maximum $4.99), plus 3.00% from a credit card",
-      "Typically no consumer fee to send or receive. Q1 2026 survey: 99.40% of linked consumer saving and checking accounts had no fee to send, receive, or request. Confirm with the bank or credit union",
+      "Typically no consumer fee to send or receive. Confirm with the bank or credit union",
     ),
     textAttr(
       "receive-fee",
@@ -207,7 +214,7 @@ export const VENMO_VS_ZELLE: EditorialComparison = buildEditorialComparison({
       VENMO,
       ZELLE,
       "$0 for a personal payment. 2.99% seller transaction fee if the sender marks goods and services",
-      "Typically no consumer fee. The same Q1 2026 survey covers receive and request",
+      "Typically no consumer fee to receive. Confirm with the bank or credit union",
     ),
     textAttr(
       "transfer-out",
@@ -233,7 +240,7 @@ export const VENMO_VS_ZELLE: EditorialComparison = buildEditorialComparison({
       SPEC,
       VENMO,
       ZELLE,
-      "Venmo does not state a cancel window for a personal payment",
+      "A sent payment cannot be canceled. A pending payment to an unregistered recipient can be canceled and expires after 30 days",
       "Cannot reverse or cancel a payment to an enrolled recipient. Cancel is available only before enrollment. Unenrolled payments expire after 14 days",
     ),
   ],
@@ -246,10 +253,10 @@ export const VENMO_VS_ZELLE: EditorialComparison = buildEditorialComparison({
     winnerReason:
       "Venmo publishes a $0 send fee from a balance, debit card, or bank, and its own weekly limits. Zelle says a consumer send or receive is typically free, and that the bank or credit union sets the dollar limit.",
     keyFact:
-      "Venmo's unverified weekly send limit is $299.99. Zelle's Q1 2026 survey found no consumer fee on 99.40% of linked saving and checking accounts.",
+      "Venmo's unverified weekly send limit is $299.99. Zelle says consumers typically pay no fee to send or receive, and the bank or credit union sets the limit.",
   },
   citationStats: {
-    sourceCount: 6,
+    sourceCount: 8,
     dataPointCount: 6,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -259,6 +266,8 @@ export const VENMO_VS_ZELLE: EditorialComparison = buildEditorialComparison({
       { name: "Venmo — fees", url: VENMO_FEES },
       { name: "Venmo — personal profile payment limits", url: VENMO_PAY_LIMITS },
       { name: "Venmo — personal profile bank transfer limits", url: VENMO_BANK_LIMITS },
+      { name: "Venmo — cancel a sent payment", url: VENMO_CANCEL },
+      { name: "Venmo — pending payments", url: VENMO_PENDING },
       { name: "Zelle — consumer fees", url: ZELLE_FEES },
       { name: "Zelle — sending and receiving limits", url: ZELLE_LIMITS },
       { name: "Zelle — Early Warning Services", url: ZELLE_DATA },
@@ -288,10 +297,23 @@ export const VENMO_VS_ZELLE: EditorialComparison = buildEditorialComparison({
     },
     {
       type: "external",
+      label: "Venmo cancel payment",
+      url: VENMO_CANCEL,
+      description: "A sent payment cannot be canceled.",
+    },
+    {
+      type: "external",
+      label: "Venmo pending payments",
+      url: VENMO_PENDING,
+      description:
+        "A pending payment to an unregistered recipient can be canceled. It expires after 30 days if it is not claimed.",
+    },
+    {
+      type: "external",
       label: "Zelle consumer fees",
       url: ZELLE_FEES,
       description:
-        "Consumers typically pay no fee to send or receive. Q1 2026 survey: 99.40% of linked consumer saving and checking accounts had no send, receive, or request fee.",
+        "Consumers typically pay no fee to send or receive. The bank or credit union can still charge a fee.",
     },
     {
       type: "external",
