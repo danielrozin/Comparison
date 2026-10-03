@@ -6,6 +6,7 @@ import {
   runPromotionRecheck,
   type PromotionRecheckDeps,
 } from "@/lib/generation/promotion-recheck";
+import { provisionalRecheckQuery } from "@/lib/services/comparison-service";
 import type { ComparisonPageData } from "@/types";
 
 function page(overrides: Partial<ComparisonPageData> = {}): ComparisonPageData {
@@ -155,6 +156,16 @@ describe("runPromotionRecheck", () => {
       5,
     );
     expect(rows.map((row) => row.slug)).toEqual(["fresh-vs-page"]);
+  });
+
+  it("asks the database for provisional rows whose attempts are still under the cap", () => {
+    const query = provisionalRecheckQuery(50, 5);
+    const sql = query.strings.join(" ");
+    expect(sql).toContain(`"status" = 'provisional'`);
+    expect(sql).toContain(`"is_auto_generated" = true`);
+    expect(sql).toContain(`'{promotion,attempts}'`);
+    expect(sql).toContain("ORDER BY \"updated_at\" ASC");
+    expect(query.values).toEqual([5, 50]);
   });
 
   it("keeps the Anthropic cap closed unless it is raised", () => {

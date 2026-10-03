@@ -247,4 +247,10 @@ describe("saveComparison entity slug collision", () => {
     expect(entityUpserts).not.toContain("iphone-17-phone");
     expect(valueEntityIds).toContain("ent-iphone-17");
   });
+
+  it("does not disambiguate a batch or content-refresh save", async () => {
+    await saveComparison(page());
+    expect(entityUpserts).toEqual(["canoe", "kayak"]);
+    expect(valueEntityIds).toContain("ent-kayak-travel");
+  });
 });

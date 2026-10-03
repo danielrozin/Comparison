@@ -231,7 +231,10 @@ export async function executePromotionRecheck(): Promise<PromotionRecheckReport>
   return runPromotionRecheck({
     limits,
     now: () => new Date(),
-    loadCandidates: () => listProvisionalUserComparisons(Math.max(limits.batch * 5, 50)),
+    loadCandidates: () => listProvisionalUserComparisons(
+      Math.max(limits.batch * 5, 50),
+      limits.maxAttempts,
+    ),
     loadComparison: (slug) => getComparisonBySlug(slug),
     enrich: async (entityA, entityB) => {
       const enrichment = await enrichComparisonData(entityA, entityB, true);

@@ -19,6 +19,7 @@ import {
 } from "@/lib/services/comparison-service";
 import { warmCacheForPaths, warmCacheForSlug } from "@/lib/services/cache-warming";
 import { captureGenerationLifecycle } from "@/lib/generation/generation-events";
+import { provisionalPageNeedsRegeneration } from "@/lib/generation/comparison-content";
 import { sanitizeErrorMessage } from "@/lib/utils/sanitize";
 import {
   startAttempt,
@@ -55,6 +56,7 @@ function clientIp(request: NextRequest): string {
 
 function isServable(row: ComparisonPageData | null): row is ComparisonPageData {
   if (!row || (row.entities?.length ?? 0) < 2) return false;
+  if (provisionalPageNeedsRegeneration(row.metadata)) return false;
   const status = row.metadata?.status;
   if (!status) return !isComparisonDbConfigured();
   return status === "published" || status === "provisional";

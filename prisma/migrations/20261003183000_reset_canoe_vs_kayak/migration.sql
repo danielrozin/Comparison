@@ -3,6 +3,12 @@
 -- only that provisional auto-generated comparison so the next visit
 -- regenerates it against a disambiguated entity.
 --
+-- The statement runs at the start of the production build, while the
+-- previous deployment is still serving. A visit in that window can insert
+-- the row again with the old save path. The new code treats a provisional
+-- auto-generated row with no visitor promotion table as missing, so the
+-- following request builds it again.
+--
 -- `prisma migrate deploy` runs only when VERCEL_ENV=production
 -- (scripts/vercel-build.mjs). Preview builds skip it.
 --
