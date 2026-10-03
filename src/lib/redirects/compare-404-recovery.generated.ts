@@ -50,7 +50,10 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   // the survivor, not another redirect.
   "f-15-vs-f-16": "f-16-vs-f-15",
   "mercedes-vs-bmw": "bmw-vs-mercedes",
+  // Both full-name orders 404. jordan-vs-lebron already folds into the live page.
+  // Confirmed 2026-10-03: these two are 404, /compare/lebron-vs-jordan is 200.
   "michael-jordan-vs-lebron-james": "lebron-vs-jordan",
+  "lebron-james-vs-michael-jordan": "lebron-vs-jordan",
   "14-inch-vs-16-inch-macbook-pro": "macbook-pro-14-vs-16-inch",
   "japan-vs-china-economy-comparison-2026": "china-vs-japan-economy-comparison-2026",
   "cristiano-ronaldo-vs-neymar-career-stats-comparison-2026":
