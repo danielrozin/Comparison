@@ -47,9 +47,9 @@ const FAQS = [
       "No. Stats as of October 3, 2026. Curry's 2026-27 table is labeled a projection, and this page does not quote it. Kobe's page lists a death date of January 26, 2020, and it has no 2026-27 game log. Curry is listed with the Golden State Warriors.",
   },
   {
-    question: "Why does the basketball hub mention this comparison?",
+    question: "How many All-Star selections does each honors list show?",
     answer:
-      "The sports basketball FAQ names Steph Curry vs Kobe Bryant in its answer about popular comparisons. The hub href is /compare/kobe-bryant-vs-steph-curry. That slug is alphabetical, and this page is that URL. The reverse /compare/steph-curry-vs-kobe-bryant redirects here in one hop.",
+      "Kobe's honors list shows 18 All-Star selections, along with 15 All-NBA selections and 12 All-Defensive selections. Curry's list shows 12 All-Star selections and 11 All-NBA selections.",
   },
   {
     question: "Who is the better player, Kobe or Curry?",
@@ -235,7 +235,7 @@ const BUILT = buildEditorialComparison({
       type: "blog",
       label: "Kobe Bryant hub",
       url: "/entity/kobe-bryant",
-      description: "AversusB hub. Index, follow on October 3, 2026.",
+      description: "Kobe Bryant player hub.",
     },
   ],
   metaTitle: "Kobe vs Curry: Career Comparison",

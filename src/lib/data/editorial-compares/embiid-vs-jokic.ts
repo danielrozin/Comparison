@@ -46,9 +46,9 @@ const FAQS = [
       "No regular-season game log is on either page. Stats as of October 3, 2026. Each 2026-27 table is labeled a projection, and this page does not quote those rows. Embiid is listed with the Philadelphia 76ers. Jokic is listed with the Denver Nuggets.",
   },
   {
-    question: "Why does the basketball hub mention this comparison?",
+    question: "How many All-Star selections does each honors list show?",
     answer:
-      "The sports basketball FAQ names Nikola Jokic vs Joel Embiid in its answer about popular comparisons. The hub href is /compare/embiid-vs-jokic. That slug is alphabetical, and this page is that URL. The reverse /compare/jokic-vs-embiid redirects here in one hop.",
+      "Embiid's honors list shows 7 All-Star selections, along with 5 All-NBA selections and 3 All-Defensive selections. Jokic's list shows 8 All-Star selections and 8 All-NBA selections.",
   },
   {
     question: "Who is the better player, Embiid or Jokic?",
