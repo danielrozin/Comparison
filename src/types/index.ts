@@ -132,6 +132,11 @@ export interface ComparisonMetadata {
   // DAN-1890: DB lifecycle status ("published" | "archived" | ...). Consumed by
   // /compare/[slug] to noindex archived rows (missing/other → indexable).
   status?: string;
+  /**
+   * False when a fresh database read found a provisional auto-generated row
+   * with no visitor attribute table. Absent on older cached payloads.
+   */
+  visitorTableSaved?: boolean;
 }
 
 // ============================================================

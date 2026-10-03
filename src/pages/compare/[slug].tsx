@@ -24,6 +24,7 @@ import { videoObjectSchema, selfHostedVideoObjectSchema, type ComparisonVoteData
 import { assembleCompareJsonLd } from "@/lib/seo/compare-jsonld";
 import { resolveEntityPageStatuses } from "@/lib/seo/entity-page-indexable";
 import { getPrisma } from "@/lib/db/prisma";
+import { provisionalPageNeedsRegeneration } from "@/lib/generation/comparison-content";
 import { SITE_URL } from "@/lib/utils/constants";
 import { categoryPagePath } from "@/lib/seo/category-page-path";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -288,6 +289,9 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
 function isRenderableComparison(c: Comparison | null): c is Comparison {
   if (!c || (c.entities?.length ?? 0) < 2) return false;
   if (!isComparisonDbConfigured()) return true;
+  // Old visitor rows have no saved table. Treat them as missing so the
+  // on-demand shell builds them again with the current save path.
+  if (provisionalPageNeedsRegeneration(c.metadata)) return false;
   const status = c.metadata?.status;
   return status === "published" || status === "provisional";
 }
