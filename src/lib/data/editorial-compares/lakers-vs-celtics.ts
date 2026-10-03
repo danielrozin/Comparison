@@ -46,7 +46,7 @@ const FAQS = [
   {
     question: "Which Finals meeting is the most recent?",
     answer:
-      "2010. The series row is June 3 to June 17, 2010, Los Angeles Lakers 4, Boston Celtics 3. The table does not list a later Finals between these two franchises. The 2008 row is June 5 to June 17, Boston 4, Los Angeles 2.",
+      "2010. The series row is June 3 to June 17, 2010, Los Angeles Lakers 4, Boston Celtics 3. Basketball-Reference does not show a later Finals between these two franchises. The 2008 row is June 5 to June 17, Boston 4, Los Angeles 2.",
   },
   {
     question: "Do the 17 and 18 championships mean Finals wins against each other?",

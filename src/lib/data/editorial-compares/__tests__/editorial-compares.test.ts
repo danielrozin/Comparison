@@ -566,7 +566,9 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
     expect(description.length).toBeGreaterThanOrEqual(70);
     expect(description.length).toBeLessThanOrEqual(160);
     expect(findSelfContradictions(page())).toEqual([]);
-    expect(pageText(page())).not.toMatch(/\d[\d,]*\s*(hinge|fold)[- ]cycles/i);
+    expect(pageText(page())).toContain(
+      "Samsung says the Fold 7's foldable display passed a 500,000-fold test verified by Bureau Veritas"
+    );
     expect(pageText(page())).not.toMatch(/AnTuTu|Geekbench/i);
   });
 
@@ -590,7 +592,7 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
 
   it("cites the cited spec sources and only links sitemap-backed compares", () => {
     const sources = page().citationStats?.sources ?? [];
-    expect(sources).toHaveLength(7);
+    expect(sources).toHaveLength(8);
     expect(page().citationStats?.lastResearched).toBe("2026-09-29");
     for (const source of sources) {
       expect(source.url).toMatch(/^https:\/\//);
@@ -601,6 +603,7 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
       "https://www.gsmarena.com/samsung_galaxy_z_fold7-13826.php",
       "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
       "https://www.geeky-gadgets.com/galaxy-s26-ultra-vs-z-fold-7/",
+      "https://www.samsungdisplay.com/eng/media/news/detail/ssdsNews-250722.jsp",
       "https://www.samsung.com/us/support/warranty/",
       "https://www.samsung.com/us/smartphones/galaxy-s26-ultra/",
       "https://www.androidauthority.com/samsung-galaxy-z-fold-7-drops-s-pen-support-3575176/",
@@ -1267,7 +1270,7 @@ const SOLAR_FAQS = [
   "Are these simple 800 W plug-in balcony kits?",
 ];
 const SOLAR_QUICK_ANSWER =
-  "Choose the EcoFlow STREAM 5000 if you want the higher published output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
+  "Choose the EcoFlow STREAM 5000 if you want the higher rated output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
 
 describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
   const page = () => getEditorialComparison(SOLAR_SLUG)!;
@@ -1283,7 +1286,7 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
     expect(page().quickAnswer?.winnerName).toBeNull();
     expect(page().entities.map((entity) => entity.bestFor)).toEqual([
       "Best if IP66 and Home Assistant matter more than output",
-      "Best if you want the higher published output",
+      "Best if you want the higher rated output",
     ]);
     expect(page().shortAnswer).toBe(SOLAR_QUICK_ANSWER);
     expect(page().quickAnswer?.tldr).toBe(SOLAR_QUICK_ANSWER);
@@ -1364,7 +1367,7 @@ const PRO_GEN_FAQS = [
   "How does a trade-in change the iPhone 17 Pro versus 18 Pro price?",
 ];
 const PRO_GEN_QUICK_ANSWER =
-  "Choose the iPhone 18 Pro if you keep a phone for years and want Apple's newest Pro chip and battery ratings. Apple lists an A20 Pro chip, up to 36 hours of video playback, and up to 24 hours of typical use. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Apple Support lists an A19 Pro chip and up to 33 hours of video playback, and that page does not list a typical-use hour. This page does not crown a winner.";
+  "Choose the iPhone 18 Pro if you keep a phone for years and want Apple's newest Pro chip and battery ratings. Apple lists an A20 Pro chip, up to 36 hours of video playback, and up to 24 hours of typical use. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Apple Support lists an A19 Pro chip and up to 33 hours of video playback, and Apple Support does not include a typical-use hour. This page does not crown a winner.";
 
 describe("ROO-138 iPhone 17 Pro vs iPhone 18 Pro", () => {
   const page = () => getEditorialComparison(PRO_GEN_SLUG)!;
@@ -1732,7 +1735,9 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
     expect(description.length).toBeLessThanOrEqual(160);
     expect(findSelfContradictions(page())).toEqual([]);
     expect(pageText(page())).not.toMatch(/Geekbench|AnTuTu|% accurate|accuracy of \d/i);
-    expect(pageText(page())).not.toMatch(/\b12\s*g(?:rams)?\b/i);
+    expect(pageText(page())).toContain(
+      "Google lists Fitbit Air at 5.2 g without the band and 12 g with the band."
+    );
     const types = schemaNodes(page()).map((node) => node["@type"]).filter(Boolean);
     expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
     expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
@@ -1761,7 +1766,7 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
 
   it("cites Apple and Google and does not link noindex entity hubs", () => {
     const sources = page().citationStats?.sources ?? [];
-    expect(sources).toHaveLength(11);
+    expect(sources).toHaveLength(12);
     expect(page().citationStats?.lastResearched).toBe("2026-10-03");
     for (const source of sources) {
       expect(source.url).toMatch(/^https:\/\//);
@@ -1770,6 +1775,7 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
     expect(urls).toEqual([
       "https://www.apple.com/apple-watch-series-12/specs/",
       "https://store.google.com/product/google_fitbit_air",
+      "https://store.google.com/product/google_fitbit_air_specs",
       "https://blog.google/products-and-platforms/devices/fitbit/fitbit-air/",
       "https://support.google.com/googlehealth/answer/14226518?hl=en",
       "https://support.google.com/googlehealth/answer/14195042?hl=en",

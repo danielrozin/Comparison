@@ -6,7 +6,8 @@ import type { EditorialComparison } from "./types";
  * Specs below were checked against sources on 2026-09-29.
  * GSMArena compare (idPhone1=13826 is the Z Fold 7, idPhone2=14320 is the S26 Ultra),
  * each phone's GSMArena spec page, and Geeky Gadgets (24 April 2026).
- * No page-level winner. No hinge-cycle count: the spec pages do not publish one.
+ * No single winner. Samsung Display says the Fold 7 panel passed a
+ * Bureau Veritas 500,000-fold test (22 July 2025).
  */
 
 const FOLD = "galaxy-z-fold-7";
@@ -17,6 +18,8 @@ const GSMARENA_COMPARE =
 const GSMARENA_FOLD = "https://www.gsmarena.com/samsung_galaxy_z_fold7-13826.php";
 const GSMARENA_S26 = "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php";
 const GEEKY = "https://www.geeky-gadgets.com/galaxy-s26-ultra-vs-z-fold-7/";
+const SAMSUNG_DISPLAY =
+  "https://www.samsungdisplay.com/eng/media/news/detail/ssdsNews-250722.jsp";
 const SAMSUNG_WARRANTY = "https://www.samsung.com/us/support/warranty/";
 const SAMSUNG_S26 = "https://www.samsung.com/us/smartphones/galaxy-s26-ultra/";
 const ANDROID_AUTHORITY =
@@ -37,22 +40,22 @@ const FAQS = [
   {
     question: "How durable is the Galaxy Z Fold 7 hinge?",
     answer:
-      "GSMArena's published ingress rating for the Z Fold 7 is IP48: dust larger than 1 mm, and immersion up to 1.5 m for 30 minutes. The S26 Ultra is listed as IP68, dust tight, with the same 1.5 m / 30 minute water line. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. No hinge-cycle rating is published for Fold 7.",
+      "GSMArena lists the Z Fold 7 ingress rating as IP48: dust larger than 1 mm, and immersion up to 1.5 m for 30 minutes. GSMArena lists the S26 Ultra as IP68, dust tight, with the same 1.5 m / 30 minute water line. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Samsung says the Fold 7's foldable display passed a 500,000-fold test verified by Bureau Veritas.",
   },
   {
     question: "Does the Galaxy Z Fold 7 have the better camera?",
     answer:
-      "Not on the hardware GSMArena lists. Both phones have a 200MP main camera and a 10MP 3x telephoto. The Fold 7 ultrawide is 12MP. The S26 Ultra adds a 50MP 5x periscope and a 50MP ultrawide. Geeky Gadgets calls the S26 Ultra the photography pick and says the Fold 7 is fine for everyday shots. That is the article's judgment, not a lab score on this page.",
+      "Not on the hardware GSMArena lists. Both phones have a 200MP main camera and a 10MP 3x telephoto. The Fold 7 ultrawide is 12MP. The S26 Ultra adds a 50MP 5x periscope and a 50MP ultrawide. Geeky Gadgets calls the S26 Ultra the photography pick and says the Fold 7 is fine for everyday shots. That is Geeky Gadgets' judgment, not a lab score in this comparison.",
   },
   {
     question: "Which phone has the better battery?",
     answer:
-      "The Galaxy S26 Ultra, on the figures GSMArena publishes. It lists a 5,000 mAh battery, 60W wired charging, and 25W wireless charging, with an active-use score of 16:23h. The Z Fold 7 is a 4,400 mAh battery, 25W wired, 15W wireless, and an active-use score of 11:44h. Those hour scores are GSMArena's lab scores.",
+      "The Galaxy S26 Ultra, on the figures GSMArena gives. GSMArena lists a 5,000 mAh battery, 60W wired charging, and 25W wireless charging, with an active-use score of 16:23h. The Z Fold 7 is a 4,400 mAh battery, 25W wired, 15W wireless, and an active-use score of 11:44h. Those hour scores are GSMArena's lab scores.",
   },
   {
     question: "How long is software support on the Fold 7 and the S26 Ultra?",
     answer:
-      "GSMArena lists up to 7 major OS updates for both. GSMArena lists Android 16 and One UI 8 for the Fold 7. GSMArena lists Android 16, upgradable to Android 17, One UI 9, and the same cap of 7 major OS updates for the S26 Ultra. The S26 Ultra shipped later (released 6 March 2026, against 25 July 2025 for the Fold 7), so that seven-update window starts one generation later. Neither spec page names the final Android version.",
+      "GSMArena lists up to 7 major OS updates for both. GSMArena lists Android 16 and One UI 8 for the Fold 7. GSMArena lists Android 16, upgradable to Android 17, One UI 9, and the same cap of 7 major OS updates for the S26 Ultra. The S26 Ultra shipped later (released 6 March 2026, against 25 July 2025 for the Fold 7), so that seven-update window starts one generation later. GSMArena does not name the final Android version for either phone.",
   },
 ];
 
@@ -64,9 +67,9 @@ There is no single winner on this page.`;
 
 const EXPERT_ANALYSIS = `The Galaxy S26 Ultra suits a 4-5 year keep. The Galaxy Z Fold 7 is the pick only if the inner foldable screen and multitasking are why you are buying. This page does not crown one phone.
 
-Spec table. Caption: Galaxy Z Fold 7 vs Galaxy S26 Ultra. Source note: the rows in the comparison table are GSMArena listings, from the compare page (idPhone1=13826, idPhone2=14320) and each phone's spec page. Geeky Gadgets is a qualitative summary, not a spec sheet. Samsung's US warranty page is cited only for warranty wording.
+Spec table. Caption: Galaxy Z Fold 7 vs Galaxy S26 Ultra. Source note: GSMArena lists the rows in the comparison table (idPhone1=13826, idPhone2=14320). Geeky Gadgets is a qualitative summary, not a measurement sheet. Samsung's US warranty wording covers the warranty sentence. Samsung Display is the source for the fold test.
 
-Sources: GSMArena compare, GSMArena Z Fold 7, GSMArena Galaxy S26 Ultra, Geeky Gadgets (article dated 24 April 2026), Samsung's US warranty page, Samsung's US Galaxy S26 Ultra page, and Android Authority (9 July 2025).
+Sources: GSMArena compare, GSMArena Z Fold 7, GSMArena Galaxy S26 Ultra, Geeky Gadgets (24 April 2026), Samsung Display (22 July 2025), Samsung's US warranty, Samsung's US Galaxy S26 Ultra, and Android Authority (9 July 2025).
 
 Screens and body
 
@@ -74,7 +77,7 @@ GSMArena lists an 8.0-inch inner display on the Z Fold 7 and a 6.5-inch cover di
 
 Ingress and chip
 
-GSMArena rates the Fold 7 IP48 (dust larger than 1 mm, immersion up to 1.5 m for 30 minutes) and the S26 Ultra IP68 (dust tight, same water line). The Fold 7 chipset is listed as Snapdragon 8 Elite. The S26 Ultra chipset is listed as Snapdragon 8 Elite Gen 5. This page does not repeat GSMArena's benchmark scores.
+GSMArena rates the Fold 7 IP48 (dust larger than 1 mm, immersion up to 1.5 m for 30 minutes) and the S26 Ultra IP68 (dust tight, same water line). GSMArena lists the Fold 7 chipset as Snapdragon 8 Elite. GSMArena lists the S26 Ultra chipset as Snapdragon 8 Elite Gen 5. This page does not repeat GSMArena's benchmark scores.
 
 Cameras
 
@@ -82,17 +85,17 @@ Both phones have a 200MP main camera. The Fold 7's other rear cameras are a 10MP
 
 Battery and charging
 
-GSMArena lists the Fold 7 at 4,400 mAh, with 25W wired charging and 15W wireless charging. It lists the S26 Ultra at 5,000 mAh, with 60W wired charging and 25W wireless charging (Qi2.2). The same pages list an active-use score of 11:44h for the Fold 7 and 16:23h for the S26 Ultra. Those scores are GSMArena's, not a Samsung marketing claim.
+GSMArena lists the Fold 7 at 4,400 mAh, with 25W wired charging and 15W wireless charging. It lists the S26 Ultra at 5,000 mAh, with 60W wired charging and 25W wireless charging (Qi2.2). GSMArena lists an active-use score of 11:44h for the Fold 7 and 16:23h for the S26 Ultra. Those scores are GSMArena's, not a Samsung marketing claim.
 
 Software support
 
-Both spec pages say up to 7 major OS updates. The Fold 7 launched on Android 16 with One UI 8 (released 25 July 2025). The S26 Ultra launched on Android 16 with One UI 9 and is listed as upgradable to Android 17 (released 6 March 2026). The seven-update promise starts later on the S26 Ultra. The spec pages do not say that one phone receives updates faster than the other.
+GSMArena lists up to 7 major OS updates for both. The Fold 7 launched on Android 16 with One UI 8 (released 25 July 2025). The S26 Ultra launched on Android 16 with One UI 9 and GSMArena lists it as upgradable to Android 17 (released 6 March 2026). The seven-update promise starts later on the S26 Ultra. GSMArena does not say that one phone receives updates faster than the other.
 
 Who should buy which
 
 Keep the S26 Ultra if you want one phone for 4-5 years and you care about ingress protection, battery, charging speed, and the longer telephoto. Geeky Gadgets makes the same split: the slab for durability, camera, and battery; the foldable for the large screen and multitasking. Samsung says the S26 Ultra has a built-in S Pen, and Samsung told Android Authority the Fold 7 does not support the S Pen because the digitizer was removed to make it thinner.
 
-Buy the Z Fold 7 only if that inner 8.0-inch screen is the point. You are accepting IP48 instead of IP68, a smaller battery, slower charging, and a hinge. Samsung's US warranty page does not publish a hinge-cycle count. It says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Check Samsung's warranty terms for the coverage that applies to your country and purchase date.`;
+Buy the Z Fold 7 only if that inner 8.0-inch screen is the point. You are accepting IP48 instead of IP68, a smaller battery, slower charging, and a hinge. Samsung says the Fold 7's foldable display passed a 500,000-fold test verified by Bureau Veritas. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Check Samsung's warranty terms for the coverage that applies to your country and purchase date.`;
 
 export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialComparison({
   slug: "galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra",
@@ -123,7 +126,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
         "4,400 mAh, 25W wired, 15W wireless, against 5,000 mAh, 60W, and 25W",
         "GSMArena active-use score 11:44h, against 16:23h",
         "10MP 3x telephoto and 12MP ultrawide, with no 5x periscope",
-        "A hinge needs extra care. No hinge-cycle count is published on the spec pages cited here",
+        "A hinge needs extra care",
         "No S Pen support. Samsung removed the digitizer to make it thinner",
       ],
       bestFor: "Best for the inner foldable screen",
@@ -318,7 +321,7 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       "GSMArena lists the Fold 7 at IP48, 4,400 mAh, and an 11:44h active-use score, and the S26 Ultra at IP68, 5,000 mAh, and a 16:23h active-use score. Both have a 200MP main camera and up to 7 major OS updates.",
   },
   citationStats: {
-    sourceCount: 7,
+    sourceCount: 8,
     dataPointCount: 10,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -329,6 +332,10 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       { name: "GSMArena — Galaxy Z Fold 7", url: GSMARENA_FOLD },
       { name: "GSMArena — Galaxy S26 Ultra", url: GSMARENA_S26 },
       { name: "Geeky Gadgets — S26 Ultra vs Z Fold 7 (24 Apr 2026)", url: GEEKY },
+      {
+        name: "Samsung Display — Fold 7 panel 500,000-fold test, verified by Bureau Veritas (22 Jul 2025)",
+        url: SAMSUNG_DISPLAY,
+      },
       { name: "Samsung US — warranty", url: SAMSUNG_WARRANTY },
       { name: "Samsung US — Galaxy S26 Ultra", url: SAMSUNG_S26 },
       {
@@ -364,14 +371,21 @@ export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialC
       label: "Geeky Gadgets comparison",
       url: GEEKY,
       description:
-        "Article dated 24 April 2026. Qualitative split: slab for durability, camera, and battery; foldable for the large screen.",
+        "24 April 2026. Qualitative split: slab for durability, camera, and battery; foldable for the large screen.",
+    },
+    {
+      type: "external",
+      label: "Samsung Display fold test",
+      url: SAMSUNG_DISPLAY,
+      description:
+        "Samsung Display says the foldable OLED panel in the Galaxy Z Fold7 stayed fully functional after a 500,000-fold test verified by Bureau Veritas.",
     },
     {
       type: "external",
       label: "Samsung US warranty",
       url: SAMSUNG_WARRANTY,
       description:
-        "Standard 12-month wording. Galaxy Z Fold5 and newer may have limited international warranty service. No hinge-cycle count.",
+        "Standard 12-month wording. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service.",
     },
     {
       type: "external",

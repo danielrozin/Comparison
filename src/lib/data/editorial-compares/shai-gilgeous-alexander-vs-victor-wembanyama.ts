@@ -37,7 +37,7 @@ const FAQS = [
   {
     question: "What are their career lines?",
     answer:
-      "SGA, in 8 seasons and 530 games: 13,411 points, 2,503 rebounds, and 2,810 assists, at 25.3 points, 4.7 rebounds, and 5.3 assists per game. Wembanyama, in 3 seasons and 181 games: 4,238 points, 1,997 rebounds, 641 assists, and 627 blocks, at 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks per game. He is listed at 7-4 and 235 pounds, drafted first overall in 2023.",
+      "SGA, in 8 seasons and 530 games: 13,411 points, 2,503 rebounds, and 2,810 assists, at 25.3 points, 4.7 rebounds, and 5.3 assists per game. Wembanyama, in 3 seasons and 181 games: 4,238 points, 1,997 rebounds, 641 assists, and 627 blocks, at 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks per game. Basketball-Reference lists him at 7-4 and 235 pounds, drafted first overall in 2023.",
   },
   {
     question: "What happened in the 2026 Western Conference finals?",
@@ -75,7 +75,7 @@ Source note: career totals, the 2025-26 regular-season lines, and the accolades 
 
 2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log. Both 2026-27 tables on Basketball-Reference are labeled projections, and this page does not quote them. NBA.com lists Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. That is the schedule. It is not a prediction.
 
-Career. SGA was born July 12, 1998, debuted October 17, 2018, and the career row says 8 years: 530 games, 13,411 points, 2,503 rebounds, 2,810 assists. Wembanyama was born January 4, 2004, is listed at 7-4 and 235 pounds, was drafted first overall in 2023, debuted October 25, 2023, and the career row says 3 years: 181 games, 4,238 points, 1,997 rebounds, 641 assists, 627 blocks.
+Career. SGA was born July 12, 1998, debuted October 17, 2018, and Basketball-Reference lists 8 years: 530 games, 13,411 points, 2,503 rebounds, 2,810 assists. Wembanyama was born January 4, 2004, Basketball-Reference lists him at 7-4 and 235 pounds, was drafted first overall in 2023, debuted October 25, 2023, and Basketball-Reference lists 3 years: 181 games, 4,238 points, 1,997 rebounds, 641 assists, 627 blocks.
 
 2025-26 regular season. SGA played 68 games at 33.2 minutes: 31.1 points, 4.3 rebounds, 6.6 assists, 55.3% from the field, 38.6% from three, and 87.9% from the line, with MVP, All-Star, and All-NBA. Wembanyama played 64 games, 55 starts, at 29.2 minutes: 25.0 points, 11.5 rebounds, 3.1 assists, 1.0 steal, and 3.1 blocks, with All-Star, All-NBA, and Defensive Player of the Year. In 2024-25, SGA averaged 32.7 points in 76 games and was also MVP.
 

@@ -60,7 +60,7 @@ const VERDICT = `Career per game: Durant 27.1 points, 6.9 rebounds, and 4.4 assi
 
 Championships on the honors lists: Durant 2. LeBron 4.
 
-2026-27 season: Durant is listed with Houston. LeBron is listed with the 76ers. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
+2026-27 season: Basketball-Reference lists Durant with Houston. Basketball-Reference lists LeBron with the 76ers. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
 
 const EXPERT_ANALYSIS = `Kevin Durant's career line is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games, totaling 32,597 points. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. In 2025-26 Durant averaged 26.0 points in 78 games and LeBron averaged 20.9 points in 60 games. This page does not pick a winner.
 
@@ -190,7 +190,7 @@ const BUILT = buildEditorialComparison({
     winnerReason:
       "No page-level winner and no 2026-27 prediction. The career rows and the 2025-26 lines are finished results.",
     keyFact:
-      "Durant 27.1 points in 1,201 games and 26.0 in 2025-26. LeBron 26.8 points in 1,622 games and 20.9 in 2025-26. Durant is listed with Houston. LeBron is listed with the 76ers.",
+      "Durant 27.1 points in 1,201 games and 26.0 in 2025-26. LeBron 26.8 points in 1,622 games and 20.9 in 2025-26. Basketball-Reference lists Durant with Houston. Basketball-Reference lists LeBron with the 76ers.",
   },
   citationStats: {
     sourceCount: 3,

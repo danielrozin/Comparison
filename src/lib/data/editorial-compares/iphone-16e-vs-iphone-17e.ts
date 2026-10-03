@@ -140,7 +140,6 @@ export const IPHONE_16E_VS_IPHONE_17E: EditorialComparison = buildEditorialCompa
         "No 128GB model, and no 512GB unless you step up from the $599 launch configuration (AppleInsider)",
         "Same 48MP Fusion camera hardware as the 16e (AppleInsider)",
         "Same up-to-26-hour video playback rating as the 16e",
-        "Apple does not publish an iOS support year count on the cited sources",
       ],
       bestFor: "Best for most people, including an upgrade from an iPhone 8",
     },

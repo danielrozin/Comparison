@@ -50,12 +50,12 @@ const FAQS = [
   {
     question: "Can Google Maps or Waze navigate offline?",
     answer:
-      "Google Maps can, with limits. The iPhone, iPad, and Android help articles say you can download an area and use it when the connection is slow or gone, as long as the whole route is inside that area. They also say offline transit, bicycling, and walking directions are unavailable, and an offline drive has no traffic info or alternate routes. Some countries cannot download offline maps. Waze says Waze assumes a data connection, and that without internet you cannot locate or navigate a route. Two Waze articles disagree about a report if the connection drops while you are reporting: About Waze says reports are not cached to send later, and Waze's hazard help says the report is saved and sent when you reconnect. This page does not choose between those two sentences.",
+      "Google Maps can, with limits. Google says you can download an area and use it when the connection is slow or gone, as long as the whole route is inside that area. Google also says offline transit, bicycling, and walking directions are unavailable, and an offline drive has no traffic info or alternate routes. Some countries cannot download offline maps. Waze says Waze assumes a data connection, and that without internet you cannot locate or navigate a route. Two Waze sentences disagree about a report if the connection drops while you are reporting: Waze says reports are not cached to send later, and Waze also says the report is saved and sent when you reconnect. This page does not choose between those two sentences.",
   },
   {
     question: "Do Google Maps and Waze work on CarPlay and Android Auto?",
     answer:
-      "Google Maps has CarPlay support, and Android navigation mentions Android Auto for 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze documents Android Auto and CarPlay. Waze says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
+      "Google Maps has CarPlay support, and Google says Android Auto shows 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze documents Android Auto and CarPlay. Waze says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
   },
   {
     question: "Does Waze support transit, bicycle, or truck lanes?",
@@ -65,7 +65,7 @@ const FAQS = [
   {
     question: "Which app keeps more of my location data?",
     answer:
-      "This page does not crown one. Google's Timeline says Timeline is off by default and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If you turn on backup, Maps saves an encrypted copy on Google's servers. Waze says that driving with Waze open shares real-time information used for speed, road layout, and routing, and that you can adjust privacy settings. Those are different designs. The cited sources do not publish a shared score for them.",
+      "This page does not crown one. Google says Timeline is off by default and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If you turn on backup, Maps saves an encrypted copy on Google's servers. Waze says that driving with Waze open shares real-time information used for speed, road layout, and routing, and that you can adjust privacy settings. Those are different designs. This comparison does not give them one shared privacy score.",
   },
 ];
 
@@ -91,23 +91,23 @@ Google Maps documents more than driving. The iPhone and iPad directions article 
 
 Driver reports
 
-Both products document incident reports. Waze says you can report traffic, accidents, police traps, blocked roads, weather, and more, and that the maps are powered by users. Waze reports about 180 million monthly active users. This comparison does not pair it with a Google Maps user count, because the Google sources cited here do not publish one. The hazard article lists construction, a car on the shoulder, a broken traffic light, a pothole, and an object, and it documents the same report flow on Android Auto and CarPlay. Google's Android navigation article lists crash, slowdown, mobile speed camera, police, construction, lane closure, an object on the road, a flooded road, low visibility, and an unplowed road, and says some incidents can only be reported in certain countries. The CarPlay article lists a similar set, without the word crash.
+Both products document incident reports. Waze says you can report traffic, accidents, police traps, blocked roads, weather, and more, and that the maps are powered by users. Waze reports about 180 million monthly active users. This comparison does not pair it with a Google Maps user count. The hazard article lists construction, a car on the shoulder, a broken traffic light, a pothole, and an object, and it documents the same report flow on Android Auto and CarPlay. Google's Android navigation article lists crash, slowdown, mobile speed camera, police, construction, lane closure, an object on the road, a flooded road, low visibility, and an unplowed road, and says some incidents can only be reported in certain countries. The CarPlay article lists a similar set, without the word crash.
 
 One Waze contradiction, left unresolved
 
-About Waze says that if Waze has no connection back to its servers, you cannot report hazards, and that Waze does not cache reports or map issues to send later. The hazard article's own FAQ says that if you lose the connection while reporting, Waze saves the report and submits it when you reconnect. This page does not decide which sentence is current.
+Waze says that if Waze has no connection back to its servers, you cannot report hazards, and that Waze does not cache reports or map issues to send later. Waze also says that if you lose the connection while reporting, Waze saves the report and submits it when you reconnect. This page does not decide which sentence is current.
 
 Lane guidance
 
-Google's Android navigation says voice navigation can tell you which lane to use, and that lane guidance is not available in all countries. Android Auto Help says lane guidance is part of navigation with Google Maps or another navigation app, and it names Waze in that sentence. The Waze help used for this comparison does not describe lane guidance as its own feature. That is a gap in the cited sources, not a finding that Waze never shows a lane.
+Google says voice navigation can tell you which lane to use, and that lane guidance is not available in all countries. Android Auto Help says lane guidance is part of navigation with Google Maps or another navigation app, and it names Waze in that sentence. Waze does not describe lane guidance as its own feature in the material used here. That is not a finding that Waze never shows a lane.
 
 CarPlay and Android Auto
 
-Both are documented on both systems. Google Maps has a CarPlay article for search, stops, and incident types. Android Auto Help tells you to open Google Maps, or another navigation app, for voice guidance, arrival times, and live traffic. Waze's Android Auto says Android Auto brings Waze to the car display, and its report list includes traffic, police, crash, hazard, bad weather, a blocked lane, and a map issue. Waze's CarPlay says you need a compatible iPhone and a car that supports CarPlay in one of the listed regions, and that Waze on CarPlay is a limited version of the mobile app.
+Both are documented on both systems. Google Maps has a CarPlay article for search, stops, and incident types. Android Auto Help tells you to open Google Maps, or another navigation app, for voice guidance, arrival times, and live traffic. Waze says Android Auto brings Waze to the car display, and its report list includes traffic, police, crash, hazard, bad weather, a blocked lane, and a map issue. Waze says you need a compatible iPhone and a car that supports CarPlay in one of the listed regions, and that Waze on CarPlay is a limited version of the mobile app.
 
 Platforms and EV help
 
-Waze's availability says the app is in the Apple App Store for iPhone and iPad and in Google Play for Android, on iOS 16 and above and Android 10 and above, and that the phone needs GPS and a cellular connection. It is free to download, and carrier data rates still apply. Google Maps Help documents the app on Android and on iPhone and iPad. Google says that in some countries you can add an electric vehicle and then filter charging stations by your plugs, and that a compatible EV on Maps app version 25.44 and up can show an estimated battery use for the trip. That estimate depends on the vehicle info you entered and does not adjust to real-time driving or a live connection to the car.
+Waze says the app is in the Apple App Store for iPhone and iPad and in Google Play for Android, on iOS 16 and above and Android 10 and above, and that the phone needs GPS and a cellular connection. It is free to download, and carrier data rates still apply. Google Maps Help documents the app on Android and on iPhone and iPad. Google says that in some countries you can add an electric vehicle and then filter charging stations by your plugs, and that a compatible EV on Maps app version 25.44 and up can show an estimated battery use for the trip. That estimate depends on the vehicle info you entered and does not adjust to real-time driving or a live connection to the car.
 
 Who should use which
 
@@ -417,7 +417,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
       label: "Waze road hazard reports",
       url: WAZE_HAZARD,
       description:
-        "Hazard types on the phone, Android Auto, and CarPlay. Waze's hazard help says a dropped connection still sends the report later.",
+        "Hazard types on the phone, Android Auto, and CarPlay. Waze says a dropped connection still sends the report later.",
     },
     {
       type: "external",

@@ -60,11 +60,11 @@ const EXPERT_ANALYSIS = `An Instax Mini gives you the easier start. The Polaroid
 
 Spec table. Caption: Polaroid Go Gen 2 vs Instax Mini. Source note: the rows are reviewer-cited figures from Digital Camera World, PCMag UK, PCMag's Instax Mini 12 review, and PCMag's instant-camera roundup. They are not a live store price.
 
-Sources: Digital Camera World (published 26 October 2024), PCMag UK (updated 8 May 2024), PCMag's Instax Mini 12 review (2 March 2023), and PCMag's best instant cameras roundup (updated 6 July 2026).
+Sources: Digital Camera World (26 October 2024), PCMag UK (updated 8 May 2024), PCMag's Instax Mini 12 review (2 March 2023), and PCMag's best instant cameras roundup (updated 6 July 2026).
 
 Prints
 
-Digital Camera World says Go film is square and smaller than Instax Mini film. PCMag UK measures Go prints at 2.6 by 2.1 inches, with a 1.8-inch-square image area. The same review measures the Instax Mini picture area at 1.8 by 2.4 inches. PCMag's Mini 12 review calls Instax Mini prints wallet-sized, with an image area of about 1.8 by 2.4 inches. The July 2026 roundup calls Mini 13 pictures wallet-size. These pages say wallet-size, not credit-card size.
+Digital Camera World says Go film is square and smaller than Instax Mini film. PCMag UK measures Go prints at 2.6 by 2.1 inches, with a 1.8-inch-square image area. The same review measures the Instax Mini picture area at 1.8 by 2.4 inches. PCMag's Mini 12 review calls Instax Mini prints wallet-sized, with an image area of about 1.8 by 2.4 inches. The July 2026 roundup calls Mini 13 pictures wallet-size. PCMag says wallet-size, not credit-card size.
 
 Price of the camera and the film
 

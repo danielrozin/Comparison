@@ -33,7 +33,7 @@ const FAQS = [
   {
     question: "Is Safari more private than Chrome?",
     answer:
-      "Safari turns more tracking protection on before you change a setting. Apple says Intelligent Tracking Prevention is on by default, hides your IP address from trackers, and that fingerprinting defense is on by default too. Apple says Safari blocks third-party cookies from tracking you by default. Its comparison chart marks Chrome as No on that row. That cell is Apple's chart, not a sentence on Google's help page. Chrome's cookie help says third-party cookies are blocked by default in Incognito, and that regular browsing lets you choose Allow or Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. This page does not turn those descriptions into a scored privacy ranking.",
+      "Safari turns more tracking protection on before you change a setting. Apple says Intelligent Tracking Prevention is on by default, hides your IP address from trackers, and that fingerprinting defense is on by default too. Apple says Safari blocks third-party cookies from tracking you by default. Its comparison chart marks Chrome as No on that row. That cell is Apple's chart, not Google's own statement. Chrome says third-party cookies are blocked by default in Incognito, and that regular browsing lets you choose Allow or Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. This page does not turn those descriptions into a scored privacy ranking.",
   },
   {
     question: "Is Safari better for battery life than Chrome?",
@@ -48,12 +48,12 @@ const FAQS = [
   {
     question: "Does Safari work on Windows or Android?",
     answer:
-      "Apple's Safari page describes Safari on Mac, iPhone, iPad, and Apple Watch. It does not list a Windows or Android download. Apple's iCloud guide says bookmarks also sync to Windows devices that have iCloud for Windows. That is bookmark sync, not a Safari app for Windows. The same guide says an extension is not installed for you on every device. You install it on each one. Chrome's own pages name Windows, Mac, Linux, ChromeOS, Android, iPhone, and iPad.",
+      "Apple describes Safari on Mac, iPhone, iPad, and Apple Watch. Apple does not offer a Safari download for Windows or Android. Apple says bookmarks also sync to Windows devices that have iCloud for Windows. That is bookmark sync, not a Safari app for Windows. The same guide says an extension is not installed for you on every device. You install it on each one. Chrome names Windows, Mac, Linux, ChromeOS, Android, iPhone, and iPad.",
   },
   {
     question: "Does Safari sync across iPhone, iPad, and Mac?",
     answer:
-      "Yes, with iCloud. Apple's iCloud guide says bookmarks, Reading List, history, open tabs, Tab Groups, profiles, and Safari settings stay up to date on iPhone, iPad, and Mac. Extension on/off state syncs too, but the extension itself still has to be installed on each device. Apple says iCloud Keychain stores user names, passkeys, passwords, and credit card numbers across trusted devices, and that Handoff can pass the website you are viewing to a nearby Apple device. Chrome sync is a different account. Chrome's sign-in help says a Google Account can put bookmarks, passwords, and more on your devices, and that signing in to Chrome is optional.",
+      "Yes, with iCloud. Apple says bookmarks, Reading List, history, open tabs, Tab Groups, profiles, and Safari settings stay up to date on iPhone, iPad, and Mac. Extension on/off state syncs too, but the extension itself still has to be installed on each device. Apple says iCloud Keychain stores user names, passkeys, passwords, and credit card numbers across trusted devices, and that Handoff can pass the website you are viewing to a nearby Apple device. Chrome sync is a different account. Chrome says a Google Account can put bookmarks, passwords, and more on your devices, and that signing in to Chrome is optional.",
   },
 ];
 
@@ -71,21 +71,21 @@ Sources: google.com/chrome, opensource.google.com/projects/chromium, Chrome sign
 
 Engine
 
-Google says Chromium is the web browser that Google Chrome is built on. Apple's Safari page describes deep WebKit integration between Mac hardware and macOS, and it names WebKit in macOS Sequoia. This page does not treat the two engines as a speed score.
+Google says Chromium is the web browser that Google Chrome is built on. Apple describes deep WebKit integration between Mac hardware and macOS, and it names WebKit in macOS Sequoia. This page does not treat the two engines as a speed score.
 
 Where each one runs
 
-Chrome says you can set Chrome as the default browser on Windows, Mac, iPhone, iPad, or Android. Chrome 139's release notes say that stable release applies to Android, ChromeOS, Linux, macOS, and Windows. Apple's Safari page describes Safari on Mac, iPhone, iPad, and Apple Watch, with extensions for iPhone, iPad, and Mac. It does not list Windows or Android. Apple's iCloud guide adds that bookmarks also sync to Windows if that PC has iCloud for Windows.
+Chrome says you can set Chrome as the default browser on Windows, Mac, iPhone, iPad, or Android. Chrome says that stable release applies to Android, ChromeOS, Linux, macOS, and Windows. Apple describes Safari on Mac, iPhone, iPad, and Apple Watch, with extensions for iPhone, iPad, and Mac. Apple does not offer Safari for Windows or Android. Apple's iCloud guide adds that bookmarks also sync to Windows if that PC has iCloud for Windows.
 
 Tracking and cookies
 
 Apple says Intelligent Tracking Prevention is on by default and hides your IP address from trackers. Fingerprinting defense is on by default. Private Browsing goes further: known trackers are prevented from loading, and link tracking protection removes tracking added to URLs. Apple says Safari blocks third-party cookies from tracking you by default. The chart there marks Chrome as No for the same row. Treat that Chrome cell as Apple's comparison.
 
-Chrome's cookie help says third-party cookies are blocked by default in Incognito, and that regular browsing is a choice between Allow and Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on.
+Chrome says third-party cookies are blocked by default in Incognito, and that regular browsing is a choice between Allow and Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on.
 
 Sync
 
-Apple's iCloud guide says Safari bookmarks, Reading List, history, open tabs, Tab Groups, profiles, and settings stay updated on iPhone, iPad, and Mac. It also syncs which extensions are installed and whether each is on, and it says the extension is not installed automatically. Apple says iCloud Keychain stores user names, passkeys, passwords, and credit card numbers, and that Handoff can move the current Safari website to a nearby Apple device. Chrome's sign-in help says a Google Account can carry bookmarks, passwords, and more. Signing in to Chrome is optional. If you turn on Web & App Activity and sync Chrome history, Google says that history can personalize other Google products.
+Apple says Safari bookmarks, Reading List, history, open tabs, Tab Groups, profiles, and settings stay updated on iPhone, iPad, and Mac. It also syncs which extensions are installed and whether each is on, and it says the extension is not installed automatically. Apple says iCloud Keychain stores user names, passkeys, passwords, and credit card numbers, and that Handoff can move the current Safari website to a nearby Apple device. Chrome says a Google Account can carry bookmarks, passwords, and more. Signing in to Chrome is optional. If you turn on Web & App Activity and sync Chrome history, Google says that history can personalize other Google products.
 
 Extensions
 
@@ -126,7 +126,6 @@ export const CHROME_VS_SAFARI: EditorialComparison = buildEditorialComparison({
       cons: [
         "Third-party cookies are blocked by default in Incognito. Regular browsing is a choice (Chrome Help)",
         "Manifest V2 extensions are disabled in Chrome 138 and stop working on Chrome 139 and later",
-        "No battery-hour count against Safari is published",
       ],
       bestFor: "Best if you also browse on Windows, Android, Linux, or ChromeOS",
     },
@@ -146,7 +145,7 @@ export const CHROME_VS_SAFARI: EditorialComparison = buildEditorialComparison({
         "Extensions come from the App Store, with per-site or one-day permission (Apple)",
       ],
       cons: [
-        "Apple's Safari page does not list a Windows or Android download",
+        "Apple does not offer a Safari download for Windows or Android",
         "Extensions are not installed for you on every device (iCloud guide)",
         "The 5-hour and 35% lines are Apple's August 2026 tests, not a result measured here",
         "Not the Chrome Web Store. A different extension catalog",
@@ -273,7 +272,7 @@ export const CHROME_VS_SAFARI: EditorialComparison = buildEditorialComparison({
     winnerReason:
       "It depends on the use. Safari when you stay on Apple devices and want tracking prevention on by default. Chrome when you also need Windows, Linux, ChromeOS, or Android.",
     keyFact:
-      "Chrome is built on Chromium. Safari uses WebKit. Apple says Intelligent Tracking Prevention is on by default. Chrome's help says third-party cookies are blocked by default in Incognito.",
+      "Chrome is built on Chromium. Safari uses WebKit. Apple says Intelligent Tracking Prevention is on by default. Chrome says third-party cookies are blocked by default in Incognito.",
   },
   citationStats: {
     sourceCount: 11,

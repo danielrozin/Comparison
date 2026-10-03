@@ -33,7 +33,7 @@ const FAQS = [
   {
     question: "Is Brave more private than Chrome?",
     answer:
-      "Brave turns more blocking on before you change a setting. Brave says Shields block ads, trackers, cross-site cookies, and fingerprinting by default, and that Global Privacy Control is on by default. Brave also says Sync is encrypted on the device and does not use Google's servers. Chrome's cookie help says third-party cookies are blocked by default in Incognito, and that regular browsing lets you choose Allow or Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. This page does not turn those vendor descriptions into a scored privacy ranking.",
+      "Brave turns more blocking on before you change a setting. Brave says Shields block ads, trackers, cross-site cookies, and fingerprinting by default, and that Global Privacy Control is on by default. Brave also says Sync is encrypted on the device and does not use Google's servers. Chrome says third-party cookies are blocked by default in Incognito, and that regular browsing lets you choose Allow or Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. This page does not turn those vendor descriptions into a scored privacy ranking.",
   },
   {
     question: "Does Brave block ads without an extension?",
@@ -43,7 +43,7 @@ const FAQS = [
   {
     question: "Can I install Chrome extensions in Brave?",
     answer:
-      "Brave's guide, published 2 June 2025, says an extension from the Chrome Web Store works in Brave, and that you click Add to Brave. Brave says it cannot vouch for how a third-party extension handles your data. The same guide says Brave will keep supporting some Manifest V2 extensions, and that Manifest V3 extensions work in Brave as they do in Chrome. Chrome's timeline, last updated 9 September 2026, says Manifest V2 extensions are disabled for every Chrome user as of Chrome 138 on 24 July 2025, and that they stop working on Chrome 139 and later.",
+      "Brave says an extension from the Chrome Web Store works in Brave, and that you click Add to Brave. Brave says it cannot vouch for how a third-party extension handles your data. Brave also says it will keep supporting some Manifest V2 extensions, and that Manifest V3 extensions work in Brave as they do in Chrome. Chrome says Manifest V2 extensions are disabled for every Chrome user as of Chrome 138 on 24 July 2025, and that they stop working on Chrome 139 and later.",
   },
   {
     question: "What is Brave Rewards and BAT?",
@@ -53,7 +53,7 @@ const FAQS = [
   {
     question: "Does Brave sync like Chrome?",
     answer:
-      "Both can sync, and they do not use the same account. Brave says a profile can sync between desktop and mobile, including history and bookmarks, with encryption on the device so Brave cannot read it, and that this sync does not touch Google's servers. The features page adds passwords and tabs. Chrome's sign-in help says a Google Account can put bookmarks, passwords, and more on your devices. Signing in to Chrome is optional. If you turn on Web & App Activity and sync Chrome history, Google says that history can personalize other Google products.",
+      "Both can sync, and they do not use the same account. Brave says a profile can sync between desktop and mobile, including history and bookmarks, with encryption on the device so Brave cannot read it, and that this sync does not touch Google's servers. The features page adds passwords and tabs. Chrome says a Google Account can put bookmarks, passwords, and more on your devices. Signing in to Chrome is optional. If you turn on Web & App Activity and sync Chrome history, Google says that history can personalize other Google products.",
   },
 ];
 
@@ -67,7 +67,7 @@ const EXPERT_ANALYSIS = `It depends on what you want the browser to do before yo
 
 Spec table. Caption: Brave vs Chrome. Source note: the rows were checked on 30 September 2026 against Brave's homepage, Shields, privacy, and features pages, Brave's 2 June 2025 extension guide, Google's Chrome page, Google's Chromium project page, Chrome's sign-in and cookie help, Chrome's Manifest V2 timeline (updated 9 September 2026), Chrome's Manifest V3 doc, and the Chrome 139 release notes.
 
-Sources: brave.com, brave.com/shields, brave.com/privacy-features, brave.com/features, Brave's extension guide (published 2 June 2025), google.com/chrome, opensource.google.com/projects/chromium, Chrome sign-in help, Chrome cookie help, the Manifest V3 doc, the Manifest V2 timeline (updated 9 September 2026), and Chrome 139 release notes (stable 5 August 2025).
+Sources: brave.com, brave.com/shields, brave.com/privacy-features, brave.com/features, Brave's extension guide (2 June 2025), google.com/chrome, opensource.google.com/projects/chromium, Chrome sign-in help, Chrome cookie help, the Manifest V3 doc, the Manifest V2 timeline (updated 9 September 2026), and Chrome 139 release notes (stable 5 August 2025).
 
 Engine
 
@@ -81,11 +81,11 @@ Ads, trackers, and cookies
 
 Brave says third-party ad and tracker blocking is on for every page, with no extra download. It also says Brave blocks cross-site cookies by default and randomizes fingerprinting by default. The homepage adds that Global Privacy Control is on by default, and that Brave upgrades pages to HTTPS when it can. Shields can be turned off for one site.
 
-Chrome describes extensions, Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. Chrome's cookie help says third-party cookies are blocked by default in Incognito, and that in regular browsing you choose Allow or Block. It does not say regular browsing blocks them by default.
+Chrome describes extensions, Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. Chrome says third-party cookies are blocked by default in Incognito, and that in regular browsing you choose Allow or Block. It does not say regular browsing blocks them by default.
 
 Sync
 
-Brave says Sync is encrypted on each device, covers history, bookmarks, and other profile data between desktop and mobile, and does not use Google's servers. Brave's features include bookmarks, passwords, and tabs. Chrome's sign-in help says a Google Account brings bookmarks, passwords, and more to your devices, and that signing in to Chrome is optional even if you use Gmail. It says Chrome history can personalize other Google products if you turn on Web & App Activity and sync that history.
+Brave says Sync is encrypted on each device, covers history, bookmarks, and other profile data between desktop and mobile, and does not use Google's servers. Brave's features include bookmarks, passwords, and tabs. Chrome says a Google Account brings bookmarks, passwords, and more to your devices, and that signing in to Chrome is optional even if you use Gmail. It says Chrome history can personalize other Google products if you turn on Web & App Activity and sync that history.
 
 Extensions and Manifest V3
 
@@ -174,7 +174,7 @@ export const BRAVE_VS_CHROME: EditorialComparison = buildEditorialComparison({
     {
       label: "Ad and tracker blocking",
       entityAValue: "Shields on by default",
-      entityBValue: "Incognito blocks third-party cookies by default",
+      entityBValue: "—",
       winner: "tie",
     },
     {
@@ -222,7 +222,7 @@ export const BRAVE_VS_CHROME: EditorialComparison = buildEditorialComparison({
       BRAVE,
       CHROME,
       "Shields on by default (Brave)",
-      "Incognito blocks third-party cookies by default. In regular browsing you choose Allow or Block"
+      "—"
     ),
     textAttr(
       "sync",

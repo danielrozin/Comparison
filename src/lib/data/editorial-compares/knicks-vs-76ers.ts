@@ -59,7 +59,7 @@ const FAQS = [
   {
     question: "Which older Knicks-76ers playoff series does this page include?",
     answer:
-      "Only the 2026 Eastern Conference semifinals. Basketball-Reference lists that series. This page does not list earlier series from other sites. The Knicks franchise header lists 3 championships, 81 seasons, a 3,078-3,191 record, and 47 playoff appearances. It does not break those championships into a series list.",
+      "Only the 2026 Eastern Conference semifinals. Basketball-Reference lists that series. Earlier series from other sites are not part of this comparison. Basketball-Reference lists 3 championships, 81 seasons, a 3,078-3,191 record, and 47 playoff appearances for the Knicks. It does not break those championships into a series list.",
   },
 ];
 
@@ -79,7 +79,7 @@ Source note: the 481-game row is from the Knicks head-to-head page on Basketball
 
 Head-to-head. The Knicks row against the 76ers is 481 games, 214 wins, 267 losses, a .445 win percentage, 103.6 points scored per game, and 104.4 points allowed per game. The Knicks franchise header lists 81 seasons from 1946-47 through 2026-27, a 3,078-3,191 record, 47 playoff appearances, and 3 championships. This page does not turn the 3 into a claim about how many of those titles came in 2026. The 2026 title is stated from the playoff index, which names the Knicks the league champion.
 
-2026 playoffs. The East semifinals were a sweep. May 4, Philadelphia 98 at New York 137. May 6, Philadelphia 102 at New York 108. May 8, New York 108 at Philadelphia 94. May 10, New York 144 at Philadelphia 114. Brunson's series line is 29.0 points, 2.8 rebounds, and 6.0 assists in 4 games. The 76ers' first-round series on the same index was a 4-3 win over the Celtics. The Finals were Knicks over Spurs, 4-1, and Brunson was Finals MVP at 32.6 points, 4.2 rebounds, and 4.6 assists. Earlier Knicks-76ers playoff series are not in these sources, so they are not listed.
+2026 playoffs. The East semifinals were a sweep. May 4, Philadelphia 98 at New York 137. May 6, Philadelphia 102 at New York 108. May 8, New York 108 at Philadelphia 94. May 10, New York 144 at Philadelphia 114. Brunson's series line is 29.0 points, 2.8 rebounds, and 6.0 assists in 4 games. The 76ers' first-round series on the same index was a 4-3 win over the Celtics. The Finals were Knicks over Spurs, 4-1, and Brunson was Finals MVP at 32.6 points, 4.2 rebounds, and 4.6 assists. Earlier Knicks-76ers playoff series are not in these sources, so this comparison does not include them.
 
 This page does not give the signing story's betting prices, and it does not give a contract figure for LeBron. Those lines are labeled as reports or as prices.`;
 

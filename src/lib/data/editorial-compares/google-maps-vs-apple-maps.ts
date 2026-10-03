@@ -57,12 +57,12 @@ const FAQS = [
   {
     question: "Can I download Apple Maps or Google Maps for offline use?",
     answer:
-      "Both document offline maps, and they are not the same download. Apple's support says offline maps in iOS 17 and later include hours and ratings, turn-by-turn directions for driving, walking, cycling, or transit, and estimated arrival times. They are only in select areas, they do not sync across devices, and features vary by country. Google's iPhone, iPad, and Android articles say you can download an area and drive with it if the whole route is inside the map. Offline transit, bicycling, and walking directions are unavailable, an offline drive has no traffic or alternate routes, and some countries cannot download the maps.",
+      "Both document offline maps, and they are not the same download. Apple says offline maps in iOS 17 and later include hours and ratings, turn-by-turn directions for driving, walking, cycling, or transit, and estimated arrival times. They are only in select areas, they do not sync across devices, and features vary by country. Google's iPhone, iPad, and Android articles say you can download an area and drive with it if the whole route is inside the map. Offline transit, bicycling, and walking directions are unavailable, an offline drive has no traffic or alternate routes, and some countries cannot download the maps.",
   },
   {
     question: "Which app is better for transit, walking, and lane guidance?",
     answer:
-      "Both document those trips, with limits. Apple's transit guide covers departure times, connections, and fares. Apple's driving guide says that in select cities you get a street-level view that helps you find the right lane at a complex intersection, and that spoken turn-by-turn directions are not available in every country. Google's iPhone and iPad directions article lists transit, walking, and cycling, and says transit depends on the local agency adding its routes. Google's Android navigation says voice guidance can tell you which lane to use, and that this is not available in all countries. This page does not score which lane prompt is clearer.",
+      "Both document those trips, with limits. Apple's transit guide covers departure times, connections, and fares. Apple says that in select cities you get a street-level view that helps you find the right lane at a complex intersection, and that spoken turn-by-turn directions are not available in every country. Google lists transit, walking, and cycling, and says transit depends on the local agency adding its routes. Google says voice guidance can tell you which lane to use, and that this is not available in all countries. This page does not score which lane prompt is clearer.",
   },
   {
     question: "Do Apple Maps and Google Maps route electric cars to chargers?",
@@ -72,7 +72,7 @@ const FAQS = [
   {
     question: "Which app is more private?",
     answer:
-      "This page does not crown one. Apple's Maps privacy statement, dated 14 September 2026, says Apple does not collect personal data associated with your Maps usage, that you do not have to sign in, and that precise locations are converted to less-exact locations within 24 hours. It says a navigation request sends the origin, the destination, the mode of transport, including whether you are on CarPlay, and a random identifier that lasts for that session. Google's Timeline says Timeline is off by default and turns on only if you opt in. It saves visits and routes on signed-in devices. If you turn backup on, Maps saves an encrypted copy on Google's servers. Those are different controls, not a shared score.",
+      "This page does not crown one. Apple says, in wording dated 14 September 2026, that it does not collect personal data associated with your Maps usage, that you do not have to sign in, and that precise locations are converted to less-exact locations within 24 hours. Apple says a navigation request sends the origin, the destination, the mode of transport, including whether you are on CarPlay, and a random identifier that lasts for that session. Google says Timeline is off by default and turns on only if you opt in. It saves visits and routes on signed-in devices. If you turn backup on, Maps saves an encrypted copy on Google's servers. Those are different controls, not a shared score.",
   },
 ];
 
@@ -98,17 +98,17 @@ Apple's support article is for iOS 17 and later. Offline maps include hours and 
 
 Transit, walking, and lanes
 
-Both document trips that are not only driving. Apple's transit guide says you can get departure times, connection information, and fare amounts, and that some transit systems can use Apple Pay inside Maps. Apple's driving guide says that in select cities you see crosswalks, bike lanes, and a street-level view that helps you find the right lane at a complex intersection. Spoken turn-by-turn directions are not available in every country. Apple also says lane guidance prepares you for turns and exits. Google's iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle, and says not every city has transit directions. Google's Android navigation says voice navigation can tell you which lane to use, and that lane guidance is not available in all countries.
+Both document trips that are not only driving. Apple's transit guide says you can get departure times, connection information, and fare amounts, and that some transit systems can use Apple Pay inside Maps. Apple says that in select cities you see crosswalks, bike lanes, and a street-level view that helps you find the right lane at a complex intersection. Spoken turn-by-turn directions are not available in every country. Apple also says lane guidance prepares you for turns and exits. Google's iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle, and says not every city has transit directions. Google says voice navigation can tell you which lane to use, and that lane guidance is not available in all countries.
 
 Electric vehicles
 
-Apple's iPhone guide says EV routing is available on select vehicles and in select areas, and that features vary by country. Maps can track the charge, use elevation and other factors, identify charging stations along the way, and, for select providers and countries, show real-time availability. Setup can go through CarPlay or through the car maker's app. Google's phone article is narrower than a slogan. In some countries you add the vehicle, filter charging stations by your plugs, and, on Maps version 25.44 and up for a compatible EV, see an estimated battery use that does not follow live driving or a live link to the car. The article titled for Google Maps built into your electric vehicle says that if you will not reach the destination, charging stops are added along the route. That says it is only for Maps built into the car, and that features depend on the manufacturer, the region, and the data plan.
+Apple's iPhone guide says EV routing is available on select vehicles and in select areas, and that features vary by country. Maps can track the charge, use elevation and other factors, identify charging stations along the way, and, for select providers and countries, show real-time availability. Setup can go through CarPlay or through the car maker's app. Google's phone article is narrower than a slogan. In some countries you add the vehicle, filter charging stations by your plugs, and, on Maps version 25.44 and up for a compatible EV, see an estimated battery use that does not follow live driving or a live link to the car. The article titled for Google Maps built into your electric vehicle says that if you will not reach the destination, charging stops are added along the route. Google says it is only for Maps built into the car, and that features depend on the manufacturer, the region, and the data plan.
 
 Privacy, read as written
 
 Apple says Maps is designed to protect your privacy and that Apple does not collect personal data associated with your Maps usage. It also says you do not have to sign in, that signed-in pins and guides can sync with end-to-end encryption, and that precise locations are converted to less-exact locations within 24 hours. A navigation request still sends the origin, the current location if you allowed it, the destination, the mode of transport, including CarPlay, and a random identifier for that session. If you use EV routing, charge information is sent and is not tied to your Apple Account. Apple's shorter line, that Maps does not let Apple know which stores, neighborhoods, or clinics you visit, sits next to that legal text. This comparison treats the legal statement as the fuller account.
 
-Google's Timeline says Timeline is off by default for the Google Account and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If backup is on, Maps saves an encrypted copy on Google's servers. You can delete Timeline data. This page does not call one design the private one. It states the controls the two pages actually describe.
+Google says Timeline is off by default for the Google Account and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If backup is on, Maps saves an encrypted copy on Google's servers. You can delete Timeline data. This page does not call one design the private one. It states the controls the two companies actually describe.
 
 Who should use which
 
@@ -154,7 +154,7 @@ export const GOOGLE_MAPS_VS_APPLE_MAPS: EditorialComparison = buildEditorialComp
       slug: APPLE,
       name: "Apple Maps",
       shortDesc:
-        "The built-in Maps app on Apple devices, with offline maps in select areas and a published privacy page.",
+        "The built-in Maps app on Apple devices, with offline maps in select areas and Apple's privacy wording.",
       imageUrl: null,
       entityType: "product",
       position: 1,
@@ -266,7 +266,7 @@ export const GOOGLE_MAPS_VS_APPLE_MAPS: EditorialComparison = buildEditorialComp
       GOOGLE,
       APPLE,
       "Google Maps Help documents search, stops, and incident reports on CarPlay.",
-      "Apple's Maps page describes CarPlay as Maps behind the wheel. The EV guide includes a CarPlay setup."
+      "Apple describes CarPlay as Maps behind the wheel. The EV guide includes a CarPlay setup."
     ),
     textAttr(
       "privacy",

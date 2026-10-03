@@ -50,7 +50,7 @@ const FAQS = [
   {
     question: "Where is Stephen Curry listed?",
     answer:
-      "Basketball-Reference lists the Golden State Warriors. Experience there is 17 years. The 2025-26 awards cell is All-Star. Stats as of October 3, 2026, his page has no 2026-27 regular-season game log. A table is labeled 2026-27 Projection, and this comparison does not quote it.",
+      "Basketball-Reference lists the Golden State Warriors. Experience there is 17 years. The 2025-26 awards cell is All-Star. Basketball-Reference has no 2026-27 regular-season game log for Curry. A table is labeled 2026-27 Projection, and this comparison does not quote it.",
   },
   {
     question: "Does this page predict 2026-27?",
@@ -65,7 +65,7 @@ const VERDICT = `Career per game: LeBron 26.8 points, 7.5 rebounds, and 7.4 assi
 
 Championships on the honors lists: 4 and 4.
 
-2026-27 season: LeBron is listed with the 76ers. Curry is listed with the Warriors. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
+2026-27 season: Basketball-Reference lists LeBron with the 76ers. Basketball-Reference lists Curry with the Warriors. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
 
 const EXPERT_ANALYSIS = `LeBron James's career line is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. Stephen Curry's is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games, totaling 26,528 points. In 2025-26 LeBron averaged 20.9 points in 60 games and Curry averaged 26.6 points in 43 games. This page does not pick a winner.
 
@@ -191,7 +191,7 @@ const BUILT = buildEditorialComparison({
     winnerReason:
       "No page-level winner and no 2026-27 prediction. The career rows and the 2025-26 lines are finished results.",
     keyFact:
-      "LeBron 26.8 points in 1,622 games and 20.9 in 2025-26. Curry 24.8 points in 1,069 games and 26.6 in 2025-26. LeBron is listed with the 76ers. Curry is listed with the Warriors.",
+      "LeBron 26.8 points in 1,622 games and 20.9 in 2025-26. Curry 24.8 points in 1,069 games and 26.6 in 2025-26. Basketball-Reference lists LeBron with the 76ers. Basketball-Reference lists Curry with the Warriors.",
   },
   citationStats: {
     sourceCount: 3,
