@@ -1015,9 +1015,16 @@ export default async function BlogPostPage({
               {/* Google Preferred Sources — articles are what Top Stories
                   surfaces, so the share box is where the ask belongs. Google's
                   script (loaded in the head) hydrates this div; it stays empty
-                  and collapses if the script is blocked. */}
+                  and collapses if the script is blocked. suppressHydrationWarning:
+                  publisher.js adds data-initialized and aria-live before React
+                  hydrates this empty div. */}
               <div className="mt-3">
-                <div google-add-preferred-source-btn="" data-lang="en" data-theme="light"></div>
+                <div
+                  google-add-preferred-source-btn=""
+                  data-lang="en"
+                  data-theme="light"
+                  suppressHydrationWarning
+                />
               </div>
             </div>
           </section>

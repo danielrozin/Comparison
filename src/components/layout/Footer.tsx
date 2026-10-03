@@ -51,9 +51,16 @@ export function Footer() {
                 theme; Google localizes the label from the reader's browser.
                 The div stays empty until news.google.com's script (loaded in
                 the head) hydrates it, so there is no layout shift or dead UI
-                if the script is blocked. */}
+                if the script is blocked. That script stamps data-initialized
+                and aria-live before React hydrates; suppress that attribute
+                mismatch so it does not warn in the console. */}
             <div className="mb-3 min-h-0" aria-hidden="false">
-              <div google-add-preferred-source-btn="" data-lang="en" data-theme="dark"></div>
+              <div
+                google-add-preferred-source-btn=""
+                data-lang="en"
+                data-theme="dark"
+                suppressHydrationWarning
+              />
             </div>
             {/* Trust badges */}
             <div className="flex items-center gap-3">

@@ -6,6 +6,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
   type ReactNode,
 } from "react";
 import { getActiveExperiments } from "./config";
@@ -49,9 +50,13 @@ function hashString(str: string): number {
   return Math.abs(hash);
 }
 
-/** Stable visitor ID persisted in localStorage for deterministic assignment. */
+/**
+ * Stable visitor ID persisted in localStorage.
+ * Call only from an effect. During render, `window` is missing on the server
+ * and present in the browser, so a render-time id would assign a different
+ * variant on each side and throw a hydration mismatch (React #418).
+ */
 function getVisitorId(): string {
-  if (typeof window === "undefined") return "server";
   const key = "ab_visitor_id";
   let id = localStorage.getItem(key);
   if (!id) {
@@ -112,29 +117,29 @@ export function ExperimentProvider({
   children,
   initialCookie,
 }: ExperimentProviderProps) {
-  // Parse whatever the server already knows from the cookie
+  // Cookie assignments only. Resolving a new variant needs the browser
+  // visitor id, which the server does not have. Doing that during render
+  // made the first client render disagree with the HTML (React #418 on
+  // pages whose copy depends on the variant, including -vs- blog posts).
   const serverAssignments = useMemo(
     () => (initialCookie ? parseCookie(initialCookie) : {}),
     [initialCookie]
   );
-
-  // Resolve: keep existing assignments, add new ones for active experiments
-  const assignments = useMemo(
-    () => resolveAssignments(serverAssignments),
-    [serverAssignments]
-  );
+  const [assignments, setAssignments] = useState(serverAssignments);
 
   // Persist to cookie & fire GA4 events (client-only, once)
   const firedRef = useRef(false);
   useEffect(() => {
-    writeCookie(assignments);
+    const resolved = resolveAssignments(serverAssignments);
+    setAssignments(resolved);
+    writeCookie(resolved);
 
     if (firedRef.current) return;
     firedRef.current = true;
 
     const active = getActiveExperiments();
     for (const exp of active) {
-      const assignment = assignments[exp.id];
+      const assignment = resolved[exp.id];
       if (assignment) {
         trackEvent("experiment_view", {
           experiment_id: exp.id,
@@ -143,7 +148,7 @@ export function ExperimentProvider({
         });
       }
     }
-  }, [assignments]);
+  }, [serverAssignments]);
 
   return (
     <ExperimentContext.Provider value={assignments}>
