@@ -14,10 +14,10 @@ function run(path: string) {
 
 describe("unknown subcategory 404 rewrite", () => {
   it("rewrites a known category with an unknown subcategory to the real 404", () => {
-    expect(isUnknownSubcategoryPath("/category/products/ereaders")).toBe(true);
+    expect(isUnknownSubcategoryPath("/category/products/not-a-subcategory")).toBe(true);
     expect(isKnownCategorySlug("__not-a-category__")).toBe(false);
 
-    const response = run("/category/products/ereaders");
+    const response = run("/category/products/not-a-subcategory");
     expect(response.headers.get("x-middleware-rewrite")).toContain(UNKNOWN_CATEGORY_404_REWRITE);
     expect(response.headers.get("x-middleware-next")).toBeNull();
     expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
