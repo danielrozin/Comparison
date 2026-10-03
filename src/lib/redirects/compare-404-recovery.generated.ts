@@ -248,6 +248,7 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "kevin-durant-match-player-stats-vs-lebron-james": "durant-vs-lebron",
   "lebron-james-match-player-stats-vs-kevin-durant": "durant-vs-lebron",
   // Batch 5 name orders and -match-player-stats forms.
+  // The hub hrefs are these canonical slugs, so the pages are not redirect sources.
   // Confirmed 2026-10-03 on the live site, sitemap/0.xml through
   // sitemap/images.xml, and the repo: none of these slugs is a 200
   // or a sitemap URL. Each is a 404, or a 301 whose alphabetical
