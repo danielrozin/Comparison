@@ -35,8 +35,8 @@ export const DEAD_REDIRECT_SOURCES_DAN2045: string[] = [
   "cloudflare-vs-aws",
   // -> airtable-vs-coda (archived); source is archived
   "coda-vs-airtable",
-  // -> binance-vs-coinbase (archived); source is archived
-  "coinbase-vs-binance",
+  // coinbase-vs-binance is a live editorial page again (2026-10-03).
+  // The old hop to archived binance-vs-coinbase stays deleted.
   // -> codeium-vs-continue (archived); source is archived
   "continue-vs-codeium",
   // -> beehiiv-vs-convertkit (archived); source is archived
