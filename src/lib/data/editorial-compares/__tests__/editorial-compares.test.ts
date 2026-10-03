@@ -2,9 +2,10 @@ import { describe, it, expect } from "vitest";
 import { comparisonPageSchema } from "@/lib/seo/schema";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
 import { findSelfContradictions } from "@/lib/services/numeric-claim-guard";
-import { isDegenerateComparisonSlug } from "@/lib/utils/slugify";
-import type { ComparisonPageData } from "@/types";
+import { isDegenerateComparisonSlug, sortComparisonSlug } from "@/lib/utils/slugify";
+import { canonicalRequestedComparisonSlug } from "@/lib/parse-comparison-query";
 import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
+import type { ComparisonPageData } from "@/types";
 import {
   appendEditorialRelatedLinks,
   getEditorialComparison,
@@ -1553,5 +1554,146 @@ describe("NBA 2026-27 new compares", () => {
     ]) {
       expect(getConsolidatedCompareSlug(slug)).toBeNull();
     }
+  });
+});
+
+const NBA_BATCH_2 = [
+  {
+    slug: "oklahoma-city-thunder-vs-spurs",
+    title: "Spurs vs Thunder: 2026 West Finals",
+    entities: ["oklahoma-city-thunder", "san-antonio-spurs"],
+    faqs: [
+      "Who won the 2026 Western Conference Finals, the Spurs or the Thunder?",
+      "What was the score of Game 7 of the 2026 Western Conference Finals?",
+      "When do the Thunder play the Spurs next?",
+      "Has the 2026-27 season started for the Thunder and the Spurs?",
+      "Where is the 2026 Spurs vs Thunder series documented?",
+      "Does this page predict the October 20 Spurs vs Thunder game?",
+    ],
+  },
+  {
+    slug: "knicks-vs-spurs",
+    title: "Knicks vs Spurs: Rivalry and Finals",
+    entities: ["new-york-knicks", "san-antonio-spurs"],
+    faqs: [
+      "Who won the 2026 NBA Finals between the Knicks and the Spurs?",
+      "Who won the 1999 NBA Finals between the Spurs and the Knicks?",
+      "What is the Knicks vs Spurs head-to-head record?",
+      "How many times have the Knicks and the Spurs met in the NBA Finals?",
+      "Have the Knicks and the Spurs played in 2026-27?",
+      "Does this page predict the next Knicks vs Spurs game?",
+    ],
+  },
+  {
+    slug: "flagg-vs-wembanyama",
+    title: "Flagg vs Wembanyama: Careers",
+    entities: ["cooper-flagg", "victor-wembanyama"],
+    faqs: [
+      "Is Cooper Flagg the reigning Rookie of the Year?",
+      "What are Victor Wembanyama's career averages?",
+      "Which honors does Basketball-Reference list for Wembanyama?",
+      "What did Cooper Flagg average as a rookie?",
+      "Have Flagg and Wembanyama played in 2026-27?",
+      "Does this page say who is the better player?",
+    ],
+  },
+] as const;
+
+describe("NBA batch 2: Spurs vs Thunder, Knicks vs Spurs, Flagg vs Wembanyama", () => {
+  it("publishes the shell canonical slugs with no page-level winner", () => {
+    expect(canonicalRequestedComparisonSlug("spurs-vs-oklahoma-city-thunder")).toBe(
+      "oklahoma-city-thunder-vs-spurs"
+    );
+    expect(canonicalRequestedComparisonSlug("spurs-vs-knicks")).toBe("knicks-vs-spurs");
+    expect(sortComparisonSlug("wembanyama-vs-flagg")).toBe("flagg-vs-wembanyama");
+    for (const from of [
+      "spurs-vs-oklahoma-city-thunder",
+      "oklahoma-city-thunder-vs-spurs",
+      "wembanyama-vs-flagg",
+      "flagg-vs-wembanyama",
+      "spurs-vs-knicks",
+      "knicks-vs-spurs",
+    ]) {
+      expect(getConsolidatedCompareSlug(from), from).toBeNull();
+    }
+
+    for (const item of NBA_BATCH_2) {
+      const page = getEditorialComparison(item.slug)!;
+      expect(isEditorialCompareSlug(item.slug)).toBe(true);
+      expect(page.metadata.status).toBe("published");
+      expect(page.schemaMarkup).toBeUndefined();
+      expect(page.entities.map((entity) => entity.slug)).toEqual([...item.entities]);
+      expect(page.quickAnswer?.winnerName).toBeNull();
+      expect(page.shortAnswer).toBe(page.quickAnswer?.tldr);
+      expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+      expect(page.faqs.map((faq) => faq.question)).toEqual([...item.faqs]);
+      expect(faqQuestions(page)).toEqual([...item.faqs]);
+      expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(item.slug);
+      const title = buildPageTitle(page.metadata.metaTitle || page.title);
+      const description = clampDescription(page.metadata.metaDescription);
+      expect(title, item.slug).toBe(`${item.title} | A Versus B`);
+      expect(title.length, title).toBeLessThanOrEqual(60);
+      expect(description.length, description).toBeGreaterThanOrEqual(70);
+      expect(description.length, description).toBeLessThanOrEqual(160);
+      expect(findSelfContradictions(page)).toEqual([]);
+      const text = pageText(page);
+      expect(text).toContain("Stats as of October 3, 2026");
+      expect(text).not.toMatch(/52-30|52–30/);
+      expect(text).not.toMatch(/projected winner|will win|favorite to|odds/i);
+      expect(text).not.toMatch(/\b29\.1\b|\b23\.0\b/);
+      expect(text).not.toMatch(/\/entity\/(cooper-flagg|victor-wembanyama|dallas-mavericks)/);
+      const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
+      expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    }
+  });
+
+  it("keeps the finished 2026 West Finals and the October 20 tip time on the Thunder page", () => {
+    const page = getEditorialComparison("oklahoma-city-thunder-vs-spurs")!;
+    const text = pageText(page);
+    expect(text).toContain("4-3");
+    expect(text).toContain("111");
+    expect(text).toContain("9:30 pm ET");
+    expect(text).toContain("October 20, 2026");
+    expect(page.resources?.map((resource) => resource.url)).toEqual([
+      "https://www.basketball-reference.com/playoffs/NBA_2026.html",
+      "https://www.nba.com/games?date=2026-10-20",
+      "/entity/oklahoma-city-thunder",
+      "/entity/san-antonio-spurs",
+    ]);
+    const october = page.attributes.find((attr) => attr.slug === "oct-20");
+    expect(october?.values.every((value) => value.winner !== true)).toBe(true);
+  });
+
+  it("records both Finals and the fetched head-to-head on the Knicks page", () => {
+    const page = getEditorialComparison("knicks-vs-spurs")!;
+    const text = pageText(page);
+    expect(text).toContain("4-1");
+    expect(text).toContain("1999");
+    expect(text).toContain("47");
+    expect(text).toContain("60");
+    expect(text).toContain("107");
+    expect(text).toContain("not captioned regular season");
+    expect(page.citationStats?.sources.map((source) => source.url)).toEqual([
+      "https://www.basketball-reference.com/playoffs/NBA_2026.html",
+      "https://www.basketball-reference.com/playoffs/NBA_1999.html",
+      "https://www.basketball-reference.com/teams/NYK/head2head.html",
+      "https://www.basketball-reference.com/teams/SAS/head2head.html",
+    ]);
+  });
+
+  it("lists Flagg's 2025-26 Rookie of the Year and Wembanyama's career line", () => {
+    const page = getEditorialComparison("flagg-vs-wembanyama")!;
+    const text = pageText(page);
+    expect(text).toContain("2025-26 Rookie of the Year");
+    expect(text).toContain("Dallas");
+    expect(text).toContain("23.4");
+    expect(text).toContain("3.5 blocks");
+    expect(text).toContain("Defensive Player of the Year");
+    expect(page.resources?.map((resource) => resource.url)).toEqual([
+      "https://www.basketball-reference.com/players/f/flaggco01.html",
+      "https://www.basketball-reference.com/players/w/wembavi01.html",
+      "/entity/san-antonio-spurs",
+    ]);
   });
 });

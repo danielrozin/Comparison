@@ -18,6 +18,9 @@ import { ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000 } from "./anker-solix-sola
 import { IPHONE_17_PRO_VS_IPHONE_18_PRO } from "./iphone-17-pro-vs-iphone-18-pro";
 import { KNICKS_VS_76ERS } from "./knicks-vs-76ers";
 import { SGA_VS_WEMBANYAMA } from "./shai-gilgeous-alexander-vs-victor-wembanyama";
+import { OKLAHOMA_CITY_THUNDER_VS_SPURS } from "./oklahoma-city-thunder-vs-spurs";
+import { KNICKS_VS_SPURS } from "./knicks-vs-spurs";
+import { FLAGG_VS_WEMBANYAMA } from "./flagg-vs-wembanyama";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -53,6 +56,9 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [IPHONE_17_PRO_VS_IPHONE_18_PRO.slug]: IPHONE_17_PRO_VS_IPHONE_18_PRO,
   [KNICKS_VS_76ERS.slug]: KNICKS_VS_76ERS,
   [SGA_VS_WEMBANYAMA.slug]: SGA_VS_WEMBANYAMA,
+  [OKLAHOMA_CITY_THUNDER_VS_SPURS.slug]: OKLAHOMA_CITY_THUNDER_VS_SPURS,
+  [KNICKS_VS_SPURS.slug]: KNICKS_VS_SPURS,
+  [FLAGG_VS_WEMBANYAMA.slug]: FLAGG_VS_WEMBANYAMA,
 };
 
 /**
