@@ -24,6 +24,7 @@ import { BlogInlineCompareCtas } from "../BlogInlineCompareCtas";
 import {
   MACBOOK_AIR_WEIGHT_BLOG_SLUG,
   MACBOOK_PRO_WEIGHT_BLOG_SLUG,
+  BEST_TANKS_BLOG_SLUG,
   NAVIGATION_APPS_BLOG_SLUG,
   ORGANIC_LANDER_COMPARES,
   selectOrganicLanderCompare,
@@ -108,7 +109,7 @@ describe("cashier's check compare targets", () => {
 
 describe("ROO-127 organic lander compare targets", () => {
   it("uses three canonical slugs that match the blog fallbacks", () => {
-    expect(ORGANIC_LANDER_COMPARES).toHaveLength(3);
+    expect(ORGANIC_LANDER_COMPARES).toHaveLength(4);
     for (const lander of ORGANIC_LANDER_COMPARES) {
       expect(lander.links).toHaveLength(3);
       expect(BLOG_COMPARE_FALLBACKS[lander.blogSlug]).toEqual(
@@ -170,6 +171,7 @@ describe("ROO-127 organic lander compare targets", () => {
       MACBOOK_PRO_WEIGHT_BLOG_SLUG,
       MACBOOK_AIR_WEIGHT_BLOG_SLUG,
       NAVIGATION_APPS_BLOG_SLUG,
+      BEST_TANKS_BLOG_SLUG,
     ]).toEqual(ORGANIC_LANDER_COMPARES.map((lander) => lander.blogSlug));
   });
 });

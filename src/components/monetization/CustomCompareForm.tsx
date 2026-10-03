@@ -2,24 +2,33 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { CustomCompareEscapes } from "@/components/monetization/CustomCompareEscapes";
+import type { CustomCompareEscape } from "@/lib/data/custom-compare-escapes";
 import { canonicalComparisonSlug } from "@/lib/parse-comparison-query";
 import { lastSearchAttachment } from "@/lib/search/search-session";
-import { trackMatchupRequested } from "@/lib/utils/analytics";
+import {
+  trackCustomCompareError,
+  trackCustomCompareGated,
+  trackMatchupRequested,
+} from "@/lib/utils/analytics";
 
 /**
  * Asks for the two sides plus the checkout email, then posts to the gate.
- * A 403 is shown as a pricing link — the form does not pretend the request
- * went through.
+ * A refusal or a backend failure keeps the request unsent and shows the
+ * same live comparisons and pricing link as the top of the page.
  */
 export function CustomCompareForm({
   initialA = "",
   initialB = "",
   requestSlug = "",
+  escapes = [],
 }: {
   initialA?: string;
   initialB?: string;
   /** Slug from /custom-compare?slug=, when the visitor came from a missing page. */
   requestSlug?: string;
+  /** Live published comparisons and the pricing CTA, repeated when submit fails. */
+  escapes?: readonly CustomCompareEscape[];
 }) {
   const [entityA, setEntityA] = useState(initialA);
   const [entityB, setEntityB] = useState(initialB);
@@ -27,7 +36,6 @@ export function CustomCompareForm({
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [upgradeUrl, setUpgradeUrl] = useState<string | null>(null);
   const [billingUrl, setBillingUrl] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -35,7 +43,6 @@ export function CustomCompareForm({
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setUpgradeUrl(null);
     setBillingUrl(null);
     setSuccess(null);
 
@@ -62,15 +69,28 @@ export function CustomCompareForm({
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok || data.ok === false) {
-        setError(data.error || "Something went wrong. Please try again.");
-        if (typeof data.upgradeUrl === "string") setUpgradeUrl(data.upgradeUrl);
+        const code =
+          typeof data.code === "string" && data.code
+            ? data.code
+            : res.status === 503
+              ? "unavailable"
+              : "request_failed";
+        if (code === "upgrade_required") trackCustomCompareGated(code);
+        else trackCustomCompareError(code);
+        setError(
+          data.error ||
+            (code === "unavailable"
+              ? "We could not check membership just now. Nothing was submitted. Please try again in a minute."
+              : "Something went wrong. Nothing was submitted. Please try again."),
+        );
         if (typeof data.billingUrl === "string") setBillingUrl(data.billingUrl);
         return;
       }
 
       setSuccess(data.message || "Request received.");
     } catch {
-      setError("Failed to submit. Please try again.");
+      trackCustomCompareError("network");
+      setError("Failed to submit. Nothing was sent. Please try again in a minute.");
     } finally {
       setLoading(false);
     }
@@ -151,22 +171,16 @@ export function CustomCompareForm({
       </div>
 
       {error && (
-        <div role="alert" className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+        <div role="alert" className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950 space-y-3">
           <p>{error}</p>
-          {(upgradeUrl || billingUrl) && (
-            <p className="mt-2 flex flex-wrap gap-3">
-              {upgradeUrl && (
-                <Link href={upgradeUrl} className="font-semibold text-primary-700 underline-offset-2 hover:underline">
-                  See Pro pricing
-                </Link>
-              )}
-              {billingUrl && (
-                <Link href={billingUrl} className="font-semibold text-primary-700 underline-offset-2 hover:underline">
-                  Manage billing
-                </Link>
-              )}
+          {billingUrl && (
+            <p>
+              <Link href={billingUrl} className="font-semibold text-primary-700 underline-offset-2 hover:underline">
+                Manage billing
+              </Link>
             </p>
           )}
+          <CustomCompareEscapes links={escapes} tone="light" />
         </div>
       )}
 

@@ -15,6 +15,7 @@ import { IPHONE_17_VS_IPHONE_AIR } from "./iphone-17-vs-iphone-air";
 import { CHROME_VS_SAFARI } from "./chrome-vs-safari";
 import { IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA } from "./iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
 import { ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000 } from "./anker-solix-solarbank-4-pro-vs-ecoflow-stream-5000";
+import { IPHONE_17_PRO_VS_IPHONE_18_PRO } from "./iphone-17-pro-vs-iphone-18-pro";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -47,6 +48,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CHROME_VS_SAFARI.slug]: CHROME_VS_SAFARI,
   [IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA.slug]: IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA,
   [ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000.slug]: ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000,
+  [IPHONE_17_PRO_VS_IPHONE_18_PRO.slug]: IPHONE_17_PRO_VS_IPHONE_18_PRO,
 };
 
 /**

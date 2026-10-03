@@ -49,13 +49,12 @@ export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
     "mercedes-vs-lexus",
   ],
   "best-cloud-platforms-2026": ["aws-vs-azure", "aws-vs-azure-vs-gcp"],
-  // tanks: abrams/leopard compares 404 live (2026-09-23). Keep them so a
-  // future publish is picked up, and offer the live military compare so the
-  // lander is not left with zero /compare links.
+  // ROO-133: Abrams / T-90 / Leopard compares 404. These three are the
+  // published, self-canonical army pages the live-slug filter keeps.
   "best-tanks-world-2026-abrams-vs-t-90-vs-leopard": [
-    "m1-abrams-vs-t-90",
-    "abrams-tank-vs-leopard-2",
     "us-military-vs-china-military",
+    "russia-vs-usa",
+    "marines-vs-army",
   ],
   // workspace-vs-365 compares 404 live; slack/zoom are published workplace tools.
   "google-workspace-alternatives-2026": [

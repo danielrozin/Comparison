@@ -1361,3 +1361,111 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
     expect(page().quickAnswer?.winnerName).toBeNull();
   });
 });
+
+const PRO_GEN_SLUG = "iphone-17-pro-vs-iphone-18-pro";
+const PRO_GEN_FAQS = [
+  "Is the iPhone 18 Pro worth the extra over the iPhone 17 Pro?",
+  "Which has better battery life, iPhone 17 Pro or iPhone 18 Pro?",
+  "Which chip is in the iPhone 18 Pro and the iPhone 17 Pro?",
+  "Should I upgrade from an iPhone 13 mini to the 17 Pro or the 18 Pro?",
+  "Should I get a Pro Max instead of the iPhone 17 Pro or 18 Pro?",
+  "How does a trade-in change the iPhone 17 Pro versus 18 Pro price?",
+];
+const PRO_GEN_QUICK_ANSWER =
+  "Choose the iPhone 18 Pro if you keep a phone for years and want Apple's newest Pro chip and battery ratings. Apple lists an A20 Pro chip, up to 36 hours of video playback, and up to 24 hours of typical use. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Apple Support lists an A19 Pro chip and up to 33 hours of video playback, and that page does not list a typical-use hour. This page does not crown a winner.";
+
+describe("ROO-138 iPhone 17 Pro vs iPhone 18 Pro", () => {
+  const page = () => getEditorialComparison(PRO_GEN_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(PRO_GEN_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(PRO_GEN_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().schemaMarkup).toBeUndefined();
+    expect(page().entities.map((entity) => entity.slug)).toEqual([
+      "iphone-17-pro",
+      "iphone-18-pro",
+    ]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best when the carrier or street price is clearly lower",
+      "Best for a multi-year keep of the newest Pro chip and battery ratings",
+    ]);
+    expect(page().shortAnswer).toBe(PRO_GEN_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(PRO_GEN_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(PRO_GEN_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/Geekbench|AnTuTu|DXO/i);
+    const types = schemaNodes(page()).map((node) => node["@type"]).filter(Boolean);
+    expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    for (const schemaType of ["Article", "FAQPage", "BreadcrumbList"]) {
+      expect(types).toContain(schemaType);
+    }
+  });
+
+  it("keeps six FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(6);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(PRO_GEN_FAQS);
+    expect(faqQuestions(page())).toEqual(PRO_GEN_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(PRO_GEN_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites Apple, attributes the carrier quotes, and skips the noindex 18 Pro hub", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(5);
+    expect(page().citationStats?.lastResearched).toBe("2026-10-03");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-10-03/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.apple.com/iphone-18-pro/specs/",
+      "https://support.apple.com/en-us/125090",
+      "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+      "https://www.apple.com/shop/buy-iphone/iphone-18-pro",
+      "https://www.reddit.com/r/AppleWhatShouldIBuy/comments/1wv8num/17_pro_vs_18_pro/",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual([
+      ...urls,
+      "/entity/iphone-17-pro",
+    ]);
+    expect(page().resources?.map((resource) => resource.url).join("\n")).not.toMatch(
+      /\/entity\/iphone-18-pro/
+    );
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "iphone-17-vs-iphone-17-pro-vs-iphone-16-pro",
+      "iphone-17-pro-vs-pro-max",
+      "iphone-17-vs-iphone-air",
+    ]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("A20 Pro");
+    expect(pageText(page())).toContain("A19 Pro");
+    expect(pageText(page())).toContain("211 grams");
+    expect(pageText(page())).toContain("$1,199");
+    expect(pageText(page())).toContain("$15.99");
+    expect(pageText(page())).toContain("not a current price");
+    expect(pageText(page())).not.toMatch(/\$300/);
+    const playback = page().attributes.find((attr) => attr.slug === "playback");
+    expect(playback?.values.find((value) => value.entityId === "iphone-18-pro")?.winner).toBe(true);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+  });
+});
