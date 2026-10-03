@@ -4,6 +4,8 @@
  * Redis and without a real database.
  */
 
+import { AsyncLocalStorage } from "node:async_hooks";
+
 interface MemberRow {
   id: string;
   email: string;
@@ -33,6 +35,15 @@ interface EventRow {
   createdAt: Date;
 }
 
+interface BillingTokenRow {
+  tokenHash: string;
+  email: string;
+  stripeCustomerId: string;
+  expiresAt: Date;
+  usedAt: Date | null;
+  createdAt: Date;
+}
+
 function uniqueError(): Error {
   const err = new Error("Unique constraint failed");
   (err as Error & { code: string }).code = "P2002";
@@ -43,8 +54,21 @@ function createDb() {
   const members: MemberRow[] = [];
   const usage: UsageRow[] = [];
   const events: EventRow[] = [];
+  const billingTokens: BillingTokenRow[] = [];
+  const emailLockTails = new Map<string, Promise<void>>();
+  const txStorage = new AsyncLocalStorage<{ releases: Array<() => void> }>();
   let seq = 0;
-  const state = { enabled: true, failWrites: false };
+  const state = { enabled: true, failWrites: false, failBillingLock: "" };
+
+  function acquireEmailLock(email: string): Promise<() => void> {
+    const previous = emailLockTails.get(email) ?? Promise.resolve();
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    emailLockTails.set(email, previous.then(() => held));
+    return previous.then(() => release);
+  }
 
   function nextId(prefix: string) {
     seq += 1;
@@ -165,6 +189,47 @@ function createDb() {
         return { ...row, pairKeys: [...row.pairKeys] };
       },
     },
+    billingPortalToken: {
+      async create({
+        data,
+      }: {
+        data: {
+          tokenHash: string;
+          email: string;
+          stripeCustomerId: string;
+          expiresAt: Date;
+        };
+      }) {
+        if (billingTokens.some((row) => row.tokenHash === data.tokenHash)) throw uniqueError();
+        const row: BillingTokenRow = {
+          tokenHash: data.tokenHash,
+          email: data.email,
+          stripeCustomerId: data.stripeCustomerId,
+          expiresAt: data.expiresAt,
+          usedAt: null,
+          createdAt: new Date(),
+        };
+        billingTokens.push(row);
+        return { ...row };
+      },
+      async count({
+        where,
+      }: {
+        where?: { email?: string; createdAt?: { gte?: Date } };
+      }) {
+        const since = where?.createdAt?.gte?.getTime() ?? 0;
+        return billingTokens.filter((row) => {
+          if (where?.email && row.email !== where.email) return false;
+          return row.createdAt.getTime() >= since;
+        }).length;
+      },
+      async delete({ where }: { where: { tokenHash: string } }) {
+        const index = billingTokens.findIndex((row) => row.tokenHash === where.tokenHash);
+        if (index < 0) throw new Error("record not found");
+        const [row] = billingTokens.splice(index, 1);
+        return { ...row };
+      },
+    },
     comparisonRequest: {
       async upsert() {
         return { id: "req" };
@@ -176,6 +241,24 @@ function createDb() {
      */
     async $executeRaw(query: TemplateStringsArray, ...values: unknown[]) {
       const sql = Array.isArray(query) ? query.join(" ") : String(query);
+      if (sql.includes("pg_advisory_xact_lock")) {
+        // Prisma 5.22 cannot deserialize the void result of this function
+        // through $queryRaw (P2010). The real issuer uses $executeRaw.
+        if (state.failBillingLock) {
+          const err = new Error(state.failBillingLock);
+          (err as Error & { code: string }).code = "P2010";
+          throw err;
+        }
+        const email = String(values[0] ?? "");
+        const release = await acquireEmailLock(email);
+        const store = txStorage.getStore();
+        if (!store) {
+          release();
+          throw new Error("pg_advisory_xact_lock must run inside a transaction");
+        }
+        store.releases.push(release);
+        return 0;
+      }
       if (!sql.includes("array_append") || !sql.includes("pro_custom_compare_usage")) {
         throw new Error(`unexpected raw sql: ${sql}`);
       }
@@ -189,22 +272,57 @@ function createDb() {
       row.updatedAt = new Date();
       return 1;
     },
-    $transaction: async <T>(fn: (tx: unknown) => Promise<T>): Promise<T> => fn(undefined),
+    /**
+     * Atomic billing-link redeem. The advisory lock must not arrive here:
+     * $queryRaw throws P2010 on the void column pg_advisory_xact_lock returns.
+     */
+    async $queryRaw(query: TemplateStringsArray, ...values: unknown[]) {
+      const sql = Array.isArray(query) ? query.join(" ") : String(query);
+      if (sql.includes("pg_advisory_xact_lock")) {
+        throw new Error(
+          "pg_advisory_xact_lock must use $executeRaw; $queryRaw cannot deserialize void (P2010)"
+        );
+      }
+      if (!sql.includes("billing_portal_tokens") || !sql.includes("RETURNING")) {
+        throw new Error(`unexpected raw sql: ${sql}`);
+      }
+      const tokenHash = String(values[0] ?? "");
+      const now = new Date();
+      const row = billingTokens.find(
+        (item) => item.tokenHash === tokenHash && item.usedAt == null && item.expiresAt > now
+      );
+      if (!row) return [];
+      row.usedAt = now;
+      return [{ email: row.email, stripe_customer_id: row.stripeCustomerId }];
+    },
+    async $transaction<T>(fn: (tx: unknown) => Promise<T>): Promise<T> {
+      return txStorage.run({ releases: [] }, async () => {
+        try {
+          return await fn(client);
+        } finally {
+          const releases = txStorage.getStore()?.releases ?? [];
+          for (const release of releases) release();
+        }
+      });
+    },
   };
-  client.$transaction = (fn) => fn(client);
 
   return {
     client,
     members,
     usage,
     events,
+    billingTokens,
     state,
     reset() {
       members.splice(0, members.length);
       usage.splice(0, usage.length);
       events.splice(0, events.length);
+      billingTokens.splice(0, billingTokens.length);
+      emailLockTails.clear();
       state.enabled = true;
       state.failWrites = false;
+      state.failBillingLock = "";
     },
   };
 }
@@ -223,6 +341,11 @@ export function setMembershipDbFailWrites(fail: boolean): void {
   db.state.failWrites = fail;
 }
 
+/** Next advisory lock throws this message. Empty clears the failure. */
+export function setMembershipDbFailBillingLock(message: string): void {
+  db.state.failBillingLock = message;
+}
+
 export function getMembershipTestPrisma() {
   return db.state.enabled ? db.client : null;
 }
@@ -237,4 +360,8 @@ export function membershipTestEvents() {
 
 export function membershipTestUsage() {
   return db.usage;
+}
+
+export function membershipTestBillingTokens() {
+  return db.billingTokens;
 }

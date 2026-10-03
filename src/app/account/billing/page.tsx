@@ -20,7 +20,7 @@ export default async function BillingPage({
     <HubShell
       eyebrow="Account"
       title="Manage billing"
-      lede="Enter the email you paid with. If it has an active membership, we'll email a one-time link to Stripe's secure billing page so you can update your card or cancel. Canceling turns custom comparisons off the same day."
+      lede="Enter the email you paid with. If we can open billing for that email, we'll send a one-time link to Stripe so you can update your card, see invoices, or cancel. Canceling turns custom comparisons off the same day."
       breadcrumbLabel="Billing"
     >
       <BillingPortalForm linkInvalid={link === "invalid" || link === "unavailable"} />
