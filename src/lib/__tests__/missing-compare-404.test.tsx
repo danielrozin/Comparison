@@ -7,10 +7,16 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const getTrendingComparisons = vi.fn();
 const filterLiveCompareSlugs = vi.fn();
+const routerReplace = vi.hoisted(() => vi.fn());
+const router = vi.hoisted(() => ({
+  replace: routerReplace,
+  events: { on: vi.fn(), off: vi.fn() },
+}));
 
 vi.mock("next/head", () => ({
   default: ({ children }: { children: unknown }) => children,
@@ -33,10 +39,18 @@ vi.mock("next/link", () => ({
 }));
 
 vi.mock("next/router", () => ({
-  useRouter: () => ({
-    replace: vi.fn(),
-    events: { on: vi.fn(), off: vi.fn() },
-  }),
+  useRouter: () => router,
+}));
+
+vi.mock("@/components/comparison/OnDemandComparison", () => ({
+  OnDemandComparison: ({ slug }: { slug: string }) => (
+    <div data-testid="on-demand-builder" data-slug={slug} />
+  ),
+}));
+
+vi.mock("@/lib/utils/analytics", () => ({
+  trackCompareMissingViewed: vi.fn(),
+  trackMatchupRequested: vi.fn(),
 }));
 
 vi.mock("@/lib/services/comparison-service", () => ({
@@ -82,6 +96,80 @@ describe("generic app 404", () => {
     expect(source).toContain("NotFoundViewTracker");
     expect(source).toContain("index: false");
     expect(source).not.toContain('content="noindex, nofollow"');
+  });
+});
+
+const PLAIN_404 = /isn't a comparison we can build/;
+const REQUEST_COPY = /Pro members can request/;
+
+function setComparePath(slug: string) {
+  window.history.pushState({}, "", `/compare/${slug}`);
+}
+
+function mockAvailability(result: "ok" | "unavailable") {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => {
+      if (result === "ok") return { ok: true, json: async () => ({}) };
+      return { ok: false, json: async () => ({ unavailable: true }) };
+    }),
+  );
+}
+
+describe("missing-compare 404 client resolve", () => {
+  beforeEach(() => {
+    routerReplace.mockClear();
+    mockAvailability("ok");
+  });
+
+  it("builds the canonical slug on a reversed URL without redirecting", async () => {
+    setComparePath("laos-vs-cambodia");
+    render(<PagesNotFound generationEnabled popular={[]} />);
+
+    const builder = await screen.findByTestId("on-demand-builder");
+    expect(builder).toHaveAttribute("data-slug", "cambodia-vs-laos");
+    expect(screen.queryByText(REQUEST_COPY)).not.toBeInTheDocument();
+    expect(routerReplace).not.toHaveBeenCalled();
+    expect(window.location.pathname).toBe("/compare/laos-vs-cambodia");
+  });
+
+  it("keeps the request page when availability says unavailable", async () => {
+    setComparePath("laos-vs-cambodia");
+    mockAvailability("unavailable");
+    render(<PagesNotFound generationEnabled popular={[]} />);
+
+    expect(await screen.findByText(REQUEST_COPY)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Request this comparison" })).toBeInTheDocument();
+    expect(screen.queryByTestId("on-demand-builder")).not.toBeInTheDocument();
+  });
+
+  it("keeps the request page when generation is off", async () => {
+    setComparePath("laos-vs-cambodia");
+    render(<PagesNotFound generationEnabled={false} popular={[]} />);
+
+    expect(await screen.findByText(REQUEST_COPY)).toBeInTheDocument();
+    expect(screen.queryByTestId("on-demand-builder")).not.toBeInTheDocument();
+    expect(screen.queryByText(PLAIN_404)).not.toBeInTheDocument();
+  });
+
+  it.each(["asdfgh-vs-qwerty", "japan-vs-japan"])(
+    "shows a plain 404 for %s and does not open the builder",
+    async (slug) => {
+      setComparePath(slug);
+      render(<PagesNotFound generationEnabled popular={[]} />);
+
+      expect(await screen.findByText(PLAIN_404)).toBeInTheDocument();
+      expect(screen.queryByTestId("on-demand-builder")).not.toBeInTheDocument();
+      expect(screen.queryByRole("link", { name: "Request this comparison" })).not.toBeInTheDocument();
+    },
+  );
+
+  it("still builds an already-canonical missing pair", async () => {
+    setComparePath("canoe-vs-kayak");
+    render(<PagesNotFound generationEnabled popular={[]} />);
+
+    const builder = await screen.findByTestId("on-demand-builder");
+    expect(builder).toHaveAttribute("data-slug", "canoe-vs-kayak");
   });
 });
 

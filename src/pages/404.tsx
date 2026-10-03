@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { OnDemandComparison } from "@/components/comparison/OnDemandComparison";
-import { isUserGenerationEnabled } from "@/lib/generation/user-generation-guard";
+import { isUserGenerationEnabled, queryBlockReason } from "@/lib/generation/user-generation-guard";
 import {
   canRequestComparisonSlug,
   canonicalRequestedComparisonSlug,
@@ -19,13 +19,20 @@ import { parseComparisonSlug } from "@/lib/utils/slugify";
 
 /**
  * Pages Router 404. A missing two-entity /compare URL can show the on-demand
- * builder when USER_GENERATION_ENABLED is on. The HTTP status stays 404, and
- * _document already sends X-Robots-Tag: noindex. Generation starts in that
- * component after load, never while this HTML is rendered.
+ * builder when USER_GENERATION_ENABLED is on. A reverse or alias URL opens
+ * that builder for the alphabetical canonical slug and stays on the URL the
+ * visitor opened. There is no client redirect: sending the browser to the
+ * canonical form used to 301 into another 404. After generation the builder
+ * lands on the canonical URL, and the reversed URL 301s to it in one hop.
+ * The HTTP status stays 404, and _document already sends X-Robots-Tag:
+ * noindex. Generation starts in that component after load, never while this
+ * HTML is rendered.
  *
  * The flag off, and archived / draft / review slugs, keep the request copy.
+ * So does an availability check that says unavailable or fails to answer.
  * They must not promise a page we will not build, and they must not promise
- * a 24-hour turnaround.
+ * a 24-hour turnaround. Junk (self-compare, too-short side, or a query the
+ * generate route would refuse) is a plain 404.
  *
  * Search and popular comparisons are in this first render. They are not
  * fetched after hydration. The search form uses the same `not_found_form`
@@ -110,13 +117,26 @@ export default function PagesNotFound({
       }
       if (cancelled) return;
 
-      // Stay on the URL that 404'd. Redirecting the browser to the
-      // alphabetical slug repeats the old 301-into-a-404 when that page
-      // is not live. A real pair in the wrong order keeps the request
-      // shell here. Junk (self-compare, too-short side) does not.
+      // Stay on the URL that 404'd. Do not redirect the browser to the
+      // alphabetical slug: that repeats the old 301-into-a-404 when the
+      // page is not live. A reverse or alias pair opens the builder for
+      // the canonical slug. The generate route canonicalises and dedupes;
+      // after it finishes, the builder lands on that URL. Junk
+      // (self-compare, too-short side, nonsense) stays a plain 404.
       const canonical = canonicalRequestedComparisonSlug(slug);
-      if (canonical && canRequestComparisonSlug(slug)) {
-        setMode({ kind: "build", slug });
+      const names = canonical ? parseComparisonSlug(canonical) : null;
+      if (
+        names &&
+        queryBlockReason(
+          names.entities[0].replace(/-/g, " "),
+          names.entities[1].replace(/-/g, " "),
+        )
+      ) {
+        setMode({ kind: "plain", compareSlug: slug });
+        return;
+      }
+      if (canonical && canRequestComparisonSlug(canonical)) {
+        setMode({ kind: "build", slug: canonical });
         return;
       }
       if (canonical) {
