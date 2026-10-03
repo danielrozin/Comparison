@@ -33,6 +33,14 @@ export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
   "typescript-vs-java",
   "ts-vs-java",
   "java-vs-ts",
+  // Honda vs Ford. These 404s 301 in compare-404-recovery.generated.ts.
+  "ford-vs-honda",
+  "honda-motor-vs-ford-motor",
+  "ford-motor-vs-honda-motor",
+  "honda-motor-company-vs-ford-motor-company",
+  "ford-motor-company-vs-honda-motor-company",
+  "honda-vs-ford-motor",
+  "ford-motor-vs-honda",
   // 404 aliases for Microsoft Word vs LibreOffice. None was a catalog page.
   "libreoffice-vs-microsoft-word",
   "word-vs-libreoffice",
