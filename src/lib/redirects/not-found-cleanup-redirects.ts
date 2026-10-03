@@ -14,8 +14,4 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
   "iphone-vs-samsung": "iphone-vs-samsung-galaxy",
   "macbook-air-vs-macbook-pro-difference-2026-specs":
     "macbook-air-vs-macbook-pro-differences-2026-specs-battery-performance",
-  "sga-vs-wembanyama": "shai-gilgeous-alexander-vs-victor-wembanyama",
-  "wembanyama-vs-sga": "shai-gilgeous-alexander-vs-victor-wembanyama",
-  "knicks-vs-sixers": "knicks-vs-76ers",
-  "sixers-vs-knicks": "knicks-vs-76ers",
 };

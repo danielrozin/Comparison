@@ -5,6 +5,20 @@ import { NOT_FOUND_CLEANUP_CONSOLIDATIONS } from "../not-found-cleanup-redirects
 import { isKnownCategorySlug, isKnownSubcategorySlug } from "@/lib/seo/category-page-path";
 
 describe("404 cleanup compare redirects", () => {
+  it("leaves the NBA short aliases and Curry/LeBron slugs to the other batch", () => {
+    const ownedElsewhere = [
+      "sga-vs-wembanyama",
+      "wembanyama-vs-sga",
+      "knicks-vs-sixers",
+      "sixers-vs-knicks",
+      "curry-vs-lebron",
+      "stephen-curry-vs-lebron-james",
+    ];
+    for (const slug of ownedElsewhere) {
+      expect(NOT_FOUND_CLEANUP_CONSOLIDATIONS, slug).not.toHaveProperty(slug);
+    }
+  });
+
   it("sends each alias to its live target in one hop", () => {
     expect(Object.keys(NOT_FOUND_CLEANUP_CONSOLIDATIONS).length).toBeGreaterThan(0);
     for (const [from, to] of Object.entries(NOT_FOUND_CLEANUP_CONSOLIDATIONS)) {

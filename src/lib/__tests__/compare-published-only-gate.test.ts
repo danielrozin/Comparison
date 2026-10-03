@@ -196,7 +196,9 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
       if (
         slug === 'knicks-vs-76ers' ||
         slug === 'shai-gilgeous-alexander-vs-victor-wembanyama' ||
-        slug === 'flagg-vs-wembanyama'
+        slug === 'flagg-vs-wembanyama' ||
+        slug === 'oklahoma-city-thunder-vs-spurs' ||
+        slug === 'knicks-vs-spurs'
       ) {
         return comparison(slug, 'published')
       }
@@ -211,6 +213,12 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
     })
     expect(await run('wembanyama-vs-flagg')).toMatchObject({
       redirect: { destination: '/compare/flagg-vs-wembanyama', statusCode: 301 },
+    })
+    expect(await run('spurs-vs-oklahoma-city-thunder')).toMatchObject({
+      redirect: { destination: '/compare/oklahoma-city-thunder-vs-spurs', statusCode: 301 },
+    })
+    expect(await run('spurs-vs-knicks')).toMatchObject({
+      redirect: { destination: '/compare/knicks-vs-spurs', statusCode: 301 },
     })
     expect(generateComparison).not.toHaveBeenCalled()
   })

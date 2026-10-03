@@ -138,6 +138,8 @@ describe("on-demand canonical redirects do not loop live pages", () => {
       "knicks-vs-76ers",
       "shai-gilgeous-alexander-vs-victor-wembanyama",
       "flagg-vs-wembanyama",
+      "oklahoma-city-thunder-vs-spurs",
+      "knicks-vs-spurs",
     ]);
     expect(step("76ers-vs-knicks", live)).toEqual({ type: "redirect", to: "knicks-vs-76ers" });
     expect(step("victor-wembanyama-vs-shai-gilgeous-alexander", live)).toEqual({
@@ -148,6 +150,24 @@ describe("on-demand canonical redirects do not loop live pages", () => {
       type: "redirect",
       to: "flagg-vs-wembanyama",
     });
+    expect(step("spurs-vs-oklahoma-city-thunder", live)).toEqual({
+      type: "redirect",
+      to: "oklahoma-city-thunder-vs-spurs",
+    });
+    expect(step("spurs-vs-knicks", live)).toEqual({
+      type: "redirect",
+      to: "knicks-vs-spurs",
+    });
+    // One hop, and only because the destination is live. A missing pair stays put.
+    for (const slug of [
+      "76ers-vs-knicks",
+      "victor-wembanyama-vs-shai-gilgeous-alexander",
+      "wembanyama-vs-flagg",
+      "spurs-vs-oklahoma-city-thunder",
+      "spurs-vs-knicks",
+    ]) {
+      expect(step(slug, new Set()).type, slug).not.toBe("redirect");
+    }
   });
 });
 
