@@ -44,7 +44,12 @@ describe("Honda vs Ford", () => {
     expect(text).toContain("June 16, 1903");
     expect(text).toContain("Top Safety Pick+");
     expect(text).toContain("Mustang Mach-E");
-    expect(text).toContain("F-150 Lightning");
+    expect(text).toContain("June 11, 1959");
+    expect(text).toContain("Fathom");
+    expect(text).toContain("2027 E-Transit");
+    expect(text).not.toContain("F-150 Lightning");
+    expect(text).not.toContain("Escape Plug-In Hybrid");
+    expect(text).not.toContain("body-on-frame");
     expect(text).not.toMatch(/\$\d/);
     expect(text).not.toMatch(/safest|J\.D\. Power|JD Power/i);
     expect(page().citationStats?.sources.map((source) => source.url)).toEqual(
