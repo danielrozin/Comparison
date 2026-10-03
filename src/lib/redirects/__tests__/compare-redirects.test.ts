@@ -259,6 +259,21 @@ describe("COMPARE_REDIRECTS", () => {
       }
     });
 
+    it("301s both Michael Jordan / LeBron 404s to the live lebron-vs-jordan page", () => {
+      for (const from of ["michael-jordan-vs-lebron-james", "lebron-james-vs-michael-jordan"]) {
+        expect(getConsolidatedCompareSlug(from)).toBe("lebron-vs-jordan");
+        const hit = COMPARE_REDIRECTS.find((redirect) => redirect.source === `/compare/${from}`);
+        expect(hit?.destination).toBe("/compare/lebron-vs-jordan");
+        expect(hit?.statusCode).toBe(301);
+      }
+      expect(getConsolidatedCompareSlug("lebron-vs-jordan")).toBeNull();
+      expect(COMPARE_REDIRECTS.some((redirect) => redirect.source === "/compare/lebron-vs-jordan")).toBe(
+        false
+      );
+      expect(getConsolidatedCompareSlug("curry-vs-lebron")).toBeNull();
+      expect(getConsolidatedCompareSlug("kobe-vs-jordan")).toBeNull();
+    });
+
     it("every DAN-1800 entry is a genuine A-vs-B / B-vs-A ordering pair (same sorted key)", () => {
       const key = (s: string) =>
         s.split("-vs-").map((t) => t.trim()).sort().join("|");
