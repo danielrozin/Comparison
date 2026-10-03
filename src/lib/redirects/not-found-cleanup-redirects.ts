@@ -53,4 +53,6 @@ export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
   "libreoffice-vs-ms-word",
   "word-vs-libreoffice-writer",
   "libreoffice-writer-vs-word",
+  // 404 alias for Venmo vs Zelle. It was never a catalog page.
+  "zelle-vs-venmo",
 ]);

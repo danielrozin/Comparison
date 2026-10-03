@@ -348,4 +348,7 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "libreoffice-vs-ms-word": "microsoft-word-vs-libreoffice",
   "word-vs-libreoffice-writer": "microsoft-word-vs-libreoffice",
   "libreoffice-writer-vs-word": "microsoft-word-vs-libreoffice",
+  // Venmo vs Zelle. venmo-vs-zelle is the alphabetical survivor and is not a
+  // redirect source.
+  "zelle-vs-venmo": "venmo-vs-zelle",
 };

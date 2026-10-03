@@ -33,6 +33,7 @@ import { KOBE_BRYANT_VS_STEPH_CURRY } from "./kobe-bryant-vs-steph-curry";
 import { JAVA_VS_TYPESCRIPT } from "./java-vs-typescript";
 import { HONDA_VS_FORD } from "./honda-vs-ford";
 import { MICROSOFT_WORD_VS_LIBREOFFICE } from "./microsoft-word-vs-libreoffice";
+import { VENMO_VS_ZELLE } from "./venmo-vs-zelle";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -83,6 +84,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [JAVA_VS_TYPESCRIPT.slug]: JAVA_VS_TYPESCRIPT,
   [HONDA_VS_FORD.slug]: HONDA_VS_FORD,
   [MICROSOFT_WORD_VS_LIBREOFFICE.slug]: MICROSOFT_WORD_VS_LIBREOFFICE,
+  [VENMO_VS_ZELLE.slug]: VENMO_VS_ZELLE,
 };
 
 /**
