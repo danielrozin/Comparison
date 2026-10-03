@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { listBlogArticles } from "@/lib/services/blog-generator";
+import { cache } from "react";
+import { notFound } from "next/navigation";
+import { blogReadMinutes, listBlogArticles } from "@/lib/services/blog-generator";
+import {
+  BLOG_LIST_PAGE_SIZE,
+  blogListPageIsOutOfRange,
+  parseBlogListPage,
+} from "@/lib/blog/list-page";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
@@ -24,13 +31,31 @@ import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Blog — ${SITE_NAME}`)}&type=blog`;
 
+const loadPublishedBlogList = cache((category: string | undefined, page: number) =>
+  listBlogArticles({
+    category,
+    limit: BLOG_LIST_PAGE_SIZE,
+    offset: (page - 1) * BLOG_LIST_PAGE_SIZE,
+    status: "published",
+    includeReadTime: true,
+  }),
+);
+
+async function publishedBlogList(search: { page?: string; category?: string }) {
+  const page = parseBlogListPage(search.page);
+  if (page === "invalid") notFound();
+  const category = search.category && search.category !== "all" ? search.category : undefined;
+  const result = await loadPublishedBlogList(category, page);
+  if (blogListPageIsOutOfRange(page, result.total, BLOG_LIST_PAGE_SIZE)) notFound();
+  return { page, category, ...result };
+}
+
 export async function generateMetadata({
   searchParams,
 }: {
   searchParams: Promise<{ page?: string; category?: string }>;
 }): Promise<Metadata> {
-  const { page: pageParam } = await searchParams;
-  const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
+  const { page } = await publishedBlogList(await searchParams);
   const baseUrl = `${SITE_URL}/blog`;
   const canonicalUrl = page > 1 ? `${baseUrl}?page=${page}` : baseUrl;
 
@@ -110,11 +135,6 @@ const CATEGORIES = [
   "food",
   "automotive",
 ];
-
-function estimateReadTime(content: string): number {
-  const words = content.split(/\s+/).length;
-  return Math.max(1, Math.ceil(words / 200));
-}
 
 function formatDate(date: Date | string | null | undefined): string {
   if (!date) return "";
@@ -246,23 +266,12 @@ export default async function BlogPage({
   searchParams: Promise<{ category?: string; page?: string }>;
 }) {
   const params = await searchParams;
-  const category =
-    params.category && params.category !== "all"
-      ? params.category
-      : undefined;
-  const page = Math.max(1, parseInt(params.page || "1", 10));
-  const limit = 12;
-  const offset = (page - 1) * limit;
-
-  const [{ articles, total }, trending] = await Promise.all([
-    listBlogArticles({
-      category,
-      limit,
-      offset,
-      status: "published",
-    }),
+  const [{ page, category, articles, total }, trending] = await Promise.all([
+    publishedBlogList(params),
     getTrendingComparisons(10),
   ]);
+  const limit = BLOG_LIST_PAGE_SIZE;
+  const offset = (page - 1) * limit;
 
   const totalPages = Math.ceil(total / limit);
   const activeCategory = params.category || "all";
@@ -675,7 +684,7 @@ export default async function BlogPage({
                         </span>
                       )}
                       <span className="text-xs text-text-secondary">
-                        {estimateReadTime(article.content)} min read
+                        {blogReadMinutes(article)} min read
                       </span>
                     </div>
 

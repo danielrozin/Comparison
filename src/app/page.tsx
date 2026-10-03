@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CATEGORIES, SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
-import { listBlogArticles } from "@/lib/services/blog-generator";
+import { blogReadMinutes, listBlogArticles } from "@/lib/services/blog-generator";
 import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { SearchBox } from "@/components/home/SearchBox";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
@@ -63,7 +63,7 @@ export default async function HomePage() {
     getTrendingComparisons(10),
     getLatestComparisons(8),
     getTotalComparisonsCount(),
-    listBlogArticles({ limit: 3, status: "published" }),
+    listBlogArticles({ limit: 3, status: "published", includeReadTime: true }),
   ]);
   const blogArticles = blogResult.articles;
 
@@ -625,7 +625,7 @@ export default async function HomePage() {
                 "from-rose-500 to-pink-600",
               ];
               const grad = gradients[idx % gradients.length];
-              const readMins = Math.max(1, Math.ceil(article.content.split(/\s+/).length / 200));
+              const readMins = blogReadMinutes(article);
               return (
                 <li key={article.slug} className="flex">
                 <Link

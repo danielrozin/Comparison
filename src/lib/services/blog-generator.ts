@@ -5,6 +5,7 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
+import { Prisma } from "@prisma/client";
 import { getPrisma } from "@/lib/db/prisma";
 import { searchTavily } from "./tavily-service";
 import { BLOG_CATEGORIES, validateBlogCategory } from "@/lib/utils/categories";
@@ -28,6 +29,8 @@ export interface BlogArticle {
   sourceQuery?: string;
   sourceImpressions?: number;
   status?: string;
+  /** Word count from the listing query. The listing does not load `content`. */
+  contentWordCount?: number;
   publishedAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -696,9 +699,9 @@ type DbBlogRow = {
   slug: string;
   title: string;
   excerpt: string | null;
-  content: string;
+  content?: string;
   category: string | null;
-  tags: string[];
+  tags?: string[];
   metaTitle: string | null;
   metaDescription: string | null;
   relatedComparisonSlugs: string[];
@@ -709,13 +712,31 @@ type DbBlogRow = {
   viewCount: number;
 };
 
+/** Card, feed, and sitemap fields. `content` and `titleEmbedding` stay off this list. */
+const BLOG_LIST_SELECT = {
+  id: true,
+  slug: true,
+  title: true,
+  excerpt: true,
+  category: true,
+  tags: true,
+  metaTitle: true,
+  metaDescription: true,
+  relatedComparisonSlugs: true,
+  status: true,
+  publishedAt: true,
+  createdAt: true,
+  updatedAt: true,
+  viewCount: true,
+} as const;
+
 function mapDbBlogArticle(row: DbBlogRow): BlogArticle {
   return clampPublishedAt({
     id: row.id,
     slug: row.slug,
     title: row.title,
     excerpt: row.excerpt || "",
-    content: row.content,
+    content: row.content ?? "",
     category: row.category || "",
     tags: row.tags || [],
     metaTitle: row.metaTitle || row.title,
@@ -727,6 +748,49 @@ function mapDbBlogArticle(row: DbBlogRow): BlogArticle {
     updatedAt: row.updatedAt,
     viewCount: row.viewCount,
   });
+}
+
+/** Minutes shown on listing cards. Uses the stored word count when the body was not loaded. */
+export function blogReadMinutes(article: {
+  content?: string;
+  contentWordCount?: number;
+}): number {
+  const fromBody = article.content?.trim()
+    ? article.content.trim().split(/\s+/).filter(Boolean).length
+    : 0;
+  const words = fromBody > 0 ? fromBody : article.contentWordCount ?? 0;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+async function attachContentWordCounts(
+  prisma: { $queryRaw?: (query: Prisma.Sql) => Promise<{ slug: string; words: number }[]> },
+  articles: BlogArticle[],
+): Promise<BlogArticle[]> {
+  const slugs = articles.filter((article) => !article.content.trim()).map((article) => article.slug);
+  if (slugs.length === 0 || typeof prisma.$queryRaw !== "function") return articles;
+  try {
+    // POSIX class, not E'\s+'. In a Postgres E-string \s is the letter s.
+    const rows = await prisma.$queryRaw(
+      Prisma.sql`
+        SELECT slug,
+          CASE
+            WHEN content IS NULL OR btrim(content) = '' THEN 0
+            ELSE cardinality(regexp_split_to_array(btrim(content), '[[:space:]]+'))
+          END::int AS words
+        FROM blog_articles
+        WHERE slug IN (${Prisma.join(slugs)})
+      `,
+    );
+    const bySlug = new Map(rows.map((row) => [row.slug, Number(row.words)]));
+    return articles.map((article) =>
+      bySlug.has(article.slug)
+        ? { ...article, contentWordCount: bySlug.get(article.slug) }
+        : article,
+    );
+  } catch (error) {
+    console.warn("Blog listing word count failed:", error);
+    return articles;
+  }
 }
 
 async function repoArticlesMissingFromDb(
@@ -755,6 +819,13 @@ export async function listBlogArticles(params: {
   limit?: number;
   offset?: number;
   status?: string;
+  /** API clients that return the markdown body. Listing pages leave this off. */
+  includeContent?: boolean;
+  /**
+   * Word counts for the read-time label. Only /blog cards and the home
+   * cards display that label. Sitemaps and feeds leave this off.
+   */
+  includeReadTime?: boolean;
 }): Promise<{ articles: BlogArticle[]; total: number }> {
   const prisma = getPrismaClient();
   if (!prisma) {
@@ -767,25 +838,41 @@ export async function listBlogArticles(params: {
     return paginateMergedBlogArticles(filtered, offset, limit);
   }
 
-  const { category, limit = 12, offset = 0, status = "published" } = params;
+  const {
+    category,
+    limit = 12,
+    offset = 0,
+    status = "published",
+    includeContent = false,
+    includeReadTime = false,
+  } = params;
+  const countWords = includeReadTime && !includeContent;
 
   try {
     const where: Record<string, unknown> = { status };
     if (category) where.category = category;
+    const select = includeContent ? { ...BLOG_LIST_SELECT, content: true } : BLOG_LIST_SELECT;
 
     const extras = await repoArticlesMissingFromDb(prisma, status, category);
     if (extras.length > 0) {
       // Load the whole matching set, merge, sort once, then paginate.
+      // The select omits the markdown body unless a caller asked for it.
       const rows = await prisma.blogArticle.findMany({
         where,
         orderBy: { publishedAt: "desc" },
+        select,
       });
       const bySlug = new Map<string, BlogArticle>();
       for (const extra of extras) bySlug.set(extra.slug, extra);
       for (const row of rows) {
         bySlug.set(row.slug, mapDbBlogArticle(row));
       }
-      return paginateMergedBlogArticles([...bySlug.values()], offset, limit);
+      const page = paginateMergedBlogArticles([...bySlug.values()], offset, limit);
+      if (!countWords) return page;
+      return {
+        ...page,
+        articles: await attachContentWordCounts(prisma, page.articles),
+      };
     }
 
     const [articles, total] = await Promise.all([
@@ -794,13 +881,15 @@ export async function listBlogArticles(params: {
         orderBy: { publishedAt: "desc" },
         take: limit,
         skip: offset,
+        select,
       }),
       prisma.blogArticle.count({ where }),
     ]);
 
     if (total > 0) {
+      const mapped = articles.map(mapDbBlogArticle);
       return {
-        articles: articles.map(mapDbBlogArticle),
+        articles: countWords ? await attachContentWordCounts(prisma, mapped) : mapped,
         total,
       };
     }

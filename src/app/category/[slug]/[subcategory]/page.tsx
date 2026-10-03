@@ -3,8 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/utils/constants";
-import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
+import {
+  comparisonsForSubcategory,
+  mergeEditorialCategoryComparisons,
+  subcategoryPageSize,
+} from "@/lib/categories/hub-comparisons";
 import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { faqAnswerPlainText, faqAnswerSegments, getSubcategoryFaqs } from "@/lib/data/subcategory-faqs";
 import { StarRating } from "@/components/ui/StarRating";
@@ -12,8 +16,6 @@ import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
 import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-
-const ITEMS_PER_PAGE = 16;
 
 /** Turn [label](/path) marks in an FAQ answer into real links. Other answers stay text. */
 function FaqAnswerText({ answer }: { answer: string }) {
@@ -39,16 +41,6 @@ function FaqAnswerText({ answer }: { answer: string }) {
 interface PageProps {
   params: Promise<{ slug: string; subcategory: string }>;
   searchParams: Promise<{ page?: string; sort?: string; rating?: string }>;
-}
-
-function getSubcategoryComparisons(
-  comparisons: { slug: string; title: string; category?: string | null }[],
-  subcat: SubcategoryDef
-) {
-  return comparisons.filter((comp) => {
-    const lower = comp.title.toLowerCase() + " " + comp.slug.toLowerCase();
-    return subcat.keywords.some((kw) => lower.includes(kw));
-  });
 }
 
 function getComparisonRating(slug: string): number {
@@ -178,14 +170,16 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
   const ratingFilter = (sp.rating as RatingFilter) || "all";
 
   const { comparisons } = await getComparisonsByCategory(slug, 500);
-  const subcatComparisons = getSubcategoryComparisons(comparisons, subcat);
+  const categoryComparisons = mergeEditorialCategoryComparisons(slug, comparisons);
+  const subcatComparisons = comparisonsForSubcategory(categoryComparisons, subcat);
 
   // Apply filters and sorting
   const filtered = filterByRating(subcatComparisons, ratingFilter);
   const sorted = sortComparisons(filtered, sort);
   const total = sorted.length;
-  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-  const paginated = sorted.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  const pageSize = subcategoryPageSize(slug, subcategory);
+  const totalPages = Math.ceil(total / pageSize);
+  const paginated = sorted.slice((page - 1) * pageSize, page * pageSize);
 
   const subcatUrl = `${SITE_URL}/category/${slug}/${subcategory}`;
   const subcatOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`${subcat.name} Comparisons`)}&type=category`;

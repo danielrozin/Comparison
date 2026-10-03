@@ -46,7 +46,7 @@ const FAQS = [
   {
     question: "Did Lillard play in 2025-26?",
     answer:
-      "The 2025-26 row on his per-game table says he did not play, injured (Achilles). His last logged season on that table is 2024-25 with Milwaukee: 58 games, 24.9 points, 4.7 rebounds, and 7.1 assists. This page does not add a playing-status line that row does not print.",
+      "The 2025-26 row on his per-game table says he did not play, injured (Achilles). His last logged season is 2024-25 with Milwaukee: 58 games, 24.9 points, 4.7 rebounds, and 7.1 assists. This page does not add a playing-status line that row does not print.",
   },
   {
     question: "What did Morant average in 2025-26?",

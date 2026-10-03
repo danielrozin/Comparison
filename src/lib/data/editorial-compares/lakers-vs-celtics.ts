@@ -41,10 +41,10 @@ const FAQS = [
   {
     question: "How many times have they met in the Finals?",
     answer:
-      "There have been 12 Finals series between the Celtics and the Lakers, including the 1959 series against the Minneapolis Lakers (Basketball-Reference). The Celtics won 9. The Lakers won 3: 2010, 4-3; 1987, 4-2; and 1985, 4-2. Celtics wins on that table are 2008, 4-2; 1984, 4-3; 1969, 4-3; 1968, 4-2; 1966, 4-3; 1965, 4-1; 1963, 4-2; 1962, 4-3; and 1959, 4-0.",
+      "There have been 12 Finals series between the Celtics and the Lakers, including the 1959 series against the Minneapolis Lakers (Basketball-Reference). The Celtics won 9. The Lakers won 3: 2010, 4-3; 1987, 4-2; and 1985, 4-2. Celtics series wins are 2008, 4-2; 1984, 4-3; 1969, 4-3; 1968, 4-2; 1966, 4-3; 1965, 4-1; 1963, 4-2; 1962, 4-3; and 1959, 4-0.",
   },
   {
-    question: "Which Finals is the most recent on that table?",
+    question: "Which Finals meeting is the most recent?",
     answer:
       "2010. The series row is June 3 to June 17, 2010, Los Angeles Lakers 4, Boston Celtics 3. The table does not list a later Finals between these two franchises. The 2008 row is June 5 to June 17, Boston 4, Los Angeles 2.",
   },
@@ -122,7 +122,7 @@ const BUILT = buildEditorialComparison({
         "169 wins in the 304-game Lakers head-to-head row",
       ],
       cons: [
-        "Lost the 2010 Finals, 3-4, the latest meeting on that table",
+        "Lost the 2010 Finals, 3-4, the latest meeting between these franchises",
         "No 2026-27 meeting is quoted on this page",
       ],
       bestFor: "The 18 championships on the franchise header and the Finals series count",
@@ -148,7 +148,7 @@ const BUILT = buildEditorialComparison({
       winner: "b",
     },
     {
-      label: "Latest Finals on that table",
+      label: "Latest Finals meeting",
       entityAValue: "2010, won 4-3",
       entityBValue: "2010, lost 3-4",
       winner: "a",

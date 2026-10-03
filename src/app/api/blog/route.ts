@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   const status = searchParams.get("status") || "published";
   const format = searchParams.get("format") || "json";
 
-  const result = await listBlogArticles({ category, limit, offset, status });
+  const result = await listBlogArticles({ category, limit, offset, status, includeContent: true });
 
   const articles = (result.articles ?? []).map((a) => ({
     ...a,
