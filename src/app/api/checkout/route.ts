@@ -70,11 +70,16 @@ export async function POST(request: NextRequest) {
         "metadata[plan]": plan.id,
         "metadata[interval]": interval.interval,
         "metadata[src]": src,
-        // Copied onto the Subscription so customer.subscription.deleted
-        // can emit subscription_canceled with plan / interval / src.
+        // The Stripe account is shared. The webhook ignores sessions that
+        // are not tagged aversusb (unless the price id is one of ours).
+        "metadata[app]": "aversusb",
+        // Copied onto the Subscription so customer.subscription.* events
+        // stay tagged, and deleted can emit subscription_canceled with
+        // plan / interval / src.
         "subscription_data[metadata][plan]": plan.id,
         "subscription_data[metadata][interval]": interval.interval,
         "subscription_data[metadata][src]": src,
+        "subscription_data[metadata][app]": "aversusb",
         allow_promotion_codes: "true",
       });
       // Both fields ride back on checkout.session.completed. The webhook

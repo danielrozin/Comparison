@@ -9,7 +9,7 @@
  * STRIPE_PRICE_PRO is a different product and is ignored.
  */
 
-import { getPlan } from "@/lib/monetization/plans";
+import { PLANS } from "@/lib/monetization/plans";
 import { normalizeMemberEmail, upsertMember } from "@/lib/monetization/members";
 
 export const PRO_BACKFILL_SINCE = "2026-09-20T00:00:00.000Z";
@@ -20,6 +20,13 @@ const MAX_PAGES = 50;
 export interface ProPriceRef {
   priceId: string;
   plan: "pro";
+  interval: "month" | "year";
+}
+
+/** Consumer checkout price: Pro yearly/monthly or Business monthly. */
+export interface OwnedPriceRef {
+  priceId: string;
+  plan: "pro" | "business";
   interval: "month" | "year";
 }
 
@@ -107,17 +114,33 @@ export function pickLatestActiveSubscription<T extends CheckoutCandidate>(candid
   return pool.reduce((best, candidate) => (candidate.created > best.created ? candidate : best));
 }
 
+/**
+ * Every AversusB consumer price (Pro and Business). The API-key price
+ * STRIPE_PRICE_PRO is not one of these and must stay out of the set.
+ * One helper so the webhook and the billing portal cannot drift.
+ */
+export function aversusbOwnedPriceIds(
+  env: Record<string, string | undefined> = process.env
+): Map<string, OwnedPriceRef> {
+  const map = new Map<string, OwnedPriceRef>();
+  for (const plan of PLANS) {
+    for (const interval of plan.intervals) {
+      const priceId = (env[interval.stripePriceEnv] ?? "").replace(/[\r\n]+/g, "").trim();
+      if (!priceId) continue;
+      map.set(priceId, { priceId, plan: plan.id, interval: interval.interval });
+    }
+  }
+  return map;
+}
+
 /** Pro price ids from the consumer plans. Empty when those env vars are unset. */
 export function aversusbProPriceIds(
   env: Record<string, string | undefined> = process.env
 ): Map<string, ProPriceRef> {
   const map = new Map<string, ProPriceRef>();
-  const pro = getPlan("pro");
-  if (!pro) return map;
-  for (const interval of pro.intervals) {
-    const priceId = (env[interval.stripePriceEnv] ?? "").replace(/[\r\n]+/g, "").trim();
-    if (!priceId) continue;
-    map.set(priceId, { priceId, plan: "pro", interval: interval.interval });
+  for (const ref of aversusbOwnedPriceIds(env).values()) {
+    if (ref.plan !== "pro") continue;
+    map.set(ref.priceId, { priceId: ref.priceId, plan: "pro", interval: ref.interval });
   }
   return map;
 }
