@@ -99,7 +99,7 @@ export const SOFTWARE_SUBCATEGORIES: { slug: string; name: string; icon: string;
   { slug: "communication", name: "Communication & Collaboration", icon: "💬", keywords: ["slack", "teams", "zoom", "google meet", "discord", "loom", "webex", "confluence"] },
   { slug: "cloud-devtools", name: "Cloud & DevTools", icon: "☁️", keywords: ["aws", "azure", "google cloud", "vercel", "netlify", "github", "gitlab", "docker", "kubernetes", "terraform", "vscode", "intellij", "supabase", "firebase", "heroku", "digitalocean", "java vs", "java-vs", "typescript"] },
   { slug: "email-crm", name: "Email Marketing & CRM", icon: "📧", keywords: ["mailchimp", "hubspot", "salesforce", "klaviyo", "convertkit", "brevo", "constant contact", "pipedrive", "zoho", "zendesk", "intercom", "freshdesk", "crm", "email marketing"] },
-  { slug: "finance-accounting", name: "Finance & Accounting", icon: "💳", keywords: ["quickbooks", "xero", "freshbooks", "wave", "stripe", "paypal", "square", "accounting", "invoicing", "venmo", "cash app", "klarna"] },
+  { slug: "finance-accounting", name: "Finance & Accounting", icon: "💳", keywords: ["quickbooks", "xero", "freshbooks", "wave", "stripe", "paypal", "square", "accounting", "invoicing", "venmo", "cash app", "klarna", "zelle"] },
   { slug: "password-privacy", name: "Password & Privacy", icon: "🔑", keywords: ["1password", "lastpass", "bitwarden", "dashlane", "keeper", "protonmail", "signal", "telegram", "brave", "duckduckgo", "tor", "password manager", "privacy"] },
   { slug: "office-tools", name: "Office & Documents", icon: "📄", keywords: ["google docs", "excel", "word", "google sheets", "office 365", "microsoft 365", "libreoffice", "acrobat", "pdf", "grammarly", "google workspace", "dropbox", "google drive", "onedrive"] },
 ];
