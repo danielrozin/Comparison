@@ -17,7 +17,9 @@ import {
   isComparisonDbConfigured,
   saveComparison,
 } from "@/lib/services/comparison-service";
-import { warmCacheForSlug } from "@/lib/services/cache-warming";
+import { warmCacheForPaths, warmCacheForSlug } from "@/lib/services/cache-warming";
+import { captureGenerationLifecycle } from "@/lib/generation/generation-events";
+import { provisionalPageNeedsRegeneration } from "@/lib/generation/comparison-content";
 import { sanitizeErrorMessage } from "@/lib/utils/sanitize";
 import {
   startAttempt,
@@ -54,6 +56,7 @@ function clientIp(request: NextRequest): string {
 
 function isServable(row: ComparisonPageData | null): row is ComparisonPageData {
   if (!row || (row.entities?.length ?? 0) < 2) return false;
+  if (provisionalPageNeedsRegeneration(row.metadata)) return false;
   const status = row.metadata?.status;
   if (!status) return !isComparisonDbConfigured();
   return status === "published" || status === "provisional";
@@ -308,6 +311,17 @@ export async function POST(request: NextRequest) {
           reason: "quality_pass",
           duration_ms: Date.now() - startedAt,
         });
+        await captureGenerationLifecycle("generation_promoted", {
+          slug: result.comparison.slug,
+          reasons: [],
+          attempt: 0,
+        });
+      } else if (saved.status === "provisional") {
+        await captureGenerationLifecycle("generation_promotion_failed", {
+          slug: result.comparison.slug,
+          reasons: saved.promotionReasons,
+          attempt: 1,
+        });
       }
       try {
         getPostHogClient().capture({
@@ -324,7 +338,11 @@ export async function POST(request: NextRequest) {
       } catch (err) {
         console.error("[posthog] comparison_generated capture failed:", err);
       }
-      await warmCacheForSlug(result.comparison.slug);
+      if (saved.promoted) {
+        await warmCacheForPaths([`/compare/${result.comparison.slug}`, "/sitemap/1.xml"]);
+      } else {
+        await warmCacheForSlug(result.comparison.slug);
+      }
       return NextResponse.json({
         status: "ready",
         comparison: result.comparison,

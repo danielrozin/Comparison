@@ -59,4 +59,6 @@ export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
   "binance-vs-coinbase-exchange",
   "coinbase-vs-binance-exchange",
   "binance-exchange-vs-coinbase",
+  // 404 alias for Venmo vs Zelle. It was never a catalog page.
+  "zelle-vs-venmo",
 ]);

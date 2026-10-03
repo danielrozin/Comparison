@@ -356,4 +356,7 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "binance-vs-coinbase-exchange": "coinbase-vs-binance",
   "coinbase-vs-binance-exchange": "coinbase-vs-binance",
   "binance-exchange-vs-coinbase": "coinbase-vs-binance",
+  // Venmo vs Zelle. venmo-vs-zelle is the alphabetical survivor and is not a
+  // redirect source.
+  "zelle-vs-venmo": "venmo-vs-zelle",
 };
