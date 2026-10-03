@@ -3,8 +3,9 @@
  *
  * A published slug stays where it is, even when it is not alphabetical.
  * Alias, reverse-order, and keyword-suffix forms redirect only to a row
- * that is actually live. A pair with no live row shows the building shell
- * at the canonical slug. An archived, draft, or review row stays a 404.
+ * that is actually live. A pair with no live row stays a 404 on the URL
+ * that was requested — do not 301 to the alphabetical slug, because that
+ * URL 404s too. An archived, draft, or review row stays a 404.
  */
 
 import { canonicalSlug, ENTITY_ALIASES } from "@/lib/services/entity-aliases";
@@ -110,7 +111,8 @@ export function isHiddenComparisonStatus(status: string | null | undefined): boo
  * `stateOf` is the database. A live requested slug always renders. Any other
  * redirect destination is a related slug that `stateOf` reports as live.
  * When nothing is live and nothing is hidden, `shell` names the canonical
- * URL where the building shell belongs (it may differ from `slug`).
+ * slug for revalidation. The HTTP response stays on the requested URL.
+ * Redirecting to `shell.slug` when that row is missing 301s into a 404.
  */
 export function decideComparePage(
   slug: string,

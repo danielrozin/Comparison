@@ -32,6 +32,7 @@ import { BATCH_ARCHIVE_CONSOLIDATIONS_DAN2518 } from "./compare-batch-archive-re
 import { RECOVERY_CONSOLIDATIONS_404 } from "./compare-404-recovery.generated";
 import { BACKWARDS_REDIRECT_SOURCES } from "./compare-backwards-redirects.generated";
 import { US_CHINA_GDP_CLUSTER_REDIRECTS } from "./us-china-gdp-cluster";
+import { NOT_FOUND_CLEANUP_CONSOLIDATIONS } from "./not-found-cleanup-redirects";
 
 // DAN-1169: PS5 Pro vs Xbox Series X intent split across two live pages; keep the
 // keyword-aligned page (the one Semrush shows ranking) and fold the short dup in.
@@ -276,6 +277,9 @@ const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   // requested and 404'd on, with each destination verified to return 200. That
   // is stronger evidence than a slug-shape rule, so it wins on collision.
   ...RECOVERY_CONSOLIDATIONS_404,
+  // 404 cleanup: explicit aliases whose targets were checked as live 200s.
+  // Later than recovery so a listed source cannot be pointed at a 404.
+  ...NOT_FOUND_CLEANUP_CONSOLIDATIONS,
 };
 
 // DAN-2078: the rivalry layer's survivor is authoritative over an earlier layer that
@@ -449,7 +453,13 @@ export function getConsolidatedCompareSlug(slug: string): string | null {
  * in this list so `canonicalComparisonWhere()` matches the edge redirect table
  * (a published row that later appears as an alias must not re-enter the sitemap).
  * They do not lower CANONICAL_COMPARISON_COUNT_FALLBACK.
+ *
+ * NEVER_PUBLISHED_ALIASES are in this list for the same sitemap reason.
+ * corpus-count-truthfulness leaves them out of the retired-page tally.
+ * Add a never-published alias to that set instead of lowering the fallback.
  */
+export { NEVER_PUBLISHED_ALIASES } from "./not-found-cleanup-redirects";
+
 export const REDIRECTED_COMPARE_SLUGS: string[] = COMPARE_REDIRECTS.map((r) =>
   r.source.replace("/compare/", ""),
 );

@@ -30,11 +30,15 @@ export async function generateStaticParams() {
   return CATEGORIES.map((cat) => ({ slug: cat.slug }));
 }
 
+// Slugs outside generateStaticParams 404 at the router, before loading.tsx
+// can stream a 200. Unknown /category/* used to stay 200 with index,follow.
+export const dynamicParams = false;
+
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const { page: pageParam } = await searchParams;
   const category = CATEGORIES.find((c) => c.slug === slug);
-  if (!category) return { title: "Category Not Found" };
+  if (!category) notFound();
+  const { page: pageParam } = await searchParams;
 
   const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
   const baseUrl = `${SITE_URL}/category/${slug}`;
@@ -142,10 +146,10 @@ function filterByRating<T extends { slug: string }>(
 
 export default async function CategoryPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const sp = await searchParams;
   const category = CATEGORIES.find((c) => c.slug === slug);
-
   if (!category) notFound();
+
+  const sp = await searchParams;
 
   const page = Math.max(1, parseInt(sp.page || "1", 10) || 1);
   const sort = (sp.sort as SortOption) || "trending";

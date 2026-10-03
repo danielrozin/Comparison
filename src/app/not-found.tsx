@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { NotFoundViewTracker } from "@/components/analytics/NotFoundViewTracker";
 import { MissingCompareCta } from "@/components/monetization/MissingCompareCta";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
-import { CATEGORIES } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_NAME } from "@/lib/utils/constants";
 import { CategoryIcon } from "@/lib/utils/category-icons";
+
+export const metadata: Metadata = {
+  title: `Page not found | ${SITE_NAME}`,
+  robots: { index: false, follow: false },
+};
 
 export default async function NotFound() {
   let trending: { slug: string; title: string; category: string }[] = [];
@@ -18,6 +25,7 @@ export default async function NotFound() {
 
   return (
     <div className="min-h-screen bg-surface">
+      <NotFoundViewTracker />
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
         <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">

@@ -34,9 +34,9 @@ mockComparisons.set('messi-vs-haaland', {
   metadata: { viewCount: 20000 },
 })
 
-mockComparisons.set('iphone-vs-samsung', {
-  slug: 'iphone-vs-samsung',
-  title: 'iPhone vs Samsung',
+mockComparisons.set('iphone-vs-samsung-galaxy', {
+  slug: 'iphone-vs-samsung-galaxy',
+  title: 'iPhone vs Samsung Galaxy',
   category: 'technology',
   entities: [{ slug: 'iphone' }, { slug: 'samsung' }],
   metadata: { viewCount: 80000 },
@@ -219,8 +219,9 @@ describe('Internal Linking Engine', () => {
     }
 
     const results = await getLinkedComparisons(input, 10)
-    // iphone-vs-samsung has 80000 views — should have a view boost
-    const iphone = results.find((r) => r.slug === 'iphone-vs-samsung')
+    // iphone-vs-samsung 301s to this live slug. The redirect source is
+    // dropped, so the view boost is scored on the page that renders.
+    const iphone = results.find((r) => r.slug === 'iphone-vs-samsung-galaxy')
     expect(iphone).toBeDefined()
     // Score should be > WEIGHT_SAME_CATEGORY (20) due to view boost
     expect(iphone!.score).toBeGreaterThan(20)
@@ -229,7 +230,7 @@ describe('Internal Linking Engine', () => {
   it('technology category relates to products, companies', async () => {
     const input: LinkingEngineInput = {
       comparisonId: '1',
-      slug: 'iphone-vs-samsung',
+      slug: 'iphone-vs-samsung-galaxy',
       category: 'technology',
       entitySlugs: ['iphone', 'samsung'],
     }

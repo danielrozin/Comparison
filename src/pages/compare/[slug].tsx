@@ -25,6 +25,7 @@ import { assembleCompareJsonLd } from "@/lib/seo/compare-jsonld";
 import { resolveEntityPageStatuses } from "@/lib/seo/entity-page-indexable";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
+import { categoryPagePath } from "@/lib/seo/category-page-path";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
@@ -174,6 +175,8 @@ interface PageMeta {
   modifiedTime?: string;
   // article:* OG tags — entity names + category for social graph AEO signals
   articleSection?: string;
+  /** Real /category path for rel=up. Absent when the DB category has no page. */
+  categoryUpHref?: string;
   articleTags?: string[];
   // twitter:label/data — structured stat labels shown in Twitter/X link preview cards
   twitterLabel1?: string;
@@ -439,16 +442,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       });
 
       const decision = decideComparePage(slug, (candidate) => states.get(candidate) ?? "missing");
-      // Redirect only when that other slug is live. A missing pair still shares
-      // one building shell, at the canonical slug.
+      // Redirect only when that other slug is live. A missing pair 404s on
+      // the URL that was requested. 301ing to the alphabetical slug
+      // (lebron-vs-durant → durant-vs-lebron) just lands on a second 404.
       if (decision.action === "redirect") {
         return {
           redirect: { destination: `/compare/${decision.destination}`, statusCode: 301 },
-        };
-      }
-      if (decision.action === "shell" && decision.slug !== slug) {
-        return {
-          redirect: { destination: `/compare/${decision.slug}`, statusCode: 301 },
         };
       }
       // Archived / draft / review stay on the hourly window. A genuinely
@@ -648,6 +647,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     articleSection: enrichedComparison.category
       ? enrichedComparison.category.charAt(0).toUpperCase() + enrichedComparison.category.slice(1)
       : undefined,
+    categoryUpHref: categoryPagePath(enrichedComparison.category) ?? undefined,
     // article:tag = entity names + "comparison" + category for social/AI graph signals
     articleTags: [
       ...enrichedComparison.entities.map((e) => e.name),
@@ -776,8 +776,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta property="article:author" content={`${SITE_URL}/authors/daniel-rozin`} />
       {/* rel=up — HTML hierarchy signal; tells AI crawlers this comparison belongs to a
           specific category, enabling topical authority context without following breadcrumbs */}
-      {meta.articleSection && (
-        <link rel="up" href={`https://www.aversusb.net/category/${meta.articleSection.toLowerCase().replace(/[\s_]+/g, "-")}`} title={`${meta.articleSection} comparisons`} />
+      {meta.categoryUpHref && (
+        <link rel="up" href={`${SITE_URL}${meta.categoryUpHref}`} title={`${meta.articleSection ?? "Category"} comparisons`} />
       )}
       {/* article:tag — entity names + comparison terms for Open Graph topic signals.
           Social platforms and AI crawlers (Perplexity social graph, Bing social signals)

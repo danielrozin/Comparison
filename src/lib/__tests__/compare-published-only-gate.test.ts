@@ -149,11 +149,76 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
       redirect: { destination: '/compare/clickup-vs-notion', statusCode: 301 },
     })
 
-    // stapler-vs-banana is not in the edge map. Both orders share the
-    // alphabetical URL, even before that page exists, so the shell (still a
-    // 404) lives in one place. getStaticProps must not call the generator.
+    // stapler-vs-banana is not in the edge map, and banana-vs-stapler is not
+    // live. Stay on the requested URL. A 301 to the sorted slug would 404.
+    expect(await run('stapler-vs-banana')).toMatchObject({ notFound: true })
+    expect(await run('stapler-vs-banana')).not.toHaveProperty('redirect')
+    expect(generateComparison).not.toHaveBeenCalled()
+  })
+
+  it('404s a missing pair at the requested URL instead of 301ing to a dead sorted slug', async () => {
+    // Invented pairs. The NBA slugs this used to list are live pages now,
+    // and their reversed forms 301 to those pages.
+    for (const slug of [
+      'stapler-vs-banana',
+      'banana-vs-stapler',
+      'zzz-test-a-vs-zzz-test-b',
+      'zzz-test-b-vs-zzz-test-a',
+    ]) {
+      const result = await run(slug)
+      expect(result, slug).toMatchObject({ notFound: true })
+      expect(result, slug).not.toHaveProperty('redirect')
+    }
+    expect(generateComparison).not.toHaveBeenCalled()
+  })
+
+  it('301s to the sorted slug only when that page is live', async () => {
+    getComparisonBySlug.mockImplementation(async (slug: string) =>
+      slug === 'banana-vs-stapler' ? comparison(slug, 'published') : null
+    )
+
     expect(await run('stapler-vs-banana')).toMatchObject({
       redirect: { destination: '/compare/banana-vs-stapler', statusCode: 301 },
+    })
+    const live = await run('banana-vs-stapler')
+    expect(live).toHaveProperty('props')
+    expect(live).not.toHaveProperty('redirect')
+    expect(generateComparison).not.toHaveBeenCalled()
+  })
+
+  it('keeps reversed-slug 301s that land on a live page', async () => {
+    // Edge map. The target does not have to be in this lookup.
+    expect(await run('kobe-vs-lebron')).toMatchObject({
+      redirect: { destination: '/compare/kobe-bryant-vs-lebron-james', statusCode: 301 },
+    })
+
+    getComparisonBySlug.mockImplementation(async (slug: string) => {
+      if (
+        slug === 'knicks-vs-76ers' ||
+        slug === 'shai-gilgeous-alexander-vs-victor-wembanyama' ||
+        slug === 'flagg-vs-wembanyama' ||
+        slug === 'oklahoma-city-thunder-vs-spurs' ||
+        slug === 'knicks-vs-spurs'
+      ) {
+        return comparison(slug, 'published')
+      }
+      return null
+    })
+
+    expect(await run('76ers-vs-knicks')).toMatchObject({
+      redirect: { destination: '/compare/knicks-vs-76ers', statusCode: 301 },
+    })
+    expect(await run('victor-wembanyama-vs-shai-gilgeous-alexander')).toMatchObject({
+      redirect: { destination: '/compare/shai-gilgeous-alexander-vs-victor-wembanyama', statusCode: 301 },
+    })
+    expect(await run('wembanyama-vs-flagg')).toMatchObject({
+      redirect: { destination: '/compare/flagg-vs-wembanyama', statusCode: 301 },
+    })
+    expect(await run('spurs-vs-oklahoma-city-thunder')).toMatchObject({
+      redirect: { destination: '/compare/oklahoma-city-thunder-vs-spurs', statusCode: 301 },
+    })
+    expect(await run('spurs-vs-knicks')).toMatchObject({
+      redirect: { destination: '/compare/knicks-vs-spurs', statusCode: 301 },
     })
     expect(generateComparison).not.toHaveBeenCalled()
   })

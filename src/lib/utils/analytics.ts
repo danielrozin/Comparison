@@ -55,6 +55,7 @@ const ALREADY_CAPTURED_IN_POSTHOG = new Set([
   "search_result_clicked",
   "compare_missing_viewed",
   "matchup_requested",
+  "not_found_viewed",
   "custom_compare_viewed",
   "custom_compare_gated",
   "custom_compare_error",
@@ -462,6 +463,11 @@ export interface CompareMissingViewedProps {
   search_id: string;
   query_raw: string;
   referrer_path: string;
+}
+
+/** The generic App Router 404 mounted in a browser. Bots are dropped by captureClient. */
+export function trackNotFoundViewed(path: string, referrer: string) {
+  captureClient("not_found_viewed", { path, referrer });
 }
 
 /**
