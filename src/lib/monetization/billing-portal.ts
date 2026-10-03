@@ -17,6 +17,7 @@
  * archive Products or Prices.
  */
 
+import * as Sentry from "@sentry/nextjs";
 import { after } from "next/server";
 import { SITE_URL } from "@/lib/utils/constants";
 import { BILLING_PORTAL_PATH } from "@/lib/monetization/welcome-email";
@@ -77,6 +78,35 @@ async function withResponseFloor<T>(started: number, result: T): Promise<T> {
   return result;
 }
 
+const ADDRESS_IN_TEXT = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+
+function scrubAddress(text: string): string {
+  const scrubbed = text.replace(ADDRESS_IN_TEXT, "[redacted]");
+  return scrubbed.includes("@") ? "details omitted" : scrubbed;
+}
+
+function prismaCodeOf(err: unknown): string {
+  if (!err || typeof err !== "object" || !("code" in err)) return "";
+  const code = (err as { code?: unknown }).code;
+  return typeof code === "string" ? code : "";
+}
+
+/**
+ * The follow-up runs after the HTTP response, so a thrown lock or insert
+ * would otherwise vanish. Log and report it without the address: Prisma
+ * puts bound parameters on the error, and those must not reach the log.
+ */
+function reportFollowUpFailure(err: unknown): void {
+  const code = prismaCodeOf(err);
+  const detail = scrubAddress(err instanceof Error ? err.message : "unknown error").slice(0, 300);
+  console.error(`[billing-portal] follow-up failed${code ? ` code=${code}` : ""}: ${detail}`);
+  const reported = new Error(`[billing-portal] follow-up failed${code ? ` code=${code}` : ""}`);
+  Sentry.captureException(reported, {
+    tags: { area: "billing-portal" },
+    extra: code ? { prismaCode: code } : undefined,
+  });
+}
+
 /**
  * Schedule work that must not change how long the HTTP response takes.
  * Inside a Next.js request, `after` runs once the response is flushed.
@@ -86,7 +116,7 @@ async function withResponseFloor<T>(started: number, result: T): Promise<T> {
 async function runAfterResponse(task: () => Promise<void>): Promise<void> {
   const guarded = () =>
     task().catch((err) => {
-      console.error("[billing-portal] follow-up failed:", err);
+      reportFollowUpFailure(err);
     });
   try {
     after(guarded);

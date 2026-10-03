@@ -18,11 +18,19 @@ vi.mock("@/lib/services/email", () => ({
   sendOutreachEmail: (...args: unknown[]) => sendOutreachEmail(...args),
 }));
 
+const captureException = vi.hoisted(() => vi.fn());
+
+vi.mock("@sentry/nextjs", () => ({
+  captureException: (...args: unknown[]) => captureException(...args),
+}));
+
 import { upsertMember } from "../members";
 import {
+  getMembershipTestPrisma,
   membershipTestBillingTokens,
   resetMembershipTestDb,
   setMembershipDbEnabled,
+  setMembershipDbFailBillingLock,
 } from "./in-memory-membership-db";
 import {
   BILLING_PORTAL_GENERIC_MESSAGE,
@@ -80,6 +88,7 @@ describe("startBillingPortal", () => {
     process.env.BILLING_PORTAL_MIN_RESPONSE_MS = "0";
     sendOutreachEmail.mockClear();
     sendOutreachEmail.mockResolvedValue({ success: true, id: "em_1" });
+    captureException.mockClear();
     await upsertMember({
       email: "buyer@example.com",
       plan: "pro",
@@ -242,6 +251,39 @@ describe("startBillingPortal", () => {
     expect(blocked).toEqual(GENERIC);
     expect(sendOutreachEmail).not.toHaveBeenCalled();
     expect(membershipTestBillingTokens()).toHaveLength(3);
+  });
+
+  it("rejects an advisory lock that arrives through $queryRaw", async () => {
+    const prisma = getMembershipTestPrisma();
+    expect(prisma).toBeTruthy();
+    await expect(
+      prisma!.$transaction(async (tx) => {
+        const db = tx as {
+          $queryRaw: (query: TemplateStringsArray, ...values: unknown[]) => Promise<unknown>;
+        };
+        await db.$queryRaw`SELECT pg_advisory_xact_lock(1)`;
+      })
+    ).rejects.toThrow(/\$executeRaw/);
+  });
+
+  it("reports a link-issue failure without the address", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    setMembershipDbFailBillingLock("bound buyer@example.com");
+    stubStripe(stripeSubscription({ priceId: "price_pro_year" }));
+    const result = await startBillingPortal("buyer@example.com");
+    expect(result).toEqual(GENERIC);
+    expect(sendOutreachEmail).not.toHaveBeenCalled();
+
+    const logged = errorSpy.mock.calls.map((call) => call.map(String).join(" ")).join("\n");
+    expect(logged).toContain("[billing-portal] follow-up failed code=P2010");
+    expect(logged).not.toContain("buyer@example.com");
+    expect(logged).not.toContain("@");
+    expect(captureException).toHaveBeenCalledTimes(1);
+    const reported = captureException.mock.calls[0][0] as Error;
+    expect(reported.message).toContain("code=P2010");
+    expect(reported.message).not.toContain("@");
+    expect(JSON.stringify(captureException.mock.calls[0])).not.toContain("buyer@example.com");
+    errorSpy.mockRestore();
   });
 
   it("lets only 3 of 4 racing requests issue a link", async () => {

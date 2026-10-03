@@ -58,7 +58,7 @@ function createDb() {
   const emailLockTails = new Map<string, Promise<void>>();
   const txStorage = new AsyncLocalStorage<{ releases: Array<() => void> }>();
   let seq = 0;
-  const state = { enabled: true, failWrites: false };
+  const state = { enabled: true, failWrites: false, failBillingLock: "" };
 
   function acquireEmailLock(email: string): Promise<() => void> {
     const previous = emailLockTails.get(email) ?? Promise.resolve();
@@ -242,7 +242,22 @@ function createDb() {
     async $executeRaw(query: TemplateStringsArray, ...values: unknown[]) {
       const sql = Array.isArray(query) ? query.join(" ") : String(query);
       if (sql.includes("pg_advisory_xact_lock")) {
-        throw new Error("advisory locks go through $queryRaw so the test double can hold them");
+        // Prisma 5.22 cannot deserialize the void result of this function
+        // through $queryRaw (P2010). The real issuer uses $executeRaw.
+        if (state.failBillingLock) {
+          const err = new Error(state.failBillingLock);
+          (err as Error & { code: string }).code = "P2010";
+          throw err;
+        }
+        const email = String(values[0] ?? "");
+        const release = await acquireEmailLock(email);
+        const store = txStorage.getStore();
+        if (!store) {
+          release();
+          throw new Error("pg_advisory_xact_lock must run inside a transaction");
+        }
+        store.releases.push(release);
+        return 0;
       }
       if (!sql.includes("array_append") || !sql.includes("pro_custom_compare_usage")) {
         throw new Error(`unexpected raw sql: ${sql}`);
@@ -258,22 +273,15 @@ function createDb() {
       return 1;
     },
     /**
-     * Billing-link redeem, plus the per-address advisory lock used when
-     * issuing a link. The lock is held until the surrounding transaction
-     * finishes, which is what stops a burst from inserting a fourth row.
+     * Atomic billing-link redeem. The advisory lock must not arrive here:
+     * $queryRaw throws P2010 on the void column pg_advisory_xact_lock returns.
      */
     async $queryRaw(query: TemplateStringsArray, ...values: unknown[]) {
       const sql = Array.isArray(query) ? query.join(" ") : String(query);
       if (sql.includes("pg_advisory_xact_lock")) {
-        const email = String(values[0] ?? "");
-        const release = await acquireEmailLock(email);
-        const store = txStorage.getStore();
-        if (!store) {
-          release();
-          throw new Error("pg_advisory_xact_lock must run inside a transaction");
-        }
-        store.releases.push(release);
-        return [];
+        throw new Error(
+          "pg_advisory_xact_lock must use $executeRaw; $queryRaw cannot deserialize void (P2010)"
+        );
       }
       if (!sql.includes("billing_portal_tokens") || !sql.includes("RETURNING")) {
         throw new Error(`unexpected raw sql: ${sql}`);
@@ -314,6 +322,7 @@ function createDb() {
       emailLockTails.clear();
       state.enabled = true;
       state.failWrites = false;
+      state.failBillingLock = "";
     },
   };
 }
@@ -330,6 +339,11 @@ export function setMembershipDbEnabled(enabled: boolean): void {
 
 export function setMembershipDbFailWrites(fail: boolean): void {
   db.state.failWrites = fail;
+}
+
+/** Next advisory lock throws this message. Empty clears the failure. */
+export function setMembershipDbFailBillingLock(message: string): void {
+  db.state.failBillingLock = message;
 }
 
 export function getMembershipTestPrisma() {

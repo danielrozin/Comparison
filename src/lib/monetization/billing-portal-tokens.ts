@@ -70,7 +70,10 @@ export async function issueBillingPortalToken(
   const inserted = await prisma.$transaction(async (tx) => {
     // Two-key lock so this does not collide with Prisma's migration lock.
     // Released automatically when the transaction commits or rolls back.
-    await tx.$queryRaw`
+    // $executeRaw, not $queryRaw: pg_advisory_xact_lock returns void, and
+    // Prisma 5.22 throws P2010 when $queryRaw tries to deserialize void
+    // (prisma/prisma#3530).
+    await tx.$executeRaw`
       SELECT pg_advisory_xact_lock(hashtext('billing_portal_token'), hashtext(${email}))
     `;
     const recent = await tx.billingPortalToken.count({
