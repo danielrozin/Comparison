@@ -96,6 +96,26 @@ const ALIASES: { from: string; to: string }[] = [
   { from: "wembanyama-vs-sga", to: "shai-gilgeous-alexander-vs-victor-wembanyama" },
   { from: "knicks-vs-sixers", to: "knicks-vs-76ers" },
   { from: "sixers-vs-knicks", to: "knicks-vs-76ers" },
+  { from: "thunder-vs-spurs", to: "oklahoma-city-thunder-vs-spurs" },
+  { from: "spurs-vs-thunder", to: "oklahoma-city-thunder-vs-spurs" },
+  { from: "okc-vs-spurs", to: "oklahoma-city-thunder-vs-spurs" },
+  { from: "spurs-vs-okc", to: "oklahoma-city-thunder-vs-spurs" },
+  { from: "okc-thunder-vs-spurs", to: "oklahoma-city-thunder-vs-spurs" },
+  { from: "spurs-vs-okc-thunder", to: "oklahoma-city-thunder-vs-spurs" },
+  { from: "thunder-vs-san-antonio-spurs", to: "oklahoma-city-thunder-vs-spurs" },
+  { from: "san-antonio-spurs-vs-thunder", to: "oklahoma-city-thunder-vs-spurs" },
+  { from: "okc-vs-san-antonio-spurs", to: "oklahoma-city-thunder-vs-spurs" },
+  { from: "san-antonio-spurs-vs-okc", to: "oklahoma-city-thunder-vs-spurs" },
+];
+
+const KINDLE_ALIASES: { from: string; to: string }[] = [
+  { from: "kobo-vs-kindle", to: "kindle-vs-kobo" },
+  { from: "amazon-kindle-vs-kobo", to: "kindle-vs-kobo" },
+  { from: "kobo-vs-amazon-kindle", to: "kindle-vs-kobo" },
+  { from: "amazon-kindle-vs-rakuten-kobo", to: "kindle-vs-kobo" },
+  { from: "rakuten-kobo-vs-amazon-kindle", to: "kindle-vs-kobo" },
+  { from: "kindle-vs-rakuten-kobo", to: "kindle-vs-kobo" },
+  { from: "rakuten-kobo-vs-kindle", to: "kindle-vs-kobo" },
 ];
 
 /** Full-name orders and the live legacy stats page. Each must beat the shell. */
@@ -236,6 +256,30 @@ describe("Microsoft Word vs LibreOffice aliases", () => {
     expect(page.hops).toEqual([]);
 
     for (const alias of WORD_ALIASES) {
+      const landed = await follow(alias.from);
+      expect(landed.status, alias.from).toBe(200);
+      expect(landed.final, alias.from).toBe(alias.to);
+      expect(landed.hops, alias.from).toEqual([alias.to]);
+      expect(REDIRECTED_COMPARE_SLUGS).toContain(alias.from);
+      expect(canonicalComparisonWhere().slug.notIn).toContain(alias.from);
+      const props = await getStaticProps({ params: { slug: alias.from } } as unknown as Ctx);
+      expect(props).toMatchObject({
+        redirect: { destination: `/compare/${alias.to}`, statusCode: 301 },
+      });
+    }
+  });
+});
+
+describe("Kindle vs Kobo aliases", () => {
+  it("sends each name order to kindle-vs-kobo in one hop", async () => {
+    expect(getConsolidatedCompareSlug("kindle-vs-kobo")).toBeNull();
+    expect(REDIRECTED_COMPARE_SLUGS).not.toContain("kindle-vs-kobo");
+
+    const page = await follow("kindle-vs-kobo");
+    expect(page.status).toBe(200);
+    expect(page.hops).toEqual([]);
+
+    for (const alias of KINDLE_ALIASES) {
       const landed = await follow(alias.from);
       expect(landed.status, alias.from).toBe(200);
       expect(landed.final, alias.from).toBe(alias.to);

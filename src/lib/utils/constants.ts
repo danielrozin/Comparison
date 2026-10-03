@@ -83,7 +83,8 @@ export const PRODUCT_SUBCATEGORIES: { slug: string; name: string; icon: string; 
   { slug: "fitness-equipment", name: "Fitness & Equipment", icon: "🏋️", keywords: ["peloton", "nordictrack", "treadmill", "bike", "rower", "creatine", "pre workout", "protein", "supplement"] },
   { slug: "outdoor-travel", name: "Outdoor & Travel", icon: "🏕️", keywords: ["yeti", "hydroflask", "hydro flask", "stanley", "luggage", "cooler", "backpack", "tent"] },
   { slug: "fashion-shopping", name: "Fashion & Shopping", icon: "👗", keywords: ["temu", "shein", "lululemon", "athleta", "nike", "adidas", "fashion", "clothing"] },
-  { slug: "streaming", name: "Streaming & Entertainment", icon: "📺", keywords: ["netflix", "max", "hbo", "hulu", "disney", "youtube tv", "streaming", "kindle", "kobo"] },
+  { slug: "streaming", name: "Streaming & Entertainment", icon: "📺", keywords: ["netflix", "max", "hbo", "hulu", "disney", "youtube tv", "streaming"] },
+  { slug: "ereaders", name: "E-Readers", icon: "📖", keywords: ["kindle", "kobo", "ereader", "e-reader", "paperwhite"] },
   { slug: "gaming", name: "Gaming", icon: "🎮", keywords: ["ps6", "ps5", "xbox", "nintendo", "switch", "steam deck", "gaming", "console"] },
   { slug: "automotive", name: "Cars & EVs", icon: "🚗", keywords: ["tesla", "rivian", "lucid", "ford", "chevy", "honda", "toyota", "rav4", "civic", "corolla", "cr-v", "ev", "hybrid"] },
 ];

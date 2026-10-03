@@ -61,4 +61,23 @@ export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
   "binance-exchange-vs-coinbase",
   // 404 alias for Venmo vs Zelle. It was never a catalog page.
   "zelle-vs-venmo",
+  // PR #338. These 404s 301 in compare-404-recovery.generated.ts. They were
+  // never catalog pages, so they stay in the set above and do not shrink the count.
+  "thunder-vs-spurs",
+  "spurs-vs-thunder",
+  "okc-vs-spurs",
+  "spurs-vs-okc",
+  "okc-thunder-vs-spurs",
+  "spurs-vs-okc-thunder",
+  "thunder-vs-san-antonio-spurs",
+  "san-antonio-spurs-vs-thunder",
+  "okc-vs-san-antonio-spurs",
+  "san-antonio-spurs-vs-okc",
+  "kobo-vs-kindle",
+  "amazon-kindle-vs-kobo",
+  "kobo-vs-amazon-kindle",
+  "amazon-kindle-vs-rakuten-kobo",
+  "rakuten-kobo-vs-amazon-kindle",
+  "kindle-vs-rakuten-kobo",
+  "rakuten-kobo-vs-kindle",
 ]);
