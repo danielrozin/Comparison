@@ -176,3 +176,76 @@ describe("NBA batch compare aliases and reverses", () => {
     }
   });
 });
+
+const HONDA_ALIASES: { from: string; to: string }[] = [
+  { from: "ford-vs-honda", to: "honda-vs-ford" },
+  { from: "honda-motor-vs-ford-motor", to: "honda-vs-ford" },
+  { from: "ford-motor-vs-honda-motor", to: "honda-vs-ford" },
+  { from: "honda-motor-company-vs-ford-motor-company", to: "honda-vs-ford" },
+  { from: "ford-motor-company-vs-honda-motor-company", to: "honda-vs-ford" },
+  { from: "honda-vs-ford-motor", to: "honda-vs-ford" },
+  { from: "ford-motor-vs-honda", to: "honda-vs-ford" },
+];
+
+describe("Honda vs Ford aliases", () => {
+  it("sends each name order to honda-vs-ford in one hop", async () => {
+    expect(getConsolidatedCompareSlug("honda-vs-ford")).toBeNull();
+    expect(REDIRECTED_COMPARE_SLUGS).not.toContain("honda-vs-ford");
+
+    const page = await follow("honda-vs-ford");
+    expect(page.status).toBe(200);
+    expect(page.hops).toEqual([]);
+
+    for (const alias of HONDA_ALIASES) {
+      expect(getConsolidatedCompareSlug(alias.from)).toBe(alias.to);
+      const landed = await follow(alias.from);
+      expect(landed.status, alias.from).toBe(200);
+      expect(landed.final, alias.from).toBe(alias.to);
+      expect(landed.hops, alias.from).toEqual([alias.to]);
+      const props = await getStaticProps({ params: { slug: alias.from } } as unknown as Ctx);
+      expect(props).toMatchObject({
+        redirect: { destination: `/compare/${alias.to}`, statusCode: 301 },
+      });
+      expect(REDIRECTED_COMPARE_SLUGS).toContain(alias.from);
+      expect(canonicalComparisonWhere().slug.notIn).toContain(alias.from);
+    }
+  });
+});
+
+const WORD_ALIASES: { from: string; to: string }[] = [
+  { from: "libreoffice-vs-microsoft-word", to: "microsoft-word-vs-libreoffice" },
+  { from: "word-vs-libreoffice", to: "microsoft-word-vs-libreoffice" },
+  { from: "libreoffice-vs-word", to: "microsoft-word-vs-libreoffice" },
+  { from: "ms-word-vs-libreoffice-writer", to: "microsoft-word-vs-libreoffice" },
+  { from: "libreoffice-writer-vs-ms-word", to: "microsoft-word-vs-libreoffice" },
+  { from: "microsoft-word-vs-libreoffice-writer", to: "microsoft-word-vs-libreoffice" },
+  { from: "libreoffice-writer-vs-microsoft-word", to: "microsoft-word-vs-libreoffice" },
+  { from: "ms-word-vs-libreoffice", to: "microsoft-word-vs-libreoffice" },
+  { from: "libreoffice-vs-ms-word", to: "microsoft-word-vs-libreoffice" },
+  { from: "word-vs-libreoffice-writer", to: "microsoft-word-vs-libreoffice" },
+  { from: "libreoffice-writer-vs-word", to: "microsoft-word-vs-libreoffice" },
+];
+
+describe("Microsoft Word vs LibreOffice aliases", () => {
+  it("sends each name order to microsoft-word-vs-libreoffice in one hop", async () => {
+    expect(getConsolidatedCompareSlug("microsoft-word-vs-libreoffice")).toBeNull();
+    expect(REDIRECTED_COMPARE_SLUGS).not.toContain("microsoft-word-vs-libreoffice");
+
+    const page = await follow("microsoft-word-vs-libreoffice");
+    expect(page.status).toBe(200);
+    expect(page.hops).toEqual([]);
+
+    for (const alias of WORD_ALIASES) {
+      const landed = await follow(alias.from);
+      expect(landed.status, alias.from).toBe(200);
+      expect(landed.final, alias.from).toBe(alias.to);
+      expect(landed.hops, alias.from).toEqual([alias.to]);
+      expect(REDIRECTED_COMPARE_SLUGS).toContain(alias.from);
+      expect(canonicalComparisonWhere().slug.notIn).toContain(alias.from);
+      const props = await getStaticProps({ params: { slug: alias.from } } as unknown as Ctx);
+      expect(props).toMatchObject({
+        redirect: { destination: `/compare/${alias.to}`, statusCode: 301 },
+      });
+    }
+  });
+});

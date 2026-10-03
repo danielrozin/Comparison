@@ -29,4 +29,28 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
  */
 export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
   ...Object.keys(NOT_FOUND_CLEANUP_CONSOLIDATIONS),
+  // 404 aliases for Java vs TypeScript. None was a catalog page.
+  "typescript-vs-java",
+  "ts-vs-java",
+  "java-vs-ts",
+  // Honda vs Ford. These 404s 301 in compare-404-recovery.generated.ts.
+  "ford-vs-honda",
+  "honda-motor-vs-ford-motor",
+  "ford-motor-vs-honda-motor",
+  "honda-motor-company-vs-ford-motor-company",
+  "ford-motor-company-vs-honda-motor-company",
+  "honda-vs-ford-motor",
+  "ford-motor-vs-honda",
+  // 404 aliases for Microsoft Word vs LibreOffice. None was a catalog page.
+  "libreoffice-vs-microsoft-word",
+  "word-vs-libreoffice",
+  "libreoffice-vs-word",
+  "ms-word-vs-libreoffice-writer",
+  "libreoffice-writer-vs-ms-word",
+  "microsoft-word-vs-libreoffice-writer",
+  "libreoffice-writer-vs-microsoft-word",
+  "ms-word-vs-libreoffice",
+  "libreoffice-vs-ms-word",
+  "word-vs-libreoffice-writer",
+  "libreoffice-writer-vs-word",
 ]);
