@@ -3,8 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/utils/constants";
-import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
+import {
+  comparisonsForSubcategory,
+  mergeEditorialCategoryComparisons,
+} from "@/lib/categories/hub-comparisons";
 import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { faqAnswerPlainText, faqAnswerSegments, getSubcategoryFaqs } from "@/lib/data/subcategory-faqs";
 import { StarRating } from "@/components/ui/StarRating";
@@ -39,16 +42,6 @@ function FaqAnswerText({ answer }: { answer: string }) {
 interface PageProps {
   params: Promise<{ slug: string; subcategory: string }>;
   searchParams: Promise<{ page?: string; sort?: string; rating?: string }>;
-}
-
-function getSubcategoryComparisons(
-  comparisons: { slug: string; title: string; category?: string | null }[],
-  subcat: SubcategoryDef
-) {
-  return comparisons.filter((comp) => {
-    const lower = comp.title.toLowerCase() + " " + comp.slug.toLowerCase();
-    return subcat.keywords.some((kw) => lower.includes(kw));
-  });
 }
 
 function getComparisonRating(slug: string): number {
@@ -178,7 +171,8 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
   const ratingFilter = (sp.rating as RatingFilter) || "all";
 
   const { comparisons } = await getComparisonsByCategory(slug, 500);
-  const subcatComparisons = getSubcategoryComparisons(comparisons, subcat);
+  const categoryComparisons = mergeEditorialCategoryComparisons(slug, comparisons);
+  const subcatComparisons = comparisonsForSubcategory(categoryComparisons, subcat);
 
   // Apply filters and sorting
   const filtered = filterByRating(subcatComparisons, ratingFilter);
