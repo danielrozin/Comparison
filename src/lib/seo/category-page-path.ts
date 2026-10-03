@@ -60,6 +60,30 @@ export function isKnownSubcategorySlug(categorySlug: string, subcategorySlug: st
 }
 
 /**
+ * Rewrite target for an unknown subcategory.
+ *
+ * `/category/[slug]/loading.tsx` starts a 200 before the child route can
+ * call notFound(). This path is not a category, so the router 404s it
+ * before that skeleton streams. It is not a subcategory path, so middleware
+ * does not rewrite the rewrite.
+ */
+export const UNKNOWN_CATEGORY_404_REWRITE = "/category/__not-a-category__";
+
+/**
+ * A real category with a subcategory that is not in the map, such as
+ * `/category/products/ereaders`. Top-level unknowns (`/category/foo`) and
+ * redirect sources (`/category/gaming`) are not included: those already
+ * 404 or 301 without this rewrite.
+ */
+export function isUnknownSubcategoryPath(pathname: string): boolean {
+  const match = pathname.match(/^\/category\/([^/]+)\/([^/]+)\/?$/);
+  if (!match) return false;
+  const slug = match[1] ?? "";
+  const subcategory = match[2] ?? "";
+  return isKnownCategorySlug(slug) && !isKnownSubcategorySlug(slug, subcategory);
+}
+
+/**
  * A category request that has no page: unknown parent, or a real parent
  * with an unknown subcategory. Redirect sources such as `/category/gaming`
  * are unknown here; next.config sends those to a live page before render.
