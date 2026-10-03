@@ -133,8 +133,10 @@ export const DEAD_REDIRECT_SOURCES_DAN2045: string[] = [
   "matomo-vs-google-analytics",
   // -> bitdefender-vs-mcafee (archived); source is archived
   "mcafee-vs-bitdefender",
-  // -> lebron-james-vs-michael-jordan (archived); source is archived
-  "michael-jordan-vs-lebron-james",
+  // michael-jordan-vs-lebron-james was dropped here while its ordering
+  // destination (lebron-james-vs-michael-jordan) was archived. The live
+  // canonical is lebron-vs-jordan, so the source is no longer dead. See
+  // RECOVERY_CONSOLIDATIONS_404.
   // -> fullstory-vs-microsoft-clarity (archived); source is archived
   "microsoft-clarity-vs-fullstory",
   // -> hotjar-vs-microsoft-clarity (archived); source is archived
