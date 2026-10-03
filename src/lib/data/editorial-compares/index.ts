@@ -21,6 +21,7 @@ import { SGA_VS_WEMBANYAMA } from "./shai-gilgeous-alexander-vs-victor-wembanyam
 import { OKLAHOMA_CITY_THUNDER_VS_SPURS } from "./oklahoma-city-thunder-vs-spurs";
 import { KNICKS_VS_SPURS } from "./knicks-vs-spurs";
 import { FLAGG_VS_WEMBANYAMA } from "./flagg-vs-wembanyama";
+import { APPLE_WATCH_SERIES_12_VS_FITBIT_AIR } from "./apple-watch-series-12-vs-fitbit-air";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -59,6 +60,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [OKLAHOMA_CITY_THUNDER_VS_SPURS.slug]: OKLAHOMA_CITY_THUNDER_VS_SPURS,
   [KNICKS_VS_SPURS.slug]: KNICKS_VS_SPURS,
   [FLAGG_VS_WEMBANYAMA.slug]: FLAGG_VS_WEMBANYAMA,
+  [APPLE_WATCH_SERIES_12_VS_FITBIT_AIR.slug]: APPLE_WATCH_SERIES_12_VS_FITBIT_AIR,
 };
 
 /**

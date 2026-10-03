@@ -1702,3 +1702,106 @@ describe("NBA batch 2: Spurs vs Thunder, Knicks vs Spurs, Flagg vs Wembanyama", 
     ]);
   });
 });
+
+const WATCH_AIR_SLUG = "apple-watch-series-12-vs-fitbit-air";
+const WATCH_AIR_FAQS = [
+  "Is the Fitbit Air a Whoop alternative?",
+  "Which is better for sleep, Apple Watch Series 12 or Fitbit Air?",
+  "Do you need cellular on the Apple Watch Series 12?",
+  "Does the Fitbit Air work with an iPhone?",
+  "Which is more comfortable for 24/7 wear?",
+  "What about the Amazfit Helio?",
+];
+const WATCH_AIR_QUICK_ANSWER =
+  "Choose the Apple Watch Series 12 if you want a full smartwatch: apps, notifications, and an optional cellular model, on an iPhone. Apple rates it for up to 24 hours of normal use, up to 38 hours in Low Power Mode, and up to 10 hours of workout tracking, and lists an S11 chip. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep. Google rates it for up to 7 days and the Google Store lists it from $99.99. This page does not crown a winner.";
+
+describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
+  const page = () => getEditorialComparison(WATCH_AIR_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(WATCH_AIR_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(WATCH_AIR_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().schemaMarkup).toBeUndefined();
+    expect(page().entities.map((entity) => entity.slug)).toEqual([
+      "apple-watch-series-12",
+      "fitbit-air",
+    ]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best for a full smartwatch on an iPhone",
+      "Best for a lower-priced screenless sleep and heart-rate tracker",
+    ]);
+    expect(page().shortAnswer).toBe(WATCH_AIR_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(WATCH_AIR_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(WATCH_AIR_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/Geekbench|AnTuTu|% accurate|accuracy of \d/i);
+    expect(pageText(page())).not.toMatch(/\b12\s*g(?:rams)?\b/i);
+    const types = schemaNodes(page()).map((node) => node["@type"]).filter(Boolean);
+    expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    for (const schemaType of ["Article", "FAQPage", "BreadcrumbList"]) {
+      expect(types).toContain(schemaType);
+    }
+  });
+
+  it("keeps six FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(6);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(WATCH_AIR_FAQS);
+    expect(faqQuestions(page())).toEqual(WATCH_AIR_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(WATCH_AIR_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites Apple and Google and does not link noindex entity hubs", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(11);
+    expect(page().citationStats?.lastResearched).toBe("2026-10-03");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-10-03/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.apple.com/apple-watch-series-12/specs/",
+      "https://store.google.com/product/google_fitbit_air",
+      "https://blog.google/products-and-platforms/devices/fitbit/fitbit-air/",
+      "https://support.google.com/googlehealth/answer/14226518?hl=en",
+      "https://support.google.com/googlehealth/answer/14195042?hl=en",
+      "https://support.google.com/googlehealth/answer/14236707?hl=en",
+      "https://support.google.com/product-documentation/answer/17050752?hl=en",
+      "https://support.google.com/googlehealth/answer/14236917?hl=en",
+      "https://support.google.com/googlehealth/answer/17033101?hl=en",
+      "https://support.google.com/googlehealth/answer/14237938?hl=en",
+      "https://www.reddit.com/r/FitbitAir_India/comments/1wweka3/apple_watch_series_12_vs_fitbit_air_please_help/",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().resources?.map((resource) => resource.url).join("\n")).not.toMatch(/\/entity\//);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual(["apple-watch-vs-fitbit"]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("S11");
+    expect(pageText(page())).toContain("up to 7 days");
+    expect(pageText(page())).toContain("$99.99");
+    expect(pageText(page())).not.toContain("$129.99 is today's");
+    const battery = page().attributes.find((attr) => attr.slug === "battery");
+    expect(battery?.values.find((value) => value.entityId === "fitbit-air")?.winner).toBe(true);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+  });
+});
