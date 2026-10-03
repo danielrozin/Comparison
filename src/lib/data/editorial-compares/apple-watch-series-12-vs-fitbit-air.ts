@@ -102,7 +102,7 @@ Apple's footnotes there, next to those items, say: "The Vitals app is for wellne
 
 Google's launch post lists 24/7 heart rate, heart rhythm monitoring with Afib alerts, SpO2, resting heart rate, heart rate variability, and sleep stages and duration. The launch-post footnote next to that rhythm feature says: "Not intended for use by people under 22 years old with known atrial fibrillation or other known arrhythmias. Not available in all countries." The 7 May 2026 launch-post footnotes also say "Not intended for medical purposes." That line is quoted from the launch post. The heart-rate help article is the source only for the optical-sensor sentence below.
 
-Google's vitals table marks the Air for breathing rate, heart rate variability, skin temperature variation, SpO2, and resting heart rate. Google says Fitbit devices use optical heart rate sensors, and Google lists Fitbit Air among the devices that sentence covers. This page does not add an accuracy percentage either way.
+Google's vitals table marks the Air for breathing rate, heart rate variability, skin temperature variation, SpO2, and resting heart rate. Google says Fitbit devices use optical heart rate sensors, and Google lists Fitbit Air. This page does not add an accuracy percentage either way.
 
 Water and weight
 
@@ -112,7 +112,7 @@ Google lists Fitbit Air at 5.2 g without the band and 12 g with the band. Apple 
 
 Price
 
-The Google Store lists Fitbit Air from $99.99. The launch post, dated 7 May 2026, said pre-order started at $99.99 and that a Special Edition was $129.99. The Google Store lists Fitbit Air from $99.99.
+The Google Store lists Fitbit Air from $99.99. The launch post, dated 7 May 2026, said pre-order started at $99.99 and that a Special Edition was $129.99.
 
 Who should buy which
 

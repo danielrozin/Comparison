@@ -55,7 +55,7 @@ const FAQS = [
   {
     question: "Do Google Maps and Waze work on CarPlay and Android Auto?",
     answer:
-      "Google Maps has CarPlay support, and Google says Android Auto shows 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze documents Android Auto and CarPlay. Waze says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
+      "Google Maps has CarPlay support, and Google says 3D map details also show on Android Auto during driving navigation, in the US on certain devices with Maps 26.27 and above. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze documents Android Auto and CarPlay. Waze says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
   },
   {
     question: "Does Waze support transit, bicycle, or truck lanes?",

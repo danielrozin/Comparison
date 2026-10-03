@@ -567,7 +567,7 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
     expect(description.length).toBeLessThanOrEqual(160);
     expect(findSelfContradictions(page())).toEqual([]);
     expect(pageText(page())).toContain(
-      "Samsung says the Fold 7's foldable display passed a 500,000-fold test verified by Bureau Veritas"
+      "Samsung Display says the Fold 7's foldable panel passed a 500,000-fold test verified by Bureau Veritas"
     );
     expect(pageText(page())).not.toMatch(/AnTuTu|Geekbench/i);
   });

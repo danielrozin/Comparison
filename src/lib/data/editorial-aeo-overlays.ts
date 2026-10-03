@@ -17,8 +17,8 @@ import {
 /**
  * Copilot-first AEO overlays for live compares (ROO-27 GDP pattern).
  *
- * GDP figures come from the live `/compare/us-vs-china-gdp` scorecard/FAQ
- *. Japan vs China figures come only from in-repo
+ * GDP figures come from the live `/compare/us-vs-china-gdp` scorecard/FAQ.
+ * Japan vs China figures come only from in-repo
  * `mock-data.ts` and `faq-expansion.ts` — do not invent IMF/World Bank
  * totals (including PPP GDP). Messi vs Ronaldo figures come only from
  * in-repo `mock-data.ts` — never invent Ballon d'Or or goal totals.

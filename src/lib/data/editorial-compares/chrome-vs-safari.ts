@@ -48,7 +48,7 @@ const FAQS = [
   {
     question: "Does Safari work on Windows or Android?",
     answer:
-      "Apple describes Safari on Mac, iPhone, iPad, and Apple Watch. Apple does not offer a Safari download for Windows or Android. Apple says bookmarks also sync to Windows devices that have iCloud for Windows. That is bookmark sync, not a Safari app for Windows. The same guide says an extension is not installed for you on every device. You install it on each one. Chrome names Windows, Mac, Linux, ChromeOS, Android, iPhone, and iPad.",
+      "Apple describes Safari on Mac, iPhone, iPad, and Apple Watch. Apple says bookmarks also sync to Windows devices that have iCloud for Windows. That is bookmark sync, not a Safari app for Windows. Apple also says an extension is not installed for you on every device. You install it on each one. Chrome names Windows, Mac, Linux, ChromeOS, Android, iPhone, and iPad.",
   },
   {
     question: "Does Safari sync across iPhone, iPad, and Mac?",
@@ -75,7 +75,7 @@ Google says Chromium is the web browser that Google Chrome is built on. Apple de
 
 Where each one runs
 
-Chrome says you can set Chrome as the default browser on Windows, Mac, iPhone, iPad, or Android. Chrome says that stable release applies to Android, ChromeOS, Linux, macOS, and Windows. Apple describes Safari on Mac, iPhone, iPad, and Apple Watch, with extensions for iPhone, iPad, and Mac. Apple does not offer Safari for Windows or Android. Apple's iCloud guide adds that bookmarks also sync to Windows if that PC has iCloud for Windows.
+Chrome says you can set Chrome as the default browser on Windows, Mac, iPhone, iPad, or Android. Google says the Chrome 139 stable release applies to Android, ChromeOS, Linux, macOS, and Windows. Apple describes Safari on Mac, iPhone, iPad, and Apple Watch, with extensions for iPhone, iPad, and Mac. Apple's iCloud guide adds that bookmarks also sync to Windows if that PC has iCloud for Windows.
 
 Tracking and cookies
 
@@ -145,7 +145,7 @@ export const CHROME_VS_SAFARI: EditorialComparison = buildEditorialComparison({
         "Extensions come from the App Store, with per-site or one-day permission (Apple)",
       ],
       cons: [
-        "Apple does not offer a Safari download for Windows or Android",
+        "Apple lists Safari for Mac, iPhone, iPad, and Apple Watch only",
         "Extensions are not installed for you on every device (iCloud guide)",
         "The 5-hour and 35% lines are Apple's August 2026 tests, not a result measured here",
         "Not the Chrome Web Store. A different extension catalog",

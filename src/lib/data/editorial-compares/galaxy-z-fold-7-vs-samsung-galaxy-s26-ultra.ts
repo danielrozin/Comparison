@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: "How durable is the Galaxy Z Fold 7 hinge?",
     answer:
-      "GSMArena lists the Z Fold 7 ingress rating as IP48: dust larger than 1 mm, and immersion up to 1.5 m for 30 minutes. GSMArena lists the S26 Ultra as IP68, dust tight, with the same 1.5 m / 30 minute water line. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Samsung says the Fold 7's foldable display passed a 500,000-fold test verified by Bureau Veritas.",
+      "GSMArena lists the Z Fold 7 ingress rating as IP48: dust larger than 1 mm, and immersion up to 1.5 m for 30 minutes. GSMArena lists the S26 Ultra as IP68, dust tight, with the same 1.5 m / 30 minute water line. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Samsung Display says the Fold 7's foldable panel passed a 500,000-fold test verified by Bureau Veritas.",
   },
   {
     question: "Does the Galaxy Z Fold 7 have the better camera?",
@@ -67,7 +67,7 @@ There is no single winner on this page.`;
 
 const EXPERT_ANALYSIS = `The Galaxy S26 Ultra suits a 4-5 year keep. The Galaxy Z Fold 7 is the pick only if the inner foldable screen and multitasking are why you are buying. This page does not crown one phone.
 
-Spec table. Caption: Galaxy Z Fold 7 vs Galaxy S26 Ultra. Source note: GSMArena lists the rows in the comparison table (idPhone1=13826, idPhone2=14320). Geeky Gadgets is a qualitative summary, not a measurement sheet. Samsung's US warranty wording covers the warranty sentence. Samsung Display is the source for the fold test.
+Spec table. Caption: Galaxy Z Fold 7 vs Galaxy S26 Ultra. Source note: GSMArena lists the rows in the comparison table (idPhone1=13826, idPhone2=14320). Geeky Gadgets is a qualitative summary, not a measurement sheet. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Samsung Display is the source for the fold test.
 
 Sources: GSMArena compare, GSMArena Z Fold 7, GSMArena Galaxy S26 Ultra, Geeky Gadgets (24 April 2026), Samsung Display (22 July 2025), Samsung's US warranty, Samsung's US Galaxy S26 Ultra, and Android Authority (9 July 2025).
 
@@ -95,7 +95,7 @@ Who should buy which
 
 Keep the S26 Ultra if you want one phone for 4-5 years and you care about ingress protection, battery, charging speed, and the longer telephoto. Geeky Gadgets makes the same split: the slab for durability, camera, and battery; the foldable for the large screen and multitasking. Samsung says the S26 Ultra has a built-in S Pen, and Samsung told Android Authority the Fold 7 does not support the S Pen because the digitizer was removed to make it thinner.
 
-Buy the Z Fold 7 only if that inner 8.0-inch screen is the point. You are accepting IP48 instead of IP68, a smaller battery, slower charging, and a hinge. Samsung says the Fold 7's foldable display passed a 500,000-fold test verified by Bureau Veritas. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Check Samsung's warranty terms for the coverage that applies to your country and purchase date.`;
+Buy the Z Fold 7 only if that inner 8.0-inch screen is the point. You are accepting IP48 instead of IP68, a smaller battery, slower charging, and a hinge. Samsung Display says the Fold 7's foldable panel passed a 500,000-fold test verified by Bureau Veritas. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Check Samsung's warranty terms for the coverage that applies to your country and purchase date.`;
 
 export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialComparison({
   slug: "galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra",
