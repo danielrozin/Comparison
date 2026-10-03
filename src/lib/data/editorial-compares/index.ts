@@ -31,6 +31,7 @@ import { DURANT_VS_LEBRON } from "./durant-vs-lebron";
 import { EMBIID_VS_JOKIC } from "./embiid-vs-jokic";
 import { KOBE_BRYANT_VS_STEPH_CURRY } from "./kobe-bryant-vs-steph-curry";
 import { HONDA_VS_FORD } from "./honda-vs-ford";
+import { MICROSOFT_WORD_VS_LIBREOFFICE } from "./microsoft-word-vs-libreoffice";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -79,6 +80,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [EMBIID_VS_JOKIC.slug]: EMBIID_VS_JOKIC,
   [KOBE_BRYANT_VS_STEPH_CURRY.slug]: KOBE_BRYANT_VS_STEPH_CURRY,
   [HONDA_VS_FORD.slug]: HONDA_VS_FORD,
+  [MICROSOFT_WORD_VS_LIBREOFFICE.slug]: MICROSOFT_WORD_VS_LIBREOFFICE,
 };
 
 /**
