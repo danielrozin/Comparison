@@ -42,17 +42,14 @@ function stateOf(live: ReadonlySet<string>, hidden: ReadonlySet<string> = new Se
 
 /**
  * Same order as getStaticProps: edge map, then the page decision.
- * A shell on a different slug is a redirect, so the test can reject it
- * when that target is not live.
+ * A shell is a 404 on the requested URL. It is not a redirect, even when
+ * the alphabetical slug is different — that target is not live.
  */
 function step(slug: string, live: ReadonlySet<string>, hidden?: ReadonlySet<string>) {
   const edge = getConsolidatedCompareSlug(slug);
   if (edge) return { type: "redirect" as const, to: edge };
   const decision = decideComparePage(slug, stateOf(live, hidden));
   if (decision.action === "redirect") return { type: "redirect" as const, to: decision.destination };
-  if (decision.action === "shell" && decision.slug !== slug) {
-    return { type: "redirect" as const, to: decision.slug };
-  }
   if (decision.action === "render") return { type: "render" as const };
   if (decision.action === "shell") return { type: "shell" as const };
   return { type: "not_found" as const };
@@ -118,10 +115,39 @@ describe("on-demand canonical redirects do not loop live pages", () => {
     expect(step("dc-vs-marvel", new Set(), hidden).type).toBe("not_found");
   });
 
-  it("puts a missing pair's shell on the canonical slug", () => {
-    const landed = step("stapler-vs-banana", new Set());
-    expect(landed).toEqual({ type: "redirect", to: "banana-vs-stapler" });
+  it("does not redirect a missing pair to a sorted slug that is not live", () => {
+    expect(step("stapler-vs-banana", new Set())).toEqual({ type: "shell" });
     expect(step("banana-vs-stapler", new Set())).toEqual({ type: "shell" });
+    expect(step("lebron-vs-durant", new Set())).toEqual({ type: "shell" });
+    expect(step("jokic-vs-embiid", new Set())).toEqual({ type: "shell" });
+    expect(step("steph-curry-vs-kobe-bryant", new Set())).toEqual({ type: "shell" });
+  });
+
+  it("redirects to the sorted slug only when that page is live", () => {
+    const live = new Set(["durant-vs-lebron"]);
+    expect(step("lebron-vs-durant", live)).toEqual({ type: "redirect", to: "durant-vs-lebron" });
+    expect(step("durant-vs-lebron", live)).toEqual({ type: "render" });
+  });
+
+  it("keeps reversed-slug redirects that land on a live page", () => {
+    expect(step("kobe-vs-lebron", new Set())).toEqual({
+      type: "redirect",
+      to: "kobe-bryant-vs-lebron-james",
+    });
+    const live = new Set([
+      "knicks-vs-76ers",
+      "shai-gilgeous-alexander-vs-victor-wembanyama",
+      "flagg-vs-wembanyama",
+    ]);
+    expect(step("76ers-vs-knicks", live)).toEqual({ type: "redirect", to: "knicks-vs-76ers" });
+    expect(step("victor-wembanyama-vs-shai-gilgeous-alexander", live)).toEqual({
+      type: "redirect",
+      to: "shai-gilgeous-alexander-vs-victor-wembanyama",
+    });
+    expect(step("wembanyama-vs-flagg", live)).toEqual({
+      type: "redirect",
+      to: "flagg-vs-wembanyama",
+    });
   });
 });
 

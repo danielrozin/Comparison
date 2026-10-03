@@ -84,13 +84,16 @@ export async function generateStaticParams() {
   return params;
 }
 
+// Unknown pairs 404 before this segment's parent loading.tsx can stream a 200.
+export const dynamicParams = false;
+
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { slug, subcategory } = await params;
-  const { page: pageParam } = await searchParams;
   const category = CATEGORIES.find((c) => c.slug === slug);
   const subcategories = getSubcategoriesForSlug(slug);
   const subcat = subcategories.find((s) => s.slug === subcategory);
-  if (!category || !subcat) return { title: "Not Found" };
+  if (!category || !subcat) notFound();
+  const { page: pageParam } = await searchParams;
 
   const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
   const baseUrl = `${SITE_URL}/category/${slug}/${subcategory}`;
@@ -145,12 +148,12 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
 export default async function SubcategoryPage({ params, searchParams }: PageProps) {
   const { slug, subcategory } = await params;
-  const sp = await searchParams;
   const category = CATEGORIES.find((c) => c.slug === slug);
   const subcategories = getSubcategoriesForSlug(slug);
   const subcat = subcategories.find((s) => s.slug === subcategory);
-
   if (!category || !subcat) notFound();
+
+  const sp = await searchParams;
 
   const page = Math.max(1, parseInt(sp.page || "1", 10) || 1);
   const sort = (sp.sort as SortOption) || "trending";

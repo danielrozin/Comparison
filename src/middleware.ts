@@ -3,6 +3,7 @@ import {
   compareHtmlSuffixRedirectPath,
   HTML_SUFFIX_COMPARE_STATUS,
 } from "@/lib/redirects/html-suffix-compare";
+import { isUnknownCategoryPath } from "@/lib/seo/category-page-path";
 
 // Simple in-memory rate limiter (per-instance; works on Edge Runtime)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -157,6 +158,11 @@ export function middleware(request: NextRequest) {
     // Content-Language — explicit English declaration for AI language classifiers
     // and international search engines (Bing, Yandex, Baidu).
     response.headers.set("Content-Language", "en");
+    // Unknown /category/* must not be index,follow if a soft 200 still
+    // slips out. The layout and dynamicParams=false are what return 404.
+    if (isUnknownCategoryPath(pathname)) {
+      response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    }
     // X-Pingback — machine-readable pingback discovery for WordPress/Ghost CMS platforms.
     // When they link to aversusb.net they auto-POST to this endpoint; accelerates
     // backlink discovery before Googlebot crawls the referring page.
@@ -206,8 +212,9 @@ export function middleware(request: NextRequest) {
           ].join(", ")
         );
       }
-    } else if (pathname.startsWith("/category/")) {
-      // Strip trailing slash and extract category (and optional subcategory)
+    } else if (pathname.startsWith("/category/") && !isUnknownCategoryPath(pathname)) {
+      // Strip trailing slash and extract category (and optional subcategory).
+      // Unknown slugs are real 404s — do not advertise them with cite-as.
       const catPath = pathname.replace(/\/$/, "").replace("/category/", "");
       const slug = catPath.split("/")[0];
       if (slug) {

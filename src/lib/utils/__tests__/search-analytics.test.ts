@@ -163,6 +163,15 @@ describe("search analytics events", () => {
     );
   });
 
+  it("emits not_found_viewed with path and referrer", async () => {
+    const { trackNotFoundViewed } = await import("../analytics");
+    trackNotFoundViewed("/category/not-real", "https://www.google.com/search?q=aversusb");
+    expect(capture).toHaveBeenCalledWith("not_found_viewed", {
+      path: "/category/not-real",
+      referrer: "https://www.google.com/search?q=aversusb",
+    });
+  });
+
   it("keeps comparison_search_performed backward compatible when no count is passed", async () => {
     const { trackComparisonSearch } = await import("../analytics");
     trackComparisonSearch("messi vs ronaldo", "comparison");
