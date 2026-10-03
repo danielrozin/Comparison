@@ -229,7 +229,7 @@ const BUILT = buildEditorialComparison({
       type: "blog",
       label: "LeBron James hub",
       url: "/entity/lebron-james",
-      description: "AversusB hub. Index, follow on October 3, 2026.",
+      description: "LeBron James player hub.",
     },
   ],
   metaTitle: "LeBron vs Curry: Careers and 2026-27",
