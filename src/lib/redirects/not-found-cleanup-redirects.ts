@@ -29,4 +29,8 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
  */
 export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
   ...Object.keys(NOT_FOUND_CLEANUP_CONSOLIDATIONS),
+  // 404 aliases for Java vs TypeScript. None was a catalog page.
+  "typescript-vs-java",
+  "ts-vs-java",
+  "java-vs-ts",
 ]);

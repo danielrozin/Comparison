@@ -319,4 +319,9 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "japan-vs-china-economy-comparison-2026": "china-vs-japan-economy-comparison-2026",
   "cristiano-ronaldo-vs-neymar-career-stats-comparison-2026":
     "neymar-vs-cristiano-ronaldo-career-stats-comparison-2026",
+  // Java vs TypeScript name orders. java-vs-typescript is the alphabetical
+  // survivor and is not a redirect source.
+  "typescript-vs-java": "java-vs-typescript",
+  "ts-vs-java": "java-vs-typescript",
+  "java-vs-ts": "java-vs-typescript",
 };
