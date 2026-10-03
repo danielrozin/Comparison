@@ -124,6 +124,8 @@ describe("submitCustomCompare", () => {
       code: "upgrade_required",
       upgradeUrl: "/pricing?src=custom-compare",
     });
+    expect(result.ok === false && result.error).not.toMatch(/24 hours/i);
+    expect(result.ok === false && result.error).toMatch(/not submitted/i);
     expect(sendNotificationEmail).not.toHaveBeenCalled();
     expect(redisBox.lists.get(CUSTOM_COMPARE_LOG_KEY)).toBeUndefined();
   });

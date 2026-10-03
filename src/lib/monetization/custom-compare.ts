@@ -152,8 +152,8 @@ function upgradeDenied(member: MemberRecord | null): CustomCompareResult {
     status: 403,
     code: "upgrade_required",
     error: lapsed
-      ? "Your membership is not active, so custom comparisons are paused. Renew on pricing, or open Manage billing if you only need to update a card."
-      : "Custom comparisons are a Pro feature. Free accounts can still suggest a matchup on the requests page and vote. Pro publishes a requested matchup within 24 hours.",
+      ? "Your membership is not active, so this request was not submitted. Renew on pricing, or open Manage billing if you only need to update a card."
+      : "Custom comparisons are a Pro feature, so this request was not submitted. Nothing was queued.",
     upgradeUrl: CUSTOM_COMPARE_UPGRADE_PATH,
     billingUrl: "/account/billing",
   };
