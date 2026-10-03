@@ -1804,4 +1804,40 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
     expect(battery?.values.find((value) => value.entityId === "fitbit-air")?.winner).toBe(true);
     expect(page().quickAnswer?.winnerName).toBeNull();
   });
+
+  it("lists both vendors' published heart items and quotes their own limits", () => {
+    const text = pageText(page());
+    const sleep = page().faqs.find((faq) => faq.question.startsWith("Which is better for sleep"));
+    expect(sleep?.answer).toContain("Sleep apnea notifications");
+    expect(sleep?.answer).toContain("Not intended for medical purposes");
+    expect(sleep?.answer).toContain("The temperature sensing feature is not intended for medical use.");
+    for (const item of [
+      "ECG app",
+      "Irregular rhythm notifications",
+      "High and low heart rate notifications",
+      "Blood Oxygen app",
+      "Sleep apnea notifications",
+      "Hypertension notifications",
+      "heart rhythm monitoring with Afib alerts",
+    ]) {
+      expect(text).toContain(item);
+    }
+    expect(text).toContain(
+      "Not intended for use by people under 22 years old with known atrial fibrillation or other known arrhythmias. Not available in all countries."
+    );
+    expect(text).toContain(
+      "Irregular rhythm notifications are not intended for use by people under 22 years old or those who have been previously diagnosed with atrial fibrillation (AFib)."
+    );
+    expect(text).toContain(
+      "Hypertension notifications are not intended for use by people under 22 years old, those who have been previously diagnosed with hypertension, or pregnant persons."
+    );
+    expect(text).toContain("The temperature sensing feature is not intended for medical use.");
+    expect(text).toContain("launch-post footnotes also say \"Not intended for medical purposes.\"");
+    expect(text).not.toMatch(/\b(detects?|detect signs|screens for|diagnoses|screening)\b/i);
+    const heartHelp = page().resources?.find((resource) => resource.url.includes("14237938"));
+    expect(heartHelp?.description ?? "").not.toMatch(/Not intended for medical purposes/);
+    expect(page().expertAnalysis ?? "").toContain(
+      "The heart-rate help article is the source only for the optical-sensor sentence below."
+    );
+  });
 });

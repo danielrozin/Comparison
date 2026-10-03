@@ -5,7 +5,9 @@ import type { EditorialComparison } from "./types";
  * ROO-139 — Apple Watch Series 12 vs Fitbit Air.
  * Specs checked on 3 October 2026 against Apple's Series 12 spec page,
  * the Google Store Fitbit Air page, the Google blog launch post, and
- * Google Health Help. No page-level winner. No accuracy percentages.
+ * Google Health Help. Health names and limits were fetched again on
+ * 3 October 2026 from the Series 12 spec page and the 7 May 2026
+ * launch post. No page-level winner. No accuracy percentages.
  * /entity/apple-watch-series-12 and /entity/fitbit-air were both
  * noindex, nofollow, so this page does not link either hub.
  */
@@ -41,7 +43,7 @@ const FAQS = [
   {
     question: "Which is better for sleep, Apple Watch Series 12 or Fitbit Air?",
     answer:
-      "This page cannot say which one measures sleep more accurately. It can only compare what Apple and Google publish. Apple lists a Sleep app that includes sleep stages, plus a sleep score, on a watch rated for up to 24 hours of normal use. Google's launch post lists sleep stages and sleep duration on the Fitbit Air, and Google Health Help rates that tracker for up to 7 days. Google's vitals table marks the Air for skin temperature variation, SpO2, heart rate variability, breathing rate, and resting heart rate. Longer published battery life is the practical difference for wearing it through several nights. It is not an accuracy score.",
+      "This page cannot say which one measures sleep more accurately. It can only compare what Apple and Google publish. Apple lists a Sleep app that includes sleep stages, a sleep score, and Sleep apnea notifications, on a watch rated for up to 24 hours of normal use. The same Health and Wellness list includes a Vitals app with heart rate, respiratory rate, wrist temperature, sleep duration, and heart rate variability. Apple's spec page says: \"The temperature sensing feature is not intended for medical use.\" Google's launch post lists sleep stages and sleep duration on the Fitbit Air. The 7 May 2026 launch-post footnotes say \"Not intended for medical purposes.\" Google Health Help rates that tracker for up to 7 days. Google's vitals table marks the Air for skin temperature variation, SpO2, heart rate variability, breathing rate, and resting heart rate. Longer published battery life is the practical difference for wearing it through several nights. It is not an accuracy score.",
   },
   {
     question: "Do you need cellular on the Apple Watch Series 12?",
@@ -73,7 +75,7 @@ There is no single winner on this page.`;
 
 const EXPERT_ANALYSIS = `Choose the Apple Watch Series 12 if you want a full smartwatch on an iPhone: apps, notifications, and an optional cellular model. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep, with a week-class battery. This page does not crown a winner.
 
-Source note: Series 12 chip, battery, sizes, weights, water resistance, and the iPhone requirement are from Apple's Series 12 spec page, fetched on 3 October 2026. Fitbit Air price, the week-long battery line, the screenless design, and the five-minute charge sentence are from the Google Store and Google's 7 May 2026 launch post, both fetched on 3 October 2026. The "up to 7 days" row, the about-90-minute full charge, the 50-meter water rating, the vitals table, and iPhone compatibility are from Google Health Help and the Fitbit Air safety guide, fetched the same day. No sleep-accuracy percentage is used.
+Source note: Series 12 chip, battery, sizes, weights, water resistance, the iPhone requirement, and the Health and Wellness names and footnotes are from Apple's Series 12 spec page, fetched on 3 October 2026. Fitbit Air price, the week-long battery line, the screenless design, the five-minute charge sentence, the rhythm footnote, and the "Not intended for medical purposes" line are from the Google Store and Google's 7 May 2026 launch post, both fetched on 3 October 2026. The "up to 7 days" row, the about-90-minute full charge, the 50-meter water rating, the vitals table, and iPhone compatibility are from Google Health Help and the Fitbit Air safety guide, fetched the same day. No sleep-accuracy percentage is used.
 
 What each one is
 
@@ -93,7 +95,13 @@ Fitbit Air does work with an iPhone, and it does not become an Apple Watch when 
 
 Sleep and heart rate, as published
 
-Apple lists a Sleep app including sleep stages, a sleep score, and a Vitals app that includes heart rate, respiratory rate, wrist temperature, sleep duration, and heart rate variability. Google's launch post lists 24/7 heart rate, heart rhythm monitoring with Afib alerts, SpO2, resting heart rate, heart rate variability, and sleep stages and duration. Google's vitals table marks the Air for breathing rate, heart rate variability, skin temperature variation, SpO2, and resting heart rate. Google's heart-rate help says Fitbit devices use optical heart rate sensors, and that article lists Google Fitbit Air among the devices it covers. Google also says heart-rate and sleep features are not for medical purposes. This page does not add an accuracy percentage either way.
+Apple's Health and Wellness list on the Series 12 spec page, fetched on 3 October 2026, includes a Sleep app including sleep stages, a sleep score, and Sleep apnea notifications. It also includes a Vitals app with heart rate, respiratory rate, wrist temperature, sleep duration, and heart rate variability, an ECG app, High and low heart rate notifications, Irregular rhythm notifications, a Blood Oxygen app, and Hypertension notifications.
+
+Apple's footnotes on that page, next to those items, say: "The Vitals app is for wellness purposes only and not for medical use." "The Blood Oxygen app is for wellness purposes only and not for medical use." "The temperature sensing feature is not intended for medical use." "The ECG app is available on Apple Watch Series 4 and later (excluding Apple Watch SE models) and all Apple Watch Ultra models and can generate an ECG similar to a single-lead electrocardiogram. Intended for use by people 22 years old or older." "Irregular rhythm notifications are not intended for use by people under 22 years old or those who have been previously diagnosed with atrial fibrillation (AFib)." "Hypertension notifications are not intended for use by people under 22 years old, those who have been previously diagnosed with hypertension, or pregnant persons."
+
+Google's launch post lists 24/7 heart rate, heart rhythm monitoring with Afib alerts, SpO2, resting heart rate, heart rate variability, and sleep stages and duration. The launch-post footnote next to that rhythm feature says: "Not intended for use by people under 22 years old with known atrial fibrillation or other known arrhythmias. Not available in all countries." The 7 May 2026 launch-post footnotes also say "Not intended for medical purposes." That line is quoted from the launch post. The heart-rate help article is the source only for the optical-sensor sentence below.
+
+Google's vitals table marks the Air for breathing rate, heart rate variability, skin temperature variation, SpO2, and resting heart rate. Google's heart-rate help says Fitbit devices use optical heart rate sensors, and that article lists Google Fitbit Air among the devices it covers. This page does not add an accuracy percentage either way.
 
 Water and weight
 
@@ -246,7 +254,7 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
       SPEC,
       WATCH,
       AIR,
-      "Sleep app including sleep stages, plus a sleep score",
+      "Sleep app including sleep stages, a sleep score, and Sleep apnea notifications",
       "Sleep stages and duration. No accuracy percentage on these pages"
     ),
     textAttr(
@@ -311,9 +319,15 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
     preferenceEntity: null,
     lastResearched: FETCHED,
     sources: [
-      { name: "Apple — Apple Watch Series 12 specs (fetched 2026-10-03)", url: APPLE },
+      {
+        name: "Apple — Apple Watch Series 12 specs, Health and Wellness footnotes (fetched 2026-10-03)",
+        url: APPLE,
+      },
       { name: "Google Store — Fitbit Air (fetched 2026-10-03)", url: STORE },
-      { name: "Google blog — Fitbit Air launch, 7 May 2026 (fetched 2026-10-03)", url: BLOG },
+      {
+        name: "Google blog — Fitbit Air launch, 7 May 2026, rhythm and medical-purpose footnotes (fetched 2026-10-03)",
+        url: BLOG,
+      },
       { name: "Google Health Help — Fitbit battery life (fetched 2026-10-03)", url: BATTERY },
       { name: "Google Health Help — charge your Fitbit device (fetched 2026-10-03)", url: CHARGE },
       { name: "Google Health Help — swim or shower (fetched 2026-10-03)", url: WATER },
@@ -333,7 +347,7 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
       label: "Apple Watch Series 12 specs",
       url: APPLE,
       description:
-        "Fetched 2026-10-03. S11 chip, up to 24 hours normal use, 38 hours Low Power Mode, 10 hours workout tracking, 50-meter water rating.",
+        "Fetched 2026-10-03. S11 chip, battery ratings, and the Health and Wellness list: ECG app, Irregular rhythm notifications, High and low heart rate notifications, Blood Oxygen app, Sleep apnea notifications, Hypertension notifications, with the spec-page footnotes.",
     },
     {
       type: "external",
@@ -347,7 +361,7 @@ export const APPLE_WATCH_SERIES_12_VS_FITBIT_AIR: EditorialComparison = buildEdi
       label: "Google blog Fitbit Air launch",
       url: BLOG,
       description:
-        "Published 2026-05-07, fetched 2026-10-03. Screenless, week-long battery, from $99.99 at launch, a full day of power in five minutes.",
+        "Published 2026-05-07, fetched 2026-10-03. Screenless, week-long battery, from $99.99 at launch. Footnote: not for people under 22 with known atrial fibrillation or other known arrhythmias, and not available in all countries. Footnotes also say not intended for medical purposes.",
     },
     {
       type: "external",
