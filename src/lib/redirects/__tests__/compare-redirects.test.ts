@@ -274,6 +274,22 @@ describe("COMPARE_REDIRECTS", () => {
       expect(getConsolidatedCompareSlug("kobe-vs-jordan")).toBeNull();
     });
 
+    it("301s SGA and Sixers short aliases straight to the live pages", () => {
+      const pairs: [string, string][] = [
+        ["sga-vs-wembanyama", "shai-gilgeous-alexander-vs-victor-wembanyama"],
+        ["wembanyama-vs-sga", "shai-gilgeous-alexander-vs-victor-wembanyama"],
+        ["knicks-vs-sixers", "knicks-vs-76ers"],
+        ["sixers-vs-knicks", "knicks-vs-76ers"],
+      ];
+      for (const [from, to] of pairs) {
+        expect(getConsolidatedCompareSlug(from), from).toBe(to);
+        expect(getConsolidatedCompareSlug(to), `${to} must stay a page`).toBeNull();
+        const hit = COMPARE_REDIRECTS.find((redirect) => redirect.source === `/compare/${from}`);
+        expect(hit?.destination).toBe(`/compare/${to}`);
+        expect(hit?.statusCode).toBe(301);
+      }
+    });
+
     it("every DAN-1800 entry is a genuine A-vs-B / B-vs-A ordering pair (same sorted key)", () => {
       const key = (s: string) =>
         s.split("-vs-").map((t) => t.trim()).sort().join("|");

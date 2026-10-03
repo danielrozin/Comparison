@@ -54,6 +54,15 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   // Confirmed 2026-10-03: these two are 404, /compare/lebron-vs-jordan is 200.
   "michael-jordan-vs-lebron-james": "lebron-vs-jordan",
   "lebron-james-vs-michael-jordan": "lebron-vs-jordan",
+  // Short NBA aliases. Both orders point at the live page so the alphabetical
+  // shell cannot insert a hop (sixers-vs-knicks would otherwise become
+  // knicks-vs-sixers, and wembanyama-vs-sga would become sga-vs-wembanyama).
+  // Confirmed 2026-10-03: these four 404 or end on a 404. Destinations are the
+  // published editorial pages.
+  "sga-vs-wembanyama": "shai-gilgeous-alexander-vs-victor-wembanyama",
+  "wembanyama-vs-sga": "shai-gilgeous-alexander-vs-victor-wembanyama",
+  "knicks-vs-sixers": "knicks-vs-76ers",
+  "sixers-vs-knicks": "knicks-vs-76ers",
   "14-inch-vs-16-inch-macbook-pro": "macbook-pro-14-vs-16-inch",
   "japan-vs-china-economy-comparison-2026": "china-vs-japan-economy-comparison-2026",
   "cristiano-ronaldo-vs-neymar-career-stats-comparison-2026":
