@@ -8,9 +8,24 @@ import { MEMBERS_LIST_KEY, normalizeMemberEmail, revokeMember, upsertMember, typ
 import { claimStripeEvent } from "@/lib/monetization/stripe-events";
 import { MembershipStoreError } from "@/lib/monetization/prisma-errors";
 import { checkoutEventDistinctId } from "@/lib/analytics/checkout-identity";
+import { aversusbOwnedPriceIds } from "@/lib/monetization/backfill-pro-members";
+import {
+  readMembershipPlan,
+  resolveCheckoutOwnership,
+  subscriptionBelongsToAversusB,
+  priceIdOf,
+  type CheckoutOwnershipSession,
+  type SubscriptionOwnership,
+} from "@/lib/monetization/stripe-app";
 
 /**
  * POST /api/stripe/webhook — Phase 2 of MONETIZATION.md.
+ *
+ * The Stripe account is shared with Scan2Remember and RookMentor. After the
+ * signature check, and before any membership write, processed-event row,
+ * Redis key, email, founder alert, or PostHog capture, the event must be
+ * an AversusB checkout or subscription. Anything else returns 200 with
+ * ignored: "foreign_app" so Stripe does not retry it.
  *
  * Inert until STRIPE_WEBHOOK_SECRET is set (returns 503 so Stripe retries
  * nothing before launch). Once live it verifies the signature manually (no
@@ -67,6 +82,73 @@ function verifyStripeSignature(payload: string, header: string, secret: string):
     });
 }
 
+type EventGate =
+  | { action: "process"; plan: string; interval: string; src: string }
+  | { action: "ignore"; reason: "foreign_app" | "invalid_plan" }
+  | { action: "retry" };
+
+function eventMetadata(object: Record<string, unknown>): Record<string, unknown> | null {
+  const metadata = object.metadata;
+  if (!metadata || typeof metadata !== "object") return null;
+  return metadata as Record<string, unknown>;
+}
+
+/**
+ * GET only. Used when a checkout payload has no app tag and no price, so a
+ * session created before metadata.app was added can still be recognized.
+ * Returns null when the read fails (caller asks Stripe to retry).
+ */
+async function fetchCheckoutLinePriceIds(sessionId: string): Promise<string[] | null> {
+  const secret = (process.env.STRIPE_SECRET_KEY ?? "").replace(/[\r\n]+/g, "").trim();
+  if (!secret) return null;
+  try {
+    const res = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}/line_items?limit=20`,
+      { method: "GET", headers: { Authorization: `Bearer ${secret}` } }
+    );
+    if (!res.ok) return null;
+    const body = (await res.json()) as { data?: Array<{ price?: unknown }> };
+    const ids: string[] = [];
+    for (const item of body.data ?? []) {
+      const id = priceIdOf(item?.price);
+      if (id) ids.push(id);
+    }
+    return ids;
+  } catch {
+    return null;
+  }
+}
+
+async function gateStripeEvent(event: {
+  type?: string;
+  data?: { object?: Record<string, unknown> };
+}): Promise<EventGate> {
+  const type = event.type ?? "";
+  const object = event.data?.object ?? {};
+  const prices = new Set(aversusbOwnedPriceIds().keys());
+  const metadata = eventMetadata(object);
+
+  if (type === "checkout.session.completed") {
+    const owned = await resolveCheckoutOwnership(
+      object as CheckoutOwnershipSession,
+      prices,
+      fetchCheckoutLinePriceIds
+    );
+    if (owned === "retry") return { action: "retry" };
+    if (!owned) return { action: "ignore", reason: "foreign_app" };
+  } else if (type.startsWith("customer.subscription.")) {
+    if (!subscriptionBelongsToAversusB(object as SubscriptionOwnership, prices)) {
+      return { action: "ignore", reason: "foreign_app" };
+    }
+  } else {
+    return { action: "ignore", reason: "foreign_app" };
+  }
+
+  const plan = readMembershipPlan(metadata);
+  if (!plan) return { action: "ignore", reason: "invalid_plan" };
+  return { action: "process", ...plan };
+}
+
 export async function POST(request: NextRequest) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!secret) {
@@ -87,6 +169,16 @@ export async function POST(request: NextRequest) {
   }
   if (!event.id || !event.type) {
     return NextResponse.json({ error: "Malformed event" }, { status: 400 });
+  }
+
+  const gate = await gateStripeEvent(event);
+  if (gate.action === "retry") {
+    console.error(`[stripe-webhook] could not confirm app id=${event.id} type=${event.type}`);
+    return NextResponse.json({ error: "Could not confirm app" }, { status: 500 });
+  }
+  if (gate.action === "ignore") {
+    console.info(`[stripe-webhook] ignored ${gate.reason} id=${event.id} type=${event.type}`);
+    return NextResponse.json({ received: true, ignored: gate.reason });
   }
 
   const redis = getRedis();
@@ -114,10 +206,10 @@ export async function POST(request: NextRequest) {
         fallback: s.customer || "unknown",
       }) || "unknown";
     const record = {
-      email: email || "unknown",
-      plan: s.metadata?.plan ?? "unknown",
-      interval: s.metadata?.interval ?? "unknown",
-      src: s.metadata?.src ?? "unknown",
+      email,
+      plan: gate.plan,
+      interval: gate.interval,
+      src: gate.src,
       stripeCustomer: s.customer ?? null,
       stripeSubscription: s.subscription ?? null,
       amountTotal: s.amount_total ?? null,
@@ -335,10 +427,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true });
   }
 
-  // Events we do not act on are still claimed so a retry is a no-op.
-  const duplicate = await acknowledgeEvent(event.id, event.type);
-  if (duplicate) return duplicate;
-
+  // Owned subscription events we do not act on (for example trial_will_end)
+  // are acknowledged with no write, email, or analytics.
   return NextResponse.json({ received: true });
 }
 
