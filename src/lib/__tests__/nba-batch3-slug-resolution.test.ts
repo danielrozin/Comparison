@@ -5,7 +5,12 @@ import {
   relatedComparisonSlugs,
   type SlugRowState,
 } from "@/lib/compare-slug-resolution";
-import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
+import {
+  getConsolidatedCompareSlug,
+  REDIRECTED_COMPARE_SLUGS,
+} from "@/lib/redirects/compare-redirects";
+import { listEditorialCompareSitemapEntries } from "@/lib/data/editorial-compares";
 import { getComparisonBySlug, isComparisonDbConfigured } from "@/lib/services/comparison-service";
 import { getStaticProps } from "@/pages/compare/[slug]";
 
@@ -80,11 +85,75 @@ const PAGES: { page: string; reverse: string }[] = [
 ];
 
 const ALIASES: { from: string; to: string }[] = [
-  { from: "curry-vs-lebron", to: "lebron-james-vs-stephen-curry" },
+  { from: "ja-morant-vs-damian-lillard", to: "damian-lillard-vs-ja-morant" },
+  { from: "ja-morant-vs-damian-lillard-match-player-stats", to: "damian-lillard-vs-ja-morant" },
+  { from: "damian-lillard-vs-ja-morant-match-player-stats", to: "damian-lillard-vs-ja-morant" },
+  { from: "ja-morant-match-player-stats-vs-damian-lillard", to: "damian-lillard-vs-ja-morant" },
+  { from: "damian-lillard-match-player-stats-vs-ja-morant", to: "damian-lillard-vs-ja-morant" },
+  { from: "ja-morant-vs-lillard", to: "damian-lillard-vs-ja-morant" },
+  { from: "lillard-vs-ja-morant", to: "damian-lillard-vs-ja-morant" },
+  { from: "ja-morant-vs-lillard-match-player-stats", to: "damian-lillard-vs-ja-morant" },
+  { from: "lillard-vs-ja-morant-match-player-stats", to: "damian-lillard-vs-ja-morant" },
+  { from: "ja-morant-match-player-stats-vs-lillard", to: "damian-lillard-vs-ja-morant" },
+  { from: "lillard-match-player-stats-vs-ja-morant", to: "damian-lillard-vs-ja-morant" },
+  { from: "morant-vs-damian-lillard", to: "damian-lillard-vs-ja-morant" },
+  { from: "damian-lillard-vs-morant", to: "damian-lillard-vs-ja-morant" },
+  { from: "morant-vs-damian-lillard-match-player-stats", to: "damian-lillard-vs-ja-morant" },
+  { from: "damian-lillard-vs-morant-match-player-stats", to: "damian-lillard-vs-ja-morant" },
+  { from: "morant-match-player-stats-vs-damian-lillard", to: "damian-lillard-vs-ja-morant" },
+  { from: "damian-lillard-match-player-stats-vs-morant", to: "damian-lillard-vs-ja-morant" },
+  { from: "morant-vs-lillard", to: "damian-lillard-vs-ja-morant" },
+  { from: "lillard-vs-morant", to: "damian-lillard-vs-ja-morant" },
+  { from: "morant-vs-lillard-match-player-stats", to: "damian-lillard-vs-ja-morant" },
+  { from: "lillard-vs-morant-match-player-stats", to: "damian-lillard-vs-ja-morant" },
+  { from: "morant-match-player-stats-vs-lillard", to: "damian-lillard-vs-ja-morant" },
+  { from: "lillard-match-player-stats-vs-morant", to: "damian-lillard-vs-ja-morant" },
   { from: "stephen-curry-vs-lebron-james", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-james-vs-stephen-curry-match-player-stats", to: "lebron-james-vs-stephen-curry" },
+  { from: "stephen-curry-vs-lebron-james-match-player-stats", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-james-match-player-stats-vs-stephen-curry", to: "lebron-james-vs-stephen-curry" },
+  { from: "stephen-curry-match-player-stats-vs-lebron-james", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-james-vs-curry", to: "lebron-james-vs-stephen-curry" },
+  { from: "curry-vs-lebron-james", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-james-vs-curry-match-player-stats", to: "lebron-james-vs-stephen-curry" },
+  { from: "curry-vs-lebron-james-match-player-stats", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-james-match-player-stats-vs-curry", to: "lebron-james-vs-stephen-curry" },
+  { from: "curry-match-player-stats-vs-lebron-james", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-vs-stephen-curry", to: "lebron-james-vs-stephen-curry" },
+  { from: "stephen-curry-vs-lebron", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-vs-stephen-curry-match-player-stats", to: "lebron-james-vs-stephen-curry" },
+  { from: "stephen-curry-vs-lebron-match-player-stats", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-match-player-stats-vs-stephen-curry", to: "lebron-james-vs-stephen-curry" },
+  { from: "stephen-curry-match-player-stats-vs-lebron", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-vs-curry", to: "lebron-james-vs-stephen-curry" },
+  { from: "curry-vs-lebron", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-vs-curry-match-player-stats", to: "lebron-james-vs-stephen-curry" },
+  { from: "curry-vs-lebron-match-player-stats", to: "lebron-james-vs-stephen-curry" },
+  { from: "lebron-match-player-stats-vs-curry", to: "lebron-james-vs-stephen-curry" },
+  { from: "curry-match-player-stats-vs-lebron", to: "lebron-james-vs-stephen-curry" },
   { from: "kobe-vs-jordan", to: "jordan-vs-kobe" },
-  { from: "kobe-bryant-vs-michael-jordan", to: "jordan-vs-kobe" },
+  { from: "jordan-vs-kobe-match-player-stats", to: "jordan-vs-kobe" },
+  { from: "kobe-vs-jordan-match-player-stats", to: "jordan-vs-kobe" },
+  { from: "jordan-match-player-stats-vs-kobe", to: "jordan-vs-kobe" },
+  { from: "kobe-match-player-stats-vs-jordan", to: "jordan-vs-kobe" },
+  { from: "jordan-vs-kobe-bryant", to: "jordan-vs-kobe" },
+  { from: "kobe-bryant-vs-jordan", to: "jordan-vs-kobe" },
+  { from: "jordan-vs-kobe-bryant-match-player-stats", to: "jordan-vs-kobe" },
+  { from: "kobe-bryant-vs-jordan-match-player-stats", to: "jordan-vs-kobe" },
+  { from: "jordan-match-player-stats-vs-kobe-bryant", to: "jordan-vs-kobe" },
+  { from: "kobe-bryant-match-player-stats-vs-jordan", to: "jordan-vs-kobe" },
+  { from: "michael-jordan-vs-kobe", to: "jordan-vs-kobe" },
+  { from: "kobe-vs-michael-jordan", to: "jordan-vs-kobe" },
+  { from: "michael-jordan-vs-kobe-match-player-stats", to: "jordan-vs-kobe" },
+  { from: "kobe-vs-michael-jordan-match-player-stats", to: "jordan-vs-kobe" },
+  { from: "michael-jordan-match-player-stats-vs-kobe", to: "jordan-vs-kobe" },
+  { from: "kobe-match-player-stats-vs-michael-jordan", to: "jordan-vs-kobe" },
   { from: "michael-jordan-vs-kobe-bryant", to: "jordan-vs-kobe" },
+  { from: "kobe-bryant-vs-michael-jordan", to: "jordan-vs-kobe" },
+  { from: "michael-jordan-vs-kobe-bryant-match-player-stats", to: "jordan-vs-kobe" },
+  { from: "kobe-bryant-vs-michael-jordan-match-player-stats", to: "jordan-vs-kobe" },
+  { from: "michael-jordan-match-player-stats-vs-kobe-bryant", to: "jordan-vs-kobe" },
+  { from: "kobe-bryant-match-player-stats-vs-michael-jordan", to: "jordan-vs-kobe" },
 ];
 
 type Ctx = Parameters<typeof getStaticProps>[0];
@@ -119,6 +188,19 @@ describe("NBA batch 3 aliases and reverses", () => {
       expect(props, item.reverse).toMatchObject({
         redirect: { destination: `/compare/${reverse.hops[0]}`, statusCode: 301 },
       });
+    }
+  });
+
+  it("drops every legacy alias from the comparison sitemap and keeps the pages", () => {
+    const sitemap = new Set(listEditorialCompareSitemapEntries().map((entry) => entry.slug));
+    const excluded = new Set(canonicalComparisonWhere().slug.notIn);
+    for (const alias of ALIASES) {
+      expect(REDIRECTED_COMPARE_SLUGS, alias.from).toContain(alias.from);
+      expect(excluded.has(alias.from), alias.from).toBe(true);
+      expect(sitemap.has(alias.from), alias.from).toBe(false);
+      expect(excluded.has(alias.to), alias.to).toBe(false);
+      expect(sitemap.has(alias.to), alias.to).toBe(true);
+      expect(getConsolidatedCompareSlug(alias.to), alias.to).toBeNull();
     }
   });
 });
