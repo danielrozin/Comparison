@@ -21,57 +21,55 @@ const BINANCE_BNB = "https://www.binance.info/en/support/faq/detail/115000583311
 
 const FETCHED = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
-const SPEC = "Fees · checked 2026-10-03";
+const SPEC = "Fees";
 
 const SHORT_ANSWER =
-  "Coinbase (NASDAQ: COIN) reported $246 billion of assets on platform as of 30 June 2026. A simple Coinbase buy or sell includes a spread, and a simple limit order adds a 1% execution fee. A regular Binance spot trade in the help example costs 0.1% of the asset you receive, or 0.075% when the 25% BNB discount applies. Checked 3 October 2026. There is no winner on this page.";
+  "Coinbase (NASDAQ: COIN) reported $246 billion of assets on platform as of 30 June 2026. A simple Coinbase buy or sell includes a spread, and a simple limit order adds a 1% execution fee. A regular Binance spot trade costs 0.1% of the asset you receive. Binance's BNB fee discount puts that example at 0.075% when the 25% discount applies. There is no winner.";
 
 const FAQS = [
   {
     question: "What does a Coinbase trade cost?",
     answer:
-      "Checked 3 October 2026. Coinbase charges a fee when you buy, sell, or convert cryptocurrency, and that fee varies by payment method, order size, market conditions, location, and asset. The trade preview shows the fee before you submit. A simple buy or sell also includes a spread in the quoted price. A simple limit order adds an execution fee equal to 1% of the amount traded, and Coinbase may also charge a 1.875% Coinbase fee that varies by payment method. Coinbase Advanced does not include a spread. Hosted cash and cryptocurrency balances are free to store, and a transfer from one Coinbase user's primary balance to another is free.",
+      "Coinbase charges a fee when you buy, sell, or convert cryptocurrency, and that fee varies by payment method, order size, market conditions, location, and asset. The trade preview shows the fee before you submit. A simple buy or sell also includes a spread in the quoted price. A simple limit order adds an execution fee equal to 1% of the amount traded, and Coinbase may also charge a 1.875% Coinbase fee that varies by payment method. Coinbase Advanced does not include a spread. Hosted cash and cryptocurrency balances are free to store, and a transfer from one Coinbase user's primary balance to another is free.",
   },
   {
     question: "What does a Binance spot trade cost?",
     answer:
-      "As of the 6 January 2026 spot-fee article, a regular user pays 0.1%. The fee is charged in the asset you receive: buy ETH/USDC and the fee is in ETH; sell and the fee is in USDC. The rate can change with VIP level. With BNB deduction on, that example is 0.075%. As of the 6 February 2026 BNB article, the spot and margin discount is 25% until further notice, and futures fees can be discounted by up to 10%.",
+      "Binance says a regular spot user pays 0.1%. The fee is charged in the asset you receive: buy ETH/USDC and the fee is in ETH; sell and the fee is in USDC. The rate can change with VIP level. Binance's BNB fee discount puts that regular-user example at 0.075% when the 25% spot and margin discount applies. That discount is 25% until further notice, and futures fees can be discounted by up to 10%.",
   },
   {
     question: "When does the Binance BNB discount apply?",
     answer:
-      "The discount needs BNB in the Spot account and the Using BNB Deduction setting turned on. If the BNB balance is too low, Binance charges the full fee. The estimated fee on the trading page is a reference. The actual fee depends on the amount of the asset you receive.",
+      "The discount needs BNB in the Spot account and the Using BNB Deduction setting turned on. If the BNB balance is too low, Binance charges the full fee. The estimated fee shown before the trade is a reference. The actual fee depends on the amount of the asset you receive.",
   },
   {
     question: "Who operates Binance.com after the ADGM change?",
     answer:
-      "From 5 January 2026 at 08:00 UTC, spot and derivative exchange activity is provided by Nest Exchange Limited, a Recognized Investment Exchange. Nest Clearing and Custody Limited is the Recognized Clearing House and custodian, and the central counterparty for on-exchange derivative trades. Nest Trading Limited is the broker-dealer for off-exchange services such as OTC, Convert, and Earn. Login, balances, and order history stay in place.",
+      "Binance says that from 5 January 2026 at 08:00 UTC, spot and derivative exchange activity is provided by Nest Exchange Limited, a Recognized Investment Exchange. Nest Clearing and Custody Limited is the Recognized Clearing House and custodian, and the central counterparty for on-exchange derivative trades. Nest Trading Limited is the broker-dealer for off-exchange services such as OTC, Convert, and Earn. Login, balances, and order history stay in place.",
   },
   {
     question: "What did Coinbase report as of 30 June 2026?",
     answer:
-      "As of 30 June 2026, Coinbase reports a 10.3% crypto trading volume market share, $246 billion of assets on platform, 100+ countries, 4,300+ employees, and 245,000 ecosystem partners. Brian Armstrong is Co-Founder and Chief Executive Officer. The company trades as NASDAQ: COIN. The fee disclosures are not applicable in all regions.",
+      "As of 30 June 2026, Coinbase reports a 10.3% crypto trading volume market share, $246 billion of assets on platform, 100+ countries, and 4,300+ employees. Coinbase also reports 245,000 ecosystem partners. Brian Armstrong is Co-Founder and Chief Executive Officer. The company trades as NASDAQ: COIN. The fee disclosures are not applicable in all regions.",
   },
   {
     question: "Which one is the winner?",
     answer:
-      "Neither. Coinbase prices a simple trade with a spread and a fee shown on the preview, and prices a simple limit order with a 1% execution fee. Binance's regular-user spot example is 0.1%, or 0.075% with the BNB discount. Those are different ways of charging. This page does not pick a winner.",
+      "Neither. Coinbase prices a simple trade with a spread and a fee shown on the preview, and prices a simple limit order with a 1% execution fee. Binance's regular-user spot example is 0.1%. Binance's BNB fee discount puts that example at 0.075%. Those are different ways of charging. There is no winner.",
   },
 ];
 
-const VERDICT = `Best fit for a spread-quoted simple trade at a US public company: Coinbase. Storage of a hosted balance is free, and Coinbase Advanced has no spread.
+const VERDICT = `Best fit for a spread-quoted simple trade at a company that trades as NASDAQ: COIN: Coinbase. Storage of a hosted balance is free, and Coinbase Advanced has no spread.
 
-Best fit for a spot order book with a regular-user example of 0.1%: Binance. Paying the fee in BNB takes that example to 0.075% when the discount is on and the BNB balance covers it.
+Best fit for a spot order book with a regular-user example of 0.1%: Binance. Binance's BNB fee discount takes that example to 0.075% when the discount is on and the BNB balance covers it.
 
-There is no single winner on this page.`;
+There is no single winner.`;
 
-const EXPERT_ANALYSIS = `Coinbase and Binance both let a customer buy and sell cryptocurrency. They do not quote that trade the same way. There is no winner on this page.
-
-Specs and fees checked 3 October 2026 on Coinbase's and Binance's official pages; sources are listed below.
+const EXPERT_ANALYSIS = `Coinbase and Binance both let a customer buy and sell cryptocurrency. They do not quote that trade the same way. There is no winner.
 
 Coinbase
 
-Coinbase trades as NASDAQ: COIN. Brian Armstrong is Co-Founder and Chief Executive Officer. As of 30 June 2026, the about page reports a 10.3% crypto trading volume market share, $246 billion of assets on platform, 100+ countries, 4,300+ employees, and 245,000 ecosystem partners. Consumers use Coinbase's apps. Institutions use Coinbase Prime. Developers use the Coinbase Developer Platform.
+Coinbase trades as NASDAQ: COIN. Brian Armstrong is Co-Founder and Chief Executive Officer. As of 30 June 2026, Coinbase reports a 10.3% crypto trading volume market share, $246 billion of assets on platform, 100+ countries, and 4,300+ employees. Coinbase also reports 245,000 ecosystem partners. Consumers use Coinbase's apps. Institutions use Coinbase Prime. Developers use the Coinbase Developer Platform.
 
 A hosted cash or cryptocurrency balance is free. A transfer between two Coinbase users' primary balances is free. Sending cryptocurrency off the platform includes a network fee shown at the time of the transaction. A Lightning Network bitcoin send adds a processing fee of 0.2% of the bitcoin. A USDT withdrawal adds a processing fee of 0.01% of the amount, capped at 20 USDT, plus a network fee. A 0.10% USDC processing fee applies to net conversion above $5 million in a rolling 30 days.
 
@@ -79,15 +77,15 @@ A simple buy or sell includes a spread in the quoted price. The separate Coinbas
 
 Binance
 
-Changpeng Zhao launched Binance in July 2017. Yi He is Co-CEO and Co-Founder. Richard Teng is Co-CEO. Binance Exchange is regulated by the ADGM Financial Services Regulatory Authority. Customer support runs 24/7 in 40 languages.
+Changpeng Zhao launched Binance in July 2017. Yi He is Co-CEO and Co-Founder. Richard Teng is Co-CEO. Binance says Binance Exchange is regulated by the ADGM FSRA. Customer support runs 24/7 in 40 languages.
 
-From 5 January 2026 at 08:00 UTC, the ADGM announcement assigns spot and derivative exchange activity to Nest Exchange Limited, clearing and custody to Nest Clearing and Custody Limited, and off-exchange services such as OTC, Convert, and Earn to Nest Trading Limited.
+Binance says that from 5 January 2026 at 08:00 UTC, spot and derivative exchange activity is provided by Nest Exchange Limited, clearing and custody by Nest Clearing and Custody Limited, and off-exchange services such as OTC, Convert, and Earn by Nest Trading Limited.
 
-On a spot trade, the fee is charged in the asset you receive. As of 6 January 2026, the regular-user rate in the fee example is 0.1%, and the rate can change with VIP level. Using BNB to pay the fee grants a 25% discount on spot and margin, so the regular-user example becomes 0.075%. Futures fees can be discounted by up to 10%. As of 6 February 2026, the 25% discount is valid until further notice. It requires BNB in the Spot account and the deduction setting. A short BNB balance means the full fee.
+On a spot trade, the fee is charged in the asset you receive. Binance's regular-user rate in the fee example is 0.1%, and the rate can change with VIP level. Binance's BNB fee discount grants 25% off spot and margin fees, so that regular-user example is 0.075%. Futures fees can be discounted by up to 10%. The 25% discount is valid until further notice. It requires BNB in the Spot account and the deduction setting. A short BNB balance means the full fee.
 
 Who should use which
 
-Use Coinbase if you want the simple-trade preview, with its spread and its disclosed fee, at the public company that reported $246 billion of assets on platform as of 30 June 2026. Use Binance if you want the spot order book whose regular-user example is 0.1%, with 0.075% when the BNB discount applies. This page does not rank the two fees, because one quote includes a spread and the other is a percentage of the asset you receive.`;
+Use Coinbase if you want the simple-trade preview, with its spread and its disclosed fee, at the company (NASDAQ: COIN) that reported $246 billion of assets on platform as of 30 June 2026. Use Binance if you want the spot order book whose regular-user example is 0.1%, or 0.075% under Binance's BNB fee discount. The two fees are not ranked here, because one quote includes a spread and the other is a percentage of the asset you receive.`;
 
 export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison({
   slug: "coinbase-vs-binance",
@@ -102,7 +100,7 @@ export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison
       id: COINBASE,
       slug: COINBASE,
       name: "Coinbase",
-      shortDesc: "US public crypto company (NASDAQ: COIN), with simple trades, Advanced, and hosted balances.",
+      shortDesc: "Public crypto company (NASDAQ: COIN), with simple trades, Advanced, and hosted balances.",
       imageUrl: null,
       entityType: "company",
       position: 0,
@@ -129,8 +127,8 @@ export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison
       position: 1,
       pros: [
         "Regular-user spot example is 0.1%, charged in the asset you receive",
-        "BNB deduction takes that example to 0.075%",
-        "From 5 January 2026, spot and derivatives sit with Nest Exchange Limited under ADGM",
+        "Binance's BNB fee discount takes that example to 0.075%",
+        "Binance says that from 5 January 2026, spot and derivatives sit with Nest Exchange Limited",
         "Customer support is 24/7 in 40 languages",
       ],
       cons: [
@@ -161,19 +159,19 @@ export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison
       winner: "tie",
     },
     {
-      label: "Oversight named on the official pages",
-      entityAValue: "US public company. Fees not applicable in all regions",
-      entityBValue: "ADGM FSRA. Three licensed entities from 5 January 2026",
+      label: "Regulatory status (company statement)",
+      entityAValue: "NASDAQ: COIN. Fees not applicable in all regions",
+      entityBValue: "Binance says Binance Exchange is regulated by the ADGM FSRA",
       winner: "tie",
     },
   ],
   attributes: [
     textAttr("listing", "Company", SPEC, COINBASE, BINANCE, "NASDAQ: COIN. Brian Armstrong, Co-Founder and CEO. 4,300+ employees as of 30 June 2026", "Launched July 2017 by Changpeng Zhao. Yi He and Richard Teng are Co-CEOs"),
-    textAttr("scale", "Scale on the official page", SPEC, COINBASE, BINANCE, "As of 30 June 2026: 10.3% crypto trading volume market share, $246 billion assets on platform, 100+ countries", "About page: regulated by the ADGM FSRA. Support 24/7 in 40 languages"),
+    textAttr("scale", "Scale", SPEC, COINBASE, BINANCE, "As of 30 June 2026: 10.3% crypto trading volume market share, $246 billion assets on platform, 100+ countries. Also reports 245,000 ecosystem partners", "Binance says Binance Exchange is regulated by the ADGM FSRA. Support 24/7 in 40 languages"),
     textAttr("spot", "Trade price", SPEC, COINBASE, BINANCE, "Simple buy or sell includes a spread. Fee varies and is shown on the preview. Simple limit order: 1% execution fee, and a Coinbase fee that may be 1.875%", "Regular-user spot example 0.1%, in the asset you receive. VIP level can change the rate"),
     textAttr("discount", "Discount", SPEC, COINBASE, BINANCE, "Coinbase One can zero trading fees. The 1% limit-order fee still applies. A spread can remain", "25% off spot and margin with BNB, until further notice. Futures discount up to 10%"),
     textAttr("storage", "Holding crypto", SPEC, COINBASE, BINANCE, "Hosted balance storage is free. User-to-user primary balance transfer is free", "From 5 January 2026, Nest Clearing and Custody Limited safeguards user digital assets"),
-    textAttr("regulator", "Named oversight", SPEC, COINBASE, BINANCE, "Fee disclosures are not applicable in all regions", "ADGM FSRA. Nest Exchange Limited runs spot and derivatives from 5 January 2026"),
+    textAttr("regulator", "Named oversight", SPEC, COINBASE, BINANCE, "Fee disclosures are not applicable in all regions", "Binance says Binance Exchange is regulated by the ADGM FSRA. Nest Exchange Limited runs spot and derivatives from 5 January 2026"),
   ],
   faqs: FAQS,
   relatedComparisons: [],
@@ -182,9 +180,9 @@ export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "Coinbase for a spread-quoted simple trade at a US public company. Binance for a spot book whose regular-user example is 0.1%, or 0.075% with BNB.",
+      "Coinbase for a spread-quoted simple trade at a company that trades as NASDAQ: COIN. Binance for a spot book whose regular-user example is 0.1%, or 0.075% under the BNB fee discount.",
     keyFact:
-      "Checked 3 October 2026: Coinbase simple trades include a spread and a 1% simple-limit fee. Binance's regular-user spot example is 0.1%.",
+      "Coinbase simple trades include a spread and a 1% simple-limit fee. Binance's regular-user spot example is 0.1%.",
   },
   citationStats: {
     sourceCount: 6,
@@ -194,9 +192,9 @@ export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison
     preferenceEntity: null,
     lastResearched: FETCHED,
     sources: [
-      { name: "Coinbase Help — pricing and fees disclosures (checked 2026-10-03)", url: COINBASE_FEES },
-      { name: "Coinbase — About (checked 2026-10-03)", url: COINBASE_ABOUT },
-      { name: "Binance — About (checked 2026-10-03)", url: BINANCE_ABOUT },
+      { name: "Coinbase Help — pricing and fees disclosures", url: COINBASE_FEES },
+      { name: "Coinbase — About", url: COINBASE_ABOUT },
+      { name: "Binance — About", url: BINANCE_ABOUT },
       { name: "Binance — ADGM transition announcement (updated 2026-01-05)", url: BINANCE_ADGM },
       { name: "Binance Support — spot trading fees (updated 2026-01-06)", url: BINANCE_SPOT },
       { name: "Binance Support — BNB fee discount (updated 2026-02-06)", url: BINANCE_BNB },
@@ -208,21 +206,21 @@ export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison
       label: "Coinbase pricing and fees",
       url: COINBASE_FEES,
       description:
-        "Checked 2026-10-03. Spread on simple trades, 1% simple limit-order fee, Advanced with no spread, free hosted balances, 35% staking commission on the listed assets.",
+        "Spread on simple trades, 1% simple limit-order fee, Advanced with no spread, free hosted balances, 35% staking commission on the listed assets.",
     },
     {
       type: "external",
       label: "Coinbase about",
       url: COINBASE_ABOUT,
       description:
-        "Checked 2026-10-03. As of 30 June 2026: 10.3% market share, $246 billion assets on platform, 100+ countries, 4,300+ employees.",
+        "As of 30 June 2026: 10.3% market share, $246 billion assets on platform, 100+ countries, 4,300+ employees. Also reports 245,000 ecosystem partners.",
     },
     {
       type: "external",
       label: "Binance about",
       url: BINANCE_ABOUT,
       description:
-        "Checked 2026-10-03. Launched July 2017. Yi He and Richard Teng are Co-CEOs. ADGM FSRA. Support in 40 languages.",
+        "Launched July 2017. Yi He and Richard Teng are Co-CEOs. Binance says Binance Exchange is regulated by the ADGM FSRA. Support in 40 languages.",
     },
     {
       type: "external",
@@ -236,14 +234,14 @@ export const COINBASE_VS_BINANCE: EditorialComparison = buildEditorialComparison
       label: "Binance spot fee calculation",
       url: BINANCE_SPOT,
       description:
-        "Updated 2026-01-06. Regular-user example 0.1%, charged in the asset received. VIP level can change the rate. BNB pays a 25% discount.",
+        "Regular-user example 0.1%, charged in the asset received. VIP level can change the rate.",
     },
     {
       type: "external",
       label: "Binance BNB fee discount",
       url: BINANCE_BNB,
       description:
-        "Updated 2026-02-06. 25% off spot and margin, up to 10% off futures. The 25% discount is valid until further notice. A short BNB balance means the full fee.",
+        "25% off spot and margin, so the regular-user example is 0.075%. Up to 10% off futures. The 25% discount is valid until further notice. A short BNB balance means the full fee.",
     },
   ],
   metaTitle: "Coinbase vs Binance | A Versus B",
