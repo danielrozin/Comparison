@@ -1,23 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 /**
- * Looks up the paid email and sends the browser to a fresh Stripe Customer
- * Portal session. Unknown emails see a pricing link instead of a blank page.
+ * Asks for the paid email. The server always answers with the same sentence
+ * so the form cannot be used to find which emails are members. When the
+ * email is an active AversusB member, the server emails a one-time link.
  */
-export function BillingPortalForm() {
+export function BillingPortalForm({ linkInvalid = false }: { linkInvalid?: boolean }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [upgradeUrl, setUpgradeUrl] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setUpgradeUrl(null);
+    setMessage(null);
 
     try {
       const res = await fetch("/api/billing-portal", {
@@ -26,14 +26,17 @@ export function BillingPortalForm() {
         body: JSON.stringify({ email: email.trim() }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.url) {
-        setError(data.error || "Could not open billing.");
-        if (typeof data.upgradeUrl === "string") setUpgradeUrl(data.upgradeUrl);
+      if (!res.ok) {
+        setError(data.error || "Could not send a billing link. Please try again.");
         return;
       }
-      window.location.assign(data.url);
+      setMessage(
+        typeof data.message === "string"
+          ? data.message
+          : "If that email has an active membership, we sent a one-time link to manage billing."
+      );
     } catch {
-      setError("Could not open billing. Please try again.");
+      setError("Could not send a billing link. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -41,6 +44,11 @@ export function BillingPortalForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
+      {linkInvalid && (
+        <div role="alert" className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+          That billing link is invalid or has expired. Enter your email to get a new one.
+        </div>
+      )}
       <div>
         <label htmlFor="billing-email" className="block text-sm font-medium text-text mb-1">
           Email you paid with
@@ -59,13 +67,11 @@ export function BillingPortalForm() {
       {error && (
         <div role="alert" className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
           <p>{error}</p>
-          {upgradeUrl && (
-            <p className="mt-2">
-              <Link href={upgradeUrl} className="font-semibold text-primary-700 underline-offset-2 hover:underline">
-                See Pro pricing
-              </Link>
-            </p>
-          )}
+        </div>
+      )}
+      {message && (
+        <div role="status" className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-950">
+          <p>{message}</p>
         </div>
       )}
       <button
@@ -73,7 +79,7 @@ export function BillingPortalForm() {
         disabled={loading}
         className="inline-flex items-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus:ring-primary-500"
       >
-        {loading ? "Opening billing…" : "Manage billing"}
+        {loading ? "Sending link…" : "Email me a billing link"}
       </button>
     </form>
   );

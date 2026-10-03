@@ -10,15 +10,20 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/account/billing` },
 };
 
-export default function BillingPage() {
+export default async function BillingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ link?: string }>;
+}) {
+  const { link } = await searchParams;
   return (
     <HubShell
       eyebrow="Account"
       title="Manage billing"
-      lede="Enter the email you paid with. We'll open Stripe's secure billing page so you can update your card or cancel. Canceling turns custom comparisons off the same day."
+      lede="Enter the email you paid with. If it has an active membership, we'll email a one-time link to Stripe's secure billing page so you can update your card or cancel. Canceling turns custom comparisons off the same day."
       breadcrumbLabel="Billing"
     >
-      <BillingPortalForm />
+      <BillingPortalForm linkInvalid={link === "invalid" || link === "unavailable"} />
     </HubShell>
   );
 }

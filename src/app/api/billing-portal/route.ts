@@ -5,8 +5,9 @@ import { startBillingPortal } from "@/lib/monetization/billing-portal";
  * POST /api/billing-portal
  *
  * Body: { email }
- * Active or canceled members with a Stripe customer id get a Customer Portal
- * URL. Unknown emails get upgradeUrl `/pricing?src=billing`.
+ * Always returns the same message for a known member, an unknown email, and
+ * a member whose Stripe subscription is not AversusB. The portal URL is not
+ * in this response. Active AversusB members get a one-time link by email.
  */
 export async function POST(request: NextRequest) {
   let body: { email?: string };
