@@ -1,4 +1,18 @@
-import type { ComparisonPageData, FAQData, QuickAnswerTLDR } from "@/types";
+import type {
+  ComparisonAttribute,
+  ComparisonEntityData,
+  ComparisonPageData,
+  FAQData,
+  KeyDifference,
+  QuickAnswerTLDR,
+} from "@/types";
+import {
+  NBA_SEASON_OVERLAYS,
+  type NamedAttribute,
+  type NamedCell,
+  type NamedFact,
+  type SeasonScorecard,
+} from "@/lib/data/nba-2026-season-overlays";
 
 /**
  * Copilot-first AEO overlays for live compares (ROO-27 GDP pattern).
@@ -781,7 +795,7 @@ type AeoOverlay = {
   shortAnswer: string;
   faqs: FAQData[];
   quickAnswer: QuickAnswerTLDR;
-};
+} & Partial<SeasonScorecard>;
 
 const OVERLAYS: Record<string, AeoOverlay> = {
   "us-vs-china-gdp": {
@@ -851,27 +865,123 @@ const OVERLAYS: Record<string, AeoOverlay> = {
   },
 };
 
+function entityMatches(entity: ComparisonEntityData, match: string): boolean {
+  const needle = match.trim().toLowerCase();
+  if (!needle) return false;
+  return (
+    entity.id.toLowerCase() === needle ||
+    entity.slug.toLowerCase() === needle ||
+    entity.slug.toLowerCase().includes(needle) ||
+    entity.name.toLowerCase().includes(needle)
+  );
+}
+
+function cellFor(entity: ComparisonEntityData, cells: NamedCell[]): NamedCell | undefined {
+  return cells.find((cell) => entityMatches(entity, cell.match));
+}
+
+function rowsToAttributes(
+  entities: ComparisonEntityData[],
+  rows: NamedAttribute[]
+): ComparisonAttribute[] {
+  return rows.map((row) => {
+    const someoneWon = row.cells.some((cell) => cell.winner);
+    return {
+      id: row.slug,
+      slug: row.slug,
+      name: row.name,
+      unit: null,
+      category: row.category,
+      dataType: "text",
+      higherIsBetter: null,
+      values: entities.map((entity) => {
+        const cell = cellFor(entity, row.cells);
+        return {
+          entityId: entity.id,
+          valueText: cell?.text ?? "—",
+          valueNumber: null,
+          valueBoolean: null,
+          winner: someoneWon ? Boolean(cell?.winner) : undefined,
+        };
+      }),
+    };
+  });
+}
+
+function factsToKeyDifferences(
+  entities: ComparisonEntityData[],
+  facts: NamedFact[]
+): KeyDifference[] {
+  const entityA = entities[0];
+  const entityB = entities[1];
+  return facts.map((fact) => {
+    const cellA = entityA ? cellFor(entityA, fact.cells) : undefined;
+    const cellB = entityB ? cellFor(entityB, fact.cells) : undefined;
+    let winner: "a" | "b" | "tie" = "tie";
+    if (cellA?.winner && !cellB?.winner) winner = "a";
+    else if (cellB?.winner && !cellA?.winner) winner = "b";
+    return {
+      label: fact.label,
+      entityAValue: cellA?.text ?? "—",
+      entityBValue: cellB?.text ?? "—",
+      winner,
+    };
+  });
+}
+
 export function getEditorialAeoOverlay(slug: string): AeoOverlay | null {
-  return OVERLAYS[slug] ?? null;
+  return OVERLAYS[slug] ?? NBA_SEASON_OVERLAYS[slug] ?? null;
 }
 
 /**
- * Strengthen speakable Quick Answer + visible FAQ for Copilot-style citation
- * without replacing the published scorecard or inventing new totals.
+ * Strengthen speakable Quick Answer + visible FAQ for Copilot-style citation.
+ * Scorecard fields are optional. Citation overlays leave the published
+ * scorecard in place. Season overlays set `facts` and `rows` only when the
+ * live table itself is wrong.
  */
 export function applyEditorialAeoOverlay(
   comparison: ComparisonPageData
 ): ComparisonPageData {
-  const overlay = OVERLAYS[comparison.slug];
+  const overlay = getEditorialAeoOverlay(comparison.slug);
   if (!overlay) return comparison;
+
+  const entities = overlay.entityPatches
+    ? comparison.entities.map((entity) => {
+        const patch = overlay.entityPatches?.find((item) => entityMatches(entity, item.match));
+        if (!patch) return entity;
+        return {
+          ...entity,
+          shortDesc: patch.shortDesc,
+          pros: patch.pros,
+          cons: patch.cons,
+          bestFor: patch.bestFor,
+        };
+      })
+    : comparison.entities;
 
   return {
     ...comparison,
+    title: overlay.title ?? comparison.title,
     shortAnswer: overlay.shortAnswer,
     faqs: overlay.faqs,
     quickAnswer: {
       ...overlay.quickAnswer,
       tldr: overlay.shortAnswer,
     },
+    ...(overlay.verdict !== undefined ? { verdict: overlay.verdict } : {}),
+    ...(overlay.expertAnalysis !== undefined ? { expertAnalysis: overlay.expertAnalysis } : {}),
+    ...(overlay.facts ? { keyDifferences: factsToKeyDifferences(entities, overlay.facts) } : {}),
+    ...(overlay.rows ? { attributes: rowsToAttributes(entities, overlay.rows) } : {}),
+    ...(overlay.citationStats ? { citationStats: overlay.citationStats } : {}),
+    ...(overlay.resources ? { resources: overlay.resources } : {}),
+    ...(overlay.relatedComparisons ? { relatedComparisons: overlay.relatedComparisons } : {}),
+    entities,
+    metadata: {
+      ...comparison.metadata,
+      ...(overlay.metaTitle ? { metaTitle: overlay.metaTitle } : {}),
+      ...(overlay.metaDescription ? { metaDescription: overlay.metaDescription } : {}),
+      ...(overlay.updatedAt ? { updatedAt: overlay.updatedAt } : {}),
+    },
+    ...(overlay.clearSchemaMarkup ? { schemaMarkup: undefined } : {}),
   };
 }

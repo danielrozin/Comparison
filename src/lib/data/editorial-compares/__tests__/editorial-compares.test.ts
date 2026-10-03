@@ -4,6 +4,7 @@ import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
 import { findSelfContradictions } from "@/lib/services/numeric-claim-guard";
 import { isDegenerateComparisonSlug } from "@/lib/utils/slugify";
 import type { ComparisonPageData } from "@/types";
+import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
 import {
   appendEditorialRelatedLinks,
   getEditorialComparison,
@@ -1467,5 +1468,90 @@ describe("ROO-138 iPhone 17 Pro vs iPhone 18 Pro", () => {
     const playback = page().attributes.find((attr) => attr.slug === "playback");
     expect(playback?.values.find((value) => value.entityId === "iphone-18-pro")?.winner).toBe(true);
     expect(page().quickAnswer?.winnerName).toBeNull();
+  });
+});
+
+const NBA_NEW_SLUGS = [
+  "knicks-vs-76ers",
+  "shai-gilgeous-alexander-vs-victor-wembanyama",
+] as const;
+
+describe("NBA 2026-27 new compares", () => {
+  it("publishes both slugs with no winner, six FAQs, and a dated season block", () => {
+    for (const slug of NBA_NEW_SLUGS) {
+      expect(isEditorialCompareSlug(slug)).toBe(true);
+      expect(isDegenerateComparisonSlug(slug)).toBe(false);
+      const page = getEditorialComparison(slug)!;
+      expect(page.metadata.status).toBe("published");
+      expect(page.schemaMarkup).toBeUndefined();
+      expect(page.quickAnswer?.winnerName).toBeNull();
+      expect(page.quickAnswer?.tldr).toBe(page.shortAnswer);
+      expect(page.faqs).toHaveLength(6);
+      expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
+      expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+      expect(pageText(page)).toContain("Stats as of October 3, 2026");
+      expect(pageText(page)).toContain("Source note:");
+      expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
+      expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
+      const description = clampDescription(page.metadata.metaDescription);
+      expect(description.length).toBeGreaterThanOrEqual(70);
+      expect(description.length).toBeLessThanOrEqual(160);
+      expect(findSelfContradictions(page)).toEqual([]);
+      const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
+      expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+      expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(slug);
+      expect(getConsolidatedCompareSlug(slug)).toBeNull();
+    }
+  });
+
+  it("keeps Knicks vs 76ers on fetched results and does not link the noindex 76ers hub", () => {
+    const page = getEditorialComparison("knicks-vs-76ers")!;
+    expect(page.entities.map((entity) => entity.slug)).toEqual([
+      "new-york-knicks",
+      "philadelphia-76ers",
+    ]);
+    expect(pageText(page)).toContain("214-267");
+    expect(pageText(page)).toContain("4-0");
+    expect(pageText(page)).toContain("4-1");
+    expect(pageText(page)).toContain("7:00 pm ET");
+    expect(pageText(page)).not.toMatch(/\$8|9-1/);
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).not.toMatch(/\/entity\/philadelphia-76ers/);
+    expect(urls).toContain("/entity/new-york-knicks");
+    expect(page.relatedComparisons.map((item) => item.slug)).toEqual([
+      "lebron-vs-jordan",
+      "kobe-bryant-vs-lebron-james",
+    ]);
+    for (const slug of [
+      "76ers-vs-knicks",
+      "new-york-knicks-vs-philadelphia-76ers",
+      "philadelphia-76ers-vs-new-york-knicks",
+    ]) {
+      expect(getConsolidatedCompareSlug(slug)).toBeNull();
+    }
+  });
+
+  it("keeps SGA vs Wembanyama on fetched lines and does not link noindex player hubs", () => {
+    const page = getEditorialComparison("shai-gilgeous-alexander-vs-victor-wembanyama")!;
+    expect(page.entities.map((entity) => entity.slug)).toEqual([
+      "shai-gilgeous-alexander",
+      "victor-wembanyama",
+    ]);
+    expect(pageText(page)).toContain("back-to-back");
+    expect(pageText(page)).toContain("4-3");
+    expect(pageText(page)).toContain("9:30 pm ET");
+    expect(pageText(page)).not.toMatch(/\b29\.1\b/);
+    const urls = page.resources?.map((resource) => resource.url).join("\n") ?? "";
+    expect(urls).not.toMatch(/\/entity\/shai-gilgeous-alexander|\/entity\/victor-wembanyama/);
+    expect(urls).toContain("/entity/oklahoma-city-thunder");
+    expect(urls).toContain("/entity/san-antonio-spurs");
+    for (const slug of [
+      "victor-wembanyama-vs-shai-gilgeous-alexander",
+      "sga-vs-wembanyama",
+      "wembanyama-vs-shai",
+    ]) {
+      expect(getConsolidatedCompareSlug(slug)).toBeNull();
+    }
   });
 });
