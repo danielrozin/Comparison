@@ -3,7 +3,11 @@ import {
   compareHtmlSuffixRedirectPath,
   HTML_SUFFIX_COMPARE_STATUS,
 } from "@/lib/redirects/html-suffix-compare";
-import { isUnknownCategoryPath } from "@/lib/seo/category-page-path";
+import {
+  isUnknownCategoryPath,
+  isUnknownSubcategoryPath,
+  UNKNOWN_CATEGORY_404_REWRITE,
+} from "@/lib/seo/category-page-path";
 
 // Simple in-memory rate limiter (per-instance; works on Edge Runtime)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -142,6 +146,28 @@ export function middleware(request: NextRequest) {
 
   // For non-API routes, set geo cookie + security headers
   if (!pathname.startsWith("/api/")) {
+    // Known parent + unknown child streams a 200 from loading.tsx before
+    // the subcategory notFound() can change the status. Rewrite to a
+    // top-level slug the category route already 404s.
+    if (isUnknownSubcategoryPath(pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = UNKNOWN_CATEGORY_404_REWRITE;
+      const rewritten = NextResponse.rewrite(url);
+      const country = request.headers.get("x-vercel-ip-country") || "";
+      rewritten.cookies.set("consent_region", EU_COUNTRIES.has(country) ? "eu" : "other", {
+        path: "/",
+        maxAge: 86400,
+        sameSite: "lax",
+        httpOnly: false,
+      });
+      rewritten.headers.set("X-Content-Type-Options", "nosniff");
+      rewritten.headers.set("Referrer-Policy", "origin-when-cross-origin");
+      rewritten.headers.set("X-DNS-Prefetch-Control", "on");
+      rewritten.headers.set("Content-Language", "en");
+      rewritten.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return rewritten;
+    }
+
     const response = NextResponse.next();
     const country = request.headers.get("x-vercel-ip-country") || "";
     const isEU = EU_COUNTRIES.has(country);
