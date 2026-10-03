@@ -28,6 +28,8 @@ import { JORDAN_VS_KOBE } from "./jordan-vs-kobe";
 import { COOPER_FLAGG_VS_KON_KNUEPPEL } from "./cooper-flagg-vs-kon-knueppel";
 import { LAKERS_VS_CELTICS } from "./lakers-vs-celtics";
 import { DURANT_VS_LEBRON } from "./durant-vs-lebron";
+import { EMBIID_VS_JOKIC } from "./embiid-vs-jokic";
+import { KOBE_BRYANT_VS_STEPH_CURRY } from "./kobe-bryant-vs-steph-curry";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -73,6 +75,8 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [COOPER_FLAGG_VS_KON_KNUEPPEL.slug]: COOPER_FLAGG_VS_KON_KNUEPPEL,
   [LAKERS_VS_CELTICS.slug]: LAKERS_VS_CELTICS,
   [DURANT_VS_LEBRON.slug]: DURANT_VS_LEBRON,
+  [EMBIID_VS_JOKIC.slug]: EMBIID_VS_JOKIC,
+  [KOBE_BRYANT_VS_STEPH_CURRY.slug]: KOBE_BRYANT_VS_STEPH_CURRY,
 };
 
 /**

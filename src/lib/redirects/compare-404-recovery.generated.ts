@@ -157,7 +157,6 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "kobe-bryant-vs-michael-jordan-match-player-stats": "jordan-vs-kobe",
   "michael-jordan-match-player-stats-vs-kobe-bryant": "jordan-vs-kobe",
   "kobe-bryant-match-player-stats-vs-michael-jordan": "jordan-vs-kobe",
-
   // Batch 4 name orders and -match-player-stats forms. Confirmed 2026-10-03
   // on the live site, sitemap/0.xml through sitemap/images.xml, and the repo:
   // none of these slugs is a 200 or a sitemap URL. Each is a 404, or a 301
@@ -248,6 +247,74 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "lebron-james-vs-kevin-durant-match-player-stats": "durant-vs-lebron",
   "kevin-durant-match-player-stats-vs-lebron-james": "durant-vs-lebron",
   "lebron-james-match-player-stats-vs-kevin-durant": "durant-vs-lebron",
+  // Batch 5 name orders and -match-player-stats forms.
+  // The hub hrefs are these canonical slugs, so the pages are not redirect sources.
+  // Confirmed 2026-10-03 on the live site, sitemap/0.xml through
+  // sitemap/images.xml, and the repo: none of these slugs is a 200
+  // or a sitemap URL. Each is a 404, or a 301 whose alphabetical
+  // shell lands on a 404. Both orders are sources so the shell
+  // cannot insert a hop. No odds or records title was found for
+  // Embiid/Jokic or Kobe/Curry. Destinations are the new editorial
+  // pages, and the sources join REDIRECTED_COMPARE_SLUGS so
+  // canonicalComparisonWhere() keeps them out of the comparison sitemap.
+  "joel-embiid-vs-nikola-jokic": "embiid-vs-jokic",
+  "joel-embiid-vs-nikola-jokic-match-player-stats": "embiid-vs-jokic",
+  "joel-embiid-match-player-stats-vs-nikola-jokic": "embiid-vs-jokic",
+  "nikola-jokic-vs-joel-embiid": "embiid-vs-jokic",
+  "nikola-jokic-vs-joel-embiid-match-player-stats": "embiid-vs-jokic",
+  "nikola-jokic-match-player-stats-vs-joel-embiid": "embiid-vs-jokic",
+  "joel-embiid-vs-jokic": "embiid-vs-jokic",
+  "joel-embiid-vs-jokic-match-player-stats": "embiid-vs-jokic",
+  "joel-embiid-match-player-stats-vs-jokic": "embiid-vs-jokic",
+  "jokic-vs-joel-embiid": "embiid-vs-jokic",
+  "jokic-vs-joel-embiid-match-player-stats": "embiid-vs-jokic",
+  "jokic-match-player-stats-vs-joel-embiid": "embiid-vs-jokic",
+  "embiid-vs-nikola-jokic": "embiid-vs-jokic",
+  "embiid-vs-nikola-jokic-match-player-stats": "embiid-vs-jokic",
+  "embiid-match-player-stats-vs-nikola-jokic": "embiid-vs-jokic",
+  "nikola-jokic-vs-embiid": "embiid-vs-jokic",
+  "nikola-jokic-vs-embiid-match-player-stats": "embiid-vs-jokic",
+  "nikola-jokic-match-player-stats-vs-embiid": "embiid-vs-jokic",
+  "embiid-vs-jokic-match-player-stats": "embiid-vs-jokic",
+  "embiid-match-player-stats-vs-jokic": "embiid-vs-jokic",
+  "jokic-vs-embiid": "embiid-vs-jokic",
+  "jokic-vs-embiid-match-player-stats": "embiid-vs-jokic",
+  "jokic-match-player-stats-vs-embiid": "embiid-vs-jokic",
+  "kobe-vs-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-match-player-stats-vs-curry": "kobe-bryant-vs-steph-curry",
+  "curry-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "curry-vs-kobe-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "curry-match-player-stats-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-steph-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-steph-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-match-player-stats-vs-steph-curry": "kobe-bryant-vs-steph-curry",
+  "steph-curry-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "steph-curry-vs-kobe-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "steph-curry-match-player-stats-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-stephen-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-stephen-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-match-player-stats-vs-stephen-curry": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-vs-kobe-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-match-player-stats-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-match-player-stats-vs-curry": "kobe-bryant-vs-steph-curry",
+  "curry-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "curry-vs-kobe-bryant-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "curry-match-player-stats-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-steph-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-match-player-stats-vs-steph-curry": "kobe-bryant-vs-steph-curry",
+  "steph-curry-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "steph-curry-vs-kobe-bryant-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "steph-curry-match-player-stats-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-stephen-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-stephen-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-match-player-stats-vs-stephen-curry": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-vs-kobe-bryant-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-match-player-stats-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
   "14-inch-vs-16-inch-macbook-pro": "macbook-pro-14-vs-16-inch",
   "japan-vs-china-economy-comparison-2026": "china-vs-japan-economy-comparison-2026",
   "cristiano-ronaldo-vs-neymar-career-stats-comparison-2026":

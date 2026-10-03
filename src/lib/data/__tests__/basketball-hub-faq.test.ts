@@ -12,12 +12,14 @@ describe("basketball hub FAQ", () => {
     expect(popular).toBeTruthy();
 
     const answer = popular!.answer;
-    const link = faqAnswerSegments(answer).find((segment) => segment.type === "link");
-    expect(link).toEqual({
-      type: "link",
-      label: "Kevin Durant vs LeBron",
-      href: "/compare/durant-vs-lebron",
-    });
+    const links = faqAnswerSegments(answer).filter((segment) => segment.type === "link");
+    expect(links).toEqual([
+      { type: "link", label: "LeBron James vs Michael Jordan", href: "/compare/lebron-vs-jordan" },
+      { type: "link", label: "Steph Curry vs Kobe Bryant", href: "/compare/kobe-bryant-vs-steph-curry" },
+      { type: "link", label: "Kevin Durant vs LeBron", href: "/compare/durant-vs-lebron" },
+      { type: "link", label: "Nikola Jokić vs Joel Embiid", href: "/compare/embiid-vs-jokic" },
+      { type: "link", label: "Lakers vs Celtics", href: "/compare/lakers-vs-celtics" },
+    ]);
 
     const plain = faqAnswerPlainText(answer);
     expect(plain).toContain("Kevin Durant vs LeBron");

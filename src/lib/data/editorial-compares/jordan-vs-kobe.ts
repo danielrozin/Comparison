@@ -21,7 +21,7 @@ const CAREER_CAT = `Career per game · Basketball-Reference, fetched ${FETCHED}`
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "Michael Jordan's career line on the per-game table is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games over 15 years. Kobe Bryant's is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games over 20 years. Jordan's honors list shows 6 championships and 6 Finals MVPs. Kobe's shows 5 championships and 2 Finals MVPs. Stats as of October 3, 2026, neither player has a 2026-27 game log. This page does not pick a winner.";
+  "Michael Jordan's career line is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games over 15 years. Kobe Bryant's is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games over 20 years. Jordan won 6 championships and 6 Finals MVPs. Kobe won 5 championships and 2 Finals MVPs. Stats as of October 3, 2026, neither player has a 2026-27 game log. This page does not pick a winner.";
 
 const FAQS = [
   {
@@ -35,9 +35,9 @@ const FAQS = [
       "The per-game career row is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Minutes per game on that row are 36.1. Shooting is .447 from the field, .329 from three, and .837 from the line. The totals table lists 33,643 points. The info box lists a 20-year career and a 1996 debut.",
   },
   {
-    question: "How many championships are on each honors list?",
+    question: "How many championships does each player have?",
     answer:
-      "Jordan's list shows 6 NBA championships, 6 Finals MVPs, 5 MVPs, 10 scoring titles, and 14 All-Star selections. Kobe's list shows 5 NBA championships, 2 Finals MVPs, the 2007-08 MVP, and 18 All-Star selections. Both lists include the Hall of Fame and the NBA 75th Anniversary Team. This page does not turn those lists into a single ranking.",
+      "Jordan won 6 NBA championships, 6 Finals MVPs, 5 MVPs, and 10 scoring titles, and made 14 All-Star teams. Kobe won 5 NBA championships, 2 Finals MVPs, and the 2007-08 MVP, and made 18 All-Star teams. Both were inducted into the Hall of Fame and named to the NBA 75th Anniversary Team. This page does not turn those honors into a single ranking.",
   },
   {
     question: "How long did each play?",
@@ -50,9 +50,9 @@ const FAQS = [
       "No. The career rows and the honors lists are finished counts. Stats as of October 3, 2026, neither page has a 2026-27 game log. This page does not forecast a season that neither player is playing.",
   },
   {
-    question: "What does Basketball-Reference list for Kobe after his career?",
+    question: "What happened after Kobe's career?",
     answer:
-      "The info box lists his death as January 26, 2020, and Hall of Fame induction as a player in 2020. There is no 2025-26 or 2026-27 season row. Jordan's page likewise has no 2026-27 game log.",
+      "Bryant retired after the 2015-16 season and died on January 26, 2020. He was inducted into the Hall of Fame as a player in 2020. There is no 2025-26 or 2026-27 season row. Jordan has no 2026-27 game log.",
   },
 ];
 
@@ -64,11 +64,11 @@ Championships on the honors lists: Jordan 6. Kobe 5.
 
 2026-27 season: Stats as of October 3, 2026, neither player has a game log. This page does not pick a winner.`;
 
-const EXPERT_ANALYSIS = `Michael Jordan's career line is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games, totaling 32,292 points. Kobe Bryant's is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games, totaling 33,643 points. Jordan's honors list shows 6 championships. Kobe's shows 5. This page does not pick a winner.
+const EXPERT_ANALYSIS = `Michael Jordan's career line is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games, totaling 32,292 points. Kobe Bryant's is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games, totaling 33,643 points. Jordan won 6 championships. Kobe won 5. This page does not pick a winner.
 
 Source note: every counting line and honor on this page is from the two Basketball-Reference player pages, fetched ${AS_OF}. ${JORDAN_URL} ${KOBE_URL}
 
-2026-27 season. Stats as of ${AS_OF}. Neither page has a 2026-27 regular-season game log, so this page does not quote one and does not quote a projection. Kobe's info box lists January 26, 2020 as the date of death. Jordan's career length on the info box is 15 years. Kobe's is 20 years.
+2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log, so this page does not quote one and does not quote a projection. Jordan played 15 seasons. Kobe played 20.
 
 The honors lists, fetched the same day, also show Jordan with 6 Finals MVPs, 5 MVPs, 10 scoring titles, and 14 All-Star selections, and Kobe with 2 Finals MVPs, the 2007-08 MVP, and 18 All-Star selections. Chicago accounts for 13 of Jordan's years on the per-game split, at 31.5 points per game. Washington accounts for 2 years, at 21.2.`;
 
@@ -117,7 +117,7 @@ const BUILT = buildEditorialComparison({
       ],
       cons: [
         "Career scoring average on the per-game row is 25.0",
-        "Info box lists death on January 26, 2020. No 2026-27 game log.",
+        "No 2026-27 game log.",
       ],
       bestFor: "The 20-year career line and the point total",
     },
@@ -168,7 +168,7 @@ const BUILT = buildEditorialComparison({
       JORDAN,
       KOBE,
       `None. Stats as of ${AS_OF}.`,
-      `None. Death listed as January 26, 2020. Stats as of ${AS_OF}.`
+      `None. Stats as of ${AS_OF}.`
     ),
   ],
   faqs: FAQS,
@@ -208,7 +208,7 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Kobe Bryant",
       url: KOBE_URL,
-      description: `Fetched ${FETCHED}. Career 25.0 points, 5.2 rebounds, 4.7 assists in 1,346 games. Honors: 5 championships, 2 Finals MVPs. Death listed as January 26, 2020.`,
+      description: `Fetched ${FETCHED}. Career 25.0 points, 5.2 rebounds, 4.7 assists in 1,346 games. Honors: 5 championships, 2 Finals MVPs.`,
     },
     {
       type: "blog",

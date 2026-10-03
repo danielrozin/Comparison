@@ -38,9 +38,9 @@ const FAQS = [
       "Durant, with Houston: 78 games, all starts, 26.0 points, 5.5 rebounds, and 4.8 assists. The awards cell is All-Star and All-NBA. LeBron, with the Lakers: 60 games, 20.9 points, 6.1 rebounds, and 7.2 assists. The awards cell is All-Star. NBA.com's signing story, updated July 27, 2026, prints the same 20.9, 6.1, and 7.2 line.",
   },
   {
-    question: "How many championships does each honors list show?",
+    question: "How many championships does each player have?",
     answer:
-      "Durant's list shows 2 NBA championships, 2 Finals MVPs, the 2013-14 MVP, 4 scoring titles, and 16 All-Star selections. LeBron's list shows 4 NBA championships, 4 Finals MVPs, 4 MVPs, and 22 All-Star selections. This page does not turn the lists into a ranking.",
+      "Durant won 2 NBA championships, 2 Finals MVPs, the 2013-14 MVP, and 4 scoring titles, and made 16 All-Star teams. LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. This page does not turn those honors into a ranking.",
   },
   {
     question: "Where is each player listed for 2026-27?",

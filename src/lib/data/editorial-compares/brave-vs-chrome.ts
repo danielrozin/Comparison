@@ -85,7 +85,7 @@ Chrome's product page, fetched the same day, describes extensions, Safe Browsing
 
 Sync
 
-Brave's privacy page says Sync is encrypted on each device, covers history, bookmarks, and other profile data between desktop and mobile, and does not use Google's servers. The features page lists bookmarks, passwords, and tabs. Chrome's sign-in help says a Google Account brings bookmarks, passwords, and more to your devices, and that signing in to Chrome is optional even if you use Gmail. The same page says Chrome history can personalize other Google products if you turn on Web & App Activity and sync that history.
+Brave's privacy page says Sync is encrypted on each device, covers history, bookmarks, and other profile data between desktop and mobile, and does not use Google's servers. Brave's features include bookmarks, passwords, and tabs. Chrome's sign-in help says a Google Account brings bookmarks, passwords, and more to your devices, and that signing in to Chrome is optional even if you use Gmail. The same page says Chrome history can personalize other Google products if you turn on Web & App Activity and sync that history.
 
 Extensions and Manifest V3
 

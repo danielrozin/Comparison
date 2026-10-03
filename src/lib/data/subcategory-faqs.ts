@@ -416,7 +416,7 @@ export const SUBCATEGORY_FAQS: Record<string, Record<string, CategoryFaq[]>> = {
       {
         question: "What are the most popular basketball comparisons?",
         answer:
-          "Top comparisons include LeBron James vs Michael Jordan, Steph Curry vs Kobe Bryant, [Kevin Durant vs LeBron](/compare/durant-vs-lebron), Nikola Jokić vs Joel Embiid, and franchise comparisons like Lakers vs Celtics by championship count.",
+          "Top comparisons include [LeBron James vs Michael Jordan](/compare/lebron-vs-jordan), [Steph Curry vs Kobe Bryant](/compare/kobe-bryant-vs-steph-curry), [Kevin Durant vs LeBron](/compare/durant-vs-lebron), [Nikola Jokić vs Joel Embiid](/compare/embiid-vs-jokic), and franchise comparisons like [Lakers vs Celtics](/compare/lakers-vs-celtics) by championship count.",
       },
       {
         question: "Is LeBron James or Michael Jordan the GOAT?",
