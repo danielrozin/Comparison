@@ -37,7 +37,7 @@ const FAQS = [
   {
     question: "How durable is the Galaxy Z Fold 7 hinge?",
     answer:
-      "GSMArena's published ingress rating for the Z Fold 7 is IP48: dust larger than 1 mm, and immersion up to 1.5 m for 30 minutes. The S26 Ultra is listed as IP68, dust tight, with the same 1.5 m / 30 minute water line. The GSMArena spec pages fetched on 29 September 2026 do not publish a hinge open-close count, and this page does not invent one. Samsung's US warranty page is where coverage is described. That page says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. It does not publish a hinge-cycle rating.",
+      "GSMArena's published ingress rating for the Z Fold 7 is IP48: dust larger than 1 mm, and immersion up to 1.5 m for 30 minutes. The S26 Ultra is listed as IP68, dust tight, with the same 1.5 m / 30 minute water line. The GSMArena spec pages fetched on 29 September 2026 do not publish a hinge open-close count, and this page does not invent one. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. It does not publish a hinge-cycle rating.",
   },
   {
     question: "Does the Galaxy Z Fold 7 have the better camera?",
@@ -52,7 +52,7 @@ const FAQS = [
   {
     question: "How long is software support on the Fold 7 and the S26 Ultra?",
     answer:
-      "GSMArena lists up to 7 major OS updates for both. The Fold 7 page says Android 16 and One UI 8. The S26 Ultra page says Android 16, upgradable to Android 17, One UI 9, and the same cap of 7 major OS updates. The S26 Ultra shipped later (released 6 March 2026, against 25 July 2025 for the Fold 7), so that seven-update window starts one generation later. Neither spec page names the final Android version.",
+      "GSMArena lists up to 7 major OS updates for both. GSMArena lists Android 16 and One UI 8 for the Fold 7. GSMArena lists Android 16, upgradable to Android 17, One UI 9, and the same cap of 7 major OS updates for the S26 Ultra. The S26 Ultra shipped later (released 6 March 2026, against 25 July 2025 for the Fold 7), so that seven-update window starts one generation later. Neither spec page names the final Android version.",
   },
 ];
 
@@ -90,9 +90,9 @@ Both spec pages say up to 7 major OS updates. The Fold 7 launched on Android 16 
 
 Who should buy which
 
-Keep the S26 Ultra if you want one phone for 4-5 years and you care about ingress protection, battery, charging speed, and the longer telephoto. Geeky Gadgets makes the same split: the slab for durability, camera, and battery; the foldable for the large screen and multitasking. Samsung's US S26 Ultra page says the phone has a built-in S Pen, and Samsung told Android Authority the Fold 7 does not support the S Pen because the digitizer was removed to make it thinner.
+Keep the S26 Ultra if you want one phone for 4-5 years and you care about ingress protection, battery, charging speed, and the longer telephoto. Geeky Gadgets makes the same split: the slab for durability, camera, and battery; the foldable for the large screen and multitasking. Samsung says the phone has a built-in S Pen, and Samsung told Android Authority the Fold 7 does not support the S Pen because the digitizer was removed to make it thinner.
 
-Buy the Z Fold 7 only if that inner 8.0-inch screen is the point. You are accepting IP48 instead of IP68, a smaller battery, slower charging, and a hinge. Samsung's US warranty page does not publish a hinge-cycle count. It says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Check that page for the coverage that applies to your country and purchase date.`;
+Buy the Z Fold 7 only if that inner 8.0-inch screen is the point. You are accepting IP48 instead of IP68, a smaller battery, slower charging, and a hinge. Samsung's US warranty page does not publish a hinge-cycle count. It says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Check Samsung's warranty terms for the coverage that applies to your country and purchase date.`;
 
 export const GALAXY_Z_FOLD_7_VS_S26_ULTRA: EditorialComparison = buildEditorialComparison({
   slug: "galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra",

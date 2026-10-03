@@ -8,7 +8,7 @@ import type { EditorialComparison } from "./types";
  * /compare/spurs-vs-knicks 301d to /compare/knicks-vs-spurs.
  * The page is built at that shell slug. No new static redirect.
  *
- * Checked 3 October 2026:
+ * as of 3 October 2026:
  * - https://www.basketball-reference.com/playoffs/NBA_2026.html
  * - https://www.basketball-reference.com/playoffs/NBA_1999.html
  * - https://www.basketball-reference.com/teams/NYK/head2head.html
@@ -249,7 +249,7 @@ const built = buildEditorialComparison({
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "Each club won one of the two Finals on the pages fetched October 3, 2026. The head-to-head table is a history line, not a pick.",
+      "Each club won one of the two Finals recorded as of October 3, 2026. The head-to-head table is a history line, not a pick.",
     keyFact:
       "2026 Finals: Knicks 4-1. 1999 Finals: Spurs 4-1. Head-to-head fetched October 3, 2026: 107 games, Knicks 47 wins, Spurs 60 wins.",
   },

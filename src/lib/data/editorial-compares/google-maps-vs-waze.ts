@@ -6,7 +6,7 @@ import type { EditorialComparison } from "./types";
  * Claims below were checked against pages fetched on 2026-09-30.
  * No page-level winner. No battery-drain, speed, or user-count comparison:
  * Google's help pages fetched here do not publish a Maps user count, and
- * Waze's About page states its own monthly figure without a Google Maps number
+ * Waze states its own monthly figure without a Google Maps number
  * beside it.
  *
  * Two Waze Help articles disagree about a dropped connection during a report.
@@ -39,39 +39,39 @@ const FETCHED = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze's About page says that without an internet connection you cannot locate or navigate a route. This page does not crown a winner.";
+  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. This page does not crown a winner.";
 
 const FAQS = [
   {
     question: "Should I use Waze or Google Maps for driving?",
     answer:
-      "It depends on the drive. Waze's About page says the maps and navigation are powered by users, and that drivers can report traffic, accidents, police traps, blocked roads, and weather. Google's Android navigation article also lets you report a crash, slowdown, mobile speed camera, police, construction, and other incidents, and it says some incident types are only available in certain countries. Pick Waze when those community reports are the point and you will stay online. Pick Google Maps when you also need an offline area or a mode other than driving.",
+      "It depends on the drive. Waze says the maps and navigation are powered by users, and that drivers can report traffic, accidents, police traps, blocked roads, and weather. Google's Android navigation article also lets you report a crash, slowdown, mobile speed camera, police, construction, and other incidents, and it says some incident types are only available in certain countries. Pick Waze when those community reports are the point and you will stay online. Pick Google Maps when you also need an offline area or a mode other than driving.",
   },
   {
     question: "Can Google Maps or Waze navigate offline?",
     answer:
-      "Google Maps can, with limits. The iPhone, iPad, and Android help articles say you can download an area and use it when the connection is slow or gone, as long as the whole route is inside that area. They also say offline transit, bicycling, and walking directions are unavailable, and an offline drive has no traffic info or alternate routes. Some countries cannot download offline maps. Waze's About page says Waze assumes a data connection, and that without internet you cannot locate or navigate a route. Two Waze articles disagree about a report if the connection drops while you are reporting: About Waze says reports are not cached to send later, and the hazard article says the report is saved and sent when you reconnect. This page does not choose between those two sentences.",
+      "Google Maps can, with limits. The iPhone, iPad, and Android help articles say you can download an area and use it when the connection is slow or gone, as long as the whole route is inside that area. They also say offline transit, bicycling, and walking directions are unavailable, and an offline drive has no traffic info or alternate routes. Some countries cannot download offline maps. Waze says Waze assumes a data connection, and that without internet you cannot locate or navigate a route. Two Waze articles disagree about a report if the connection drops while you are reporting: About Waze says reports are not cached to send later, and the hazard says the report is saved and sent when you reconnect. This page does not choose between those two sentences.",
   },
   {
     question: "Do Google Maps and Waze work on CarPlay and Android Auto?",
     answer:
-      "Yes, on the help pages fetched for this comparison. Google Maps has a CarPlay article, and the Android navigation article mentions Android Auto for 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze has its own Android Auto article and its own CarPlay article. The CarPlay article says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
+      "Yes. Google Maps has CarPlay support, and Android navigation mentions Android Auto for 3D map details during driving navigation. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app, and it names Waze. Waze documents Android Auto and CarPlay. Waze says Waze on CarPlay is a limited version of the mobile app, so some features might not be available. Car support still depends on the vehicle.",
   },
   {
     question: "Does Waze support transit, bicycle, or truck lanes?",
     answer:
-      "Not for transit lanes. Waze's About page says Waze was created for private cars, motorcycles, and taxis, and that it does not currently support navigating in lanes dedicated to public transportation, bicycles, or trucks. Google's iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle. It also says not every city has transit directions, because the local agency has to add its routes.",
+      "Not for transit lanes. Waze says Waze was created for private cars, motorcycles, and taxis, and that it does not currently support navigating in lanes dedicated to public transportation, bicycles, or trucks. Google's iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle. It also says not every city has transit directions, because the local agency has to add its routes.",
   },
   {
     question: "Which app keeps more of my location data?",
     answer:
-      "This page does not crown one. Google's Timeline article says Timeline is off by default and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If you turn on backup, Maps saves an encrypted copy on Google's servers. Waze's About page says that driving with Waze open shares real-time information used for speed, road layout, and routing, and that you can adjust privacy settings. Those are different designs. The pages fetched here do not publish a shared score for them.",
+      "This page does not crown one. Google's Timeline says Timeline is off by default and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If you turn on backup, Maps saves an encrypted copy on Google's servers. Waze says that driving with Waze open shares real-time information used for speed, road layout, and routing, and that you can adjust privacy settings. Those are different designs. The cited sources do not publish a shared score for them.",
   },
 ];
 
-const VERDICT = `Best for live driver reports, if you can stay online: Waze. The About page describes a community that reports traffic, accidents, police, hazards, and weather, and says the navigation is powered by people driving with the app open.
+const VERDICT = `Best for live driver reports, if you can stay online: Waze. Waze describes a community that reports traffic, accidents, police, hazards, and weather, and says the navigation is powered by people driving with the app open.
 
-Best for offline areas, transit, walking, and cycling: Google Maps. Help articles document downloadable areas and those direction modes, with the limits named on those pages.
+Best for offline areas, transit, walking, and cycling: Google Maps. Help articles document downloadable areas and those direction modes, with the limits those help articles name.
 
 There is no single winner on this page.`;
 
@@ -83,15 +83,15 @@ Sources fetched on 30 September 2026: Google Maps offline help for iPhone and iP
 
 Offline maps
 
-Google Maps can guide a drive from a downloaded area. The iPhone, iPad, and Android articles say you save an area to the phone or tablet and use it when the connection is slow or unavailable, if the whole route is inside the map. They also say you cannot download offline maps in some countries, and that offline transit, bicycling, and walking directions are unavailable. An offline drive does not get traffic info or alternate routes. Waze's About page answers "Can I use Waze without an internet connection?" by saying that without internet you will not be able to locate or navigate a route, and that every part of Waze needs an active data connection.
+Google Maps can guide a drive from a downloaded area. The iPhone, iPad, and Android articles say you save an area to the phone or tablet and use it when the connection is slow or unavailable, if the whole route is inside the map. They also say you cannot download offline maps in some countries, and that offline transit, bicycling, and walking directions are unavailable. An offline drive does not get traffic info or alternate routes. Waze answers "Can I use Waze without an internet connection?" by saying that without internet you will not be able to locate or navigate a route, and that every part of Waze needs an active data connection.
 
 Direction modes
 
-Google Maps documents more than driving. The iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle. Transit is not in every city. Waze's About page says the app was created for private cars, motorcycles, and taxis, and that it does not currently support navigating in lanes dedicated to public transportation, bicycles, or trucks.
+Google Maps documents more than driving. The iPhone and iPad directions article lists driving, public transit, walking, ride sharing, cycling, flight, and motorcycle. Transit is not in every city. Waze says the app was created for private cars, motorcycles, and taxis, and that it does not currently support navigating in lanes dedicated to public transportation, bicycles, or trucks.
 
 Driver reports
 
-Both products document incident reports. Waze's About page says you can report traffic, accidents, police traps, blocked roads, weather, and more, and that the maps are powered by users. The About page states about 180 million monthly active users. That figure is Waze's, on the page fetched 30 September 2026. This page does not pair it with a Google Maps user count, because the Google pages fetched here do not publish one. The hazard article lists construction, a car on the shoulder, a broken traffic light, a pothole, and an object, and it documents the same report flow on Android Auto and CarPlay. Google's Android navigation article lists crash, slowdown, mobile speed camera, police, construction, lane closure, an object on the road, a flooded road, low visibility, and an unplowed road, and says some incidents can only be reported in certain countries. The CarPlay article lists a similar set, without the word crash.
+Both products document incident reports. Waze says you can report traffic, accidents, police traps, blocked roads, weather, and more, and that the maps are powered by users. Waze states about 180 million monthly active users. That figure is Waze's, as of 30 September 2026. This comparison does not pair it with a Google Maps user count, because Google does not publish one in the cited sources. The hazard article lists construction, a car on the shoulder, a broken traffic light, a pothole, and an object, and it documents the same report flow on Android Auto and CarPlay. Google's Android navigation article lists crash, slowdown, mobile speed camera, police, construction, lane closure, an object on the road, a flooded road, low visibility, and an unplowed road, and says some incidents can only be reported in certain countries. The CarPlay article lists a similar set, without the word crash.
 
 One Waze contradiction, left unresolved
 
@@ -99,15 +99,15 @@ About Waze says that if Waze has no connection back to its servers, you cannot r
 
 Lane guidance
 
-Google's Android navigation article says voice navigation can tell you which lane to use, and that lane guidance is not available in all countries. Android Auto Help says lane guidance is part of navigation with Google Maps or another navigation app, and it names Waze in that sentence. None of the Waze Help pages fetched for this comparison describe lane guidance as its own feature. That is a gap in the pages read here, not a finding that Waze never shows a lane.
+Google's Android navigation says voice navigation can tell you which lane to use, and that lane guidance is not available in all countries. Android Auto Help says lane guidance is part of navigation with Google Maps or another navigation app, and it names Waze in that sentence. The Waze help used for this comparison does not describe lane guidance as its own feature. That is a gap in the cited sources, not a finding that Waze never shows a lane.
 
 CarPlay and Android Auto
 
-Both are documented on both systems. Google Maps has a CarPlay article for search, stops, and incident types. Android Auto Help tells you to open Google Maps, or another navigation app, for voice guidance, arrival times, and live traffic. Waze's Android Auto article says Android Auto brings Waze to the car display, and its report list includes traffic, police, crash, hazard, bad weather, a blocked lane, and a map issue. Waze's CarPlay article says you need a compatible iPhone and a car that supports CarPlay in one of the listed regions, and that Waze on CarPlay is a limited version of the mobile app.
+Both are documented on both systems. Google Maps has a CarPlay article for search, stops, and incident types. Android Auto Help tells you to open Google Maps, or another navigation app, for voice guidance, arrival times, and live traffic. Waze's Android Auto says Android Auto brings Waze to the car display, and its report list includes traffic, police, crash, hazard, bad weather, a blocked lane, and a map issue. Waze's CarPlay says you need a compatible iPhone and a car that supports CarPlay in one of the listed regions, and that Waze on CarPlay is a limited version of the mobile app.
 
 Platforms and EV help
 
-Waze's availability article says the app is in the Apple App Store for iPhone and iPad and in Google Play for Android, on iOS 16 and above and Android 10 and above, and that the phone needs GPS and a cellular connection. It is free to download, and carrier data rates still apply. Google Maps Help documents the app on Android and on iPhone and iPad. The vehicle-profile article says that in some countries you can add an electric vehicle and then filter charging stations by your plugs, and that a compatible EV on Maps app version 25.44 and up can show an estimated battery use for the trip. That estimate depends on the vehicle info you entered and does not adjust to real-time driving or a live connection to the car. No Waze Help page fetched here describes electric-vehicle routing.
+Waze's availability says the app is in the Apple App Store for iPhone and iPad and in Google Play for Android, on iOS 16 and above and Android 10 and above, and that the phone needs GPS and a cellular connection. It is free to download, and carrier data rates still apply. Google Maps Help documents the app on Android and on iPhone and iPad. The vehicle-profile says that in some countries you can add an electric vehicle and then filter charging stations by your plugs, and that a compatible EV on Maps app version 25.44 and up can show an estimated battery use for the trip. That estimate depends on the vehicle info you entered and does not adjust to real-time driving or a live connection to the car. No Waze Help page fetched here describes electric-vehicle routing.
 
 Who should use which
 
@@ -315,7 +315,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
     winnerReason:
       "Use Waze for live driver reports when you can stay online. Use Google Maps for offline areas and for transit, walking, or cycling.",
     keyFact:
-      "Waze's About page says that without an internet connection you cannot locate or navigate a route. Google Maps Help says a downloaded area can guide a drive when the whole route is inside that area.",
+      "Waze says that without an internet connection you cannot locate or navigate a route. Google Maps Help says a downloaded area can guide a drive when the whole route is inside that area.",
   },
   citationStats: {
     sourceCount: 14,
@@ -417,7 +417,7 @@ export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison
       label: "Waze road hazard reports",
       url: WAZE_HAZARD,
       description:
-        "Fetched 2026-09-30. Hazard types on the phone, Android Auto, and CarPlay. This article says a dropped connection still sends the report later.",
+        "Fetched 2026-09-30. Hazard types on the phone, Android Auto, and CarPlay. This says a dropped connection still sends the report later.",
     },
     {
       type: "external",

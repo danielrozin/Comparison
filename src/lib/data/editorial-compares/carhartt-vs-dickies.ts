@@ -6,7 +6,7 @@ import type { EditorialComparison } from "./types";
  * B01 fabric, fit, knee pads, pockets, and origin are from carhartt.com
  * (style 106679, model B01-M), confirmed in a browser on 2026-09-28.
  * Gear Patrol (Aug 2, 2021) is only the reviewer's hands-on fit and break-in.
- * No 2021 prices are reused, and this page does not print a live price.
+ * No 2021 prices are reused, and this page does not give a live price.
  */
 
 const CARHARTT = "carhartt";
@@ -60,7 +60,7 @@ const VERDICT = `Most durable: Carhartt duck, such as the B01 Double-Front. Carh
 
 Best lightweight or uniform pant: Dickies 874. Dickies lists it as 8.5 oz, 65% polyester / 35% cotton, non-stretch twill. Gear Patrol found Dickies twill lighter, stain- and wrinkle-resistant, and quicker to break in — a better match for uniform or indoor work than for abrasive job sites.
 
-No value pick. This page does not print a price. Gear Patrol’s 2021 prices are out of date.`;
+No value pick. This page does not give a price. Gear Patrol’s 2021 prices are out of date.`;
 
 const EXPERT_ANALYSIS = `This page compares Carhartt and Dickies work pants, focused on the Carhartt Iconic B01 Firm Duck Double-Front Dungaree (style 106679, model B01-M), the Dickies Original 874, and the Dickies Loose Fit Double Knee that Gear Patrol reviewed. There is no single winner, and there is no value crown.
 
@@ -70,11 +70,11 @@ Carhartt lists the B01 as 12-ounce, firm-hand, 100% cotton ringspun duck canvas.
 
 Fit and sizing
 
-Carhartt calls the B01 its most generous cut. The loose fit is meant to give free movement, with a roomy fit through the hips and thigh and cuffs that fit easily over work boots. The same page says the high rise sits slightly above the waist, with a generous fit in the seat and thigh, and a straight leg opening. Gear Patrol’s hands-on is a separate finding: that reviewer found the B01 very wide and long in the inseam, and suggested ordering one inseam shorter than usual. Dickies describes the 874 as a high rise, relaxed through the seat and thigh, with a straight leg that tapers slightly. Gear Patrol found the Dickies Loose Fit Double Knee looser than a slim pant but straighter than the B01.
+Carhartt calls the B01 its most generous cut. The loose fit is meant to give free movement, with a roomy fit through the hips and thigh and cuffs that fit easily over work boots. It says the high rise sits slightly above the waist, with a generous fit in the seat and thigh, and a straight leg opening. Gear Patrol’s hands-on is a separate finding: that reviewer found the B01 very wide and long in the inseam, and suggested ordering one inseam shorter than usual. Dickies describes the 874 as a high rise, relaxed through the seat and thigh, with a straight leg that tapers slightly. Gear Patrol found the Dickies Loose Fit Double Knee looser than a slim pant but straighter than the B01.
 
 Construction
 
-Carhartt says the B01 has double-layer knees with openings for adding knee pads and cleaning out debris, and that the pant is compatible with the Carhartt Knee Pad. Carhartt lists multiple tool and utility pockets with a left-leg hammer loop, and heavy-hauling reinforced back pockets for hand tools and more. Origin on that page is “Imported or Made in USA of Imported Parts.” The Dickies Double Knee, in Gear Patrol’s review, is two layers of twill seamed together and has no slots for knee pads. Dickies lists reinforced seams and welt back pockets on the 874. It does not describe a double knee.
+Carhartt says the B01 has double-layer knees with openings for adding knee pads and cleaning out debris, and that the pant is compatible with the Carhartt Knee Pad. Carhartt lists multiple tool and utility pockets with a left-leg hammer loop, and heavy-hauling reinforced back pockets for hand tools and more. Origin there is “Imported or Made in USA of Imported Parts.” The Dickies Double Knee, in Gear Patrol’s review, is two layers of twill seamed together and has no slots for knee pads. Dickies lists reinforced seams and welt back pockets on the 874. It does not describe a double knee.
 
 What owners report
 

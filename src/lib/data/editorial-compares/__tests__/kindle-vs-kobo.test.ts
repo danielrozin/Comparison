@@ -64,7 +64,12 @@ describe("Kindle vs Kobo", () => {
     expect(text).toContain("up to 12 weeks");
     expect(text).toContain("EPUB");
     expect(text).toContain("Libby");
+    expect(text).toContain("OverDrive");
     expect(text).toContain("$79.99");
+    expect(page().entities[0]?.cons).toContain("EPUB files are added through Send to Kindle");
+    expect(
+      page().citationStats?.sources.some((source) => source.url?.includes("GUWACXF9HENBXTQP")),
+    ).toBe(true);
     for (const fileType of ["HTML", "RTF", "TXT", "JPEG", "GIF", "PNG", "BMP", "PDF", "EPUB"]) {
       expect(text).toContain(fileType);
     }

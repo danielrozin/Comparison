@@ -33,7 +33,7 @@ const FAQS = [
   {
     question: "Is 256GB enough, or should you get the 512GB iPhone 16e?",
     answer:
-      "256GB is the 17e's starting storage. Apple's 17e page says that is twice the 16e's starting storage. AppleInsider lists the 16e at 128GB, 256GB, and 512GB, and the 17e at 256GB and 512GB only. Buy the 16e 512GB only if you know you need more than 256GB and the live price is close to the 17e. AppleInsider's 2 March 2026 article lists launch prices, not today's price: 16e 512GB at $899 and 17e 256GB at $599. Those figures can be out of date. Check the current price before you decide.",
+      "256GB is the 17e says that is twice the 16e's starting storage. AppleInsider lists the 16e at 128GB, 256GB, and 512GB, and the 17e at 256GB and 512GB only. Buy the 16e 512GB only if you know you need more than 256GB and the live price is close to the 17e. AppleInsider's 2 March 2026 article lists launch prices, not today's price: 16e 512GB at $899 and 17e 256GB at $599. Those figures can be out of date. Check the current price before you decide.",
   },
   {
     question: "Is the iPhone 17e camera better than the iPhone 16e?",
@@ -66,7 +66,7 @@ Sources fetched on 29 September 2026: MacRumors buyer's guide (3 March 2026), Ap
 
 Chip and charging
 
-MacRumors, AppleInsider, and Apple's 17e page all put an A18 in the 16e and an A19 in the 17e. Apple's page says the 17e A19 has a 4-core GPU with Neural Accelerators. AppleInsider says the iPhone 17's A19 has a five-core GPU, and that its benchmark comparison uses the iPhone 17, not the 17e. This page does not repeat those scores.
+MacRumors, AppleInsider, and Apple's 17e page all put an A18 in the 16e and an A19 in the 17e. Apple says the 17e A19 has a 4-core GPU with Neural Accelerators. AppleInsider says the iPhone 17's A19 has a five-core GPU, and that its benchmark comparison uses the iPhone 17, not the 17e. This page does not repeat those scores.
 
 The 16e charges by Qi at up to 7.5W. The 17e charges by MagSafe at up to 15W. Apple states that 15W versus 7.5W comparison on the 17e page. MacRumors and AppleInsider's spec table say the same 15W.
 
@@ -80,9 +80,9 @@ MacRumors lists Ceramic Shield front glass on the 16e and Ceramic Shield 2 on th
 
 Storage and launch price
 
-The 16e comes in 128GB, 256GB, and 512GB. The 17e comes in 256GB and 512GB only. Apple's page says 256GB starting storage is twice the 16e's starting storage. MacRumors and AppleInsider both list a $599 starting launch price for each phone. Apple's 17e marketing page, as fetched, does not print that dollar figure, so the $599 comes from MacRumors and AppleInsider.
+The 16e comes in 128GB, 256GB, and 512GB. The 17e comes in 256GB and 512GB only. Apple says 256GB starting storage is twice the 16e's starting storage. MacRumors and AppleInsider both list a $599 starting launch price for each phone. Apple's 17e marketing page, as fetched, does not give that dollar figure, so the $599 comes from MacRumors and AppleInsider.
 
-AppleInsider also lists launch prices by capacity: 16e 128GB $599, 256GB $699, 512GB $899; 17e 256GB $599, 512GB $799. At launch, the 512GB 16e cost more than the 256GB 17e. A discounted 16e can change that. Check a live price. This page does not print a sale price.
+AppleInsider also lists launch prices by capacity: 16e 128GB $599, 256GB $699, 512GB $899; 17e 256GB $599, 512GB $799. At launch, the 512GB 16e cost more than the 256GB 17e. A discounted 16e can change that. Check a live price. This page does not give a sale price.
 
 Who should buy which
 
@@ -140,7 +140,7 @@ export const IPHONE_16E_VS_IPHONE_17E: EditorialComparison = buildEditorialCompa
         "No 128GB model, and no 512GB unless you step up from the $599 launch configuration (AppleInsider)",
         "Same 48MP Fusion camera hardware as the 16e (AppleInsider)",
         "Same up-to-26-hour video playback rating as the 16e",
-        "Apple does not publish an iOS support year count on the pages cited here",
+        "Apple does not publish an iOS support year count on the cited sources",
       ],
       bestFor: "Best for most people, including an upgrade from an iPhone 8",
     },
@@ -308,7 +308,7 @@ export const IPHONE_16E_VS_IPHONE_17E: EditorialComparison = buildEditorialCompa
       label: "AppleInsider spec comparison",
       url: APPLEINSIDER,
       description:
-        "Fetched 2026-09-29. Launch prices by capacity, 6.1-inch display, 48MP Fusion, up to 26 hours video playback. Benchmark scores on that page are the iPhone 17, not the 17e.",
+        "Fetched 2026-09-29. Launch prices by capacity, 6.1-inch display, 48MP Fusion, up to 26 hours video playback. Benchmark scores there are the iPhone 17, not the 17e.",
     },
     {
       type: "external",

@@ -139,7 +139,7 @@ Career. Basketball-Reference lists LeBron at 23 years, 1,622 games, 43,440 point
 
 Accolades from the same pages. LeBron: 22 All-Star selections, 21 All-NBA selections, 4 MVPs, 4 Finals MVPs, 4 championships, 2003-04 Rookie of the Year, and the 2007-08 scoring title. Jordan: 14 All-Star selections, 10 scoring titles, 5 MVPs, 6 Finals MVPs, 6 championships, 1987-88 Defensive Player of the Year, and the 2009 Hall of Fame. NBA.com calls LeBron the league's all-time leading scorer and says he led a team to the Finals in 10 seasons.
 
-This page does not print a contract amount. NBA.com's dollar figure is labeled "per reports," so it stays out. Betting odds stay out. The 2026-27 projection row stays out.`;
+This page does not give a contract amount. NBA.com's dollar figure is labeled "per reports," so it stays out. Betting odds stay out. The 2026-27 projection row stays out.`;
 
 const KOBE_LEBRON_SHORT =
   "Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games over 20 seasons. LeBron James's career line through 2025-26 is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games. LeBron averaged 20.9 points, 6.1 rebounds, and 7.2 assists in 60 games in the 2025-26 regular season. He signed with the Philadelphia 76ers in July 2026, and 2026-27 is his 24th season. Stats as of October 3, 2026, there is no 2026-27 regular-season game log. This page does not pick a winner.";
@@ -189,7 +189,7 @@ Career. Kobe: 20 years, 1,346 games, 33,643 points, 7,047 rebounds, 6,306 assist
 
 Accolades from the same pages. Kobe: 5 championships, 2 Finals MVPs, the 2007-08 MVP, 18 All-Star selections, 15 All-NBA selections, 12 All-Defensive selections, 2 scoring titles, and the 2020 Hall of Fame. LeBron: 4 championships, 4 Finals MVPs, 4 MVPs, 22 All-Star selections, 21 All-NBA selections, and 10 Finals appearances. NBA.com calls him the league's all-time leading scorer.
 
-This page does not print a contract amount. The dollar figure in the NBA.com story is labeled "per reports." Betting odds and the 2026-27 projection row stay out.`;
+This page does not give a contract amount. The dollar figure in the NBA.com story is labeled "per reports." Betting odds and the 2026-27 projection row stay out.`;
 
 function lebronSeasonRows(otherMatch: string, otherNoSeason: string): NamedAttribute[] {
   return [

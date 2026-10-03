@@ -76,7 +76,7 @@ const EXPERT_ANALYSIS = `If you can buy a discounted Galaxy S24 Ultra, it is sti
 
 Spec snapshot
 
-GSMArena lists the S24 Ultra at 232 g or 233 g and the S25 Ultra at 218 g. Digital Trends lists 233 g and 218 g, and says the S25 Ultra is 15 grams lighter. Both spec sheets list a 3120 x 1440 resolution, a 120Hz refresh rate, and 2,600 nits of peak brightness. GSMArena calls both panels Dynamic LTPO AMOLED 2X. Samsung's S24 Ultra page says that display can reach a peak brightness of up to 2600 nits, and that the screen measures 6.8 inches. Samsung's S25 Ultra page says the screen is 6.9 inches in the full rectangle and 6.8 inches once the rounded corners are accounted for.
+GSMArena lists the S24 Ultra at 232 g or 233 g and the S25 Ultra at 218 g. Digital Trends lists 233 g and 218 g, and says the S25 Ultra is 15 grams lighter. Both spec sheets list a 3120 x 1440 resolution, a 120Hz refresh rate, and 2,600 nits of peak brightness. GSMArena calls both panels Dynamic LTPO AMOLED 2X. Samsung says that display can reach a peak brightness of up to 2600 nits, and that the screen measures 6.8 inches. Samsung says the screen is 6.9 inches in the full rectangle and 6.8 inches once the rounded corners are accounted for.
 
 Samsung names the chips Snapdragon 8 Gen 3 for Galaxy on the S24 Ultra and Snapdragon 8 Elite for Galaxy on the S25 Ultra. GSMArena's compare lists those same chipsets.
 
@@ -96,7 +96,7 @@ Performance and gaming
 
 Digital Trends gives gaming to the S25 Ultra because of the Snapdragon 8 Elite for Galaxy chip plus a larger vapor chamber and new thermal material. Samsung's S25 Ultra page describes the same larger vapor chamber and new thermal interface material, and says they are there for a smoother, cooler gaming session. In the Digital Trends review, Asphalt Legends: Unite at maximum settings did not overheat the S25 Ultra, including in performance mode.
 
-The S24 Ultra is still described as strong for everyday use and games. Digital Trends says a reviewer spent over 30 minutes on demanding titles such as Asphalt 9: Legends, the phone barely got warm, and it never got too hot to hold, including during stress tests. The same article says most people probably will not see much difference in daily use.
+The S24 Ultra is still described as strong for everyday use and games. Digital Trends says a reviewer spent over 30 minutes on demanding titles such as Asphalt 9: Legends, the phone barely got warm, and it never got too hot to hold, including during stress tests. The same says most people probably will not see much difference in daily use.
 
 S Pen and software support
 

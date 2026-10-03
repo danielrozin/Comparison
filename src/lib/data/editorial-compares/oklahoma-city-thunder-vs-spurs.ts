@@ -10,7 +10,7 @@ import type { EditorialComparison } from "./types";
  * There is no static redirect entry. Publishing this slug is what makes
  * the existing 301 land on a page.
  *
- * Checked 3 October 2026:
+ * as of 3 October 2026:
  * - https://www.basketball-reference.com/playoffs/NBA_2026.html
  * - https://www.nba.com/games?date=2026-10-20
  * Entity hubs /entity/oklahoma-city-thunder and /entity/san-antonio-spurs
@@ -85,7 +85,7 @@ Basketball-Reference lists San Antonio over Oklahoma City, 4-3. The games are: M
 
 2026-27 season
 
-Stats as of October 3, 2026. The 2026-27 regular season had not started. NBA.com lists one Thunder at Spurs game on October 20, 2026, at 9:30 pm ET, in San Antonio. The game URL on that page is /game/okc-vs-sas-0022600003. Treat that line as the published schedule. It is not a forecast, and this page does not say which team wins it.
+Stats as of October 3, 2026. The 2026-27 regular season had not started. NBA.com lists one Thunder at Spurs game on October 20, 2026, at 9:30 pm ET, in San Antonio. The game URL there is /game/okc-vs-sas-0022600003. Treat that line as the published schedule. It is not a forecast, and this page does not say which team wins it.
 
 What stays out of this page
 

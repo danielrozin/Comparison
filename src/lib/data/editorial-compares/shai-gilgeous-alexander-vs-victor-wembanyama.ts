@@ -32,7 +32,7 @@ const FAQS = [
   {
     question: "Is Shai Gilgeous-Alexander a back-to-back MVP?",
     answer:
-      "Yes, for 2024-25 and 2025-26. Basketball-Reference marks MVP-1 on both of those regular-season rows, and the page header says 2x MVP. The 2024-25 row is 32.7 points per game in 76 games. The 2025-26 row is 31.1 points, 4.3 rebounds, and 6.6 assists in 68 games. This page does not say anything about the 2026-27 MVP award.",
+      "Yes, for 2024-25 and 2025-26. Basketball-Reference marks MVP-1 on both of those regular-season rows, and Basketball-Reference's header says 2x MVP. The 2024-25 row is 32.7 points per game in 76 games. The 2025-26 row is 31.1 points, 4.3 rebounds, and 6.6 assists in 68 games. This page does not say anything about the 2026-27 MVP award.",
   },
   {
     question: "What are their career lines?",

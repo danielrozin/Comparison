@@ -36,7 +36,7 @@ const FAQS = [
   {
     question: "What is the Lakers' record against the Celtics?",
     answer:
-      "On the Lakers head-to-head table, the Boston row is 304 games, 135 Lakers wins, 169 losses, a .444 winning percentage, 104.4 points scored per game, and 106.7 points allowed per game. The page does not label that row as regular season only, so this page does not add that label. The other side of the same row is 169 Celtics wins and 135 losses.",
+      "On the Lakers head-to-head table, the Boston row is 304 games, 135 Lakers wins, 169 losses, a .444 winning percentage, 104.4 points scored per game, and 106.7 points allowed per game. Basketball-Reference does not label that row as regular season only, so this comparison does not add that label. The other side of the same row is 169 Celtics wins and 135 losses.",
   },
   {
     question: "How many times have they met in the Finals?",
@@ -76,7 +76,7 @@ Source note: the headers are the Lakers and Celtics franchise pages. The 304-gam
 
 Finals series, winner first. 2010, Los Angeles 4, Boston 3, June 3 to June 17. 2008, Boston 4, Los Angeles 2, June 5 to June 17. 1987, Los Angeles 4, Boston 2, June 2 to June 14. 1985, Los Angeles 4, Boston 2, May 27 to June 9. 1984, Boston 4, Los Angeles 3, May 27 to June 12. 1969, Boston 4, Los Angeles 3, April 23 to May 5. 1968, Boston 4, Los Angeles 2, April 21 to May 2. 1966, Boston 4, Los Angeles 3, April 17 to April 28. 1965, Boston 4, Los Angeles 1, April 18 to April 25. 1963, Boston 4, Los Angeles 2, April 14 to April 24. 1962, Boston 4, Los Angeles 3, April 7 to April 18. 1959, Boston 4, Minneapolis 0, April 4 to April 9.
 
-The head-to-head row is a separate count from those Finals. It is 304 games, Lakers 135 wins, 169 losses, .444, 104.4 points scored per game, and 106.7 allowed. The table caption is "40 Opponents," and the page does not say the row is regular season only.`;
+The head-to-head row is a separate count from those Finals. It is 304 games, Lakers 135 wins, 169 losses, .444, 104.4 points scored per game, and 106.7 allowed. The table caption is "40 Opponents," and Basketball-Reference does not say the row is regular season only.`;
 
 const BUILT = buildEditorialComparison({
   slug: "lakers-vs-celtics",

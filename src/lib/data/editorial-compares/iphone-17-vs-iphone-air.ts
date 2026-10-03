@@ -92,7 +92,7 @@ Software and price
 
 GSMArena lists both phones as iOS 26, upgradable to iOS 27. Apple's spec pages, fetched on 30 September 2026, list "iPhone with iOS 27" in the box. This page does not guess which software a specific unit ships with beyond those two lines.
 
-Apple's India buy page for the iPhone 17 lists ₹99,900 for 256GB and ₹1,24,900 for 512GB. Apple lists ₹1,49,900 for a 256GB iPhone Air, ₹1,74,900 for 512GB, and ₹2,24,900 for 1TB. Both pages were fetched on 30 September 2026, and both call the listed price the MRP, inclusive of all taxes. At 256GB and at 512GB, the iPhone 17 is the lower price. A lower price does not make it the better phone, and the Air's 1TB option has no iPhone 17 match on that page. Check a live listing before you decide on cost. This page does not quote a discount.
+Apple's India buy page for the iPhone 17 lists ₹99,900 for 256GB and ₹1,24,900 for 512GB. Apple lists ₹1,49,900 for a 256GB iPhone Air, ₹1,74,900 for 512GB, and ₹2,24,900 for 1TB. Both pages were fetched on 30 September 2026, and both call the listed price the MRP, inclusive of all taxes. At 256GB and at 512GB, the iPhone 17 is the lower price. A lower price does not make it the better phone, and the Air's 1TB option has no iPhone 17 match there. Check a live listing before you decide on cost. This page does not quote a discount.
 
 Who should buy which
 

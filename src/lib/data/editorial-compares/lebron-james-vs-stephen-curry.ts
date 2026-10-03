@@ -50,7 +50,7 @@ const FAQS = [
   {
     question: "Where is Stephen Curry listed?",
     answer:
-      "Basketball-Reference lists the Golden State Warriors. Experience on that page is 17 years. The 2025-26 awards cell is All-Star. Stats as of October 3, 2026, his page has no 2026-27 regular-season game log. A table on the page is labeled 2026-27 Projection, and this page does not quote it.",
+      "Basketball-Reference lists the Golden State Warriors. Experience there is 17 years. The 2025-26 awards cell is All-Star. Stats as of October 3, 2026, his page has no 2026-27 regular-season game log. A table is labeled 2026-27 Projection, and this comparison does not quote it.",
   },
   {
     question: "Does this page predict 2026-27?",

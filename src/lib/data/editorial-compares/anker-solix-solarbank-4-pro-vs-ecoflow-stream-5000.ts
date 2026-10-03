@@ -40,12 +40,12 @@ const FAQS = [
   {
     question: "Which is better for outdoor mounting?",
     answer:
-      "Anker's datasheet lists IP66. EcoFlow's specs list IP65. Those are the published codes. This page does not add a hose test of its own. EcoFlow's support page says the STREAM 5000 can be used indoors or outdoors and recommends a ventilated, cool, shaded place.",
+      "Anker's datasheet lists IP66. EcoFlow's specs list IP65. Those are the published codes. This page does not add a hose test of its own. EcoFlow says the STREAM 5000 can be used indoors or outdoors and recommends a ventilated, cool, shaded place.",
   },
   {
     question: "Do they accept the same solar input?",
     answer:
-      "Both publish 5,000 W of PV across four MPPTs, 1,250 W per tracker, and a maximum PV voltage of 60 V. Anker's datasheet also lists an MPPT voltage range of 16 to 50 V. EcoFlow's specs list the PV input voltage as a 60 V maximum and does not print that 16 to 50 V range.",
+      "Both publish 5,000 W of PV across four MPPTs, 1,250 W per tracker, and a maximum PV voltage of 60 V. Anker's datasheet also lists an MPPT voltage range of 16 to 50 V. EcoFlow's specs list the PV input voltage as a 60 V maximum and does not give that 16 to 50 V range.",
   },
   {
     question: "Which works with Home Assistant?",
@@ -81,11 +81,11 @@ Anker's datasheet lists on-grid AC output settings of 600 W, 790 W, 800 W, and 2
 
 Cycles, warranty, weather, and weight
 
-Anker lists 10,000 cycles. The datasheet lists a 10-year warranty and a 15-year product lifespan. It does not print a capacity-retention percentage next to the cycle count. EcoFlow's specs list 10,000 cycles and a 10-year warranty. EcoFlow's product FAQ says that cycle life is to 60% retention. Anker's datasheet lists IP66 and 50 kg. EcoFlow's specs list IP65 and 45.4 kg. The product FAQ also says 45.4 kg, plus or minus 0.5 kg, for the bare unit.
+Anker lists 10,000 cycles. The datasheet lists a 10-year warranty and a 15-year product lifespan. It does not give a capacity-retention percentage next to the cycle count. EcoFlow's specs list 10,000 cycles and a 10-year warranty. EcoFlow's product FAQ says that cycle life is to 60% retention. Anker's datasheet lists IP66 and 50 kg. EcoFlow's specs list IP65 and 45.4 kg. The product FAQ also says 45.4 kg, plus or minus 0.5 kg, for the bare unit.
 
 Expansion
 
-Anker's product page says the main unit is 5,024 Wh and can take five BP5000 expansion batteries, up to 30 kWh total. EcoFlow's product FAQ says one host can stack up to two expansion batteries, to 15 kWh, and a system can include up to six hosts, to 90 kWh. Those are the published ceilings. They are different ecosystems, so a pack from one does not fit the other.
+Anker says the main unit is 5,024 Wh and can take five BP5000 expansion batteries, up to 30 kWh total. EcoFlow's product FAQ says one host can stack up to two expansion batteries, to 15 kWh, and a system can include up to six hosts, to 90 kWh. Those are the published ceilings. They are different ecosystems, so a pack from one does not fit the other.
 
 Home Assistant
 
@@ -310,7 +310,7 @@ export const ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000: EditorialComparison =
       label: "EcoFlow STREAM support",
       url: ECO_SUPPORT,
       description:
-        "Fetched 2026-09-30. The STREAM 5000 can be used indoors or outdoors. The page recommends a ventilated, cool, shaded place.",
+        "Fetched 2026-09-30. The STREAM 5000 can be used indoors or outdoors. EcoFlow recommends a ventilated, cool, shaded place.",
     },
     {
       type: "external",

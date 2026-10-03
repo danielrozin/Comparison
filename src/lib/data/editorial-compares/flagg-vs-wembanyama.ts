@@ -9,7 +9,7 @@ import type { EditorialComparison } from "./types";
  * That 301 is the runtime alphabetical shell, not a static redirect.
  * The page is built at flagg-vs-wembanyama so the 301 lands on it.
  *
- * Checked 3 October 2026:
+ * as of 3 October 2026:
  * - https://www.basketball-reference.com/players/f/flaggco01.html
  * - https://www.basketball-reference.com/players/w/wembavi01.html
  * /entity/cooper-flagg and /entity/victor-wembanyama were noindex, nofollow,
@@ -45,7 +45,7 @@ const FAQS = [
   {
     question: "What are Victor Wembanyama's career averages?",
     answer:
-      "Through three seasons on the Basketball-Reference per-game table, fetched October 3, 2026: 181 games, 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks. Field goal percentage .484, three-point percentage .342, free throw percentage .817. Career totals on that page: 4,238 points, 1,997 rebounds, 641 assists, and 627 blocks.",
+      "Through three seasons on the Basketball-Reference per-game table, fetched October 3, 2026: 181 games, 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks. Field goal percentage .484, three-point percentage .342, free throw percentage .817. Career totals there: 4,238 points, 1,997 rebounds, 641 assists, and 627 blocks.",
   },
   {
     question: "Which honors does Basketball-Reference list for Wembanyama?",
@@ -60,7 +60,7 @@ const FAQS = [
   {
     question: "Have Flagg and Wembanyama played in 2026-27?",
     answer:
-      "Not on the pages fetched October 3, 2026. Neither player page had a 2026-27 game log. Basketball-Reference does print a 2026-27 projection table for each player. This page does not quote those projection rows. Stats as of October 3, 2026.",
+      "As of October 3, 2026, neither player had a 2026-27 game log. Basketball-Reference does print a 2026-27 projection table for each player. This page does not quote those projection rows. Stats as of October 3, 2026.",
   },
   {
     question: "Does this page say who is the better player?",
@@ -85,7 +85,7 @@ He is 6-9 and 205 pounds, born December 21, 2006, in Newport, Maine. Team: Dalla
 
 Victor Wembanyama
 
-He is 7-4 and 235 pounds, born January 4, 2004, in Le Chesnay, France. Team: San Antonio Spurs. Draft: San Antonio, first overall, 2023. NBA debut: October 25, 2023. Experience: 3 years. The honors line is 2x All-Star, 3x blocks champ, 2025-26 All-NBA, 2023-24 Rookie of the Year, 2023-24 All-Rookie, 2x All-Defensive, 2025-26 Defensive Player of the Year, and 2025-26 Western Conference Finals MVP. The three-year per-game line is 181 games, 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks, on .484 from the field, .342 from three, and .817 from the line. Career totals: 4,238 points, 1,997 rebounds, 641 assists, and 627 blocks. The 2025-26 regular-season row is 64 games, 25.0 points, 11.5 rebounds, 3.1 assists, 1.0 steal, and 3.1 blocks. The playoff per-game table on that page is 22 games, 23.8 points, 10.9 rebounds, 2.7 assists, and 3.5 blocks.
+He is 7-4 and 235 pounds, born January 4, 2004, in Le Chesnay, France. Team: San Antonio Spurs. Draft: San Antonio, first overall, 2023. NBA debut: October 25, 2023. Experience: 3 years. The honors line is 2x All-Star, 3x blocks champ, 2025-26 All-NBA, 2023-24 Rookie of the Year, 2023-24 All-Rookie, 2x All-Defensive, 2025-26 Defensive Player of the Year, and 2025-26 Western Conference Finals MVP. The three-year per-game line is 181 games, 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks, on .484 from the field, .342 from three, and .817 from the line. Career totals: 4,238 points, 1,997 rebounds, 641 assists, and 627 blocks. The 2025-26 regular-season row is 64 games, 25.0 points, 11.5 rebounds, 3.1 assists, 1.0 steal, and 3.1 blocks. The playoff per-game table there is 22 games, 23.8 points, 10.9 rebounds, 2.7 assists, and 3.5 blocks.
 
 2026-27 season
 
@@ -115,7 +115,7 @@ const built = buildEditorialComparison({
         "Drafted first overall by Dallas in 2025. Debut October 22, 2025",
       ],
       cons: [
-        "One NBA season on the page fetched October 3, 2026",
+        "One NBA season logged as of October 3, 2026",
         "Three-point percentage .295 on that rookie row",
         "No 2026-27 game log as of October 3, 2026",
       ],
@@ -138,9 +138,9 @@ const built = buildEditorialComparison({
       cons: [
         "2025-26 regular season was 64 games, not a full 82",
         "No 2026-27 game log as of October 3, 2026",
-        "His Rookie of the Year on the page is 2023-24, not 2025-26",
+        "His Rookie of the Year is 2023-24, not 2025-26",
       ],
-      bestFor: "The Spurs career line and the 2025-26 award list on his page",
+      bestFor: "The Spurs career line and the 2025-26 award list",
     },
   ],
   keyDifferences: [
@@ -182,7 +182,7 @@ const built = buildEditorialComparison({
     ),
     textAttr(
       "other-honors",
-      "Other honors on the page",
+      "Other honors",
       HONOR_CAT,
       FLAGG,
       WEMBY,

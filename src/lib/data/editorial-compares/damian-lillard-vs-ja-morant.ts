@@ -36,7 +36,7 @@ const FAQS = [
   {
     question: "What day was the Morant trade?",
     answer:
-      "The NBA.com story was updated June 30, 2026, and it says the teams agreed on the trade Monday. June 29, 2026 was a Monday. The story does not print the numeral June 29. It does print the players: Ja Morant to Portland, Jerami Grant and Kris Murray to Memphis. A cash figure in that story is attributed to a later newsletter report, so this page does not use it.",
+      "The NBA.com story was updated June 30, 2026, and it says the teams agreed on the trade Monday. June 29, 2026 was a Monday. The story does not give the numeral June 29. It does print the players: Ja Morant to Portland, Jerami Grant and Kris Murray to Memphis. A cash figure in that story is attributed to a later newsletter report, so this page does not use it.",
   },
   {
     question: "What are their career scoring lines?",
@@ -46,7 +46,7 @@ const FAQS = [
   {
     question: "Did Lillard play in 2025-26?",
     answer:
-      "The 2025-26 row on his per-game table says he did not play, injured (Achilles). His last logged season is 2024-25 with Milwaukee: 58 games, 24.9 points, 4.7 rebounds, and 7.1 assists. This page does not add a playing-status line that row does not print.",
+      "The 2025-26 row on his per-game table says he did not play, injured (Achilles). His last logged season is 2024-25 with Milwaukee: 58 games, 24.9 points, 4.7 rebounds, and 7.1 assists. This page does not add a playing-status line that row does not give.",
   },
   {
     question: "What did Morant average in 2025-26?",
@@ -56,7 +56,7 @@ const FAQS = [
   {
     question: "When do the Trail Blazers play the Suns?",
     answer:
-      "NBA.com's games page for October 21, 2026 lists Phoenix at Portland at 10:00 pm ET, regular season, game 0022600092. Both teams are shown at 0-0. That is a schedule fact for the teams. The page does not say Lillard is playing that night. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and this page does not quote a projection.",
+      "NBA.com's games page for October 21, 2026 lists Phoenix at Portland at 10:00 pm ET, regular season, game 0022600092. Both teams are shown at 0-0. That is a schedule fact for the teams. NBA.com does not say Lillard is playing that night. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and this page does not quote a projection.",
   },
 ];
 

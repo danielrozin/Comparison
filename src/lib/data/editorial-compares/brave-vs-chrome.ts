@@ -27,7 +27,7 @@ const FETCHED = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave's homepage says Brave is 3x faster than Chrome, and the same page also says websites load 3x-6x faster. Those are Brave's claims, not a lab result on this page. This page does not crown a winner.";
+  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a lab result on this page. This page does not crown a winner.";
 
 const FAQS = [
   {
@@ -43,17 +43,17 @@ const FAQS = [
   {
     question: "Can I install Chrome extensions in Brave?",
     answer:
-      "Brave's guide, published 2 June 2025 and still the page fetched on 30 September 2026, says an extension from the Chrome Web Store works in Brave, and that you click Add to Brave. Brave says it cannot vouch for how a third-party extension handles your data. The same guide says Brave will keep supporting some Manifest V2 extensions, and that Manifest V3 extensions work in Brave as they do in Chrome. Chrome's timeline, last updated 9 September 2026, says Manifest V2 extensions are disabled for every Chrome user as of Chrome 138 on 24 July 2025, and that they stop working on Chrome 139 and later.",
+      "Brave's guide, published 2 June 2025 and still current on 30 September 2026, says an extension from the Chrome Web Store works in Brave, and that you click Add to Brave. Brave says it cannot vouch for how a third-party extension handles your data. The same guide says Brave will keep supporting some Manifest V2 extensions, and that Manifest V3 extensions work in Brave as they do in Chrome. Chrome's timeline, last updated 9 September 2026, says Manifest V2 extensions are disabled for every Chrome user as of Chrome 138 on 24 July 2025, and that they stop working on Chrome 139 and later.",
   },
   {
     question: "What is Brave Rewards and BAT?",
     answer:
-      "BAT is Basic Attention Token. Brave's homepage says Rewards is optional. If you opt in, you can view ads from the Brave Private Ads network and earn BAT. You can keep BAT, tip publishers, or store it in Brave Wallet. Brave's features page also says you can redeem BAT for gift cards, crypto, and more. You do not have to turn Rewards on. Brave says the browser itself is free. Brave Firewall + VPN is a separate subscription, and Brave says one subscription covers up to 5 devices.",
+      "BAT is Basic Attention Token. Brave says Rewards is optional. If you opt in, you can view ads from the Brave Private Ads network and earn BAT. You can keep BAT, tip publishers, or store it in Brave Wallet. Brave's features page also says you can redeem BAT for gift cards, crypto, and more. You do not have to turn Rewards on. Brave says the browser itself is free. Brave Firewall + VPN is a separate subscription, and Brave says one subscription covers up to 5 devices.",
   },
   {
     question: "Does Brave sync like Chrome?",
     answer:
-      "Both can sync, and they do not use the same account. Brave's privacy page says a profile can sync between desktop and mobile, including history and bookmarks, with encryption on the device so Brave cannot read it, and that this sync does not touch Google's servers. The features page adds passwords and tabs. Chrome's sign-in help says a Google Account can put bookmarks, passwords, and more on your devices. Signing in to Chrome is optional. If you turn on Web & App Activity and sync Chrome history, Google says that history can personalize other Google products.",
+      "Both can sync, and they do not use the same account. Brave says a profile can sync between desktop and mobile, including history and bookmarks, with encryption on the device so Brave cannot read it, and that this sync does not touch Google's servers. The features page adds passwords and tabs. Chrome's sign-in help says a Google Account can put bookmarks, passwords, and more on your devices. Signing in to Chrome is optional. If you turn on Web & App Activity and sync Chrome history, Google says that history can personalize other Google products.",
   },
 ];
 
@@ -71,31 +71,31 @@ Sources fetched on 30 September 2026: brave.com, brave.com/shields, brave.com/pr
 
 Engine
 
-Google's open-source project page says Chromium is the web browser that Google Chrome is built on. Brave's privacy page says Brave is built on that same open-source Chromium project, and names Google Chrome as one browser that engine powers. Brave's homepage says the same thing in its own words: Brave is built on the open-source Chromium web core. This page does not treat that shared engine as a speed score.
+Google says Chromium is the web browser that Google Chrome is built on. Brave says Brave is built on that same open-source Chromium project, and names Google Chrome as one browser that engine powers. Brave says the same thing in its own words: Brave is built on the open-source Chromium web core. This page does not treat that shared engine as a speed score.
 
 Where each one runs
 
-Brave's homepage says you can download Brave for Android, iOS, Linux, macOS, or Windows. Chrome's product page says you can set Chrome as the default browser on Windows, Mac, iPhone, iPad, or Android. Chrome 139's release notes say that stable release applies to Android, ChromeOS, Linux, macOS, and Windows. Read the two lists together and Chrome is the one whose own pages name ChromeOS. Brave's pages fetched here do not mention ChromeOS.
+Brave says you can download Brave for Android, iOS, Linux, macOS, or Windows. Chrome says you can set Chrome as the default browser on Windows, Mac, iPhone, iPad, or Android. Chrome 139's release notes say that stable release applies to Android, ChromeOS, Linux, macOS, and Windows. Read the two lists together and Chrome is the one whose own pages name ChromeOS. Brave's pages fetched here do not mention ChromeOS.
 
 Ads, trackers, and cookies
 
-Brave's Shields page says third-party ad and tracker blocking is on for every page, with no extra download. It also says Brave blocks cross-site cookies by default and randomizes fingerprinting by default. The homepage adds that Global Privacy Control is on by default, and that Brave upgrades pages to HTTPS when it can. Shields can be turned off for one site.
+Brave says third-party ad and tracker blocking is on for every page, with no extra download. It also says Brave blocks cross-site cookies by default and randomizes fingerprinting by default. The homepage adds that Global Privacy Control is on by default, and that Brave upgrades pages to HTTPS when it can. Shields can be turned off for one site.
 
 Chrome's product page, fetched the same day, describes extensions, Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. It does not describe a built-in ad and tracker blocker. Chrome's cookie help says third-party cookies are blocked by default in Incognito, and that in regular browsing you choose Allow or Block. It does not say regular browsing blocks them by default.
 
 Sync
 
-Brave's privacy page says Sync is encrypted on each device, covers history, bookmarks, and other profile data between desktop and mobile, and does not use Google's servers. Brave's features include bookmarks, passwords, and tabs. Chrome's sign-in help says a Google Account brings bookmarks, passwords, and more to your devices, and that signing in to Chrome is optional even if you use Gmail. The same page says Chrome history can personalize other Google products if you turn on Web & App Activity and sync that history.
+Brave says Sync is encrypted on each device, covers history, bookmarks, and other profile data between desktop and mobile, and does not use Google's servers. Brave's features include bookmarks, passwords, and tabs. Chrome's sign-in help says a Google Account brings bookmarks, passwords, and more to your devices, and that signing in to Chrome is optional even if you use Gmail. It says Chrome history can personalize other Google products if you turn on Web & App Activity and sync that history.
 
 Extensions and Manifest V3
 
 Brave's 2 June 2025 guide says Chrome Web Store extensions install in Brave with Add to Brave. It says Brave will keep supporting some Manifest V2 extensions, and that Manifest V3 extensions work in Brave the way they work in Chrome. Brave also says Shields replaces an extension ad blocker.
 
-Chrome's Manifest V3 doc says version 3 moves the background page to service workers, stops remotely hosted code, and replaces the blocking webRequest API with declarativeNetRequest. Chrome's timeline, updated 9 September 2026, says that on 24 July 2025 Chrome 138 disabled Manifest V2 extensions for every user, and that users cannot turn them back on. It says those extensions stop working on Chrome 139 and later. It also says that on 31 August 2026 the remaining Manifest V2 extensions were removed from the Chrome Web Store. Installs already on Chrome 138 or earlier can keep running, but they cannot be updated or reinstalled. Chrome's product page says you add extensions from the Chrome Web Store on desktop.
+Chrome's Manifest V3 doc says version 3 moves the background page to service workers, stops remotely hosted code, and replaces the blocking webRequest API with declarativeNetRequest. Chrome's timeline, updated 9 September 2026, says that on 24 July 2025 Chrome 138 disabled Manifest V2 extensions for every user, and that users cannot turn them back on. It says those extensions stop working on Chrome 139 and later. It also says that on 31 August 2026 the remaining Manifest V2 extensions were removed from the Chrome Web Store. Installs already on Chrome 138 or earlier can keep running, but they cannot be updated or reinstalled. Chrome says you add extensions from the Chrome Web Store on desktop.
 
 Rewards
 
-Brave's homepage says BAT, the Basic Attention Token, is optional. Opt in and you can view Brave Private Ads and earn BAT, then keep it, tip a publisher, or store it in Brave Wallet. The features page adds gift cards and crypto as redeem options. The browser is free without Rewards. Brave Firewall + VPN is separate: Brave says one subscription covers up to 5 devices on Android, iOS, and desktop. Chrome's pages fetched here do not offer a token rewards program.
+Brave says BAT, the Basic Attention Token, is optional. Opt in and you can view Brave Private Ads and earn BAT, then keep it, tip a publisher, or store it in Brave Wallet. The features page adds gift cards and crypto as redeem options. The browser is free without Rewards. Brave Firewall + VPN is separate: Brave says one subscription covers up to 5 devices on Android, iOS, and desktop. Chrome's pages fetched here do not offer a token rewards program.
 
 Speed, as the vendor states it
 
@@ -195,7 +195,7 @@ export const BRAVE_VS_CHROME: EditorialComparison = buildEditorialComparison({
     {
       label: "Rewards",
       entityAValue: "Optional BAT",
-      entityBValue: "Not offered on the pages fetched",
+      entityBValue: "Not offered",
       winner: "tie",
     },
   ],
@@ -252,7 +252,7 @@ export const BRAVE_VS_CHROME: EditorialComparison = buildEditorialComparison({
       BRAVE,
       CHROME,
       "Optional BAT (Brave)",
-      "Not offered on the Chrome pages fetched"
+      "Not offered by Chrome"
     ),
     textAttr(
       "speed",

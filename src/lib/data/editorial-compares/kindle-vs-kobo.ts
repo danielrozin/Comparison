@@ -15,6 +15,7 @@ const KOBO = "rakuten-kobo";
 const LINEUP = "https://www.aboutamazon.com/news/devices/new-kindle-lineup-2026";
 const SCRIBE = "https://www.aboutamazon.com/news/devices/new-amazon-kindle-scribe-color";
 const SEND = "https://www.amazon.com/gp/help/customer/display.html?nodeId=200767340";
+const KINDLE_LIBRARY = "https://www.amazon.com/gp/help/customer/display.html?nodeId=GUWACXF9HENBXTQP";
 const KOBO_LINEUP = "https://www.kobo.com/us/en/ereaders";
 const KOBO_STORE = "https://ereader.kobo.com/en-us/collections/ereaders";
 const FORMATS = "https://help.kobo.com/hc/en-us/articles/360017763713-File-formats-your-Kobo-eReader-and-Kobo-Books-app-support";
@@ -23,10 +24,10 @@ const LIBBY = "https://help.kobo.com/hc/en-us/articles/4477058367895-About-the-L
 
 const FETCHED = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
-const SPEC = "Lineup · checked 2026-10-03";
+const SPEC = "Lineup";
 
 const SHORT_ANSWER =
-  "Choose a Kindle if you want Amazon's bookstore on a dedicated reader. The 6-inch Kindle starts at $149.99 with 16GB and up to 6 weeks of battery, and Kindle Paperwhite is waterproof with up to 12 weeks, from $199.99. Choose a Kobo if you want EPUB on the device and public-library borrowing. Kobo Clara BW is $159.99 and Kobo Libra Colour is $259.99. Checked 3 October 2026. There is no winner on this page.";
+  "Choose a Kindle if you want Amazon's bookstore on a dedicated reader. The 6-inch Kindle starts at $149.99 with 16GB and up to 6 weeks of battery, and Kindle Paperwhite is waterproof with up to 12 weeks, from $199.99. Eligible US public-library Kindle books come through OverDrive. Choose a Kobo if you want EPUB on the device and built-in Libby browsing and borrowing. Kobo Clara BW is $159.99 and Kobo Libra Colour is $259.99. There is no winner.";
 
 const FAQS = [
   {
@@ -35,14 +36,14 @@ const FAQS = [
       "Send to Kindle accepts HTML, RTF, TXT, JPEG, GIF, PNG, BMP, PDF, and EPUB. Web uploads are 200 MB or smaller, and the service is at no additional cost. A Kobo eReader supports EPUB, EPUB2, and EPUB3 on the device, plus PDF, FlePub, and MOBI.",
   },
   {
-    question: "Can a Kobo borrow library books?",
+    question: "Can either reader borrow library books?",
     answer:
-      "Libby by OverDrive on a Kobo eReader can browse, borrow, and place holds with a library card and Wi-Fi. That built-in feature covers Kobo Libra Colour, Clara Colour, Clara BW, Elipsa 2E, and Sage, among other models, in the United States, Canada, the United Kingdom, Australia, New Zealand, and several other countries. Libby may not be available at your library. Audiobooks borrowed through Libby cannot be played on Kobo eReaders. OverDrive also covers library eBooks and audiobooks.",
+      "Eligible Kindle books can be borrowed from US public libraries through OverDrive. You need a library card and a PIN, you check the book out on the library website, and you send it to the Kindle. Libby by OverDrive on a Kobo eReader can browse, borrow, and place holds with a library card and Wi-Fi. That built-in feature covers Kobo Libra Colour, Clara Colour, Clara BW, Elipsa 2E, and Sage, among other models, in the United States, Canada, the United Kingdom, Australia, New Zealand, and several other countries. Libby may not be available at your library. Audiobooks borrowed through Libby cannot be played on Kobo eReaders.",
   },
   {
     question: "Which current models are waterproof?",
     answer:
-      "Kindle Paperwhite is waterproof and has an adjustable warm light. Only Paperwhite is waterproof in the 2026 Kindle lineup. Libra Colour, Clara Colour, Clara BW, and Sage are waterproof. Elipsa 2E is not waterproof.",
+      "Kindle Paperwhite is waterproof and has an adjustable warm light. Libra Colour, Clara Colour, Clara BW, and Sage are waterproof. Elipsa 2E is not waterproof.",
   },
   {
     question: "Which lineup has a color screen?",
@@ -52,7 +53,7 @@ const FAQS = [
   {
     question: "What do the current models cost?",
     answer:
-      "Checked 3 October 2026. New Kindle models: 6-inch Kindle 16GB from $149.99, aluminum 32GB at $189.99, Paperwhite 16GB from $199.99, Paperwhite Signature Edition 32GB at $249.99, Colorsoft 16GB from $289.99, Colorsoft Signature Edition 32GB at $319.99, and Kids versions starting at $179.99. Kindle Scribe is an 11-inch model. New Kobo models: Clara BW $159.99, Clara Colour $179.99, Libra Colour $259.99, Sage $269.99, Elipsa 2E $399.99. Certified refurbished Kobo readers are $79.99, $109.99, $159.99, and $279.99.",
+      "New Kindle models: 6-inch Kindle 16GB from $149.99, aluminum 32GB at $189.99, Paperwhite 16GB from $199.99, Paperwhite Signature Edition 32GB at $249.99, Colorsoft 16GB from $289.99, Colorsoft Signature Edition 32GB at $319.99, and Kids versions starting at $179.99. Kindle Scribe is an 11-inch model. New Kobo models: Clara BW $159.99, Clara Colour $179.99, Libra Colour $259.99, Sage $269.99, Elipsa 2E $399.99. Certified refurbished Kobo readers are $79.99, $109.99, $159.99, and $279.99.",
   },
   {
     question: "Which one is for handwritten notes?",
@@ -61,21 +62,19 @@ const FAQS = [
   },
 ];
 
-const VERDICT = `Best fit for Amazon's bookstore: Kindle. The 6-inch model starts at $149.99. Paperwhite adds waterproofing and up to 12 weeks of battery, from $199.99.
+const VERDICT = `Best fit for Amazon's bookstore: Kindle. The 6-inch model starts at $149.99. Paperwhite is waterproof and has up to 12 weeks of battery, from $199.99. Eligible US public-library Kindle books come through OverDrive.
 
-Best fit for EPUB on the device and library borrowing: Kobo. Clara BW is $159.99. Libra Colour adds a 7-inch color screen and page-turn buttons at $259.99.
+Best fit for EPUB on the device and built-in Libby: Kobo. Clara BW is $159.99. Libra Colour adds a 7-inch color screen and page-turn buttons at $259.99. Libby browsing and borrowing is built in on Libra Colour, Clara Colour, Clara BW, Elipsa 2E, and Sage in the listed countries.
 
-There is no single winner on this page.`;
+There is no single winner.`;
 
-const EXPERT_ANALYSIS = `Choose a Kindle if the books you buy are in Amazon's Kindle store and you want a dedicated reader for them. Choose a Kobo if you want EPUB on the device and a built-in way to borrow from a public library that supports Libby. There is no winner on this page.
-
-Specs and prices checked 3 October 2026 on Amazon and Kobo's official pages; sources are listed below.
+const EXPERT_ANALYSIS = `Choose a Kindle if the books you buy are in Amazon's Kindle store and you want a dedicated reader for them. Eligible US public-library Kindle books come through OverDrive, with checkout on the library website. Choose a Kobo if you want EPUB on the device and built-in Libby browsing and borrowing. There is no winner.
 
 What each lineup is
 
 The 2026 Kindle lineup is a redesigned Kindle, Kindle Paperwhite, and Kindle Colorsoft, plus Kids versions. The 6-inch Kindle has 16GB, up to 6 weeks of battery, and starts at $149.99 in Ube and Graphite. An aluminum version has 32GB at $189.99. Kindle Paperwhite is waterproof, has an adjustable warm light, and up to 12 weeks of battery. It starts at $199.99 with 16GB. The Signature Edition is $249.99 with 32GB, an aluminum rear, an auto-adjusting front light, and pogo-pin dock charging. Kindle Colorsoft starts at $289.99 with 16GB. Its Signature Edition is $319.99 with 32GB. The 6-inch Kindle and its aluminum version are available. Paperwhite and Colorsoft are on preorder on a rolling basis.
 
-Kobo's current US lineup is Libra Colour, Clara Colour, Clara BW, Sage, and Elipsa 2E. Clara Colour and Clara BW are 6-inch. Libra Colour is 7-inch color E Ink Kaleido 3 with page-turn buttons and 32GB, up to 24,000 eBooks or 150 Kobo audiobooks. Clara models have 16GB, up to 12,000 eBooks or 75 Kobo audiobooks. Sage is an 8-inch E Ink Carta 1200 with 32GB. Elipsa 2E is a 10.3-inch E Ink Carta 1200 with 32GB and includes Kobo Stylus 2. New store prices are Clara BW $159.99, Clara Colour $179.99, Libra Colour $259.99, Sage $269.99, and Elipsa 2E $399.99. Certified refurbished readers on that store are $79.99, $109.99, $159.99, and $279.99.
+Kobo's current US lineup is Libra Colour, Clara Colour, Clara BW, Sage, and Elipsa 2E. Clara Colour and Clara BW are 6-inch. Libra Colour is 7-inch color E Ink Kaleido 3 with page-turn buttons and 32GB, up to 24,000 eBooks or 150 Kobo audiobooks. Clara models have 16GB, up to 12,000 eBooks or 75 Kobo audiobooks. Sage is an 8-inch E Ink Carta 1200 with 32GB. Elipsa 2E is a 10.3-inch E Ink Carta 1200 with 32GB and includes Kobo Stylus 2. New prices are Clara BW $159.99, Clara Colour $179.99, Libra Colour $259.99, Sage $269.99, and Elipsa 2E $399.99. Certified refurbished Kobo readers are $79.99, $109.99, $159.99, and $279.99.
 
 Files
 
@@ -83,7 +82,7 @@ Send to Kindle accepts HTML, RTF, TXT, JPEG, GIF, PNG, BMP, PDF, and EPUB, and d
 
 Library borrowing
 
-Kobo includes Libby by OverDrive on the models and in the countries named above. Public-library borrowing is not part of the Kindle lineup or of Send to Kindle.
+Eligible Kindle books can be borrowed from US public libraries through OverDrive. Checkout is on the library website, then the book is sent to the Kindle. Kobo includes built-in Libby browsing and borrowing on Libra Colour, Clara Colour, Clara BW, Elipsa 2E, and Sage, in the United States, Canada, the United Kingdom, Australia, New Zealand, and several other countries.
 
 Notes and ads
 
@@ -91,9 +90,9 @@ Kindle Scribe is the writing Kindle: 11 inches, 5.4 mm, 400 g, and a pen that ne
 
 Who should buy which
 
-Buy a Kindle if your library of purchased books is already in Kindle format and you want Amazon's store on the device. Among new models, the 6-inch Kindle at $149.99 is the lowest price, and Kobo Clara BW at $159.99 is the lowest new Kobo. Refurbished Kobo readers start lower, at $79.99. Paperwhite is the waterproof Kindle, with the longer battery figure of up to 12 weeks.
+Buy a Kindle if your library of purchased books is already in Kindle format and you want Amazon's store on the device. Among new models, the 6-inch Kindle at $149.99 is the lowest new Kindle, and Kobo Clara BW at $159.99 is the lowest new Kobo. Refurbished Kobo readers start lower, at $79.99. Paperwhite is waterproof, with up to 12 weeks of battery.
 
-Buy a Kobo if EPUB files and public-library loans matter more than the Kindle store. Clara BW at $159.99 is the black-and-white 6-inch model. Libra Colour at $259.99 is the 7-inch color model with page-turn buttons. Kobo rates battery life in weeks.`;
+Buy a Kobo if EPUB files on the device and built-in Libby matter more than the Kindle store. Clara BW at $159.99 is the black-and-white 6-inch model. Libra Colour at $259.99 is the 7-inch color model with page-turn buttons. Kobo rates battery life in weeks.`;
 
 export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
   slug: "kindle-vs-kobo",
@@ -119,9 +118,8 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
         "Send to Kindle accepts EPUB, PDF, HTML, RTF, TXT, and JPEG, GIF, PNG, and BMP, at no additional cost",
       ],
       cons: [
-        "Public-library borrowing is not built in",
-        "Only Paperwhite is waterproof",
-        "EPUB goes through Send to Kindle, rather than opening as a file on the device itself",
+        "EPUB files are added through Send to Kindle",
+        "US library checkout is on the library website, then the book is sent to the Kindle",
       ],
       bestFor: "Best for books you buy from Amazon",
     },
@@ -144,7 +142,7 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
         "Elipsa 2E is $399.99 and is not waterproof",
         "Sideloaded books do not sync across devices",
       ],
-      bestFor: "Best for EPUB files and public-library loans",
+      bestFor: "Best for EPUB on the device and built-in Libby",
     },
   ],
   keyDifferences: [
@@ -162,8 +160,8 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
     },
     {
       label: "Library loans",
-      entityAValue: "Not part of the Kindle lineup or Send to Kindle",
-      entityBValue: "Libby on listed models and countries",
+      entityAValue: "US OverDrive loans. Checkout is on the library website",
+      entityBValue: "Built-in Libby browsing and borrowing on listed models and countries",
       winner: "tie",
     },
     {
@@ -185,7 +183,7 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
     textAttr("color", "Color model", SPEC, KINDLE, KOBO, "Colorsoft from $289.99, 16GB. Signature Edition $319.99, 32GB", "Clara Colour $179.99, 6-inch Kaleido 3. Libra Colour $259.99, 7-inch Kaleido 3"),
     textAttr("notes", "Handwriting", SPEC, KINDLE, KOBO, "Kindle Scribe: 11-inch, 5.4 mm, 400 g, pen included", "Libra Colour and Sage take a Kobo Stylus. Elipsa 2E includes Stylus 2, 10.3-inch, $399.99"),
     textAttr("epub", "EPUB", SPEC, KINDLE, KOBO, "Send to Kindle accepts EPUB, plus HTML, RTF, TXT, JPEG, GIF, PNG, BMP, and PDF. Web upload 200 MB or smaller", "EPUB, EPUB2, and EPUB3 on the eReader"),
-    textAttr("library", "Public library", SPEC, KINDLE, KOBO, "Not part of the Kindle lineup or Send to Kindle", "Libby by OverDrive on listed models, in listed countries"),
+    textAttr("library", "Public library", SPEC, KINDLE, KOBO, "Eligible US public-library books through OverDrive. Checkout is on the library website", "Built-in Libby browsing and borrowing on listed models, in listed countries"),
     textAttr("water", "Waterproof", SPEC, KINDLE, KOBO, "Paperwhite is waterproof", "Libra Colour, Clara Colour, Clara BW, and Sage"),
     textAttr("battery", "Battery", SPEC, KINDLE, KOBO, "6-inch Kindle up to 6 weeks. Paperwhite up to 12 weeks", "Kobo rates battery life in weeks"),
   ],
@@ -196,26 +194,27 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "Kindle for Amazon's store, including a $149.99 6-inch reader and a waterproof Paperwhite. Kobo for EPUB on the device and Libby library loans.",
+      "Kindle for Amazon's store, including a $149.99 6-inch reader, a waterproof Paperwhite, and US public-library books through OverDrive. Kobo for EPUB on the device and built-in Libby.",
     keyFact:
-      "Checked 3 October 2026: Kindle from $149.99 with up to 6 weeks, Paperwhite up to 12 weeks, Kobo Clara BW $159.99, Libra Colour $259.99.",
+      "Kindle from $149.99 with up to 6 weeks, Paperwhite up to 12 weeks, Kobo Clara BW $159.99, Libra Colour $259.99.",
   },
   citationStats: {
-    sourceCount: 8,
+    sourceCount: 9,
     dataPointCount: 9,
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
     lastResearched: FETCHED,
     sources: [
-      { name: "Amazon — 2026 Kindle lineup post (checked 2026-10-03)", url: LINEUP },
-      { name: "Amazon — Kindle Scribe lineup post (checked 2026-10-03)", url: SCRIBE },
-      { name: "Amazon Help — Send to Kindle file types (checked 2026-10-03)", url: SEND },
-      { name: "Rakuten Kobo — US eReaders (checked 2026-10-03)", url: KOBO_LINEUP },
-      { name: "Rakuten Kobo — US eReader store (checked 2026-10-03)", url: KOBO_STORE },
-      { name: "Kobo Help — file formats (checked 2026-10-03)", url: FORMATS },
-      { name: "Kobo Help — borrow library books on the eReader (checked 2026-10-03)", url: LIBRARY },
-      { name: "Kobo Help — About the Libby app (checked 2026-10-03)", url: LIBBY },
+      { name: "Amazon — 2026 Kindle lineup", url: LINEUP },
+      { name: "Amazon — Kindle Scribe", url: SCRIBE },
+      { name: "Amazon Help — Send to Kindle file types", url: SEND },
+      { name: "Amazon Help — public library books on Kindle", url: KINDLE_LIBRARY },
+      { name: "Rakuten Kobo — US eReaders", url: KOBO_LINEUP },
+      { name: "Rakuten Kobo — US eReader store", url: KOBO_STORE },
+      { name: "Kobo Help — file formats", url: FORMATS },
+      { name: "Kobo Help — library books on the eReader", url: LIBRARY },
+      { name: "Kobo Help — Libby", url: LIBBY },
     ],
   },
   resources: [
@@ -224,51 +223,58 @@ export const KINDLE_VS_KOBO: EditorialComparison = buildEditorialComparison({
       label: "Amazon 2026 Kindle lineup",
       url: LINEUP,
       description:
-        "Checked 2026-10-03. 6-inch Kindle from $149.99, Paperwhite from $199.99 and waterproof with up to 12 weeks, Colorsoft from $289.99.",
+        "6-inch Kindle from $149.99, Paperwhite from $199.99 and waterproof with up to 12 weeks, Colorsoft from $289.99.",
     },
     {
       type: "external",
       label: "Amazon Kindle Scribe post",
       url: SCRIBE,
-      description: "Checked 2026-10-03. 11-inch display, 5.4 mm, 400 g, pen included.",
+      description: "11-inch display, 5.4 mm, 400 g, pen included.",
     },
     {
       type: "external",
       label: "Send to Kindle help",
       url: SEND,
-      description: "Checked 2026-10-03. HTML, RTF, TXT, JPEG, GIF, PNG, BMP, PDF, and EPUB. Web uploads 200 MB or smaller. No additional cost.",
+      description: "HTML, RTF, TXT, JPEG, GIF, PNG, BMP, PDF, and EPUB. Web uploads 200 MB or smaller. No additional cost.",
+    },
+    {
+      type: "external",
+      label: "Kindle public library books",
+      url: KINDLE_LIBRARY,
+      description:
+        "Eligible Kindle books from US public libraries through OverDrive. Checkout is on the library website, then the book is sent to the Kindle.",
     },
     {
       type: "external",
       label: "Kobo US eReaders",
       url: KOBO_LINEUP,
       description:
-        "Checked 2026-10-03. Clara 6-inch, Libra Colour 7-inch, Sage 8-inch, Elipsa 2E 10.3-inch. Kobo rates battery life in weeks.",
+        "Clara 6-inch, Libra Colour 7-inch, Sage 8-inch, Elipsa 2E 10.3-inch. Kobo rates battery life in weeks.",
     },
     {
       type: "external",
       label: "Kobo US eReader store",
       url: KOBO_STORE,
       description:
-        "Checked 2026-10-03. New: Clara BW $159.99, Clara Colour $179.99, Libra Colour $259.99, Sage $269.99, Elipsa 2E $399.99. Certified refurbished: $79.99, $109.99, $159.99, and $279.99. Every Kobo eReader is free of ads.",
+        "New: Clara BW $159.99, Clara Colour $179.99, Libra Colour $259.99, Sage $269.99, Elipsa 2E $399.99. Certified refurbished: $79.99, $109.99, $159.99, and $279.99. Every Kobo eReader is free of ads.",
     },
     {
       type: "external",
       label: "Kobo file formats",
       url: FORMATS,
-      description: "Checked 2026-10-03. EPUB, EPUB2, EPUB3, PDF, FlePub, and MOBI on the eReader.",
+      description: "EPUB, EPUB2, EPUB3, PDF, FlePub, and MOBI on the eReader.",
     },
     {
       type: "external",
       label: "Kobo library borrowing",
       url: LIBRARY,
-      description: "Checked 2026-10-03. Libby by OverDrive on listed models, in listed countries.",
+      description: "Built-in Libby browsing and borrowing on listed models, in listed countries.",
     },
     {
       type: "external",
       label: "About the Libby app",
       url: LIBBY,
-      description: "Checked 2026-10-03. Audiobooks borrowed through Libby cannot be played on Kobo eReaders.",
+      description: "Audiobooks borrowed through Libby cannot be played on Kobo eReaders.",
     },
   ],
   metaTitle: "Kindle vs Kobo | A Versus B",
