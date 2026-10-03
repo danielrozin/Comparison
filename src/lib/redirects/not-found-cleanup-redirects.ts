@@ -29,4 +29,16 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
  */
 export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
   ...Object.keys(NOT_FOUND_CLEANUP_CONSOLIDATIONS),
+  // 404 aliases for Microsoft Word vs LibreOffice. None was a catalog page.
+  "libreoffice-vs-microsoft-word",
+  "word-vs-libreoffice",
+  "libreoffice-vs-word",
+  "ms-word-vs-libreoffice-writer",
+  "libreoffice-writer-vs-ms-word",
+  "microsoft-word-vs-libreoffice-writer",
+  "libreoffice-writer-vs-microsoft-word",
+  "ms-word-vs-libreoffice",
+  "libreoffice-vs-ms-word",
+  "word-vs-libreoffice-writer",
+  "libreoffice-writer-vs-word",
 ]);
