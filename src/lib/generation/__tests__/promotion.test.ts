@@ -12,9 +12,9 @@ const passing = {
   ],
   attributes: [
     { name: "Price", values: [{ valueNumber: 10 }, { valueNumber: 20 }] },
-    { name: "Speed", values: [{ valueText: "3 GHz" }] },
-    { name: "Weight", values: [{ valueText: "150 grams" }] },
-    { name: "Year", values: [{ valueNumber: 2024 }] },
+    { name: "Speed", values: [{ valueText: "3 GHz" }, { valueText: "2 GHz" }] },
+    { name: "Weight", values: [{ valueText: "150 grams" }, { valueText: "180 grams" }] },
+    { name: "Year", values: [{ valueNumber: 2024 }, { valueNumber: 2020 }] },
   ],
   entities: [
     { pros: ["fast", "cheap"], cons: ["loud"] },
@@ -28,6 +28,45 @@ describe("assessUserGenerationPromotion", () => {
     const decision = assessUserGenerationPromotion(passing);
     expect(decision.pass).toBe(true);
     expect(decision.reasons).toEqual([]);
+  });
+
+  it("counts distinct source URLs even when the stored sourceCount is 0", () => {
+    const decision = assessUserGenerationPromotion({
+      ...passing,
+      citationStats: {
+        sourceCount: 0,
+        sources: [
+          { name: "rei.com", url: "https://www.rei.com/canoe" },
+          { name: "rei.com", url: "https://rei.com/kayak" },
+          { name: "wikipedia.org", url: "https://en.wikipedia.org/wiki/Kayak" },
+        ],
+      },
+    });
+    expect(decision.pass).toBe(true);
+  });
+
+  it("does not treat one-sided inherited attributes as this comparison's data", () => {
+    const decision = assessUserGenerationPromotion({
+      ...passing,
+      attributes: Array.from({ length: 8 }, (_, index) => ({
+        name: `Airline metric ${index}`,
+        values: [{ valueNumber: 100 + index, entityId: "kayak-travel-site" }],
+      })),
+    });
+    expect(decision.pass).toBe(false);
+    expect(decision.reasons.some((reason) => reason.includes("one side"))).toBe(true);
+    expect(decision.reasons.some((reason) => reason.includes("substantive attributes"))).toBe(true);
+  });
+
+  it("fails a canoe-shaped page that has numbers and depth but no sources", () => {
+    const decision = assessUserGenerationPromotion({
+      ...passing,
+      shortAnswer:
+        "Canoes feature an open design and typically seat 2-3 people, while kayaks usually accommodate 1-2 paddlers.",
+      citationStats: { sourceCount: 0, sources: [] },
+    });
+    expect(decision.pass).toBe(false);
+    expect(decision.reasons).toEqual(["only 0 sources (need 2)"]);
   });
 
   it("fails closed when there are not enough sources or numeric data", () => {
