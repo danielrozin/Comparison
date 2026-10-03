@@ -63,6 +63,23 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   "wembanyama-vs-sga": "shai-gilgeous-alexander-vs-victor-wembanyama",
   "knicks-vs-sixers": "knicks-vs-76ers",
   "sixers-vs-knicks": "knicks-vs-76ers",
+  // Spurs vs Thunder / Knicks vs Spurs full names. Both orders are sources so
+  // the alphabetical shell cannot insert a hop. Confirmed 2026-10-03:
+  // san-antonio-spurs-vs-oklahoma-city-thunder 301s to
+  // oklahoma-city-thunder-vs-san-antonio-spurs, which 404s; the Knicks full-name
+  // order does the same onto new-york-knicks-vs-san-antonio-spurs.
+  // The -match-player-stats slug is a published, indexed page (title
+  // "Spurs vs Thunder 2026: 52-30 Record Comparison", championship-odds rows).
+  // Mapping it here runs before the DB lookup and adds it to
+  // REDIRECTED_COMPARE_SLUGS, which canonicalComparisonWhere() excludes from
+  // the sitemap. Repo and sitemap/1.xml had no other legacy slug for
+  // Knicks/Spurs, Thunder/Spurs, or Flagg/Wembanyama.
+  "san-antonio-spurs-vs-oklahoma-city-thunder-match-player-stats":
+    "oklahoma-city-thunder-vs-spurs",
+  "san-antonio-spurs-vs-oklahoma-city-thunder": "oklahoma-city-thunder-vs-spurs",
+  "oklahoma-city-thunder-vs-san-antonio-spurs": "oklahoma-city-thunder-vs-spurs",
+  "new-york-knicks-vs-san-antonio-spurs": "knicks-vs-spurs",
+  "san-antonio-spurs-vs-new-york-knicks": "knicks-vs-spurs",
   "14-inch-vs-16-inch-macbook-pro": "macbook-pro-14-vs-16-inch",
   "japan-vs-china-economy-comparison-2026": "china-vs-japan-economy-comparison-2026",
   "cristiano-ronaldo-vs-neymar-career-stats-comparison-2026":

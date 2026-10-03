@@ -290,6 +290,26 @@ describe("COMPARE_REDIRECTS", () => {
       }
     });
 
+    it("301s Spurs/Thunder and Knicks/Spurs legacy slugs in one hop", () => {
+      const pairs: [string, string][] = [
+        [
+          "san-antonio-spurs-vs-oklahoma-city-thunder-match-player-stats",
+          "oklahoma-city-thunder-vs-spurs",
+        ],
+        ["san-antonio-spurs-vs-oklahoma-city-thunder", "oklahoma-city-thunder-vs-spurs"],
+        ["oklahoma-city-thunder-vs-san-antonio-spurs", "oklahoma-city-thunder-vs-spurs"],
+        ["new-york-knicks-vs-san-antonio-spurs", "knicks-vs-spurs"],
+        ["san-antonio-spurs-vs-new-york-knicks", "knicks-vs-spurs"],
+      ];
+      for (const [from, to] of pairs) {
+        expect(getConsolidatedCompareSlug(from), from).toBe(to);
+        expect(getConsolidatedCompareSlug(to), `${to} must stay a page`).toBeNull();
+        const hit = COMPARE_REDIRECTS.find((redirect) => redirect.source === `/compare/${from}`);
+        expect(hit?.destination).toBe(`/compare/${to}`);
+        expect(hit?.statusCode).toBe(301);
+      }
+    });
+
     it("every DAN-1800 entry is a genuine A-vs-B / B-vs-A ordering pair (same sorted key)", () => {
       const key = (s: string) =>
         s.split("-vs-").map((t) => t.trim()).sort().join("|");

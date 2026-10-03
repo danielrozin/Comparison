@@ -5,7 +5,11 @@ import {
   relatedComparisonSlugs,
   type SlugRowState,
 } from "@/lib/compare-slug-resolution";
-import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
+import {
+  getConsolidatedCompareSlug,
+  REDIRECTED_COMPARE_SLUGS,
+} from "@/lib/redirects/compare-redirects";
 import { getComparisonBySlug, isComparisonDbConfigured } from "@/lib/services/comparison-service";
 import { getStaticProps } from "@/pages/compare/[slug]";
 
@@ -94,6 +98,24 @@ const ALIASES: { from: string; to: string }[] = [
   { from: "sixers-vs-knicks", to: "knicks-vs-76ers" },
 ];
 
+/** Full-name orders and the live legacy stats page. Each must beat the shell. */
+const LEGACY_ALIASES: { from: string; to: string }[] = [
+  {
+    from: "san-antonio-spurs-vs-oklahoma-city-thunder-match-player-stats",
+    to: "oklahoma-city-thunder-vs-spurs",
+  },
+  {
+    from: "san-antonio-spurs-vs-oklahoma-city-thunder",
+    to: "oklahoma-city-thunder-vs-spurs",
+  },
+  {
+    from: "oklahoma-city-thunder-vs-san-antonio-spurs",
+    to: "oklahoma-city-thunder-vs-spurs",
+  },
+  { from: "new-york-knicks-vs-san-antonio-spurs", to: "knicks-vs-spurs" },
+  { from: "san-antonio-spurs-vs-new-york-knicks", to: "knicks-vs-spurs" },
+];
+
 type Ctx = Parameters<typeof getStaticProps>[0];
 
 describe("NBA batch compare aliases and reverses", () => {
@@ -107,6 +129,31 @@ describe("NBA batch compare aliases and reverses", () => {
       expect(props).toMatchObject({
         redirect: { destination: `/compare/${alias.to}`, statusCode: 301 },
       });
+    }
+  });
+
+  it("301s the legacy Spurs/Thunder page and full-name orders in one hop", async () => {
+    for (const alias of LEGACY_ALIASES) {
+      const landed = await follow(alias.from);
+      expect(landed.status, alias.from).toBe(200);
+      expect(landed.final, alias.from).toBe(alias.to);
+      expect(landed.hops, alias.from).toEqual([alias.to]);
+      const props = await getStaticProps({ params: { slug: alias.from } } as unknown as Ctx);
+      expect(props).toMatchObject({
+        redirect: { destination: `/compare/${alias.to}`, statusCode: 301 },
+      });
+    }
+
+    // sitemap.ts lists comparisons with canonicalComparisonWhere(), whose
+    // slug.notIn is REDIRECTED_COMPARE_SLUGS. The published stats row leaves
+    // the sitemap because it is a redirect source, not because its DB status
+    // changed.
+    const legacy = "san-antonio-spurs-vs-oklahoma-city-thunder-match-player-stats";
+    expect(REDIRECTED_COMPARE_SLUGS).toContain(legacy);
+    expect(canonicalComparisonWhere().slug.notIn).toContain(legacy);
+    for (const alias of LEGACY_ALIASES) {
+      expect(canonicalComparisonWhere().slug.notIn).toContain(alias.from);
+      expect(canonicalComparisonWhere().slug.notIn).not.toContain(alias.to);
     }
   });
 
