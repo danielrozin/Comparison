@@ -86,10 +86,28 @@ export function eligiblePromotionCandidates(
   return rows.filter((row) => readPromotionState(row.content).attempts < maxAttempts);
 }
 
+export interface PromotionSource {
+  name: string;
+  url?: string;
+}
+
+/**
+ * Sources from a finished enrichment. `providerError` is set only when the
+ * search provider failed (missing key, non-2xx, timeout, network). A finished
+ * search with nothing to cite leaves it null.
+ */
+export interface PromotionEnrichment {
+  sources: PromotionSource[];
+  providerError?: string | null;
+}
+
 export interface PromotionRecheckDeps {
   loadCandidates: () => Promise<PromotionCandidate[]>;
   loadComparison: (slug: string) => Promise<ComparisonPageData | null>;
-  enrich: (entityA: string, entityB: string) => Promise<{ name: string; url?: string }[]>;
+  enrich: (
+    entityA: string,
+    entityB: string,
+  ) => Promise<PromotionSource[] | PromotionEnrichment>;
   save: (input: {
     slug: string;
     status: "published" | "provisional";
@@ -122,6 +140,7 @@ export async function runPromotionRecheck(deps: PromotionRecheckDeps): Promise<P
   void anthropicCallsAllowed(report.anthropicCalls, deps.limits.anthropicCap);
 
   const rows = eligiblePromotionCandidates(await deps.loadCandidates(), deps.limits.maxAttempts);
+  const providerFailures: { slug: string; reason: string }[] = [];
 
   for (const row of rows) {
     if (report.processed >= deps.limits.batch) break;
@@ -152,9 +171,20 @@ export async function runPromotionRecheck(deps: PromotionRecheckDeps): Promise<P
         continue;
       }
       const [entityA, entityB] = comparison.entities;
-      const added = await deps.enrich(entityA.name, entityB.name);
+      const added = await readPromotionEnrichment(() => deps.enrich(entityA.name, entityB.name));
       report.tavilyCalls += 1;
-      citationStats = mergeCitationStats(citationStats, added, deps.now());
+      const merged = mergeCitationStats(citationStats, added.sources, deps.now());
+      // A provider outage is not evidence that the page has no sources.
+      // Leave the attempt counter where it is so the page stays in the queue.
+      if (
+        added.providerError &&
+        userGenerationSourceCount({ citationStats: merged }) < MIN_USER_GENERATION_SOURCES
+      ) {
+        await recordProviderFailure(deps, report, row, added.providerError);
+        providerFailures.push({ slug: row.slug, reason: added.providerError });
+        continue;
+      }
+      citationStats = merged;
     }
 
     const decision = needsSources && !attributesBlockPromotion
@@ -168,7 +198,66 @@ export async function runPromotionRecheck(deps: PromotionRecheckDeps): Promise<P
     });
   }
 
+  warnProviderFailures(providerFailures);
   return report;
+}
+
+/**
+ * One line for the whole cron run. Reason codes only — never the API key,
+ * the query, or the response body.
+ */
+function warnProviderFailures(failures: { slug: string; reason: string }[]): void {
+  if (failures.length === 0) return;
+  const counts = new Map<string, number>();
+  for (const failure of failures) {
+    const reason = failure.reason;
+    counts.set(reason, (counts.get(reason) ?? 0) + 1);
+  }
+  const summary = [...counts.entries()]
+    .map(([reason, count]) => `${reason} x${count}`)
+    .join(", ");
+  console.warn(
+    `[promote-provisional] ${failures.length} search provider failure(s); attempts not counted (${summary})`,
+  );
+}
+
+async function readPromotionEnrichment(
+  load: () => Promise<PromotionSource[] | PromotionEnrichment>,
+): Promise<{ sources: PromotionSource[]; providerError: string | null }> {
+  try {
+    const value = await load();
+    if (Array.isArray(value)) return { sources: value, providerError: null };
+    const reason = typeof value?.providerError === "string" ? value.providerError.trim() : "";
+    return {
+      sources: Array.isArray(value?.sources) ? value.sources : [],
+      providerError: reason.length > 0 ? normalizeProviderErrorReason(reason) : null,
+    };
+  } catch {
+    return { sources: [], providerError: "search_provider_error:network" };
+  }
+}
+
+function normalizeProviderErrorReason(reason: string): string {
+  const prefix = "search_provider_error:";
+  const code = reason.startsWith(prefix) ? reason.slice(prefix.length) : reason;
+  const safe = /^[A-Za-z0-9_]+$/.test(code) ? code : "unknown";
+  return `${prefix}${safe}`;
+}
+
+async function recordProviderFailure(
+  deps: PromotionRecheckDeps,
+  report: PromotionRecheckReport,
+  row: PromotionCandidate,
+  providerError: string,
+): Promise<void> {
+  const attempt = readPromotionState(row.content).attempts;
+  report.processed += 1;
+  report.failed.push({ slug: row.slug, reasons: [providerError], attempt });
+  await deps.log("generation_promotion_failed", {
+    slug: row.slug,
+    reasons: [providerError],
+    attempt,
+  });
 }
 
 async function recordOutcome(
@@ -237,8 +326,12 @@ export async function executePromotionRecheck(): Promise<PromotionRecheckReport>
     ),
     loadComparison: (slug) => getComparisonBySlug(slug),
     enrich: async (entityA, entityB) => {
-      const enrichment = await enrichComparisonData(entityA, entityB, true);
-      return citationSourcesFromResults(enrichment.sources);
+      // Per-request Tavily warnings stay off. runPromotionRecheck logs one summary.
+      const enrichment = await enrichComparisonData(entityA, entityB, true, { logFailures: false });
+      return {
+        sources: citationSourcesFromResults(enrichment.sources),
+        providerError: enrichment.providerError,
+      };
     },
     save: (input) => applyProvisionalPromotion(input),
     revalidate: async (slug, promoted) => {

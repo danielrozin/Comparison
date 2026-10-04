@@ -36,6 +36,7 @@ import { MICROSOFT_WORD_VS_LIBREOFFICE } from "./microsoft-word-vs-libreoffice";
 import { COINBASE_VS_BINANCE } from "./coinbase-vs-binance";
 import { VENMO_VS_ZELLE } from "./venmo-vs-zelle";
 import { KINDLE_VS_KOBO } from "./kindle-vs-kobo";
+import { MACBOOK_AIR_VS_IPAD_AIR } from "./macbook-air-vs-ipad-air";
 import { GALAXY_S25_VS_GALAXY_S25_FE } from "./galaxy-s25-vs-galaxy-s25-fe";
 import type { EditorialComparison } from "./types";
 
@@ -90,6 +91,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [COINBASE_VS_BINANCE.slug]: COINBASE_VS_BINANCE,
   [VENMO_VS_ZELLE.slug]: VENMO_VS_ZELLE,
   [KINDLE_VS_KOBO.slug]: KINDLE_VS_KOBO,
+  [MACBOOK_AIR_VS_IPAD_AIR.slug]: MACBOOK_AIR_VS_IPAD_AIR,
   [GALAXY_S25_VS_GALAXY_S25_FE.slug]: GALAXY_S25_VS_GALAXY_S25_FE,
 };
 
