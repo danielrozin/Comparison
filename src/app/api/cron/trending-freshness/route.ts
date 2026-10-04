@@ -14,16 +14,31 @@ export const maxDuration = 60;
  * assistant citations, and AI Overview answer boxes. Stale "2025" references
  * undermine trust signals and reduce click-through on SERPs (DAN-1619 priority 6).
  *
- * Only rewrites shortAnswer — does not touch attributes, FAQs, or verdict,
- * so it's safe to run daily alongside the full content-refresh cron.
+ * Only rewrites shortAnswer — does not touch attributes, FAQs, or verdict.
+ * The write sets shortAnswer and updatedAt.
  *
- * Schedule in vercel.json:
+ * Not scheduled. The vercel.json cron was removed, so this route is not
+ * called on a timer. A request returns before any database or model call
+ * unless CRON_TRENDING_FRESHNESS_ENABLED is exactly "true" (case-insensitive).
+ * Any other value, including unset, is off. To run it again, set that flag
+ * and restore:
  *   { "path": "/api/cron/trending-freshness", "schedule": "0 12 * * *" }
  */
+function isTrendingFreshnessEnabled(): boolean {
+  return (process.env.CRON_TRENDING_FRESHNESS_ENABLED ?? "").toLowerCase() === "true";
+}
+
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
   if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!isTrendingFreshnessEnabled()) {
+    return NextResponse.json({
+      status: "disabled",
+      reason: "CRON_TRENDING_FRESHNESS_ENABLED is not true",
+    });
   }
 
   const { getPrisma } = await import("@/lib/db/prisma");
