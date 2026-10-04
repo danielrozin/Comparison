@@ -235,7 +235,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
         },
       ],
       // hasPart — formal ReviewPage→FAQPage edge so AI crawlers attribute FAQ answers to this page.
-      hasPart: { "@type": "FAQPage", "@id": `${SITE_URL}/reviews/${slug}#faq` },
+      hasPart: { "@id": `${SITE_URL}/reviews/${slug}#faq` },
       // timeRequired — estimated reading time for a review page (aggregated reviews + ratings).
       timeRequired: "PT3M",
       // wordCount — proxy for content depth; review aggregation pages scale with review count.

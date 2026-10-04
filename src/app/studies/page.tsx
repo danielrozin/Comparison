@@ -176,7 +176,7 @@ export default async function StudiesIndexPage() {
     potentialAction: { "@type": "ReadAction", target: STUDIES_URL },
     hasPart: [
       ...STUDIES.map((s) => ({ "@type": "Article", name: s.title, url: `${STUDIES_URL}/${s.slug}`, description: s.blurb })),
-      { "@type": "FAQPage", "@id": `${STUDIES_URL}#faq` },
+      { "@id": `${STUDIES_URL}#faq` },
     ],
     timeRequired: "PT2M",
     wordCount: 400,

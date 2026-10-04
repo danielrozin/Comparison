@@ -3,7 +3,7 @@
  *  - noindex entity pages are not linked from the hero, Explore More, or JSON-LD
  *  - a dropped /entity URL does not leave a ProfilePage with no @id and no url
  *  - indexable entity pages keep those links
- *  - an editorial compare emits exactly one ClaimReview
+ *  - an editorial compare emits no ClaimReview
  *  - a compare page emits exactly one FAQPage
  */
 import { beforeAll, describe, expect, it } from "vitest";
@@ -13,8 +13,10 @@ import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { IPHONE_16E_VS_IPHONE_17E } from "@/lib/data/editorial-compares/iphone-16e-vs-iphone-17e";
 import { BRAVE_VS_CHROME } from "@/lib/data/editorial-compares/brave-vs-chrome";
+import { applyEditorialAeoOverlay } from "@/lib/data/editorial-aeo-overlays";
 import { assembleCompareJsonLd, stripNoindexEntityPageUrls } from "@/lib/seo/compare-jsonld";
 import { entityPageRobotsStatus, isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
+import { getMockComparison } from "@/lib/services/mock-data";
 
 beforeAll(() => {
   const view = window as Window & {
@@ -198,7 +200,7 @@ describe("compare template entity links", () => {
     expect(types).toContain("FAQPage");
     expect(types).toContain("BreadcrumbList");
     expect(types).toContain("Product");
-    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
   });
 
   it("keeps the indexable entity link and drops only the noindex sibling", () => {
@@ -385,33 +387,10 @@ describe("compare template entity links", () => {
 });
 
 describe("editorial compare ClaimReview", () => {
-  it("renders exactly one ClaimReview and keeps the other schema types", () => {
-    const { types, documents } = renderCompareSurface(IPHONE_16E_VS_IPHONE_17E);
-    const reviews = documents.flatMap((doc) => {
-      const found: Record<string, unknown>[] = [];
-      const walk = (node: unknown) => {
-        if (Array.isArray(node)) {
-          node.forEach(walk);
-          return;
-        }
-        if (!node || typeof node !== "object") return;
-        const record = node as Record<string, unknown>;
-        if (record["@type"] === "ClaimReview") {
-          found.push(record);
-          return;
-        }
-        Object.values(record).forEach(walk);
-      };
-      walk(doc);
-      return found;
-    });
+  it("renders no ClaimReview and keeps the other schema types", () => {
+    const { types } = renderCompareSurface(IPHONE_16E_VS_IPHONE_17E);
 
-    expect(reviews).toHaveLength(1);
-    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
-    // The @graph node is the complete one (publisher + #claimreview).
-    // The standalone script used #claim-review and had no publisher.
-    expect(reviews[0]["@id"]).toMatch(/#claimreview$/);
-    expect(reviews[0].publisher).toBeTruthy();
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
     expect(types).toContain("FAQPage");
     expect(types).toContain("BreadcrumbList");
     expect(types).toContain("Product");
@@ -450,7 +429,7 @@ describe("compare FAQPage", () => {
     expect(new Set(names.map((name) => name.trim().toLowerCase())).size).toBe(names.length);
   });
 
-  it("merges questions from two FAQPage nodes and keeps the first answer", () => {
+  it("keeps only the FAQ questions that are visible on the page", () => {
     const page = comparison("published");
     const url = "https://www.aversusb.net/compare/alpha-widget-vs-beta-widget";
     page.schemaMarkup = {
@@ -497,12 +476,62 @@ describe("compare FAQPage", () => {
 
     expect(faqs).toHaveLength(1);
     expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
-    expect(questionNames(faqs[0])).toEqual([
-      "Which widget?",
-      "Where is it made?",
-      "Does it fold?",
-    ]);
-    expect((questions[0].acceptedAnswer as Record<string, unknown>).text).toBe("Alpha.");
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
+    expect(questionNames(faqs[0])).toEqual(["Which widget?"]);
+    expect((questions[0].acceptedAnswer as Record<string, unknown>).text).toBe(
+      "Alpha Widget for most people.",
+    );
+    expect(JSON.stringify(documents)).not.toContain("Where is it made?");
+    expect(JSON.stringify(documents)).not.toContain("Does it fold?");
     expect(JSON.stringify(documents).match(/"@type":"FAQPage"/g)).toHaveLength(1);
+  });
+});
+
+describe("compare JSON-LD fact-check and FAQ limits", () => {
+  function assertSingleVisibleFaq(page: ComparisonPageData) {
+    const { documents, types } = renderCompareSurface(page);
+    const faqCount = types.filter((type) => type === "FAQPage").length;
+    const faqs = faqPages(documents);
+
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
+    expect(faqCount === 0 || faqCount === 1).toBe(true);
+    expect(faqs).toHaveLength(faqCount);
+
+    if (faqs.length !== 1) return;
+
+    const questions = (faqs[0].mainEntity as Record<string, unknown>[]) ?? [];
+    expect(questions.map((question) => question.name)).toEqual(page.faqs.map((faq) => faq.question));
+    expect(
+      questions.map((question) => (question.acceptedAnswer as Record<string, unknown>).text),
+    ).toEqual(page.faqs.map((faq) => faq.answer));
+  }
+
+  it("renders an editorial module page with no ClaimReview and one visible FAQPage", () => {
+    expect(BRAVE_VS_CHROME.faqs.length).toBeGreaterThan(0);
+    assertSingleVisibleFaq(BRAVE_VS_CHROME);
+  });
+
+  it("renders a DB compare (chrome-vs-firefox) with no ClaimReview and one visible FAQPage", () => {
+    const page = getMockComparison("chrome-vs-firefox");
+    expect(page).not.toBeNull();
+    assertSingleVisibleFaq(page!);
+  });
+
+  it("renders a DB compare (messi-vs-ronaldo) with no ClaimReview and one visible FAQPage", () => {
+    const mock = getMockComparison("messi-vs-ronaldo");
+    expect(mock).not.toBeNull();
+    const page = applyEditorialAeoOverlay(mock!);
+    expect(page.faqs.length).toBeGreaterThan(0);
+    assertSingleVisibleFaq(page);
+
+    const { documents } = renderCompareSurface(page);
+    const article = documents
+      .flatMap((doc) => collectNodes(doc, (record) => record["@type"] === "Article"))
+      .find((node) => typeof node.datePublished === "string" || typeof node.dateModified === "string");
+    expect(article).toBeTruthy();
+    if (article?.datePublished) expect(article.datePublished).toBe(page.metadata.publishedAt);
+    if (article?.dateModified) expect(article.dateModified).toBe(page.metadata.updatedAt);
+    const author = article?.author as Record<string, unknown> | undefined;
+    expect(author?.["@type"]).toBe("Organization");
   });
 });

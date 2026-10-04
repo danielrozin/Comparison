@@ -287,7 +287,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     // FAQPage hasPart reference — AI crawlers follow this edge to the typed FAQPage schema node.
     hasPart: [
       { "@type": "ItemList", "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`, name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` },
-      { "@type": "FAQPage", "@id": `${subcatUrl}#faq`, name: `${subcat.name} FAQ`, url: subcatUrl },
+      { "@id": `${subcatUrl}#faq`, name: `${subcat.name} FAQ`, url: subcatUrl },
     ],
   };
   // Dataset node — parity with parent category pages (HB347).

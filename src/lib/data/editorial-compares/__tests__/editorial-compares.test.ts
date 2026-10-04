@@ -1389,7 +1389,7 @@ describe("ROO-138 iPhone 17 Pro vs iPhone 18 Pro", () => {
     expect(pageText(page())).not.toMatch(/Geekbench|AnTuTu|DXO/i);
     const types = schemaNodes(page()).map((node) => node["@type"]).filter(Boolean);
     expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
-    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
     for (const schemaType of ["Article", "FAQPage", "BreadcrumbList"]) {
       expect(types).toContain(schemaType);
     }
@@ -1480,7 +1480,7 @@ describe("NBA 2026-27 new compares", () => {
       expect(findSelfContradictions(page)).toEqual([]);
       const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
       expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
-      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
       expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(slug);
       expect(getConsolidatedCompareSlug(slug)).toBeNull();
     }
@@ -1629,7 +1629,7 @@ describe("NBA batch 2: Spurs vs Thunder, Knicks vs Spurs, Flagg vs Wembanyama", 
       expect(text).not.toMatch(/\/entity\/(cooper-flagg|victor-wembanyama|dallas-mavericks)/);
       const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
       expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
-      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
     }
   });
 
@@ -1728,7 +1728,7 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
     );
     const types = schemaNodes(page()).map((node) => node["@type"]).filter(Boolean);
     expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
-    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
     for (const schemaType of ["Article", "FAQPage", "BreadcrumbList"]) {
       expect(types).toContain(schemaType);
     }
@@ -1848,7 +1848,7 @@ describe("NBA batch 3 compares", () => {
       expect(findSelfContradictions(page)).toEqual([]);
       const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
       expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
-      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
       expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(slug);
       expect(getConsolidatedCompareSlug(slug)).toBeNull();
     }
@@ -1931,7 +1931,7 @@ describe("NBA batch 4 compares", () => {
       expect(findSelfContradictions(page)).toEqual([]);
       const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
       expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
-      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
       expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(slug);
       expect(getConsolidatedCompareSlug(slug)).toBeNull();
     }
@@ -2009,7 +2009,7 @@ describe("NBA batch 5: Embiid vs Jokic, Kobe vs Curry", () => {
       expect(text).not.toMatch(/will win|predicted winner|odds/i);
       const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
       expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
-      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+      expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
     }
   });
 

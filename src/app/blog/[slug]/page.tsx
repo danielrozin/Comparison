@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs, blogClaimReviewSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
 import { resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares";
@@ -736,7 +736,7 @@ export default async function BlogPostPage({
     graph.push(faqSchema(extras.faqs, `${articleUrl}#faq`));
     // Merge FAQPage into hasPart — if HowTo was already set, emit an array.
     const existingPart = (articleSchema as Record<string, unknown>).hasPart;
-    const faqPart = { "@type": "FAQPage", "@id": `${articleUrl}#faq` };
+    const faqPart = { "@id": `${articleUrl}#faq` };
     (articleSchema as Record<string, unknown>).hasPart = existingPart
       ? [existingPart, faqPart]
       : faqPart;
@@ -754,27 +754,6 @@ export default async function BlogPostPage({
         item: { "@type": "WebPage", "@id": `${articleUrl}#${it.anchor}`, name: it.name, url: `${articleUrl}#${it.anchor}` },
       })),
     });
-  }
-
-  // ClaimReview — for "X vs Y" blog articles; adds Google Fact Check eligibility and
-  // AI fact-checking E-E-A-T signal. Parse entities from title: "X vs Y ..." pattern.
-  const vsMatch = article.title.match(/^(.+?)\s+vs\.?\s+(.+?)(?:\s*[:|—]|$)/i);
-  if (vsMatch) {
-    const [, blogEntityA, blogEntityB] = vsMatch;
-    graph.push(blogClaimReviewSchema({
-      articleUrl,
-      entityA: blogEntityA.trim(),
-      entityB: blogEntityB.trim(),
-      shortAnswer: article.excerpt ?? undefined,
-      datePublished: article.publishedAt ? new Date(article.publishedAt).toISOString().slice(0, 10) : undefined,
-      dateModified: article.updatedAt ? new Date(article.updatedAt).toISOString().slice(0, 10) : undefined,
-    }));
-    // hasPart — formal Article→ClaimReview graph edge.
-    const existingPart = (articleSchema as Record<string, unknown>).hasPart;
-    const claimPart = { "@type": "ClaimReview", "@id": `${articleUrl}#claim-review` };
-    (articleSchema as Record<string, unknown>).hasPart = existingPart
-      ? Array.isArray(existingPart) ? [...existingPart, claimPart] : [existingPart, claimPart]
-      : claimPart;
   }
 
   // WebPage node — @id uses #webpage anchor for explicit cross-document merging;

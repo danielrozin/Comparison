@@ -263,7 +263,7 @@ export default async function EntityPage({ params }: PageProps) {
       // hasPart — formal ProfilePage→FAQPage edge. Google and AI answer engines
       // use hasPart to discover which structured FAQ content belongs to this profile,
       // enabling FAQ rich results for "[entity] questions" queries.
-      ...(hasCuratedFaqs && { hasPart: [{ "@type": "FAQPage", "@id": faqNodeId }] }),
+      ...(hasCuratedFaqs && { hasPart: [{ "@id": faqNodeId }] }),
       // subjectOf — entity → DataCatalog edge. AI knowledge graph crawlers follow
       // subjectOf from entity ProfilePages to the site's DataCatalog, establishing
       // that this entity profile is part of a larger structured comparison dataset.

@@ -310,7 +310,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       })),
       // FAQPage hasPart reference — AI crawlers follow this edge to the typed FAQPage
       // schema node, resolving structured Q&A without re-parsing the full CollectionPage.
-      { "@type": "FAQPage", "@id": `${categoryUrl}#faq`, name: `${category.name} FAQ`, url: categoryUrl },
+      { "@id": `${categoryUrl}#faq`, name: `${category.name} FAQ`, url: categoryUrl },
     ],
     timeRequired: "PT2M",
     wordCount: 400,

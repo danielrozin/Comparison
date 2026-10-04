@@ -68,7 +68,7 @@ const webPageSchema = {
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-  hasPart: [{ "@type": "FAQPage", "@id": `${PAGE_URL}#faq` }],
+  hasPart: [{ "@id": `${PAGE_URL}#faq` }],
 };
 
 const privacyFaqSchema = {

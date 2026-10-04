@@ -207,7 +207,7 @@ describe("editorial compare ignores a legacy published DB row", () => {
     const documents = [assembled.document, assembled.claimReview].filter(Boolean);
     const types = documents.flatMap((doc) => collectTypes(doc));
     expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
-    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(1);
+    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
     expect(JSON.stringify(documents)).not.toContain("Google Chrome leads");
     expect(JSON.stringify(documents)).not.toContain("Privacy Rating");
   });

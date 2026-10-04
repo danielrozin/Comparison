@@ -186,7 +186,7 @@ const profilePageSchema = {
   mainEntity: { "@type": "Person", "@id": `${PAGE_URL}#person` },
   timeRequired: "PT3M",
   wordCount: 600,
-  hasPart: [{ "@type": "FAQPage", "@id": `${PAGE_URL}#faq` }],
+  hasPart: [{ "@id": `${PAGE_URL}#faq` }],
 };
 
 const authorFaqSchema = {

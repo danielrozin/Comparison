@@ -70,7 +70,7 @@ function searchPageSchema(generationEnabled: boolean) {
         { "@type": "ReadAction", target: SEARCH_PAGE_URL },
         { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SEARCH_PAGE_URL}?q={search_term_string}` }, "query-input": "required name=search_term_string" },
       ],
-      hasPart: [{ "@type": "FAQPage", "@id": `${SEARCH_PAGE_URL}#faq` }],
+      hasPart: [{ "@id": `${SEARCH_PAGE_URL}#faq` }],
     },
     {
       "@type": "BreadcrumbList",

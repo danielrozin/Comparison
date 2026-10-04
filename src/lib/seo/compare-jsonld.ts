@@ -2,7 +2,6 @@ import type { ComparisonPageData } from "@/types";
 import { SITE_URL } from "@/lib/utils/constants";
 import { isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
 import {
-  claimReviewSchema,
   comparisonPageSchema,
   jsonLdGraph,
   webPageSchema,
@@ -14,11 +13,10 @@ export interface AssembledCompareJsonLd {
   /** Single JSON-LD document the compare template puts in the first script tag. */
   document: Record<string, unknown>;
   /**
-   * Standalone ClaimReview script. Null when the main document already
-   * carries the ClaimReview (the usual editorial case) or when that node
-   * is at least as complete as `claimReviewSchema`.
+   * Always null. Compare pages do not emit ClaimReview: the site is not a
+   * fact-checker, and the old node invented a claim nobody made.
    */
-  claimReview: Record<string, unknown> | null;
+  claimReview: null;
 }
 
 /**
@@ -135,21 +133,6 @@ function isClaimReviewType(type: unknown): boolean {
   return Array.isArray(type) && type.includes("ClaimReview");
 }
 
-function collectClaimReviews(node: unknown, found: Record<string, unknown>[] = []): Record<string, unknown>[] {
-  if (Array.isArray(node)) {
-    for (const item of node) collectClaimReviews(item, found);
-    return found;
-  }
-  if (!node || typeof node !== "object") return found;
-  const obj = node as Record<string, unknown>;
-  if (isClaimReviewType(obj["@type"])) {
-    found.push(obj);
-    return found;
-  }
-  for (const child of Object.values(obj)) collectClaimReviews(child, found);
-  return found;
-}
-
 /** How many populated fields a node carries. `@context` is boilerplate. */
 function schemaCompleteness(node: unknown): number {
   if (node == null || node === "") return 0;
@@ -181,34 +164,6 @@ function stripClaimReviewNodes(value: unknown): unknown {
     if (stripped !== undefined) next[key] = stripped;
   }
   return next;
-}
-
-/**
- * One ClaimReview per page. The @graph node from `comparisonPageSchema`
- * (publisher, itemReviewed.datePublished, appearance, firstAppearance) is
- * more complete than the standalone `claimReviewSchema` script. When the
- * standalone node is richer — a thin editorial `schemaMarkup` blob — keep
- * that one and remove the thinner node so FAQPage, Product, BreadcrumbList,
- * and the rest of the graph stay.
- */
-function singleClaimReview(
-  document: Record<string, unknown>,
-  standalone: Record<string, unknown> | null,
-): AssembledCompareJsonLd {
-  if (!standalone) return { document, claimReview: null };
-
-  const inDocument = collectClaimReviews(document);
-  if (inDocument.length === 0) return { document, claimReview: standalone };
-
-  const documentScore = Math.max(...inDocument.map((node) => schemaCompleteness(node)));
-  const standaloneScore = schemaCompleteness(standalone);
-  if (standaloneScore > documentScore) {
-    return {
-      document: stripClaimReviewNodes(document) as Record<string, unknown>,
-      claimReview: standalone,
-    };
-  }
-  return { document, claimReview: null };
 }
 
 function isFaqPageType(type: unknown): boolean {
@@ -326,10 +281,9 @@ function rewriteFaqTree(
 }
 
 /**
- * One FAQPage per compare document. The Article hasPart stub and the full
- * FAQPage node (and a second full node inside editorial schemaMarkup) share
- * `#faq`. Questions from every source are merged, and a repeated question
- * keeps the first answer.
+ * One FAQPage per compare document. Extra FAQPage nodes (an Article hasPart
+ * stub, or a second node stored in schemaMarkup) collapse onto the fullest
+ * node. Question text is aligned to the visible FAQ list afterwards.
  */
 export function dedupeFaqPages<T>(document: T): T {
   if (!document || typeof document !== "object") return document;
@@ -348,11 +302,163 @@ export function dedupeFaqPages<T>(document: T): T {
   return rewriteFaqTree(document, keeper, keeper["@id"], mergedQuestions) as T;
 }
 
+function answerText(question: Record<string, unknown>): string {
+  const answer = question.acceptedAnswer;
+  if (!answer || typeof answer !== "object" || Array.isArray(answer)) return "";
+  const text = (answer as Record<string, unknown>).text;
+  return typeof text === "string" ? text : "";
+}
+
+function questionName(question: Record<string, unknown>): string {
+  if (typeof question.name === "string") return question.name;
+  if (typeof question.text === "string") return question.text;
+  return "";
+}
+
+function visibleFaqsMatch(
+  node: Record<string, unknown>,
+  faqs: ComparisonPageData["faqs"],
+): boolean {
+  const questions = questionsOf(node);
+  if (questions.length !== faqs.length) return false;
+  return faqs.every((faq, index) => {
+    const question = questions[index];
+    if (questionName(question) !== faq.question) return false;
+    if (typeof question.text === "string" && question.text !== faq.question) return false;
+    return answerText(question) === faq.answer;
+  });
+}
+
+function alignedQuestions(
+  faqs: ComparisonPageData["faqs"],
+  keeper: Record<string, unknown> | undefined,
+  comparison: ComparisonPageData,
+): Record<string, unknown>[] {
+  const existing = keeper ? questionsOf(keeper) : [];
+  const faqId =
+    keeper && typeof keeper["@id"] === "string"
+      ? keeper["@id"]
+      : `${SITE_URL}/compare/${comparison.slug}#faq`;
+  const base = faqId.endsWith("#faq") ? faqId.slice(0, -"#faq".length) : "";
+  const published = comparison.metadata.publishedAt ?? undefined;
+  const modified = comparison.metadata.updatedAt ?? published;
+
+  return faqs.map((faq, index) => {
+    const template = existing[index] ?? existing[existing.length - 1];
+    const n = index + 1;
+    if (template) {
+      const answer = template.acceptedAnswer;
+      const answerObj =
+        answer && typeof answer === "object" && !Array.isArray(answer)
+          ? { ...(answer as Record<string, unknown>) }
+          : { "@type": "Answer" };
+      return {
+        ...template,
+        "@type": "Question",
+        name: faq.question,
+        text: faq.question,
+        ...(base ? { "@id": `${base}#q${n}`, url: `${base}#q${n}` } : {}),
+        acceptedAnswer: {
+          ...answerObj,
+          "@type": "Answer",
+          text: faq.answer,
+          ...(base ? { "@id": `${base}#a${n}` } : {}),
+        },
+      };
+    }
+    return {
+      "@type": "Question",
+      name: faq.question,
+      text: faq.question,
+      ...(base ? { "@id": `${base}#q${n}`, url: `${base}#q${n}` } : {}),
+      ...(published ? { dateCreated: published } : {}),
+      ...(modified ? { dateModified: modified } : {}),
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+        ...(base ? { "@id": `${base}#a${n}` } : {}),
+        ...(published ? { dateCreated: published } : {}),
+        ...(modified ? { dateModified: modified } : {}),
+      },
+    };
+  });
+}
+
+function appendFaqPage(
+  document: Record<string, unknown>,
+  comparison: ComparisonPageData,
+  questions: Record<string, unknown>[],
+): Record<string, unknown> {
+  const url = `${SITE_URL}/compare/${comparison.slug}`;
+  const faqNode: Record<string, unknown> = {
+    "@type": "FAQPage",
+    "@id": `${url}#faq`,
+    mainEntity: questions,
+  };
+  if (Array.isArray(document["@graph"])) {
+    return { ...document, "@graph": [...(document["@graph"] as unknown[]), faqNode] };
+  }
+  const { "@context": context, ...rest } = document;
+  return {
+    "@context": context ?? "https://schema.org",
+    "@graph": [rest, faqNode],
+  };
+}
+
+/**
+ * Keep at most one FAQPage, and make its questions the ones rendered on
+ * the page. A node that already matches is left alone so its dates stay.
+ * Stored schemaMarkup questions that are not on the page are dropped.
+ */
+function alignFaqToVisibleFaqs(
+  document: Record<string, unknown>,
+  comparison: ComparisonPageData,
+): Record<string, unknown> {
+  const faqs = comparison.faqs ?? [];
+  const nodes: Record<string, unknown>[] = [];
+  collectFaqPages(document, nodes);
+
+  if (faqs.length === 0) {
+    if (nodes.length === 0) return document;
+    const stripped = stripFaqPageNodes(document);
+    return stripped && typeof stripped === "object" && !Array.isArray(stripped)
+      ? (stripped as Record<string, unknown>)
+      : document;
+  }
+
+  if (nodes.length === 1 && visibleFaqsMatch(nodes[0], faqs)) return document;
+
+  const keeper = [...nodes].sort((a, b) => schemaCompleteness(b) - schemaCompleteness(a))[0];
+  const questions = alignedQuestions(faqs, keeper, comparison);
+  if (!keeper) return appendFaqPage(document, comparison, questions);
+
+  const rewritten = rewriteFaqTree(document, keeper, keeper["@id"], questions);
+  return rewritten && typeof rewritten === "object" && !Array.isArray(rewritten)
+    ? (rewritten as Record<string, unknown>)
+    : document;
+}
+
+function stripFaqPageNodes(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => stripFaqPageNodes(item))
+      .filter((item) => item !== undefined);
+  }
+  if (!value || typeof value !== "object") return value;
+  if (isFaqPageNode(value)) return undefined;
+  const next: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    const stripped = stripFaqPageNodes(child);
+    if (stripped !== undefined) next[key] = stripped;
+  }
+  return next;
+}
+
 /**
  * JSON-LD for `/compare/[slug]`. Mirrors the previous getStaticProps
  * branches (editorial schemaMarkup, multi-entity @graph, 2-entity graph)
- * then applies the entity-page indexability gate, FAQPage dedupe, and
- * ClaimReview dedupe.
+ * then applies the entity-page indexability gate and a single visible FAQPage.
+ * ClaimReview is never emitted.
  */
 export function assembleCompareJsonLd(args: {
   comparison: ComparisonPageData;
@@ -404,33 +510,15 @@ export function assembleCompareJsonLd(args: {
   }
 
   document = stripNoindexEntityPageUrls(document, comparison.entities);
+  const withoutClaims = stripClaimReviewNodes(document);
+  if (withoutClaims && typeof withoutClaims === "object" && !Array.isArray(withoutClaims)) {
+    document = withoutClaims as Record<string, unknown>;
+  }
   document = dedupeFaqPages(document);
+  document = alignFaqToVisibleFaqs(document, comparison);
 
-  const entityA = comparison.entities[0]?.name || "";
-  const entityB = comparison.entities[1]?.name || "";
-  const standalone =
-    !isMultiEntity && comparison.verdict && entityA && entityB && comparison.shortAnswer
-      ? (claimReviewSchema({
-          slug,
-          title: comparison.title,
-          entityA,
-          entityB,
-          verdict: comparison.verdict,
-          shortAnswer: comparison.shortAnswer,
-          datePublished: comparison.metadata.publishedAt
-            ? new Date(comparison.metadata.publishedAt).toISOString().slice(0, 10)
-            : undefined,
-          dateModified: comparison.metadata.updatedAt
-            ? new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10)
-            : undefined,
-        }) as Record<string, unknown>)
-      : null;
-
-  const assembled = singleClaimReview(document, standalone);
   return {
-    document: labelUnreviewedCompareJsonLd(assembled.document, slug),
-    claimReview: assembled.claimReview
-      ? labelUnreviewedCompareJsonLd(assembled.claimReview, slug)
-      : null,
+    document: labelUnreviewedCompareJsonLd(document, slug),
+    claimReview: null,
   };
 }

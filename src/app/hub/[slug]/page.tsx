@@ -259,7 +259,7 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     // AI crawlers follow hasPart edges to resolve sub-schemas without re-crawling the full page.
     hasPart: [
       { "@type": "ItemList", "@id": `${hubUrl}#comparisons`, name: `${hub.h1} Comparisons`, url: hubUrl },
-      ...(hub.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${hubUrl}#faq` }] : []),
+      ...(hub.faqs.length > 0 ? [{ "@id": `${hubUrl}#faq` }] : []),
       { "@type": "DefinedTermSet", "@id": `${hubUrl}#terms`, name: `${hub.h1} Key Terms` },
     ],
   };

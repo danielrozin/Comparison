@@ -7,8 +7,7 @@
  *  - DAN-1479 (HB118-120): item node @id switched from `{url}#item-x` to the
  *    canonical `/entity/{slug}` URL so item nodes merge with the entity
  *    ProfilePage node across the knowledge graph.
- *  - HB178: a standalone ClaimReview node now emits in the @graph for
- *    schema.org fact-check parity with the 2-entity schema.
+ *  - ClaimReview is not emitted. The site is not a fact-checking organization.
  */
 import { describe, it, expect } from "vitest";
 import { comparisonPageSchema, type ComparisonVoteData } from "../schema";
@@ -88,10 +87,9 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     expect(Array.isArray(doc["@graph"])).toBe(true);
   });
 
-  it("emits an 8-node @graph (Article + ItemList + 3 items + BreadcrumbList + ClaimReview + WebPage) when no FAQs", () => {
+  it("emits a 7-node @graph (Article + ItemList + 3 items + BreadcrumbList + WebPage) when no FAQs", () => {
     const doc = comparisonPageSchema(cmp)[0] as { "@graph": Array<{ "@type": string }> };
     const types = doc["@graph"].map((n) => n["@type"]);
-    // ClaimReview added for schema.org fact-check parity with the 2-entity schema (HB178).
     // WebPage node added for bidirectional Article↔WebPage graph edge (HB325+).
     expect(types).toEqual([
       "Article",
@@ -100,12 +98,12 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
       "SoftwareApplication",
       "SoftwareApplication",
       "BreadcrumbList",
-      "ClaimReview",
       "WebPage",
     ]);
+    expect(types).not.toContain("ClaimReview");
   });
 
-  it("emits a 9-node @graph including FAQPage, ClaimReview and WebPage when faqs are present", () => {
+  it("emits an 8-node @graph including FAQPage and WebPage when faqs are present", () => {
     const withFaqs: ComparisonPageData = {
       ...cmp,
       faqs: [{ question: "Q?", answer: "A." }],
@@ -113,9 +111,10 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     const doc = comparisonPageSchema(withFaqs)[0] as { "@graph": Array<{ "@type": string }> };
     const types = doc["@graph"].map((n) => n["@type"]);
     expect(types).toContain("FAQPage");
-    expect(types).toContain("ClaimReview");
+    expect(types).not.toContain("ClaimReview");
     expect(types).toContain("WebPage");
-    expect(types).toHaveLength(9);
+    expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
+    expect(types).toHaveLength(8);
   });
 
   it("Article.mainEntity references the ItemList @id (#comparison)", () => {
@@ -220,7 +219,7 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     expect(byType.BreadcrumbList).toBe(`${pageUrl}#breadcrumbs`);
     expect(byType.FAQPage).toBe(`${pageUrl}#faq`);
     expect(byType.ItemList).toBe(`${pageUrl}#comparison`);
-    expect(byType.ClaimReview).toBe(`${pageUrl}#claimreview`);
+    expect(byType.ClaimReview).toBeUndefined();
     // No node may be missing its @id, and all must share the canonical host.
     // Item (SoftwareApplication) nodes intentionally use their /entity/{slug} @id
     // (DAN-1479 entity-graph merge); every other node anchors to the /compare/ page.
