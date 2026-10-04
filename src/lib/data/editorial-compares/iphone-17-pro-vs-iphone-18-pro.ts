@@ -7,7 +7,7 @@ import type { EditorialComparison } from "./types";
  * Apple Support's iPhone 17 Pro tech specs, Apple's newsroom post, and the
  * Apple Store buy page. No page-level winner. No benchmark scores.
  * /entity/iphone-17-pro was index, follow. /entity/iphone-18-pro was
- * noindex, nofollow, so this page does not link that hub.
+ * noindex, nofollow, so that hub is not linked.
  */
 
 const PRO_17 = "iphone-17-pro";
@@ -25,7 +25,7 @@ const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 
 const SHORT_ANSWER =
-  "Choose the iPhone 18 Pro if you keep a phone for years and want Apple's newest Pro chip and battery ratings. Apple lists an A20 Pro chip, up to 36 hours of video playback, and up to 24 hours of typical use. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Apple Support lists an A19 Pro chip and up to 33 hours of video playback, and Apple Support does not include a typical-use hour. This page does not crown a winner.";
+  "Choose the iPhone 18 Pro if you keep a phone for years and want Apple's newest Pro chip and battery ratings. Apple lists an A20 Pro chip, up to 36 hours of video playback, and up to 24 hours of typical use. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Apple Support lists an A19 Pro chip and up to 33 hours of video playback, and Apple Support does not include a typical-use hour. Neither is better for everyone; it depends on whether you want the newer Pro chip or a clearly cheaper price.";
 
 const FAQS = [
   {
@@ -36,22 +36,22 @@ const FAQS = [
   {
     question: "Which has better battery life, iPhone 17 Pro or iPhone 18 Pro?",
     answer:
-      "On the hours Apple gives, the iPhone 18 Pro. Apple rates it for up to 24 hours of typical use, up to 36 hours of video playback, and up to 33 hours of streamed video playback. Apple Support rates the iPhone 17 Pro for up to 33 hours of video playback and up to 30 hours of streamed video playback, and Apple Support does not include a typical-use hour. Apple says the 18 Pro hours come from preproduction testing and that results vary. Apple Support says 17 Pro battery claims vary with the network and with use. This page does not add a lab score of its own.",
+      "On the hours Apple gives, the iPhone 18 Pro. Apple rates it for up to 24 hours of typical use, up to 36 hours of video playback, and up to 33 hours of streamed video playback. Apple Support rates the iPhone 17 Pro for up to 33 hours of video playback and up to 30 hours of streamed video playback, and Apple Support does not include a typical-use hour. Apple says the 18 Pro hours come from preproduction testing and that results vary. Apple Support says 17 Pro battery claims vary with the network and with use. No separate lab score is added.",
   },
   {
     question: "Which chip is in the iPhone 18 Pro and the iPhone 17 Pro?",
     answer:
-      "The iPhone 18 Pro uses the A20 Pro. Apple lists a 6-core CPU with 2 super cores and 4 efficiency cores, and a 7-core GPU. The iPhone 17 Pro uses the A19 Pro. Apple Support lists a 6-core CPU with 2 performance cores and 4 efficiency cores, and a 6-core GPU. This page does not cite a benchmark, so it does not turn those names into a speed ranking.",
+      "The iPhone 18 Pro uses the A20 Pro. Apple lists a 6-core CPU with 2 super cores and 4 efficiency cores, and a 7-core GPU. The iPhone 17 Pro uses the A19 Pro. Apple Support lists a 6-core CPU with 2 performance cores and 4 efficiency cores, and a 6-core GPU. No benchmark is cited, so those names are not a speed ranking.",
   },
   {
     question: "Should I upgrade from an iPhone 13 mini to the 17 Pro or the 18 Pro?",
     answer:
-      "Both of these are 6.3-inch Pro phones, so either one is a size step up from a mini. This page does not restate iPhone 13 mini specs. If you keep phones for years, the iPhone 18 Pro is the one with the newer chip and the higher battery ratings Apple gives. If the 17 Pro is the clearly cheaper phone in the offer you actually have, that price gap is the reason to take the prior Pro. A shopper in that spot, coming from a dying 13 mini, posted AT&T monthly quotes on r/AppleWhatShouldIBuy. Treat those quotes as one example, and check the offer you are given.",
+      "Both of these are 6.3-inch Pro phones, so either one is a size step up from a mini. iPhone 13 mini specs are not restated. If you keep phones for years, the iPhone 18 Pro is the one with the newer chip and the higher battery ratings Apple gives. If the 17 Pro is the clearly cheaper phone in the offer you actually have, that price gap is the reason to take the prior Pro. A shopper in that spot, coming from a dying 13 mini, posted AT&T monthly quotes on r/AppleWhatShouldIBuy. Treat those quotes as one example, and check the offer you are given.",
   },
   {
     question: "Should I get a Pro Max instead of the iPhone 17 Pro or 18 Pro?",
     answer:
-      "That is a separate comparison. iPhone 17 Pro Max and iPhone 18 Pro Max specs are not part of this comparison. A separate comparison covers iPhone 17 Pro versus iPhone 17 Pro Max if the question is the larger 17 Pro body.",
+      "That is a separate comparison. iPhone 17 Pro Max and iPhone 18 Pro Max specs are not included. A separate comparison covers iPhone 17 Pro versus iPhone 17 Pro Max if the question is the larger 17 Pro body.",
   },
   {
     question: "How does a trade-in change the iPhone 17 Pro versus 18 Pro price?",
@@ -64,15 +64,13 @@ const VERDICT = `Best if you keep a phone for years and want the newest Pro chip
 
 Best if the offer in front of you is clearly cheaper: iPhone 17 Pro. A19 Pro and up to 33 hours of video playback. Apple Support does not include a typical-use hour.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you want the newer Pro chip or a clearly cheaper price.`;
 
-const EXPERT_ANALYSIS = `Choose the iPhone 18 Pro if you keep a phone for years and want the newest Pro chip and the higher battery ratings Apple gives. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. This page does not crown a winner.
-
-Source note: Apple lists the chip, display, weight, storage, and the iPhone 18 Pro battery hours. Apple Support lists the iPhone 17 Pro figures. The $1,199 starting price is from Apple's newsroom and from the Apple Store. The monthly AT&T figures are one shopper's quotes from a Reddit thread, not a price this page checked with a carrier.
+const EXPERT_ANALYSIS = `Choose the iPhone 18 Pro if you keep a phone for years and want the newest Pro chip and the higher battery ratings Apple gives. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Neither is better for everyone; it depends on whether you want the newer Pro chip or a clearly cheaper price.
 
 Chip
 
-The iPhone 18 Pro uses an A20 Pro chip. Apple lists a 6-core CPU with 2 super cores and 4 efficiency cores, and a 7-core GPU. The iPhone 17 Pro uses an A19 Pro chip. Apple Support lists a 6-core CPU with 2 performance cores and 4 efficiency cores, and a 6-core GPU. The names and the core counts are the difference in the figures Apple gives. This page does not cite a benchmark.
+The iPhone 18 Pro uses an A20 Pro chip. Apple lists a 6-core CPU with 2 super cores and 4 efficiency cores, and a 7-core GPU. The iPhone 17 Pro uses an A19 Pro chip. Apple Support lists a 6-core CPU with 2 performance cores and 4 efficiency cores, and a 6-core GPU. The names and the core counts are the difference in the figures Apple gives. No benchmark is cited.
 
 Battery
 
@@ -94,11 +92,11 @@ Who should buy which
 
 Choose the iPhone 18 Pro if you are the person who keeps a phone for years and you want the A20 Pro and the battery hours Apple rates higher. Apple lists the 256GB iPhone 18 Pro at $1,199 before tax and trade-in.
 
-Choose the iPhone 17 Pro if the carrier or street price you are offered is clearly lower and you can live with the A19 Pro and Apple Support's 33-hour video-playback rating. No current Apple Store price for the iPhone 17 Pro is included, so this comparison does not call the 17 Pro cheaper.
+Choose the iPhone 17 Pro if the carrier or street price you are offered is clearly lower and you can live with the A19 Pro and Apple Support's 33-hour video-playback rating. No current Apple Store price for the iPhone 17 Pro is included, so the 17 Pro is not called cheaper.
 
 Pro Max
 
-A Pro Max is a different phone. This comparison does not cover iPhone 17 Pro Max and iPhone 18 Pro Max. The iPhone 17 Pro versus iPhone 17 Pro Max comparison is the one to use if the question is the larger 17-generation body.`;
+A Pro Max is a different phone. iPhone 17 Pro Max and iPhone 18 Pro Max are not covered. The iPhone 17 Pro versus iPhone 17 Pro Max comparison is the one to use if the question is the larger 17-generation body.`;
 
 const SPEC_BOTH = "Specs · Apple";
 
@@ -250,11 +248,11 @@ export const IPHONE_17_PRO_VS_IPHONE_18_PRO: EditorialComparison = buildEditoria
     ),
     textAttr(
       "price",
-      "Apple price checked 2026-10-03",
+      "Apple price as of October 3, 2026",
       "Price · Apple Store and newsroom for the 18 Pro. No 17 Pro price was listed",
       PRO_17,
       PRO_18,
-      "No current price. The specs and buy URLs redirected",
+      "No current Apple price",
       "256GB $1,199 before tax and trade-in"
     ),
   ],

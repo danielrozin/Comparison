@@ -25,7 +25,7 @@ const FINALS_CAT = `Finals series · Basketball-Reference playoff series history
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "The Lakers franchise header lists 17 championships, 66 playoff appearances, and a 3,653-2,515 record across 79 seasons. The Celtics header lists 18 championships, 63 playoff appearances, and a 3,751-2,527 record across 81 seasons. On the Lakers head-to-head table the Lakers are 135-169 against Boston in 304 games. They have played 12 Finals, and the Celtics won 9 of them (Basketball-Reference). Stats as of October 3, 2026, this page does not quote a 2026-27 game and does not predict one.";
+  "The Lakers franchise header lists 17 championships, 66 playoff appearances, and a 3,653-2,515 record across 79 seasons. The Celtics header lists 18 championships, 63 playoff appearances, and a 3,751-2,527 record across 81 seasons. On the Lakers head-to-head table the Lakers are 135-169 against Boston in 304 games. They have played 12 Finals, and the Celtics won 9 of them (Basketball-Reference). Stats as of October 3, 2026, no 2026-27 game is quoted and none is predicted.";
 
 const FAQS = [
   {
@@ -36,7 +36,7 @@ const FAQS = [
   {
     question: "What is the Lakers' record against the Celtics?",
     answer:
-      "On the Lakers head-to-head table, the Boston row is 304 games, 135 Lakers wins, 169 losses, a .444 winning percentage, 104.4 points scored per game, and 106.7 points allowed per game. Basketball-Reference does not label that row as regular season only, so this comparison does not add that label. The other side of the same row is 169 Celtics wins and 135 losses.",
+      "On the Lakers head-to-head table, the Boston row is 304 games, 135 Lakers wins, 169 losses, a .444 winning percentage, 104.4 points scored per game, and 106.7 points allowed per game. Basketball-Reference does not label that row as regular season only, so that label is not added. The other side of the same row is 169 Celtics wins and 135 losses.",
   },
   {
     question: "How many times have they met in the Finals?",
@@ -56,7 +56,7 @@ const FAQS = [
   {
     question: "What is known for 2026-27?",
     answer:
-      "Stats as of October 3, 2026, both franchise headers include the 2026-27 season in the season span, and this page does not quote a 2026-27 Lakers-Celtics game. It does not predict the season series or a championship.",
+      "Stats as of October 3, 2026, both franchise headers include the 2026-27 season in the season span, and no 2026-27 Lakers-Celtics game is quoted. The season series and a championship are not predicted.",
   },
 ];
 
@@ -66,13 +66,11 @@ Head-to-head row: Lakers 135 wins and 169 losses in 304 games.
 
 Finals series on the playoff series table: 12 meetings. Celtics won 9. Lakers won 3. The latest is 2010, Lakers 4, Celtics 3.
 
-2026-27 season: Stats as of October 3, 2026, this page does not quote a game between them and does not pick a winner.`;
+2026-27 season: Stats as of October 3, 2026, no game between them is quoted. Neither is named the winner.`;
 
-const EXPERT_ANALYSIS = `The Celtics franchise header lists 18 championships. The Lakers header lists 17. In the 12 Finals series on Basketball-Reference's playoff series table, the Celtics won 9 and the Lakers won 3. On the Lakers head-to-head table, the Lakers are 135-169 against Boston in 304 games. This page does not predict 2026-27.
+const EXPERT_ANALYSIS = `The Celtics franchise header lists 18 championships. The Lakers header lists 17. In the 12 Finals series on Basketball-Reference's playoff series table, the Celtics won 9 and the Lakers won 3. On the Lakers head-to-head table, the Lakers are 135-169 against Boston in 304 games. There is no 2026-27 forecast.
 
-Source note: the headers are the Lakers and Celtics franchise pages. The 304-game row is the Lakers head-to-head page. The 12 Finals series are filtered from the playoff series history table to rows whose series is Finals and whose two teams are the Celtics and the Lakers, including Minneapolis in 1959. ${LAL_URL} ${BOS_URL} ${H2H} ${SERIES}
-
-2026-27 season. Stats as of ${AS_OF}. Both headers run through 2026-27. This page does not quote a 2026-27 meeting, a score, or a projection. The latest Finals row between them is 2010.
+2026-27 season. Stats as of ${AS_OF}. Both headers run through 2026-27. No 2026-27 meeting, score, or projection is quoted. The latest Finals row between them is 2010.
 
 Finals series, winner first. 2010, Los Angeles 4, Boston 3, June 3 to June 17. 2008, Boston 4, Los Angeles 2, June 5 to June 17. 1987, Los Angeles 4, Boston 2, June 2 to June 14. 1985, Los Angeles 4, Boston 2, May 27 to June 9. 1984, Boston 4, Los Angeles 3, May 27 to June 12. 1969, Boston 4, Los Angeles 3, April 23 to May 5. 1968, Boston 4, Los Angeles 2, April 21 to May 2. 1966, Boston 4, Los Angeles 3, April 17 to April 28. 1965, Boston 4, Los Angeles 1, April 18 to April 25. 1963, Boston 4, Los Angeles 2, April 14 to April 24. 1962, Boston 4, Los Angeles 3, April 7 to April 18. 1959, Boston 4, Minneapolis 0, April 4 to April 9.
 
@@ -123,7 +121,7 @@ const BUILT = buildEditorialComparison({
       ],
       cons: [
         "Lost the 2010 Finals, 3-4, the latest meeting between these franchises",
-        "No 2026-27 meeting is quoted on this page",
+        "No 2026-27 meeting is quoted",
       ],
       bestFor: "The 18 championships on the franchise header and the Finals series count",
     },
@@ -154,7 +152,7 @@ const BUILT = buildEditorialComparison({
       winner: "a",
     },
     {
-      label: "2026-27 game on this page",
+      label: "2026-27 game",
       entityAValue: "None quoted. Stats as of October 3, 2026.",
       entityBValue: "None quoted. Stats as of October 3, 2026.",
       winner: "tie",

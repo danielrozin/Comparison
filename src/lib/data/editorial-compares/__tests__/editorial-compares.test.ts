@@ -374,7 +374,7 @@ const E16_FAQS = [
   "Which should you buy if you are coming from an iPhone 8?",
 ];
 const E16_QUICK_ANSWER =
-  "Buy the iPhone 17e 256GB unless you already know you need more than 256GB. It has the A19 chip, MagSafe up to 15W, Ceramic Shield 2, and it launched a year after the 16e. Pick the iPhone 16e 512GB only if that extra storage matters more than MagSafe and the newer chip, and a live price check shows it is close to the 17e. Both have a 6.1-inch Super Retina XDR display, one 48MP Fusion camera, and up to 26 hours of video playback. Both launched at a $599 starting price. This page does not crown a winner.";
+  "Buy the iPhone 17e 256GB unless you already know you need more than 256GB. It has the A19 chip, MagSafe up to 15W, Ceramic Shield 2, and it launched a year after the 16e. Pick the iPhone 16e 512GB only if that extra storage matters more than MagSafe and the newer chip, and a live price check shows it is close to the 17e. Both have a 6.1-inch Super Retina XDR display, one 48MP Fusion camera, and up to 26 hours of video playback. Both launched at a $599 starting price. Neither is better for everyone; it depends on whether you need more than 256GB.";
 
 describe("ROO-121 iPhone 16e vs iPhone 17e", () => {
   const page = () => getEditorialComparison(E16_SLUG)!;
@@ -440,7 +440,6 @@ describe("ROO-121 iPhone 16e vs iPhone 17e", () => {
       "iphone-17-vs-iphone-17-pro-vs-iphone-16-pro",
       "iphone-16-pro-vs-iphone-16-pro-max",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("15W");
     expect(pageText(page())).toContain("7.5W");
     expect(pageText(page())).toContain("Ceramic Shield 2");
@@ -456,7 +455,7 @@ const GO_FAQS = [
   "Is the Polaroid Go Gen 2 good outdoors?",
 ];
 const GO_QUICK_ANSWER =
-  "An Instax Mini is the easier start. That means the Mini 12, or the Mini 13 if that is the camera on the shelf: cheaper film in the reviews cited here, more consistent prints, and simple one-button shooting. The Polaroid Go Gen 2 is for people who want the Polaroid look and tiny square prints, and who accept a higher cost per shot and less predictable exposure. Digital Camera World lists both camera bodies at a US$79.99 RRP and says the Go still leans toward overexposing outdoors. This page does not crown a winner.";
+  "An Instax Mini is the easier start. That means the Mini 12, or the Mini 13 if that is the camera on the shelf: cheaper film in the reviews cited here, more consistent prints, and simple one-button shooting. The Polaroid Go Gen 2 is for people who want the Polaroid look and tiny square prints, and who accept a higher cost per shot and less predictable exposure. Digital Camera World lists both camera bodies at a US$79.99 RRP and says the Go still leans toward overexposing outdoors. Neither is better for everyone; it depends on whether you want the easier Instax start or the Polaroid look.";
 
 describe("ROO-122 Polaroid Go Gen 2 vs Instax Mini", () => {
   const page = () => getEditorialComparison(GO_SLUG)!;
@@ -522,7 +521,6 @@ describe("ROO-122 Polaroid Go Gen 2 vs Instax Mini", () => {
     ]);
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
     expect(page().relatedComparisons).toEqual([]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("reviewer-cited");
     expect(pageText(page())).toContain("wallet-size");
     expect(pageText(page())).toContain("US$79.99");
@@ -538,7 +536,7 @@ const FOLD_FAQS = [
   "How long is software support on the Fold 7 and the S26 Ultra?",
 ];
 const FOLD_QUICK_ANSWER =
-  "The Galaxy S26 Ultra suits a 4-5 year keep. GSMArena lists IP68, a 5,000 mAh battery, 60W wired and 25W wireless charging, a 5x periscope, and a 7.9 mm slab. The Galaxy Z Fold 7 is the pick only if the 8.0-inch inner screen and multitasking are why you are buying, and you accept IP48, a 4,400 mAh battery, 25W wired charging, and the extra care a hinge needs. Both phones have a 200MP main camera and up to 7 major OS updates. GSMArena's active-use score is 11:44h on the Fold 7 and 16:23h on the S26 Ultra. This page does not crown a winner.";
+  "The Galaxy S26 Ultra suits a 4-5 year keep. GSMArena lists IP68, a 5,000 mAh battery, 60W wired and 25W wireless charging, a 5x periscope, and a 7.9 mm slab. The Galaxy Z Fold 7 is the pick only if the 8.0-inch inner screen and multitasking are why you are buying, and you accept IP48, a 4,400 mAh battery, 25W wired charging, and the extra care a hinge needs. Both phones have a 200MP main camera and up to 7 major OS updates. GSMArena's active-use score is 11:44h on the Fold 7 and 16:23h on the S26 Ultra. Neither is better for everyone; it depends on whether you want a 4-5 year slab or the inner foldable screen.";
 
 describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
   const page = () => getEditorialComparison(FOLD_SLUG)!;
@@ -613,7 +611,6 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
       "iphone-17-vs-samsung-s26",
       "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("IP48");
     expect(pageText(page())).toContain("IP68");
     expect(pageText(page())).toContain("11:44h");
@@ -724,7 +721,6 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
       "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
       "iphone-17-vs-iphone-air",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("₹1,19,999");
     expect(pageText(page())).toContain("₹1,39,999");
     expect(pageText(page())).toContain("₹1,54,999");
@@ -760,7 +756,7 @@ const AIR_FAQS = [
   "Which has better battery life, iPhone Air or iPhone 17?",
 ];
 const AIR_QUICK_ANSWER =
-  "Choose the iPhone 17 for the more complete everyday phone if you are coming from an iPhone 13. Apple rates it for up to 30 hours of video playback, against up to 27 hours on the iPhone Air, and it adds a 48MP ultrawide. Choose the iPhone Air only if the 5.64 mm, 165 gram titanium body is why you are upgrading. It has one 48MP rear camera. GSMArena lists 3,692 mAh for the iPhone 17 and 3,149 mAh for the iPhone Air. This page does not crown a winner.";
+  "Choose the iPhone 17 for the more complete everyday phone if you are coming from an iPhone 13. Apple rates it for up to 30 hours of video playback, against up to 27 hours on the iPhone Air, and it adds a 48MP ultrawide. Choose the iPhone Air only if the 5.64 mm, 165 gram titanium body is why you are upgrading. It has one 48MP rear camera. GSMArena lists 3,692 mAh for the iPhone 17 and 3,149 mAh for the iPhone Air. Neither is better for everyone; it depends on whether you want the more complete everyday phone or the thinner body.";
 
 describe("ROO-130 iPhone Air vs iPhone 17", () => {
   const page = () => getEditorialComparison(AIR_SLUG)!;
@@ -832,7 +828,6 @@ describe("ROO-130 iPhone Air vs iPhone 17", () => {
       "iphone-17-vs-iphone-17-pro-vs-iphone-16-pro",
       "iphone-16e-vs-iphone-17e",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("5.64 mm");
     expect(pageText(page())).toContain("7.95 mm");
     expect(pageText(page())).toContain("3,149 mAh");
@@ -855,7 +850,7 @@ const MAPS_APPLE_FAQS = [
   "Which app is more private?",
 ];
 const MAPS_APPLE_QUICK_ANSWER =
-  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple says it does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. This page does not crown a winner.";
+  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple says it does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. Neither is better for everyone.";
 
 describe("ROO-127 Google Maps vs Apple Maps", () => {
   const page = () => getEditorialComparison(MAPS_APPLE_SLUG)!;
@@ -937,7 +932,6 @@ describe("ROO-127 Google Maps vs Apple Maps", () => {
       "google-maps-vs-waze",
       "android-vs-ios",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("random identifier");
     expect(pageText(page())).toContain("iPhone, iPad, Mac, Apple Watch, HomePod, and CarPlay");
     expect(page().quickAnswer?.winnerName).toBeNull();
@@ -954,7 +948,7 @@ const MAPS_WAZE_FAQS = [
   "Which app keeps more of my location data?",
 ];
 const MAPS_WAZE_QUICK_ANSWER =
-  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. This page does not crown a winner.";
+  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. Neither is better for everyone.";
 
 describe("ROO-127 Google Maps vs Waze", () => {
   const page = () => getEditorialComparison(MAPS_WAZE_SLUG)!;
@@ -1035,7 +1029,6 @@ describe("ROO-127 Google Maps vs Waze", () => {
       "google-maps-vs-apple-maps",
       "android-vs-ios",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("180 million");
     expect(pageText(page())).toContain("does not cache reports");
     expect(pageText(page())).toContain("submits it when you reconnect");
@@ -1067,7 +1060,7 @@ const BRAVE_FAQS = [
   "Does Brave sync like Chrome?",
 ];
 const BRAVE_QUICK_ANSWER =
-  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a lab result on this page. This page does not crown a winner.";
+  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a separate lab result. Neither is better for everyone.";
 
 describe("ROO-114 Brave vs Chrome", () => {
   const page = () => getEditorialComparison(BRAVE_SLUG)!;
@@ -1148,7 +1141,6 @@ describe("ROO-114 Brave vs Chrome", () => {
       "chrome-vs-firefox",
       "firefox-vs-safari",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("It depends");
     expect(pageText(page())).toContain("Chromium");
     expect(pageText(page())).toContain("Shields");
@@ -1167,7 +1159,7 @@ const SAFARI_FAQS = [
   "Does Safari sync across iPhone, iPad, and Mac?",
 ];
 const SAFARI_QUICK_ANSWER =
-  "It depends on the devices you actually use. Pick Safari when you stay on Apple devices and want Intelligent Tracking Prevention on by default, and pick Chrome when you also need Windows, Linux, ChromeOS, or Android. Safari extensions come from the App Store, and Chrome extensions come from the Chrome Web Store on desktop. Apple says Safari is up to 5 hours longer than Chrome for streaming video. That figure is Apple's August 2026 test, labelled here as Apple's claim, not a result measured for this page. This page does not crown a winner.";
+  "It depends on the devices you actually use. Pick Safari when you stay on Apple devices and want Intelligent Tracking Prevention on by default, and pick Chrome when you also need Windows, Linux, ChromeOS, or Android. Safari extensions come from the App Store, and Chrome extensions come from the Chrome Web Store on desktop. Apple says Safari is up to 5 hours longer than Chrome for streaming video. That figure is Apple's August 2026 test, labelled as Apple's claim, not a separate lab result. Neither is better for everyone.";
 
 describe("ROO-114 Chrome vs Safari", () => {
   const page = () => getEditorialComparison(SAFARI_SLUG)!;
@@ -1250,7 +1242,6 @@ describe("ROO-114 Chrome vs Safari", () => {
       "chrome-vs-firefox",
       "firefox-vs-safari",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("It depends");
     expect(pageText(page())).toContain("WebKit");
     expect(pageText(page())).toContain("Chromium");
@@ -1270,7 +1261,7 @@ const SOLAR_FAQS = [
   "Are these simple 800 W plug-in balcony kits?",
 ];
 const SOLAR_QUICK_ANSWER =
-  "Choose the EcoFlow STREAM 5000 if you want the higher rated output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
+  "Choose the EcoFlow STREAM 5000 if you want the higher rated output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. Neither is better for everyone; it depends on whether you want the higher rated output or IP66 and Home Assistant.";
 
 describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
   const page = () => getEditorialComparison(SOLAR_SLUG)!;
@@ -1346,7 +1337,6 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
     expect(page().resources?.map((resource) => resource.url).join("\n")).not.toMatch(/\/entity\//);
     expect(page().relatedComparisons).toEqual([]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("IP66");
     expect(pageText(page())).toContain("IP65");
     expect(pageText(page())).toContain("45.4 kg");
@@ -1367,7 +1357,7 @@ const PRO_GEN_FAQS = [
   "How does a trade-in change the iPhone 17 Pro versus 18 Pro price?",
 ];
 const PRO_GEN_QUICK_ANSWER =
-  "Choose the iPhone 18 Pro if you keep a phone for years and want Apple's newest Pro chip and battery ratings. Apple lists an A20 Pro chip, up to 36 hours of video playback, and up to 24 hours of typical use. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Apple Support lists an A19 Pro chip and up to 33 hours of video playback, and Apple Support does not include a typical-use hour. This page does not crown a winner.";
+  "Choose the iPhone 18 Pro if you keep a phone for years and want Apple's newest Pro chip and battery ratings. Apple lists an A20 Pro chip, up to 36 hours of video playback, and up to 24 hours of typical use. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Apple Support lists an A19 Pro chip and up to 33 hours of video playback, and Apple Support does not include a typical-use hour. Neither is better for everyone; it depends on whether you want the newer Pro chip or a clearly cheaper price.";
 
 describe("ROO-138 iPhone 17 Pro vs iPhone 18 Pro", () => {
   const page = () => getEditorialComparison(PRO_GEN_SLUG)!;
@@ -1450,7 +1440,6 @@ describe("ROO-138 iPhone 17 Pro vs iPhone 18 Pro", () => {
       "iphone-17-pro-vs-pro-max",
       "iphone-17-vs-iphone-air",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("A20 Pro");
     expect(pageText(page())).toContain("A19 Pro");
     expect(pageText(page())).toContain("211 grams");
@@ -1483,7 +1472,6 @@ describe("NBA 2026-27 new compares", () => {
       expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
       expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
       expect(pageText(page)).toContain("Stats as of October 3, 2026");
-      expect(pageText(page)).toContain("Source note:");
       expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
       expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
       const description = clampDescription(page.metadata.metaDescription);
@@ -1565,7 +1553,7 @@ const NBA_BATCH_2 = [
       "When do the Thunder play the Spurs next?",
       "Has the 2026-27 season started for the Thunder and the Spurs?",
       "Where is the 2026 Spurs vs Thunder series documented?",
-      "Does this page predict the October 20 Spurs vs Thunder game?",
+      "Is the October 20 Spurs vs Thunder game predicted?",
     ],
   },
   {
@@ -1578,7 +1566,7 @@ const NBA_BATCH_2 = [
       "What is the Knicks vs Spurs head-to-head record?",
       "How many times have the Knicks and the Spurs met in the NBA Finals?",
       "Have the Knicks and the Spurs played in 2026-27?",
-      "Does this page predict the next Knicks vs Spurs game?",
+      "Is the next Knicks vs Spurs game predicted?",
     ],
   },
   {
@@ -1591,7 +1579,7 @@ const NBA_BATCH_2 = [
       "Which honors does Basketball-Reference list for Wembanyama?",
       "What did Cooper Flagg average as a rookie?",
       "Have Flagg and Wembanyama played in 2026-27?",
-      "Does this comparison say who is the better player?",
+      "Is one the better player?",
     ],
   },
 ] as const;
@@ -1705,7 +1693,7 @@ const WATCH_AIR_FAQS = [
   "What about the Amazfit Helio?",
 ];
 const WATCH_AIR_QUICK_ANSWER =
-  "Choose the Apple Watch Series 12 if you want a full smartwatch: apps, notifications, and an optional cellular model, on an iPhone. Apple rates it for up to 24 hours of normal use, up to 38 hours in Low Power Mode, and up to 10 hours of workout tracking, and lists an S11 chip. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep. Google rates it for up to 7 days and the Google Store lists it from $99.99. This page does not crown a winner.";
+  "Choose the Apple Watch Series 12 if you want a full smartwatch: apps, notifications, and an optional cellular model, on an iPhone. Apple rates it for up to 24 hours of normal use, up to 38 hours in Low Power Mode, and up to 10 hours of workout tracking, and lists an S11 chip. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep. Google rates it for up to 7 days and the Google Store lists it from $99.99. Neither is better for everyone; it depends on whether you want a full smartwatch or a screenless tracker.";
 
 describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
   const page = () => getEditorialComparison(WATCH_AIR_SLUG)!;
@@ -1789,7 +1777,6 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
     expect(page().resources?.map((resource) => resource.url).join("\n")).not.toMatch(/\/entity\//);
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual(["apple-watch-vs-fitbit"]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("S11");
     expect(pageText(page())).toContain("up to 7 days");
     expect(pageText(page())).toContain("$99.99");
@@ -1853,9 +1840,6 @@ describe("NBA batch 3 compares", () => {
       expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
       expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
       expect(pageText(page)).toContain("Stats as of October 3, 2026");
-      if (slug !== "damian-lillard-vs-ja-morant") {
-        expect(pageText(page)).toContain("Source note:");
-      }
       expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
       expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
       const description = clampDescription(page.metadata.metaDescription);
@@ -1939,7 +1923,6 @@ describe("NBA batch 4 compares", () => {
       expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
       expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
       expect(pageText(page)).toContain("Stats as of October 3, 2026");
-      expect(pageText(page)).toContain("Source note:");
       expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
       expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
       const description = clampDescription(page.metadata.metaDescription);
@@ -2023,7 +2006,6 @@ describe("NBA batch 5: Embiid vs Jokic, Kobe vs Curry", () => {
       expect(findSelfContradictions(page)).toEqual([]);
       const text = pageText(page);
       expect(text).toContain("Stats as of October 3, 2026");
-      expect(text).toContain("Source note:");
       expect(text).not.toMatch(/will win|predicted winner|odds/i);
       const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
       expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);

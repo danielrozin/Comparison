@@ -8,7 +8,7 @@ const CRAWL = /Index, follow|returned 404/;
 // already appear as product wording on galaxy-z-fold-7, knicks-vs-76ers, and the
 // S24 Ultra vs S25 Ultra page. Kindle vs Kobo rejects those three on its own test.
 const SOURCE_PROCESS =
-  /date of death|page lists|list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|checked 3 October|checked the same day|in the help example|announcement assigns|official page|fetch/i;
+  /date of death|page lists|list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|checked|checked 3 October|checked the same day|Source note|(?:^|\n)Sources:|in the help example|announcement assigns|official page|fetch/i;
 
 /** The only death mention allowed on the Kobe vs Curry page. */
 const ALLOWED_DEATH_MENTION =
@@ -16,7 +16,7 @@ const ALLOWED_DEATH_MENTION =
 
 /** Reader copy Product asked the blog to pass, including the #333 review bans. */
 const BLOG_BANNED =
-  /Index, follow|returned 404|date of death|page lists|list shows|the page says|honors list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|checked 3 October|checked the same day|in the help example|announcement assigns|official page|fetch/i;
+  /Index, follow|returned 404|date of death|page lists|list shows|the page says|honors list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|checked|checked 3 October|checked the same day|Source note|(?:^|\n)Sources:|in the help example|announcement assigns|official page|fetch/i;
 
 function readerText(value: unknown): string {
   const parts: string[] = [];
@@ -71,5 +71,20 @@ describe("editorial reader copy", () => {
 
   it("fails when the NBA season preview blog contains crawl metadata, 404 history, or source-process wording", () => {
     expect(BLOG_BANNED.test(readerText(NBA_SEASON_PREVIEW_ARTICLE))).toBe(false);
+  });
+
+  it("rejects a source note or a leading Sources line in expert analysis and other reader text", () => {
+    const banned = /Source note|(?:^|\n)Sources:/;
+    const hits = listEditorialCompareSlugs()
+      .map((slug) => {
+        const page = getEditorialComparison(slug);
+        const text = [page?.expertAnalysis, page?.shortAnswer, page?.verdict, ...(page?.faqs ?? []).map((faq) => faq.answer)]
+          .filter((part): part is string => typeof part === "string")
+          .join("\n");
+        const hit = text.match(banned);
+        return hit ? `${slug}: ${hit[0].replace(/\n/g, "\\n")}` : null;
+      })
+      .filter((hit): hit is string => hit !== null);
+    expect(hits).toEqual([]);
   });
 });

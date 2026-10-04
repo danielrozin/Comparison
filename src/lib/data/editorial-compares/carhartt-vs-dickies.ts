@@ -6,7 +6,7 @@ import type { EditorialComparison } from "./types";
  * B01 fabric, fit, knee pads, pockets, and origin are from carhartt.com
  * (style 106679, model B01-M), confirmed in a browser on 2026-09-28.
  * Gear Patrol (Aug 2, 2021) is only the reviewer's hands-on fit and break-in.
- * No 2021 prices are reused, and this page does not give a live price.
+ * No 2021 prices are reused, and no live price is given.
  */
 
 const CARHARTT = "carhartt";
@@ -52,7 +52,7 @@ const FAQS = [
   {
     question: "Are there more durable alternatives?",
     answer:
-      "Commenters on the linked Reddit thread also mention Duluth Trading and Helly Hansen. Those are mentions only. This page does not compare their fabric weight or warranty.",
+      "Commenters on the linked Reddit thread also mention Duluth Trading and Helly Hansen. Those are mentions only. Their fabric weight and warranty are not compared.",
   },
 ];
 
@@ -60,9 +60,9 @@ const VERDICT = `Most durable: Carhartt duck, such as the B01 Double-Front. Carh
 
 Best lightweight or uniform pant: Dickies 874. Dickies lists it as 8.5 oz, 65% polyester / 35% cotton, non-stretch twill. Gear Patrol found Dickies twill lighter, stain- and wrinkle-resistant, and quicker to break in — a better match for uniform or indoor work than for abrasive job sites.
 
-No value pick. This page does not give a price. Gear Patrol’s 2021 prices are out of date.`;
+No value pick. No price is stated. Gear Patrol’s 2021 prices are out of date.`;
 
-const EXPERT_ANALYSIS = `This page compares Carhartt and Dickies work pants, focused on the Carhartt Iconic B01 Firm Duck Double-Front Dungaree (style 106679, model B01-M), the Dickies Original 874, and the Dickies Loose Fit Double Knee that Gear Patrol reviewed. There is no single winner, and there is no value crown.
+const EXPERT_ANALYSIS = `The Carhartt versus Dickies work-pants comparison covers the Carhartt Iconic B01 Firm Duck Double-Front Dungaree (style 106679, model B01-M), the Dickies Original 874, and the Dickies Loose Fit Double Knee that Gear Patrol reviewed. There is no single winner, and there is no value crown.
 
 Fabric
 
@@ -78,7 +78,7 @@ Carhartt says the B01 has double-layer knees with openings for adding knee pads 
 
 What owners report
 
-The r/BuyItForLife thread asking which pants last longer is a split, not a vote tally this page can print. Some people prefer Carhartt duck over regular Dickies. Some report Carhartt knees wearing through or rear pockets tearing. Read the thread for the range of jobs those owners do. This summary does not quote usernames.
+The r/BuyItForLife thread asking which pants last longer is a split, not a counted vote. Some people prefer Carhartt duck over regular Dickies. Some report Carhartt knees wearing through or rear pockets tearing. Read the thread for the range of jobs those owners do. Usernames are not quoted.
 
 Break-in
 
@@ -86,7 +86,7 @@ Gear Patrol calls the B01 duck firm-hand and tougher to the touch, and says the 
 
 Alternatives commenters mention
 
-People in that Reddit thread also name Duluth Trading and Helly Hansen. Those are mentions only. This page does not rank them or repeat a warranty claim.`;
+People in that Reddit thread also name Duluth Trading and Helly Hansen. Those are mentions only. They are not ranked, and a warranty claim is not repeated.`;
 
 export const CARHARTT_VS_DICKIES: EditorialComparison = buildEditorialComparison({
   slug: "carhartt-vs-dickies",

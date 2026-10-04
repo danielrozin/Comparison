@@ -11,8 +11,8 @@ import type { EditorialComparison } from "./types";
  *
  * Two Waze Help articles disagree about a dropped connection during a report.
  * About Waze says Waze does not cache reports to send later. The hazard article
- * says a report started offline is saved and sent when you reconnect. This page
- * quotes both and does not pick one.
+ * says a report started offline is saved and sent when you reconnect. Both are
+ * quoted, and neither is picked.
  */
 
 const MAPS = "google-maps";
@@ -39,7 +39,7 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. This page does not crown a winner.";
+  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. Neither is better for everyone.";
 
 const FAQS = [
   {
@@ -50,7 +50,7 @@ const FAQS = [
   {
     question: "Can Google Maps or Waze navigate offline?",
     answer:
-      "Google Maps can, with limits. Google says you can download an area and use it when the connection is slow or gone, as long as the whole route is inside that area. Google also says offline transit, bicycling, and walking directions are unavailable, and an offline drive has no traffic info or alternate routes. Some countries cannot download offline maps. Waze says Waze assumes a data connection, and that without internet you cannot locate or navigate a route. Two Waze sentences disagree about a report if the connection drops while you are reporting: Waze says reports are not cached to send later, and Waze also says the report is saved and sent when you reconnect. This page does not choose between those two sentences.",
+      "Google Maps can, with limits. Google says you can download an area and use it when the connection is slow or gone, as long as the whole route is inside that area. Google also says offline transit, bicycling, and walking directions are unavailable, and an offline drive has no traffic info or alternate routes. Some countries cannot download offline maps. Waze says Waze assumes a data connection, and that without internet you cannot locate or navigate a route. Two Waze sentences disagree about a report if the connection drops while you are reporting: Waze says reports are not cached to send later, and Waze also says the report is saved and sent when you reconnect. Both sentences are stated, and neither is marked the current one.",
   },
   {
     question: "Do Google Maps and Waze work on CarPlay and Android Auto?",
@@ -65,7 +65,7 @@ const FAQS = [
   {
     question: "Which app keeps more of my location data?",
     answer:
-      "This page does not crown one. Google says Timeline is off by default and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If you turn on backup, Maps saves an encrypted copy on Google's servers. Waze says that driving with Waze open shares real-time information used for speed, road layout, and routing, and that you can adjust privacy settings. Those are different designs. This comparison does not give them one shared privacy score.",
+      "Neither is better for everyone; it depends on the privacy design. Google says Timeline is off by default and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If you turn on backup, Maps saves an encrypted copy on Google's servers. Waze says that driving with Waze open shares real-time information used for speed, road layout, and routing, and that you can adjust privacy settings. Those are different designs. They do not share one privacy score.",
   },
 ];
 
@@ -73,13 +73,9 @@ const VERDICT = `Best for live driver reports, if you can stay online: Waze. Waz
 
 Best for offline areas, transit, walking, and cycling: Google Maps. Help articles document downloadable areas and those direction modes, with the limits those help articles name.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on the trip.`;
 
-const EXPERT_ANALYSIS = `It depends on the trip. Waze fits a drive where you want other drivers' reports and you can keep a data connection. Google Maps fits a saved offline area, and trips that are not only driving. This page does not crown one app.
-
-Spec table. Caption: Google Maps vs Waze, from official help articles. Source note: every row is a claim from Google Maps, Android Auto, or Waze Help.
-
-Sources: Google Maps offline help for iPhone and iPad, Google Maps offline help for Android, Google Maps directions for iPhone and iPad, Google Maps navigation for Android, Google Maps on CarPlay, Android Auto turn-by-turn navigation, Google Maps vehicle profiles, Google Maps Timeline, About Waze, Waze availability and cost, Waze road-hazard reports, Waze on Android Auto, Waze on Apple CarPlay, and Waze parking.
+const EXPERT_ANALYSIS = `It depends on the trip. Waze fits a drive where you want other drivers' reports and you can keep a data connection. Google Maps fits a saved offline area, and trips that are not only driving. Neither is better for everyone.
 
 Offline maps
 
@@ -91,11 +87,11 @@ Google Maps documents more than driving. The iPhone and iPad directions article 
 
 Driver reports
 
-Both products document incident reports. Waze says you can report traffic, accidents, police traps, blocked roads, weather, and more, and that the maps are powered by users. Waze reports about 180 million monthly active users. This comparison does not pair it with a Google Maps user count. The hazard article lists construction, a car on the shoulder, a broken traffic light, a pothole, and an object, and it documents the same report flow on Android Auto and CarPlay. Google's Android navigation article lists crash, slowdown, mobile speed camera, police, construction, lane closure, an object on the road, a flooded road, low visibility, and an unplowed road, and says some incidents can only be reported in certain countries. The CarPlay article lists a similar set, without the word crash.
+Both products document incident reports. Waze says you can report traffic, accidents, police traps, blocked roads, weather, and more, and that the maps are powered by users. Waze reports about 180 million monthly active users. It is not paired with a Google Maps user count. The hazard article lists construction, a car on the shoulder, a broken traffic light, a pothole, and an object, and it documents the same report flow on Android Auto and CarPlay. Google's Android navigation article lists crash, slowdown, mobile speed camera, police, construction, lane closure, an object on the road, a flooded road, low visibility, and an unplowed road, and says some incidents can only be reported in certain countries. The CarPlay article lists a similar set, without the word crash.
 
 One Waze contradiction, left unresolved
 
-Waze says that if Waze has no connection back to its servers, you cannot report hazards, and that Waze does not cache reports or map issues to send later. Waze also says that if you lose the connection while reporting, Waze saves the report and submits it when you reconnect. This page does not decide which sentence is current.
+Waze says that if Waze has no connection back to its servers, you cannot report hazards, and that Waze does not cache reports or map issues to send later. Waze also says that if you lose the connection while reporting, Waze saves the report and submits it when you reconnect. Both sentences stay, and neither is marked the current one.
 
 Lane guidance
 
@@ -111,7 +107,7 @@ Waze says the app is in the Apple App Store for iPhone and iPad and in Google Pl
 
 Who should use which
 
-Use Waze for a drive where the community reports are why you opened the app, and you expect a data connection the whole way. Use Google Maps when the route may leave coverage, or when the trip is transit, walking, or cycling. Privacy is not a tie-breaker on this page: Google's Timeline is off until you opt in, and Waze says driving with the app open shares real-time road information you can limit in settings.`;
+Use Waze for a drive where the community reports are why you opened the app, and you expect a data connection the whole way. Use Google Maps when the route may leave coverage, or when the trip is transit, walking, or cycling. Privacy is not the tie-breaker: Google's Timeline is off until you opt in, and Waze says driving with the app open shares real-time road information you can limit in settings.`;
 
 export const GOOGLE_MAPS_VS_WAZE: EditorialComparison = buildEditorialComparison({
   slug: "google-maps-vs-waze",
