@@ -8,7 +8,7 @@ const PAGE_URL = `${SITE_URL}/how-we-write-verdicts`;
 const PAGE_TITLE = `How We Write Verdicts — ${SITE_NAME}`;
 const PAGE_DESC = `How ${SITE_NAME} produces the AI-assisted verdict at the top of every comparison page — sourcing, the role of the AI model, the role of human editors, and how your feedback shapes future verdicts.`;
 const VERDICTS_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("How We Write Verdicts")}&type=home`;
-const VERDICTS_TODAY = new Date().toISOString().split("T")[0];
+const VERDICTS_LAST_EDITED = "2026-07-10"; // last content edit: 7f152c0a (1eb76ac1 only added accessibilitySummary).
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -43,15 +43,15 @@ export const metadata: Metadata = {
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESC,
-      "citation_publication_date": "2024-01-01",
-      "citation_online_date": "2024-01-01",
+      "citation_publication_date": "2026-05-28",
+      "citation_online_date": "2026-05-28",
     "DC.title": PAGE_TITLE,
     "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
     "DC.format": "text/html",
-      "DC.date": "2024-01-01",
+      "DC.date": "2026-05-28",
     "DC.identifier": PAGE_URL,
   },
 };
@@ -119,10 +119,10 @@ const articleSchema = {
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
-  datePublished: "2026-03-15",
-  dateModified: VERDICTS_TODAY,
-  lastReviewed: VERDICTS_TODAY,
-  contentReferenceTime: VERDICTS_TODAY,
+  datePublished: "2026-05-28",
+  dateModified: VERDICTS_LAST_EDITED,
+  lastReviewed: VERDICTS_LAST_EDITED,
+  contentReferenceTime: VERDICTS_LAST_EDITED,
   thumbnailUrl: VERDICTS_OG_IMAGE,
   image: {
     "@type": "ImageObject",
@@ -136,8 +136,8 @@ const articleSchema = {
   alternativeHeadline: `${SITE_NAME} Verdict Methodology — AI-Assisted Comparison Verdicts`,
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
-  copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
-  copyrightYear: new Date().getFullYear(),
+  copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightYear: 2026,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Journalists, AI Developers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },

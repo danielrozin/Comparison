@@ -141,7 +141,7 @@ describe("analysis labeling", () => {
     expect(screen.getByRole("heading", { name: "Analysis: Alpha Widget vs Beta Widget" })).toBeInTheDocument();
     expect(screen.getByText(/Drafted with AI from web research/)).toBeInTheDocument();
     const research = screen.getByRole("link", { name: "How we research" });
-    expect(research).toHaveAttribute("href", "/how-we-write-verdicts");
+    expect(research).toHaveAttribute("href", `${SITE_URL}/how-we-write-verdicts`);
     expect(screen.queryByText(/Daniel Rozin/)).not.toBeInTheDocument();
     expect(screen.queryByText(/Human reviewed/)).not.toBeInTheDocument();
     expect(screen.getByText("A Versus B")).toBeInTheDocument();

@@ -286,8 +286,7 @@ export function dataCatalogSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FAL
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     creativeWorkStatus: "Published",
-    datePublished: "2024-01-01",
-    dateModified: new Date().toISOString(),
+    datePublished: "2026-03-15",
     inLanguage: "en-US",
     // potentialAction: SearchAction lets AI routers know the catalog is queryable by keyword —
     // same pattern as WebSite SearchAction but scoped to the DataCatalog entity.
@@ -321,8 +320,7 @@ export function dataCatalogSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FAL
       // This is a primary signal Dataset Search uses to rank dataset importance and
       // display corpus size in the "dataset overview" card.
       numberOfItems,
-      datePublished: "2024-01-01",
-      dateModified: new Date().toISOString(),
+      datePublished: "2026-03-15",
       keywords: ["comparison", "vs", "versus", "benchmark", "review", "analysis"],
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
@@ -462,9 +460,8 @@ export function webSiteSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FALLBAC
     keywords: "vs, versus, compare, comparison, side-by-side, which is better, best, alternatives, review, technology, sports, products",
     inLanguage: "en-US",
     availableLanguage: { "@type": "Language", name: "English", alternateName: "en" },
-    datePublished: "2024-01-01",
-    dateCreated: "2024-01-01",
-    dateModified: new Date().toISOString(),
+    datePublished: "2026-03-15",
+    dateCreated: "2026-03-15",
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
@@ -734,8 +731,7 @@ export function webApplicationSchema() {
     teaches: "How to compare products, technologies, sports figures, and countries side-by-side using structured data and expert-reviewed analysis",
     educationalUse: "comparison",
     releaseNotes: `${SITE_URL}/changelog`,
-    datePublished: "2024-01-01",
-    dateModified: new Date().toISOString(),
+    datePublished: "2026-03-15",
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

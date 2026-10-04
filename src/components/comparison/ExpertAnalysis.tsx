@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { isHumanReviewedSlug } from "@/lib/editorial/human-reviewed";
+import { SITE_URL } from "@/lib/utils/constants";
 
 interface ExpertAnalysisProps {
   analysis: string;
@@ -110,7 +111,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
         <div className="px-5 sm:px-7 py-3.5 border-t border-border bg-slate-50 flex items-center gap-2 text-xs text-text-secondary">
           <span>
             Drafted with AI from web research.{" "}
-            <Link href="/how-we-write-verdicts" className="underline hover:text-primary-700 transition-colors">
+            <Link href={`${SITE_URL}/how-we-write-verdicts`} className="underline hover:text-primary-700 transition-colors">
               How we research
             </Link>
           </span>
