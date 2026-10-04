@@ -4,8 +4,7 @@ import type { EditorialComparison } from "./types";
 /**
  * Durant vs LeBron. Career and 2025-26 lines are Basketball-Reference.
  * The July 2026 76ers signing is the NBA.com story updated July 27, 2026.
- * Projection rows and reported contract dollars are
- * not quoted. No prediction.
+ * No prediction.
  */
 
 const DURANT = "kevin-durant";

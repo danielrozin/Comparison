@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: "How many championships does each player have?",
     answer:
-      "LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. Curry won 4 NBA championships and 2 MVPs, made 12 All-Star teams, and was 2021-22 Finals MVP. Basketball-Reference is the source. Those honors are not a single ranking.",
+      "LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. Curry won 4 NBA championships and 2 MVPs, made 12 All-Star teams, and was 2021-22 Finals MVP (Basketball-Reference). Those honors are not a single ranking.",
   },
   {
     question: "Where is LeBron for 2026-27?",

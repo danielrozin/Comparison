@@ -33,7 +33,7 @@ const FAQS = [
   {
     question: "What did Embiid and Jokic average in 2025-26?",
     answer:
-      "Embiid played 38 games, all starts, at 31.6 minutes: 26.9 points, 7.7 rebounds, and 3.9 assists. Jokic played 65 games, all starts, at 34.8 minutes: 27.7 points, 12.9 rebounds, and 10.7 assists. Jokic's 2025-26 awards are MVP-2, All-Star, and All-NBA. Embiid's 2025-26 season names no award.",
+      "Embiid played 38 games, all starts, at 31.6 minutes: 26.9 points, 7.7 rebounds, and 3.9 assists. Jokic played 65 games, all starts, at 34.8 minutes: 27.7 points, 12.9 rebounds, and 10.7 assists. Jokic's 2025-26 awards are MVP-2, All-Star, and All-NBA. Embiid had no 2025-26 awards.",
   },
   {
     question: "Which MVP seasons did each player win?",
