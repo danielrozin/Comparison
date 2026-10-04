@@ -8,7 +8,7 @@ const CRAWL = /Index, follow|returned 404/;
 // already appear as product wording on galaxy-z-fold-7, knicks-vs-76ers, and the
 // S24 Ultra vs S25 Ultra page. Kindle vs Kobo rejects those three on its own test.
 const SOURCE_PROCESS =
-  /date of death|page lists|list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|checked 3 October|checked the same day|in the help example|announcement assigns|official page|fetch/i;
+  /date of death|page lists|list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|checked|checked 3 October|checked the same day|in the help example|announcement assigns|official page|fetch/i;
 
 /** The only death mention allowed on the Kobe vs Curry page. */
 const ALLOWED_DEATH_MENTION =
@@ -16,7 +16,7 @@ const ALLOWED_DEATH_MENTION =
 
 /** Reader copy Product asked the blog to pass, including the #333 review bans. */
 const BLOG_BANNED =
-  /Index, follow|returned 404|date of death|page lists|list shows|the page says|honors list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|checked 3 October|checked the same day|in the help example|announcement assigns|official page|fetch/i;
+  /Index, follow|returned 404|date of death|page lists|list shows|the page says|honors list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|checked|checked 3 October|checked the same day|in the help example|announcement assigns|official page|fetch/i;
 
 function readerText(value: unknown): string {
   const parts: string[] = [];

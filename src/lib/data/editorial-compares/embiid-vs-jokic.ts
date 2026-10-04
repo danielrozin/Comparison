@@ -22,7 +22,7 @@ const LAST = `2025-26 regular season · Basketball-Reference`;
 const THIS = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games. Embiid won the 2022-23 MVP. Jokic won MVP in 2020-21, 2021-22, and 2023-24, plus the 2023 championship. Stats as of October 3, 2026, neither player has a 2026-27 regular-season game log, and the projection rows are not used. Neither is better for everyone; it depends on the counting line.";
+  "Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games. Embiid won the 2022-23 MVP. Jokic won MVP in 2020-21, 2021-22, and 2023-24, plus the 2023 championship. Stats as of October 3, 2026, neither player has a 2026-27 regular-season game log, and the projection rows are not used. Neither is named the better player.";
 
 const FAQS = [
   {
@@ -53,7 +53,7 @@ const FAQS = [
   {
     question: "Who is the better player, Embiid or Jokic?",
     answer:
-      "Neither is better for everyone; it depends on the column. Embiid's column is the higher career scoring average and the 2022-23 MVP. Jokic's column is the longer career, the assist line, three MVP seasons, and the 2023 championship. The 2026-27 season has no game log yet.",
+      "Neither is named the better player. Embiid's column is the higher career scoring average and the 2022-23 MVP. Jokic's column is the longer career, the assist line, three MVP seasons, and the 2023 championship. The 2026-27 season has no game log yet.",
   },
 ];
 
@@ -65,7 +65,7 @@ MVPs: Embiid in 2022-23. Jokic in 2020-21, 2021-22, and 2023-24. Jokic also won 
 
 2026-27 season: Stats as of October 3, 2026, there is no regular-season game log. Neither is named the winner of the 2026-27 season. There is no game forecast.`;
 
-const EXPERT_ANALYSIS = `Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games. Embiid was MVP in 2022-23. Jokic was MVP in 2020-21, 2021-22, and 2023-24. Neither is better for everyone; it depends on the counting line.
+const EXPERT_ANALYSIS = `Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games. Embiid was MVP in 2022-23. Jokic was MVP in 2020-21, 2021-22, and 2023-24. Neither is named the better player.
 
 Source note: career totals, the 2025-26 regular-season lines, and the honors lists are from the two Basketball-Reference player pages. ${EMBIID_URL} ${JOKIC_URL}
 

@@ -27,7 +27,7 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on the devices you actually use. Pick Safari when you stay on Apple devices and want Intelligent Tracking Prevention on by default, and pick Chrome when you also need Windows, Linux, ChromeOS, or Android. Safari extensions come from the App Store, and Chrome extensions come from the Chrome Web Store on desktop. Apple says Safari is up to 5 hours longer than Chrome for streaming video. That figure is Apple's August 2026 test, labelled as Apple's claim, not a separate lab result. Neither is better for everyone; it depends on the devices you actually use.";
+  "It depends on the devices you actually use. Pick Safari when you stay on Apple devices and want Intelligent Tracking Prevention on by default, and pick Chrome when you also need Windows, Linux, ChromeOS, or Android. Safari extensions come from the App Store, and Chrome extensions come from the Chrome Web Store on desktop. Apple says Safari is up to 5 hours longer than Chrome for streaming video. That figure is Apple's August 2026 test, labelled as Apple's claim, not a separate lab result. Neither is better for everyone.";
 
 const FAQS = [
   {
@@ -63,9 +63,9 @@ Best if you also use Windows, Linux, ChromeOS, or Android: Chrome. A Google Acco
 
 Neither is better for everyone; it depends on the use.`;
 
-const EXPERT_ANALYSIS = `It depends on the devices you actually use. Safari is the pick when you stay on Apple devices and want tracking prevention on before you change a setting. Chrome is the pick when you also need Windows, Linux, ChromeOS, or Android, or you want the Chrome Web Store. Neither is better for everyone; it depends on the devices you actually use.
+const EXPERT_ANALYSIS = `It depends on the devices you actually use. Safari is the pick when you stay on Apple devices and want tracking prevention on before you change a setting. Chrome is the pick when you also need Windows, Linux, ChromeOS, or Android, or you want the Chrome Web Store. Neither is better for everyone.
 
-Spec table. Caption: Chrome vs Safari. Source note: the rows were checked on 30 September 2026 against Google's Chrome page, Google's Chromium project page, Chrome's sign-in and cookie help, Chrome's Manifest V2 timeline (updated 9 September 2026), Chrome's Manifest V3 doc, the Chrome 139 release notes, Apple's Safari page (including footnotes 1 to 3), Apple's privacy features page, Apple's Safari privacy notice (dated 12 December 2025), and Apple's iCloud Safari guide.
+Spec table. Caption: Chrome vs Safari. Source note: the rows are as of 30 September 2026, from Google's Chrome page, Google's Chromium project page, Chrome's sign-in and cookie help, Chrome's Manifest V2 timeline (updated 9 September 2026), Chrome's Manifest V3 doc, the Chrome 139 release notes, Apple's Safari page (including footnotes 1 to 3), Apple's privacy features page, Apple's Safari privacy notice (dated 12 December 2025), and Apple's iCloud Safari guide.
 
 Sources: google.com/chrome, opensource.google.com/projects/chromium, Chrome sign-in help, Chrome cookie help, the Manifest V3 doc, the Manifest V2 timeline (updated 9 September 2026), Chrome 139 release notes (stable 5 August 2025), apple.com/safari, apple.com/privacy/features, Apple's Safari privacy notice, and the iCloud Safari guide.
 

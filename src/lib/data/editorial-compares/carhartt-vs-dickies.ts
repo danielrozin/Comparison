@@ -62,7 +62,7 @@ Best lightweight or uniform pant: Dickies 874. Dickies lists it as 8.5 oz, 65% p
 
 No value pick. No price is stated. Gear Patrol’s 2021 prices are out of date.`;
 
-const EXPERT_ANALYSIS = `Carhartt versus Dickies work pants covers the Carhartt Iconic B01 Firm Duck Double-Front Dungaree (style 106679, model B01-M), the Dickies Original 874, and the Dickies Loose Fit Double Knee that Gear Patrol reviewed. There is no single winner, and there is no value crown.
+const EXPERT_ANALYSIS = `The Carhartt versus Dickies work-pants comparison covers the Carhartt Iconic B01 Firm Duck Double-Front Dungaree (style 106679, model B01-M), the Dickies Original 874, and the Dickies Loose Fit Double Knee that Gear Patrol reviewed. There is no single winner, and there is no value crown.
 
 Fabric
 

@@ -68,7 +68,7 @@ Neither is better for everyone; it depends on whether you want the newer Pro chi
 
 const EXPERT_ANALYSIS = `Choose the iPhone 18 Pro if you keep a phone for years and want the newest Pro chip and the higher battery ratings Apple gives. Choose the iPhone 17 Pro if a carrier or street price makes it clearly cheaper. Neither is better for everyone; it depends on whether you want the newer Pro chip or a clearly cheaper price.
 
-Source note: Apple lists the chip, display, weight, storage, and the iPhone 18 Pro battery hours. Apple Support lists the iPhone 17 Pro figures. The $1,199 starting price is from Apple's newsroom and from the Apple Store. The monthly AT&T figures are one shopper's quotes from a Reddit thread, not a price checked with a carrier.
+Source note: Apple lists the chip, display, weight, storage, and the iPhone 18 Pro battery hours. Apple Support lists the iPhone 17 Pro figures. The $1,199 starting price is from Apple's newsroom and from the Apple Store. The monthly AT&T figures are one shopper's quotes from a Reddit thread, not a carrier's published price.
 
 Chip
 
@@ -250,7 +250,7 @@ export const IPHONE_17_PRO_VS_IPHONE_18_PRO: EditorialComparison = buildEditoria
     ),
     textAttr(
       "price",
-      "Apple price checked 2026-10-03",
+      "Apple price as of October 3, 2026",
       "Price · Apple Store and newsroom for the 18 Pro. No 17 Pro price was listed",
       PRO_17,
       PRO_18,

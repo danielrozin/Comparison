@@ -39,7 +39,7 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. Neither is better for everyone; it depends on the trip.";
+  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. Neither is better for everyone.";
 
 const FAQS = [
   {
@@ -75,7 +75,7 @@ Best for offline areas, transit, walking, and cycling: Google Maps. Help article
 
 Neither is better for everyone; it depends on the trip.`;
 
-const EXPERT_ANALYSIS = `It depends on the trip. Waze fits a drive where you want other drivers' reports and you can keep a data connection. Google Maps fits a saved offline area, and trips that are not only driving. Neither is better for everyone; it depends on the trip.
+const EXPERT_ANALYSIS = `It depends on the trip. Waze fits a drive where you want other drivers' reports and you can keep a data connection. Google Maps fits a saved offline area, and trips that are not only driving. Neither is better for everyone.
 
 Spec table. Caption: Google Maps vs Waze, from official help articles. Source note: every row is a claim from Google Maps, Android Auto, or Waze Help.
 

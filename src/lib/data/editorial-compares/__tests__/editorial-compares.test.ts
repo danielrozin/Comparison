@@ -855,7 +855,7 @@ const MAPS_APPLE_FAQS = [
   "Which app is more private?",
 ];
 const MAPS_APPLE_QUICK_ANSWER =
-  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple says it does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. Neither is better for everyone; it depends on the phone and the trip.";
+  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple says it does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. Neither is better for everyone.";
 
 describe("ROO-127 Google Maps vs Apple Maps", () => {
   const page = () => getEditorialComparison(MAPS_APPLE_SLUG)!;
@@ -954,7 +954,7 @@ const MAPS_WAZE_FAQS = [
   "Which app keeps more of my location data?",
 ];
 const MAPS_WAZE_QUICK_ANSWER =
-  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. Neither is better for everyone; it depends on the trip.";
+  "It depends on the trip. Use Waze when you want other drivers' reports of traffic, crashes, police, and hazards and you can keep a data connection. Use Google Maps when you need a saved offline area, or directions for transit, walking, or cycling. Google Maps Help documents those modes on iPhone and iPad, and offline maps on iPhone, iPad, and Android. Waze says that without an internet connection you cannot locate or navigate a route. Neither is better for everyone.";
 
 describe("ROO-127 Google Maps vs Waze", () => {
   const page = () => getEditorialComparison(MAPS_WAZE_SLUG)!;
@@ -1067,7 +1067,7 @@ const BRAVE_FAQS = [
   "Does Brave sync like Chrome?",
 ];
 const BRAVE_QUICK_ANSWER =
-  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a separate lab result. Neither is better for everyone; it depends on what you want the browser to do before you change a setting.";
+  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a separate lab result. Neither is better for everyone.";
 
 describe("ROO-114 Brave vs Chrome", () => {
   const page = () => getEditorialComparison(BRAVE_SLUG)!;
@@ -1167,7 +1167,7 @@ const SAFARI_FAQS = [
   "Does Safari sync across iPhone, iPad, and Mac?",
 ];
 const SAFARI_QUICK_ANSWER =
-  "It depends on the devices you actually use. Pick Safari when you stay on Apple devices and want Intelligent Tracking Prevention on by default, and pick Chrome when you also need Windows, Linux, ChromeOS, or Android. Safari extensions come from the App Store, and Chrome extensions come from the Chrome Web Store on desktop. Apple says Safari is up to 5 hours longer than Chrome for streaming video. That figure is Apple's August 2026 test, labelled as Apple's claim, not a separate lab result. Neither is better for everyone; it depends on the devices you actually use.";
+  "It depends on the devices you actually use. Pick Safari when you stay on Apple devices and want Intelligent Tracking Prevention on by default, and pick Chrome when you also need Windows, Linux, ChromeOS, or Android. Safari extensions come from the App Store, and Chrome extensions come from the Chrome Web Store on desktop. Apple says Safari is up to 5 hours longer than Chrome for streaming video. That figure is Apple's August 2026 test, labelled as Apple's claim, not a separate lab result. Neither is better for everyone.";
 
 describe("ROO-114 Chrome vs Safari", () => {
   const page = () => getEditorialComparison(SAFARI_SLUG)!;

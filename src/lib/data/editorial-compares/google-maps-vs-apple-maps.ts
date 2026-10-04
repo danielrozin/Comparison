@@ -41,7 +41,7 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple says it does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. Neither is better for everyone; it depends on the phone and the trip.";
+  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple says it does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. Neither is better for everyone.";
 
 const FAQS = [
   {
@@ -82,7 +82,7 @@ Best when you need Android, or a saved offline driving area on either phone: Goo
 
 Neither is better for everyone; it depends on the phone and the trip.`;
 
-const EXPERT_ANALYSIS = `It depends on the phone and the trip. Apple Maps is the built-in app on Apple devices. Google Maps is the app that also runs on Android. Neither is better for everyone; it depends on the phone and the trip.
+const EXPERT_ANALYSIS = `It depends on the phone and the trip. Apple Maps is the built-in app on Apple devices. Google Maps is the app that also runs on Android. Neither is better for everyone.
 
 Spec table. Caption: Google Maps vs Apple Maps, from Apple and Google pages. Source note: every row is a claim from Apple or Google, including Apple Maps, Apple Maps and Privacy, Apple Support, Google Maps Help, and Android Auto Help.
 

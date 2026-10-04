@@ -22,7 +22,7 @@ const CAREER = `Career · Basketball-Reference`;
 const LAST = `2025-26 regular season · Basketball-Reference`;
 
 const SHORT_ANSWER =
-  "Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships and the 2007-08 MVP. Curry won 4 championships and MVPs in 2014-15 and 2015-16. Stats as of October 3, 2026, Curry has no 2026-27 regular-season game log. Neither is better for everyone; it depends on the counting line.";
+  "Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships and the 2007-08 MVP. Curry won 4 championships and MVPs in 2014-15 and 2015-16. Stats as of October 3, 2026, Curry has no 2026-27 regular-season game log. Neither is named the better player.";
 
 const FAQS = [
   {
@@ -53,7 +53,7 @@ const FAQS = [
   {
     question: "Who is the better player, Kobe or Curry?",
     answer:
-      "Neither is better for everyone; it depends on the column. Kobe's column is the longer career, 33,643 points, and 5 championships. Curry's column is the assist line, 4 championships, and two MVP seasons. The 2026-27 season has no game log for Curry.",
+      "Neither is named the better player. Kobe's column is the longer career, 33,643 points, and 5 championships. Curry's column is the assist line, 4 championships, and two MVP seasons. The 2026-27 season has no game log for Curry.",
   },
 ];
 
@@ -63,9 +63,9 @@ Championships: Kobe 5, Curry 4. MVPs: Kobe in 2007-08. Curry in 2014-15 and 2015
 
 2025-26 regular season: Curry 26.6 points, 3.6 rebounds, and 4.7 assists in 43 games. Kobe has no 2025-26 row.
 
-2026-27 season: Stats as of October 3, 2026, Curry has no regular-season game log. Neither is named the winner of the 2026-27 season. There is no game forecast.`;
+2026-27 season: Stats as of October 3, 2026, Curry has no regular-season game log. There is no 2026-27 forecast.`;
 
-const EXPERT_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships. Curry won 4. Neither is better for everyone; it depends on the counting line.
+const EXPERT_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships. Curry won 4. Neither is named the better player.
 
 Source note: career totals, Curry's 2025-26 regular-season line, and the honors lists are from the two Basketball-Reference player pages. ${KOBE_URL} ${CURRY_URL}
 

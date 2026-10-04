@@ -70,7 +70,7 @@ Price of the camera and the film
 
 Digital Camera World lists the Go Gen 2 and the Instax Mini 12 at a US$79.99 RRP. PCMag UK lists the Go 2 at $79.99 and calls the Instax Mini 12 a $79.95 camera. PCMag's Mini 12 review lists an MSRP of $79.95. Those are the reviewers' prices.
 
-Film is where the reviews separate them. Digital Camera World cites US$1.24 a shot for Go film and US$0.79 a shot for Instax Mini. PCMag UK cites US$1.25 a photo for Go and US$0.70 a picture for Instax Mini. PCMag's Mini 12 review says color packs cost about $7.50 for 10 exposures. None of those sentences is a price checked in a store on 29 September 2026.
+Film is where the reviews separate them. Digital Camera World cites US$1.24 a shot for Go film and US$0.79 a shot for Instax Mini. PCMag UK cites US$1.25 a photo for Go and US$0.70 a picture for Instax Mini. PCMag's Mini 12 review says color packs cost about $7.50 for 10 exposures. None of those review prices is a store price as of 29 September 2026.
 
 Controls and power
 

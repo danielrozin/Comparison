@@ -27,7 +27,7 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a separate lab result. Neither is better for everyone; it depends on what you want the browser to do before you change a setting.";
+  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a separate lab result. Neither is better for everyone.";
 
 const FAQS = [
   {
@@ -63,9 +63,9 @@ Best if you want Google's browser as Google ships it: Chrome. A Google Account s
 
 Neither is better for everyone; it depends on the use.`;
 
-const EXPERT_ANALYSIS = `It depends on what you want the browser to do before you change a setting. Brave is the pick when default ad and tracker blocking is the point. Chrome is the pick when Google Account sync and the Chrome Web Store, as Google ships it, are the point. Neither is better for everyone; it depends on what you want the browser to do before you change a setting.
+const EXPERT_ANALYSIS = `It depends on what you want the browser to do before you change a setting. Brave is the pick when default ad and tracker blocking is the point. Chrome is the pick when Google Account sync and the Chrome Web Store, as Google ships it, are the point. Neither is better for everyone.
 
-Spec table. Caption: Brave vs Chrome. Source note: the rows were checked on 30 September 2026 against Brave's homepage, Shields, privacy, and features pages, Brave's 2 June 2025 extension guide, Google's Chrome page, Google's Chromium project page, Chrome's sign-in and cookie help, Chrome's Manifest V2 timeline (updated 9 September 2026), Chrome's Manifest V3 doc, and the Chrome 139 release notes.
+Spec table. Caption: Brave vs Chrome. Source note: the rows are as of 30 September 2026, from Brave's homepage, Shields, privacy, and features pages, Brave's 2 June 2025 extension guide, Google's Chrome page, Google's Chromium project page, Chrome's sign-in and cookie help, Chrome's Manifest V2 timeline (updated 9 September 2026), Chrome's Manifest V3 doc, and the Chrome 139 release notes.
 
 Sources: brave.com, brave.com/shields, brave.com/privacy-features, brave.com/features, Brave's extension guide (2 June 2025), google.com/chrome, opensource.google.com/projects/chromium, Chrome sign-in help, Chrome cookie help, the Manifest V3 doc, the Manifest V2 timeline (updated 9 September 2026), and Chrome 139 release notes (stable 5 August 2025).
 

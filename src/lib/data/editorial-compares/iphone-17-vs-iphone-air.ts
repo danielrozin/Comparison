@@ -96,7 +96,7 @@ Apple lists ₹99,900 for a 256GB iPhone 17 and ₹1,24,900 for 512GB. Apple lis
 
 Who should buy which
 
-Choose the iPhone 17 if you are leaving an iPhone 13 and you want a reliable everyday phone: two rear cameras, the higher video-playback rating, and the larger battery. The chip difference is not a reason to pick the Air for photos and social apps. No benchmark says otherwise.
+Choose the iPhone 17 if you are leaving an iPhone 13 and you want a reliable everyday phone: two rear cameras, the higher video-playback rating, and the larger battery. The chip difference is not a reason to pick the Air for photos and social apps. No benchmark is cited that says otherwise.
 
 Choose the iPhone Air if you have held the 5.64 mm titanium phone and that is why you are upgrading. You are accepting one rear camera, 3,149 mAh, and Apple's 27-hour video-playback rating.`;
 

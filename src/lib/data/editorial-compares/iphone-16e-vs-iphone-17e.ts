@@ -60,7 +60,7 @@ Neither is better for everyone; it depends on whether you need more than 256GB.`
 
 const EXPERT_ANALYSIS = `Buy the iPhone 17e 256GB unless you already know you need more than 256GB. Pick the iPhone 16e 512GB only when that extra storage matters more than MagSafe and the A19, and only after you check a live price. Neither is better for everyone; it depends on whether you need more than 256GB.
 
-Spec table. Caption: iPhone 16e vs iPhone 17e. Source note: the rows were checked on 29 September 2026 against MacRumors, AppleInsider (2 March 2026), and Apple's iPhone 17e page. Dollar figures below are launch prices from AppleInsider, not a current deal.
+Spec table. Caption: iPhone 16e vs iPhone 17e. Source note: the rows are as of 29 September 2026, from MacRumors, AppleInsider (2 March 2026), and Apple's iPhone 17e page. Dollar figures below are launch prices from AppleInsider, not a current deal.
 
 Sources: MacRumors buyer's guide (3 March 2026), AppleInsider's spec comparison (2 March 2026), and apple.com/iphone-17e.
 
@@ -86,7 +86,7 @@ AppleInsider also lists launch prices by capacity: 16e 128GB $599, 256GB $699, 5
 
 Who should buy which
 
-Coming from an iPhone 8, the 17e 256GB is the phone these sources point you toward, because an iPhone 8 is older than the iPhone 14 cutoff MacRumors uses. Take the 16e 512GB only if the extra storage is the thing you cannot give up and the price, checked today, is close.`;
+Coming from an iPhone 8, the 17e 256GB is the phone these sources point you toward, because an iPhone 8 is older than the iPhone 14 cutoff MacRumors uses. Take the 16e 512GB only if the extra storage is the thing you cannot give up and the price, as of 29 September 2026, is close.`;
 
 export const IPHONE_16E_VS_IPHONE_17E: EditorialComparison = buildEditorialComparison({
   slug: "iphone-16e-vs-iphone-17e",

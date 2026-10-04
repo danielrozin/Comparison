@@ -84,7 +84,7 @@ Refurbished or third-party: iPhone 17 Pro and iPhone 16 Pro. As of September 26,
 
 What about the iPhone 18 Pro? Apple says availability began September 18, 2026, starting at $1,199, which is $100 more than the 17 Pro launch price. Apple’s compare tool still lists the iPhone 17 Pro next to the iPhone 18 Pro, the same way it still lists older iPhones. The 17 Pro figures here are from Apple Support, not from a live apple.com/iphone-17-pro/specs/ URL.`;
 
-const EXPERT_ANALYSIS = `The choice among the iPhone 17, the iPhone 17 Pro, and the iPhone 16 Pro depends on battery life, staying on updates, and video, including a refurbished buy. There is no single winner.
+const EXPERT_ANALYSIS = `The choice among the iPhone 17, the iPhone 17 Pro, and the iPhone 16 Pro depends on battery life, staying on updates, video, and whether you might buy refurbished. There is no single winner.
 
 Battery and longevity
 

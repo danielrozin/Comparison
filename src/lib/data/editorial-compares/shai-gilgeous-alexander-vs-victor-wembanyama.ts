@@ -26,7 +26,7 @@ const LAST = `2025-26 regular season · Basketball-Reference`;
 const THIS = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "Shai Gilgeous-Alexander's career line is 25.3 points, 4.7 rebounds, and 5.3 assists in 530 games. Victor Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 assists in 181 games. SGA was MVP in 2024-25 and again in 2025-26. In the 2026 Western Conference finals, the Spurs beat the Thunder 4-3. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and the projection rows are not used. Neither is better for everyone; it depends on the counting line.";
+  "Shai Gilgeous-Alexander's career line is 25.3 points, 4.7 rebounds, and 5.3 assists in 530 games. Victor Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 assists in 181 games. SGA was MVP in 2024-25 and again in 2025-26. In the 2026 Western Conference finals, the Spurs beat the Thunder 4-3. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and the projection rows are not used. Neither is named the better player.";
 
 const FAQS = [
   {
@@ -57,7 +57,7 @@ const FAQS = [
   {
     question: "Who is the better player, SGA or Wembanyama?",
     answer:
-      "Neither is better for everyone; it depends on the column. SGA's column is the longer career, two MVPs, and the 2025 championship. Wembanyama's column is the rebounding and block lines, the 2025-26 Defensive Player of the Year award, and the 2026 West finals. The 2026-27 season has no game log yet.",
+      "Neither is named the better player. SGA's column is the longer career, two MVPs, and the 2025 championship. Wembanyama's column is the rebounding and block lines, the 2025-26 Defensive Player of the Year award, and the 2026 West finals. The 2026-27 season has no game log yet.",
   },
 ];
 
@@ -69,7 +69,7 @@ MVPs: SGA in 2024-25 and 2025-26. 2026 West finals: Spurs beat the Thunder 4-3.
 
 2026-27 season: Stats as of October 3, 2026, there is no regular-season game log. Oklahoma City is at San Antonio on October 20, 2026, at 9:30 pm ET. Neither is named the winner of that game, and there is no forecast for it.`;
 
-const EXPERT_ANALYSIS = `Shai Gilgeous-Alexander's career line is 25.3 points, 4.7 rebounds, and 5.3 assists in 530 games. Victor Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 assists in 181 games. SGA was MVP in 2024-25 and 2025-26. In the 2026 West finals, the Spurs beat the Thunder 4-3. Neither is better for everyone; it depends on the counting line.
+const EXPERT_ANALYSIS = `Shai Gilgeous-Alexander's career line is 25.3 points, 4.7 rebounds, and 5.3 assists in 530 games. Victor Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 assists in 181 games. SGA was MVP in 2024-25 and 2025-26. In the 2026 West finals, the Spurs beat the Thunder 4-3. Neither is named the better player.
 
 Source note: career totals, the 2025-26 regular-season lines, and the accolades are from the two Basketball-Reference player pages. The West finals are from Basketball-Reference's 2026 playoff index. The October 20 game is from NBA.com's games page. ${SGA_URL} ${WEMBY_URL} ${PLAYOFFS} ${SCHEDULE}
 

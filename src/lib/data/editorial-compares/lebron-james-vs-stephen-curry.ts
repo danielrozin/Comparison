@@ -67,7 +67,7 @@ Championships on the honors lists: 4 and 4.
 
 2026-27 season: Basketball-Reference lists LeBron with the 76ers. Basketball-Reference lists Curry with the Warriors. Stats as of October 3, 2026, there is no regular-season game log. Neither is named the winner of the 2026-27 season.`;
 
-const EXPERT_ANALYSIS = `LeBron James's career line is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. Stephen Curry's is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games, totaling 26,528 points. In 2025-26 LeBron averaged 20.9 points in 60 games and Curry averaged 26.6 points in 43 games. Neither is better for everyone; it depends on the counting line.
+const EXPERT_ANALYSIS = `LeBron James's career line is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. Stephen Curry's is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games, totaling 26,528 points. In 2025-26 LeBron averaged 20.9 points in 60 games and Curry averaged 26.6 points in 43 games. Neither is named the better player.
 
 Source note: the career rows, the 2025-26 lines, and the team fields are from Basketball-Reference. The signing and the line that 2026-27 adds at least one season after 23 are from NBA.com's story updated July 27, 2026, which also prints the 20.9 and 26.8 figures. ${LEBRON_URL} ${CURRY_URL} ${SIGNING}
 

@@ -62,7 +62,7 @@ Championships on the honors lists: Durant 2. LeBron 4.
 
 2026-27 season: Basketball-Reference lists Durant with Houston. Basketball-Reference lists LeBron with the 76ers. Stats as of October 3, 2026, there is no regular-season game log. Neither is named the winner of the 2026-27 season.`;
 
-const EXPERT_ANALYSIS = `Kevin Durant's career line is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games, totaling 32,597 points. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. In 2025-26 Durant averaged 26.0 points in 78 games and LeBron averaged 20.9 points in 60 games. Neither is better for everyone; it depends on the counting line.
+const EXPERT_ANALYSIS = `Kevin Durant's career line is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games, totaling 32,597 points. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. In 2025-26 Durant averaged 26.0 points in 78 games and LeBron averaged 20.9 points in 60 games. Neither is named the better player.
 
 Source note: the career rows, the 2025-26 lines, and the team fields are from Basketball-Reference. The signing and the line that 2026-27 adds at least one season after 23 are from NBA.com's story updated July 27, 2026. ${DURANT_URL} ${LEBRON_URL} ${SIGNING}
 
