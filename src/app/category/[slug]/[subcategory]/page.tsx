@@ -187,6 +187,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
   const subcatUrl = `${SITE_URL}/category/${slug}/${subcategory}`;
   const subcatOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`${subcat.name} Comparisons`)}&type=category`;
   const subcatToday = new Date().toISOString().slice(0, 10);
+  const subcatFaqs = getSubcategoryFaqs(slug, subcategory);
   const breadcrumbs = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
     { name: category.name, url: `${SITE_URL}/category/${slug}` },
@@ -287,7 +288,9 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     // FAQPage hasPart reference — AI crawlers follow this edge to the typed FAQPage schema node.
     hasPart: [
       { "@type": "ItemList", "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`, name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` },
-      { "@id": `${subcatUrl}#faq`, name: `${subcat.name} FAQ`, url: subcatUrl },
+      ...(subcatFaqs.length > 0
+        ? [{ "@id": `${subcatUrl}#faq`, name: `${subcat.name} FAQ`, url: subcatUrl }]
+        : []),
     ],
   };
   // Dataset node — parity with parent category pages (HB347).
@@ -329,7 +332,6 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       target: { "@type": "EntryPoint", urlTemplate: subcatUrl },
     },
   };
-  const subcatFaqs = getSubcategoryFaqs(slug, subcategory);
   const subcatFaqSchema = subcatFaqs.length > 0
     ? faqSchema(
         subcatFaqs.map((faq) => ({ ...faq, answer: faqAnswerPlainText(faq.answer) })),

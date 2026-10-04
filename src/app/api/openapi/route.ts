@@ -229,12 +229,12 @@ export async function GET() {
           operationId: "getAnswer",
           tags: ["Comparisons"],
           summary: "Get AI-optimized answer",
-          description: "Returns a pre-packaged, citation-ready answer: shortAnswer, verdict, keyDifferences, faqs (top 3), entities with alternativesUrl, winner entity, confidence level, citation format, and ClaimReview JSON-LD. Designed for AI answer engines. X-Summary HTTP header carries the shortAnswer.",
+          description: "Returns a pre-packaged, citation-ready answer: shortAnswer, verdict, keyDifferences, faqs (top 3), entities with alternativesUrl, winner entity, confidence level, and citation format. Designed for AI answer engines. X-Summary HTTP header carries the shortAnswer.",
           parameters: [
             { name: "slug", in: "path", required: true, description: "Comparison slug", schema: { type: "string" } },
           ],
           responses: {
-            "200": { description: "Citation-ready answer with ClaimReview JSON-LD" },
+            "200": { description: "Citation-ready answer with shortAnswer, verdict, keyDifferences, winner, confidence, faqs, and entities" },
             "404": { description: "Comparison not found" },
           },
         },

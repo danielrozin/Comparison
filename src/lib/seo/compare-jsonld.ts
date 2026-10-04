@@ -419,10 +419,10 @@ function alignFaqToVisibleFaqs(
   collectFaqPages(document, nodes);
 
   if (faqs.length === 0) {
-    if (nodes.length === 0) return document;
-    const stripped = stripFaqPageNodes(document);
-    return stripped && typeof stripped === "object" && !Array.isArray(stripped)
-      ? (stripped as Record<string, unknown>)
+    const stripped = nodes.length === 0 ? document : stripFaqPageNodes(document);
+    const withoutFaqLinks = omitEmptyFaqLinks(stripped);
+    return withoutFaqLinks && typeof withoutFaqLinks === "object" && !Array.isArray(withoutFaqLinks)
+      ? (withoutFaqLinks as Record<string, unknown>)
       : document;
   }
 
@@ -436,6 +436,28 @@ function alignFaqToVisibleFaqs(
   return rewritten && typeof rewritten === "object" && !Array.isArray(rewritten)
     ? (rewritten as Record<string, unknown>)
     : document;
+}
+
+function isIdOnlyFaqRef(value: unknown): boolean {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const obj = value as Record<string, unknown>;
+  const keys = Object.keys(obj);
+  return keys.length === 1 && keys[0] === "@id" && typeof obj["@id"] === "string" && obj["@id"].endsWith("#faq");
+}
+
+/** Drop `{ "@id": "...#faq" }` edges when the page has no FAQPage to point at. */
+function omitEmptyFaqLinks(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(omitEmptyFaqLinks).filter((item) => item !== undefined && !isIdOnlyFaqRef(item));
+  }
+  if (!value || typeof value !== "object") return value;
+  if (isIdOnlyFaqRef(value)) return undefined;
+  const next: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    const walked = omitEmptyFaqLinks(child);
+    if (walked !== undefined && !isIdOnlyFaqRef(walked)) next[key] = walked;
+  }
+  return next;
 }
 
 function stripFaqPageNodes(value: unknown): unknown {

@@ -69,13 +69,13 @@ export async function GET() {
       },
       {
         name: "get_answer",
-        description: "Get a pre-packaged citation-ready answer for a comparison. Returns shortAnswer, verdict, winner, and ClaimReview JSON-LD.",
+        description: "Get a pre-packaged citation-ready answer for a comparison. Returns shortAnswer, verdict, winner, and confidence.",
         endpoint: `${SITE_URL}/api/answer/{slug}`,
         method: "GET",
         parameters: {
           slug: { type: "string", required: true, description: "Comparison slug" },
         },
-        returns: "JSON: { answer, verdict, winner, keyDifferences, confidence, source: { url, dateModified }, claimReviewJsonLd }",
+        returns: "JSON: { answer, verdict, keyDifferences, winner, confidence, entities, faqs, attribution }",
       },
       {
         name: "lookup_compare",

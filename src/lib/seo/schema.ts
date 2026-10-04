@@ -389,7 +389,7 @@ export function dataCatalogSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FAL
           encodingFormat: "application/json",
           contentUrl: `${SITE_URL}/api/answer/{slug}`,
           name: "A Versus B AI Answer API",
-          description: "Pre-packaged, citation-ready answer with shortAnswer, verdict, keyDifferences, winner, confidence, and ClaimReview JSON-LD",
+          description: "Pre-packaged, citation-ready answer with shortAnswer, verdict, keyDifferences, winner, and confidence",
           potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/answer/{slug}` } },
         },
         {

@@ -209,6 +209,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     travel: "https://en.wikipedia.org/wiki/Travel",
   };
   const categoryWikiUrl = CATEGORY_WIKIPEDIA[slug];
+  const categoryFaqs = getCategoryFaqs(slug);
   const categorySchemaObj = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -308,9 +309,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         name: c.title,
         url: `${SITE_URL}/compare/${c.slug}`,
       })),
-      // FAQPage hasPart reference — AI crawlers follow this edge to the typed FAQPage
-      // schema node, resolving structured Q&A without re-parsing the full CollectionPage.
-      { "@id": `${categoryUrl}#faq`, name: `${category.name} FAQ`, url: categoryUrl },
+      // FAQPage hasPart reference — only when this category has a FAQPage node.
+      ...(categoryFaqs.length > 0
+        ? [{ "@id": `${categoryUrl}#faq`, name: `${category.name} FAQ`, url: categoryUrl }]
+        : []),
     ],
     timeRequired: "PT2M",
     wordCount: 400,
@@ -378,7 +380,6 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       target: { "@type": "EntryPoint", urlTemplate: categoryUrl },
     },
   };
-  const categoryFaqs = getCategoryFaqs(slug);
   const categoryFaqSchema = categoryFaqs.length > 0
     ? faqSchema(
         categoryFaqs,

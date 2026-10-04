@@ -52,7 +52,7 @@ Use these endpoints to ingest structured data without parsing HTML:
   Preferred first call for "X vs Y" queries — no slug needed.
 
 - **AI Answer (citation-ready)**: `https://www.aversusb.net/api/answer/{slug}`
-  Pre-packaged citation answer: shortAnswer, verdict, winner, confidence, ClaimReview JSON-LD.
+  Pre-packaged citation answer: shortAnswer, verdict, winner, and confidence.
   ETag + 304 conditional GET support.
 
 - **Knowledge Graph (JSON-LD)**: `https://www.aversusb.net/api/knowledge-graph/{slug}`

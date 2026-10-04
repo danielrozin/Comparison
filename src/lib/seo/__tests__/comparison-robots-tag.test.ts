@@ -54,6 +54,20 @@ describe("provisional read APIs send noindex", () => {
     expect(published.headers.get("X-Robots-Tag")).toBe("all");
   });
 
+  it("answer GET does not return claimReviewSchema", async () => {
+    getPublishedComparisonBySlug.mockResolvedValue(comparison("published"));
+    const response = await answerGet(
+      new Request("https://aversusb.net/api/answer/alpha-vs-beta") as never,
+      params,
+    );
+    const body = await response.json();
+    expect(body.claimReviewSchema).toBeUndefined();
+    expect(JSON.stringify(body)).not.toContain("ClaimReview");
+    expect(body.answer).toBe("Alpha is ahead.");
+    expect(body.winner).toBeNull();
+    expect(body.confidence).toBeTruthy();
+  });
+
   it("answer HEAD noindex for a provisional page", async () => {
     getPublishedComparisonBySlug.mockResolvedValue(comparison("provisional"));
     const response = await answerHead(
