@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: "Is the Galaxy S25 Ultra still worth buying after the S26 Ultra?",
     answer:
-      "Yes if you want the same Ultra camera set: a 200MP main camera, a 10MP 3x telephoto, a 50MP 5x periscope, and a 50MP ultrawide. The S26 Ultra adds Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India store showed the S25 Ultra 256GB | 12GB at ₹1,19,999 and the 512GB | 12GB model at ₹1,39,999. The 1TB option did not show a price. This page does not pick a phone from price.",
+      "Yes if you want the same Ultra camera set: a 200MP main camera, a 10MP 3x telephoto, a 50MP 5x periscope, and a 50MP ultrawide. The S26 Ultra adds Snapdragon 8 Elite Gen 5, 60W wired charging, and a GSMArena active-use score of 16:23h, against 14:49h on the S25 Ultra. Samsung's India store showed the S25 Ultra 256GB | 12GB at ₹1,19,999 and the 512GB | 12GB model at ₹1,39,999. The 1TB option did not show a price. Those prices do not decide the phone.",
   },
   {
     question: "What does the Galaxy S26 Ultra add over the S25 Ultra?",
@@ -68,19 +68,19 @@ const VERDICT = `Ultra cameras: Galaxy S25 Ultra and Galaxy S26 Ultra. Both keep
 
 Apple video tools: iPhone 17 Pro. Apple lists a 48MP 100 mm (4x) telephoto and up to 33 hours of video playback. GSMArena lists ProRes, ProRes RAW, and Apple Log 2.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you want Ultra zoom and battery or Apple's Pro video formats.`;
 
-const EXPERT_ANALYSIS = `Choose the Galaxy S25 Ultra or the Galaxy S26 Ultra for the Ultra zoom cameras and the 5,000 mAh battery. Choose the iPhone 17 Pro when the 4x telephoto and Apple's Pro video formats matter. This page does not crown a winner.
+const EXPERT_ANALYSIS = `Choose the Galaxy S25 Ultra or the Galaxy S26 Ultra for the Ultra zoom cameras and the 5,000 mAh battery. Choose the iPhone 17 Pro when the 4x telephoto and Apple's Pro video formats matter. Neither is better for everyone; it depends on whether you want Ultra zoom and battery or Apple's Pro video formats.
 
 Source note: GSMArena lists the comparison table. Apple Support lists the iPhone 17 Pro's size, the 100 mm telephoto, ProRes, and the 33-hour video-playback rating. Rupee prices are from Samsung's India store. Apple's India store did not show an iPhone 17 Pro price. GSMArena is not used for a rupee price. Check a live listing.
 
 Price
 
-Samsung's India store for the Galaxy S25 Ultra showed ₹1,19,999 for 256GB | 12GB and ₹1,39,999 for 512GB | 12GB. The 1TB option did not show a price. Samsung's India store for the Galaxy S26 Ultra showed ₹1,54,999 for 256GB | 12GB and ₹1,74,999 for 512GB | 12GB. The 1TB | 16GB option did not show a price. Apple's India store for the iPhone 17 Pro redirected to the current lineup and did not show that phone. These are the figures from 30 September 2026. Check a live listing. This page does not pick a phone from price.
+Samsung's India store for the Galaxy S25 Ultra showed ₹1,19,999 for 256GB | 12GB and ₹1,39,999 for 512GB | 12GB. The 1TB option did not show a price. Samsung's India store for the Galaxy S26 Ultra showed ₹1,54,999 for 256GB | 12GB and ₹1,74,999 for 512GB | 12GB. The 1TB | 16GB option did not show a price. Apple's India store for the iPhone 17 Pro redirected to the current lineup and did not show that phone. These are the figures from 30 September 2026. Check a live listing. Those prices do not decide the phone.
 
 Screens, weight, and chips
 
-GSMArena lists a 6.3-inch LTPO Super Retina XDR OLED, 120Hz, on the iPhone 17 Pro. Both Ultras are a 6.9-inch Dynamic LTPO AMOLED 2X, 120Hz. Apple Support lists the 17 Pro at 206 grams and 8.75 mm thick. GSMArena lists the same 206 grams and rounds the thickness to 8.8 mm. The S25 Ultra is 218 grams and 8.2 mm. The S26 Ultra is 214 grams and 7.9 mm. The 17 Pro chipset is Apple A19 Pro. The S25 Ultra is Snapdragon 8 Elite. The S26 Ultra is Snapdragon 8 Elite Gen 5. This page does not repeat GSMArena's benchmark scores.
+GSMArena lists a 6.3-inch LTPO Super Retina XDR OLED, 120Hz, on the iPhone 17 Pro. Both Ultras are a 6.9-inch Dynamic LTPO AMOLED 2X, 120Hz. Apple Support lists the 17 Pro at 206 grams and 8.75 mm thick. GSMArena lists the same 206 grams and rounds the thickness to 8.8 mm. The S25 Ultra is 218 grams and 8.2 mm. The S26 Ultra is 214 grams and 7.9 mm. The 17 Pro chipset is Apple A19 Pro. The S25 Ultra is Snapdragon 8 Elite. The S26 Ultra is Snapdragon 8 Elite Gen 5. GSMArena's benchmark scores are not repeated.
 
 Cameras and video
 
@@ -88,9 +88,9 @@ The iPhone 17 Pro rear system is three 48MP cameras: a main, a 100 mm (4x) peris
 
 Battery and software
 
-Both Ultras are 5,000 mAh. The S25 Ultra charges at 45W wired. The S26 Ultra charges at 60W wired and 25W wireless. GSMArena does not give a wired watt number for the 17 Pro. It lists PD3.2 and 50% in 20 minutes, plus 25W wireless MagSafe. The 17 Pro battery is market-dependent: 3,998 mAh on the nano-SIM version and 4,252 mAh on the eSIM-only version. This page does not assign one of those to India. GSMArena's active-use scores are 16:23h for the S26 Ultra, 15:23h for the 17 Pro, and 14:49h for the S25 Ultra. Apple's 33-hour video-playback rating is a separate claim and is not a GSMArena score.
+Both Ultras are 5,000 mAh. The S25 Ultra charges at 45W wired. The S26 Ultra charges at 60W wired and 25W wireless. GSMArena does not give a wired watt number for the 17 Pro. It lists PD3.2 and 50% in 20 minutes, plus 25W wireless MagSafe. The 17 Pro battery is market-dependent: 3,998 mAh on the nano-SIM version and 4,252 mAh on the eSIM-only version. Neither battery capacity is assigned to India. GSMArena's active-use scores are 16:23h for the S26 Ultra, 15:23h for the 17 Pro, and 14:49h for the S25 Ultra. Apple's 33-hour video-playback rating is a separate claim and is not a GSMArena score.
 
-GSMArena lists up to 7 major OS updates for both Ultras. The S25 Ultra line is Android 15 and One UI 8. The S26 Ultra line is Android 16, upgradable to Android 17, and One UI 9, and it was released 6 March 2026. The 17 Pro line is iOS 26, upgradable to iOS 27. GSMArena does not publish a year count for Apple updates, so this page does not invent one.
+GSMArena lists up to 7 major OS updates for both Ultras. The S25 Ultra line is Android 15 and One UI 8. The S26 Ultra line is Android 16, upgradable to Android 17, and One UI 9, and it was released 6 March 2026. The 17 Pro line is iOS 26, upgradable to iOS 27. GSMArena does not publish a year count for Apple updates.
 
 Who should buy which
 
@@ -181,7 +181,7 @@ export const IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA: EditorialComparison = buil
         "Up to 7 major OS updates, from a 6 March 2026 release",
       ],
       cons: [
-        "This page does not pick a phone from price",
+        "Those prices do not decide the phone",
         "6.9-inch slab, if you wanted the 17 Pro's smaller body",
       ],
       bestFor: "Best if you want the newer chip and the longer active-use score",

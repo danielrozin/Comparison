@@ -62,17 +62,17 @@ const FAQS = [
   {
     question: "Should I buy the 18 Pro instead?",
     answer:
-      "Apple says iPhone 18 Pro availability began September 18, 2026, starting at $1,199. That is $100 more than the iPhone 17 Pro launch price of $1,099. The iPhone 17 launched at $799. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs URL still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. This comparison does not cover iPhone 18 Pro camera or battery specs. If the budget is tight, the iPhone 17 is the value pick among the three phones here.",
+      "Apple says iPhone 18 Pro availability began September 18, 2026, starting at $1,199. That is $100 more than the iPhone 17 Pro launch price of $1,099. The iPhone 17 launched at $799. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs URL still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. iPhone 18 Pro camera and battery specs are not included. If the budget is tight, the iPhone 17 is the value pick among the three phones here.",
   },
   {
     question: "Is buying refurbished safe?",
     answer:
-      "Apple sells Certified Refurbished iPhones. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase, because apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/ and the iPhone 17 specs URL still loaded. Check battery health and the warranty before you buy. Refurbished prices are not part of this comparison.",
+      "Apple sells Certified Refurbished iPhones. As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase, because apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/ and the iPhone 17 specs URL still loaded. Check battery health and the warranty before you buy. Refurbished prices are not included.",
   },
   {
     question: "Which lasts the most years?",
     answer:
-      "This page does not quote a support-year count. The iPhone 17 and iPhone 17 Pro launched on iOS 26, and the iPhone 16 Pro shipped with iOS 18. The 17 uses an A19 chip and the 17 Pro an A19 Pro; the 16 Pro uses an A18 Pro. A newer chip and a later launch are the usual signs of a longer remaining update window.",
+      "No support-year count is stated. The iPhone 17 and iPhone 17 Pro launched on iOS 26, and the iPhone 16 Pro shipped with iOS 18. The 17 uses an A19 chip and the 17 Pro an A19 Pro; the 16 Pro uses an A18 Pro. A newer chip and a later launch are the usual signs of a longer remaining update window.",
   },
 ];
 
@@ -84,11 +84,11 @@ Refurbished or third-party: iPhone 17 Pro and iPhone 16 Pro. As of September 26,
 
 What about the iPhone 18 Pro? Apple says availability began September 18, 2026, starting at $1,199, which is $100 more than the 17 Pro launch price. Apple’s compare tool still lists the iPhone 17 Pro next to the iPhone 18 Pro, the same way it still lists older iPhones. The 17 Pro figures here are from Apple Support, not from a live apple.com/iphone-17-pro/specs/ URL.`;
 
-const EXPERT_ANALYSIS = `This page answers which of the iPhone 17, iPhone 17 Pro, and iPhone 16 Pro to buy when you are upgrading from an older phone and care about battery life, staying on updates, and video — including if you might buy refurbished. There is no single winner.
+const EXPERT_ANALYSIS = `The choice among the iPhone 17, the iPhone 17 Pro, and the iPhone 16 Pro depends on battery life, staying on updates, and video, including a refurbished buy. There is no single winner.
 
 Battery and longevity
 
-Apple rates video playback at up to 30 hours on the iPhone 17, up to 33 hours on the iPhone 17 Pro, and up to 27 hours on the iPhone 16 Pro. The 17 uses an A19 chip, the 17 Pro an A19 Pro, and the 16 Pro an A18 Pro. GSMArena lists launch software as iOS 26 for the 17 series and iOS 18 for the 16 Pro. Apple Support storage notes also mention iOS 26 on the 17 Pro and iOS 18 on the 16 Pro. This page does not quote a year count for how long Apple will ship updates.
+Apple rates video playback at up to 30 hours on the iPhone 17, up to 33 hours on the iPhone 17 Pro, and up to 27 hours on the iPhone 16 Pro. The 17 uses an A19 chip, the 17 Pro an A19 Pro, and the 16 Pro an A18 Pro. GSMArena lists launch software as iOS 26 for the 17 series and iOS 18 for the 16 Pro. Apple Support storage notes also mention iOS 26 on the 17 Pro and iOS 18 on the 16 Pro. No year count is stated for how long Apple will ship updates.
 
 Camera and video
 
@@ -96,7 +96,7 @@ Apple does not give the iPhone 17 a separate telephoto lens. Its longer reach is
 
 Buying refurbished
 
-As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs URL still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. Apple’s compare tool still lists the 17 Pro beside the 18 Pro, the same way it still lists older iPhones, so the missing specs URL is the lineup signal, not the compare tool dropping the name. Apple’s Certified Refurbished iPhone store is the place to start. Check battery health and the warranty on the unit you are offered. Refurbished prices are not part of this comparison, and it does not name third-party sellers.
+As of September 26, 2026, the iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase. apple.com/iphone-17-pro/specs/ redirected to apple.com/iphone/, while the iPhone 17 specs URL still loaded. That is the sign Apple replaced the 17 Pro with the 18 Pro in its current lineup. Apple’s compare tool still lists the 17 Pro beside the 18 Pro, the same way it still lists older iPhones, so the missing specs URL is the lineup signal, not the compare tool dropping the name. Apple’s Certified Refurbished iPhone store is the place to start. Check battery health and the warranty on the unit you are offered. Refurbished prices are not included, and third-party sellers are not named.
 
 Who should buy which
 
@@ -362,7 +362,7 @@ export const IPHONE_17_VS_17_PRO_VS_16_PRO: EditorialComparison = buildEditorial
       type: "external",
       label: "Apple Certified Refurbished iPhone",
       url: REFURB,
-      description: "Check battery health and warranty. No prices on this page.",
+      description: "Check battery health and warranty. No prices.",
     },
     {
       type: "external",

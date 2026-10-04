@@ -34,7 +34,7 @@ const H2H_CAT =
 const SEASON_CAT = "2026-27 season · Stats as of October 3, 2026";
 
 const SHORT_ANSWER =
-  "The New York Knicks beat the San Antonio Spurs 4-1 in the 2026 NBA Finals. The Spurs beat the Knicks 4-1 in the 1999 NBA Finals. Basketball-Reference counts 107 Knicks games against San Antonio, with New York at 47 wins and San Antonio at 60. The Spurs head-to-head count is the same 107 games (Basketball-Reference). This page does not pick a future winner.";
+  "The New York Knicks beat the San Antonio Spurs 4-1 in the 2026 NBA Finals. The Spurs beat the Knicks 4-1 in the 1999 NBA Finals. Basketball-Reference counts 107 Knicks games against San Antonio, with New York at 47 wins and San Antonio at 60. The Spurs head-to-head count is the same 107 games (Basketball-Reference). Neither is named the winner of a game that has not been played.";
 
 const META_DESCRIPTION =
   "Knicks beat the Spurs 4-1 in the 2026 Finals. Spurs beat the Knicks 4-1 in 1999. Head-to-head: 107 games, Knicks 47 wins, Spurs 60.";
@@ -58,17 +58,17 @@ const FAQS = [
   {
     question: "How many times have the Knicks and the Spurs met in the NBA Finals?",
     answer:
-      "Two Finals are on the Basketball-Reference playoff summaries checked October 3, 2026. The 1999 Finals went to the Spurs, 4-1. The 2026 Finals went to the Knicks, 4-1. This page is about that rivalry history. It is not a score lookup for one night.",
+      "Two Finals are on the Basketball-Reference playoff summaries checked October 3, 2026. The 1999 Finals went to the Spurs, 4-1. The 2026 Finals went to the Knicks, 4-1. Those series are the rivalry history, not a score for one night.",
   },
   {
     question: "Have the Knicks and the Spurs played in 2026-27?",
     answer:
-      "Not as of October 3, 2026. The 2026-27 regular season had not started on that date, so this page adds no 2026-27 head-to-head result. Stats as of October 3, 2026.",
+      "Not as of October 3, 2026. The 2026-27 regular season had not started on that date, so there is no 2026-27 head-to-head result. Stats as of October 3, 2026.",
   },
   {
-    question: "Does this page predict the next Knicks vs Spurs game?",
+    question: "Is the next Knicks vs Spurs game predicted?",
     answer:
-      "No. The 1999 Finals and the 2026 Finals are finished series. The head-to-head count is Basketball-Reference's, as of October 3, 2026. This comparison does not name a winner for a game that has not been played.",
+      "No. The 1999 Finals and the 2026 Finals are finished series. The head-to-head count is Basketball-Reference's, as of October 3, 2026. Neither is named the winner of a game that has not been played.",
   },
 ];
 
@@ -78,7 +78,7 @@ Head-to-head table: 107 games, Knicks 47 wins, Spurs 60 wins. The opponent table
 
 2026-27, stats as of October 3, 2026: no games yet. There is no single winner.`;
 
-const EXPERT_ANALYSIS = `The Knicks and the Spurs have split two NBA Finals. New York won the 2026 Finals, 4-1. San Antonio won the 1999 Finals, 4-1. Across the head-to-head table, the series is 107 games, with the Knicks at 47 wins and the Spurs at 60. This page does not pick a winner for a game that has not been played.
+const EXPERT_ANALYSIS = `The Knicks and the Spurs have split two NBA Finals. New York won the 2026 Finals, 4-1. San Antonio won the 1999 Finals, 4-1. Across the head-to-head table, the series is 107 games, with the Knicks at 47 wins and the Spurs at 60. Neither is named the winner of a game that has not been played.
 
 Source note: the 2026 Finals are from Basketball-Reference's 2026 NBA playoffs summary. The 1999 Finals are from the 1999 NBA playoffs summary. The head-to-head row is from the Knicks opponent table, checked against the Spurs opponent table. Basketball-Reference lists Knicks franchise seasons from 1946-47 to 2026-27, record 3078-3191. The opponent table is not captioned regular season or playoffs.
 

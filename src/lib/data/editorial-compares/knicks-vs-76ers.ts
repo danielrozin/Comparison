@@ -28,13 +28,13 @@ const PLAYOFF_CAT = `2026 playoffs · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "On the Knicks head-to-head table, the Knicks are 214-267 against the 76ers in 481 games. In the 2026 playoffs the Knicks swept the 76ers 4-0 in the Eastern Conference semifinals, then won the championship by beating the Spurs 4-1. LeBron James signed with the 76ers in July 2026. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log. NBA.com lists the 76ers at the Knicks on October 20, 2026, at 7:00 pm ET. This page does not predict that game.";
+  "On the Knicks head-to-head table, the Knicks are 214-267 against the 76ers in 481 games. In the 2026 playoffs the Knicks swept the 76ers 4-0 in the Eastern Conference semifinals, then won the championship by beating the Spurs 4-1. LeBron James signed with the 76ers in July 2026. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log. NBA.com lists the 76ers at the Knicks on October 20, 2026, at 7:00 pm ET. There is no forecast for that game.";
 
 const FAQS = [
   {
     question: "What is the Knicks' record against the 76ers?",
     answer:
-      "On the Knicks head-to-head table at Basketball-Reference, the Knicks are 214-267 in 481 games. The same row lists 103.6 points scored per game and 104.4 points allowed per game. Basketball-Reference does not label that row as regular season only, so this comparison does not add that label. The 76ers' side of the same row is 267 wins and 214 losses.",
+      "On the Knicks head-to-head table at Basketball-Reference, the Knicks are 214-267 in 481 games. The same row lists 103.6 points scored per game and 104.4 points allowed per game. Basketball-Reference does not label that row as regular season only, so that label is not added. The 76ers' side of the same row is 267 wins and 214 losses.",
   },
   {
     question: "Who won the 2026 playoff series between the Knicks and the 76ers?",
@@ -54,12 +54,12 @@ const FAQS = [
   {
     question: "When do the 76ers play the Knicks to open 2026-27?",
     answer:
-      "NBA.com's games page for October 20, 2026 lists Philadelphia at New York at 7:00 pm ET. That is a schedule fact. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log for either team. This page does not predict the opener or the season series.",
+      "NBA.com's games page for October 20, 2026 lists Philadelphia at New York at 7:00 pm ET. That is a schedule fact. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log for either team. There is no forecast for the opener or the season series.",
   },
   {
-    question: "Which older Knicks-76ers playoff series does this page include?",
+    question: "Which older Knicks-76ers playoff series are included?",
     answer:
-      "Only the 2026 Eastern Conference semifinals. Basketball-Reference lists that series. Earlier series from other sites are not part of this comparison. Basketball-Reference lists 3 championships, 81 seasons, a 3,078-3,191 record, and 47 playoff appearances for the Knicks. It does not break those championships into a series list.",
+      "Only the 2026 Eastern Conference semifinals. Basketball-Reference lists that series. Earlier series from other sites are not included. Basketball-Reference lists 3 championships, 81 seasons, a 3,078-3,191 record, and 47 playoff appearances for the Knicks. It does not break those championships into a series list.",
   },
 ];
 
@@ -69,19 +69,19 @@ const VERDICT = `Head-to-head table: Knicks 214 wins, 267 losses in 481 games.
 
 2026 NBA Finals: Knicks beat the Spurs 4-1 and are the league champion on Basketball-Reference's 2026 playoff page.
 
-2026-27 season: LeBron James signed with the 76ers in July 2026. Stats as of October 3, 2026, there is no regular-season game log. The 76ers are at the Knicks on October 20, 2026, at 7:00 pm ET. This page does not pick a winner and does not predict that game.`;
+2026-27 season: LeBron James signed with the 76ers in July 2026. Stats as of October 3, 2026, there is no regular-season game log. The 76ers are at the Knicks on October 20, 2026, at 7:00 pm ET. Neither is named the winner of that game, and there is no forecast for it.`;
 
-const EXPERT_ANALYSIS = `The Knicks are 214-267 against the 76ers in 481 games on the Knicks head-to-head table. In the 2026 playoffs they swept the 76ers 4-0, then beat the Spurs 4-1 for the championship. LeBron James signed with the 76ers in July 2026. This page does not predict the 2026-27 season.
+const EXPERT_ANALYSIS = `The Knicks are 214-267 against the 76ers in 481 games on the Knicks head-to-head table. In the 2026 playoffs they swept the 76ers 4-0, then beat the Spurs 4-1 for the championship. LeBron James signed with the 76ers in July 2026. There is no 2026-27 forecast.
 
 Source note: the 481-game row is from the Knicks head-to-head page on Basketball-Reference. The sweep, the Finals, and the championship are from Basketball-Reference's 2026 playoff index and the Eastern Conference semifinals series page. The signing and the 76ers' 45-37 record are from NBA.com's story updated July 27, 2026. The October 20 opener is from NBA.com's games page. ${H2H} ${PLAYOFFS} ${SERIES} ${SIGNING} ${SCHEDULE}
 
-2026-27 season. Stats as of ${AS_OF}. No regular-season game log is on Basketball-Reference for this matchup, so this page does not quote a 2026-27 scoring line or a projection. NBA.com lists Philadelphia at New York on October 20, 2026, at 7:00 pm ET. That is the schedule. It is not a pick. LeBron's move is a roster fact: NBA.com says he announced it Friday, that it became official on Sunday, that his posts are dated July 24, 2026, and that the 76ers' post is dated July 27, 2026. The story says the 76ers went 45-37 and were swept by the Knicks in the second round.
+2026-27 season. Stats as of ${AS_OF}. No regular-season game log is on Basketball-Reference for this matchup, so no 2026-27 scoring line or projection is quoted. NBA.com lists Philadelphia at New York on October 20, 2026, at 7:00 pm ET. That is the schedule. It is not a pick. LeBron's move is a roster fact: NBA.com says he announced it Friday, that it became official on Sunday, that his posts are dated July 24, 2026, and that the 76ers' post is dated July 27, 2026. The story says the 76ers went 45-37 and were swept by the Knicks in the second round.
 
-Head-to-head. The Knicks row against the 76ers is 481 games, 214 wins, 267 losses, a .445 win percentage, 103.6 points scored per game, and 104.4 points allowed per game. The Knicks franchise header lists 81 seasons from 1946-47 through 2026-27, a 3,078-3,191 record, 47 playoff appearances, and 3 championships. This page does not turn the 3 into a claim about how many of those titles came in 2026. The 2026 title is stated from the playoff index, which names the Knicks the league champion.
+Head-to-head. The Knicks row against the 76ers is 481 games, 214 wins, 267 losses, a .445 win percentage, 103.6 points scored per game, and 104.4 points allowed per game. The Knicks franchise header lists 81 seasons from 1946-47 through 2026-27, a 3,078-3,191 record, 47 playoff appearances, and 3 championships. The 3 is not a claim about how many of those titles came in 2026. The 2026 title is stated from the playoff index, which names the Knicks the league champion.
 
-2026 playoffs. The East semifinals were a sweep. May 4, Philadelphia 98 at New York 137. May 6, Philadelphia 102 at New York 108. May 8, New York 108 at Philadelphia 94. May 10, New York 144 at Philadelphia 114. Brunson's series line is 29.0 points, 2.8 rebounds, and 6.0 assists in 4 games. The 76ers' first-round series on the same index was a 4-3 win over the Celtics. The Finals were Knicks over Spurs, 4-1, and Brunson was Finals MVP at 32.6 points, 4.2 rebounds, and 4.6 assists. Earlier Knicks-76ers playoff series are not in these sources, so this comparison does not include them.
+2026 playoffs. The East semifinals were a sweep. May 4, Philadelphia 98 at New York 137. May 6, Philadelphia 102 at New York 108. May 8, New York 108 at Philadelphia 94. May 10, New York 144 at Philadelphia 114. Brunson's series line is 29.0 points, 2.8 rebounds, and 6.0 assists in 4 games. The 76ers' first-round series on the same index was a 4-3 win over the Celtics. The Finals were Knicks over Spurs, 4-1, and Brunson was Finals MVP at 32.6 points, 4.2 rebounds, and 4.6 assists. Earlier Knicks-76ers playoff series are not in these sources, so they are not included.
 
-This page does not give the signing story's betting prices, and it does not give a contract figure for LeBron. Those lines are labeled as reports or as prices.`;
+The signing story's betting prices are not given, and no contract figure for LeBron is given. Those lines are labeled as reports or as prices.`;
 
 const BUILT = buildEditorialComparison({
   slug: "knicks-vs-76ers",

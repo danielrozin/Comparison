@@ -20,7 +20,7 @@ const SOURCE_DATE = "2026-09-29";
 const PUBLISHED = "2026-09-29T00:00:00Z";
 
 const SHORT_ANSWER =
-  "An Instax Mini is the easier start. That means the Mini 12, or the Mini 13 if that is the camera on the shelf: cheaper film in the reviews cited here, more consistent prints, and simple one-button shooting. The Polaroid Go Gen 2 is for people who want the Polaroid look and tiny square prints, and who accept a higher cost per shot and less predictable exposure. Digital Camera World lists both camera bodies at a US$79.99 RRP and says the Go still leans toward overexposing outdoors. This page does not crown a winner.";
+  "An Instax Mini is the easier start. That means the Mini 12, or the Mini 13 if that is the camera on the shelf: cheaper film in the reviews cited here, more consistent prints, and simple one-button shooting. The Polaroid Go Gen 2 is for people who want the Polaroid look and tiny square prints, and who accept a higher cost per shot and less predictable exposure. Digital Camera World lists both camera bodies at a US$79.99 RRP and says the Go still leans toward overexposing outdoors. Neither is better for everyone; it depends on whether you want the easier Instax start or the Polaroid look.";
 
 const FAQS = [
   {
@@ -41,7 +41,7 @@ const FAQS = [
   {
     question: "Should you buy the Instax Mini 12 or the Mini 13?",
     answer:
-      "Buy the Instax Mini that is actually on the shelf. PCMag's roundup, updated 6 July 2026, names the Mini 13 as the current entry-level pick: one-button operation, a selfie mirror, a self-timer, and AA batteries, and it does not do double exposures. The Mini 12 review from 2 March 2023 describes one-button operation, a selfie mirror, a close-up mode, and AA batteries. These sources do not include a full Mini 13 spec sheet, and this page does not invent one. It also does not use Polaroid Go Generation 3 specs.",
+      "Buy the Instax Mini that is actually on the shelf. PCMag's roundup, updated 6 July 2026, names the Mini 13 as the current entry-level pick: one-button operation, a selfie mirror, a self-timer, and AA batteries, and it does not do double exposures. The Mini 12 review from 2 March 2023 describes one-button operation, a selfie mirror, a close-up mode, and AA batteries. These sources do not include a full Mini 13 spec sheet. Polaroid Go Generation 3 specs are not used.",
   },
   {
     question: "Is the Polaroid Go Gen 2 good outdoors?",
@@ -54,9 +54,9 @@ const VERDICT = `Best easy start: Instax Mini (Mini 12, or Mini 13 if that is wh
 
 Best for the Polaroid look: Polaroid Go Gen 2. Tiny square prints, double exposure, a self-timer, and USB-C, if you accept the higher cost per shot and less predictable exposure.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you want the easier Instax start or the Polaroid look.`;
 
-const EXPERT_ANALYSIS = `An Instax Mini gives you the easier start. The Polaroid Go Gen 2 is the camera for the Polaroid look and tiny square prints, if you accept the higher cost per shot and the less predictable exposure. This page does not crown one camera.
+const EXPERT_ANALYSIS = `An Instax Mini gives you the easier start. The Polaroid Go Gen 2 is the camera for the Polaroid look and tiny square prints, if you accept the higher cost per shot and the less predictable exposure. Neither is better for everyone; it depends on whether you want the easier Instax start or the Polaroid look.
 
 Spec table. Caption: Polaroid Go Gen 2 vs Instax Mini. Source note: the rows are reviewer-cited figures from Digital Camera World, PCMag UK, PCMag's Instax Mini 12 review, and PCMag's instant-camera roundup. They are not a live store price.
 
@@ -74,7 +74,7 @@ Film is where the reviews separate them. Digital Camera World cites US$1.24 a sh
 
 Controls and power
 
-Digital Camera World and PCMag UK both say the Go Gen 2 has double exposure, a self-timer, and USB-C charging for an internal battery. PCMag's Mini 12 review describes one-button operation, a selfie mirror, a close-up mode (11.8 inches / 0.3 m), and AA batteries. The July 2026 roundup says the Mini 13 is also one-button, with a selfie mirror, a self-timer, and AA batteries, and that it does not support double exposures. This page does not add Mini 13 specs beyond that roundup, and it does not describe a Polaroid Go Generation 3.
+Digital Camera World and PCMag UK both say the Go Gen 2 has double exposure, a self-timer, and USB-C charging for an internal battery. PCMag's Mini 12 review describes one-button operation, a selfie mirror, a close-up mode (11.8 inches / 0.3 m), and AA batteries. The July 2026 roundup says the Mini 13 is also one-button, with a selfie mirror, a self-timer, and AA batteries, and that it does not support double exposures. Mini 13 specs beyond that roundup are not added, and a Polaroid Go Generation 3 is not described.
 
 Exposure
 
@@ -135,7 +135,7 @@ export const POLAROID_GO_GEN_2_VS_INSTAX_MINI: EditorialComparison = buildEditor
         "Prints are the rectangular wallet-size Instax Mini format, not square Polaroid Go prints",
         "The Mini 12 review says it has no double exposure",
         "Mini 12 and Mini 13 run on AA batteries, not a USB-C internal pack",
-        "This page does not invent a full Mini 13 spec sheet beyond PCMag's 2026 roundup",
+        "No full Mini 13 spec sheet beyond PCMag's 2026 roundup",
       ],
       bestFor: "Best easy start: cheaper film and more consistent prints",
     },

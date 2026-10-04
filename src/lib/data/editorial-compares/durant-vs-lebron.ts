@@ -24,7 +24,7 @@ const RECENT_CAT = `2025-26 regular season · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "Kevin Durant's career line on the per-game table is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games. In 2025-26 Durant averaged 26.0 points in 78 games for Houston and LeBron averaged 20.9 points in 60 games for the Lakers. LeBron signed with the 76ers in July 2026. Stats as of October 3, 2026, there is no 2026-27 regular-season game log. This page does not predict the season.";
+  "Kevin Durant's career line on the per-game table is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games. In 2025-26 Durant averaged 26.0 points in 78 games for Houston and LeBron averaged 20.9 points in 60 games for the Lakers. LeBron signed with the 76ers in July 2026. Stats as of October 3, 2026, there is no 2026-27 regular-season game log. There is no 2026-27 forecast.";
 
 const FAQS = [
   {
@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: "How many championships does each player have?",
     answer:
-      "Durant won 2 NBA championships, 2 Finals MVPs, the 2013-14 MVP, and 4 scoring titles, and made 16 All-Star teams. LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. This page does not turn those honors into a ranking.",
+      "Durant won 2 NBA championships, 2 Finals MVPs, the 2013-14 MVP, and 4 scoring titles, and made 16 All-Star teams. LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. Those honors are not a single ranking.",
   },
   {
     question: "Where is each player listed for 2026-27?",
@@ -48,9 +48,9 @@ const FAQS = [
       "Basketball-Reference lists Durant with the Houston Rockets and LeBron with the Philadelphia 76ers. NBA.com's story, updated July 27, 2026, says LeBron announced the move on social media Friday and that it became official on Sunday. His posts on that story are dated July 24, 2026. He told the Lakers on June 30 that he would not return. The story says he logged 23 seasons and will add at least one more this season.",
   },
   {
-    question: "Does this page predict 2026-27?",
+    question: "Is 2026-27 predicted?",
     answer:
-      "No. Stats as of October 3, 2026, neither player page has a 2026-27 regular-season game log. Tables labeled 2026-27 Projection are not quoted. Reported contract dollars in the signing story are labeled as reports, so they are not used. This page does not pick a winner.",
+      "No. Stats as of October 3, 2026, neither player page has a 2026-27 regular-season game log. Tables labeled 2026-27 Projection are not quoted. Reported contract dollars in the signing story are labeled as reports, so they are not used. Neither is named the winner of the 2026-27 season.",
   },
 ];
 
@@ -60,9 +60,9 @@ const VERDICT = `Career per game: Durant 27.1 points, 6.9 rebounds, and 4.4 assi
 
 Championships on the honors lists: Durant 2. LeBron 4.
 
-2026-27 season: Basketball-Reference lists Durant with Houston. Basketball-Reference lists LeBron with the 76ers. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
+2026-27 season: Basketball-Reference lists Durant with Houston. Basketball-Reference lists LeBron with the 76ers. Stats as of October 3, 2026, there is no regular-season game log. Neither is named the winner of the 2026-27 season.`;
 
-const EXPERT_ANALYSIS = `Kevin Durant's career line is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games, totaling 32,597 points. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. In 2025-26 Durant averaged 26.0 points in 78 games and LeBron averaged 20.9 points in 60 games. This page does not pick a winner.
+const EXPERT_ANALYSIS = `Kevin Durant's career line is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games, totaling 32,597 points. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. In 2025-26 Durant averaged 26.0 points in 78 games and LeBron averaged 20.9 points in 60 games. Neither is better for everyone; it depends on the counting line.
 
 Source note: the career rows, the 2025-26 lines, and the team fields are from Basketball-Reference. The signing and the line that 2026-27 adds at least one season after 23 are from NBA.com's story updated July 27, 2026. ${DURANT_URL} ${LEBRON_URL} ${SIGNING}
 

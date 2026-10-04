@@ -31,7 +31,7 @@ const FAQS = [
   {
     question: "Which is better for everyday family chat?",
     answer:
-      "It depends who is already installed. If the goal is private family chat with default end-to-end encryption, Signal matches that job. If the family already lives in Telegram groups or Channels, Telegram is easier — but default cloud chats are not end-to-end encrypted. There is no MAU ranking on this page.",
+      "It depends who is already installed. If the goal is private family chat with default end-to-end encryption, Signal matches that job. If the family already lives in Telegram groups or Channels, Telegram is easier — but default cloud chats are not end-to-end encrypted. There is no MAU ranking.",
   },
   {
     question: "Signal vs Telegram for business — which should teams use?",
@@ -45,7 +45,7 @@ const FAQS = [
   },
 ];
 
-const EXPERT_ANALYSIS = `This page compares Signal and Telegram by use-case: default privacy versus large-community features. It does not invent user counts.
+const EXPERT_ANALYSIS = `Signal or Telegram depends on default privacy versus large-community features. No user counts are added.
 
 Privacy and encryption
 

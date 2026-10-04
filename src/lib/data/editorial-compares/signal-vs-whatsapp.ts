@@ -45,7 +45,7 @@ const FAQS = [
   },
 ];
 
-const EXPERT_ANALYSIS = `This page answers “Signal or WhatsApp — which messenger is better for privacy, features, and everyday use?” with a verdict by use-case. It does not rank the apps by user counts or download tallies.
+const EXPERT_ANALYSIS = `Signal or WhatsApp depends on privacy, features, and everyday use. There is no ranking by user counts or download tallies.
 
 Privacy and encryption
 

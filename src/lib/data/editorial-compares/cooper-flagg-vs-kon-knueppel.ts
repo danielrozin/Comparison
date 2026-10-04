@@ -21,7 +21,7 @@ const ROOKIE_CAT = `2025-26 per game · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "Cooper Flagg's 2025-26 line is 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games for Dallas. Kon Knueppel's is 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games for Charlotte. Flagg won 2025-26 Rookie of the Year. Knueppel finished second in that vote and made 2025-26 All-Rookie. Stats as of October 3, 2026, neither player has a 2026-27 regular-season game log. This page does not predict the season.";
+  "Cooper Flagg's 2025-26 line is 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games for Dallas. Kon Knueppel's is 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games for Charlotte. Flagg won 2025-26 Rookie of the Year. Knueppel finished second in that vote and made 2025-26 All-Rookie. Stats as of October 3, 2026, neither player has a 2026-27 regular-season game log. There is no 2026-27 forecast.";
 
 const FAQS = [
   {
@@ -42,7 +42,7 @@ const FAQS = [
   {
     question: "Who is listed as Rookie of the Year?",
     answer:
-      "Flagg. The honors list prints 2025-26 Rookie of the Year, and the season awards cell is ROY-1. Knueppel's season awards cell is ROY-2, which is the voting place on that cell, and his honors list is All-Rookie. This page does not call Knueppel the Rookie of the Year.",
+      "Flagg. The honors list prints 2025-26 Rookie of the Year, and the season awards cell is ROY-1. Knueppel's season awards cell is ROY-2, which is the voting place on that cell, and his honors list is All-Rookie. Knueppel is not called the Rookie of the Year.",
   },
   {
     question: "Where is each player listed for 2026-27?",
@@ -50,9 +50,9 @@ const FAQS = [
       "Basketball-Reference lists Flagg with the Dallas Mavericks and Knueppel with the Charlotte Hornets. Each info box says experience of 1 year. Stats as of October 3, 2026, neither page has a 2026-27 regular-season game log.",
   },
   {
-    question: "Does this page use the 2026-27 projection?",
+    question: "Is the 2026-27 projection used?",
     answer:
-      "No. Both pages include a table labeled 2026-27 Projection. This page does not quote it. There is no 2026-27 game log to put in its place, and this page does not predict the season.",
+      "No. Both pages include a table labeled 2026-27 Projection. That table is not quoted. There is no 2026-27 game log to put in its place, and there is no 2026-27 forecast.",
   },
 ];
 
@@ -60,13 +60,13 @@ const VERDICT = `2025-26 per game: Flagg 21.0 points, 6.7 rebounds, and 4.5 assi
 
 Honors: Flagg won 2025-26 Rookie of the Year. Knueppel finished second in that vote and made 2025-26 All-Rookie.
 
-2026-27 season: Flagg is listed with Dallas. Knueppel is listed with Charlotte. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
+2026-27 season: Flagg is listed with Dallas. Knueppel is listed with Charlotte. Stats as of October 3, 2026, there is no regular-season game log. Neither is named the winner of the 2026-27 season.`;
 
-const EXPERT_ANALYSIS = `Cooper Flagg averaged 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games as a rookie. Kon Knueppel averaged 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games. Flagg won 2025-26 Rookie of the Year. Knueppel did not. This page does not predict 2026-27.
+const EXPERT_ANALYSIS = `Cooper Flagg averaged 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games as a rookie. Kon Knueppel averaged 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games. Flagg won 2025-26 Rookie of the Year. Knueppel did not. There is no 2026-27 forecast.
 
 Source note: the per-game rows, totals, draft lines, and honors are from the two Basketball-Reference player pages. ${FLAGG_URL} ${KNUEPPEL_URL}
 
-2026-27 season. Stats as of ${AS_OF}. Flagg's team field is the Dallas Mavericks. Knueppel's is the Charlotte Hornets. Neither page has a 2026-27 regular-season game log. Each page has a table labeled 2026-27 Projection, and this page does not quote it.
+2026-27 season. Stats as of ${AS_OF}. Flagg's team field is the Dallas Mavericks. Knueppel's is the Charlotte Hornets. Neither page has a 2026-27 regular-season game log. Each page has a table labeled 2026-27 Projection, and that table is not quoted.
 
 The rookie shooting lines are .468 / .295 / .827 for Flagg and .475 / .425 / .863 for Knueppel, field goals, threes, and free throws. Point totals are 1,473 and 1,498. Both debuted October 22, 2025. Flagg was the 1st overall pick. Knueppel was the 4th.`;
 

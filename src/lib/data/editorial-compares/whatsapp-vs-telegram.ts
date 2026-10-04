@@ -45,7 +45,7 @@ const FAQS = [
   },
 ];
 
-const EXPERT_ANALYSIS = `This page compares WhatsApp and Telegram by use-case: default encrypted everyday chat and business tools versus large public communities. It does not invent user counts.
+const EXPERT_ANALYSIS = `WhatsApp or Telegram depends on default encrypted everyday chat and business tools versus large public communities. No user counts are added.
 
 Privacy and encryption
 

@@ -4,7 +4,7 @@ import type { EditorialComparison } from "./types";
 /**
  * ROO-114 — Brave vs Chrome.
  * Checked against sources on 2026-09-30. Speed lines are the vendor's
- * own wording, not a measurement run for this page. No page-level winner.
+ * own wording, not a separate measurement. No page-level winner.
  */
 
 const BRAVE = "brave";
@@ -27,13 +27,13 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a lab result on this page. This page does not crown a winner.";
+  "It depends on what you want the browser to do before you change a setting. Pick Brave when you want third-party ads and trackers blocked by default, and pick Chrome when you want Google Account sync and the Chrome Web Store as Google ships it. Both are Chromium browsers. Brave says it is 3x faster than Chrome, and Brave also says websites load 3x-6x faster. Those are Brave's claims, not a separate lab result. Neither is better for everyone; it depends on what you want the browser to do before you change a setting.";
 
 const FAQS = [
   {
     question: "Is Brave more private than Chrome?",
     answer:
-      "Brave turns more blocking on before you change a setting. Brave says Shields block ads, trackers, cross-site cookies, and fingerprinting by default, and that Global Privacy Control is on by default. Brave also says Sync is encrypted on the device and does not use Google's servers. Chrome says third-party cookies are blocked by default in Incognito, and that regular browsing lets you choose Allow or Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. This page does not turn those vendor descriptions into a scored privacy ranking.",
+      "Brave turns more blocking on before you change a setting. Brave says Shields block ads, trackers, cross-site cookies, and fingerprinting by default, and that Global Privacy Control is on by default. Brave also says Sync is encrypted on the device and does not use Google's servers. Chrome says third-party cookies are blocked by default in Incognito, and that regular browsing lets you choose Allow or Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. Those vendor descriptions are not a scored privacy ranking.",
   },
   {
     question: "Does Brave block ads without an extension?",
@@ -61,9 +61,9 @@ const VERDICT = `Best if you want blocking on before you add an extension: Brave
 
 Best if you want Google's browser as Google ships it: Chrome. A Google Account syncs bookmarks and passwords, and the Chrome Web Store follows Manifest V3.
 
-There is no single winner on this page. It depends on the use.`;
+Neither is better for everyone; it depends on the use.`;
 
-const EXPERT_ANALYSIS = `It depends on what you want the browser to do before you change a setting. Brave is the pick when default ad and tracker blocking is the point. Chrome is the pick when Google Account sync and the Chrome Web Store, as Google ships it, are the point. This page does not crown one browser.
+const EXPERT_ANALYSIS = `It depends on what you want the browser to do before you change a setting. Brave is the pick when default ad and tracker blocking is the point. Chrome is the pick when Google Account sync and the Chrome Web Store, as Google ships it, are the point. Neither is better for everyone; it depends on what you want the browser to do before you change a setting.
 
 Spec table. Caption: Brave vs Chrome. Source note: the rows were checked on 30 September 2026 against Brave's homepage, Shields, privacy, and features pages, Brave's 2 June 2025 extension guide, Google's Chrome page, Google's Chromium project page, Chrome's sign-in and cookie help, Chrome's Manifest V2 timeline (updated 9 September 2026), Chrome's Manifest V3 doc, and the Chrome 139 release notes.
 
@@ -71,7 +71,7 @@ Sources: brave.com, brave.com/shields, brave.com/privacy-features, brave.com/fea
 
 Engine
 
-Google says Chromium is the web browser that Google Chrome is built on. Brave says Brave is built on that same open-source Chromium project, and names Google Chrome as one browser that engine powers. Brave says the same thing in its own words: Brave is built on the open-source Chromium web core. This page does not treat that shared engine as a speed score.
+Google says Chromium is the web browser that Google Chrome is built on. Brave says Brave is built on that same open-source Chromium project, and names Google Chrome as one browser that engine powers. Brave says the same thing in its own words: Brave is built on the open-source Chromium web core. That shared engine is not a speed score.
 
 Where each one runs
 
@@ -99,7 +99,7 @@ Brave says BAT, the Basic Attention Token, is optional. Opt in and you can view 
 
 Speed, as the vendor states it
 
-Brave's homepage FAQ says the browser is 3x faster than Google Chrome. The same homepage also says websites load 3x-6x faster. Those two sentences are both Brave's. This page does not pick one, and it does not treat either figure as a lab result. Chrome names Energy Saver and Memory Saver. It does not publish a speed multiple against Brave.
+Brave's homepage FAQ says the browser is 3x faster than Google Chrome. The same homepage also says websites load 3x-6x faster. Those two sentences are both Brave's. Neither speed figure is picked, and neither figure is a lab result. Chrome names Energy Saver and Memory Saver. It does not publish a speed multiple against Brave.
 
 Who should pick which
 
@@ -132,7 +132,7 @@ export const BRAVE_VS_CHROME: EditorialComparison = buildEditorialComparison({
       cons: [
         "Aggressive Shields can break sites. Brave says you can turn Shields off per site",
         "Brave says it cannot vouch for third-party extensions you add",
-        "The 3x and 3x-6x speed lines are Brave's claims, not a lab result on this page",
+        "The 3x and 3x-6x speed lines are Brave's claims, not a separate lab result",
       ],
       bestFor: "Best if you want ads and trackers blocked before you add an extension",
     },

@@ -29,7 +29,7 @@ const SOURCE_DATE = "2026-09-29";
 const PUBLISHED = "2026-09-29T00:00:00Z";
 
 const SHORT_ANSWER =
-  "The Galaxy S26 Ultra suits a 4-5 year keep. GSMArena lists IP68, a 5,000 mAh battery, 60W wired and 25W wireless charging, a 5x periscope, and a 7.9 mm slab. The Galaxy Z Fold 7 is the pick only if the 8.0-inch inner screen and multitasking are why you are buying, and you accept IP48, a 4,400 mAh battery, 25W wired charging, and the extra care a hinge needs. Both phones have a 200MP main camera and up to 7 major OS updates. GSMArena's active-use score is 11:44h on the Fold 7 and 16:23h on the S26 Ultra. This page does not crown a winner.";
+  "The Galaxy S26 Ultra suits a 4-5 year keep. GSMArena lists IP68, a 5,000 mAh battery, 60W wired and 25W wireless charging, a 5x periscope, and a 7.9 mm slab. The Galaxy Z Fold 7 is the pick only if the 8.0-inch inner screen and multitasking are why you are buying, and you accept IP48, a 4,400 mAh battery, 25W wired charging, and the extra care a hinge needs. Both phones have a 200MP main camera and up to 7 major OS updates. GSMArena's active-use score is 11:44h on the Fold 7 and 16:23h on the S26 Ultra. Neither is better for everyone; it depends on whether you want a 4-5 year slab or the inner foldable screen.";
 
 const FAQS = [
   {
@@ -45,7 +45,7 @@ const FAQS = [
   {
     question: "Does the Galaxy Z Fold 7 have the better camera?",
     answer:
-      "Not on the hardware GSMArena lists. Both phones have a 200MP main camera and a 10MP 3x telephoto. The Fold 7 ultrawide is 12MP. The S26 Ultra adds a 50MP 5x periscope and a 50MP ultrawide. Geeky Gadgets calls the S26 Ultra the photography pick and says the Fold 7 is fine for everyday shots. That is Geeky Gadgets' judgment, not a lab score in this comparison.",
+      "Not on the hardware GSMArena lists. Both phones have a 200MP main camera and a 10MP 3x telephoto. The Fold 7 ultrawide is 12MP. The S26 Ultra adds a 50MP 5x periscope and a 50MP ultrawide. Geeky Gadgets calls the S26 Ultra the photography pick and says the Fold 7 is fine for everyday shots. That is Geeky Gadgets' judgment, not a lab score.",
   },
   {
     question: "Which phone has the better battery?",
@@ -63,9 +63,9 @@ const VERDICT = `Best for a 4-5 year keep: Galaxy S26 Ultra. IP68, a 5,000 mAh b
 
 Best for an inner foldable screen: Galaxy Z Fold 7. Buy it only if that 8.0-inch display and the multitasking it allows are why you want the phone, and you accept IP48, the smaller battery, and the extra care a hinge needs.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you want a 4-5 year slab or the inner foldable screen.`;
 
-const EXPERT_ANALYSIS = `The Galaxy S26 Ultra suits a 4-5 year keep. The Galaxy Z Fold 7 is the pick only if the inner foldable screen and multitasking are why you are buying. This page does not crown one phone.
+const EXPERT_ANALYSIS = `The Galaxy S26 Ultra suits a 4-5 year keep. The Galaxy Z Fold 7 is the pick only if the inner foldable screen and multitasking are why you are buying. Neither is better for everyone; it depends on whether you want a 4-5 year slab or the inner foldable screen.
 
 Spec table. Caption: Galaxy Z Fold 7 vs Galaxy S26 Ultra. Source note: GSMArena lists the rows in the comparison table (idPhone1=13826, idPhone2=14320). Geeky Gadgets is a qualitative summary, not a measurement sheet. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Samsung Display is the source for the fold test.
 
@@ -77,7 +77,7 @@ GSMArena lists an 8.0-inch inner display on the Z Fold 7 and a 6.5-inch cover di
 
 Ingress and chip
 
-GSMArena rates the Fold 7 IP48 (dust larger than 1 mm, immersion up to 1.5 m for 30 minutes) and the S26 Ultra IP68 (dust tight, same water line). GSMArena lists the Fold 7 chipset as Snapdragon 8 Elite. GSMArena lists the S26 Ultra chipset as Snapdragon 8 Elite Gen 5. This page does not repeat GSMArena's benchmark scores.
+GSMArena rates the Fold 7 IP48 (dust larger than 1 mm, immersion up to 1.5 m for 30 minutes) and the S26 Ultra IP68 (dust tight, same water line). GSMArena lists the Fold 7 chipset as Snapdragon 8 Elite. GSMArena lists the S26 Ultra chipset as Snapdragon 8 Elite Gen 5. GSMArena's benchmark scores are not repeated.
 
 Cameras
 

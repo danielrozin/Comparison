@@ -22,7 +22,7 @@ const CAREER = `Career · Basketball-Reference`;
 const LAST = `2025-26 regular season · Basketball-Reference`;
 
 const SHORT_ANSWER =
-  "Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships and the 2007-08 MVP. Curry won 4 championships and MVPs in 2014-15 and 2015-16. Stats as of October 3, 2026, Curry has no 2026-27 regular-season game log. This page does not pick a winner.";
+  "Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships and the 2007-08 MVP. Curry won 4 championships and MVPs in 2014-15 and 2015-16. Stats as of October 3, 2026, Curry has no 2026-27 regular-season game log. Neither is better for everyone; it depends on the counting line.";
 
 const FAQS = [
   {
@@ -43,7 +43,7 @@ const FAQS = [
   {
     question: "Is there a 2026-27 line for Curry?",
     answer:
-      "No. Stats as of October 3, 2026. Curry's 2026-27 table is labeled a projection, and this page does not quote it. Curry has no 2026-27 game log. He plays for the Golden State Warriors.",
+      "No. Stats as of October 3, 2026. Curry's 2026-27 table is labeled a projection, and that table is not quoted. Curry has no 2026-27 game log. He plays for the Golden State Warriors.",
   },
   {
     question: "How many All-Star selections does each player have?",
@@ -53,7 +53,7 @@ const FAQS = [
   {
     question: "Who is the better player, Kobe or Curry?",
     answer:
-      "This page does not pick a winner. Kobe's column is the longer career, 33,643 points, and 5 championships. Curry's column is the assist line, 4 championships, and two MVP seasons. The 2026-27 season has no game log for Curry.",
+      "Neither is better for everyone; it depends on the column. Kobe's column is the longer career, 33,643 points, and 5 championships. Curry's column is the assist line, 4 championships, and two MVP seasons. The 2026-27 season has no game log for Curry.",
   },
 ];
 
@@ -63,13 +63,13 @@ Championships: Kobe 5, Curry 4. MVPs: Kobe in 2007-08. Curry in 2014-15 and 2015
 
 2025-26 regular season: Curry 26.6 points, 3.6 rebounds, and 4.7 assists in 43 games. Kobe has no 2025-26 row.
 
-2026-27 season: Stats as of October 3, 2026, Curry has no regular-season game log. This page does not pick a winner and does not predict a game.`;
+2026-27 season: Stats as of October 3, 2026, Curry has no regular-season game log. Neither is named the winner of the 2026-27 season. There is no game forecast.`;
 
-const EXPERT_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships. Curry won 4. This page does not pick a winner.
+const EXPERT_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships. Curry won 4. Neither is better for everyone; it depends on the counting line.
 
 Source note: career totals, Curry's 2025-26 regular-season line, and the honors lists are from the two Basketball-Reference player pages. ${KOBE_URL} ${CURRY_URL}
 
-2026-27 season. Stats as of ${AS_OF}. Curry has no 2026-27 regular-season game log. The 2026-27 table on his page is labeled a projection, and this page does not quote it.
+2026-27 season. Stats as of ${AS_OF}. Curry has no 2026-27 regular-season game log. The 2026-27 table on his page is labeled a projection, and that table is not quoted.
 
 Career. Kobe was born August 23, 1978, stood 6-6 and 212 pounds, was drafted 13th overall by Charlotte in 1996, and debuted November 3, 1996. He played 20 seasons and 1,346 games, scored 33,643 points, and his seasons were with the Lakers. He was inducted into the Hall of Fame as a player in 2020. Bryant retired after the 2015-16 season and died on January 26, 2020. Curry was born March 14, 1988, stands 6-2 and 185 pounds, was drafted 7th overall by Golden State in 2009, and debuted October 28, 2009. He has played 17 seasons and 1,069 games, scored 26,528 points, and plays for the Golden State Warriors.
 

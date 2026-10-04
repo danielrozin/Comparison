@@ -70,9 +70,9 @@ const VERDICT = `Best value: Galaxy S24 Ultra (on sale). A discounted S24 Ultra 
 
 Best upgrade: Galaxy S25 Ultra (chip, display, ultrawide). Choose it for the Snapdragon 8 Elite for Galaxy chip, the 6.9-inch display, the 50MP ultrawide, and the lighter 218 g body.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you want the discounted S24 Ultra or the S25 Ultra's newer hardware.`;
 
-const EXPERT_ANALYSIS = `If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite for Galaxy chip, the larger 6.9-inch display, the 50MP ultrawide, and a lighter body. This page does not crown one phone.
+const EXPERT_ANALYSIS = `If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite for Galaxy chip, the larger 6.9-inch display, the 50MP ultrawide, and a lighter body. Neither is better for everyone; it depends on whether you want the discounted S24 Ultra or the S25 Ultra's newer hardware.
 
 Spec snapshot
 
@@ -86,7 +86,7 @@ Battery and daily use
 
 Both phones use a 5,000 mAh battery, 45W wired charging, and 15W wireless charging (GSMArena and Digital Trends). GSMArena also lists 65% in 30 minutes on wired charging for both, and 4.5W reverse wireless for both. The S25 Ultra is Qi2 Ready, which Digital Trends says still needs a compatible magnetic case.
 
-Samsung's S24 Ultra page calls 5,000 mAh the typical capacity, lists a 4,855 mAh rated capacity, and claims up to 30 hours of video playback. Samsung lists 5,000 mAh for the S25 Ultra and claims up to 31 hours of video playback. Those hour figures are Samsung's claims, not a lab result on this page. Digital Trends called the battery round a tie: in that review, both phones were described as lasting through two days of use, with the same 45W charging.
+Samsung's S24 Ultra page calls 5,000 mAh the typical capacity, lists a 4,855 mAh rated capacity, and claims up to 30 hours of video playback. Samsung lists 5,000 mAh for the S25 Ultra and claims up to 31 hours of video playback. Those hour figures are Samsung's claims, not a separate lab result. Digital Trends called the battery round a tie: in that review, both phones were described as lasting through two days of use, with the same 45W charging.
 
 Camera
 
@@ -112,7 +112,7 @@ Buy the Galaxy S25 Ultra if those upgrades are the point: Snapdragon 8 Elite for
 
 Community takeaway
 
-On September 27, 2026, a post on r/samsunggalaxy asked which phone to buy. The asker listed €545 for the S24 Ultra and €665 for the S25 Ultra, and asked whether the extra €120 was worth it for camera, battery, performance, display, and gaming, and whether to wait for Black Friday 2026. Those euro figures are the asker's prices in that post. This page does not treat them as a current store price.
+On September 27, 2026, a post on r/samsunggalaxy asked which phone to buy. The asker listed €545 for the S24 Ultra and €665 for the S25 Ultra, and asked whether the extra €120 was worth it for camera, battery, performance, display, and gaming, and whether to wait for Black Friday 2026. Those euro figures are the asker's prices in that post. They are not a current store price.
 
 That thread had three comments. One person would take the S24 Ultra and use the €120 for something else, and would not wait for Black Friday. One person asked how the battery life compares, and the thread did not answer with a test. One person said it depends: the S24 Ultra for the design and a Bluetooth S Pen, the S25 Ultra for more power and the better ultrawide.
 

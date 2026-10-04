@@ -9,8 +9,8 @@ import type { EditorialComparison } from "./types";
  *
  * Apple's legal privacy statement (dated 2026-09-14) says Apple does
  * not collect personal data associated with Maps usage, and the same page
- * lists route details that are still sent. This page quotes both. It does not
- * flatten that into "Apple collects nothing."
+ * lists route details that are still sent. Both are quoted. That is not
+ * flattened into "Apple collects nothing."
  */
 
 const GOOGLE = "google-maps";
@@ -41,7 +41,7 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple says it does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. This page does not crown a winner.";
+  "It depends on the phone and the trip. Use Apple Maps when you are on an iPhone and want the built-in Maps app, and use Google Maps when you need Android or a saved offline area on either phone. Apple says it does not collect personal data associated with Maps usage, and it still sends route details under a random identifier for that trip. Apple's offline maps, in iOS 17 and later, cover select areas and include walking, cycling, and transit directions. Google's downloaded areas are for driving only, and they are not available in every country. Neither is better for everyone; it depends on the phone and the trip.";
 
 const FAQS = [
   {
@@ -62,7 +62,7 @@ const FAQS = [
   {
     question: "Which app is better for transit, walking, and lane guidance?",
     answer:
-      "Both document those trips, with limits. Apple's transit guide covers departure times, connections, and fares. Apple says that in select cities you get a street-level view that helps you find the right lane at a complex intersection, and that spoken turn-by-turn directions are not available in every country. Google lists transit, walking, and cycling, and says transit depends on the local agency adding its routes. Google says voice guidance can tell you which lane to use, and that this is not available in all countries. This page does not score which lane prompt is clearer.",
+      "Both document those trips, with limits. Apple's transit guide covers departure times, connections, and fares. Apple says that in select cities you get a street-level view that helps you find the right lane at a complex intersection, and that spoken turn-by-turn directions are not available in every country. Google lists transit, walking, and cycling, and says transit depends on the local agency adding its routes. Google says voice guidance can tell you which lane to use, and that this is not available in all countries. Neither lane prompt is scored as clearer.",
   },
   {
     question: "Do Apple Maps and Google Maps route electric cars to chargers?",
@@ -72,7 +72,7 @@ const FAQS = [
   {
     question: "Which app is more private?",
     answer:
-      "This page does not crown one. Apple says, in wording dated 14 September 2026, that it does not collect personal data associated with your Maps usage, that you do not have to sign in, and that precise locations are converted to less-exact locations within 24 hours. Apple says a navigation request sends the origin, the destination, the mode of transport, including whether you are on CarPlay, and a random identifier that lasts for that session. Google says Timeline is off by default and turns on only if you opt in. It saves visits and routes on signed-in devices. If you turn backup on, Maps saves an encrypted copy on Google's servers. Those are different controls, not a shared score.",
+      "Neither is better for everyone; it depends on the privacy controls. Apple says, in wording dated 14 September 2026, that it does not collect personal data associated with your Maps usage, that you do not have to sign in, and that precise locations are converted to less-exact locations within 24 hours. Apple says a navigation request sends the origin, the destination, the mode of transport, including whether you are on CarPlay, and a random identifier that lasts for that session. Google says Timeline is off by default and turns on only if you opt in. It saves visits and routes on signed-in devices. If you turn backup on, Maps saves an encrypted copy on Google's servers. Those are different controls, not a shared score.",
   },
 ];
 
@@ -80,9 +80,9 @@ const VERDICT = `Best on an iPhone, if you want the built-in app and Apple's pri
 
 Best when you need Android, or a saved offline driving area on either phone: Google Maps. Help articles document the Android app, Android Auto, and downloadable areas. Timeline stays off until you opt in.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on the phone and the trip.`;
 
-const EXPERT_ANALYSIS = `It depends on the phone and the trip. Apple Maps is the built-in app on Apple devices. Google Maps is the app that also runs on Android. This page does not crown one.
+const EXPERT_ANALYSIS = `It depends on the phone and the trip. Apple Maps is the built-in app on Apple devices. Google Maps is the app that also runs on Android. Neither is better for everyone; it depends on the phone and the trip.
 
 Spec table. Caption: Google Maps vs Apple Maps, from Apple and Google pages. Source note: every row is a claim from Apple or Google, including Apple Maps, Apple Maps and Privacy, Apple Support, Google Maps Help, and Android Auto Help.
 
@@ -106,9 +106,9 @@ Apple's iPhone guide says EV routing is available on select vehicles and in sele
 
 Privacy, read as written
 
-Apple says Maps is designed to protect your privacy and that Apple does not collect personal data associated with your Maps usage. It also says you do not have to sign in, that signed-in pins and guides can sync with end-to-end encryption, and that precise locations are converted to less-exact locations within 24 hours. A navigation request still sends the origin, the current location if you allowed it, the destination, the mode of transport, including CarPlay, and a random identifier for that session. If you use EV routing, charge information is sent and is not tied to your Apple Account. Apple's shorter line, that Maps does not let Apple know which stores, neighborhoods, or clinics you visit, sits next to that legal text. This comparison treats the legal statement as the fuller account.
+Apple says Maps is designed to protect your privacy and that Apple does not collect personal data associated with your Maps usage. It also says you do not have to sign in, that signed-in pins and guides can sync with end-to-end encryption, and that precise locations are converted to less-exact locations within 24 hours. A navigation request still sends the origin, the current location if you allowed it, the destination, the mode of transport, including CarPlay, and a random identifier for that session. If you use EV routing, charge information is sent and is not tied to your Apple Account. Apple's shorter line, that Maps does not let Apple know which stores, neighborhoods, or clinics you visit, sits next to that legal text. The legal statement is the fuller account.
 
-Google says Timeline is off by default for the Google Account and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If backup is on, Maps saves an encrypted copy on Google's servers. You can delete Timeline data. This page does not call one design the private one. It states the controls the two companies actually describe.
+Google says Timeline is off by default for the Google Account and turns on only if you opt in. Timeline saves visits and routes on each signed-in device. If backup is on, Maps saves an encrypted copy on Google's servers. You can delete Timeline data. Neither design is called the private one. The controls are the ones the two companies describe.
 
 Who should use which
 

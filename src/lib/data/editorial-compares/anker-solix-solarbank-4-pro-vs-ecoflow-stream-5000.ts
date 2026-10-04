@@ -24,7 +24,7 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "Choose the EcoFlow STREAM 5000 if you want the higher rated output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. This page does not crown a winner.";
+  "Choose the EcoFlow STREAM 5000 if you want the higher rated output: up to 3,000 W on-grid and off-grid, at 45.4 kg. Choose the Anker SOLIX Solarbank 4 Pro if IP66 and Anker's Home Assistant integration matter more. Its on-grid settings top out at 2,500 W and it weighs 50 kg. Both are 5,024 Wh LiFePO4 packs with 5,000 W of PV input across four MPPTs. Neither is better for everyone; it depends on whether you want the higher rated output or IP66 and Home Assistant.";
 
 const FAQS = [
   {
@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: "Which is better for outdoor mounting?",
     answer:
-      "Anker lists IP66. EcoFlow lists IP65. Those are the codes each company states. This page does not add a hose test of its own. EcoFlow says the STREAM 5000 can be used indoors or outdoors and recommends a ventilated, cool, shaded place.",
+      "Anker lists IP66. EcoFlow lists IP65. Those are the codes each company states. No separate hose test is added. EcoFlow says the STREAM 5000 can be used indoors or outdoors and recommends a ventilated, cool, shaded place.",
   },
   {
     question: "Do they accept the same solar input?",
@@ -65,9 +65,9 @@ Weather rating and Home Assistant: Anker SOLIX Solarbank 4 Pro. The datasheet li
 
 Same storage on the spec sheets: 5,024 Wh LiFePO4, 5,000 W PV, four MPPTs.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you want the higher rated output or IP66 and Home Assistant.`;
 
-const EXPERT_ANALYSIS = `The EcoFlow STREAM 5000 is the pick when the higher rated inverter output is the point. The Anker SOLIX Solarbank 4 Pro is the pick when IP66 and the documented Home Assistant integration matter more than that extra output. This page does not crown a winner.
+const EXPERT_ANALYSIS = `The EcoFlow STREAM 5000 is the pick when the higher rated inverter output is the point. The Anker SOLIX Solarbank 4 Pro is the pick when IP66 and the documented Home Assistant integration matter more than that extra output. Neither is better for everyone; it depends on whether you want the higher rated output or IP66 and Home Assistant.
 
 Source note: output, ingress rating, weight, and warranty below come from Anker's datasheet for the German Solarbank 4 E5000 Pro and from EcoFlow's EU specs. Cycle life and expansion for Anker come from the German Solarbank listing. EcoFlow chemistry, the 60% retention note, and expansion come from EcoFlow's product FAQ. Home Assistant support comes from Anker's official integration README.
 

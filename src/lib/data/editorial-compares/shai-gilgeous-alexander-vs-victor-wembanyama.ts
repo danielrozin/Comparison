@@ -26,13 +26,13 @@ const LAST = `2025-26 regular season · Basketball-Reference`;
 const THIS = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "Shai Gilgeous-Alexander's career line is 25.3 points, 4.7 rebounds, and 5.3 assists in 530 games. Victor Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 assists in 181 games. SGA was MVP in 2024-25 and again in 2025-26. In the 2026 Western Conference finals, the Spurs beat the Thunder 4-3. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and this page does not quote the projection rows. This page does not pick a winner.";
+  "Shai Gilgeous-Alexander's career line is 25.3 points, 4.7 rebounds, and 5.3 assists in 530 games. Victor Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 assists in 181 games. SGA was MVP in 2024-25 and again in 2025-26. In the 2026 Western Conference finals, the Spurs beat the Thunder 4-3. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and the projection rows are not used. Neither is better for everyone; it depends on the counting line.";
 
 const FAQS = [
   {
     question: "Is Shai Gilgeous-Alexander a back-to-back MVP?",
     answer:
-      "Yes, for 2024-25 and 2025-26. Basketball-Reference marks MVP-1 on both of those regular-season rows, and Basketball-Reference's header says 2x MVP. The 2024-25 row is 32.7 points per game in 76 games. The 2025-26 row is 31.1 points, 4.3 rebounds, and 6.6 assists in 68 games. This page does not say anything about the 2026-27 MVP award.",
+      "Yes, for 2024-25 and 2025-26. Basketball-Reference marks MVP-1 on both of those regular-season rows, and Basketball-Reference's header says 2x MVP. The 2024-25 row is 32.7 points per game in 76 games. The 2025-26 row is 31.1 points, 4.3 rebounds, and 6.6 assists in 68 games. Nothing is stated about the 2026-27 MVP award.",
   },
   {
     question: "What are their career lines?",
@@ -52,12 +52,12 @@ const FAQS = [
   {
     question: "Is there a 2026-27 stat line yet?",
     answer:
-      "No. Stats as of October 3, 2026. Basketball-Reference has no 2026-27 regular-season game log for either player, and each 2026-27 table is labeled a projection. This page does not quote those rows. NBA.com lists Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. That is a schedule fact, not a pick.",
+      "No. Stats as of October 3, 2026. Basketball-Reference has no 2026-27 regular-season game log for either player, and each 2026-27 table is labeled a projection. Those rows are not used. NBA.com lists Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. That is a schedule fact, not a pick.",
   },
   {
     question: "Who is the better player, SGA or Wembanyama?",
     answer:
-      "This page does not pick a winner. SGA's column is the longer career, two MVPs, and the 2025 championship. Wembanyama's column is the rebounding and block lines, the 2025-26 Defensive Player of the Year award, and the 2026 West finals. The 2026-27 season has no game log yet.",
+      "Neither is better for everyone; it depends on the column. SGA's column is the longer career, two MVPs, and the 2025 championship. Wembanyama's column is the rebounding and block lines, the 2025-26 Defensive Player of the Year award, and the 2026 West finals. The 2026-27 season has no game log yet.",
   },
 ];
 
@@ -67,13 +67,13 @@ const VERDICT = `Career points per game: SGA 25.3, Wembanyama 23.4. Career rebou
 
 MVPs: SGA in 2024-25 and 2025-26. 2026 West finals: Spurs beat the Thunder 4-3.
 
-2026-27 season: Stats as of October 3, 2026, there is no regular-season game log. Oklahoma City is at San Antonio on October 20, 2026, at 9:30 pm ET. This page does not pick a winner and does not predict that game.`;
+2026-27 season: Stats as of October 3, 2026, there is no regular-season game log. Oklahoma City is at San Antonio on October 20, 2026, at 9:30 pm ET. Neither is named the winner of that game, and there is no forecast for it.`;
 
-const EXPERT_ANALYSIS = `Shai Gilgeous-Alexander's career line is 25.3 points, 4.7 rebounds, and 5.3 assists in 530 games. Victor Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 assists in 181 games. SGA was MVP in 2024-25 and 2025-26. In the 2026 West finals, the Spurs beat the Thunder 4-3. This page does not pick a winner.
+const EXPERT_ANALYSIS = `Shai Gilgeous-Alexander's career line is 25.3 points, 4.7 rebounds, and 5.3 assists in 530 games. Victor Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 assists in 181 games. SGA was MVP in 2024-25 and 2025-26. In the 2026 West finals, the Spurs beat the Thunder 4-3. Neither is better for everyone; it depends on the counting line.
 
 Source note: career totals, the 2025-26 regular-season lines, and the accolades are from the two Basketball-Reference player pages. The West finals are from Basketball-Reference's 2026 playoff index. The October 20 game is from NBA.com's games page. ${SGA_URL} ${WEMBY_URL} ${PLAYOFFS} ${SCHEDULE}
 
-2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log. Both 2026-27 tables on Basketball-Reference are labeled projections, and this page does not quote them. NBA.com lists Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. That is the schedule. It is not a prediction.
+2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log. Both 2026-27 tables on Basketball-Reference are labeled projections, and those projections are not used. NBA.com lists Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. That is the schedule. It is not a prediction.
 
 Career. SGA was born July 12, 1998, debuted October 17, 2018, and Basketball-Reference lists 8 years: 530 games, 13,411 points, 2,503 rebounds, 2,810 assists. Wembanyama was born January 4, 2004, Basketball-Reference lists him at 7-4 and 235 pounds, was drafted first overall in 2023, debuted October 25, 2023, and Basketball-Reference lists 3 years: 181 games, 4,238 points, 1,997 rebounds, 641 assists, 627 blocks.
 
@@ -175,7 +175,7 @@ const BUILT = buildEditorialComparison({
     textAttr("career-apg", "Assists per game", CAREER, SGA, WEMBY, "5.3", "3.5", "a"),
     textAttr("career-games", "Games", CAREER, SGA, WEMBY, "530", "181", "a"),
     textAttr("career-points", "Career points", CAREER, SGA, WEMBY, "13,411", "4,238", "a"),
-    textAttr("blocks", "Blocks per game", CAREER, SGA, WEMBY, "Not printed on this page", "3.5"),
+    textAttr("blocks", "Blocks per game", CAREER, SGA, WEMBY, "—", "3.5"),
     textAttr("season-2526-ppg", "2025-26 points per game", LAST, SGA, WEMBY, "31.1 in 68 games", "25.0 in 64 games", "a"),
     textAttr("season-2526-rpg", "2025-26 rebounds per game", LAST, SGA, WEMBY, "4.3", "11.5", "b"),
     textAttr("mvp", "MVP", CAREER, SGA, WEMBY, "2024-25 and 2025-26", "Not listed", "a"),

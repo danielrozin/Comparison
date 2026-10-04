@@ -13,7 +13,7 @@ import type { EditorialComparison } from "./types";
  * - https://www.basketball-reference.com/players/f/flaggco01.html
  * - https://www.basketball-reference.com/players/w/wembavi01.html
  * /entity/cooper-flagg and /entity/victor-wembanyama were noindex, nofollow,
- * so this page does not link those hubs. /entity/san-antonio-spurs was
+ * so those hubs are not linked. /entity/san-antonio-spurs was
  * index, follow. 2026-27 projection rows are not quoted.
  */
 
@@ -31,7 +31,7 @@ const HONOR_CAT = "Accolades · Basketball-Reference";
 const SEASON_CAT = "2026-27 season · Stats as of October 3, 2026";
 
 const SHORT_ANSWER =
-  "Cooper Flagg plays for the Dallas Mavericks. Basketball-Reference lists him as the 2025-26 Rookie of the Year, with a rookie per-game line of 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games. Victor Wembanyama plays for the San Antonio Spurs. His career line through three seasons is 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks in 181 games, and he won the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Stats as of October 3, 2026: neither player had a 2026-27 game log. This page does not pick a winner.";
+  "Cooper Flagg plays for the Dallas Mavericks. Basketball-Reference lists him as the 2025-26 Rookie of the Year, with a rookie per-game line of 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games. Victor Wembanyama plays for the San Antonio Spurs. His career line through three seasons is 23.4 points, 11.0 rebounds, 3.5 assists, and 3.5 blocks in 181 games, and he won the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Stats as of October 3, 2026: neither player had a 2026-27 game log. Neither is better for everyone; it depends on the counting line.";
 
 const META_DESCRIPTION =
   "Cooper Flagg of Dallas is the 2025-26 Rookie of the Year. Wembanyama's career line is 23.4 points, 11.0 rebounds, and 3.5 blocks. Stats as of October 3, 2026.";
@@ -63,9 +63,9 @@ const FAQS = [
       "Basketball-Reference has no 2026-27 game log for Cooper Flagg or Victor Wembanyama. Basketball-Reference also has a 2026-27 projection table for each player. Those rows are not quoted here. Stats as of October 3, 2026.",
   },
   {
-    question: "Does this comparison say who is the better player?",
+    question: "Is one the better player?",
     answer:
-      "No. It lists the honors and the career lines from Basketball-Reference. Stats as of October 3, 2026. Flagg's latest listed Rookie of the Year is 2025-26. Wembanyama's listed Rookie of the Year is 2023-24, and Basketball-Reference also lists the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Those are different awards in different seasons. This page does not turn them into a prediction.",
+      "No. It lists the honors and the career lines from Basketball-Reference. Stats as of October 3, 2026. Flagg's latest listed Rookie of the Year is 2025-26. Wembanyama's listed Rookie of the Year is 2023-24, and Basketball-Reference also lists the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Those are different awards in different seasons. Those awards are not a prediction.",
   },
 ];
 
@@ -75,7 +75,7 @@ Victor Wembanyama: San Antonio Spurs. Career line: 23.4 points, 11.0 rebounds, 3
 
 2026-27, stats as of October 3, 2026: Basketball-Reference has no game log for either player. There is no winner.`;
 
-const EXPERT_ANALYSIS = `Cooper Flagg is the Dallas Mavericks forward Basketball-Reference lists as the 2025-26 Rookie of the Year. Victor Wembanyama is the San Antonio Spurs big man with three seasons, a career line of 23.4 points, 11.0 rebounds, and 3.5 blocks, and the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Stats as of October 3, 2026, neither player had a 2026-27 game log. This page does not pick a winner.
+const EXPERT_ANALYSIS = `Cooper Flagg is the Dallas Mavericks forward Basketball-Reference lists as the 2025-26 Rookie of the Year. Victor Wembanyama is the San Antonio Spurs big man with three seasons, a career line of 23.4 points, 11.0 rebounds, and 3.5 blocks, and the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Stats as of October 3, 2026, neither player had a 2026-27 game log. Neither is better for everyone; it depends on the counting line.
 
 Source note: Flagg's team, draft, rookie line, and 2025-26 Rookie of the Year are from Basketball-Reference. Wembanyama's team, career line, playoff line, and honors are from Basketball-Reference. Projection tables are not used.
 

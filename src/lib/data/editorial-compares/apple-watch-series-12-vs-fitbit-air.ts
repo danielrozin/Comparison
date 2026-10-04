@@ -9,7 +9,7 @@ import type { EditorialComparison } from "./types";
  * 3 October 2026 from the Series 12 spec page and the 7 May 2026
  * launch post. No page-level winner. No accuracy percentages.
  * /entity/apple-watch-series-12 and /entity/fitbit-air were both
- * noindex, nofollow, so this page does not link either hub.
+ * noindex, nofollow, so neither hub is linked.
  */
 
 const WATCH = "apple-watch-series-12";
@@ -33,18 +33,18 @@ const SOURCE_DATE = "2026-10-03";
 const PUBLISHED = "2026-10-03T00:00:00Z";
 
 const SHORT_ANSWER =
-  "Choose the Apple Watch Series 12 if you want a full smartwatch: apps, notifications, and an optional cellular model, on an iPhone. Apple rates it for up to 24 hours of normal use, up to 38 hours in Low Power Mode, and up to 10 hours of workout tracking, and lists an S11 chip. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep. Google rates it for up to 7 days and the Google Store lists it from $99.99. This page does not crown a winner.";
+  "Choose the Apple Watch Series 12 if you want a full smartwatch: apps, notifications, and an optional cellular model, on an iPhone. Apple rates it for up to 24 hours of normal use, up to 38 hours in Low Power Mode, and up to 10 hours of workout tracking, and lists an S11 chip. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep. Google rates it for up to 7 days and the Google Store lists it from $99.99. Neither is better for everyone; it depends on whether you want a full smartwatch or a screenless tracker.";
 
 const FAQS = [
   {
     question: "Is the Fitbit Air a Whoop alternative?",
     answer:
-      "It is a different kind of product. Fitbit Air is hardware. The Google Store lists it from $99.99. The May 2026 launch post also included a three-month Google Health Premium trial that renews at $9.99 a month unless you cancel, and Google says some features require that membership. Whoop is a membership product. This page does not quote a Whoop price. The asker had already decided Whoop felt like more than they needed. There is no live Apple Watch Series 12 versus Whoop page, so this page does not link one.",
+      "It is a different kind of product. Fitbit Air is hardware. The Google Store lists it from $99.99. The May 2026 launch post also included a three-month Google Health Premium trial that renews at $9.99 a month unless you cancel, and Google says some features require that membership. Whoop is a membership product. No Whoop price is stated. The asker had already decided Whoop felt like more than they needed. There is no live Apple Watch Series 12 versus Whoop comparison, so no link is included.",
   },
   {
     question: "Which is better for sleep, Apple Watch Series 12 or Fitbit Air?",
     answer:
-      "This comparison cannot say which one measures sleep more accurately. It compares what Apple and Google state. Apple lists a Sleep app that includes sleep stages, a sleep score, and Sleep apnea notifications, on a watch rated for up to 24 hours of normal use. The same Health and Wellness list includes a Vitals app with heart rate, respiratory rate, wrist temperature, sleep duration, and heart rate variability. Apple says: \"The temperature sensing feature is not intended for medical use.\" Google lists sleep stages and sleep duration on the Fitbit Air. The 7 May 2026 launch-post footnotes also say \"Not intended for medical purposes.\" Google Health Help rates that tracker for up to 7 days. Google's vitals table marks the Air for skin temperature variation, SpO2, heart rate variability, breathing rate, and resting heart rate. The longer battery rating is the practical difference for wearing it through several nights. It is not an accuracy score.",
+      "Neither measurement is ranked as more accurate for sleep. Apple lists a Sleep app that includes sleep stages, a sleep score, and Sleep apnea notifications, on a watch rated for up to 24 hours of normal use. The same Health and Wellness list includes a Vitals app with heart rate, respiratory rate, wrist temperature, sleep duration, and heart rate variability. Apple says: \"The temperature sensing feature is not intended for medical use.\" Google lists sleep stages and sleep duration on the Fitbit Air. The 7 May 2026 launch-post footnotes also say \"Not intended for medical purposes.\" Google Health Help rates that tracker for up to 7 days. Google's vitals table marks the Air for skin temperature variation, SpO2, heart rate variability, breathing rate, and resting heart rate. The longer battery rating is the practical difference for wearing it through several nights. It is not an accuracy score.",
   },
   {
     question: "Do you need cellular on the Apple Watch Series 12?",
@@ -64,7 +64,7 @@ const FAQS = [
   {
     question: "What about the Amazfit Helio?",
     answer:
-      "The asker had also considered the Amazfit Helio before looking at the Series 12 and the Fitbit Air. Amazfit Helio specs are not part of this comparison.",
+      "The asker had also considered the Amazfit Helio before looking at the Series 12 and the Fitbit Air. Amazfit Helio specs are not included.",
   },
 ];
 
@@ -72,9 +72,9 @@ const VERDICT = `Best full smartwatch on an iPhone: Apple Watch Series 12. Apps,
 
 Best lower-priced screenless tracker: Fitbit Air. No screen, heart rate and sleep features Google lists, up to 7 days of battery, from $99.99 on the Google Store.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you want a full smartwatch or a screenless tracker.`;
 
-const EXPERT_ANALYSIS = `Choose the Apple Watch Series 12 if you want a full smartwatch on an iPhone: apps, notifications, and an optional cellular model. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep, with a week-class battery. This page does not crown a winner.
+const EXPERT_ANALYSIS = `Choose the Apple Watch Series 12 if you want a full smartwatch on an iPhone: apps, notifications, and an optional cellular model. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep, with a week-class battery. Neither is better for everyone; it depends on whether you want a full smartwatch or a screenless tracker.
 
 Source note: Apple lists the Series 12 chip, battery, sizes, weights, water resistance, the iPhone requirement, and the Health and Wellness names and footnotes. The Google Store and Google's 7 May 2026 launch post give the Fitbit Air price, the week-long battery line, the screenless design, the five-minute charge sentence, the rhythm footnote, and the "Not intended for medical purposes" line. Google lists Fitbit Air at 5.2 g without the band and 12 g with the band. Google Health Help and the Fitbit Air safety guide give the "up to 7 days" rating, the about-90-minute full charge, the 50-meter water rating, the vitals, and iPhone compatibility. No sleep-accuracy percentage is used.
 
@@ -86,7 +86,7 @@ Battery
 
 Apple rates the Series 12 for up to 24 hours of normal use, up to 38 hours in Low Power Mode, and up to 10 hours of workout tracking. Apple says those figures come from preproduction testing in July and August 2026, and that battery life varies. Google Health Help lists Google Fitbit Air at up to 7 days. The Google Store and the launch post say up to a week, or a week-long battery. Google's footnote says the maximum is approximate, based on 2025 preproduction testing with a median Fitbit Air usage profile, and that actual battery life may be lower.
 
-Charging is not the same test. Apple says the Series 12 can reach up to 80 percent in about 30 minutes, that 15 minutes can give up to 12 hours of normal use, and that 5 minutes can give up to 10 hours of sleep tracking. Google says Fitbit Air charges from 0 to 100 percent in about 90 minutes. Google says fast charging gives a full day of power in five minutes. This page does not merge those sentences into one charge-time ranking.
+Charging is not the same test. Apple says the Series 12 can reach up to 80 percent in about 30 minutes, that 15 minutes can give up to 12 hours of normal use, and that 5 minutes can give up to 10 hours of sleep tracking. Google says Fitbit Air charges from 0 to 100 percent in about 90 minutes. Google says fast charging gives a full day of power in five minutes. Those sentences are not one charge-time ranking.
 
 Ecosystem: Watch on iPhone, Air in the Google Health app
 
@@ -120,7 +120,7 @@ Choose the Series 12 if you already use an iPhone and you want the watch to show
 
 Choose the Fitbit Air if you want the screenless tracker, the week-class battery Google rates, and the lower hardware price, and you are fine reading the data in the Google Health app. It is the one to pick when a full watch is more device than you want on the wrist overnight.
 
-The Amazfit Helio stays off this comparison except as the other device the asker had considered. Helio specs are not part of this comparison.`;
+The Amazfit Helio is only the other device the asker had considered. Helio specs are not included.`;
 
 const SPEC = "Specs";
 

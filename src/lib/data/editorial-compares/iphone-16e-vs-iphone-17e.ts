@@ -22,13 +22,13 @@ const SOURCE_DATE = "2026-09-29";
 const PUBLISHED = "2026-09-29T00:00:00Z";
 
 const SHORT_ANSWER =
-  "Buy the iPhone 17e 256GB unless you already know you need more than 256GB. It has the A19 chip, MagSafe up to 15W, Ceramic Shield 2, and it launched a year after the 16e. Pick the iPhone 16e 512GB only if that extra storage matters more than MagSafe and the newer chip, and a live price check shows it is close to the 17e. Both have a 6.1-inch Super Retina XDR display, one 48MP Fusion camera, and up to 26 hours of video playback. Both launched at a $599 starting price. This page does not crown a winner.";
+  "Buy the iPhone 17e 256GB unless you already know you need more than 256GB. It has the A19 chip, MagSafe up to 15W, Ceramic Shield 2, and it launched a year after the 16e. Pick the iPhone 16e 512GB only if that extra storage matters more than MagSafe and the newer chip, and a live price check shows it is close to the 17e. Both have a 6.1-inch Super Retina XDR display, one 48MP Fusion camera, and up to 26 hours of video playback. Both launched at a $599 starting price. Neither is better for everyone; it depends on whether you need more than 256GB.";
 
 const FAQS = [
   {
     question: "Is the iPhone 17e worth it over the iPhone 16e?",
     answer:
-      "For most people, yes. MacRumors calls MagSafe the main upgrade: the 16e is Qi charging up to 7.5W, and the 17e is MagSafe up to 15W. The 17e also moves to the A19 chip and Ceramic Shield 2, and its storage starts at 256GB instead of 128GB. MacRumors still treats a heavily discounted 16e as a capable phone if you do not care about MagSafe. Check a live price. This page does not hard-code a sale price.",
+      "For most people, yes. MacRumors calls MagSafe the main upgrade: the 16e is Qi charging up to 7.5W, and the 17e is MagSafe up to 15W. The 17e also moves to the A19 chip and Ceramic Shield 2, and its storage starts at 256GB instead of 128GB. MacRumors still treats a heavily discounted 16e as a capable phone if you do not care about MagSafe. Check a live price. No sale price is stated.",
   },
   {
     question: "Is 256GB enough, or should you get the 512GB iPhone 16e?",
@@ -38,7 +38,7 @@ const FAQS = [
   {
     question: "Is the iPhone 17e camera better than the iPhone 16e?",
     answer:
-      "The hardware is the same single 48MP Fusion camera. AppleInsider says Apple did not change that camera hardware for the 17e, and that the 2x telephoto view is a crop of the 48MP sensor, not a second lens. The 17e adds what Apple and MacRumors call next-generation portraits with Focus and Depth Control. AppleInsider says there is no material difference in camera hardware, and that the 17e should benefit from the newer chip. This page does not cite a lab photo score.",
+      "The hardware is the same single 48MP Fusion camera. AppleInsider says Apple did not change that camera hardware for the 17e, and that the 2x telephoto view is a crop of the 48MP sensor, not a second lens. The 17e adds what Apple and MacRumors call next-generation portraits with Focus and Depth Control. AppleInsider says there is no material difference in camera hardware, and that the 17e should benefit from the newer chip. No lab photo score is cited.",
   },
   {
     question: "Does MagSafe matter on the iPhone 17e?",
@@ -48,7 +48,7 @@ const FAQS = [
   {
     question: "Which should you buy if you are coming from an iPhone 8?",
     answer:
-      "The iPhone 17e 256GB, unless you know you need more than 256GB. MacRumors says the 17e is a strong upgrade from an iPhone 14 or older, and that the newer chip should age better over a three- to five-year ownership stretch. An iPhone 8 is older than that. AppleInsider points owners of much older iPhones, such as the iPhone XR or the last iPhone SE, to the 17e. Neither source publishes a year count for iOS updates, so this page does not invent one. The 17e simply starts that window a year later, on the A19.",
+      "The iPhone 17e 256GB, unless you know you need more than 256GB. MacRumors says the 17e is a strong upgrade from an iPhone 14 or older, and that the newer chip should age better over a three- to five-year ownership stretch. An iPhone 8 is older than that. AppleInsider points owners of much older iPhones, such as the iPhone XR or the last iPhone SE, to the 17e. Neither source publishes a year count for iOS updates. The 17e simply starts that window a year later, on the A19.",
   },
 ];
 
@@ -56,9 +56,9 @@ const VERDICT = `Best for most people leaving an iPhone 8: iPhone 17e 256GB. You
 
 Best if you need more than 256GB: iPhone 16e 512GB, and only when a live price check shows it is close to the 17e. Storage is the reason. MagSafe and the newer chip are the things you give up.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you need more than 256GB.`;
 
-const EXPERT_ANALYSIS = `Buy the iPhone 17e 256GB unless you already know you need more than 256GB. Pick the iPhone 16e 512GB only when that extra storage matters more than MagSafe and the A19, and only after you check a live price. This page does not crown one phone.
+const EXPERT_ANALYSIS = `Buy the iPhone 17e 256GB unless you already know you need more than 256GB. Pick the iPhone 16e 512GB only when that extra storage matters more than MagSafe and the A19, and only after you check a live price. Neither is better for everyone; it depends on whether you need more than 256GB.
 
 Spec table. Caption: iPhone 16e vs iPhone 17e. Source note: the rows were checked on 29 September 2026 against MacRumors, AppleInsider (2 March 2026), and Apple's iPhone 17e page. Dollar figures below are launch prices from AppleInsider, not a current deal.
 
@@ -66,7 +66,7 @@ Sources: MacRumors buyer's guide (3 March 2026), AppleInsider's spec comparison 
 
 Chip and charging
 
-MacRumors, AppleInsider, and Apple's 17e page all put an A18 in the 16e and an A19 in the 17e. Apple says the 17e A19 has a 4-core GPU with Neural Accelerators. AppleInsider says the iPhone 17's A19 has a five-core GPU, and that its benchmark comparison uses the iPhone 17, not the 17e. This page does not repeat those scores.
+MacRumors, AppleInsider, and Apple's 17e page all put an A18 in the 16e and an A19 in the 17e. Apple says the 17e A19 has a 4-core GPU with Neural Accelerators. AppleInsider says the iPhone 17's A19 has a five-core GPU, and that its benchmark comparison uses the iPhone 17, not the 17e. Those scores are not repeated.
 
 The 16e charges by Qi at up to 7.5W. The 17e charges by MagSafe at up to 15W. Apple states that 15W versus 7.5W comparison on the 17e page. MacRumors and AppleInsider's spec table say the same 15W.
 
@@ -82,7 +82,7 @@ Storage and launch price
 
 The 16e comes in 128GB, 256GB, and 512GB. The 17e comes in 256GB and 512GB only. Apple says 256GB starting storage is twice the 16e's starting storage. MacRumors and AppleInsider both list a $599 starting launch price for each phone. The $599 starting price comes from MacRumors and AppleInsider.
 
-AppleInsider also lists launch prices by capacity: 16e 128GB $599, 256GB $699, 512GB $899; 17e 256GB $599, 512GB $799. At launch, the 512GB 16e cost more than the 256GB 17e. A discounted 16e can change that. Check a live price. This page does not give a sale price.
+AppleInsider also lists launch prices by capacity: 16e 128GB $599, 256GB $699, 512GB $899; 17e 256GB $599, 512GB $799. At launch, the 512GB 16e cost more than the 256GB 17e. A discounted 16e can change that. Check a live price. No sale price is stated.
 
 Who should buy which
 
