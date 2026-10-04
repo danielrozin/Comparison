@@ -50,12 +50,12 @@ const FAQS = [
   {
     question: "When do the Thunder play the Spurs next?",
     answer:
-      "NBA.com schedules Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. The game is /game/okc-vs-sas-0022600003. Neither is named the winner of that game.",
+      "NBA.com schedules Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. Neither is named the winner of that game.",
   },
   {
     question: "Has the 2026-27 season started for the Thunder and the Spurs?",
     answer:
-      "Not on October 3, 2026. The October 20 game is still ahead. The finished 2026 Western Conference Finals is a separate result.",
+      "Not on October 3, 2026. The October 20 game is still ahead.",
   },
   {
     question: "Where is the 2026 Spurs vs Thunder series documented?",
@@ -73,7 +73,7 @@ const VERDICT = `Finished series: the Spurs won the 2026 Western Conference Fina
 
 2026-27 schedule, stats as of October 3, 2026: Oklahoma City at San Antonio on October 20, 2026, 9:30 pm ET. That is a tip time, not a pick.
 
-There is no page-level winner.`;
+Neither is named the winner.`;
 
 const EXPERT_ANALYSIS = `The San Antonio Spurs beat the Oklahoma City Thunder 4-3 in the 2026 Western Conference Finals. Game 7 on May 30, 2026 was San Antonio 111 at Oklahoma City 103 (Basketball-Reference). As of October 3, 2026, NBA.com schedules the next meeting for October 20, 2026, at 9:30 pm ET, Oklahoma City at San Antonio. Neither is named the winner of that game.
 
@@ -83,7 +83,7 @@ San Antonio beat Oklahoma City, 4-3 (Basketball-Reference). The games are: May 1
 
 2026-27 season
 
-Stats as of October 3, 2026. The 2026-27 regular season had not started. NBA.com schedules the Thunder at the Spurs for October 20, 2026, at 9:30 pm ET, in San Antonio. The game is /game/okc-vs-sas-0022600003. Neither team is named the winner.
+Stats as of October 3, 2026. The 2026-27 regular season had not started. NBA.com schedules the Thunder at the Spurs for October 20, 2026, at 9:30 pm ET, in San Antonio. Neither team is named the winner.
 
 What is not included
 
@@ -269,7 +269,7 @@ const built = buildEditorialComparison({
       label: "NBA.com games on October 20, 2026",
       url: SCHEDULE,
       description:
-        "OKC at SAS, 9:30 pm ET. Game path /game/okc-vs-sas-0022600003. Schedule only.",
+        "OKC at SAS, 9:30 pm ET. Schedule only.",
     },
     {
       type: "blog",

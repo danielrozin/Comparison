@@ -177,7 +177,7 @@ const BUILT = buildEditorialComparison({
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "No page-level winner.",
+      "Neither is named the winner.",
     keyFact:
       "Jordan 30.1 points in 1,072 games and 6 championships. Kobe 25.0 points in 1,346 games and 5 championships.",
   },

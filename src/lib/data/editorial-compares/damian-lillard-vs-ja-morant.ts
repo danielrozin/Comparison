@@ -46,7 +46,7 @@ const FAQS = [
   {
     question: "Did Lillard play in 2025-26?",
     answer:
-      "Lillard did not play in 2025-26, injured (Achilles) (Basketball-Reference). His last season is 2024-25 with Milwaukee: 58 games, 24.9 points, 4.7 rebounds, and 7.1 assists.",
+      "Lillard missed the 2025-26 season with an Achilles injury (Basketball-Reference). His last season is 2024-25 with Milwaukee: 58 games, 24.9 points, 4.7 rebounds, and 7.1 assists.",
   },
   {
     question: "What did Morant average in 2025-26?",
@@ -56,13 +56,13 @@ const FAQS = [
   {
     question: "When do the Trail Blazers play the Suns?",
     answer:
-      "NBA.com schedules Phoenix at Portland on October 21, 2026, at 10:00 pm ET, regular season, game 0022600092. Both teams are at 0-0. As of October 3, 2026, Morant has not played a 2026-27 regular-season game.",
+      "NBA.com schedules Phoenix at Portland on October 21, 2026, at 10:00 pm ET, regular season. Both teams are at 0-0. As of October 3, 2026, Morant has not played a 2026-27 regular-season game.",
   },
 ];
 
 const VERDICT = `Career per game: Lillard 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Morant 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games.
 
-2025-26: Lillard did not play, injured (Achilles). Morant played 20 games for Memphis at 19.5 points, 3.3 rebounds, and 8.1 assists.
+2025-26: Lillard missed 2025-26 with an Achilles injury. Morant played 20 games for Memphis at 19.5 points, 3.3 rebounds, and 8.1 assists.
 
 2026-27 season: Both are with Portland. The trade story updated June 30, 2026 says the teams agreed Monday, June 29, 2026. As of October 3, 2026, neither has played a regular-season game. The Suns are at the Trail Blazers on October 21, 2026, at 10:00 pm ET. Neither is named the winner of that game, and there is no forecast for it.`;
 
@@ -198,7 +198,7 @@ const BUILT = buildEditorialComparison({
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "No page-level winner and no 2026-27 prediction. The career averages and the 2025-26 seasons are finished.",
+      "Neither is named the winner, and there is no 2026-27 prediction. The career averages and the 2025-26 seasons are finished.",
     keyFact:
       "Lillard 25.1 points in 900 games. Morant 22.4 points in 327 games. Both are with Portland. The Suns are at Portland on October 21, 2026, at 10:00 pm ET.",
   },
@@ -239,7 +239,7 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "NBA.com games for October 21, 2026",
       url: SCHEDULE,
-      description: `Phoenix at Portland, 10:00 pm ET, game 0022600092. Schedule fact only.`,
+      description: `Phoenix at Portland, 10:00 pm ET. Schedule fact only.`,
     },
   ],
   metaTitle: "Lillard vs Morant: Careers and 2026-27",
