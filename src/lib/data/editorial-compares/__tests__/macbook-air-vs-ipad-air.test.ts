@@ -51,7 +51,7 @@ describe("MacBook Air vs iPad Air", () => {
     expect(page().metadata.updatedAt).toBe("2026-10-04T00:00:00Z");
     expect(page().relatedComparisons).toEqual([]);
     expect(findSelfContradictions(page())).toEqual([]);
-    const sentences = page().shortAnswer.split(/(?<=\.)\s+/);
+    const sentences = (page().shortAnswer ?? "").split(/(?<=\.)\s+/);
     expect(sentences[0]).toMatch(/MacBook Air/);
     expect(sentences[1]).toMatch(/iPad Air/);
   });
