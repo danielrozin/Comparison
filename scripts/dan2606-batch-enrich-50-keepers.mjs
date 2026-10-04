@@ -220,7 +220,7 @@ Return ONLY valid JSON array:
     where: { id: existing.id },
     data: {
       content: { ...existingContent, expertAnalysis: expertAnalysis.trim(), enrichedBy: "DAN-2606", enrichedAt: new Date().toISOString() },
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       contentScore: 85,
       lastRefreshedAt: new Date(),
       updatedAt: new Date(),

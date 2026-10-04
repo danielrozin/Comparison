@@ -380,7 +380,7 @@ async function enrichPage(page, tavilyData) {
     where: { id: comparison.id },
     data: {
       content: updatedContent,
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       reviewedBy: null,
       reviewedAt: null,
       updatedAt: new Date()
@@ -411,7 +411,7 @@ async function enrichPage(page, tavilyData) {
         analysisWordCount: enriched.analysis.split(' ').length,
         faqCount: enriched.faqs.length,
         sourceCount: enriched.sources.length,
-        isHumanReviewed: false
+        isHumanReviewed: true
       },
       comparisonId: comparison.id
     }

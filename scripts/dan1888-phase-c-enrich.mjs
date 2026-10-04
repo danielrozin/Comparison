@@ -178,7 +178,7 @@ Return ONLY valid JSON array, no markdown:
     where: { id: existing.id },
     data: {
       content: newContent,
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       contentScore: 85,
       lastRefreshedAt: new Date(),
       updatedAt: new Date(),
