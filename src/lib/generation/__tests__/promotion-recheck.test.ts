@@ -173,4 +173,99 @@ describe("runPromotionRecheck", () => {
     expect(anthropicCallsAllowed(0, 0)).toBe(false);
     expect(anthropicCallsAllowed(0, 1)).toBe(true);
   });
+
+  it("does not count a search provider failure against the attempt limit", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const { deps, save, log } = harness({
+      "cambodia-vs-laos": page({ slug: "cambodia-vs-laos" }),
+      "peru-vs-chile": page({ slug: "peru-vs-chile" }),
+    });
+    deps.loadCandidates = async () => [
+      {
+        slug: "cambodia-vs-laos",
+        content: { promotion: { attempts: 4, lastReasons: ["only 0 sources (need 2)"], lastAttemptAt: null } },
+      },
+      {
+        slug: "peru-vs-chile",
+        content: { promotion: { attempts: 1, lastReasons: [], lastAttemptAt: null } },
+      },
+    ];
+    let calls = 0;
+    deps.enrich = vi.fn(async () => {
+      calls += 1;
+      return {
+        sources: [],
+        providerError: calls === 1 ? "search_provider_error:429" : "search_provider_error:timeout",
+      };
+    });
+
+    const report = await runPromotionRecheck(deps);
+
+    expect(save).not.toHaveBeenCalled();
+    expect(report.promoted).toEqual([]);
+    expect(report.failed).toEqual([
+      { slug: "cambodia-vs-laos", reasons: ["search_provider_error:429"], attempt: 4 },
+      { slug: "peru-vs-chile", reasons: ["search_provider_error:timeout"], attempt: 1 },
+    ]);
+    expect(log).toHaveBeenCalledWith("generation_promotion_failed", {
+      slug: "cambodia-vs-laos",
+      reasons: ["search_provider_error:429"],
+      attempt: 4,
+    });
+    expect(log).toHaveBeenCalledWith("generation_promotion_failed", {
+      slug: "peru-vs-chile",
+      reasons: ["search_provider_error:timeout"],
+      attempt: 1,
+    });
+    expect(warn).toHaveBeenCalledTimes(1);
+    const warning = String(warn.mock.calls[0]?.[0]);
+    expect(warning).toContain("search_provider_error:429 x1");
+    expect(warning).toContain("search_provider_error:timeout x1");
+    expect(warning).not.toContain("test-key");
+    expect(warning).not.toMatch(/tvly-/);
+    warn.mockRestore();
+  });
+
+  it("still counts a finished search that found no sources", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const { deps, save, log } = harness({ "cambodia-vs-laos": page({ slug: "cambodia-vs-laos" }) });
+    deps.enrich = vi.fn(async () => ({ sources: [], providerError: null }));
+
+    const report = await runPromotionRecheck(deps);
+
+    expect(save).toHaveBeenCalledTimes(1);
+    const saved = save.mock.calls[0][0];
+    expect(saved.status).toBe("provisional");
+    expect((saved.content as { promotion: { attempts: number; lastReasons: string[] } }).promotion.attempts).toBe(1);
+    expect((saved.content as { promotion: { lastReasons: string[] } }).promotion.lastReasons).toContain(
+      "only 0 sources (need 2)",
+    );
+    expect(report.failed[0]?.reasons).toContain("only 0 sources (need 2)");
+    expect(report.failed[0]?.attempt).toBe(1);
+    expect(log).toHaveBeenCalledWith(
+      "generation_promotion_failed",
+      expect.objectContaining({
+        reasons: expect.arrayContaining(["only 0 sources (need 2)"]),
+        attempt: 1,
+      }),
+    );
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("promotes when a partial provider failure still leaves two sources", async () => {
+    const { deps, save } = harness({ "cambodia-vs-laos": page({ slug: "cambodia-vs-laos" }) });
+    deps.enrich = vi.fn(async () => ({
+      sources: [
+        { name: "rei.com", url: "https://www.rei.com/canoe" },
+        { name: "wikipedia.org", url: "https://en.wikipedia.org/wiki/Kayak" },
+      ],
+      providerError: "search_provider_error:timeout",
+    }));
+
+    const report = await runPromotionRecheck(deps);
+
+    expect(report.promoted).toEqual(["cambodia-vs-laos"]);
+    expect(save).toHaveBeenCalledWith(expect.objectContaining({ status: "published" }));
+  });
 });
