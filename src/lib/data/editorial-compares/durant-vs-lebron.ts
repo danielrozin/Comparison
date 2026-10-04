@@ -4,8 +4,7 @@ import type { EditorialComparison } from "./types";
 /**
  * Durant vs LeBron. Career and 2025-26 lines are Basketball-Reference.
  * The July 2026 76ers signing is the NBA.com story updated July 27, 2026.
- * Projection rows and reported contract dollars are
- * not quoted. No prediction.
+ * No prediction.
  */
 
 const DURANT = "kevin-durant";
@@ -24,18 +23,18 @@ const RECENT_CAT = `2025-26 regular season · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "Kevin Durant's career line on the per-game table is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games. In 2025-26 Durant averaged 26.0 points in 78 games for Houston and LeBron averaged 20.9 points in 60 games for the Lakers. LeBron signed with the 76ers in July 2026. Stats as of October 3, 2026, there is no 2026-27 regular-season game log. There is no 2026-27 forecast.";
+  "Kevin Durant's per-game averages are 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games. LeBron James's are 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games. In 2025-26 Durant averaged 26.0 points in 78 games for Houston and LeBron averaged 20.9 points in 60 games for the Lakers. LeBron signed with the 76ers in July 2026. As of October 3, 2026, neither has played a 2026-27 regular-season game. There is no 2026-27 forecast.";
 
 const FAQS = [
   {
     question: "What are Durant's and LeBron's career scoring lines?",
     answer:
-      "Durant's per-game career row is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games over 18 years. Career points total 32,597 (Basketball-Reference). LeBron's per-game career row is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games over 23 years. Career points total 43,440 (Basketball-Reference). Career shooting is .503 / .392 / .882 for Durant and .507 / .348 / .737 for LeBron, field goals, threes, and free throws.",
+      "Durant's per-game averages are 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games over 18 years. Career points total 32,597 (Basketball-Reference). LeBron's per-game averages are 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games over 23 years. Career points total 43,440 (Basketball-Reference). Career shooting is .503 / .392 / .882 for Durant and .507 / .348 / .737 for LeBron, field goals, threes, and free throws.",
   },
   {
     question: "What did each average in 2025-26?",
     answer:
-      "Durant, with Houston: 78 games, all starts, 26.0 points, 5.5 rebounds, and 4.8 assists. The awards cell is All-Star and All-NBA. LeBron, with the Lakers: 60 games, 20.9 points, 6.1 rebounds, and 7.2 assists. The awards cell is All-Star. NBA.com's signing story, updated July 27, 2026, prints the same 20.9, 6.1, and 7.2 line.",
+      "Durant, with Houston: 78 games, all starts, 26.0 points, 5.5 rebounds, and 4.8 assists. 2025-26 awards are All-Star and All-NBA. LeBron, with the Lakers: 60 games, 20.9 points, 6.1 rebounds, and 7.2 assists. 2025-26 award is All-Star. NBA.com's signing story, updated July 27, 2026, has the same 20.9, 6.1, and 7.2 line.",
   },
   {
     question: "How many championships does each player have?",
@@ -43,14 +42,14 @@ const FAQS = [
       "Durant won 2 NBA championships, 2 Finals MVPs, the 2013-14 MVP, and 4 scoring titles, and made 16 All-Star teams. LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. Those honors are not a single ranking.",
   },
   {
-    question: "Where is each player listed for 2026-27?",
+    question: "Where is each player for 2026-27?",
     answer:
-      "Basketball-Reference lists Durant with the Houston Rockets and LeBron with the Philadelphia 76ers. NBA.com's story, updated July 27, 2026, says LeBron announced the move on social media Friday and that it became official on Sunday. His posts on that story are dated July 24, 2026. He told the Lakers on June 30 that he would not return. The story says he logged 23 seasons and will add at least one more this season.",
+      "Durant is with the Houston Rockets (Basketball-Reference). LeBron is with the Philadelphia 76ers (Basketball-Reference). NBA.com's story, updated July 27, 2026, says LeBron announced the move on social media Friday and that it became official on Sunday. His posts on that story are dated July 24, 2026. He told the Lakers on June 30 that he would not return. NBA.com writes that he played 23 seasons and will add at least one more this season.",
   },
   {
     question: "Is 2026-27 predicted?",
     answer:
-      "No. Stats as of October 3, 2026, neither player page has a 2026-27 regular-season game log. Tables labeled 2026-27 Projection are not quoted. Reported contract dollars in the signing story are labeled as reports, so they are not used. Neither is named the winner of the 2026-27 season.",
+      "No. As of October 3, 2026, neither player has played a 2026-27 regular-season game. Neither is named the winner of the 2026-27 season.",
   },
 ];
 
@@ -58,15 +57,15 @@ const VERDICT = `Career per game: Durant 27.1 points, 6.9 rebounds, and 4.4 assi
 
 2025-26: Durant 26.0 points in 78 games. LeBron 20.9 points in 60 games.
 
-Championships on the honors lists: Durant 2. LeBron 4.
+Championships: Durant 2. LeBron 4.
 
-2026-27 season: Basketball-Reference lists Durant with Houston. Basketball-Reference lists LeBron with the 76ers. Stats as of October 3, 2026, there is no regular-season game log. Neither is named the winner of the 2026-27 season.`;
+2026-27 season: Durant is with the Houston Rockets (Basketball-Reference). LeBron is with the Philadelphia 76ers (Basketball-Reference). As of October 3, 2026, neither has played a regular-season game. Neither is named the winner of the 2026-27 season.`;
 
 const EXPERT_ANALYSIS = `Kevin Durant's career line is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games, totaling 32,597 points. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. In 2025-26 Durant averaged 26.0 points in 78 games and LeBron averaged 20.9 points in 60 games. Neither is named the better player.
 
-2026-27 season. Stats as of ${AS_OF}. Durant's team field is the Houston Rockets. LeBron's is the Philadelphia 76ers. NBA.com says LeBron announced the move Friday, that it became official Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. Neither page has a 2026-27 game log. Tables labeled 2026-27 Projection are not quoted.
+2026-27 season. Stats as of ${AS_OF}. Durant is with the Houston Rockets (Basketball-Reference). LeBron is with the Philadelphia 76ers (Basketball-Reference). NBA.com says LeBron announced the move Friday, that it became official Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. Neither player has played a 2026-27 regular-season game.
 
-Honors on the same pages: Durant 2 championships, 2 Finals MVPs, the 2013-14 MVP, 4 scoring titles, and 16 All-Star selections. LeBron 4 championships, 4 Finals MVPs, 4 MVPs, and 22 All-Star selections. Durant played 18 years and debuted in 2007. LeBron played 23 years and debuted in 2003 (Basketball-Reference).`;
+Honors: Durant 2 championships, 2 Finals MVPs, the 2013-14 MVP, 4 scoring titles, and 16 All-Star selections. LeBron 4 championships, 4 Finals MVPs, 4 MVPs, and 22 All-Star selections. Durant played 18 years and debuted in 2007. LeBron played 23 years and debuted in 2003 (Basketball-Reference).`;
 
 const BUILT = buildEditorialComparison({
   slug: "durant-vs-lebron",
@@ -82,18 +81,18 @@ const BUILT = buildEditorialComparison({
       slug: DURANT,
       name: "Kevin Durant",
       shortDesc:
-        "Career 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games. 2025-26: 26.0 points in 78 games. Listed with Houston.",
+        "Career 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games. 2025-26: 26.0 points in 78 games. With the Houston Rockets.",
       imageUrl: null,
       entityType: "person",
       position: 0,
       pros: [
         "Career per game: 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games",
         "2025-26: 26.0 points, 5.5 rebounds, and 4.8 assists in 78 games",
-        "Honors list: 2 championships, 2 Finals MVPs, 2013-14 MVP, 4 scoring titles",
+        "2 championships, 2 Finals MVPs, 2013-14 MVP, 4 scoring titles",
       ],
       cons: [
-        "Career assists on the per-game row are 4.4",
-        "No 2026-27 regular-season game log as of October 3, 2026",
+        "Career assists are 4.4",
+        "2026-27 games played: none as of October 3, 2026",
       ],
       bestFor: "The career scoring average and the 2025-26 Houston line",
     },
@@ -102,18 +101,18 @@ const BUILT = buildEditorialComparison({
       slug: LEBRON,
       name: "LeBron James",
       shortDesc:
-        "Career 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games. 2025-26: 20.9 points in 60 games. Listed with the 76ers.",
+        "Career 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games. 2025-26: 20.9 points in 60 games. With the 76ers.",
       imageUrl: null,
       entityType: "person",
       position: 1,
       pros: [
         "Career per game: 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games",
-        "Totals table: 43,440 points",
-        "Honors list: 4 championships, 4 Finals MVPs, 4 MVPs, 22 All-Star selections",
+        "Career points: 43,440",
+        "4 championships, 4 Finals MVPs, 4 MVPs, 22 All-Star selections",
       ],
       cons: [
         "2025-26 scoring average was 20.9, below the career 26.8",
-        "No 2026-27 regular-season game log as of October 3, 2026",
+        "2026-27 games played: none as of October 3, 2026",
       ],
       bestFor: "The career totals and the July 2026 76ers signing",
     },
@@ -138,13 +137,13 @@ const BUILT = buildEditorialComparison({
       winner: "a",
     },
     {
-      label: "Championships on the honors list",
+      label: "Championships",
       entityAValue: "2",
       entityBValue: "4",
       winner: "b",
     },
     {
-      label: "2026-27 team",
+      label: "Team",
       entityAValue: "Houston Rockets",
       entityBValue: "Philadelphia 76ers",
       winner: "tie",
@@ -155,7 +154,7 @@ const BUILT = buildEditorialComparison({
     textAttr("career-rpg", "Career rebounds per game", CAREER_CAT, DURANT, LEBRON, "6.9", "7.5", "b"),
     textAttr("career-apg", "Career assists per game", CAREER_CAT, DURANT, LEBRON, "4.4", "7.4", "b"),
     textAttr("career-pts", "Career points", CAREER_CAT, DURANT, LEBRON, "32,597", "43,440", "b"),
-    textAttr("titles", "Championships on the honors list", CAREER_CAT, DURANT, LEBRON, "2", "4", "b"),
+    textAttr("titles", "Championships", CAREER_CAT, DURANT, LEBRON, "2", "4", "b"),
     textAttr(
       "season-2526",
       "2025-26 points per game",
@@ -168,11 +167,11 @@ const BUILT = buildEditorialComparison({
     ),
     textAttr(
       "team-2627",
-      "Listed team",
+      "Team",
       SEASON_CAT,
       DURANT,
       LEBRON,
-      `Houston Rockets. No game log. Stats as of ${AS_OF}.`,
+      `Houston Rockets. Has not played a 2026-27 game. Stats as of ${AS_OF}.`,
       `Philadelphia 76ers. Signed in July 2026. Stats as of ${AS_OF}.`
     ),
   ],
@@ -186,9 +185,9 @@ const BUILT = buildEditorialComparison({
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "No page-level winner and no 2026-27 prediction. The career rows and the 2025-26 lines are finished results.",
+      "Neither is named the winner, and there is no 2026-27 prediction. The career averages and the 2025-26 seasons are finished.",
     keyFact:
-      "Durant 27.1 points in 1,201 games and 26.0 in 2025-26. LeBron 26.8 points in 1,622 games and 20.9 in 2025-26. Basketball-Reference lists Durant with Houston. Basketball-Reference lists LeBron with the 76ers.",
+      "Durant 27.1 points in 1,201 games and 26.0 in 2025-26. LeBron 26.8 points in 1,622 games and 20.9 in 2025-26. Durant is with the Houston Rockets (Basketball-Reference). LeBron is with the Philadelphia 76ers (Basketball-Reference).",
   },
   citationStats: {
     sourceCount: 3,
@@ -220,7 +219,7 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "NBA.com: LeBron signs with the 76ers",
       url: SIGNING,
-      description: `Updated July 27, 2026. July signing. 23 seasons logged, and the story says he will add at least one more. Contract dollars are labeled per reports and are not used.`,
+      description: `Updated July 27, 2026. July signing. 23 seasons played, and the story says he will add at least one more.`,
     },
     {
       type: "blog",
@@ -239,6 +238,6 @@ const BUILT = buildEditorialComparison({
 });
 
 BUILT.metadata.metaDescription =
-  "Durant's career line is 27.1 points in 1,201 games. LeBron's is 26.8 in 1,622. The 2026-27 block is dated October 3, 2026, with no game log.";
+  "Durant's career line is 27.1 points in 1,201 games. LeBron's is 26.8 in 1,622. As of October 3, 2026, neither has played a 2026-27 game.";
 
 export const DURANT_VS_LEBRON: EditorialComparison = BUILT;

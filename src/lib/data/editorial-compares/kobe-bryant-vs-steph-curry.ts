@@ -71,7 +71,7 @@ const EXPERT_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds,
 
 Career. Kobe was born August 23, 1978, stood 6-6 and 212 pounds, was drafted 13th overall by Charlotte in 1996, and debuted November 3, 1996. He played 20 seasons and 1,346 games, scored 33,643 points, and his seasons were with the Lakers. He was inducted into the Hall of Fame as a player in 2020. Bryant retired after the 2015-16 season and died on January 26, 2020. Curry was born March 14, 1988, stands 6-2 and 185 pounds, was drafted 7th overall by Golden State in 2009, and debuted October 28, 2009. He has played 17 seasons and 1,069 games, scored 26,528 points, and plays for the Golden State Warriors.
 
-2025-26 regular season. Curry played 43 games at 30.9 minutes: 26.6 points, 3.6 rebounds, and 4.7 assists, and was an All-Star. In 2024-25 he played 70 games at 24.5 points per game. Kobe has no season after his career.
+2025-26 regular season. Curry played 43 games at 30.9 minutes: 26.6 points, 3.6 rebounds, and 4.7 assists, and was an All-Star. In 2024-25 he played 70 games at 24.5 points per game.
 
 Honors. Kobe: 18 All-Star selections, 2 scoring titles, 5 championships, 15 All-NBA selections, 12 All-Defensive selections, the 2007-08 MVP, 2 Finals MVPs, and the Hall of Fame. Curry: 12 All-Star selections, 2 scoring titles, 4 championships, 11 All-NBA selections, MVPs in 2014-15 and 2015-16, and the 2021-22 Finals MVP.`;
 
