@@ -3467,34 +3467,6 @@ export function teachesDefinedTerm(label: string, pageUrl: string): Record<strin
   };
 }
 
-// Gated off. A Versus B is not a fact-checking organization, and these
-// builders used to invent "A is better than B" claims credited to the
-// Internet. Callers must not emit the return value.
-export function blogClaimReviewSchema(_opts: {
-  articleUrl: string;
-  entityA: string;
-  entityB: string;
-  shortAnswer?: string;
-  verdict?: string | null;
-  datePublished?: string;
-  dateModified?: string;
-}): null {
-  return null;
-}
-
-export function claimReviewSchema(_opts: {
-  slug: string;
-  title: string;
-  entityA: string;
-  entityB: string;
-  verdict: string;
-  shortAnswer: string;
-  datePublished?: string;
-  dateModified?: string;
-}): null {
-  return null;
-}
-
 export function howToSchemaFromBlog(opts: {
   title: string;
   description: string;
