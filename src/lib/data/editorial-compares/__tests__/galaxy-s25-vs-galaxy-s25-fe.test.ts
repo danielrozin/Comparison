@@ -53,7 +53,7 @@ describe("Galaxy S25 vs Galaxy S25 FE", () => {
       "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
     ]);
     expect(findSelfContradictions(page())).toEqual([]);
-    const sentences = page().shortAnswer.split(/(?<=\.)\s+/);
+    const sentences = (page().shortAnswer ?? "").split(/(?<=\.)\s+/);
     expect(sentences[0]).toMatch(/S25 FE/);
     expect(sentences[1]).toMatch(/Galaxy S25/);
   });
