@@ -58,15 +58,15 @@ const FAQS = [
 
 const VERDICT = `Career per game: Jordan 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games. Kobe 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games.
 
-Career points on the totals tables: Jordan 32,292. Kobe 33,643.
+Career points: Jordan 32,292. Kobe 33,643.
 
-Championships on the honors lists: Jordan 6. Kobe 5.`;
+Championships: Jordan 6. Kobe 5.`;
 
 const EXPERT_ANALYSIS = `Michael Jordan's career line is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games, totaling 32,292 points. Kobe Bryant's is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games, totaling 33,643 points. Jordan won 6 championships. Kobe won 5. Neither is named the better player.
 
-2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log, so no game log is quoted and no projection is quoted. Jordan played 15 seasons. Kobe played 20.
+2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log. Jordan played 15 seasons. Kobe played 20.
 
-The honors lists, also show Jordan with 6 Finals MVPs, 5 MVPs, 10 scoring titles, and 14 All-Star selections, and Kobe with 2 Finals MVPs, the 2007-08 MVP, and 18 All-Star selections. Chicago accounts for 13 of Jordan's years on the per-game split, at 31.5 points per game. Washington accounts for 2 years, at 21.2.`;
+The honors lists also show Jordan with 6 Finals MVPs, 5 MVPs, 10 scoring titles, and 14 All-Star selections, and Kobe with 2 Finals MVPs, the 2007-08 MVP, and 18 All-Star selections. Chicago accounts for 13 of Jordan's years on the per-game split, at 31.5 points per game. Washington accounts for 2 years, at 21.2.`;
 
 const BUILT = buildEditorialComparison({
   slug: "jordan-vs-kobe",

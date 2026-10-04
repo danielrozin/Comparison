@@ -56,7 +56,7 @@ const FAQS = [
   {
     question: "When do the Trail Blazers play the Suns?",
     answer:
-      "NBA.com lists Phoenix at Portland on October 21, 2026, at 10:00 pm ET, regular season, game 0022600092. Both teams are shown at 0-0. That is a schedule fact for the teams. NBA.com's schedule lists teams, not players. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and a projection is not quoted.",
+      "NBA.com lists Phoenix at Portland on October 21, 2026, at 10:00 pm ET, regular season, game 0022600092. Both teams are shown at 0-0. That is a schedule fact for the teams. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and a projection is not quoted.",
   },
 ];
 
@@ -68,7 +68,7 @@ const VERDICT = `Career per game: Lillard 25.1 points, 4.3 rebounds, and 6.7 ass
 
 const EXPERT_ANALYSIS = `Damian Lillard's career line on the per-game table is 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Ja Morant's is 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games. Basketball-Reference lists both with the Portland Trail Blazers. There is no 2026-27 forecast.
 
-2026-27 season. Stats as of ${AS_OF}. Basketball-Reference has no 2026-27 regular-season game log for either player. Basketball-Reference also has a 2026-27 projection table for Morant. NBA.com lists Phoenix at Portland on October 21, 2026, at 10:00 pm ET. NBA.com's schedule lists teams, not players. Basketball-Reference lists Lillard as not playing in 2025-26, injured (Achilles). NBA.com's June 30 trade story lists him on Portland's current roster.
+2026-27 season. Stats as of ${AS_OF}. Basketball-Reference has no 2026-27 regular-season game log for either player. NBA.com lists Phoenix at Portland on October 21, 2026, at 10:00 pm ET. Basketball-Reference lists Lillard as not playing in 2025-26, injured (Achilles). NBA.com's June 30 trade story lists him on Portland's current roster.
 
 The trade. The story says Portland and Memphis agreed Monday. The story was updated June 30, 2026, and June 29, 2026 was that Monday. Portland received Ja Morant. Memphis received Jerami Grant and Kris Murray. The same story says Grant averaged 18.6 points and 3.5 rebounds over 57 games last season, and Murray averaged 5.8 points and 3.6 rebounds over 56 games. Lillard made 9 All-Star teams, with 7 All-NBA selections, 2012-13 Rookie of the Year, and 2023-24 All-Star Game MVP. Morant made 2 All-Star teams, with 2021-22 All-NBA, 2019-20 Rookie of the Year, and 2021-22 Most Improved.`;
 

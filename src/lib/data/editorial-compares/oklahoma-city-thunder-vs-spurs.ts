@@ -87,7 +87,7 @@ Stats as of October 3, 2026. The 2026-27 regular season had not started. NBA.com
 
 What is not included
 
-The finished series above is the 2026 playoffs. It is not a 2026-27 result. A Basketball-Reference 2026-27 projection row is not quoted, and a season win-loss record is not in the title.`;
+The finished series above is the 2026 playoffs. It is not a 2026-27 result.`;
 
 const built = buildEditorialComparison({
   slug: "oklahoma-city-thunder-vs-spurs",
