@@ -36,7 +36,7 @@ const FAQS = [
   {
     question: "What day was the Morant trade?",
     answer:
-      "The NBA.com story was updated June 30, 2026, and it says the teams agreed on the trade Monday. June 29, 2026 was a Monday. The story does not give the numeral June 29. It names the players: Ja Morant to Portland, Jerami Grant and Kris Murray to Memphis. A cash figure in that story is attributed to a later newsletter report, so that cash figure is not used.",
+      "The NBA.com story was updated June 30, 2026, and it says the teams agreed on the trade Monday. June 29, 2026 was a Monday. It names the players: Ja Morant to Portland, Jerami Grant and Kris Murray to Memphis.",
   },
   {
     question: "What are their career scoring lines?",
@@ -68,7 +68,7 @@ const VERDICT = `Career per game: Lillard 25.1 points, 4.3 rebounds, and 6.7 ass
 
 const EXPERT_ANALYSIS = `Damian Lillard's per-game averages are 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Ja Morant's are 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games. Both are with the Portland Trail Blazers. There is no 2026-27 forecast.
 
-2026-27 season. Stats as of ${AS_OF}. Neither player has played a 2026-27 regular-season game. NBA.com schedules Phoenix at Portland on October 21, 2026, at 10:00 pm ET. Lillard did not play in 2025-26, injured (Achilles). NBA.com's June 30 trade story has him on Portland's current roster.
+2026-27 season. Stats as of ${AS_OF}. Neither player has played a 2026-27 regular-season game. NBA.com schedules Phoenix at Portland on October 21, 2026, at 10:00 pm ET. Lillard missed the 2025-26 season with an Achilles injury. NBA.com's June 30 trade story has him on Portland's current roster.
 
 The trade. The story says Portland and Memphis agreed Monday. The story was updated June 30, 2026, and June 29, 2026 was that Monday. Portland received Ja Morant. Memphis received Jerami Grant and Kris Murray. The same story says Grant averaged 18.6 points and 3.5 rebounds over 57 games last season, and Murray averaged 5.8 points and 3.6 rebounds over 56 games. Lillard made 9 All-Star teams, with 7 All-NBA selections, 2012-13 Rookie of the Year, and 2023-24 All-Star Game MVP. Morant made 2 All-Star teams, with 2021-22 All-NBA, 2019-20 Rookie of the Year, and 2021-22 Most Improved.`;
 
