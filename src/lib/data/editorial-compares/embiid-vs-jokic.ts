@@ -22,18 +22,18 @@ const LAST = `2025-26 regular season · Basketball-Reference`;
 const THIS = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games. Embiid won the 2022-23 MVP. Jokic won MVP in 2020-21, 2021-22, and 2023-24, plus the 2023 championship. Stats as of October 3, 2026, neither player has a 2026-27 regular-season game log, and the projection rows are not used. Neither is named the better player.";
+  "Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games. Embiid won the 2022-23 MVP. Jokic won MVP in 2020-21, 2021-22, and 2023-24, plus the 2023 championship. As of October 3, 2026, neither player has played a 2026-27 regular-season game. Neither is named the better player.";
 
 const FAQS = [
   {
     question: "What are Joel Embiid's and Nikola Jokic's career lines?",
     answer:
-      "Embiid, in 10 seasons and 490 games: 13,544 points, at 27.6 points, 10.8 rebounds, and 3.7 assists per game. Jokic, in 11 seasons and 810 games: 18,009 points, at 22.2 points, 11.1 rebounds, and 7.5 assists per game. Both lines are the Basketball-Reference career rows.",
+      "Embiid, in 10 seasons and 490 games: 13,544 points, at 27.6 points, 10.8 rebounds, and 3.7 assists per game. Jokic, in 11 seasons and 810 games: 18,009 points, at 22.2 points, 11.1 rebounds, and 7.5 assists per game. Both are Basketball-Reference career averages.",
   },
   {
     question: "What did Embiid and Jokic average in 2025-26?",
     answer:
-      "Embiid played 38 games, all starts, at 31.6 minutes: 26.9 points, 7.7 rebounds, and 3.9 assists. Jokic played 65 games, all starts, at 34.8 minutes: 27.7 points, 12.9 rebounds, and 10.7 assists. Jokic's 2025-26 awards cell reads MVP-2, All-Star, and All-NBA. Embiid's 2025-26 awards cell is blank.",
+      "Embiid played 38 games, all starts, at 31.6 minutes: 26.9 points, 7.7 rebounds, and 3.9 assists. Jokic played 65 games, all starts, at 34.8 minutes: 27.7 points, 12.9 rebounds, and 10.7 assists. Jokic's 2025-26 awards are MVP-2, All-Star, and All-NBA. Embiid's 2025-26 season names no award.",
   },
   {
     question: "Which MVP seasons did each player win?",
@@ -43,7 +43,7 @@ const FAQS = [
   {
     question: "Has the 2026-27 season started for Embiid and Jokic?",
     answer:
-      "No regular-season game log is on either page. Stats as of October 3, 2026. Each 2026-27 table is labeled a projection, and those rows are not used. Embiid is listed with the Philadelphia 76ers. Jokic is listed with the Denver Nuggets.",
+      "As of October 3, 2026, neither has played a 2026-27 regular-season game. Embiid is with the Philadelphia 76ers. Jokic is with the Denver Nuggets.",
   },
   {
     question: "How many All-Star selections does each player have?",
@@ -53,7 +53,7 @@ const FAQS = [
   {
     question: "Who is the better player, Embiid or Jokic?",
     answer:
-      "Neither is named the better player. Embiid's column is the higher career scoring average and the 2022-23 MVP. Jokic's column is the longer career, the assist line, three MVP seasons, and the 2023 championship. The 2026-27 season has no game log yet.",
+      "Neither is named the better player. Embiid has the higher career scoring average and the 2022-23 MVP. Jokic has the longer career, the higher assist average, three MVP seasons, and the 2023 championship (Basketball-Reference). Neither has played a 2026-27 game.",
   },
 ];
 
@@ -63,17 +63,17 @@ const VERDICT = `Career points per game: Embiid 27.6, Jokic 22.2. Career rebound
 
 MVPs: Embiid in 2022-23. Jokic in 2020-21, 2021-22, and 2023-24. Jokic also won the 2023 championship.
 
-2026-27 season: Stats as of October 3, 2026, there is no regular-season game log. Neither is named the winner of the 2026-27 season. There is no game forecast.`;
+2026-27 season: As of October 3, 2026, neither has played a regular-season game. Neither is named the winner of the 2026-27 season. There is no game forecast.`;
 
 const EXPERT_ANALYSIS = `Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games. Embiid was MVP in 2022-23. Jokic was MVP in 2020-21, 2021-22, and 2023-24. Neither is named the better player.
 
-2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log. Both 2026-27 tables on Basketball-Reference are labeled projections, and those projections are not used.
+2026-27 season. Stats as of ${AS_OF}. Neither player has played a 2026-27 regular-season game.
 
 Career. Embiid was born March 16, 1994, stands 7-0 and 280 pounds, was drafted 3rd overall by Philadelphia in 2014, and debuted October 26, 2016. He has played 10 seasons and 490 games and scored 13,544 points. Jokic was born February 19, 1995, stands 6-11 and 284 pounds, was drafted 41st overall by Denver in 2014, and debuted October 28, 2015. He has played 11 seasons and 810 games and scored 18,009 points. Embiid plays for the Philadelphia 76ers. Jokic plays for the Denver Nuggets.
 
 2025-26 regular season. Embiid played 38 games at 31.6 minutes: 26.9 points, 7.7 rebounds, and 3.9 assists. Jokic played 65 games at 34.8 minutes: 27.7 points, 12.9 rebounds, and 10.7 assists, and was an All-Star, All-NBA, and second in MVP voting. Jokic also led the league in rebounding and assists in 2025-26.
 
-Honors from the same player pages. Embiid: 7 All-Star selections, 2 scoring titles, 5 All-NBA selections, 3 All-Defensive selections, 2016-17 All-Rookie, and the 2022-23 MVP. Jokic: 8 All-Star selections, 8 All-NBA selections, 2015-16 All-Rookie, 3 MVPs, the 2023 championship, the 2022-23 Finals MVP, and the 2022-23 West finals MVP.`;
+Honors. Embiid: 7 All-Star selections, 2 scoring titles, 5 All-NBA selections, 3 All-Defensive selections, 2016-17 All-Rookie, and the 2022-23 MVP. Jokic: 8 All-Star selections, 8 All-NBA selections, 2015-16 All-Rookie, 3 MVPs, the 2023 championship, the 2022-23 Finals MVP, and the 2022-23 West finals MVP.`;
 
 const BUILT = buildEditorialComparison({
   slug: "embiid-vs-jokic",
@@ -102,7 +102,7 @@ const BUILT = buildEditorialComparison({
       cons: [
         "490 games in 10 seasons. Jokic has 810 games in 11 seasons",
         "Career assists are 3.7 per game. Jokic's career mark is 7.5",
-        "No 2026-27 regular-season game log as of October 3, 2026",
+        "2026-27 games played: none as of October 3, 2026",
       ],
       bestFor: "The career scoring average and the 2022-23 MVP",
     },
@@ -123,7 +123,7 @@ const BUILT = buildEditorialComparison({
       ],
       cons: [
         "Career scoring average is 22.2. Embiid's is 27.6",
-        "No 2026-27 regular-season game log as of October 3, 2026",
+        "2026-27 games played: none as of October 3, 2026",
       ],
       bestFor: "The assist line, the three MVP seasons, and the 2023 championship",
     },
@@ -154,9 +154,9 @@ const BUILT = buildEditorialComparison({
       winner: "b",
     },
     {
-      label: "2026-27 regular season",
-      entityAValue: "No game log as of October 3, 2026",
-      entityBValue: "No game log as of October 3, 2026",
+      label: "2026-27 games played",
+      entityAValue: "None as of October 3, 2026",
+      entityBValue: "None as of October 3, 2026",
       winner: "tie",
     },
   ],
@@ -172,12 +172,12 @@ const BUILT = buildEditorialComparison({
     textAttr("title", "Championships", CAREER, EMBIID, JOKIC, "None", "2023", "b"),
     textAttr(
       "season-2627-line",
-      "Regular-season line",
+      "2026-27 games played",
       THIS,
       EMBIID,
       JOKIC,
-      `None yet. Stats as of ${AS_OF}. Projection row not quoted.`,
-      `None yet. Stats as of ${AS_OF}. Projection row not quoted.`
+      `None as of ${AS_OF}.`,
+      `None as of ${AS_OF}.`
     ),
   ],
   faqs: FAQS,
@@ -190,9 +190,9 @@ const BUILT = buildEditorialComparison({
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "No page-level winner. Career lines stay separate from the 2026-27 season, which has no game log.",
+      "Neither is named the winner. As of October 3, 2026, neither has played a 2026-27 game.",
     keyFact:
-      "Embiid was MVP in 2022-23. Jokic was MVP in 2020-21, 2021-22, and 2023-24, and won the 2023 championship. Stats as of October 3, 2026, there is no 2026-27 regular-season line.",
+      "Embiid was MVP in 2022-23. Jokic was MVP in 2020-21, 2021-22, and 2023-24, and won the 2023 championship. As of October 3, 2026, neither has played a 2026-27 game.",
   },
   citationStats: {
     sourceCount: 2,
@@ -211,19 +211,19 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Joel Embiid",
       url: EMBIID_URL,
-      description: `Career 27.6 / 10.8 / 3.7 in 490 games. 2025-26: 26.9 points in 38 games. 2022-23 MVP. 2026-27 row is a projection and is not used.`,
+      description: `Career 27.6 / 10.8 / 3.7 in 490 games. 2025-26: 26.9 points in 38 games. 2022-23 MVP.`,
     },
     {
       type: "external",
       label: "Basketball-Reference: Nikola Jokic",
       url: JOKIC_URL,
-      description: `Career 22.2 / 11.1 / 7.5 in 810 games. MVP-1 in 2020-21, 2021-22, and 2023-24. 2026-27 row is a projection and is not used.`,
+      description: `Career 22.2 / 11.1 / 7.5 in 810 games. MVP-1 in 2020-21, 2021-22, and 2023-24.`,
     },
   ],
   metaTitle: "Embiid vs Jokic: Careers and 2026-27",
 });
 
 BUILT.metadata.metaDescription =
-  "Embiid's career line is 27.6 points in 490 games. Jokic's is 22.2 in 810. The 2026-27 block is dated October 3, 2026, with no game log.";
+  "Embiid's career line is 27.6 points in 490 games. Jokic's is 22.2 in 810. As of October 3, 2026, neither has played a 2026-27 game.";
 
 export const EMBIID_VS_JOKIC: EditorialComparison = BUILT;

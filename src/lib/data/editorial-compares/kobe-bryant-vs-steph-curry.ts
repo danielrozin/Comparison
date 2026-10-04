@@ -22,13 +22,13 @@ const CAREER = `Career · Basketball-Reference`;
 const LAST = `2025-26 regular season · Basketball-Reference`;
 
 const SHORT_ANSWER =
-  "Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships and the 2007-08 MVP. Curry won 4 championships and MVPs in 2014-15 and 2015-16. Stats as of October 3, 2026, Curry has no 2026-27 regular-season game log. Neither is named the better player.";
+  "Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships and the 2007-08 MVP. Curry won 4 championships and MVPs in 2014-15 and 2015-16. As of October 3, 2026, Curry has not played a 2026-27 regular-season game. Neither is named the better player.";
 
 const FAQS = [
   {
     question: "What are Kobe Bryant's and Stephen Curry's career lines?",
     answer:
-      "Kobe, in 20 seasons and 1,346 games: 33,643 points, at 25.0 points, 5.2 rebounds, and 4.7 assists per game. Curry, in 17 seasons and 1,069 games: 26,528 points, at 24.8 points, 4.7 rebounds, and 6.3 assists per game. Both lines are the Basketball-Reference career rows.",
+      "Kobe, in 20 seasons and 1,346 games: 33,643 points, at 25.0 points, 5.2 rebounds, and 4.7 assists per game. Curry, in 17 seasons and 1,069 games: 26,528 points, at 24.8 points, 4.7 rebounds, and 6.3 assists per game. Both are Basketball-Reference career averages.",
   },
   {
     question: "How many championships does each player have?",
@@ -38,12 +38,12 @@ const FAQS = [
   {
     question: "What did Curry average in 2025-26?",
     answer:
-      "Curry played 43 games, 41 starts, at 30.9 minutes: 26.6 points, 3.6 rebounds, and 4.7 assists. The awards cell for that season is All-Star. Kobe has no 2025-26 row. His career row is the last line on the per-game table.",
+      "Curry played 43 games, 41 starts, at 30.9 minutes: 26.6 points, 3.6 rebounds, and 4.7 assists. His 2025-26 award is All-Star. Kobe has no 2025-26 season.",
   },
   {
     question: "Is there a 2026-27 line for Curry?",
     answer:
-      "No. Stats as of October 3, 2026. Curry's 2026-27 table is labeled a projection, and that table is not quoted. Curry has no 2026-27 game log. He plays for the Golden State Warriors.",
+      "No. As of October 3, 2026, Curry has not played a 2026-27 regular-season game. He plays for the Golden State Warriors.",
   },
   {
     question: "How many All-Star selections does each player have?",
@@ -53,7 +53,7 @@ const FAQS = [
   {
     question: "Who is the better player, Kobe or Curry?",
     answer:
-      "Neither is named the better player. Kobe's column is the longer career, 33,643 points, and 5 championships. Curry's column is the assist line, 4 championships, and two MVP seasons. The 2026-27 season has no game log for Curry.",
+      "Neither is named the better player. Kobe has the longer career, 33,643 points, and 5 championships. Curry has the higher assist average, 4 championships, and two MVP seasons (Basketball-Reference). Curry has not played a 2026-27 game.",
   },
 ];
 
@@ -61,19 +61,19 @@ const VERDICT = `Career points per game: Kobe 25.0, Curry 24.8. Career assists p
 
 Championships: Kobe 5, Curry 4. MVPs: Kobe in 2007-08. Curry in 2014-15 and 2015-16.
 
-2025-26 regular season: Curry 26.6 points, 3.6 rebounds, and 4.7 assists in 43 games. Kobe has no 2025-26 row.
+2025-26 regular season: Curry 26.6 points, 3.6 rebounds, and 4.7 assists in 43 games. Kobe has no 2025-26 season.
 
-2026-27 season: Stats as of October 3, 2026, Curry has no regular-season game log. There is no 2026-27 forecast.`;
+2026-27 season: As of October 3, 2026, Curry has not played a regular-season game. There is no 2026-27 forecast.`;
 
 const EXPERT_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships. Curry won 4. Neither is named the better player.
 
-2026-27 season. Stats as of ${AS_OF}. Curry has no 2026-27 regular-season game log. The 2026-27 table on his page is labeled a projection, and that table is not quoted.
+2026-27 season. Stats as of ${AS_OF}. Curry has not played a 2026-27 regular-season game.
 
 Career. Kobe was born August 23, 1978, stood 6-6 and 212 pounds, was drafted 13th overall by Charlotte in 1996, and debuted November 3, 1996. He played 20 seasons and 1,346 games, scored 33,643 points, and his seasons were with the Lakers. He was inducted into the Hall of Fame as a player in 2020. Bryant retired after the 2015-16 season and died on January 26, 2020. Curry was born March 14, 1988, stands 6-2 and 185 pounds, was drafted 7th overall by Golden State in 2009, and debuted October 28, 2009. He has played 17 seasons and 1,069 games, scored 26,528 points, and plays for the Golden State Warriors.
 
-2025-26 regular season. Curry played 43 games at 30.9 minutes: 26.6 points, 3.6 rebounds, and 4.7 assists, with an All-Star mark on the awards cell. In 2024-25 he played 70 games at 24.5 points per game. Kobe has no season after the career row.
+2025-26 regular season. Curry played 43 games at 30.9 minutes: 26.6 points, 3.6 rebounds, and 4.7 assists, and was an All-Star. In 2024-25 he played 70 games at 24.5 points per game. Kobe has no season after his career.
 
-Honors from the same player pages. Kobe: 18 All-Star selections, 2 scoring titles, 5 championships, 15 All-NBA selections, 12 All-Defensive selections, the 2007-08 MVP, 2 Finals MVPs, and the Hall of Fame. Curry: 12 All-Star selections, 2 scoring titles, 4 championships, 11 All-NBA selections, MVPs in 2014-15 and 2015-16, and the 2021-22 Finals MVP.`;
+Honors. Kobe: 18 All-Star selections, 2 scoring titles, 5 championships, 15 All-NBA selections, 12 All-Defensive selections, the 2007-08 MVP, 2 Finals MVPs, and the Hall of Fame. Curry: 12 All-Star selections, 2 scoring titles, 4 championships, 11 All-NBA selections, MVPs in 2014-15 and 2015-16, and the 2021-22 Finals MVP.`;
 
 const BUILT = buildEditorialComparison({
   slug: "kobe-bryant-vs-steph-curry",
@@ -122,7 +122,7 @@ const BUILT = buildEditorialComparison({
       cons: [
         "Career points are 26,528. Kobe's career total is 33,643",
         "4 championships. Kobe won 5",
-        "No 2026-27 regular-season game log as of October 3, 2026",
+        "2026-27 games played: none as of October 3, 2026",
       ],
       bestFor: "The assist line, the two MVP seasons, and the 2025-26 line",
     },
@@ -167,7 +167,7 @@ const BUILT = buildEditorialComparison({
       LAST,
       KOBE,
       CURRY,
-      "No 2025-26 row",
+      "No 2025-26 season",
       "26.6 in 43 games",
       "b"
     ),
@@ -182,9 +182,9 @@ const BUILT = buildEditorialComparison({
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "No page-level winner. Career lines stay separate from Curry's 2026-27 season, which has no game log.",
+      "Neither is named the winner. As of October 3, 2026, Curry has not played a 2026-27 game.",
     keyFact:
-      "Kobe won 5 championships and the 2007-08 MVP. Curry won 4 championships and MVPs in 2014-15 and 2015-16. Stats as of October 3, 2026, Curry has no 2026-27 regular-season line.",
+      "Kobe won 5 championships and the 2007-08 MVP. Curry won 4 championships and MVPs in 2014-15 and 2015-16. As of October 3, 2026, Curry has not played a 2026-27 game.",
   },
   citationStats: {
     sourceCount: 2,
@@ -209,7 +209,7 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Basketball-Reference: Stephen Curry",
       url: CURRY_URL,
-      description: `Career 24.8 / 4.7 / 6.3 in 1,069 games. 2025-26: 26.6 points in 43 games. MVP-1 in 2014-15 and 2015-16. 2026-27 row is a projection and is not used.`,
+      description: `Career 24.8 / 4.7 / 6.3 in 1,069 games. 2025-26: 26.6 points in 43 games. MVP-1 in 2014-15 and 2015-16.`,
     },
     {
       type: "blog",
