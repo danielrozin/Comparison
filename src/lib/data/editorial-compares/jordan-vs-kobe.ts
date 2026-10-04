@@ -60,13 +60,9 @@ const VERDICT = `Career per game: Jordan 30.1 points, 6.2 rebounds, and 5.3 assi
 
 Career points on the totals tables: Jordan 32,292. Kobe 33,643.
 
-Championships on the honors lists: Jordan 6. Kobe 5.
-
-2026-27 season: Stats as of October 3, 2026, neither player has a game log.`;
+Championships on the honors lists: Jordan 6. Kobe 5.`;
 
 const EXPERT_ANALYSIS = `Michael Jordan's career line is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games, totaling 32,292 points. Kobe Bryant's is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games, totaling 33,643 points. Jordan won 6 championships. Kobe won 5. Neither is named the better player.
-
-Source note: Every counting line and honor is from the two Basketball-Reference player pages. ${JORDAN_URL} ${KOBE_URL}
 
 2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log, so no game log is quoted and no projection is quoted. Jordan played 15 seasons. Kobe played 20.
 

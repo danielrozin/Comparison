@@ -67,7 +67,7 @@ Platforms and account requirements
 
 Both require a phone number to register. Signal lets you create a username so people can contact you without seeing that number. Desktop apps for both are linked-device clients, not standalone accounts. Check each vendor’s help center for current OS and desktop requirements.
 
-Choose Signal if you want the privacy-first messenger: open-source clients, nonprofit operator, and documented minimal metadata. Choose WhatsApp if you need the everyday family, international, or business messenger: default encrypted chats plus Communities and WhatsApp Business. Sources: Signal documentation and Support; WhatsApp Security and Privacy Policy.`;
+Choose Signal if you want the privacy-first messenger: open-source clients, nonprofit operator, and documented minimal metadata. Choose WhatsApp if you need the everyday family, international, or business messenger: default encrypted chats plus Communities and WhatsApp Business.`;
 
 export const SIGNAL_VS_WHATSAPP: EditorialComparison = buildEditorialComparison({
   slug: "signal-vs-whatsapp",

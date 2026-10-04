@@ -65,10 +65,6 @@ Neither is better for everyone; it depends on the use.`;
 
 const EXPERT_ANALYSIS = `It depends on what you want the browser to do before you change a setting. Brave is the pick when default ad and tracker blocking is the point. Chrome is the pick when Google Account sync and the Chrome Web Store, as Google ships it, are the point. Neither is better for everyone.
 
-Spec table. Caption: Brave vs Chrome. Source note: the rows are as of 30 September 2026, from Brave's homepage, Shields, privacy, and features pages, Brave's 2 June 2025 extension guide, Google's Chrome page, Google's Chromium project page, Chrome's sign-in and cookie help, Chrome's Manifest V2 timeline (updated 9 September 2026), Chrome's Manifest V3 doc, and the Chrome 139 release notes.
-
-Sources: brave.com, brave.com/shields, brave.com/privacy-features, brave.com/features, Brave's extension guide (2 June 2025), google.com/chrome, opensource.google.com/projects/chromium, Chrome sign-in help, Chrome cookie help, the Manifest V3 doc, the Manifest V2 timeline (updated 9 September 2026), and Chrome 139 release notes (stable 5 August 2025).
-
 Engine
 
 Google says Chromium is the web browser that Google Chrome is built on. Brave says Brave is built on that same open-source Chromium project, and names Google Chrome as one browser that engine powers. Brave says the same thing in its own words: Brave is built on the open-source Chromium web core. That shared engine is not a speed score.

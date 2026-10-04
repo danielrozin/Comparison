@@ -70,8 +70,6 @@ Neither is better for everyone; it depends on whether you want the more complete
 
 const EXPERT_ANALYSIS = `The iPhone 17 is the better everyday upgrade from an iPhone 13 unless the ultra-thin body is the reason you are buying. The iPhone Air is that thin phone, and the spec sheet shows what you give up to get it. Neither is better for everyone; it depends on whether the ultra-thin body is the reason you are buying.
 
-Source note: Apple lists size, display, chip, cameras, and video-playback hours. GSMArena lists battery capacity, RAM, and active-use scores. Rupee prices are from Apple's India store, and GSMArena is not used for a rupee price. GSMArena lists the Air's thickness as 5.6 mm and the iPhone 17's as 8 mm. Apple lists 5.64 mm and 7.95 mm, and those are the figures used here. Apple does not give RAM or a milliamp-hour capacity.
-
 Body and display
 
 Apple lists the iPhone Air at 6.5 inches, 165 grams, and 5.64 mm, with a titanium design. The iPhone 17 is 6.3 inches, 177 grams, and 7.95 mm, with an aluminum design. Both are a Super Retina XDR OLED display with ProMotion up to 120Hz, Ceramic Shield 2, and an IP68 rating (maximum depth of 6 meters for up to 30 minutes). The Air is the thinner, lighter phone. The iPhone 17 is the more conventional body.

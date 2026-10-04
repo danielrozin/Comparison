@@ -84,10 +84,6 @@ Neither is better for everyone; it depends on the phone and the trip.`;
 
 const EXPERT_ANALYSIS = `It depends on the phone and the trip. Apple Maps is the built-in app on Apple devices. Google Maps is the app that also runs on Android. Neither is better for everyone.
 
-Spec table. Caption: Google Maps vs Apple Maps, from Apple and Google pages. Source note: every row is a claim from Apple or Google, including Apple Maps, Apple Maps and Privacy, Apple Support, Google Maps Help, and Android Auto Help.
-
-Sources: Apple Maps, Apple Maps and Privacy (dated 14 September 2026), Apple offline maps, Apple driving directions, Apple transit directions, Apple EV routing, Google Maps offline help for iPhone and iPad, Google Maps offline help for Android, Google Maps directions for iPhone and iPad, Google Maps navigation for Android, Google Maps on CarPlay, Android Auto turn-by-turn navigation, Google Maps vehicle profiles, Google Maps built into an electric vehicle, and Google Maps Timeline.
-
 Where the apps run
 
 Apple says Maps works across your Apple devices, and it describes CarPlay as Maps behind the wheel. It says Maps is available in over two hundred regions, and that some features are not available in every country. Google Maps Help documents the app on Android and on iPhone and iPad. Android Auto Help says you get voice-guided navigation, arrival times, live traffic, and lane guidance with Google Maps or another navigation app. Google Maps also has its own CarPlay article.

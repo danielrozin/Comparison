@@ -76,8 +76,6 @@ Neither is better for everyone; it depends on whether you want a full smartwatch
 
 const EXPERT_ANALYSIS = `Choose the Apple Watch Series 12 if you want a full smartwatch on an iPhone: apps, notifications, and an optional cellular model. Choose the Fitbit Air if you want a lower-priced, screenless tracker for 24/7 heart rate and sleep, with a week-class battery. Neither is better for everyone; it depends on whether you want a full smartwatch or a screenless tracker.
 
-Source note: Apple lists the Series 12 chip, battery, sizes, weights, water resistance, the iPhone requirement, and the Health and Wellness names and footnotes. The Google Store and Google's 7 May 2026 launch post give the Fitbit Air price, the week-long battery line, the screenless design, the five-minute charge sentence, the rhythm footnote, and the "Not intended for medical purposes" line. Google lists Fitbit Air at 5.2 g without the band and 12 g with the band. Google Health Help and the Fitbit Air safety guide give the "up to 7 days" rating, the about-90-minute full charge, the 50-meter water rating, the vitals, and iPhone compatibility. No sleep-accuracy percentage is used.
-
 What each one is
 
 The Series 12 is a watch with an Always-On Retina display. Apple lists an S11 chip with a 64-bit dual-core processor, a 4-core Neural Engine, and 64GB of capacity. The Fitbit Air is screenless. Google's launch post calls it a discreet pebble, and the Google Health getting-started page calls it a lightweight, screenless tracker. There is no watch face for apps. You read the data in the Google Health app.

@@ -67,8 +67,6 @@ MVPs: Embiid in 2022-23. Jokic in 2020-21, 2021-22, and 2023-24. Jokic also won 
 
 const EXPERT_ANALYSIS = `Joel Embiid's career line is 27.6 points, 10.8 rebounds, and 3.7 assists in 490 games. Nikola Jokic's career line is 22.2 points, 11.1 rebounds, and 7.5 assists in 810 games. Embiid was MVP in 2022-23. Jokic was MVP in 2020-21, 2021-22, and 2023-24. Neither is named the better player.
 
-Source note: career totals, the 2025-26 regular-season lines, and the honors lists are from the two Basketball-Reference player pages. ${EMBIID_URL} ${JOKIC_URL}
-
 2026-27 season. Stats as of ${AS_OF}. Neither player has a 2026-27 regular-season game log. Both 2026-27 tables on Basketball-Reference are labeled projections, and those projections are not used.
 
 Career. Embiid was born March 16, 1994, stands 7-0 and 280 pounds, was drafted 3rd overall by Philadelphia in 2014, and debuted October 26, 2016. He has played 10 seasons and 490 games and scored 13,544 points. Jokic was born February 19, 1995, stands 6-11 and 284 pounds, was drafted 41st overall by Denver in 2014, and debuted October 28, 2015. He has played 11 seasons and 810 games and scored 18,009 points. Embiid plays for the Philadelphia 76ers. Jokic plays for the Denver Nuggets.

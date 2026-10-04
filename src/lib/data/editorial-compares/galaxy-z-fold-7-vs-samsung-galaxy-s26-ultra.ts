@@ -67,10 +67,6 @@ Neither is better for everyone; it depends on whether you want a 4-5 year slab o
 
 const EXPERT_ANALYSIS = `The Galaxy S26 Ultra suits a 4-5 year keep. The Galaxy Z Fold 7 is the pick only if the inner foldable screen and multitasking are why you are buying. Neither is better for everyone; it depends on whether you want a 4-5 year slab or the inner foldable screen.
 
-Spec table. Caption: Galaxy Z Fold 7 vs Galaxy S26 Ultra. Source note: GSMArena lists the rows in the comparison table (idPhone1=13826, idPhone2=14320). Geeky Gadgets is a qualitative summary, not a measurement sheet. Samsung says Galaxy Z Fold5 and newer models may have limited international warranty service during the standard 12-month period. Samsung Display is the source for the fold test.
-
-Sources: GSMArena compare, GSMArena Z Fold 7, GSMArena Galaxy S26 Ultra, Geeky Gadgets (24 April 2026), Samsung Display (22 July 2025), Samsung's US warranty, Samsung's US Galaxy S26 Ultra, and Android Authority (9 July 2025).
-
 Screens and body
 
 GSMArena lists an 8.0-inch inner display on the Z Fold 7 and a 6.5-inch cover display. The S26 Ultra display is 6.9 inches. Both inner and slab panels are Dynamic LTPO AMOLED 2X, 120Hz, with 2,600 nits peak. The Fold 7 weighs 215 g. Unfolded it is 4.2 mm thick. Folded it is 8.9 mm thick. The S26 Ultra weighs 214 g and is 7.9 mm thick. One gram is not a meaningful weight gap. The shape is the gap: a foldable versus a slab.

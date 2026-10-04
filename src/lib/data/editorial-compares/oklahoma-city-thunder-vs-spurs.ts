@@ -77,8 +77,6 @@ There is no page-level winner.`;
 
 const EXPERT_ANALYSIS = `The San Antonio Spurs beat the Oklahoma City Thunder 4-3 in the 2026 Western Conference Finals. Basketball-Reference lists Game 7 on May 30, 2026, as San Antonio 111 at Oklahoma City 103. As of October 3, 2026, NBA.com lists the next meeting as Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. Neither is named the winner of that game.
 
-Source note: the series score and the seven game lines are from Basketball-Reference's 2026 NBA playoffs summary. The October 20 tip time is from NBA.com's games page for that date. The card text is "OKC @ SAS, 2026-10-20" and the status line is "9:30 pm ET."
-
 2026 Western Conference Finals
 
 Basketball-Reference lists San Antonio over Oklahoma City, 4-3. The games are: May 18, San Antonio 122 at Oklahoma City 115. May 20, San Antonio 113 at Oklahoma City 122. May 22, Oklahoma City 123 at San Antonio 108. May 24, Oklahoma City 82 at San Antonio 103. May 26, San Antonio 114 at Oklahoma City 127. May 28, Oklahoma City 91 at San Antonio 118. May 30, San Antonio 111 at Oklahoma City 103. San Antonio won Games 1, 4, 6, and 7. Oklahoma City won Games 2, 3, and 5.

@@ -72,8 +72,6 @@ Neither is better for everyone; it depends on whether you want Ultra zoom and ba
 
 const EXPERT_ANALYSIS = `Choose the Galaxy S25 Ultra or the Galaxy S26 Ultra for the Ultra zoom cameras and the 5,000 mAh battery. Choose the iPhone 17 Pro when the 4x telephoto and Apple's Pro video formats matter. Neither is better for everyone; it depends on whether you want Ultra zoom and battery or Apple's Pro video formats.
 
-Source note: GSMArena lists the comparison table. Apple Support lists the iPhone 17 Pro's size, the 100 mm telephoto, ProRes, and the 33-hour video-playback rating. Rupee prices are from Samsung's India store. Apple's India store did not show an iPhone 17 Pro price. GSMArena is not used for a rupee price. Check a live listing.
-
 Price
 
 Samsung's India store for the Galaxy S25 Ultra showed ₹1,19,999 for 256GB | 12GB and ₹1,39,999 for 512GB | 12GB. The 1TB option did not show a price. Samsung's India store for the Galaxy S26 Ultra showed ₹1,54,999 for 256GB | 12GB and ₹1,74,999 for 512GB | 12GB. The 1TB | 16GB option did not show a price. Apple's India store for the iPhone 17 Pro redirected to the current lineup and did not show that phone. These are the figures from 30 September 2026. Check a live listing. Those prices do not decide the phone.

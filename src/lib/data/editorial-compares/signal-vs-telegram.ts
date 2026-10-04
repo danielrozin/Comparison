@@ -55,9 +55,7 @@ Features and communities
 
 Telegram documents large groups, unlimited-audience Channels, bots, and large file transfers. Those are the reasons people pick Telegram for public communities. Signal’s feature set is narrower and privacy-oriented (disappearing messages, sealed sender, usernames).
 
-Choose Signal if every participant can install it and you want default end-to-end encryption. Choose Telegram if you need Channels, bots, or very large groups and accept that default cloud chats are not end-to-end encrypted. Related: Signal vs WhatsApp; WhatsApp vs Telegram.
-
-Sources: Signal documentation and Support; Telegram FAQ (Secret Chats, groups, Channels).`;
+Choose Signal if every participant can install it and you want default end-to-end encryption. Choose Telegram if you need Channels, bots, or very large groups and accept that default cloud chats are not end-to-end encrypted. Related: Signal vs WhatsApp; WhatsApp vs Telegram.`;
 
 export const SIGNAL_VS_TELEGRAM: EditorialComparison = buildEditorialComparison({
   slug: "signal-vs-telegram",

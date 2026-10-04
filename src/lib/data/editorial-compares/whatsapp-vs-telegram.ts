@@ -55,9 +55,7 @@ Features
 
 Telegram’s documented strengths are large groups, Channels, bots, and cloud sync. WhatsApp’s documented strengths are default E2EE chats, Communities, and WhatsApp Business. Those are complementary jobs, not a single scoreboard.
 
-Choose WhatsApp for family, international, and business chats that should be end-to-end encrypted by default. Choose Telegram for public Channels, bots, and very large groups. Related: Signal vs WhatsApp; Signal vs Telegram.
-
-Sources: WhatsApp Security and Privacy Policy; Telegram FAQ.`;
+Choose WhatsApp for family, international, and business chats that should be end-to-end encrypted by default. Choose Telegram for public Channels, bots, and very large groups. Related: Signal vs WhatsApp; Signal vs Telegram.`;
 
 export const WHATSAPP_VS_TELEGRAM: EditorialComparison = buildEditorialComparison({
   slug: "whatsapp-vs-telegram",

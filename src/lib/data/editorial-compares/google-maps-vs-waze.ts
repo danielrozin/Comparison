@@ -77,10 +77,6 @@ Neither is better for everyone; it depends on the trip.`;
 
 const EXPERT_ANALYSIS = `It depends on the trip. Waze fits a drive where you want other drivers' reports and you can keep a data connection. Google Maps fits a saved offline area, and trips that are not only driving. Neither is better for everyone.
 
-Spec table. Caption: Google Maps vs Waze, from official help articles. Source note: every row is a claim from Google Maps, Android Auto, or Waze Help.
-
-Sources: Google Maps offline help for iPhone and iPad, Google Maps offline help for Android, Google Maps directions for iPhone and iPad, Google Maps navigation for Android, Google Maps on CarPlay, Android Auto turn-by-turn navigation, Google Maps vehicle profiles, Google Maps Timeline, About Waze, Waze availability and cost, Waze road-hazard reports, Waze on Android Auto, Waze on Apple CarPlay, and Waze parking.
-
 Offline maps
 
 Google Maps can guide a drive from a downloaded area. The iPhone, iPad, and Android articles say you save an area to the phone or tablet and use it when the connection is slow or unavailable, if the whole route is inside the map. They also say you cannot download offline maps in some countries, and that offline transit, bicycling, and walking directions are unavailable. An offline drive does not get traffic info or alternate routes. Waze answers "Can I use Waze without an internet connection?" by saying that without internet you will not be able to locate or navigate a route, and that every part of Waze needs an active data connection.

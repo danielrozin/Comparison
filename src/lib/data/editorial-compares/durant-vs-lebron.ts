@@ -64,8 +64,6 @@ Championships on the honors lists: Durant 2. LeBron 4.
 
 const EXPERT_ANALYSIS = `Kevin Durant's career line is 27.1 points, 6.9 rebounds, and 4.4 assists in 1,201 games, totaling 32,597 points. LeBron James's is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. In 2025-26 Durant averaged 26.0 points in 78 games and LeBron averaged 20.9 points in 60 games. Neither is named the better player.
 
-Source note: the career rows, the 2025-26 lines, and the team fields are from Basketball-Reference. The signing and the line that 2026-27 adds at least one season after 23 are from NBA.com's story updated July 27, 2026. ${DURANT_URL} ${LEBRON_URL} ${SIGNING}
-
 2026-27 season. Stats as of ${AS_OF}. Durant's team field is the Houston Rockets. LeBron's is the Philadelphia 76ers. NBA.com says LeBron announced the move Friday, that it became official Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. Neither page has a 2026-27 game log. Tables labeled 2026-27 Projection are not quoted.
 
 Honors on the same pages: Durant 2 championships, 2 Finals MVPs, the 2013-14 MVP, 4 scoring titles, and 16 All-Star selections. LeBron 4 championships, 4 Finals MVPs, 4 MVPs, and 22 All-Star selections. Durant played 18 years and debuted in 2007. LeBron played 23 years and debuted in 2003 (Basketball-Reference).`;

@@ -67,8 +67,6 @@ Championships: Kobe 5, Curry 4. MVPs: Kobe in 2007-08. Curry in 2014-15 and 2015
 
 const EXPERT_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games. Stephen Curry's career line is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. Kobe won 5 championships. Curry won 4. Neither is named the better player.
 
-Source note: career totals, Curry's 2025-26 regular-season line, and the honors lists are from the two Basketball-Reference player pages. ${KOBE_URL} ${CURRY_URL}
-
 2026-27 season. Stats as of ${AS_OF}. Curry has no 2026-27 regular-season game log. The 2026-27 table on his page is labeled a projection, and that table is not quoted.
 
 Career. Kobe was born August 23, 1978, stood 6-6 and 212 pounds, was drafted 13th overall by Charlotte in 1996, and debuted November 3, 1996. He played 20 seasons and 1,346 games, scored 33,643 points, and his seasons were with the Lakers. He was inducted into the Hall of Fame as a player in 2020. Bryant retired after the 2015-16 season and died on January 26, 2020. Curry was born March 14, 1988, stands 6-2 and 185 pounds, was drafted 7th overall by Golden State in 2009, and debuted October 28, 2009. He has played 17 seasons and 1,069 games, scored 26,528 points, and plays for the Golden State Warriors.

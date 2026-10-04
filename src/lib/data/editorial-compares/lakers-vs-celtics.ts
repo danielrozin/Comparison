@@ -70,8 +70,6 @@ Finals series on the playoff series table: 12 meetings. Celtics won 9. Lakers wo
 
 const EXPERT_ANALYSIS = `The Celtics franchise header lists 18 championships. The Lakers header lists 17. In the 12 Finals series on Basketball-Reference's playoff series table, the Celtics won 9 and the Lakers won 3. On the Lakers head-to-head table, the Lakers are 135-169 against Boston in 304 games. There is no 2026-27 forecast.
 
-Source note: the headers are the Lakers and Celtics franchise pages. The 304-game row is the Lakers head-to-head page. The 12 Finals series are filtered from the playoff series history table to rows whose series is Finals and whose two teams are the Celtics and the Lakers, including Minneapolis in 1959. ${LAL_URL} ${BOS_URL} ${H2H} ${SERIES}
-
 2026-27 season. Stats as of ${AS_OF}. Both headers run through 2026-27. No 2026-27 meeting, score, or projection is quoted. The latest Finals row between them is 2010.
 
 Finals series, winner first. 2010, Los Angeles 4, Boston 3, June 3 to June 17. 2008, Boston 4, Los Angeles 2, June 5 to June 17. 1987, Los Angeles 4, Boston 2, June 2 to June 14. 1985, Los Angeles 4, Boston 2, May 27 to June 9. 1984, Boston 4, Los Angeles 3, May 27 to June 12. 1969, Boston 4, Los Angeles 3, April 23 to May 5. 1968, Boston 4, Los Angeles 2, April 21 to May 2. 1966, Boston 4, Los Angeles 3, April 17 to April 28. 1965, Boston 4, Los Angeles 1, April 18 to April 25. 1963, Boston 4, Los Angeles 2, April 14 to April 24. 1962, Boston 4, Los Angeles 3, April 7 to April 18. 1959, Boston 4, Minneapolis 0, April 4 to April 9.

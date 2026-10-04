@@ -64,8 +64,6 @@ Honors: Flagg won 2025-26 Rookie of the Year. Knueppel finished second in that v
 
 const EXPERT_ANALYSIS = `Cooper Flagg averaged 21.0 points, 6.7 rebounds, and 4.5 assists in 70 games as a rookie. Kon Knueppel averaged 18.5 points, 5.3 rebounds, and 3.4 assists in 81 games. Flagg won 2025-26 Rookie of the Year. Knueppel did not. There is no 2026-27 forecast.
 
-Source note: the per-game rows, totals, draft lines, and honors are from the two Basketball-Reference player pages. ${FLAGG_URL} ${KNUEPPEL_URL}
-
 2026-27 season. Stats as of ${AS_OF}. Flagg's team field is the Dallas Mavericks. Knueppel's is the Charlotte Hornets. Neither page has a 2026-27 regular-season game log. Each page has a table labeled 2026-27 Projection, and that table is not quoted.
 
 The rookie shooting lines are .468 / .295 / .827 for Flagg and .475 / .425 / .863 for Knueppel, field goals, threes, and free throws. Point totals are 1,473 and 1,498. Both debuted October 22, 2025. Flagg was the 1st overall pick. Knueppel was the 4th.`;

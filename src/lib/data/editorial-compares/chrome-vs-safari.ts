@@ -65,10 +65,6 @@ Neither is better for everyone; it depends on the use.`;
 
 const EXPERT_ANALYSIS = `It depends on the devices you actually use. Safari is the pick when you stay on Apple devices and want tracking prevention on before you change a setting. Chrome is the pick when you also need Windows, Linux, ChromeOS, or Android, or you want the Chrome Web Store. Neither is better for everyone.
 
-Spec table. Caption: Chrome vs Safari. Source note: the rows are as of 30 September 2026, from Google's Chrome page, Google's Chromium project page, Chrome's sign-in and cookie help, Chrome's Manifest V2 timeline (updated 9 September 2026), Chrome's Manifest V3 doc, the Chrome 139 release notes, Apple's Safari page (including footnotes 1 to 3), Apple's privacy features page, Apple's Safari privacy notice (dated 12 December 2025), and Apple's iCloud Safari guide.
-
-Sources: google.com/chrome, opensource.google.com/projects/chromium, Chrome sign-in help, Chrome cookie help, the Manifest V3 doc, the Manifest V2 timeline (updated 9 September 2026), Chrome 139 release notes (stable 5 August 2025), apple.com/safari, apple.com/privacy/features, Apple's Safari privacy notice, and the iCloud Safari guide.
-
 Engine
 
 Google says Chromium is the web browser that Google Chrome is built on. Apple describes deep WebKit integration between Mac hardware and macOS, and it names WebKit in macOS Sequoia. The two engines are not a speed score.

@@ -440,7 +440,6 @@ describe("ROO-121 iPhone 16e vs iPhone 17e", () => {
       "iphone-17-vs-iphone-17-pro-vs-iphone-16-pro",
       "iphone-16-pro-vs-iphone-16-pro-max",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("15W");
     expect(pageText(page())).toContain("7.5W");
     expect(pageText(page())).toContain("Ceramic Shield 2");
@@ -522,7 +521,6 @@ describe("ROO-122 Polaroid Go Gen 2 vs Instax Mini", () => {
     ]);
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
     expect(page().relatedComparisons).toEqual([]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("reviewer-cited");
     expect(pageText(page())).toContain("wallet-size");
     expect(pageText(page())).toContain("US$79.99");
@@ -613,7 +611,6 @@ describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
       "iphone-17-vs-samsung-s26",
       "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("IP48");
     expect(pageText(page())).toContain("IP68");
     expect(pageText(page())).toContain("11:44h");
@@ -724,7 +721,6 @@ describe("ROO-128 iPhone 17 Pro vs S25 Ultra vs S26 Ultra", () => {
       "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
       "iphone-17-vs-iphone-air",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("₹1,19,999");
     expect(pageText(page())).toContain("₹1,39,999");
     expect(pageText(page())).toContain("₹1,54,999");
@@ -832,7 +828,6 @@ describe("ROO-130 iPhone Air vs iPhone 17", () => {
       "iphone-17-vs-iphone-17-pro-vs-iphone-16-pro",
       "iphone-16e-vs-iphone-17e",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("5.64 mm");
     expect(pageText(page())).toContain("7.95 mm");
     expect(pageText(page())).toContain("3,149 mAh");
@@ -937,7 +932,6 @@ describe("ROO-127 Google Maps vs Apple Maps", () => {
       "google-maps-vs-waze",
       "android-vs-ios",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("random identifier");
     expect(pageText(page())).toContain("iPhone, iPad, Mac, Apple Watch, HomePod, and CarPlay");
     expect(page().quickAnswer?.winnerName).toBeNull();
@@ -1035,7 +1029,6 @@ describe("ROO-127 Google Maps vs Waze", () => {
       "google-maps-vs-apple-maps",
       "android-vs-ios",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("180 million");
     expect(pageText(page())).toContain("does not cache reports");
     expect(pageText(page())).toContain("submits it when you reconnect");
@@ -1148,7 +1141,6 @@ describe("ROO-114 Brave vs Chrome", () => {
       "chrome-vs-firefox",
       "firefox-vs-safari",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("It depends");
     expect(pageText(page())).toContain("Chromium");
     expect(pageText(page())).toContain("Shields");
@@ -1250,7 +1242,6 @@ describe("ROO-114 Chrome vs Safari", () => {
       "chrome-vs-firefox",
       "firefox-vs-safari",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("It depends");
     expect(pageText(page())).toContain("WebKit");
     expect(pageText(page())).toContain("Chromium");
@@ -1346,7 +1337,6 @@ describe("ROO-129 Anker Solarbank 4 Pro vs EcoFlow STREAM 5000", () => {
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
     expect(page().resources?.map((resource) => resource.url).join("\n")).not.toMatch(/\/entity\//);
     expect(page().relatedComparisons).toEqual([]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("IP66");
     expect(pageText(page())).toContain("IP65");
     expect(pageText(page())).toContain("45.4 kg");
@@ -1450,7 +1440,6 @@ describe("ROO-138 iPhone 17 Pro vs iPhone 18 Pro", () => {
       "iphone-17-pro-vs-pro-max",
       "iphone-17-vs-iphone-air",
     ]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("A20 Pro");
     expect(pageText(page())).toContain("A19 Pro");
     expect(pageText(page())).toContain("211 grams");
@@ -1483,7 +1472,6 @@ describe("NBA 2026-27 new compares", () => {
       expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
       expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
       expect(pageText(page)).toContain("Stats as of October 3, 2026");
-      expect(pageText(page)).toContain("Source note:");
       expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
       expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
       const description = clampDescription(page.metadata.metaDescription);
@@ -1789,7 +1777,6 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
     expect(page().resources?.map((resource) => resource.url).join("\n")).not.toMatch(/\/entity\//);
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual(["apple-watch-vs-fitbit"]);
-    expect(pageText(page())).toContain("Source note:");
     expect(pageText(page())).toContain("S11");
     expect(pageText(page())).toContain("up to 7 days");
     expect(pageText(page())).toContain("$99.99");
@@ -1856,7 +1843,6 @@ describe("NBA batch 3 compares", () => {
       expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
       expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
       expect(pageText(page)).toContain("Stats as of October 3, 2026");
-      expect(pageText(page)).toContain("Source note:");
       expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
       expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
       const description = clampDescription(page.metadata.metaDescription);
@@ -1940,7 +1926,6 @@ describe("NBA batch 4 compares", () => {
       expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
       expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
       expect(pageText(page)).toContain("Stats as of October 3, 2026");
-      expect(pageText(page)).toContain("Source note:");
       expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
       expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
       const description = clampDescription(page.metadata.metaDescription);
@@ -2024,7 +2009,6 @@ describe("NBA batch 5: Embiid vs Jokic, Kobe vs Curry", () => {
       expect(findSelfContradictions(page)).toEqual([]);
       const text = pageText(page);
       expect(text).toContain("Stats as of October 3, 2026");
-      expect(text).toContain("Source note:");
       expect(text).not.toMatch(/will win|predicted winner|odds/i);
       const types = schemaNodes(page).map((node) => node["@type"]).filter(Boolean);
       expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);

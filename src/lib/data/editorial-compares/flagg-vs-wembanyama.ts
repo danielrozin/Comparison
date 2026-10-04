@@ -77,8 +77,6 @@ Victor Wembanyama: San Antonio Spurs. Career line: 23.4 points, 11.0 rebounds, 3
 
 const EXPERT_ANALYSIS = `Cooper Flagg is the Dallas Mavericks forward Basketball-Reference lists as the 2025-26 Rookie of the Year. Victor Wembanyama is the San Antonio Spurs big man with three seasons, a career line of 23.4 points, 11.0 rebounds, and 3.5 blocks, and the 2025-26 Defensive Player of the Year and Western Conference Finals MVP. Stats as of October 3, 2026, neither player had a 2026-27 game log. Neither is named the better player.
 
-Source note: Flagg's team, draft, rookie line, and 2025-26 Rookie of the Year are from Basketball-Reference. Wembanyama's team, career line, playoff line, and honors are from Basketball-Reference. Projection tables are not used.
-
 Cooper Flagg
 
 He is 6-9 and 205 pounds, born December 21, 2006, in Newport, Maine. Team: Dallas Mavericks. Draft: Dallas, first overall, 2025. NBA debut: October 22, 2025. Experience: 1 year. Honors: 2025-26 Rookie of the Year and 2025-26 All-Rookie. The 2025-26 per-game line is 70 games, 70 starts, 33.5 minutes, 21.0 points, 6.7 rebounds, 4.5 assists, 1.2 steals, and 0.9 blocks, on .468 from the field, .295 from three, and .827 from the line. The one-year totals are 1,473 points, 466 rebounds, and 316 assists. That line is also the career line, because he has played one season.
