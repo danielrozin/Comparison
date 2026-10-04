@@ -27,18 +27,18 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "It depends on the devices you actually use. Pick Safari when you stay on Apple devices and want Intelligent Tracking Prevention on by default, and pick Chrome when you also need Windows, Linux, ChromeOS, or Android. Safari extensions come from the App Store, and Chrome extensions come from the Chrome Web Store on desktop. Apple says Safari is up to 5 hours longer than Chrome for streaming video. That figure is Apple's August 2026 test, labelled here as Apple's claim, not a result measured for this page. This page does not crown a winner.";
+  "It depends on the devices you actually use. Pick Safari when you stay on Apple devices and want Intelligent Tracking Prevention on by default, and pick Chrome when you also need Windows, Linux, ChromeOS, or Android. Safari extensions come from the App Store, and Chrome extensions come from the Chrome Web Store on desktop. Apple says Safari is up to 5 hours longer than Chrome for streaming video. That figure is Apple's August 2026 test, labelled as Apple's claim, not a separate lab result. Neither is better for everyone.";
 
 const FAQS = [
   {
     question: "Is Safari more private than Chrome?",
     answer:
-      "Safari turns more tracking protection on before you change a setting. Apple says Intelligent Tracking Prevention is on by default, hides your IP address from trackers, and that fingerprinting defense is on by default too. Apple says Safari blocks third-party cookies from tracking you by default. Its comparison chart marks Chrome as No on that row. That cell is Apple's chart, not Google's own statement. Chrome says third-party cookies are blocked by default in Incognito, and that regular browsing lets you choose Allow or Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. This page does not turn those descriptions into a scored privacy ranking.",
+      "Safari turns more tracking protection on before you change a setting. Apple says Intelligent Tracking Prevention is on by default, hides your IP address from trackers, and that fingerprinting defense is on by default too. Apple says Safari blocks third-party cookies from tracking you by default. Its comparison chart marks Chrome as No on that row. That cell is Apple's chart, not Google's own statement. Chrome says third-party cookies are blocked by default in Incognito, and that regular browsing lets you choose Allow or Block. It does not say regular browsing blocks them by default. Chrome describes Safe Browsing, a Privacy Guide, and Enhanced Safe Browsing that you turn on. Those descriptions are not a scored privacy ranking.",
   },
   {
     question: "Is Safari better for battery life than Chrome?",
     answer:
-      "Apple says Safari is up to 5 hours longer than Chrome for streaming video, and up to 18 hours of video streaming. Footnote 3 says Apple ran that test in August 2026 on a 15-inch MacBook Air with an M5 chip, prerelease Safari 27.0, and Chrome v151, streaming 1080p on battery. Apple also says Safari was 35% faster on average at loading frequently visited websites than Chrome, and footnote 2 ties that line to an Apple test of 12 websites on the same kind of Mac. This page did not re-run either test. Google's Chrome page names Energy Saver and Memory Saver and does not publish an hour count against Safari.",
+      "Apple says Safari is up to 5 hours longer than Chrome for streaming video, and up to 18 hours of video streaming. Footnote 3 says Apple ran that test in August 2026 on a 15-inch MacBook Air with an M5 chip, prerelease Safari 27.0, and Chrome v151, streaming 1080p on battery. Apple also says Safari was 35% faster on average at loading frequently visited websites than Chrome, and footnote 2 ties that line to an Apple test of 12 websites on the same kind of Mac. Those hour and speed figures are Apple's tests. Google's Chrome page names Energy Saver and Memory Saver and does not publish an hour count against Safari.",
   },
   {
     question: "Can I use Chrome extensions in Safari?",
@@ -61,17 +61,13 @@ const VERDICT = `Best if you stay on Apple devices: Safari. Intelligent Tracking
 
 Best if you also use Windows, Linux, ChromeOS, or Android: Chrome. A Google Account syncs bookmarks and passwords, and desktop extensions come from the Chrome Web Store.
 
-There is no single winner on this page. It depends on the use.`;
+Neither is better for everyone; it depends on the use.`;
 
-const EXPERT_ANALYSIS = `It depends on the devices you actually use. Safari is the pick when you stay on Apple devices and want tracking prevention on before you change a setting. Chrome is the pick when you also need Windows, Linux, ChromeOS, or Android, or you want the Chrome Web Store. This page does not crown one browser.
-
-Spec table. Caption: Chrome vs Safari. Source note: the rows were checked on 30 September 2026 against Google's Chrome page, Google's Chromium project page, Chrome's sign-in and cookie help, Chrome's Manifest V2 timeline (updated 9 September 2026), Chrome's Manifest V3 doc, the Chrome 139 release notes, Apple's Safari page (including footnotes 1 to 3), Apple's privacy features page, Apple's Safari privacy notice (dated 12 December 2025), and Apple's iCloud Safari guide.
-
-Sources: google.com/chrome, opensource.google.com/projects/chromium, Chrome sign-in help, Chrome cookie help, the Manifest V3 doc, the Manifest V2 timeline (updated 9 September 2026), Chrome 139 release notes (stable 5 August 2025), apple.com/safari, apple.com/privacy/features, Apple's Safari privacy notice, and the iCloud Safari guide.
+const EXPERT_ANALYSIS = `It depends on the devices you actually use. Safari is the pick when you stay on Apple devices and want tracking prevention on before you change a setting. Chrome is the pick when you also need Windows, Linux, ChromeOS, or Android, or you want the Chrome Web Store. Neither is better for everyone.
 
 Engine
 
-Google says Chromium is the web browser that Google Chrome is built on. Apple describes deep WebKit integration between Mac hardware and macOS, and it names WebKit in macOS Sequoia. This page does not treat the two engines as a speed score.
+Google says Chromium is the web browser that Google Chrome is built on. Apple describes deep WebKit integration between Mac hardware and macOS, and it names WebKit in macOS Sequoia. The two engines are not a speed score.
 
 Where each one runs
 
@@ -93,7 +89,7 @@ Apple says extensions come from the App Store. Apple says you can limit an exten
 
 Speed and battery, as Apple states them
 
-Apple's Safari page calls Safari the world's fastest browser. Footnote 1 says that line refers to tests Apple ran in August 2026 with JetStream 3.0, MotionMark 1.3.2, and Speedometer 3.1, and that Safari scored higher on average than the other browsers in that test. Apple also says Safari was 35% faster on average at loading frequently visited websites than Chrome. Footnote 2 says Apple measured snapshot versions of 12 websites in August 2026 on a 15-inch MacBook Air with an M5 chip, prerelease Safari 27.0, and Chrome v151.0.7922.138. The battery lines in the same statement are up to 5 hours more streaming video than Chrome, and up to 18 hours of video streaming. Footnote 3 says Apple ran that in August 2026 on the same kind of Mac, streaming 1080p, against Chrome v151.0.7922.76. Those are Apple's tests. This page did not repeat the benchmark multiples printed in Apple's charts, and it did not re-run the tests. Google's Chrome page names Energy Saver and Memory Saver. It does not publish an hour count.
+Apple's Safari page calls Safari the world's fastest browser. Footnote 1 says that line refers to tests Apple ran in August 2026 with JetStream 3.0, MotionMark 1.3.2, and Speedometer 3.1, and that Safari scored higher on average than the other browsers in that test. Apple also says Safari was 35% faster on average at loading frequently visited websites than Chrome. Footnote 2 says Apple measured snapshot versions of 12 websites in August 2026 on a 15-inch MacBook Air with an M5 chip, prerelease Safari 27.0, and Chrome v151.0.7922.138. The battery lines in the same statement are up to 5 hours more streaming video than Chrome, and up to 18 hours of video streaming. Footnote 3 says Apple ran that in August 2026 on the same kind of Mac, streaming 1080p, against Chrome v151.0.7922.76. Those are Apple's tests. The benchmark multiples in Apple's charts are not repeated, and the tests were not re-run. Google's Chrome page names Energy Saver and Memory Saver. It does not publish an hour count.
 
 Who should pick which
 

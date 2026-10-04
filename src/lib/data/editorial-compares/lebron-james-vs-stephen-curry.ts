@@ -24,7 +24,7 @@ const RECENT_CAT = `2025-26 regular season · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "LeBron James's career line on the per-game table is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games. Stephen Curry's is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. In 2025-26 LeBron averaged 20.9 points in 60 games and Curry averaged 26.6 points in 43 games. LeBron signed with the 76ers in July 2026, and NBA.com says 2026-27 adds at least one more season after 23. Stats as of October 3, 2026, there is no 2026-27 regular-season game log. This page does not predict the season.";
+  "LeBron James's career line on the per-game table is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games. Stephen Curry's is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games. In 2025-26 LeBron averaged 20.9 points in 60 games and Curry averaged 26.6 points in 43 games. LeBron signed with the 76ers in July 2026, and NBA.com says 2026-27 adds at least one more season after 23. Stats as of October 3, 2026, there is no 2026-27 regular-season game log. There is no 2026-27 forecast.";
 
 const FAQS = [
   {
@@ -40,22 +40,22 @@ const FAQS = [
   {
     question: "How many championships does each player have?",
     answer:
-      "LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. Curry won 4 NBA championships and 2 MVPs, made 12 All-Star teams, and was 2021-22 Finals MVP. Basketball-Reference is the source. This page does not turn those honors into a ranking.",
+      "LeBron won 4 NBA championships, 4 Finals MVPs, and 4 MVPs, and made 22 All-Star teams. Curry won 4 NBA championships and 2 MVPs, made 12 All-Star teams, and was 2021-22 Finals MVP. Basketball-Reference is the source. Those honors are not a single ranking.",
   },
   {
     question: "Where is LeBron listed for 2026-27?",
     answer:
-      "Basketball-Reference lists his team as the Philadelphia 76ers. NBA.com's story, updated July 27, 2026, says he announced the move on social media Friday and that it became official on Sunday. His posts on that story are dated July 24, 2026. He told the Lakers on June 30 that he would not return. NBA.com writes that he was the first player to log 23 seasons and will add at least one more this season. That is the story's line, not a forecast from this page.",
+      "Basketball-Reference lists his team as the Philadelphia 76ers. NBA.com's story, updated July 27, 2026, says he announced the move on social media Friday and that it became official on Sunday. His posts on that story are dated July 24, 2026. He told the Lakers on June 30 that he would not return. NBA.com writes that he was the first player to log 23 seasons and will add at least one more this season. That is the story's line, not a forecast.",
   },
   {
     question: "Where is Stephen Curry listed?",
     answer:
-      "Basketball-Reference lists the Golden State Warriors. Experience there is 17 years. The 2025-26 awards cell is All-Star. Basketball-Reference has no 2026-27 regular-season game log for Curry. A table is labeled 2026-27 Projection, and this comparison does not quote it.",
+      "Basketball-Reference lists the Golden State Warriors. Experience there is 17 years. The 2025-26 awards cell is All-Star. Basketball-Reference has no 2026-27 regular-season game log for Curry. A table is labeled 2026-27 Projection, and that table is not quoted.",
   },
   {
-    question: "Does this page predict 2026-27?",
+    question: "Is 2026-27 predicted?",
     answer:
-      "No. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log for either player. Reported contract dollars in the signing story are labeled as reports, so they are not used. This page does not pick a winner.",
+      "No. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log for either player. Reported contract dollars in the signing story are labeled as reports, so they are not used. Neither is named the winner of the 2026-27 season.",
   },
 ];
 
@@ -65,11 +65,9 @@ const VERDICT = `Career per game: LeBron 26.8 points, 7.5 rebounds, and 7.4 assi
 
 Championships on the honors lists: 4 and 4.
 
-2026-27 season: Basketball-Reference lists LeBron with the 76ers. Basketball-Reference lists Curry with the Warriors. Stats as of October 3, 2026, there is no regular-season game log. This page does not pick a winner.`;
+2026-27 season: Basketball-Reference lists LeBron with the 76ers. Basketball-Reference lists Curry with the Warriors. Stats as of October 3, 2026, there is no regular-season game log. Neither is named the winner of the 2026-27 season.`;
 
-const EXPERT_ANALYSIS = `LeBron James's career line is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. Stephen Curry's is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games, totaling 26,528 points. In 2025-26 LeBron averaged 20.9 points in 60 games and Curry averaged 26.6 points in 43 games. This page does not pick a winner.
-
-Source note: the career rows, the 2025-26 lines, and the team fields are from Basketball-Reference. The signing and the line that 2026-27 adds at least one season after 23 are from NBA.com's story updated July 27, 2026, which also prints the 20.9 and 26.8 figures. ${LEBRON_URL} ${CURRY_URL} ${SIGNING}
+const EXPERT_ANALYSIS = `LeBron James's career line is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. Stephen Curry's is 24.8 points, 4.7 rebounds, and 6.3 assists in 1,069 games, totaling 26,528 points. In 2025-26 LeBron averaged 20.9 points in 60 games and Curry averaged 26.6 points in 43 games. Neither is named the better player.
 
 2026-27 season. Stats as of ${AS_OF}. LeBron's team on Basketball-Reference is the Philadelphia 76ers. Curry's is the Golden State Warriors. NBA.com says LeBron announced the move Friday, that it became official Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. He said he believes he can help make the 76ers a championship team. That is his statement. NBA.com writes that he logged 23 seasons and will add at least one more this season. Neither player page has a 2026-27 game log. Tables labeled 2026-27 Projection are not quoted.
 

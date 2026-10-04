@@ -31,7 +31,7 @@ const PLAYOFF_CAT = "2026 playoffs · Basketball-Reference";
 const SEASON_CAT = "2026-27 season · Stats as of October 3, 2026 · NBA.com schedule";
 
 const SHORT_ANSWER =
-  "The San Antonio Spurs beat the Oklahoma City Thunder 4-3 in the 2026 Western Conference Finals. Basketball-Reference lists Game 7 on May 30, 2026, as San Antonio 111 at Oklahoma City 103. NBA.com lists Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. That October line is the tip time NBA.com lists. This page does not pick a winner.";
+  "The San Antonio Spurs beat the Oklahoma City Thunder 4-3 in the 2026 Western Conference Finals. Basketball-Reference lists Game 7 on May 30, 2026, as San Antonio 111 at Oklahoma City 103. NBA.com lists Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. That October line is the tip time NBA.com lists. Neither is named the winner of the October 20 game.";
 
 const META_DESCRIPTION =
   "Spurs beat the Thunder 4-3 in the 2026 West Finals. Game 7 on May 30, 2026 was 111-103. OKC is at San Antonio on October 20, 2026, at 9:30 pm ET.";
@@ -50,12 +50,12 @@ const FAQS = [
   {
     question: "When do the Thunder play the Spurs next?",
     answer:
-      "NBA.com's games page for October 20, 2026 lists Oklahoma City at San Antonio, with a tip time of 9:30 pm ET. The card links to /game/okc-vs-sas-0022600003. That is a schedule fact. This page does not pick a winner for that game.",
+      "NBA.com's games page for October 20, 2026 lists Oklahoma City at San Antonio, with a tip time of 9:30 pm ET. The card links to /game/okc-vs-sas-0022600003. That is a schedule fact. Neither is named the winner of that game.",
   },
   {
     question: "Has the 2026-27 season started for the Thunder and the Spurs?",
     answer:
-      "Not on October 3, 2026. The October 20 game is still ahead. This page keeps that date in a 2026-27 block labeled Stats as of October 3, 2026, separate from the finished 2026 Western Conference Finals.",
+      "Not on October 3, 2026. The October 20 game is still ahead. That date stays in a 2026-27 block labeled Stats as of October 3, 2026, separate from the finished 2026 Western Conference Finals.",
   },
   {
     question: "Where is the 2026 Spurs vs Thunder series documented?",
@@ -63,9 +63,9 @@ const FAQS = [
       "Basketball-Reference's 2026 NBA playoffs summary lists every game. Game 1, May 18: San Antonio 122 at Oklahoma City 115. Game 2, May 20: San Antonio 113 at Oklahoma City 122. Game 3, May 22: Oklahoma City 123 at San Antonio 108. Game 4, May 24: Oklahoma City 82 at San Antonio 103. Game 5, May 26: San Antonio 114 at Oklahoma City 127. Game 6, May 28: Oklahoma City 91 at San Antonio 118. Game 7, May 30: San Antonio 111 at Oklahoma City 103.",
   },
   {
-    question: "Does this page predict the October 20 Spurs vs Thunder game?",
+    question: "Is the October 20 Spurs vs Thunder game predicted?",
     answer:
-      "No. The October 20, 2026 line is the tip time NBA.com lists: 9:30 pm ET, Oklahoma City at San Antonio. The 2026 Western Conference Finals is a finished series. This page does not name a winner for a game that has not been played.",
+      "No. The October 20, 2026 line is the tip time NBA.com lists: 9:30 pm ET, Oklahoma City at San Antonio. The 2026 Western Conference Finals is a finished series. Neither is named the winner of a game that has not been played.",
   },
 ];
 
@@ -75,9 +75,7 @@ const VERDICT = `Finished series: the Spurs won the 2026 Western Conference Fina
 
 There is no page-level winner.`;
 
-const EXPERT_ANALYSIS = `The San Antonio Spurs beat the Oklahoma City Thunder 4-3 in the 2026 Western Conference Finals. Basketball-Reference lists Game 7 on May 30, 2026, as San Antonio 111 at Oklahoma City 103. The next meeting on the NBA.com schedule checked October 3, 2026, is Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. This page does not pick a winner for that game.
-
-Source note: the series score and the seven game lines are from Basketball-Reference's 2026 NBA playoffs summary. The October 20 tip time is from NBA.com's games page for that date. The card text is "OKC @ SAS, 2026-10-20" and the status line is "9:30 pm ET."
+const EXPERT_ANALYSIS = `The San Antonio Spurs beat the Oklahoma City Thunder 4-3 in the 2026 Western Conference Finals. Basketball-Reference lists Game 7 on May 30, 2026, as San Antonio 111 at Oklahoma City 103. As of October 3, 2026, NBA.com lists the next meeting as Oklahoma City at San Antonio on October 20, 2026, at 9:30 pm ET. Neither is named the winner of that game.
 
 2026 Western Conference Finals
 
@@ -85,11 +83,11 @@ Basketball-Reference lists San Antonio over Oklahoma City, 4-3. The games are: M
 
 2026-27 season
 
-Stats as of October 3, 2026. The 2026-27 regular season had not started. NBA.com lists one Thunder at Spurs game on October 20, 2026, at 9:30 pm ET, in San Antonio. The game URL there is /game/okc-vs-sas-0022600003. Treat that line as the schedule NBA.com lists. It is not a forecast, and this page does not say which team wins it.
+Stats as of October 3, 2026. The 2026-27 regular season had not started. NBA.com lists one Thunder at Spurs game on October 20, 2026, at 9:30 pm ET, in San Antonio. The game URL there is /game/okc-vs-sas-0022600003. Treat that line as the schedule NBA.com lists. It is not a forecast, and neither team is named the winner.
 
-What stays out of this page
+What is not included
 
-The finished series above is the 2026 playoffs. It is not a 2026-27 result. This page does not quote a Basketball-Reference 2026-27 projection row, and it does not carry a season win-loss record in the title.`;
+The finished series above is the 2026 playoffs. It is not a 2026-27 result. A Basketball-Reference 2026-27 projection row is not quoted, and a season win-loss record is not in the title.`;
 
 const built = buildEditorialComparison({
   slug: "oklahoma-city-thunder-vs-spurs",

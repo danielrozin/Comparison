@@ -6,7 +6,7 @@ import type { EditorialComparison } from "./types";
  * Apple's product name is iPhone Air. The canonical hub is
  * /entity/iphone-air, which was index, follow on 30 September 2026.
  * /entity/iphone-17-air is a different hub and was noindex, nofollow, so
- * this page does not link it.
+ * that hub is not linked.
  * Specs checked against Apple's spec pages and GSMArena, 2026-09-30.
  * No page-level winner. No invented benchmark.
  */
@@ -25,7 +25,7 @@ const SOURCE_DATE = "2026-09-30";
 const PUBLISHED = "2026-09-30T00:00:00Z";
 
 const SHORT_ANSWER =
-  "Choose the iPhone 17 for the more complete everyday phone if you are coming from an iPhone 13. Apple rates it for up to 30 hours of video playback, against up to 27 hours on the iPhone Air, and it adds a 48MP ultrawide. Choose the iPhone Air only if the 5.64 mm, 165 gram titanium body is why you are upgrading. It has one 48MP rear camera. GSMArena lists 3,692 mAh for the iPhone 17 and 3,149 mAh for the iPhone Air. This page does not crown a winner.";
+  "Choose the iPhone 17 for the more complete everyday phone if you are coming from an iPhone 13. Apple rates it for up to 30 hours of video playback, against up to 27 hours on the iPhone Air, and it adds a 48MP ultrawide. Choose the iPhone Air only if the 5.64 mm, 165 gram titanium body is why you are upgrading. It has one 48MP rear camera. GSMArena lists 3,692 mAh for the iPhone 17 and 3,149 mAh for the iPhone Air. Neither is better for everyone; it depends on whether you want the more complete everyday phone or the thinner body.";
 
 const FAQS = [
   {
@@ -41,7 +41,7 @@ const FAQS = [
   {
     question: "Does the iPhone Air have a better chip than the iPhone 17?",
     answer:
-      "The Air uses the A19 Pro with a 5-core GPU. The iPhone 17 uses the A19 with a 5-core GPU. Apple lists both that way. This page does not cite a benchmark, and it does not claim a gaming gap.",
+      "The Air uses the A19 Pro with a 5-core GPU. The iPhone 17 uses the A19 with a 5-core GPU. Apple lists both that way. No benchmark is cited, and no gaming gap is claimed.",
   },
   {
     question: "Which is thinner and lighter, iPhone Air or iPhone 17?",
@@ -66,11 +66,9 @@ Best if thinness is the reason: iPhone Air. Apple lists 5.64 mm and 165 grams, i
 
 On Apple's India store, the iPhone 17 256GB is ₹99,900 and the iPhone Air 256GB is ₹1,49,900. The iPhone 17 is also lower at 512GB: ₹1,24,900 against ₹1,74,900. The Air 1TB is ₹2,24,900. Apple calls these prices the MRP, inclusive of all taxes. Check a live listing.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you want the more complete everyday phone or the thinner body.`;
 
-const EXPERT_ANALYSIS = `The iPhone 17 is the better everyday upgrade from an iPhone 13 unless the ultra-thin body is the reason you are buying. The iPhone Air is that thin phone, and the spec sheet shows what you give up to get it. This page does not crown a winner.
-
-Source note: Apple lists size, display, chip, cameras, and video-playback hours. GSMArena lists battery capacity, RAM, and active-use scores. Rupee prices are from Apple's India store, and GSMArena is not used for a rupee price. GSMArena lists the Air's thickness as 5.6 mm and the iPhone 17's as 8 mm. Apple lists 5.64 mm and 7.95 mm, and those are the figures used here. Apple does not give RAM or a milliamp-hour capacity.
+const EXPERT_ANALYSIS = `The iPhone 17 is the better everyday upgrade from an iPhone 13 unless the ultra-thin body is the reason you are buying. The iPhone Air is that thin phone, and the spec sheet shows what you give up to get it. Neither is better for everyone; it depends on whether the ultra-thin body is the reason you are buying.
 
 Body and display
 
@@ -78,7 +76,7 @@ Apple lists the iPhone Air at 6.5 inches, 165 grams, and 5.64 mm, with a titaniu
 
 Chip, memory, and storage
 
-The Air uses an A19 Pro chip with a 5-core GPU. The iPhone 17 uses an A19 chip with a 5-core GPU. Apple does not give a RAM amount. GSMArena lists 12GB on the Air and 8GB on the iPhone 17. Apple lists Air storage at 256GB, 512GB, and 1TB. iPhone 17 storage is 256GB and 512GB. This page does not cite a benchmark, so it does not turn the chip names into a gaming ranking.
+The Air uses an A19 Pro chip with a 5-core GPU. The iPhone 17 uses an A19 chip with a 5-core GPU. Apple does not give a RAM amount. GSMArena lists 12GB on the Air and 8GB on the iPhone 17. Apple lists Air storage at 256GB, 512GB, and 1TB. iPhone 17 storage is 256GB and 512GB. No benchmark is cited, so the chip names are not a gaming ranking.
 
 Cameras
 
@@ -90,13 +88,13 @@ Apple rates video playback at up to 30 hours on the iPhone 17 and up to 27 hours
 
 Software and price
 
-GSMArena lists both phones as iOS 26, upgradable to iOS 27. Apple lists "iPhone with iOS 27" in the box. This page does not guess which software a specific unit ships with beyond those two lines.
+GSMArena lists both phones as iOS 26, upgradable to iOS 27. Apple lists "iPhone with iOS 27" in the box. Which software a specific unit ships with is not stated beyond those two lines.
 
-Apple lists ₹99,900 for a 256GB iPhone 17 and ₹1,24,900 for 512GB. Apple lists ₹1,49,900 for a 256GB iPhone Air, ₹1,74,900 for 512GB, and ₹2,24,900 for 1TB. Apple calls each price the MRP, inclusive of all taxes. At 256GB and at 512GB, the iPhone 17 is the lower price. A lower price does not make it the better phone, and the Air's 1TB option has no iPhone 17 match there. Check a live listing before you decide on cost. This page does not quote a discount.
+Apple lists ₹99,900 for a 256GB iPhone 17 and ₹1,24,900 for 512GB. Apple lists ₹1,49,900 for a 256GB iPhone Air, ₹1,74,900 for 512GB, and ₹2,24,900 for 1TB. Apple calls each price the MRP, inclusive of all taxes. At 256GB and at 512GB, the iPhone 17 is the lower price. A lower price does not make it the better phone, and the Air's 1TB option has no iPhone 17 match there. Check a live listing before you decide on cost. No discount is stated.
 
 Who should buy which
 
-Choose the iPhone 17 if you are leaving an iPhone 13 and you want a reliable everyday phone: two rear cameras, the higher video-playback rating, and the larger battery. The chip difference is not a reason to pick the Air for photos and social apps. This page has no benchmark that says otherwise.
+Choose the iPhone 17 if you are leaving an iPhone 13 and you want a reliable everyday phone: two rear cameras, the higher video-playback rating, and the larger battery. The chip difference is not a reason to pick the Air for photos and social apps. No benchmark is cited that says otherwise.
 
 Choose the iPhone Air if you have held the 5.64 mm titanium phone and that is why you are upgrading. You are accepting one rear camera, 3,149 mAh, and Apple's 27-hour video-playback rating.`;
 

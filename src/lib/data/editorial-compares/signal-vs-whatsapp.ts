@@ -45,7 +45,7 @@ const FAQS = [
   },
 ];
 
-const EXPERT_ANALYSIS = `This page answers “Signal or WhatsApp — which messenger is better for privacy, features, and everyday use?” with a verdict by use-case. It does not rank the apps by user counts or download tallies.
+const EXPERT_ANALYSIS = `Signal or WhatsApp depends on privacy, features, and everyday use. There is no ranking by user counts or download tallies.
 
 Privacy and encryption
 
@@ -67,7 +67,7 @@ Platforms and account requirements
 
 Both require a phone number to register. Signal lets you create a username so people can contact you without seeing that number. Desktop apps for both are linked-device clients, not standalone accounts. Check each vendor’s help center for current OS and desktop requirements.
 
-Choose Signal if you want the privacy-first messenger: open-source clients, nonprofit operator, and documented minimal metadata. Choose WhatsApp if you need the everyday family, international, or business messenger: default encrypted chats plus Communities and WhatsApp Business. Sources: Signal documentation and Support; WhatsApp Security and Privacy Policy.`;
+Choose Signal if you want the privacy-first messenger: open-source clients, nonprofit operator, and documented minimal metadata. Choose WhatsApp if you need the everyday family, international, or business messenger: default encrypted chats plus Communities and WhatsApp Business.`;
 
 export const SIGNAL_VS_WHATSAPP: EditorialComparison = buildEditorialComparison({
   slug: "signal-vs-whatsapp",

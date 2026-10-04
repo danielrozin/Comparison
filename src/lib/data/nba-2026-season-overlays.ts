@@ -129,8 +129,6 @@ const LEBRON_JORDAN_FAQS = [
 
 const LEBRON_JORDAN_ANALYSIS = `LeBron James averaged 20.9 points, 6.1 rebounds, and 7.2 assists in 60 games in the 2025-26 regular season. His career line through that season is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games, totaling 43,440 points. Michael Jordan's career line is 30.1 points, 6.2 rebounds, and 5.3 assists in 1,072 games, totaling 32,292 points, with 6 championships and 6 Finals MVPs. LeBron has 4 championships, 4 Finals MVPs, and 10 Finals appearances. He signed with the Philadelphia 76ers in July 2026, and 2026-27 is his 24th season. This page does not pick a winner.
 
-Source note: the career totals and the 2025-26 per-game line are from Basketball-Reference. The signing, the 24th season, and the same 20.9 and 26.8 lines are from NBA.com's story updated July 27, 2026. ${LEBRON_BBR} ${JORDAN_BBR} ${SIGNING}
-
 2026-27 season. Stats as of ${AS_OF}. LeBron's team is the Philadelphia 76ers. NBA.com says he announced the move on social media Friday, that it became official on Sunday, and that he had told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. The 76ers post is dated July 27, 2026. He said, "I believe I can help make the Philadelphia 76ers a championship team and I am so excited to energize a new fan base and start this incredible journey one last time." NBA.com also writes that he was the first player to log 23 seasons and will add at least one more this season, and that he turns 42 on December 30. Basketball-Reference has no 2026-27 game log. Its 2026-27 table is labeled a projection, and this page does not quote it. Jordan has no 2026-27 season.
 
 Career. Basketball-Reference lists LeBron at 23 years, 1,622 games, 43,440 points, 12,095 rebounds, and 12,016 assists. The per-game career line is 26.8 points, 7.5 rebounds, and 7.4 assists. Jordan is listed at 15 years, 1,072 games, 32,292 points, 6,672 rebounds, and 5,633 assists, at 30.1 points, 6.2 rebounds, and 5.3 assists per game. Jordan's 1986-87 regular season is listed at 37.1 points per game. LeBron's 2005-06 regular season is listed at 31.4 points per game. Those are single seasons, not career averages.
@@ -178,8 +176,6 @@ const KOBE_LEBRON_FAQS = [
 ];
 
 const KOBE_LEBRON_ANALYSIS = `Kobe Bryant's career line is 25.0 points, 5.2 rebounds, and 4.7 assists in 1,346 games and 33,643 points. LeBron James's career line through 2025-26 is 26.8 points, 7.5 rebounds, and 7.4 assists in 1,622 games and 43,440 points. LeBron's 2025-26 regular-season line was 20.9 points, 6.1 rebounds, and 7.2 assists in 60 games. He signed with the Philadelphia 76ers in July 2026, and 2026-27 is his 24th season. This page does not pick a winner.
-
-Source note: career totals and the 2025-26 line are from Basketball-Reference. The signing and the 24th season are from NBA.com's story updated July 27, 2026, which also prints the 20.9 and 26.8 lines. ${KOBE_BBR} ${LEBRON_BBR} ${SIGNING}
 
 2026-27 season. Stats as of ${AS_OF}. LeBron's team is the Philadelphia 76ers. NBA.com says he announced the move on social media Friday, that it became official on Sunday, and that he told the Lakers on June 30 he would not return. His posts on that story are dated July 24, 2026. The 76ers post is dated July 27, 2026. NBA.com writes that he logged 23 seasons and will add at least one more this season. Basketball-Reference has no 2026-27 game log, and its 2026-27 table is a projection this page does not quote. Kobe has no 2026-27 season.
 
