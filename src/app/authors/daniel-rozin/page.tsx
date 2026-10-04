@@ -11,7 +11,7 @@ const PAGE_URL = `${SITE_URL}/authors/daniel-rozin`;
 const PAGE_TITLE = `${AUTHOR_NAME} — ${AUTHOR_TITLE}`;
 const PAGE_DESCRIPTION = `${AUTHOR_NAME} is the founder of ${SITE_NAME}, a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17 other product categories. He writes and edits all primary comparison hub pages.`;
 const AUTHOR_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent(PAGE_TITLE)}&type=author`;
-const AUTHOR_TODAY = new Date().toISOString().split("T")[0];
+const AUTHOR_LAST_EDITED = "2026-07-11"; // last content edit: 1eb76ac1 (e0d14aa0 only removed twitter metadata).
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -35,13 +35,13 @@ export const metadata: Metadata = {
     "citation_title": PAGE_TITLE,
     "citation_journal_title": SITE_NAME,
     "citation_language": "en",
-    "citation_publication_date": "2024-01-01",
-    "citation_online_date": AUTHOR_TODAY,
+    "citation_publication_date": "2026-06-12",
+    "citation_online_date": "2026-06-12",
     "DC.creator": AUTHOR_NAME,
     "DC.title": PAGE_TITLE,
     "DC.publisher": SITE_NAME,
     "DC.language": "en",
-    "DC.date": "2024-01-01",
+    "DC.date": "2026-06-12",
     "DC.identifier": PAGE_URL,
   },
 };
@@ -51,19 +51,19 @@ const ARTICLES = [
     title: "Best Password Managers Compared (2026)",
     url: "/password-manager-comparison",
 
-    locale: "en_US",    date: "2026-07-11",
+    locale: "en_US",    date: "2026-06-12",
   },
   {
     title: "Best Browsers Compared (2026)",
     url: "/browser-comparison-2026",
 
-    locale: "en_US",    date: "2026-07-11",
+    locale: "en_US",    date: "2026-06-12",
   },
   {
     title: "LLM Comparison: GPT-4o vs Claude vs Gemini (2026)",
     url: "/llm-comparisons",
 
-    locale: "en_US",    date: "2026-07-11",
+    locale: "en_US",    date: "2026-06-12",
   },
 ];
 
@@ -147,10 +147,10 @@ const profilePageSchema = {
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
-  datePublished: "2026-03-15",
-  dateModified: AUTHOR_TODAY,
-  lastReviewed: AUTHOR_TODAY,
-  contentReferenceTime: AUTHOR_TODAY,
+  datePublished: "2026-06-12",
+  dateModified: AUTHOR_LAST_EDITED,
+  lastReviewed: AUTHOR_LAST_EDITED,
+  contentReferenceTime: AUTHOR_LAST_EDITED,
   thumbnailUrl: AUTHOR_OG_IMAGE,
   image: {
     "@type": "ImageObject",
@@ -164,8 +164,8 @@ const profilePageSchema = {
   },
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
-  copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
-  copyrightYear: new Date().getFullYear(),
+  copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightYear: 2026,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Journalists, Potential Partners", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
