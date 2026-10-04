@@ -19,6 +19,12 @@ export default function Document({ omitSitewideJsonLd }: { omitSitewideJsonLd?: 
   return (
     <Html lang="en">
       <Head>
+        {/* Impact.com site-ownership verification. Impact reads the `value`
+            attribute; Next.js `metadata.other` would emit `content` instead.
+            Pages Router /compare pages do not use the App Router root layout.
+            React's meta types only allow `content`, so this one attribute is exempt. */}
+        {/* @ts-expect-error Impact.com requires the non-standard `value` attribute. */}
+        <meta name="impact-site-verification" value="6c9a227a-f292-4a99-884e-977f8dbf815a" />
         {/* theme-color + color-scheme — parity with layout.tsx */}
         <meta name="theme-color" content="#1a56db" />
         <meta name="color-scheme" content="light" />
