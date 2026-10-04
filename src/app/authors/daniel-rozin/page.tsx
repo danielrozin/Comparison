@@ -11,7 +11,8 @@ const PAGE_URL = `${SITE_URL}/authors/daniel-rozin`;
 const PAGE_TITLE = `${AUTHOR_NAME} — ${AUTHOR_TITLE}`;
 const PAGE_DESCRIPTION = `${AUTHOR_NAME} is the founder of ${SITE_NAME}, a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17 other product categories. He writes and edits all primary comparison hub pages.`;
 const AUTHOR_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent(PAGE_TITLE)}&type=author`;
-const AUTHOR_TODAY = new Date().toISOString().split("T")[0];
+/** Last content edit in git (e0d14aa0, 2026-08-23). Not the request clock. */
+const AUTHOR_LAST_EDITED = "2026-08-23";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     "citation_journal_title": SITE_NAME,
     "citation_language": "en",
     "citation_publication_date": "2024-01-01",
-    "citation_online_date": AUTHOR_TODAY,
+    "citation_online_date": AUTHOR_LAST_EDITED,
     "DC.creator": AUTHOR_NAME,
     "DC.title": PAGE_TITLE,
     "DC.publisher": SITE_NAME,
@@ -148,9 +149,9 @@ const profilePageSchema = {
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   datePublished: "2026-03-15",
-  dateModified: AUTHOR_TODAY,
-  lastReviewed: AUTHOR_TODAY,
-  contentReferenceTime: AUTHOR_TODAY,
+  dateModified: AUTHOR_LAST_EDITED,
+  lastReviewed: AUTHOR_LAST_EDITED,
+  contentReferenceTime: AUTHOR_LAST_EDITED,
   thumbnailUrl: AUTHOR_OG_IMAGE,
   image: {
     "@type": "ImageObject",

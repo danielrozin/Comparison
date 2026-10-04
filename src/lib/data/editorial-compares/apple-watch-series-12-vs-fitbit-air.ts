@@ -102,7 +102,7 @@ Apple's footnotes there, next to those items, say: "The Vitals app is for wellne
 
 Google's launch post lists 24/7 heart rate, heart rhythm monitoring with Afib alerts, SpO2, resting heart rate, heart rate variability, and sleep stages and duration. The launch-post footnote next to that rhythm feature says: "Not intended for use by people under 22 years old with known atrial fibrillation or other known arrhythmias. Not available in all countries." The 7 May 2026 launch-post footnotes also say "Not intended for medical purposes." That line is quoted from the launch post. The heart-rate help article is the source only for the optical-sensor sentence below.
 
-Google's vitals table marks the Air for breathing rate, heart rate variability, skin temperature variation, SpO2, and resting heart rate. Google says Fitbit devices use optical heart rate sensors, and Google lists Fitbit Air.
+Google's vitals table marks the Air for breathing rate, heart rate variability, skin temperature variation, SpO2, and resting heart rate. Google says Fitbit devices, including Fitbit Air, use optical heart rate sensors.
 
 Water and weight
 
