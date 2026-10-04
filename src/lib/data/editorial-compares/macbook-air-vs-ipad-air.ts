@@ -4,7 +4,8 @@ import type { EditorialComparison } from "./types";
 /**
  * ROO-147 — MacBook Air vs iPad Air, as a second device next to a Windows laptop.
  * Figures read from apple.com/macbook-air/specs/, apple.com/ipad-air/specs/,
- * the MacBook Air buy offer, and Apple's product-price endpoint on 4 October 2026.
+ * the MacBook Air buy offer, and the Apple Store pages for iPad Air, Apple Pencil,
+ * and Magic Keyboard for iPad Air on 4 October 2026.
  * No page-level winner. No benchmark scores.
  * /entity/macbook-air and /entity/ipad-air were both noindex, nofollow, so
  * neither hub is linked.
@@ -16,8 +17,12 @@ const IPAD = "ipad-air";
 const MAC_SPECS = "https://www.apple.com/macbook-air/specs/";
 const IPAD_SPECS = "https://www.apple.com/ipad-air/specs/";
 const MAC_BUY = "https://www.apple.com/shop/buy-mac/macbook-air";
-const PRICES =
-  "https://www.apple.com/us/shop/mcm/product-price?parts=IPADAIR2026_MAIN,APPLE_PENCIL_PRO_MAIN-5000146389,APPLE_PENCIL_USB-C_MAIN-1000148760,MAGIC_KEYBOARD_IPADAIR11-M3,MAGIC_KEYBOARD_IPADAIR13-M3";
+const IPAD_BUY = "https://www.apple.com/shop/buy-ipad/ipad-air";
+const PENCIL = "https://www.apple.com/shop/select-apple-pencil";
+const KEYBOARD_11 =
+  "https://www.apple.com/shop/product/mdfv4ll/a/magic-keyboard-for-ipad-air-11-inch-m4-us-english-white";
+const KEYBOARD_13 =
+  "https://www.apple.com/shop/product/mdfw4ll/a/magic-keyboard-for-ipad-air-13-inch-m4-us-english-white";
 
 const SOURCE_DATE = "2026-10-04";
 const PUBLISHED = "2026-10-04T00:00:00Z";
@@ -128,7 +133,7 @@ export const MACBOOK_AIR_VS_IPAD_AIR: EditorialComparison = buildEditorialCompar
       ],
       cons: [
         "13-inch model is 2.7 pounds (1.23 kg); 15-inch model is 3.3 pounds (1.51 kg)",
-        "Apple Pencil support is listed for iPad Air, not as a MacBook Air feature",
+        "Apple Pencil works with iPad Air; it is not a MacBook Air accessory",
       ],
       bestFor: "Best when the second device should be a macOS laptop",
     },
@@ -265,7 +270,7 @@ export const MACBOOK_AIR_VS_IPAD_AIR: EditorialComparison = buildEditorialCompar
     ),
     textAttr(
       "price",
-      "Listed price",
+      "Price",
       SPEC,
       MAC,
       IPAD,
@@ -285,7 +290,7 @@ export const MACBOOK_AIR_VS_IPAD_AIR: EditorialComparison = buildEditorialCompar
       "Apple lists an M5 chip on the MacBook Air and an M4 chip with 12GB of memory on the iPad Air. The 13-inch MacBook Air weighs 2.7 pounds (1.23 kg). The 11-inch Wi-Fi iPad Air weighs 1.02 pounds (464 grams).",
   },
   citationStats: {
-    sourceCount: 4,
+    sourceCount: 7,
     dataPointCount: 10,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -295,7 +300,10 @@ export const MACBOOK_AIR_VS_IPAD_AIR: EditorialComparison = buildEditorialCompar
       { name: "Apple — MacBook Air specs", url: MAC_SPECS },
       { name: "Apple — iPad Air specs", url: IPAD_SPECS },
       { name: "Apple — MacBook Air buy offer", url: MAC_BUY },
-      { name: "Apple — iPad Air, Pencil, and Magic Keyboard prices", url: PRICES },
+      { name: "Apple — iPad Air", url: IPAD_BUY },
+      { name: "Apple — Apple Pencil", url: PENCIL },
+      { name: "Apple — Magic Keyboard for iPad Air 11-inch (M4)", url: KEYBOARD_11 },
+      { name: "Apple — Magic Keyboard for iPad Air 13-inch (M4)", url: KEYBOARD_13 },
     ],
   },
   resources: [
@@ -321,10 +329,27 @@ export const MACBOOK_AIR_VS_IPAD_AIR: EditorialComparison = buildEditorialCompar
     },
     {
       type: "external",
-      label: "iPad Air, Pencil, and Magic Keyboard prices",
-      url: PRICES,
-      description:
-        "iPad Air from $749. Apple Pencil Pro $129. Apple Pencil (USB-C) $79. Magic Keyboard for iPad Air 11-inch (M4) from $269. 13-inch keyboard from $319.",
+      label: "iPad Air",
+      url: IPAD_BUY,
+      description: "iPad Air from $749. Apple Pencil Pro $129. Apple Pencil (USB-C) $79.",
+    },
+    {
+      type: "external",
+      label: "Apple Pencil",
+      url: PENCIL,
+      description: "Apple Pencil Pro $129. Apple Pencil (USB-C) $79.",
+    },
+    {
+      type: "external",
+      label: "Magic Keyboard for iPad Air 11-inch (M4)",
+      url: KEYBOARD_11,
+      description: "Magic Keyboard for iPad Air 11-inch (M4) from $269.",
+    },
+    {
+      type: "external",
+      label: "Magic Keyboard for iPad Air 13-inch (M4)",
+      url: KEYBOARD_13,
+      description: "Magic Keyboard for iPad Air 13-inch (M4) from $319.",
     },
   ],
   metaTitle: "MacBook Air vs iPad Air | A Versus B",
