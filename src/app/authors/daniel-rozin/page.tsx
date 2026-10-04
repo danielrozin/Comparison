@@ -11,8 +11,7 @@ const PAGE_URL = `${SITE_URL}/authors/daniel-rozin`;
 const PAGE_TITLE = `${AUTHOR_NAME} — ${AUTHOR_TITLE}`;
 const PAGE_DESCRIPTION = `${AUTHOR_NAME} is the founder of ${SITE_NAME}, a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17 other product categories. He writes and edits all primary comparison hub pages.`;
 const AUTHOR_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent(PAGE_TITLE)}&type=author`;
-/** Last content edit in git (e0d14aa0, 2026-08-23). Not the request clock. */
-const AUTHOR_LAST_EDITED = "2026-08-23";
+const AUTHOR_LAST_EDITED = "2026-07-11"; // last content edit: 1eb76ac1 (e0d14aa0 only removed twitter metadata).
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -37,7 +36,7 @@ export const metadata: Metadata = {
     "citation_journal_title": SITE_NAME,
     "citation_language": "en",
     "citation_publication_date": "2024-01-01",
-    "citation_online_date": AUTHOR_LAST_EDITED,
+    "citation_online_date": "2026-06-12",
     "DC.creator": AUTHOR_NAME,
     "DC.title": PAGE_TITLE,
     "DC.publisher": SITE_NAME,
@@ -52,19 +51,19 @@ const ARTICLES = [
     title: "Best Password Managers Compared (2026)",
     url: "/password-manager-comparison",
 
-    locale: "en_US",    date: "2026-07-11",
+    locale: "en_US",    date: "2026-06-12",
   },
   {
     title: "Best Browsers Compared (2026)",
     url: "/browser-comparison-2026",
 
-    locale: "en_US",    date: "2026-07-11",
+    locale: "en_US",    date: "2026-06-12",
   },
   {
     title: "LLM Comparison: GPT-4o vs Claude vs Gemini (2026)",
     url: "/llm-comparisons",
 
-    locale: "en_US",    date: "2026-07-11",
+    locale: "en_US",    date: "2026-06-12",
   },
 ];
 
@@ -148,7 +147,7 @@ const profilePageSchema = {
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
-  datePublished: "2026-03-15",
+  datePublished: "2026-06-12",
   dateModified: AUTHOR_LAST_EDITED,
   lastReviewed: AUTHOR_LAST_EDITED,
   contentReferenceTime: AUTHOR_LAST_EDITED,

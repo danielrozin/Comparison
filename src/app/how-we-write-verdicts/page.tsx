@@ -8,8 +8,7 @@ const PAGE_URL = `${SITE_URL}/how-we-write-verdicts`;
 const PAGE_TITLE = `How We Write Verdicts — ${SITE_NAME}`;
 const PAGE_DESC = `How ${SITE_NAME} produces the AI-assisted verdict at the top of every comparison page — sourcing, the role of the AI model, the role of human editors, and how your feedback shapes future verdicts.`;
 const VERDICTS_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("How We Write Verdicts")}&type=home`;
-/** Last content edit in git (1eb76ac1, 2026-07-11). Not the request clock. */
-const VERDICTS_LAST_EDITED = "2026-07-11";
+const VERDICTS_LAST_EDITED = "2026-07-10"; // last content edit: 7f152c0a (1eb76ac1 only added accessibilitySummary).
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -45,7 +44,7 @@ export const metadata: Metadata = {
     "citation_language": "en",
     "citation_abstract": PAGE_DESC,
       "citation_publication_date": "2024-01-01",
-      "citation_online_date": "2024-01-01",
+      "citation_online_date": "2026-05-28",
     "DC.title": PAGE_TITLE,
     "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
@@ -120,7 +119,7 @@ const articleSchema = {
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
-  datePublished: "2026-03-15",
+  datePublished: "2026-05-28",
   dateModified: VERDICTS_LAST_EDITED,
   lastReviewed: VERDICTS_LAST_EDITED,
   contentReferenceTime: VERDICTS_LAST_EDITED,
