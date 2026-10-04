@@ -22,53 +22,53 @@ const AS_OF = "October 3, 2026";
 
 const CAREER_CAT = `Career per game · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
-const SCHEDULE_CAT = `Schedule · NBA.com games page`;
+const SCHEDULE_CAT = `Schedule · NBA.com`;
 
 const SHORT_ANSWER =
-  "On the Basketball-Reference per-game table, Damian Lillard's career line is 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Ja Morant's is 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games. Basketball-Reference lists both with the Portland Trail Blazers. NBA.com's story, updated June 30, 2026, says Portland and Memphis agreed on a trade Monday that sent Morant to Portland. That Monday was June 29, 2026. Stats as of October 3, 2026, there is no 2026-27 regular-season game log. There is no 2026-27 forecast.";
+  "Damian Lillard's per-game averages are 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Ja Morant's are 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games. Both are with the Portland Trail Blazers (Basketball-Reference). NBA.com's story, updated June 30, 2026, says Portland and Memphis agreed on a trade Monday that sent Morant to Portland. That Monday was June 29, 2026. As of October 3, 2026, neither has played a 2026-27 regular-season game. There is no 2026-27 forecast.";
 
 const FAQS = [
   {
-    question: "Where are Damian Lillard and Ja Morant listed for 2026-27?",
+    question: "Where are Damian Lillard and Ja Morant for 2026-27?",
     answer:
-      "Basketball-Reference lists both with the Portland Trail Blazers. NBA.com's story, updated June 30, 2026, says the Trail Blazers and Grizzlies agreed on a trade Monday. Portland received Ja Morant. Memphis received Jerami Grant and Kris Murray. The story lists Damian Lillard on Portland's roster with Jrue Holiday and Scoot Henderson. The Blazers' post and the Grizzlies' post on that story are dated June 30, 2026.",
+      "Both are with the Portland Trail Blazers (Basketball-Reference). NBA.com's story, updated June 30, 2026, says the Trail Blazers and Grizzlies agreed on a trade Monday. Portland received Ja Morant. Memphis received Jerami Grant and Kris Murray. Damian Lillard is on Portland's roster with Jrue Holiday and Scoot Henderson. The Blazers' post and the Grizzlies' post on that story are dated June 30, 2026.",
   },
   {
     question: "What day was the Morant trade?",
     answer:
-      "The NBA.com story was updated June 30, 2026, and it says the teams agreed on the trade Monday. June 29, 2026 was a Monday. The story does not give the numeral June 29. It does print the players: Ja Morant to Portland, Jerami Grant and Kris Murray to Memphis. A cash figure in that story is attributed to a later newsletter report, so that cash figure is not used.",
+      "The NBA.com story was updated June 30, 2026, and it says the teams agreed on the trade Monday. June 29, 2026 was a Monday. The story does not give the numeral June 29. It names the players: Ja Morant to Portland, Jerami Grant and Kris Murray to Memphis. A cash figure in that story is attributed to a later newsletter report, so that cash figure is not used.",
   },
   {
     question: "What are their career scoring lines?",
     answer:
-      "Lillard's per-game career row is 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games over 13 years. Career points total 22,598 (Basketball-Reference). Morant's per-game career row is 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games over 7 years. Career points total 7,331 (Basketball-Reference). Shooting on those per-game rows is .439 / .371 / .899 for Lillard and .466 / .311 / .773 for Morant, field goals, threes, and free throws.",
+      "Lillard's per-game averages are 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games over 13 years. Career points total 22,598 (Basketball-Reference). Morant's per-game averages are 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games over 7 years. Career points total 7,331 (Basketball-Reference). Shooting is .439 / .371 / .899 for Lillard and .466 / .311 / .773 for Morant, field goals, threes, and free throws.",
   },
   {
     question: "Did Lillard play in 2025-26?",
     answer:
-      "Basketball-Reference lists Lillard as not playing in 2025-26, injured (Achilles). His last logged season is 2024-25 with Milwaukee: 58 games, 24.9 points, 4.7 rebounds, and 7.1 assists.",
+      "Lillard did not play in 2025-26, injured (Achilles) (Basketball-Reference). His last season is 2024-25 with Milwaukee: 58 games, 24.9 points, 4.7 rebounds, and 7.1 assists.",
   },
   {
     question: "What did Morant average in 2025-26?",
     answer:
-      "With Memphis, 20 games, all starts, 19.5 points, 3.3 rebounds, and 8.1 assists. NBA.com's trade story prints the same 19.5 points and 8.1 assists over 20 games, and a career average of 22.4 points. Basketball-Reference lists 2 All-Star selections, 2021-22 All-NBA, 2019-20 Rookie of the Year, and 2021-22 Most Improved.",
+      "With Memphis, 20 games, all starts, 19.5 points, 3.3 rebounds, and 8.1 assists. NBA.com's trade story has the same 19.5 points and 8.1 assists over 20 games, and a career average of 22.4 points. He has 2 All-Star selections, 2021-22 All-NBA, 2019-20 Rookie of the Year, and 2021-22 Most Improved (Basketball-Reference).",
   },
   {
     question: "When do the Trail Blazers play the Suns?",
     answer:
-      "NBA.com lists Phoenix at Portland on October 21, 2026, at 10:00 pm ET, regular season, game 0022600092. Both teams are shown at 0-0. That is a schedule fact for the teams. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log, and a projection is not quoted.",
+      "NBA.com schedules Phoenix at Portland on October 21, 2026, at 10:00 pm ET, regular season, game 0022600092. Both teams are at 0-0. As of October 3, 2026, Morant has not played a 2026-27 regular-season game.",
   },
 ];
 
 const VERDICT = `Career per game: Lillard 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Morant 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games.
 
-2025-26: Basketball-Reference lists Lillard as not playing, injured (Achilles). Morant played 20 games for Memphis at 19.5 points, 3.3 rebounds, and 8.1 assists.
+2025-26: Lillard did not play, injured (Achilles). Morant played 20 games for Memphis at 19.5 points, 3.3 rebounds, and 8.1 assists.
 
-2026-27 season: Basketball-Reference lists both with Portland. The trade story updated June 30, 2026 says the teams agreed Monday, June 29, 2026. Stats as of October 3, 2026, there is no regular-season game log. The Suns are at the Trail Blazers on October 21, 2026, at 10:00 pm ET. Neither is named the winner of that game, and there is no forecast for it.`;
+2026-27 season: Both are with Portland. The trade story updated June 30, 2026 says the teams agreed Monday, June 29, 2026. As of October 3, 2026, neither has played a regular-season game. The Suns are at the Trail Blazers on October 21, 2026, at 10:00 pm ET. Neither is named the winner of that game, and there is no forecast for it.`;
 
-const EXPERT_ANALYSIS = `Damian Lillard's career line on the per-game table is 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Ja Morant's is 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games. Basketball-Reference lists both with the Portland Trail Blazers. There is no 2026-27 forecast.
+const EXPERT_ANALYSIS = `Damian Lillard's per-game averages are 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Ja Morant's are 22.4 points, 4.6 rebounds, and 7.4 assists in 327 games. Both are with the Portland Trail Blazers. There is no 2026-27 forecast.
 
-2026-27 season. Stats as of ${AS_OF}. Basketball-Reference has no 2026-27 regular-season game log for either player. NBA.com lists Phoenix at Portland on October 21, 2026, at 10:00 pm ET. Basketball-Reference lists Lillard as not playing in 2025-26, injured (Achilles). NBA.com's June 30 trade story lists him on Portland's current roster.
+2026-27 season. Stats as of ${AS_OF}. Neither player has played a 2026-27 regular-season game. NBA.com schedules Phoenix at Portland on October 21, 2026, at 10:00 pm ET. Lillard did not play in 2025-26, injured (Achilles). NBA.com's June 30 trade story has him on Portland's current roster.
 
 The trade. The story says Portland and Memphis agreed Monday. The story was updated June 30, 2026, and June 29, 2026 was that Monday. Portland received Ja Morant. Memphis received Jerami Grant and Kris Murray. The same story says Grant averaged 18.6 points and 3.5 rebounds over 57 games last season, and Murray averaged 5.8 points and 3.6 rebounds over 56 games. Lillard made 9 All-Star teams, with 7 All-NBA selections, 2012-13 Rookie of the Year, and 2023-24 All-Star Game MVP. Morant made 2 All-Star teams, with 2021-22 All-NBA, 2019-20 Rookie of the Year, and 2021-22 Most Improved.`;
 
@@ -86,21 +86,21 @@ const BUILT = buildEditorialComparison({
       slug: LILLARD,
       name: "Damian Lillard",
       shortDesc:
-        "Career 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. Listed with Portland. 2025-26 row: did not play, injured (Achilles).",
+        "Career 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games. With Portland. 2025-26: did not play, injured (Achilles).",
       imageUrl: null,
       entityType: "person",
       position: 0,
       pros: [
         "Career per game: 25.1 points, 4.3 rebounds, and 6.7 assists in 900 games",
-        "Totals table: 22,598 points",
+        "Career points: 22,598",
         "9 All-Star selections, 7 All-NBA, 2012-13 Rookie of the Year",
-        "Listed with the Portland Trail Blazers",
+        "With the Portland Trail Blazers",
       ],
       cons: [
-        "2025-26 per-game row: did not play, injured (Achilles)",
-        "No 2026-27 regular-season game log as of October 3, 2026",
+        "2025-26: did not play, injured (Achilles)",
+        "2026-27 games played: none as of October 3, 2026",
       ],
-      bestFor: "The career per-game line and the Portland roster note",
+      bestFor: "The career per-game averages and the Portland roster",
     },
     {
       id: MORANT,
@@ -118,7 +118,7 @@ const BUILT = buildEditorialComparison({
       ],
       cons: [
         "2025-26 line was 20 games, all with Memphis",
-        "No 2026-27 regular-season game log as of October 3, 2026",
+        "2026-27 games played: none as of October 3, 2026",
       ],
       bestFor: "The 2025-26 line and the trade to Portland",
     },
@@ -171,11 +171,11 @@ const BUILT = buildEditorialComparison({
     ),
     textAttr(
       "team-2627",
-      "Listed team",
+      "Team",
       SEASON_CAT,
       LILLARD,
       MORANT,
-      `Portland Trail Blazers. Stats as of ${AS_OF}. No game log.`,
+      `Portland Trail Blazers. Stats as of ${AS_OF}. Has not played a 2026-27 game.`,
       `Portland Trail Blazers. Trade agreed Monday, June 29, 2026. Stats as of ${AS_OF}.`
     ),
     textAttr(
@@ -198,9 +198,9 @@ const BUILT = buildEditorialComparison({
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "No page-level winner and no 2026-27 prediction. The career rows and the 2025-26 lines are finished results.",
+      "No page-level winner and no 2026-27 prediction. The career averages and the 2025-26 seasons are finished.",
     keyFact:
-      "Lillard 25.1 points in 900 games. Morant 22.4 points in 327 games. Basketball-Reference lists both with Portland. The Suns are at Portland on October 21, 2026, at 10:00 pm ET. That game is a schedule fact.",
+      "Lillard 25.1 points in 900 games. Morant 22.4 points in 327 games. Both are with Portland. The Suns are at Portland on October 21, 2026, at 10:00 pm ET.",
   },
   citationStats: {
     sourceCount: 4,
@@ -233,7 +233,7 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "NBA.com: Trail Blazers add Ja Morant",
       url: TRADE,
-      description: `Updated June 30, 2026. Teams agreed Monday. Morant to Portland. Grant and Murray to Memphis. NBA.com lists Lillard on the Portland roster.`,
+      description: `Updated June 30, 2026. Teams agreed Monday. Morant to Portland. Grant and Murray to Memphis. Lillard is on the Portland roster.`,
     },
     {
       type: "external",
@@ -246,6 +246,6 @@ const BUILT = buildEditorialComparison({
 });
 
 BUILT.metadata.metaDescription =
-  "Lillard's career line is 25.1 points in 900 games. Morant's is 22.4 in 327. Basketball-Reference lists both with Portland. Stats as of October 3, 2026.";
+  "Lillard's career line is 25.1 points in 900 games. Morant's is 22.4 in 327. Both are with Portland. Stats as of October 3, 2026.";
 
 export const DAMIAN_LILLARD_VS_JA_MORANT: EditorialComparison = BUILT;
