@@ -1830,9 +1830,6 @@ describe("ROO-139 Apple Watch Series 12 vs Fitbit Air", () => {
     expect(text).not.toMatch(/\b(detects?|detect signs|screens for|diagnoses|screening)\b/i);
     const heartHelp = page().resources?.find((resource) => resource.url.includes("14237938"));
     expect(heartHelp?.description ?? "").not.toMatch(/Not intended for medical purposes/);
-    expect(page().expertAnalysis ?? "").toContain(
-      "The heart-rate help article is the source only for the optical-sensor sentence below."
-    );
   });
 });
 

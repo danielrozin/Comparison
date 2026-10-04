@@ -439,7 +439,7 @@ export function webSiteSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FALLBAC
     inLanguage: "en-US",
     availableLanguage: { "@type": "Language", name: "English", alternateName: "en" },
     datePublished: "2026-03-15",
-    dateCreated: "2024-01-01",
+    dateCreated: "2026-03-15",
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
