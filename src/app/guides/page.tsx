@@ -146,7 +146,7 @@ export default function GuidesIndexPage() {
     genre: "Topic Guide Index",
     contentReferenceTime: today,
     hasPart: [
-      { "@type": "FAQPage", "@id": `${guidesUrl}#faqpage`, name: "Topic Guides — FAQ" },
+      { "@id": `${guidesUrl}#faqpage`, name: "Topic Guides — FAQ" },
     ],
   };
 

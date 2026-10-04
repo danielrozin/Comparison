@@ -389,7 +389,7 @@ export function dataCatalogSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FAL
           encodingFormat: "application/json",
           contentUrl: `${SITE_URL}/api/answer/{slug}`,
           name: "A Versus B AI Answer API",
-          description: "Pre-packaged, citation-ready answer with shortAnswer, verdict, keyDifferences, winner, confidence, and ClaimReview JSON-LD",
+          description: "Pre-packaged, citation-ready answer with shortAnswer, verdict, keyDifferences, winner, and confidence",
           potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/answer/{slug}` } },
         },
         {
@@ -1370,7 +1370,7 @@ export function comparisonPageSchema(
       const howtoEligible = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy", "entertainment", "companies"]);
       const hasHowTo = Boolean(comparison.category && howtoEligible.has(comparison.category) && comparison.attributes.length >= 3);
       const parts = [
-        ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
+        ...(hasFaqs ? [{ "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@id": `${url}#dataset` }] : []),
         // DefinedTermSet — Article→DefinedTermSet graph edge so AI crawlers discover the
         // attribute vocabulary directly from the Article node without loading the Dataset first.
@@ -1450,69 +1450,6 @@ export function comparisonPageSchema(
     // AI Overviews for US queries) use locationCreated to correctly scope the data origin.
     locationCreated: { "@type": "Country", name: "United States" },
   });
-
-  // 1b. ClaimReview — standalone type required by Schema.org and Google Fact Check.
-  // claimReviewed/reviewRating were previously misplaced as Article properties.
-  // A proper ClaimReview node signals to AI fact-checking systems (Google Fact Check,
-  // Perplexity truth mode, ChatGPT factual validation) that this page evaluates a
-  // specific factual claim, enabling the Fact Check rich result and AI trust boost.
-  if (comparison.shortAnswer && comparison.entities.length >= 2) {
-    const crClaimText = `${comparison.entities[0].name} is better than ${comparison.entities[1].name}`;
-    const crVerdictLower = (comparison.verdict ?? "").toLowerCase();
-    const crRating =
-      comparison.entities[0].name && crVerdictLower === comparison.entities[0].name.toLowerCase()
-        ? "TRUE"
-        : comparison.entities[1].name && crVerdictLower === comparison.entities[1].name.toLowerCase()
-        ? "FALSE"
-        : "MIXTURE";
-    schemas.push({
-      "@context": "https://schema.org",
-      "@type": "ClaimReview",
-      "@id": `${url}#claimreview`,
-      url,
-      // inLanguage — language-scoped fact-checking for AI engines; enables language-qualified
-      // citations ("According to [source] (en-US), ...") in ChatGPT, Perplexity, and Google Fact Check.
-      inLanguage: "en-US",
-      isAccessibleForFree: true,
-      conditionsOfAccess: "Free",
-      claimReviewed: crClaimText,
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: crRating,
-        bestRating: "TRUE",
-        worstRating: "FALSE",
-        alternateName:
-          crRating === "TRUE"
-            ? `${comparison.entities[0].name} wins`
-            : crRating === "FALSE"
-            ? `${comparison.entities[1].name} wins`
-            : "Depends on use case — see analysis",
-      },
-      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-      datePublished: comparison.metadata.updatedAt,
-      itemReviewed: {
-        "@type": "Claim",
-        // inLanguage on itemReviewed — language-scopes the reviewed claim for multilingual AI crawlers.
-        inLanguage: "en-US",
-        name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
-        // text — the actual claim text as required by Google Fact Check Tools for rich-result
-        // eligibility; AI fact-checkers (Perplexity truth mode, ChatGPT factual validation)
-        // use text to extract the assertion independently of the claimReviewed field.
-        text: comparison.shortAnswer ? comparison.shortAnswer.slice(0, 400) : `${comparison.entities.map((e) => e.name).join(" vs ")} — a structured side-by-side comparison`,
-        author: { "@type": "Thing", name: "Internet" },
-        datePublished: comparison.metadata.publishedAt,
-        // appearance — current canonical URL of the claim; used by AI fact-checkers
-        // to fetch the live page for verification.
-        appearance: { "@type": "WebPage", "@id": url, url },
-        // firstAppearance — the original publication URL of the claim; when claim and
-        // reviewer are the same page (self-published editorial), both fields point here.
-        // Google Fact Check and AI trust engines (Perplexity truth mode) use this to
-        // establish claim provenance and publication timeline.
-        firstAppearance: { "@type": "WebPage", "@id": url, url },
-      },
-    });
-  }
 
   // 2. ItemList for the compared entities
   schemas.push({
@@ -2271,7 +2208,7 @@ function buildMultiEntityGraph(
     // sub-document graph edges. ProfilePage nodes create Article→entity traversal paths for AI.
     ...(() => {
       const parts = [
-        ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
+        ...(comparison.faqs.length > 0 ? [{ "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@id": `${url}#dataset` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
         // ItemList — Article→ItemList graph edge for AI to extract the compared entity list.
@@ -2418,53 +2355,6 @@ function buildMultiEntityGraph(
     ...itemNodes,
     breadcrumbList,
   ];
-
-  // ClaimReview — standalone node (parity with 2-entity schema).
-  if (comparison.shortAnswer && comparison.entities.length >= 2) {
-    const meCrClaimText = `${comparison.entities[0].name} is better than ${comparison.entities[1].name}`;
-    const meCrVerdictLower = (comparison.verdict ?? "").toLowerCase();
-    const meCrRating =
-      comparison.entities[0].name && meCrVerdictLower === comparison.entities[0].name.toLowerCase()
-        ? "TRUE"
-        : comparison.entities[1].name && meCrVerdictLower === comparison.entities[1].name.toLowerCase()
-        ? "FALSE"
-        : "MIXTURE";
-    graph.push({
-      "@type": "ClaimReview",
-      "@id": `${url}#claimreview`,
-      url,
-      inLanguage: "en-US",
-      isAccessibleForFree: true,
-      conditionsOfAccess: "Free",
-      claimReviewed: meCrClaimText,
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: meCrRating,
-        bestRating: "TRUE",
-        worstRating: "FALSE",
-        alternateName:
-          meCrRating === "TRUE"
-            ? `${comparison.entities[0].name} wins`
-            : meCrRating === "FALSE"
-            ? `${comparison.entities[1].name} wins`
-            : "Depends on use case — see analysis",
-      },
-      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-      datePublished: comparison.metadata.updatedAt,
-      itemReviewed: {
-        "@type": "Claim",
-        inLanguage: "en-US",
-        name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
-        // text — required by Google Fact Check Tools for rich-result eligibility.
-        text: comparison.shortAnswer ? comparison.shortAnswer.slice(0, 400) : `${comparison.entities.map((e) => e.name).join(" vs ")} — a structured side-by-side comparison`,
-        author: { "@type": "Thing", name: "Internet" },
-        datePublished: comparison.metadata.publishedAt,
-        appearance: { "@type": "WebPage", "@id": url, url },
-        firstAppearance: { "@type": "WebPage", "@id": url, url },
-      },
-    });
-  }
 
   if (comparison.faqs.length > 0) {
     const faqDatePublished = comparison.metadata.publishedAt ?? new Date().toISOString().slice(0, 10);
@@ -3558,22 +3448,6 @@ export function definedTermSetSchema() {
   };
 }
 
-/**
- * ClaimReview schema for comparison verdict pages.
- *
- * ClaimReview is Google's fact-checking schema — it signals that this page reviews
- * a specific claim with an expert verdict. For comparison pages, the "claim" is the
- * common user belief about which entity wins (e.g., "iPhone is better than Samsung").
- * We review that claim with structured evidence.
- *
- * Benefits:
- *  - Google Fact Check Explorer — increases chance of showing a "Fact Check" label
- *  - Perplexity / ChatGPT citations — AI systems prefer pages with ClaimReview when
- *    answering "X vs Y" queries, as the schema signals authority and verifiability
- *  - E-E-A-T: demonstrates the page's role as an authoritative review source
- *
- * Only emits when comparison has a clear verdict.winner.
- */
 // ============================================================
 // Typed DefinedTerm helper — converts a plain "teaches" string into a proper
 // Schema.org DefinedTerm node so AI knowledge graphs can traverse the teaches→
@@ -3589,132 +3463,6 @@ export function teachesDefinedTerm(label: string, pageUrl: string): Record<strin
       "@id": `${SITE_URL}/#definedTermSet`,
       name: "A Versus B Learning Outcomes",
       url: SITE_URL,
-    },
-  };
-}
-
-// ============================================================
-// Blog ClaimReview — emitted for "X vs Y" blog articles. Adds Google Fact Check
-// eligibility + AI fact-checking E-E-A-T signal. Unlike comparison ClaimReview
-// (which has explicit verdicts), blog articles default to MIXTURE when no clear
-// winner is declared, signalling nuanced analysis rather than a binary ruling.
-// ============================================================
-export function blogClaimReviewSchema(opts: {
-  articleUrl: string;
-  entityA: string;
-  entityB: string;
-  shortAnswer?: string;
-  verdict?: string | null;
-  datePublished?: string;
-  dateModified?: string;
-}) {
-  const claimText = `${opts.entityA} is better than ${opts.entityB}`;
-  const verdictLower = (opts.verdict ?? "").toLowerCase();
-  const ratingValue =
-    verdictLower && verdictLower === opts.entityA.toLowerCase()
-      ? "TRUE"
-      : verdictLower && verdictLower === opts.entityB.toLowerCase()
-        ? "FALSE"
-        : "MIXTURE";
-
-  return {
-    "@type": "ClaimReview",
-    "@id": `${opts.articleUrl}#claim-review`,
-    url: opts.articleUrl,
-    inLanguage: "en-US",
-    isAccessibleForFree: true,
-    conditionsOfAccess: "Free",
-    claimReviewed: claimText,
-    datePublished: opts.datePublished ?? new Date().toISOString().slice(0, 10),
-    dateModified: opts.dateModified ?? opts.datePublished ?? new Date().toISOString().slice(0, 10),
-    author: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue,
-      bestRating: "TRUE",
-      worstRating: "FALSE",
-      alternateName:
-        ratingValue === "TRUE"
-          ? `${opts.entityA} wins`
-          : ratingValue === "FALSE"
-            ? `${opts.entityB} wins`
-            : "Depends on use case — see analysis",
-    },
-    itemReviewed: {
-      "@type": "Claim",
-      inLanguage: "en-US",
-      name: claimText,
-      ...(opts.shortAnswer && { text: opts.shortAnswer.slice(0, 300) }),
-      author: { "@type": "Thing", name: "Internet consensus" },
-      appearance: { "@type": "WebPage", "@id": opts.articleUrl, url: opts.articleUrl },
-      firstAppearance: { "@type": "WebPage", "@id": opts.articleUrl, url: opts.articleUrl },
-    },
-  };
-}
-
-export function claimReviewSchema(opts: {
-  slug: string;
-  title: string;
-  entityA: string;
-  entityB: string;
-  verdict: string;
-  shortAnswer: string;
-  datePublished?: string;
-  dateModified?: string;
-}) {
-  const url = `${SITE_URL}/compare/${opts.slug}`;
-  const claimText = `${opts.entityA} is better than ${opts.entityB}`;
-  const verdictLower = opts.verdict.toLowerCase();
-  const ratingValue = verdictLower === opts.entityA.toLowerCase()
-    ? "TRUE"
-    : verdictLower === opts.entityB.toLowerCase()
-    ? "FALSE"
-    : "MIXTURE";
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "ClaimReview",
-    "@id": `${url}#claim-review`,
-    url,
-    inLanguage: "en-US",
-    isAccessibleForFree: true,
-    conditionsOfAccess: "Free",
-    claimReviewed: claimText,
-    datePublished: opts.datePublished ?? new Date().toISOString().slice(0, 10),
-    dateModified: opts.dateModified ?? opts.datePublished ?? new Date().toISOString().slice(0, 10),
-    author: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue,
-      bestRating: "TRUE",
-      worstRating: "FALSE",
-      alternateName: ratingValue === "TRUE"
-        ? `${opts.entityA} wins`
-        : ratingValue === "FALSE"
-        ? `${opts.entityB} wins`
-        : "Depends on use case",
-    },
-    itemReviewed: {
-      "@type": "Claim",
-      inLanguage: "en-US",
-      name: claimText,
-      text: opts.shortAnswer,
-      author: {
-        "@type": "Thing",
-        name: "Internet consensus",
-      },
-      appearance: { "@type": "WebPage", "@id": url, url },
-      firstAppearance: { "@type": "WebPage", "@id": url, url },
     },
   };
 }

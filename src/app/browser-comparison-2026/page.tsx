@@ -152,7 +152,7 @@ const articleSchema = {
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", "#quick-answer", ".faq-answer"] },
-  hasPart: [{ "@type": "FAQPage", "@id": `${PAGE_URL}#faq` }],
+  hasPart: [{ "@id": `${PAGE_URL}#faq` }],
   about: { "@type": "Thing", name: "Web browsers", sameAs: "https://en.wikipedia.org/wiki/Web_browser" },
   mentions: [
     { "@type": "SoftwareApplication", name: "Google Chrome", url: "https://www.google.com/chrome/" },

@@ -625,7 +625,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
   // JSON-LD assembly lives in compare-jsonld.ts: editorial schemaMarkup,
   // multi-entity @graph, or the 2-entity graph, then the entity-page
-  // indexability gate and a single ClaimReview.
+  // indexability gate and a single FAQPage. ClaimReview is not emitted.
   const assembledJsonLd = assembleCompareJsonLd({
     comparison: enrichedComparison,
     voteData,
@@ -688,8 +688,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     humanReviewed: isHumanReviewedSlug(slug),
   };
 
-  // Second script only when the main document has no ClaimReview of its own.
-  // Editorial pages already carry the fuller node inside the @graph.
+  // ClaimReview is never assembled. The prop stays so older caches still type-check.
   const claimReviewJsonLd: string | null = assembledJsonLd.claimReview
     ? JSON.stringify(assembledJsonLd.claimReview)
     : null;
@@ -929,7 +928,6 @@ export default function ComparisonPage(props: Props) {
 
       {/* Schema markup — single consolidated @graph (or editorial schemaMarkup). */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
-      {/* ClaimReview — fact-check schema for verdict pages; boosts E-E-A-T and AI citation confidence */}
       {claimReviewJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: claimReviewJsonLd }} />}
 
       {/* Floating back-to-top is mounted globally in _app.tsx — a second copy

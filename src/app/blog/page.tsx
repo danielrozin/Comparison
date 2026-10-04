@@ -377,7 +377,7 @@ export default async function BlogPage({
     // hasPart[] — ItemList + FAQPage edges for AI graph traversal.
     hasPart: [
       { "@type": "ItemList", name: "Latest Articles", url: `${SITE_URL}/blog` },
-      { "@type": "FAQPage", "@id": `${SITE_URL}/blog#faq` },
+      { "@id": `${SITE_URL}/blog#faq` },
     ],
     // speakable — upgraded to include .faq-answer so voice assistants can extract structured answers.
     speakable: {
