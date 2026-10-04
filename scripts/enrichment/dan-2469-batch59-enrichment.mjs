@@ -262,8 +262,8 @@ async function main() {
       ...(typeof currentContent === 'object' && !Array.isArray(currentContent) ? currentContent : {}),
       expertAnalysis: entry.analysis,
       sources: entry.sources,
-      isHumanReviewed: true,
-      reviewedBy: 'daniel-rozin',
+      isHumanReviewed: false,
+      reviewedBy: null,
       reviewedAt: now,
       enrichedBy: 'DAN-2469',
     }

@@ -146,8 +146,8 @@ async function enrichPage(slug, enrichedContent) {
     where: { slug },
     data: {
       content: contentJson,
-      isHumanReviewed: true,
-      reviewedBy: 'daniel-rozin',
+      isHumanReviewed: false,
+      reviewedBy: null,
       reviewedAt: now
     }
   })
@@ -185,8 +185,8 @@ async function updateProvenance(slug) {
     where: { slug },
     data: {
       content: contentJson,
-      isHumanReviewed: true,
-      reviewedBy: 'daniel-rozin',
+      isHumanReviewed: false,
+      reviewedBy: null,
       reviewedAt: now
     }
   })

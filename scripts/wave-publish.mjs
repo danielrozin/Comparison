@@ -103,7 +103,7 @@ try {
       if (c.status === 'published' && c.isHumanReviewed) { console.log('   already published'); continue; }
       await prisma.comparison.update({
         where: { slug },
-        data: { status: 'published', isHumanReviewed: true, publishedAt: new Date(), lastRefreshedAt: new Date() },
+        data: { status: 'published', isHumanReviewed: false, publishedAt: new Date(), lastRefreshedAt: new Date() },
       });
       outcome.published.push(slug);
       console.log('   → PUBLISHED');

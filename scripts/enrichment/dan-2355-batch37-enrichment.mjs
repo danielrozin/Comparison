@@ -237,8 +237,8 @@ async function enrichPage(slug, data, rank) {
         sources: data.sources,
         enrichedAt: new Date().toISOString(),
         enrichedBy: 'DAN-2355',
-        isHumanReviewed: true,
-        reviewedBy: 'daniel-rozin',
+        isHumanReviewed: false,
+        reviewedBy: null,
         reviewedAt: new Date().toISOString(),
       }
     }

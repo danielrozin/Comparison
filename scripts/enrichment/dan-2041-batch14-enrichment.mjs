@@ -354,8 +354,8 @@ async function main() {
       await prisma.comparison.update({
         where: { slug },
         data: {
-          isHumanReviewed: true,
-          reviewedBy: 'daniel-rozin',
+          isHumanReviewed: false,
+          reviewedBy: null,
           reviewedAt: now,
           content: {
             expertAnalysis: data.analysis,

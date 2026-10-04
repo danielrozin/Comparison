@@ -294,8 +294,8 @@ async function enrichPage(slug, { analysis, sources, faqs }) {
     where: { slug },
     data: {
       content: contentJson,
-      isHumanReviewed: true,
-      reviewedBy: 'daniel-rozin',
+      isHumanReviewed: false,
+      reviewedBy: null,
       reviewedAt: now
     }
   })
