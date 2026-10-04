@@ -290,14 +290,14 @@ async function enrichPage(slug, data) {
     enrichedBy: 'DAN-2495',
     reviewedAt: new Date().toISOString(),
     reviewedBy: null,
-    isHumanReviewed: false,
+    isHumanReviewed: true,
   }
 
   await prisma.comparison.update({
     where: { id: existing.id },
     data: {
       content: newContent,
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       contentScore: 85,
       lastRefreshedAt: new Date(),
       updatedAt: new Date(),

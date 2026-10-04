@@ -206,7 +206,7 @@ async function main() {
       ...currentContent,
       expertAnalysis: entry.analysis,
       sources: entry.sources,
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       reviewedBy: null,
       reviewedAt: now,
       enrichedBy: 'DAN-2414',

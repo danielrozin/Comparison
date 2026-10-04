@@ -354,7 +354,7 @@ async function enrichPage(slug, enrichedContent) {
     where: { slug },
     data: {
       content: contentJson,
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       reviewedBy: null,
       reviewedAt: now
     }

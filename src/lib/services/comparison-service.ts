@@ -1080,7 +1080,6 @@ export async function saveComparison(
     data.metadata,
     origin,
     promotion?.pass ?? false,
-    data.slug,
   );
   const promoted = origin === "user" && persistedStatus === "published";
   const promotionReasons = origin === "user" && !promoted ? (promotion?.reasons ?? []) : [];

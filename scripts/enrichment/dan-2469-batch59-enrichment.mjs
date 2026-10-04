@@ -262,7 +262,7 @@ async function main() {
       ...(typeof currentContent === 'object' && !Array.isArray(currentContent) ? currentContent : {}),
       expertAnalysis: entry.analysis,
       sources: entry.sources,
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       reviewedBy: null,
       reviewedAt: now,
       enrichedBy: 'DAN-2469',

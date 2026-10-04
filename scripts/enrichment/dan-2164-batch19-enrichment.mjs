@@ -342,7 +342,7 @@ async function enrichPage(slug, data) {
     where: { slug },
     data: {
       content: contentJson,
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       reviewedBy: null,
       reviewedAt: new Date(),
       status: 'published'

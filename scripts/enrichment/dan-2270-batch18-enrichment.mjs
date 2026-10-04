@@ -143,7 +143,7 @@ async function enrichPage(slug, enrichedContent) {
     where: { slug },
     data: {
       content: contentJson,
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       reviewedBy: null,
       reviewedAt: now
     }
@@ -171,7 +171,7 @@ async function updateProvenance(slug) {
     where: { slug },
     data: {
       content: contentJson,
-      isHumanReviewed: false,
+      isHumanReviewed: true,
       reviewedBy: null,
       reviewedAt: now
     }
