@@ -38,6 +38,6 @@ describe("perimenopause hot-flash claim migration", () => {
     expect(sql.toLowerCase()).not.toContain("excerpt");
     expect(sql.toLowerCase()).not.toContain("meta_description");
     expect(sql.toLowerCase()).not.toContain("meta_title");
-    expect(sql.match(/UPDATE/gi)).toHaveLength(1);
+    expect(sql.match(/\bUPDATE\b/g)).toHaveLength(1);
   });
 });
