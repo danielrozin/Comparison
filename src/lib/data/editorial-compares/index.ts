@@ -38,6 +38,7 @@ import { VENMO_VS_ZELLE } from "./venmo-vs-zelle";
 import { KINDLE_VS_KOBO } from "./kindle-vs-kobo";
 import { MACBOOK_AIR_VS_IPAD_AIR } from "./macbook-air-vs-ipad-air";
 import { GALAXY_Z_FLIP_8_VS_S26_ULTRA } from "./galaxy-z-flip-8-vs-galaxy-s26-ultra";
+import { GALAXY_S25_VS_GALAXY_S25_FE } from "./galaxy-s25-vs-galaxy-s25-fe";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -93,6 +94,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [KINDLE_VS_KOBO.slug]: KINDLE_VS_KOBO,
   [MACBOOK_AIR_VS_IPAD_AIR.slug]: MACBOOK_AIR_VS_IPAD_AIR,
   [GALAXY_Z_FLIP_8_VS_S26_ULTRA.slug]: GALAXY_Z_FLIP_8_VS_S26_ULTRA,
+  [GALAXY_S25_VS_GALAXY_S25_FE.slug]: GALAXY_S25_VS_GALAXY_S25_FE,
 };
 
 /**
