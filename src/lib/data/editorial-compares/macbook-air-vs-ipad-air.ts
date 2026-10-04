@@ -274,7 +274,7 @@ export const MACBOOK_AIR_VS_IPAD_AIR: EditorialComparison = buildEditorialCompar
       SPEC,
       MAC,
       IPAD,
-      "From $1,299 (13-inch) and $1,499 (15-inch). Offer range $1,299 to $3,719",
+      "From $1,299 (13-inch) and $1,499 (15-inch). Configurations up to $3,719",
       "From $749. Apple Pencil Pro $129. Apple Pencil (USB-C) $79. 11-inch Magic Keyboard from $269. 13-inch Magic Keyboard from $319"
     ),
   ],
@@ -325,7 +325,7 @@ export const MACBOOK_AIR_VS_IPAD_AIR: EditorialComparison = buildEditorialCompar
       type: "external",
       label: "MacBook Air buy offer",
       url: MAC_BUY,
-      description: "13-inch from $1,299. 15-inch from $1,499. Offer range $1,299 to $3,719.",
+      description: "From $1,299 (13-inch) and $1,499 (15-inch). Configurations up to $3,719.",
     },
     {
       type: "external",
