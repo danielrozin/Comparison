@@ -36,6 +36,7 @@ import { MICROSOFT_WORD_VS_LIBREOFFICE } from "./microsoft-word-vs-libreoffice";
 import { COINBASE_VS_BINANCE } from "./coinbase-vs-binance";
 import { VENMO_VS_ZELLE } from "./venmo-vs-zelle";
 import { KINDLE_VS_KOBO } from "./kindle-vs-kobo";
+import { GALAXY_Z_FLIP_8_VS_S26_ULTRA } from "./galaxy-z-flip-8-vs-galaxy-s26-ultra";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -89,6 +90,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [COINBASE_VS_BINANCE.slug]: COINBASE_VS_BINANCE,
   [VENMO_VS_ZELLE.slug]: VENMO_VS_ZELLE,
   [KINDLE_VS_KOBO.slug]: KINDLE_VS_KOBO,
+  [GALAXY_Z_FLIP_8_VS_S26_ULTRA.slug]: GALAXY_Z_FLIP_8_VS_S26_ULTRA,
 };
 
 /**
