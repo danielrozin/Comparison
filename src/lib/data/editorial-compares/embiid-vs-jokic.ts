@@ -53,7 +53,7 @@ const FAQS = [
   {
     question: "Who is the better player, Embiid or Jokic?",
     answer:
-      "Neither is named the better player. Embiid's column is the higher career scoring average and the 2022-23 MVP. Jokic's column is the longer career, the assist line, three MVP seasons, and the 2023 championship. Neither has played a 2026-27 game.",
+      "Neither is named the better player. Embiid has the higher career scoring average and the 2022-23 MVP. Jokic has the longer career, the higher assist average, three MVP seasons, and the 2023 championship (Basketball-Reference). Neither has played a 2026-27 game.",
   },
 ];
 

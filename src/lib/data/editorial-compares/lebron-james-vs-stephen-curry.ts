@@ -55,7 +55,7 @@ const FAQS = [
   {
     question: "Is 2026-27 predicted?",
     answer:
-      "No. As of October 3, 2026, neither player has played a 2026-27 regular-season game. Reported contract dollars in the signing story are labeled as reports, so they are not used. Neither is named the winner of the 2026-27 season.",
+      "No. As of October 3, 2026, neither player has played a 2026-27 regular-season game. Neither is named the winner of the 2026-27 season.",
   },
 ];
 
@@ -221,7 +221,7 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "NBA.com: LeBron signs with the 76ers",
       url: SIGNING,
-      description: `Updated July 27, 2026. July signing. 23 seasons played, and the story says he will add at least one more. Contract dollars are labeled per reports and are not used.`,
+      description: `Updated July 27, 2026. July signing. 23 seasons played, and the story says he will add at least one more.`,
     },
     {
       type: "blog",

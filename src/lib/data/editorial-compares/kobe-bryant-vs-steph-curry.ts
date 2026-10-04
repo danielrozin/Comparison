@@ -53,7 +53,7 @@ const FAQS = [
   {
     question: "Who is the better player, Kobe or Curry?",
     answer:
-      "Neither is named the better player. Kobe's column is the longer career, 33,643 points, and 5 championships. Curry's column is the assist line, 4 championships, and two MVP seasons. Curry has not played a 2026-27 game.",
+      "Neither is named the better player. Kobe has the longer career, 33,643 points, and 5 championships. Curry has the higher assist average, 4 championships, and two MVP seasons (Basketball-Reference). Curry has not played a 2026-27 game.",
   },
 ];
 
