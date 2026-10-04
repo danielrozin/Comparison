@@ -318,7 +318,7 @@ async function main() {
         where: { slug },
         data: {
           isHumanReviewed: true,
-          reviewedBy: 'daniel-rozin',
+          reviewedBy: null,
           reviewedAt: now,
           content: {
             expertAnalysis: data.analysis,

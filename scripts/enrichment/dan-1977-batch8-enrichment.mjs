@@ -155,7 +155,7 @@ async function enrichPage(slug, enrichedContent) {
     data: {
       content: contentJson,
       isHumanReviewed: true,
-      reviewedBy: 'daniel-rozin',
+      reviewedBy: null,
       reviewedAt: now
     }
   })

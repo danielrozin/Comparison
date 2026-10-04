@@ -3,6 +3,7 @@ import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
+import { isHumanReviewedSlug } from "@/lib/editorial/human-reviewed";
 import { SITE_NAME } from "@/lib/utils/constants";
 import { AffiliateButton } from "./AffiliateButton";
 import { HeroShareButton } from "./HeroShareButton";
@@ -306,13 +307,19 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
           {visibleCompareHeading(comparison.metadata?.metaTitle || comparison.title)}
         </h1>
 
-        {/* Author + Last Updated — E-E-A-T attribution always visible */}
+        {/* Publisher, plus Daniel's byline only after he has reviewed this slug. */}
         <div className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-2 flex-wrap motion-safe:animate-fade-in" style={{ animationDelay: "0.1s" }}>
           <span className="flex items-center gap-1.5">
-            <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
-              <span className="text-white font-bold leading-none text-[8px]">DR</span>
-            </span>
-            <Link href="/authors/daniel-rozin" rel="author" className="inline-flex items-center min-h-11 sm:min-h-0 hover:text-white transition-colors font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">Daniel Rozin</Link>
+            {isHumanReviewedSlug(comparison.slug) ? (
+              <>
+                <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
+                  <span className="text-white font-bold leading-none text-[8px]">DR</span>
+                </span>
+                <Link href="/authors/daniel-rozin" rel="author" className="inline-flex items-center min-h-11 sm:min-h-0 hover:text-white transition-colors font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">Daniel Rozin</Link>
+              </>
+            ) : (
+              <span className="font-semibold">{SITE_NAME}</span>
+            )}
           </span>
           {comparison.metadata?.updatedAt && (
             <>

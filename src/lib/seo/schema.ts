@@ -4,6 +4,7 @@
  */
 
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { isHumanReviewedSlug } from "@/lib/editorial/human-reviewed";
 import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 import { resolveEntityWikipediaUrl } from "@/lib/services/wikipedia-url";
 import type { ComparisonPageData, FAQData, CitationStats } from "@/types";
@@ -50,6 +51,27 @@ export function contentAuthorArray() {
     personAuthorNode(),
     { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   ];
+}
+
+function organizationAuthorNode() {
+  return { "@type": "Organization" as const, "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL };
+}
+
+/**
+ * Article author for a compare page. Daniel is the author only when the slug
+ * is on HUMAN_REVIEWED_SLUGS. Every other page is authored by A Versus B.
+ */
+function comparisonArticleAuthor(slug: string) {
+  return isHumanReviewedSlug(slug) ? contentAuthorArray() : organizationAuthorNode();
+}
+
+/** reviewedBy / lastReviewed only when Daniel has actually reviewed the slug. */
+function comparisonReviewSignals(slug: string, updatedAt: string) {
+  if (!isHumanReviewedSlug(slug)) return {};
+  return {
+    lastReviewed: updatedAt,
+    reviewedBy: [personAuthorNode(), organizationAuthorNode()],
+  };
 }
 
 // ============================================================
@@ -928,8 +950,8 @@ export function comparisonPageSchema(
     datePublished: comparison.metadata.publishedAt,
     dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    // author — [Person, Organization] via shared helper for DRY E-E-A-T coverage.
-    author: contentAuthorArray(),
+    // Daniel is the author only for slugs on HUMAN_REVIEWED_SLUGS.
+    author: comparisonArticleAuthor(comparison.slug),
     // correction — when updatedAt is materially later than publishedAt, emit a CorrectionComment.
     // Google E-E-A-T evaluators treat this as content-maintenance evidence (editorial accountability).
     // AI crawlers (Perplexity, ChatGPT) also weight this positively as a source-reliability signal.
@@ -938,12 +960,16 @@ export function comparisonPageSchema(
         const pub = comparison.metadata.publishedAt ? new Date(comparison.metadata.publishedAt).getTime() : 0;
         const upd = comparison.metadata.updatedAt ? new Date(comparison.metadata.updatedAt).getTime() : 0;
         if (upd > pub + 60_000) {
+          const reviewed = isHumanReviewedSlug(comparison.slug);
+          const updatedOn = new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10);
           return {
             correction: {
               "@type": "CorrectionComment",
               "@id": `${url}#correction`,
               name: `Updated: ${comparison.title}`,
-              text: `This comparison was reviewed and updated on ${new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10)} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
+              text: reviewed
+                ? `This comparison was reviewed and updated on ${updatedOn} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`
+                : `This comparison was updated on ${updatedOn} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
               dateCreated: new Date(comparison.metadata.updatedAt).toISOString(),
               url: `${SITE_URL}/how-we-write-verdicts`,
               author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -988,7 +1014,7 @@ export function comparisonPageSchema(
       // #key-facts — entity-level factual claims. #comparison-table — the structured attribute
       // grid; AI data-mode crawlers extract column headers + values directly from this section.
       // #faq — Q&A pairs; Google AI Overviews cite FAQ answers verbatim for voice results.
-      // #expert-analysis — human-reviewed analysis; high E-E-A-T signal for AI content extraction.
+      // #expert-analysis — analysis section anchor (the visible heading is "Analysis").
       cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#expert-analysis", "#faq"],
     },
     // accessMode signals content type to AI classifiers and accessibility crawlers.
@@ -1173,9 +1199,8 @@ export function comparisonPageSchema(
     // timeRequired — estimated reading time (ISO8601 duration); Google and AI engines
     // use this for content classification and featured-snippet slot selection.
     timeRequired: `PT${Math.ceil(Math.max(300, (comparison.attributes.length * 40) + (hasFaqs ? comparison.faqs.length * 80 : 0)) / 200)}M`,
-    // lastReviewed — freshness signal for AI fact-checkers and Google's QA systems.
-    lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    // lastReviewed + reviewedBy only when Daniel has reviewed this slug.
+    ...comparisonReviewSignals(comparison.slug, comparison.metadata.updatedAt),
     // contentReferenceTime — ISO 8601 date that the data in this article is "as of".
     // LLMs (ChatGPT, Perplexity, Claude) use this to give time-qualified answers:
     // "According to A Versus B (as of June 2026), ..." instead of treating the data
@@ -2081,8 +2106,7 @@ function buildMultiEntityGraph(
     datePublished: comparison.metadata.publishedAt,
     dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    // author — [Person, Organization] via shared helper for DRY E-E-A-T coverage.
-    author: contentAuthorArray(),
+    author: comparisonArticleAuthor(comparison.slug),
     // correction — CorrectionComment when updatedAt materially exceeds publishedAt.
     // Parity with 2-entity path; Google E-E-A-T and AI source-reliability weighting.
     ...(() => {
@@ -2090,12 +2114,16 @@ function buildMultiEntityGraph(
         const pub = comparison.metadata.publishedAt ? new Date(comparison.metadata.publishedAt).getTime() : 0;
         const upd = comparison.metadata.updatedAt ? new Date(comparison.metadata.updatedAt).getTime() : 0;
         if (upd > pub + 60_000) {
+          const reviewed = isHumanReviewedSlug(comparison.slug);
+          const updatedOn = new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10);
           return {
             correction: {
               "@type": "CorrectionComment",
               "@id": `${url}#correction`,
               name: `Updated: ${comparison.title}`,
-              text: `This comparison was reviewed and updated on ${new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10)} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
+              text: reviewed
+                ? `This comparison was reviewed and updated on ${updatedOn} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`
+                : `This comparison was updated on ${updatedOn} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
               dateCreated: new Date(comparison.metadata.updatedAt).toISOString(),
               url: `${SITE_URL}/how-we-write-verdicts`,
               author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -2200,9 +2228,8 @@ function buildMultiEntityGraph(
     conditionsOfAccess: "Free",
     // interactivityType — multi-entity pages are read-only expositive content.
     interactivityType: "expositive",
-    // lastReviewed + reviewedBy — freshness signal for AI fact-checkers.
-    lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    // lastReviewed + reviewedBy only when Daniel has reviewed this slug.
+    ...comparisonReviewSignals(comparison.slug, comparison.metadata.updatedAt),
     // wordCount — estimated from attribute count × avg words/attribute + FAQ words.
     wordCount: Math.max(400, (comparison.attributes.length * 40) + (comparison.faqs.length * 80)),
     // timeRequired — estimated reading time (ISO8601 duration); Google and AI engines

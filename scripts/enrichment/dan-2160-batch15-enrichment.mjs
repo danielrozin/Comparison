@@ -301,7 +301,7 @@ async function enrichPage(slug, { analysis, sources, faqs }) {
     data: {
       content: contentJson,
       isHumanReviewed: true,
-      reviewedBy: 'daniel-rozin',
+      reviewedBy: null,
       reviewedAt: now
     }
   })

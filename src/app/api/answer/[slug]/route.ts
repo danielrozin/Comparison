@@ -185,7 +185,7 @@ export async function GET(
         ? `${winnerName} wins`
         : "Depends on use case",
       ratingExplanation: confidence === "high"
-        ? "Verified verdict based on structured attribute comparison, community votes, and expert analysis"
+        ? "Verdict based on structured attribute comparison, community votes, and analysis"
         : confidence === "medium"
         ? "Verdict based on available data — some attributes missing"
         : "Limited data — verdict is approximate",

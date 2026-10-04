@@ -8,6 +8,7 @@ import {
   webPageSchema,
   type ComparisonVoteData,
 } from "@/lib/seo/schema";
+import { labelUnreviewedCompareJsonLd } from "@/lib/editorial/human-reviewed";
 
 export interface AssembledCompareJsonLd {
   /** Single JSON-LD document the compare template puts in the first script tag. */
@@ -425,5 +426,11 @@ export function assembleCompareJsonLd(args: {
         }) as Record<string, unknown>)
       : null;
 
-  return singleClaimReview(document, standalone);
+  const assembled = singleClaimReview(document, standalone);
+  return {
+    document: labelUnreviewedCompareJsonLd(assembled.document, slug),
+    claimReview: assembled.claimReview
+      ? labelUnreviewedCompareJsonLd(assembled.claimReview, slug)
+      : null,
+  };
 }

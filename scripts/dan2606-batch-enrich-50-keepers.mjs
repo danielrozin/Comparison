@@ -2,8 +2,8 @@
  * DAN-2606: Full enrichment — 50 keeper pages without expertAnalysis
  *
  * Processes 50 published+reviewed pages that lack expertAnalysis in content JSON.
- * Applies Tavily-sourced research + Claude-generated expert analysis (400-500 words)
- * + 5 PAA FAQs. Sets contentScore=85, isHumanReviewed=true, fires IndexNow.
+ * Applies Tavily-sourced research + Claude-generated analysis (400-500 words)
+ * + 5 PAA FAQs. Sets contentScore=85 and fires IndexNow. Does not set isHumanReviewed.
  *
  * Note: Xbox/PS5 cluster (11 pages) shares a single expert analysis for efficiency
  * since they all cover the same comparison topic.
@@ -167,8 +167,8 @@ async function enrichPage(page) {
 
     console.log("  Generating expert analysis...");
     expertAnalysis = await callClaude(
-      `You are Daniel Rozin, Editor-in-Chief of A Versus B (aversusb.net). Write authoritative, data-driven analyses backed by real numbers. Direct, confident, no filler phrases.`,
-      `Write a 400-500 word expert analysis for the comparison page "${page.entityA} vs ${page.entityB}".
+      `You write for A Versus B (aversusb.net). Write authoritative, data-driven analyses backed by real numbers. Direct, confident, no filler phrases. Do not write in the first person and do not present the analysis as written by a named editor.`,
+      `Write a 400-500 word analysis for the comparison page "${page.entityA} vs ${page.entityB}". The section heading on the page is "Analysis".
 
 Requirements:
 1. Open with the single most important differentiator
