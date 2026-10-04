@@ -71,7 +71,7 @@ describe("Galaxy S25 vs Galaxy S25 FE", () => {
     expect(text).toContain("10 MP");
     expect(text).toContain("8 MP");
     expect(text).toContain("Snapdragon 8 Elite for Galaxy");
-    expect(text).toContain("Snapdragon Elite 8 for Galaxy");
+    expect(text).not.toMatch(/Exynos 2,400|Snapdragon Elite 8/);
     expect(text).toContain("Exynos 2400");
     expect(text).toContain("up to 28 hours");
     expect(text).toContain("up to 29 hours");

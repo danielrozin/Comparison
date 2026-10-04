@@ -19,6 +19,7 @@ const UK_FEATURES =
 const UK_FE =
   "https://www.samsung.com/uk/smartphones/galaxy-s/galaxy-s25-fe-navy-128gb-sm-s731bdbdeub/";
 const UK_S25 = "https://www.samsung.com/uk/smartphones/galaxy-s25/";
+const NZ_S25 = "https://www.samsung.com/nz/smartphones/galaxy-s25/specs/";
 
 const SOURCE_DATE = "2026-10-04";
 const PUBLISHED = "2026-10-04T00:00:00Z";
@@ -35,7 +36,7 @@ const FAQS = [
   {
     question: "Which battery lasts longer, Galaxy S25 or Galaxy S25 FE?",
     answer:
-      "The capacity and the video rating do not point the same way. Samsung says the Galaxy S25 FE battery is 4,900 mAh and the Galaxy S25 battery is 4,000 mAh. Samsung's UK video playback rating is up to 28 hours on the FE and up to 29 hours on the Galaxy S25. Those are the figures Samsung gives. They are not one combined endurance score. Charging is also different: Samsung says the Galaxy S25 has 25W Super Fast Charging via a wired connection, and the Galaxy S25 FE has 45W Super Fast Charging 2.0. Samsung also says the FE can power up to 65% in 30 minutes with fast wired charging. Across the series, Samsung says Fast Wireless Charging 2.0 and Wireless PowerShare are supported.",
+      "The capacity and the video rating do not point the same way. Samsung says the Galaxy S25 FE battery is 4,900 mAh and the Galaxy S25 battery is 4,000 mAh. Samsung's UK video playback rating is up to 28 hours on the FE and up to 29 hours on the Galaxy S25. Those are the figures Samsung gives. They are separate ratings, not one endurance score. Charging is also different: Samsung says the Galaxy S25 has 25W Super Fast Charging via a wired connection, and the Galaxy S25 FE has 45W Super Fast Charging 2.0. Samsung also says the FE can power up to 65% in 30 minutes with fast wired charging. Across the series, Samsung says Fast Wireless Charging 2.0 and Wireless PowerShare are supported.",
   },
   {
     question: "Is the Galaxy S25 camera better than the Galaxy S25 FE?",
@@ -48,9 +49,9 @@ const FAQS = [
       "The Galaxy S25 FE has the larger screen. Samsung says it is a 6.7-inch FHD+ display, 1080 x 2340, at 120 Hz. Measured as a rectangle it is 6.7 inches, and 6.6 inches with the rounded corners. Samsung says the FE is 7.4 mm thin and 190 grams, and calls it the thinnest and lightest FE phone yet. That line is about earlier FE phones. Samsung says the Galaxy S25 is a 6.2-inch FHD+ display, 2340 x 1080, at 120 Hz.",
   },
   {
-    question: "Is the Galaxy S25 FE using last year's chip?",
+    question: "Which chip does the Galaxy S25 FE use?",
     answer:
-      "Samsung's UK Galaxy S25 FE uses the Exynos 2400, with 8 GB of memory. Samsung also writes that name as Exynos 2,400. In the UK, Samsung offers the Galaxy S25 with Snapdragon 8 Elite for Galaxy. In the UK, Samsung also offers that S25 chip as Qualcomm Snapdragon Elite 8 for Galaxy (3 nm), with 12 GB of memory. Those are the names Samsung uses. The names are not a speed ranking.",
+      "In the UK, Samsung's Galaxy S25 FE uses the Exynos 2400, with 8 GB of memory. In the UK, Samsung offers the Galaxy S25 with Snapdragon 8 Elite for Galaxy, a 3 nm chip, and 12 GB of memory. The chip names are not a speed ranking.",
   },
   {
     question: "Should I get the Galaxy S25 Ultra instead?",
@@ -83,9 +84,9 @@ Samsung says the Galaxy S25 and Galaxy S25 Edge have 25W Super Fast Charging via
 
 Chip, by region
 
-In the UK, Samsung offers the Galaxy S25 with Snapdragon 8 Elite for Galaxy. In the UK, Samsung also offers that chip as Qualcomm Snapdragon Elite 8 for Galaxy (3 nm), with 12 GB of memory. Samsung's UK Galaxy S25 FE uses the Exynos 2400, also written Exynos 2,400, with 8 GB of memory. Samsung calls that processor a flagship performance processor and says it is built for ultra-smooth gaming and responsiveness, with hardware-based ray tracing and a 13% larger vapor chamber.
+In the UK, Samsung offers the Galaxy S25 with Snapdragon 8 Elite for Galaxy, a 3 nm chip, and 12 GB of memory. Samsung's UK Galaxy S25 FE uses the Exynos 2400, with 8 GB of memory. Samsung calls that processor a flagship performance processor and says it is built for ultra-smooth gaming and responsiveness, with hardware-based ray tracing and a 13% larger vapor chamber.
 
-Storage differs by region. In the US, Samsung offers the Galaxy S25 FE and the Galaxy S25 in 128GB or 256GB. In the UK, Samsung offers the FE in 128GB, 256GB, or 512GB, and the Galaxy S25 in 128GB, 256GB, or 512GB, with 12 GB of memory on the S25. In the UK, Samsung also gives the Galaxy S25 12 GB of memory and up to 128GB, 256GB, or 512GB.
+Storage differs by region. In the US, Samsung offers the Galaxy S25 FE and the Galaxy S25 in 128GB or 256GB. In the UK, Samsung offers both in 128GB, 256GB, or 512GB, with 8 GB of memory on the FE and 12 GB on the Galaxy S25.
 
 Who should buy which
 
@@ -187,7 +188,7 @@ export const GALAXY_S25_VS_GALAXY_S25_FE: EditorialComparison = buildEditorialCo
       SPEC,
       S25,
       FE,
-      "—",
+      "Samsung New Zealand: 146.9 x 70.5 x 7.2 mm (height x width x depth), 162 grams",
       "7.4 mm and 190 grams. Samsung calls it the thinnest and lightest FE phone yet"
     ),
     textAttr(
@@ -224,8 +225,8 @@ export const GALAXY_S25_VS_GALAXY_S25_FE: EditorialComparison = buildEditorialCo
       SPEC,
       S25,
       FE,
-      "UK: Snapdragon 8 Elite for Galaxy. Also in the UK: Qualcomm Snapdragon Elite 8 for Galaxy (3 nm), 12 GB memory",
-      "UK: Exynos 2400, also written Exynos 2,400, with 8 GB memory"
+      "UK: Snapdragon 8 Elite for Galaxy (3 nm), 12 GB memory",
+      "UK: Exynos 2400, 8 GB memory"
     ),
     textAttr(
       "storage",
@@ -264,7 +265,7 @@ export const GALAXY_S25_VS_GALAXY_S25_FE: EditorialComparison = buildEditorialCo
       "Samsung says both phones have a 50 MP wide camera, a 12 MP ultrawide camera, and a 12 MP selfie camera. The telephoto is 10 MP on the Galaxy S25 and 8 MP on the Galaxy S25 FE.",
   },
   citationStats: {
-    sourceCount: 4,
+    sourceCount: 5,
     dataPointCount: 8,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -275,6 +276,7 @@ export const GALAXY_S25_VS_GALAXY_S25_FE: EditorialComparison = buildEditorialCo
       { name: "Samsung UK — Galaxy S25 FE features", url: UK_FEATURES },
       { name: "Samsung UK — Galaxy S25 FE 128GB", url: UK_FE },
       { name: "Samsung UK — Galaxy S25", url: UK_S25 },
+      { name: "Samsung New Zealand — Galaxy S25", url: NZ_S25 },
     ],
   },
   resources: [
@@ -290,7 +292,7 @@ export const GALAXY_S25_VS_GALAXY_S25_FE: EditorialComparison = buildEditorialCo
       label: "Samsung UK Galaxy S25 FE features",
       url: UK_FEATURES,
       description:
-        "Exynos 2400 and 8 GB on the FE. Snapdragon Elite 8 for Galaxy (3 nm) and 12 GB on the S25. Video playback up to 28 hours on the FE and up to 29 hours on the S25.",
+        "Exynos 2400 and 8 GB on the FE. Snapdragon 8 Elite for Galaxy (3 nm) and 12 GB on the S25. Video playback up to 28 hours on the FE and up to 29 hours on the S25.",
     },
     {
       type: "external",
@@ -305,6 +307,12 @@ export const GALAXY_S25_VS_GALAXY_S25_FE: EditorialComparison = buildEditorialCo
       url: UK_S25,
       description:
         "Powered by Snapdragon 8 Elite for Galaxy. Display 6.2 inches, battery 4,000 mAh, resolution FHD+. 12 GB of memory.",
+    },
+    {
+      type: "external",
+      label: "Samsung New Zealand Galaxy S25",
+      url: NZ_S25,
+      description: "146.9 x 70.5 x 7.2 mm (height x width x depth). 162 grams.",
     },
   ],
   metaTitle: "Galaxy S25 vs S25 FE | A Versus B",
