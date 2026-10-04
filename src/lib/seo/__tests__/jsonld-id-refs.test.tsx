@@ -1,6 +1,9 @@
 /**
  * JSON-LD @id edges must point at a node in the same page graph.
  * A compare with no FAQs emits neither an FAQPage nor a #faq link.
+ * The home page emits neither an FAQPage nor a #faq link: those questions
+ * are not rendered in the visible HTML, and Google requires FAQ markup
+ * to match content on the page.
  */
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
@@ -20,6 +23,7 @@ import { HUB_CONFIG } from "@/lib/data/hubs";
 import { hubSchemas } from "@/lib/seo/hub-schemas";
 import { SITE_URL } from "@/lib/utils/constants";
 import BlogPostPage from "@/app/blog/[slug]/page";
+import HomePage from "@/app/page";
 import SubcategoryPage from "@/app/category/[slug]/[subcategory]/page";
 
 beforeAll(() => {
@@ -257,5 +261,19 @@ describe("@id-only references resolve inside the page graph", () => {
     expect(documents.length).toBeGreaterThan(0);
     assertNoFaq(documents);
     assertIdsResolve(documents);
+  });
+
+  it("emits no FAQPage and no dangling refs on the home page", async () => {
+    const ui = await HomePage();
+    const view = render(ui);
+    const documents = jsonLdFrom(view.container);
+    expect(documents.length).toBeGreaterThan(0);
+    const types = collectTypes(documents);
+    expect(types).toContain("CollectionPage");
+    expect(types).toContain("WebPage");
+    expect(types).toContain("ItemList");
+    assertNoFaq(documents);
+    assertIdsResolve(documents);
+    expect(view.container.textContent).not.toContain("What is A Versus B?");
   });
 });
