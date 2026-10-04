@@ -36,7 +36,7 @@ const FAQS = [
   {
     question: "Which battery lasts longer, Galaxy S25 or Galaxy S25 FE?",
     answer:
-      "The capacity and the video rating do not point the same way. Samsung says the Galaxy S25 FE battery is 4,900 mAh and the Galaxy S25 battery is 4,000 mAh. Samsung's UK video playback rating is up to 28 hours on the FE and up to 29 hours on the Galaxy S25. Those are the figures Samsung gives. They are separate ratings, not one endurance score. Charging is also different: Samsung says the Galaxy S25 has 25W Super Fast Charging via a wired connection, and the Galaxy S25 FE has 45W Super Fast Charging 2.0. Samsung also says the FE can power up to 65% in 30 minutes with fast wired charging. Across the series, Samsung says Fast Wireless Charging 2.0 and Wireless PowerShare are supported.",
+      "The capacity and the video rating do not point the same way. Samsung says the Galaxy S25 FE battery is 4,900 mAh and the Galaxy S25 battery is 4,000 mAh. Samsung's UK video playback rating is up to 28 hours on the FE and up to 29 hours on the Galaxy S25. They are separate ratings, not one endurance score. Charging is also different: Samsung says the Galaxy S25 has 25W Super Fast Charging via a wired connection, and the Galaxy S25 FE has 45W Super Fast Charging 2.0. Samsung also says the FE can power up to 65% in 30 minutes with fast wired charging. Across the series, Samsung says Fast Wireless Charging 2.0 and Wireless PowerShare are supported.",
   },
   {
     question: "Is the Galaxy S25 camera better than the Galaxy S25 FE?",
