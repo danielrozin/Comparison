@@ -53,7 +53,7 @@ describe("Galaxy Z Flip8 vs Galaxy S26 Ultra", () => {
       "galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra",
     ]);
     expect(findSelfContradictions(page())).toEqual([]);
-    const sentences = page().shortAnswer.split(/(?<=\.)\s+/);
+    const sentences = (page().shortAnswer ?? "").split(/(?<=\.)\s+/);
     expect(sentences[0]).toMatch(/Flip8/);
     expect(sentences[1]).toMatch(/S26 Ultra/);
   });
