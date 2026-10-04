@@ -47,9 +47,9 @@ const FAQS = [
       "Samsung says the Galaxy S26 Ultra has a refined Armor Aluminum frame with rounded ergonomic corners. It stays one flat slab, 7.9 mm thick and 214 grams. Galaxy Z Flip8 folds. Samsung Australia says refinements to the hinge structure reduce the visible crease. Samsung Australia says it is 13.1 mm folded, and Samsung says it is 6.1 mm and 180 grams unfolded. The trade-off is a hinge and a crease on a lighter phone, against a heavier slab whose frame Samsung describes with rounded corners.",
   },
   {
-    question: "Should I get the Galaxy Z Flip8 or the Galaxy Z Fold instead?",
+    question: "Should I get the Galaxy Z Flip8 or a Galaxy Z Fold instead?",
     answer:
-      "They are different foldables. Galaxy Z Flip8 is the clamshell: 180 grams, 6.1 mm unfolded, and a cover screen Samsung measures at 4.1 inches in the full rectangle and 4.0 inches with the rounded corners. Galaxy Z Fold 7 is the book-style foldable. Galaxy Z Fold 7 vs Galaxy S26 Ultra covers that phone against the same slab. Leaving an Ultra for a Flip is the lighter, smaller fold. Leaving an Ultra for a Fold is the larger inner screen.",
+      "They are different foldables. Galaxy Z Flip8 is the clamshell: 180 grams, 6.1 mm unfolded, and a cover screen Samsung measures at 4.1 inches in the full rectangle and 4.0 inches with the rounded corners. Samsung's current book-style foldables are Galaxy Z Fold8 and Galaxy Z Fold8 Ultra. Leaving an Ultra for a Flip is the lighter, smaller fold. Leaving an Ultra for a Fold is the larger inner screen. If you already own a Galaxy Z Fold 7, Galaxy Z Fold 7 vs Galaxy S26 Ultra covers that phone against the same slab.",
   },
 ];
 
@@ -77,7 +77,7 @@ Battery and charging
 
 Samsung rates both phones for up to 31 hours of video playback. Galaxy S26 Ultra's typical battery is 5000 mAh. Galaxy Z Flip8's typical battery is 4300 mAh, and Samsung gives a rated capacity of 4174 mAh under the IEC 61960 standard. The hour rating matches. The capacity does not.
 
-Samsung says: "With Super Fast Charging 3.0 the increased power from 45 W to 60 W allows you to charge your device up to 75% in around 30 minutes." Samsung also says up to 75% charge in around 30 minutes. Samsung Australia says the Galaxy Z Flip8 supports 25W wired fast charging, while wireless charging and reverse wireless charging are also supported. Samsung Australia says a Super Fast charger is sold separately for that wired charge.
+Samsung says: "With Super Fast Charging 3.0 the increased power from 45 W to 60 W allows you to charge your device up to 75% in around 30 minutes." Samsung Australia says the Galaxy Z Flip8 supports 25W wired fast charging, while wireless charging and reverse wireless charging are also supported. Samsung Australia says a Super Fast charger is sold separately for that wired charge.
 
 Cameras
 
@@ -87,11 +87,11 @@ Samsung says Galaxy S26 Ultra has a 200 MP F1.4 wide camera with 2x optical qual
 
 Water rating
 
-Samsung says Galaxy Z Flip8 has an IP48 rating, for submersion in up to 1.5 meters of freshwater for up to 30 minutes, and protection against a solid object greater than 1 mm. Samsung Australia says it is not advised for beach or pool use. Samsung says Galaxy S26 Ultra has an IP68 rating for water and dust resistance against accidental spills and everyday mishaps.
+Samsung says Galaxy Z Flip8 has an IP48 rating, for submersion in up to 1.5 meters of freshwater for up to 30 minutes. Samsung Australia adds protection against a solid object greater than 1 mm and says it is not advised for beach or pool use. Samsung says Galaxy S26 Ultra has an IP68 rating for water and dust resistance against accidental spills and everyday mishaps.
 
 Who should buy which
 
-Buy the Galaxy Z Flip8 if the reason for leaving an Ultra is weight and a phone that folds into a pocket, and you can live with a 4300 mAh typical battery, a hinge, and its 50 MP wide and 12 MP ultrawide cameras. Buy the Galaxy S26 Ultra if you still want the slab: the 200 MP wide camera, the telephoto cameras, the 5000 mAh typical battery, and Super Fast Charging 3.0. For a book-style foldable instead of this clamshell, see Galaxy Z Fold 7 vs Galaxy S26 Ultra.`;
+Buy the Galaxy Z Flip8 if the reason for leaving an Ultra is weight and a phone that folds into a pocket, and you can live with a 4300 mAh typical battery, a hinge, and its 50 MP wide and 12 MP ultrawide cameras. Buy the Galaxy S26 Ultra if you still want the slab: the 200 MP wide camera, the telephoto cameras, the 5000 mAh typical battery, and Super Fast Charging 3.0. If you already own a Galaxy Z Fold 7, see Galaxy Z Fold 7 vs Galaxy S26 Ultra.`;
 
 const SPEC = "Specs";
 
