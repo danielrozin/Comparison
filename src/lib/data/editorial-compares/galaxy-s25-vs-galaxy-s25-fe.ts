@@ -4,7 +4,7 @@ import type { EditorialComparison } from "./types";
 /**
  * ROO-149 — Galaxy S25 vs Galaxy S25 FE.
  * Figures read on 4 October 2026 from Samsung US Support ANS10004600,
- * Samsung UK's S25 FE features note, the UK Galaxy S25 FE 128GB phone,
+ * Samsung UK's S25 FE features, the UK Galaxy S25 FE 128GB phone,
  * and the UK Galaxy S25 phone. No benchmark scores. No page-level winner.
  * /entity/samsung-galaxy-s25 and /entity/samsung-galaxy-s25-fe were both
  * noindex, nofollow, so neither hub is linked.
@@ -30,7 +30,7 @@ const FAQS = [
   {
     question: "Is the Galaxy S25 FE enough if I am not a heavy gamer?",
     answer:
-      "No game benchmark is included, so there is no score to clear. Both phones use a Dynamic AMOLED 2X display at 120 Hz. Samsung says the UK Galaxy S25 FE uses the Exynos 2400, which Samsung describes as built for ultra-smooth gaming and responsiveness, with hardware-based ray tracing and a 13% larger vapor chamber. Samsung says the UK Galaxy S25 is powered by Snapdragon 8 Elite for Galaxy, with improved real-time ray tracing. For light gaming and social video, either phone is in that everyday range. No heavy-gaming score is included.",
+      "Both phones use a Dynamic AMOLED 2X display at 120 Hz. Samsung says the UK Galaxy S25 FE uses the Exynos 2400, which Samsung describes as built for ultra-smooth gaming and responsiveness, with hardware-based ray tracing and a 13% larger vapor chamber. Samsung says the UK Galaxy S25 is powered by Snapdragon 8 Elite for Galaxy, with improved real-time ray tracing. For light gaming and social video, either phone is in that everyday range.",
   },
   {
     question: "Which battery lasts longer, Galaxy S25 or Galaxy S25 FE?",
@@ -40,7 +40,7 @@ const FAQS = [
   {
     question: "Is the Galaxy S25 camera better than the Galaxy S25 FE?",
     answer:
-      "No lab photo score is included. The wide, ultrawide, and selfie cameras match in megapixels. Samsung says both have a 12 MP ultrawide camera, a 50 MP wide camera, and a 12 MP selfie camera. The telephoto is 10 MP on the Galaxy S25 and 8 MP on the Galaxy S25 FE. Samsung says both of those telephoto cameras have 3x optical zoom. The UK FE phone lists the rear cameras as 50.0 MP + 12.0 MP + 8.0 MP, at F1.8, F2.2, and F2.4.",
+      "The wide, ultrawide, and selfie cameras match in megapixels. Samsung says both have a 12 MP ultrawide camera, a 50 MP wide camera, and a 12 MP selfie camera. The telephoto is 10 MP on the Galaxy S25 and 8 MP on the Galaxy S25 FE. Samsung says both of those telephoto cameras have 3x optical zoom. Samsung UK gives the FE rear cameras as 50 MP + 12 MP + 8 MP, at F1.8, F2.2, and F2.4.",
   },
   {
     question: "Which is bigger, the Galaxy S25 or the Galaxy S25 FE?",
@@ -50,12 +50,12 @@ const FAQS = [
   {
     question: "Is the Galaxy S25 FE using last year's chip?",
     answer:
-      "Samsung's UK Galaxy S25 FE uses the Exynos 2400, with 8 GB of memory. Samsung also writes that name as Exynos 2,400. Samsung's UK Galaxy S25 phone says Snapdragon 8 Elite for Galaxy. Samsung's UK features note writes that S25 chip as Qualcomm Snapdragon Elite 8 for Galaxy (3 nm), with 12 GB of memory. Those are the names Samsung uses. No benchmark score is included, so the names are not a speed ranking.",
+      "Samsung's UK Galaxy S25 FE uses the Exynos 2400, with 8 GB of memory. Samsung also writes that name as Exynos 2,400. In the UK, Samsung offers the Galaxy S25 with Snapdragon 8 Elite for Galaxy. In the UK, Samsung also offers that S25 chip as Qualcomm Snapdragon Elite 8 for Galaxy (3 nm), with 12 GB of memory. Those are the names Samsung uses. The names are not a speed ranking.",
   },
   {
     question: "Should I get the Galaxy S25 Ultra instead?",
     answer:
-      "Get the Galaxy S25 Ultra if you want the phone Samsung lists at 6.9 inches, QHD+, with a 5,000 mAh battery, a 200 MP wide camera, and an integrated S Pen. Samsung says the Galaxy S25 FE, Galaxy S25, Galaxy S25+, and Galaxy S25 Edge are not compatible with the S Pen. For a 6.2-inch or 6.7-inch FHD+ phone, the Galaxy S25 and Galaxy S25 FE are the pair above. Galaxy S24 Ultra vs Galaxy S25 Ultra covers the Ultra against the previous Ultra.",
+      "Get Samsung's 6.9-inch QHD+ Galaxy S25 Ultra if you want a 5,000 mAh battery, a 200 MP wide camera, and an integrated S Pen. Samsung says the Galaxy S25 FE, Galaxy S25, Galaxy S25+, and Galaxy S25 Edge are not compatible with the S Pen. For a 6.2-inch or 6.7-inch FHD+ phone, choose between the Galaxy S25 and Galaxy S25 FE. Galaxy S24 Ultra vs Galaxy S25 Ultra covers the Ultra against the previous Ultra.",
   },
 ];
 
@@ -63,17 +63,17 @@ const VERDICT = `Best larger screen and larger battery capacity: Galaxy S25 FE. 
 
 Best smaller phone and 10 MP telephoto: Galaxy S25. 6.2-inch FHD+, 4,000 mAh, 25W Super Fast Charging, and a 10 MP telephoto.
 
-Neither is better for everyone; it depends on screen size and whether that telephoto difference matters. Both have a 50 MP wide camera, a 12 MP ultrawide camera, and a 12 MP selfie camera. No benchmark score is included.`;
+Neither is better for everyone; it depends on screen size and whether that telephoto difference matters. Both have a 50 MP wide camera, a 12 MP ultrawide camera, and a 12 MP selfie camera.`;
 
 const EXPERT_ANALYSIS = `For camera, daily use, light gaming, and social video, choose the Galaxy S25 FE if you want the larger 6.7-inch FHD+ screen and the 4,900 mAh battery. Choose the Galaxy S25 if you want the smaller 6.2-inch FHD+ phone and its 10 MP telephoto, against the FE's 8 MP telephoto. Neither is better for everyone; it depends on screen size and whether that telephoto difference matters.
 
 Display and size
 
-Samsung says the Galaxy S25 is a 6.2-inch FHD+ screen. The UK features note gives that display as Dynamic AMOLED 2X, 2340 x 1080, at 120 Hz. Samsung says the Galaxy S25 FE is a 6.7-inch FHD+ screen, Dynamic AMOLED 2X, 1080 x 2340, at 120 Hz. On the UK FE phone, Samsung measures that screen as 6.7 inches in the full rectangle and 6.6 inches with the rounded corners. Samsung says the FE is 7.4 mm thin and 190 grams, and calls it the thinnest and lightest FE phone yet. That line is about earlier FE phones.
+Samsung says the Galaxy S25 is a 6.2-inch FHD+ screen. In the UK, Samsung gives that display as Dynamic AMOLED 2X, 2340 x 1080, at 120 Hz. Samsung says the Galaxy S25 FE is a 6.7-inch FHD+ screen, Dynamic AMOLED 2X, 1080 x 2340, at 120 Hz. In the UK, Samsung measures the FE screen as 6.7 inches in the full rectangle and 6.6 inches with the rounded corners. Samsung says the FE is 7.4 mm thin and 190 grams, and calls it the thinnest and lightest FE phone yet. That line is about earlier FE phones.
 
 Camera
 
-Samsung says both phones have a 12 MP ultrawide camera, a 50 MP wide camera, and a 12 MP selfie camera. The telephoto is 10 MP on the Galaxy S25 and 8 MP on the Galaxy S25 FE. Samsung says both telephoto cameras have 3x optical zoom. On the UK FE phone the rear cameras are listed as 50.0 MP + 12.0 MP + 8.0 MP, at F1.8, F2.2, and F2.4, with optical zoom 3x. Samsung also gives the S25 wide camera as 50 MP F1.8 and the ultrawide as 12 MP F2.2. No lab photo score is included.
+Samsung says both phones have a 12 MP ultrawide camera, a 50 MP wide camera, and a 12 MP selfie camera. The telephoto is 10 MP on the Galaxy S25 and 8 MP on the Galaxy S25 FE. Samsung says both telephoto cameras have 3x optical zoom. Samsung UK gives the FE rear cameras as 50 MP + 12 MP + 8 MP, at F1.8, F2.2, and F2.4. Samsung also gives the S25 wide camera as 50 MP F1.8 and the ultrawide as 12 MP F2.2.
 
 Battery and charging
 
@@ -83,9 +83,9 @@ Samsung says the Galaxy S25 and Galaxy S25 Edge have 25W Super Fast Charging via
 
 Chip, by region
 
-Samsung's UK Galaxy S25 phone says it is powered by Snapdragon 8 Elite for Galaxy. Samsung's UK features note writes that chip as Qualcomm Snapdragon Elite 8 for Galaxy (3 nm), with 12 GB of memory. Samsung's UK Galaxy S25 FE uses the Exynos 2400, also written Exynos 2,400, with 8 GB of memory. Samsung calls that processor a flagship performance processor and says it is built for ultra-smooth gaming and responsiveness, with hardware-based ray tracing and a 13% larger vapor chamber. No benchmark score is included.
+In the UK, Samsung offers the Galaxy S25 with Snapdragon 8 Elite for Galaxy. In the UK, Samsung also offers that chip as Qualcomm Snapdragon Elite 8 for Galaxy (3 nm), with 12 GB of memory. Samsung's UK Galaxy S25 FE uses the Exynos 2400, also written Exynos 2,400, with 8 GB of memory. Samsung calls that processor a flagship performance processor and says it is built for ultra-smooth gaming and responsiveness, with hardware-based ray tracing and a 13% larger vapor chamber.
 
-Storage differs by region. Samsung's US support note says the Galaxy S25 FE and the Galaxy S25 each come in 128GB or 256GB. Samsung's UK features note lists FE storage as 128GB, 256GB, or 512GB, and Galaxy S25 storage as 128GB, 256GB, or 512GB, with 12 GB of memory on the S25. The UK Galaxy S25 phone also says 12 GB of memory and up to 128GB, 256GB, or 512GB.
+Storage differs by region. In the US, Samsung offers the Galaxy S25 FE and the Galaxy S25 in 128GB or 256GB. In the UK, Samsung offers the FE in 128GB, 256GB, or 512GB, and the Galaxy S25 in 128GB, 256GB, or 512GB, with 12 GB of memory on the S25. In the UK, Samsung also gives the Galaxy S25 12 GB of memory and up to 128GB, 256GB, or 512GB.
 
 Who should buy which
 
@@ -114,7 +114,7 @@ export const GALAXY_S25_VS_GALAXY_S25_FE: EditorialComparison = buildEditorialCo
         "6.2-inch FHD+ Dynamic AMOLED 2X at 120 Hz (Samsung)",
         "10 MP telephoto with 3x optical zoom (Samsung)",
         "50 MP wide, 12 MP ultrawide, and 12 MP selfie (Samsung)",
-        "UK phone: Snapdragon 8 Elite for Galaxy, 12 GB of memory (Samsung)",
+        "UK: Snapdragon 8 Elite for Galaxy, 12 GB of memory (Samsung)",
       ],
       cons: [
         "4,000 mAh, against 4,900 mAh on the Galaxy S25 FE",
@@ -224,7 +224,7 @@ export const GALAXY_S25_VS_GALAXY_S25_FE: EditorialComparison = buildEditorialCo
       SPEC,
       S25,
       FE,
-      "UK phone: Snapdragon 8 Elite for Galaxy. UK features note: Qualcomm Snapdragon Elite 8 for Galaxy (3 nm), 12 GB memory",
+      "UK: Snapdragon 8 Elite for Galaxy. Also in the UK: Qualcomm Snapdragon Elite 8 for Galaxy (3 nm), 12 GB memory",
       "UK: Exynos 2400, also written Exynos 2,400, with 8 GB memory"
     ),
     textAttr(
