@@ -1,19 +1,22 @@
 import Link from "next/link";
-import { SITE_URL } from "@/lib/utils/constants";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
+import { isHumanReviewedSlug } from "@/lib/editorial/human-reviewed";
 
 interface ExpertAnalysisProps {
   analysis: string;
   entityAName: string;
   entityBName: string;
   updatedAt: string;
-  /** Overrides the default "Expert Analysis: A vs B" heading (used for 3-way pages). */
+  /** Compare slug. Daniel's byline renders only when this slug is on HUMAN_REVIEWED_SLUGS. */
+  slug?: string;
+  /** Overrides the default "Analysis: A vs B" heading (used for 3-way pages). */
   heading?: string;
 }
 
-export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, heading }: ExpertAnalysisProps) {
+export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, slug, heading }: ExpertAnalysisProps) {
   if (!analysis) return null;
 
+  const humanReviewed = isHumanReviewedSlug(slug);
   const paragraphs = analysis.split(/\n\n+/).filter(Boolean);
 
   return (
@@ -33,20 +36,30 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
           </div>
           <div className="min-w-0">
             <h2 id="expert-analysis-heading" className="text-lg sm:text-xl font-display font-bold text-text">
-              {heading ?? `Expert Analysis: ${entityAName} vs ${entityBName}`}
+              {heading ?? `Analysis: ${entityAName} vs ${entityBName}`}
             </h2>
             <div className="flex flex-wrap items-center gap-3 mt-1.5">
-              <Link
-                href="/authors/daniel-rozin"
-                rel="author"
-                className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-primary-700 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded"
-              >
-                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center ring-1 ring-white shadow-sm flex-shrink-0 group-hover:shadow-md transition-all duration-150" aria-hidden="true">
-                  <span className="text-white font-bold text-xs tracking-tight select-none leading-none">DR</span>
-                </div>
-                <span>Daniel Rozin, Editor-in-Chief</span>
-              </Link>
-              <span className="text-border text-xs" aria-hidden="true">·</span>
+              {humanReviewed && (
+                <>
+                  <Link
+                    href="/authors/daniel-rozin"
+                    rel="author"
+                    className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-primary-700 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center ring-1 ring-white shadow-sm flex-shrink-0 group-hover:shadow-md transition-all duration-150" aria-hidden="true">
+                      <span className="text-white font-bold text-xs tracking-tight select-none leading-none">DR</span>
+                    </div>
+                    <span>Daniel Rozin, Editor-in-Chief</span>
+                  </Link>
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-2 py-0.5 leading-none">
+                    <svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    Human reviewed
+                  </span>
+                  <span className="text-border text-xs" aria-hidden="true">·</span>
+                </>
+              )}
               <time
                 dateTime={updatedAt}
                 className="text-xs text-text-secondary"
@@ -93,14 +106,11 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
           )}
         </div>
 
-        {/* Footer: E-E-A-T badge */}
+        {/* Footer: who wrote this, and how. Compatible with the methodology link. */}
         <div className="px-5 sm:px-7 py-3.5 border-t border-border bg-slate-50 flex items-center gap-2 text-xs text-text-secondary">
-          <svg className="w-3.5 h-3.5 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-            <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-          </svg>
           <span>
-            Human-reviewed analysis based on primary sources including official product pages, third-party benchmarks, and consumer reviews.{" "}
-            <Link href={`${SITE_URL}/how-we-write-verdicts`} className="underline hover:text-primary-700 transition-colors">
+            Drafted with AI from web research.{" "}
+            <Link href="/how-we-write-verdicts" className="underline hover:text-primary-700 transition-colors">
               How we research
             </Link>
           </span>

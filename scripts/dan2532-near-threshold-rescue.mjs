@@ -105,7 +105,7 @@ async function enrichPage(page) {
 
   // 3. Generate expert analysis
   console.log("  Generating expert analysis with Claude...");
-  const analysisSystemPrompt = `You are Daniel Rozin, Editor-in-Chief of A Versus B (aversusb.net), an expert comparison platform. You write authoritative, data-driven expert analyses that help consumers make informed decisions.
+  const analysisSystemPrompt = `You write for A Versus B (aversusb.net), a comparison site. Write authoritative, data-driven analyses that help readers choose. Do not write in the first person and do not present the analysis as written by a named editor.
 
 Your writing style:
 - Direct and confident, backed by data
@@ -115,9 +115,9 @@ Your writing style:
 - Accessible to a general audience while remaining substantive
 - Cites real 2026 data when available`;
 
-  const analysisUserPrompt = `Write a 400-500 word expert analysis section for the comparison page "${page.entityA} vs ${page.entityB}".
+  const analysisUserPrompt = `Write a 400-500 word analysis section for the comparison page "${page.entityA} vs ${page.entityB}".
 
-This section will appear under the heading "Expert Analysis" on our comparison page. Write it as flowing prose (NOT bullet points), with paragraph breaks between ideas.
+This section will appear under the heading "Analysis" on our comparison page. Write it as flowing prose (NOT bullet points), with paragraph breaks between ideas.
 
 Requirements:
 1. Open with the single most important differentiator — the one fact that determines which to choose for most people
@@ -165,7 +165,7 @@ Return ONLY valid JSON array, no markdown:
     faqs = [];
   }
 
-  // 5. Update DB — enrich content, mark as human-reviewed, restore to published
+  // 5. Update DB — enrich content and restore to published. Do not claim a human review.
   console.log(`  Updating DB... (analysis: ${expertAnalysis.length} chars, FAQs: ${faqs.length})`);
 
   const existingContent = (existing.content && typeof existing.content === "object") ? existing.content : {};
@@ -180,7 +180,7 @@ Return ONLY valid JSON array, no markdown:
     where: { id: existing.id },
     data: {
       content: newContent,
-      isHumanReviewed: true,
+      isHumanReviewed: false,
       contentScore: 85,
       status: "published",
       lastRefreshedAt: new Date(),

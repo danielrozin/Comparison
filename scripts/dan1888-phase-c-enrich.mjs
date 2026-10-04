@@ -4,7 +4,7 @@
  * For each of the 8 priority pages:
  *   1. Fetch fresh 2026 data from Tavily
  *   2. Generate 400-word expert analysis + 5 PAA-style FAQs via Claude
- *   3. Update DB: content.expertAnalysis, FAQs, isHumanReviewed=true, contentScore=85
+ *   3. Update DB: content.expertAnalysis, FAQs, contentScore=85. Do not set isHumanReviewed.
  *   4. Fire IndexNow for each updated page
  *
  * Run: node --env-file=.env.local scripts/dan1888-phase-c-enrich.mjs
@@ -107,7 +107,7 @@ async function enrichPage(page) {
 
   // 3. Generate expert analysis
   console.log("  Generating expert analysis with Claude...");
-  const analysisSystemPrompt = `You are Daniel Rozin, Editor-in-Chief of A Versus B (aversusb.net), an expert comparison platform. You write authoritative, data-driven expert analyses that help consumers make informed decisions.
+  const analysisSystemPrompt = `You write for A Versus B (aversusb.net), a comparison site. Write authoritative, data-driven analyses that help readers choose. Do not write in the first person and do not present the analysis as written by a named editor.
 
 Your writing style:
 - Direct and confident, backed by data
@@ -117,9 +117,9 @@ Your writing style:
 - Accessible to a general audience while remaining substantive
 - Cites real 2026 data when available`;
 
-  const analysisUserPrompt = `Write a 400-500 word expert analysis section for the comparison page "${page.entityA} vs ${page.entityB}".
+  const analysisUserPrompt = `Write a 400-500 word analysis section for the comparison page "${page.entityA} vs ${page.entityB}".
 
-This section will appear under the heading "Expert Analysis" on our comparison page. Write it as flowing prose (NOT bullet points), with paragraph breaks between ideas.
+This section will appear under the heading "Analysis" on our comparison page. Write it as flowing prose (NOT bullet points), with paragraph breaks between ideas.
 
 Requirements:
 1. Open with the single most important differentiator — the one fact that determines which to choose for most people
@@ -178,7 +178,7 @@ Return ONLY valid JSON array, no markdown:
     where: { id: existing.id },
     data: {
       content: newContent,
-      isHumanReviewed: true,
+      isHumanReviewed: false,
       contentScore: 85,
       lastRefreshedAt: new Date(),
       updatedAt: new Date(),
