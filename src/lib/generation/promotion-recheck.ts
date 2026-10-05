@@ -35,6 +35,9 @@ import {
   enrichComparisonData,
 } from "@/lib/services/apify-search";
 
+/** Leave the last 30s of the 120s cron for the search already in flight. */
+export const PROMOTION_SEARCH_TIME_BUDGET_MS = 90_000;
+
 export const DEFAULT_PROMOTION_RECHECK_BATCH = 10;
 export const DEFAULT_PROMOTION_MAX_ATTEMPTS = 5;
 export const DEFAULT_PROMOTION_TAVILY_CAP = 6;
@@ -145,6 +148,7 @@ export async function runPromotionRecheck(deps: PromotionRecheckDeps): Promise<P
 
   const rows = eligiblePromotionCandidates(await deps.loadCandidates(), deps.limits.maxAttempts);
   const providerFailures: { slug: string; reason: string }[] = [];
+  const startedAt = deps.now().getTime();
 
   for (const row of rows) {
     if (report.processed >= deps.limits.batch) break;
@@ -171,6 +175,12 @@ export async function runPromotionRecheck(deps: PromotionRecheckDeps): Promise<P
     const needsSources = userGenerationSourceCount(comparison) < MIN_USER_GENERATION_SOURCES;
     if (needsSources && !attributesBlockPromotion) {
       if (report.tavilyCalls >= deps.limits.tavilyCap) {
+        report.deferred += 1;
+        continue;
+      }
+      // A search started after this point can still be running when the
+      // 120s function is killed. Leave the page in the queue.
+      if (deps.now().getTime() - startedAt >= PROMOTION_SEARCH_TIME_BUDGET_MS) {
         report.deferred += 1;
         continue;
       }

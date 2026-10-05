@@ -6,6 +6,7 @@ import {
   searchWebDetailed,
   webSearchProviderErrorReason,
 } from "@/lib/services/apify-search";
+import { apifyFetch } from "@/lib/services/apify-service";
 import { searchTavilyDetailed } from "@/lib/services/tavily-service";
 
 const TOKEN = "test-token";
@@ -95,7 +96,7 @@ describe("Apify web search", () => {
 
     const [url, init] = fetchMock.mock.calls[0] ?? [];
     expect(String(url)).toBe(
-      "https://api.apify.com/v2/acts/apify~rag-web-browser/run-sync-get-dataset-items?timeout=11&memory=4096",
+      "https://api.apify.com/v2/acts/apify~rag-web-browser/run-sync-get-dataset-items?timeout=16&memory=4096",
     );
     expect(String(url)).not.toContain(TOKEN);
     expect(String(url)).not.toContain("token=");
@@ -106,42 +107,93 @@ describe("Apify web search", () => {
       maxResults: 5,
       outputFormats: ["markdown"],
       scrapingTool: "raw-http",
-      requestTimeoutSecs: 10,
+      requestTimeoutSecs: 15,
     });
     expect(JSON.stringify(body)).not.toContain(TOKEN);
     expect(warn.mock.calls.flat().join(" ")).not.toContain(TOKEN);
   });
 
-  it("uses searchResult when the page markdown never arrived", async () => {
+  it("drops a failed crawl whose only url is a Google redirect and has no markdown", async () => {
     vi.stubEnv("APIFY_API_TOKEN", TOKEN);
     vi.stubGlobal(
       "fetch",
       vi.fn(async () =>
         jsonResponse([
           {
+            crawl: { httpStatusCode: 500 },
+            searchResult: {
+              url: "https://www.lonelyplanet.com/articles/cambodia-vs-laos",
+              title: "Cambodia vs Laos",
+              description: "A travel comparison that was never fetched.",
+            },
+            metadata: {
+              url: "https://www.google.com/goto?url=https%3A%2F%2Fwww.lonelyplanet.com%2Farticles%2Fcambodia-vs-laos",
+              title: "Cambodia vs Laos",
+            },
+          },
+          {
+            crawl: { httpStatusCode: 200 },
+            searchResult: {
+              url: "https://www.roughguides.com/cambodia-vs-laos",
+              title: "Rough Guides",
+            },
+            metadata: {
+              url: "https://www.google.com/url?q=https://www.roughguides.com/cambodia-vs-laos",
+              title: "Cambodia or Laos",
+            },
+            markdown: "Cambodia and Laos share a border.",
+          },
+          {
+            crawl: { httpStatusCode: 200 },
+            searchResult: { url: "https://www.google.com/goto?url=https%3A%2F%2Fexample.com", title: "Nope" },
+            metadata: { url: "https://www.google.com/url?q=1", title: "Nope" },
+            markdown: "Both links are Google redirects.",
+          },
+          {
+            crawl: { httpStatusCode: 404 },
+            searchResult: { url: "https://example.com/missing", title: "Missing" },
+            metadata: { url: "https://example.com/missing", title: "Missing" },
+            markdown: "The crawler never got this page.",
+          },
+          {
+            crawl: { httpStatusCode: 200 },
             searchResult: {
               url: "https://www.example.com/laos",
               title: "Laos",
-              description: "Laos is landlocked.",
+              description: "A snippet is not a page.",
             },
+            metadata: { url: "https://www.example.com/laos", title: "Laos" },
+          },
+          {
+            crawl: { httpStatusCode: 200 },
+            metadata: { url: "https://www.example.com/cambodia", title: "Cambodia" },
+            markdown: "Cambodia is a country in Southeast Asia.",
           },
         ]),
       ),
     );
 
-    const outcome = await searchWebDetailed("laos");
+    const outcome = await searchWebDetailed("Cambodia vs Laos travel");
 
     expect(outcome).toEqual({
       ok: true,
       results: [
         {
-          url: "https://www.example.com/laos",
-          title: "Laos",
-          content: "Laos is landlocked.",
+          url: "https://www.roughguides.com/cambodia-vs-laos",
+          title: "Cambodia or Laos",
+          content: "Cambodia and Laos share a border.",
+          score: 1,
+        },
+        {
+          url: "https://www.example.com/cambodia",
+          title: "Cambodia",
+          content: "Cambodia is a country in Southeast Asia.",
           score: 1,
         },
       ],
     });
+    const cited = outcome.ok ? outcome.results.map((result) => result.url).join(" ") : "";
+    expect(cited).not.toContain("google.com");
   });
 
   it("treats a non-array success body as a provider error, not as zero hits", async () => {
@@ -235,6 +287,12 @@ describe("Apify web search", () => {
 
     const enrichment = await enrichComparisonData("Cambodia", "Laos", true, { logFailures: false });
 
+    const comparisonCall = vi.mocked(fetch).mock.calls.find((call) => {
+      const body = JSON.parse(String(call[1]?.body)) as { query?: string };
+      return String(body.query).includes(" vs ");
+    });
+    const comparisonBody = JSON.parse(String(comparisonCall?.[1]?.body)) as { maxResults?: number };
+    expect(comparisonBody.maxResults).toBe(5);
     expect(enrichment.providerError).toBe("search_provider_error:429");
     expect(enrichment.sources).toEqual([
       {
@@ -274,5 +332,19 @@ describe("Apify web search", () => {
     expect(calledUrl).toContain("api.apify.com");
     expect(calledUrl).not.toContain("tavily");
     expect(calledUrl).not.toContain("should-not-be-sent");
+  });
+
+  it("refuses to send the Apify token to any host other than api.apify.com", async () => {
+    vi.stubEnv("APIFY_API_TOKEN", TOKEN);
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(apifyFetch("https://evil.example/v2/acts")).rejects.toThrow(
+      /non-Apify host/,
+    );
+    await expect(apifyFetch("http://api.apify.com/v2/acts")).rejects.toThrow(
+      /non-Apify host/,
+    );
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

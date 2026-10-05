@@ -66,12 +66,13 @@ const RAG_WEB_BROWSER_ACTOR = "apify~rag-web-browser";
 /**
  * HTTP abort for on-demand generation.
  *
- * `POST /api/comparisons/generate` has `maxDuration` 60s, and the model call
- * after search is capped at 45s. 12s + 45s stays inside that 60s budget.
- * The actor’s own `requestTimeoutSecs` is shorter, so it can return whatever
- * it already fetched instead of us aborting the connection.
+ * A warm `rag-web-browser` search takes about 14s. The generate route
+ * `maxDuration` is 60s and the model call is capped at 45s, so a search that
+ * uses the full 17s plus a full model call can run past 60s. 17s is still the
+ * search budget: it covers that warm run. The actor’s own
+ * `requestTimeoutSecs` is shorter, so it can return pages it already fetched.
  */
-export const APIFY_SEARCH_TIMEOUT_MS = 12_000;
+export const APIFY_SEARCH_TIMEOUT_MS = 17_000;
 
 /**
  * HTTP abort for one promotion enrichment. The cron’s `maxDuration` is 120s
@@ -202,7 +203,7 @@ export async function enrichComparisonData(
   // wait is one timeout, not three. The promotion cron turns per-request
   // logs off and writes one summary.
   const [comparisonOutcome, entityAOutcome, entityBOutcome] = await Promise.all([
-    searchWebDetailed(`${entityA} vs ${entityB} comparison 2026`, 3, undefined, options),
+    searchWebDetailed(`${entityA} vs ${entityB} comparison 2026`, 5, undefined, options),
     searchWebDetailed(`${entityA} latest features specs 2026`, 2, undefined, options),
     searchWebDetailed(`${entityB} latest features specs 2026`, 2, undefined, options),
   ]);
@@ -263,21 +264,47 @@ function logProviderFailure(code: string, logFailures: boolean): void {
 function mapRagItem(item: unknown): WebSearchResult | null {
   if (!item || typeof item !== "object") return null;
   const row = item as Record<string, unknown>;
+  // A 500 from the crawler is a Google redirect shell, not a page we can cite.
+  if (crawlStatus(row) >= 400) return null;
+  const markdown = asString(row.markdown) || asString(row.text);
+  if (!markdown) return null;
+
   const metadata = asRecord(row.metadata);
   const searchResult = asRecord(row.searchResult);
-  const url =
-    asString(metadata.url) || asString(row["metadata.url"]) || asString(searchResult.url);
-  if (!url) return null;
+  let url = asString(metadata.url) || asString(row["metadata.url"]);
+  // `https://www.google.com/goto?...` is a redirect, not the article.
+  if (!url || isGoogleRedirect(url)) url = asString(searchResult.url);
+  if (!url || isGoogleRedirect(url)) return null;
+
   const title =
     asString(metadata.title) || asString(row["metadata.title"]) || asString(searchResult.title);
-  const markdown = asString(row.markdown) || asString(row.text);
-  const fallback = asString(searchResult.description) || asString(metadata.description);
   return {
     url,
     title,
-    content: clipSnippet(markdown || fallback),
+    content: clipSnippet(markdown),
     score: 1,
   };
+}
+
+function crawlStatus(row: Record<string, unknown>): number {
+  const crawl = asRecord(row.crawl);
+  const status = crawl.httpStatusCode;
+  const code = typeof status === "number" ? status : Number(status);
+  return Number.isFinite(code) ? code : 0;
+}
+
+/** Google `/goto` and `/url` links must never be stored as a citation. */
+function isGoogleRedirect(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    const google = host === "google.com" || host.endsWith(".google.com");
+    if (!google) return false;
+    const path = parsed.pathname.toLowerCase();
+    return path === "/goto" || path.startsWith("/goto/") || path === "/url" || path.startsWith("/url/");
+  } catch {
+    return false;
+  }
 }
 
 function asRecord(value: unknown): Record<string, unknown> {

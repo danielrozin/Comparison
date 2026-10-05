@@ -177,19 +177,35 @@ export async function runApifyActorSync(
   }
 }
 
-/** Authenticated request. Throws when the token is missing. Never puts the token in the URL. */
+/**
+ * Authenticated request. Throws when the token is missing.
+ * The token is sent only to `https://api.apify.com/`, never in the URL.
+ */
 export async function apifyFetch(path: string, init: RequestInit = {}): Promise<Response> {
-  const token = readApifyToken();
-  if (!token) throw new Error("APIFY_API_TOKEN is not set");
   const url = path.startsWith("http")
     ? path
     : `${APIFY_API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
+  assertApifyHost(url);
+  const token = readApifyToken();
+  if (!token) throw new Error("APIFY_API_TOKEN is not set");
   const headers = new Headers(init.headers);
   headers.set("Authorization", `Bearer ${token}`);
   if (init.body != null && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
   return fetch(url, { ...init, headers });
+}
+
+function assertApifyHost(url: string): void {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    throw new Error("Refusing to send the Apify token to a non-Apify host");
+  }
+  if (parsed.protocol !== "https:" || parsed.hostname !== "api.apify.com") {
+    throw new Error("Refusing to send the Apify token to a non-Apify host");
+  }
 }
 
 function isAbortError(error: unknown): boolean {
