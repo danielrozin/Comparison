@@ -87,11 +87,11 @@ Samsung says the Galaxy S25 and Galaxy S25+ have the same cameras: a 12 MP ultra
 
 Chip, by region
 
-In the UK, Samsung says the Galaxy S25 and Galaxy S25+ both feature its custom-made processor, and names Snapdragon 8 Elite for Galaxy. Samsung New Zealand says both phones are equipped with a Snapdragon 8 Elite chipset. Those are the names Samsung uses in those regions. They are not one shared label.
+Samsung says the Galaxy S25 and Galaxy S25+ both use Snapdragon 8 Elite for Galaxy, a processor customized for Galaxy. Samsung New Zealand calls it a Snapdragon 8 Elite chipset.
 
 Storage, by region
 
-In the US, Samsung offers the Galaxy S25 in 128GB or 256GB, and the Galaxy S25+ in 128GB and 256GB. In the UK, Samsung offers the Galaxy S25 with 12 GB of memory and up to 128 GB, 256 GB, or 512 GB of storage, and the Galaxy S25+ in 256 GB or 512 GB. Samsung New Zealand offers the Galaxy S25+ in 256GB and 512GB, shows the Galaxy S25 in 256GB and 512GB, and says the Galaxy S25 has 12GB of RAM. That 12 GB figure is stated for the Galaxy S25, not for the Galaxy S25+.
+In the US, Samsung offers the Galaxy S25 in 128GB or 256GB and the Galaxy S25+ in 256GB or 512GB, both with 12GB of memory. In the UK, Samsung offers the Galaxy S25 with 12 GB of memory and 128 GB, 256 GB, or 512 GB of storage, and the Galaxy S25+ in 256 GB or 512 GB. Samsung New Zealand offers both phones in 256GB and 512GB.
 
 Who should buy which
 
@@ -120,7 +120,7 @@ export const GALAXY_S25_VS_GALAXY_S25_PLUS: EditorialComparison = buildEditorial
         "6.2-inch FHD+ Dynamic AMOLED 2X at 120 Hz adaptive (Samsung)",
         "Same cameras as the Galaxy S25+: 50 MP wide, 12 MP ultrawide, 10 MP telephoto, 12 MP selfie (Samsung)",
         "Samsung New Zealand: 146.9 x 70.5 x 7.2 mm, 162 g",
-        "UK: Snapdragon 8 Elite for Galaxy. NZ: Snapdragon 8 Elite chipset (Samsung)",
+        "Snapdragon 8 Elite for Galaxy (Samsung)",
       ],
       cons: [
         "4,000 mAh, against 4,900 mAh on the Galaxy S25+",
@@ -145,7 +145,6 @@ export const GALAXY_S25_VS_GALAXY_S25_PLUS: EditorialComparison = buildEditorial
       ],
       cons: [
         "Larger and heavier: Samsung New Zealand says 158.4 x 75.8 x 7.3 mm and 190 g",
-        "In the US, Samsung offers 128GB and 256GB",
         "Wear still happens as the battery ages",
       ],
       bestFor: "Best if battery, charging, and the larger screen are the main worry",
@@ -231,8 +230,8 @@ export const GALAXY_S25_VS_GALAXY_S25_PLUS: EditorialComparison = buildEditorial
       SPEC,
       S25,
       PLUS,
-      "UK: Snapdragon 8 Elite for Galaxy, with the Galaxy S25+. NZ: Snapdragon 8 Elite chipset, with the Galaxy S25+",
-      "UK: Snapdragon 8 Elite for Galaxy, with the Galaxy S25. NZ: Snapdragon 8 Elite chipset, with the Galaxy S25"
+      "Snapdragon 8 Elite for Galaxy (Samsung US and UK). NZ: Snapdragon 8 Elite chipset",
+      "Snapdragon 8 Elite for Galaxy (Samsung US and UK). NZ: Snapdragon 8 Elite chipset"
     ),
     textAttr(
       "storage",
@@ -240,8 +239,8 @@ export const GALAXY_S25_VS_GALAXY_S25_PLUS: EditorialComparison = buildEditorial
       SPEC,
       S25,
       PLUS,
-      "US: 128GB or 256GB. UK: 12 GB of memory and up to 128 GB, 256 GB, or 512 GB. NZ: 256GB and 512GB, and 12GB of RAM on the Galaxy S25",
-      "US: 128GB and 256GB. UK: 256 GB or 512 GB. NZ: 256GB and 512GB"
+      "US: 128GB or 256GB, 12GB memory. UK: 128 GB, 256 GB, or 512 GB, 12 GB memory. NZ: 256GB or 512GB",
+      "US: 256GB or 512GB, 12GB memory. UK: 256 GB or 512 GB. NZ: 256GB or 512GB"
     ),
   ],
   faqs: FAQS,
@@ -287,7 +286,7 @@ export const GALAXY_S25_VS_GALAXY_S25_PLUS: EditorialComparison = buildEditorial
       label: "Samsung US Support Galaxy S25 series",
       url: US,
       description:
-        "S25 6.2-inch FHD+ and 4,000 mAh with 25W Super Fast Charging. S25+ 6.7-inch QHD+ and 4,900 mAh with 45W Super Fast Charging 2.0. Same cameras. US storage 128GB or 256GB on the S25, and 128GB and 256GB on the S25+. Dynamic AMOLED 2X, 120 Hz adaptive. Fast Wireless Charging 2.0 and Wireless PowerShare.",
+        "S25 6.2-inch FHD+ and 4,000 mAh with 25W Super Fast Charging. S25+ 6.7-inch QHD+ and 4,900 mAh with 45W Super Fast Charging 2.0. Same cameras. Dynamic AMOLED 2X, 120 Hz adaptive. Fast Wireless Charging 2.0 and Wireless PowerShare.",
     },
     {
       type: "external",
@@ -315,7 +314,7 @@ export const GALAXY_S25_VS_GALAXY_S25_PLUS: EditorialComparison = buildEditorial
       label: "Samsung US Newsroom Galaxy S25 series",
       url: UPDATES,
       description:
-        "Seven generations of OS upgrades and seven years of security updates from the global launch date for the Galaxy S25 series.",
+        "Seven generations of OS upgrades and seven years of security updates from the global launch date for the Galaxy S25 series. Galaxy S25 128GB and 256GB. Galaxy S25+ 256GB and 512GB. 12GB memory on both.",
     },
   ],
   metaTitle: "Galaxy S25 vs S25 Plus | A Versus B",
