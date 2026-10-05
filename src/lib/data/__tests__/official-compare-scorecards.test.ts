@@ -38,6 +38,18 @@ describe("official scorecards replace near-miss Key Facts", () => {
     expect(cell(next, "GDP per capita", "cn")).toBe(CN_PER_CAPITA);
     expect(cell(next, "2026 real GDP growth", "us")).toBe("2.3%, IMF WEO April 2026");
     expect(cell(next, "2026 real GDP growth", "cn")).toBe("4.4%, IMF WEO April 2026");
+    const withStaleGrowth = usVsChinaGdpFixture();
+    withStaleGrowth.keyDifferences.push({
+      label: "Expected Growth Rate 2026",
+      entityAValue: "2-2.5%",
+      entityBValue: "4.5-5%",
+      winner: "b",
+    });
+    const collapsed = applyEditorialAeoOverlay(withStaleGrowth);
+    const growthRows = collapsed.keyDifferences.filter((row) => row.label === "2026 real GDP growth" || row.label === "Expected Growth Rate 2026");
+    expect(growthRows).toHaveLength(1);
+    expect(growthRows[0]?.entityAValue).toBe("2.3%, IMF WEO April 2026");
+    expect(growthRows[0]?.entityBValue).toBe("4.4%, IMF WEO April 2026");
     expect(cell(next, "Defense spending", "us")).toBe(US_MILITARY);
     expect(cell(next, "Defense spending", "cn")).toBe(CN_MILITARY);
     const debt = next.attributes.find((attr) => canonicalizeMetricName(attr.name, attr.unit, labels) === "debt to gdp");
@@ -94,5 +106,18 @@ describe("official scorecards replace near-miss Key Facts", () => {
     expect(next.keyDifferences.find((row) => row.label === "Nominal GDP")?.entityAValue).toBe(JP_NOMINAL);
     expect(next.resources?.some((resource) => resource.url.includes("worldbank.org"))).toBe(true);
     expect(next.resources?.some((resource) => resource.url.includes("hdr.undp.org"))).toBe(true);
+  });
+
+  it("keeps retired dollar totals out of the stored mock pros and descriptions", () => {
+    const stale = /\$25\.5|\$17\.7|\$17\.9|\$27\.4|\$35T|\$39,285|\b84\.6\b|0\.920|0\.796|1\.417|2-2\.5%|4\.5-5%|\$12,500|\$76,300|\$76,398|\$30\+|\$13,500/;
+    for (const slug of ["us-economy-vs-china-economy", "usa-vs-china", "japan-vs-china"]) {
+      const page = getMockComparison(slug);
+      expect(page, slug).toBeTruthy();
+      const stored = [
+        page?.shortAnswer ?? "",
+        ...((page?.entities ?? []).flatMap((entity) => [entity.shortDesc ?? "", ...entity.pros, ...entity.cons])),
+      ].join("\n");
+      expect(stored, slug).not.toMatch(stale);
+    }
   });
 });
