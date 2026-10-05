@@ -9,9 +9,9 @@ import { getMockComparison } from "@/lib/services/mock-data";
 import type { ComparisonPageData } from "@/types";
 
 const BRIEF_GDP_FAQS = [
-  "Is China’s economy bigger than the US in 2026?",
-  "What is US vs China GDP (nominal) in 2026?",
-  "How do US and China defense spending and manufacturing share compare?",
+  "Is China’s economy bigger than the US?",
+  "What is US vs China nominal GDP?",
+  "Which country spends more on its military, the United States or China?",
   "Why can nominal GDP totals for the US and China differ?",
   "What is GDP per capita for the US vs China?",
   "Will China overtake the US in nominal GDP this decade?",
@@ -22,94 +22,61 @@ const BRIEF_JAPAN_CHINA_FAQS = [
   "Is China’s economy bigger than Japan’s?",
   "What is Japan vs China GDP?",
   "What is Japan vs China GDP per capita?",
-  "What share of GDP is manufacturing in Japan vs China?",
   "Which country has the larger population, Japan or China?",
   "Which country spends more on defence, Japan or China?",
-  "Which country has higher life expectancy and HDI, Japan or China?",
+  "Which country has higher life expectancy, Japan or China?",
 ];
 
 const BRIEF_MESSI_FAQS = [
   "Who is better, Messi or Ronaldo?",
   "Who has more Ballon d'Or awards, Messi or Ronaldo?",
-  "Who has scored more career goals, Messi or Ronaldo?",
   "Who won the World Cup, Messi or Ronaldo?",
-  "Who has more Champions League titles, Messi or Ronaldo?",
-  "Who has more international goals, Messi or Ronaldo?",
-  "What is the 2025 career-goal count for Messi and Ronaldo?",
 ];
 
 const BRIEF_PS5_FAQS = [
   "Which console is better, PS5 or Xbox Series X?",
-  "How much storage does the PS5 have compared with the Xbox Series X?",
-  "Which has more GPU power, PS5 or Xbox Series X (TFLOPS)?",
-  "How much do the PS5 and Xbox Series X cost?",
-  "Which console has more exclusive games, PS5 or Xbox?",
-  "Which console has better backward compatibility, PS5 or Xbox Series X?",
+  "Which has the higher GPU rating, PS5 or Xbox Series X?",
   "What is the SSD speed of the PS5 vs the Xbox Series X?",
   "Which should you buy, a PS5 or an Xbox Series X?",
 ];
 
 const BRIEF_FIGMA_FAQS = [
   "Which is better, Figma or Sketch?",
-  "What is Figma vs Sketch market share?",
   "Does Figma work on Windows, and does Sketch?",
-  "Which has better real-time collaboration, Figma or Sketch?",
-  "How much do Figma and Sketch cost?",
-  "Can you use Figma or Sketch offline?",
   "Is Figma free?",
-  "How many active designers use Figma vs Sketch?",
 ];
 
 const BRIEF_CANVA_FAQS = [
   "Which is better, Canva or Photoshop?",
-  "How much do Canva and Photoshop cost?",
   "Is Canva replacing Photoshop?",
-  "Who has more users, Canva or Photoshop?",
-  "Which is easier to learn, Canva or Photoshop?",
-  "Which is better for photo retouching and templates?",
-  "Can Canva be used professionally?",
-  "What Canva and Photoshop prices are stated?",
+  "Which is the better fit for a simple layout, Canva or Photoshop?",
+  "Which is the better fit for photo editing, Canva or Photoshop?",
 ];
 
 const BRIEF_CURSOR_FAQS = [
   "Which is better, Cursor or GitHub Copilot?",
   "How much do Cursor and GitHub Copilot cost?",
-  "Which has better agentic and multi-file editing, Cursor or Copilot?",
   "Which works in more editors, Cursor or GitHub Copilot?",
-  "Which has better GitHub integration and enterprise controls?",
-  "Do Cursor and Copilot both offer Claude, GPT, and Gemini?",
-  "Which is better for inline autocomplete and onboarding?",
-  "What are the Cursor and Copilot business prices?",
+  "What are the Cursor and Copilot team prices?",
 ];
 
 const BRIEF_ANDROID_FAQS = [
   "Which is better, Android or iOS?",
   "What is Android vs iOS global market share?",
-  "Which gets software updates longer, Android or iOS?",
-  "Which is more private, Android or iOS?",
-  "Which is more customizable, Android or iOS?",
-  "How long do Android and iOS software updates last?",
-  "What Android and iOS differences are settled by market share, updates, and privacy?",
 ];
 
 const BRIEF_NVIDIA_FAQS = [
   "Which is better, NVIDIA or AMD?",
-  "What is NVIDIA vs AMD discrete GPU market share?",
-  "Which has the larger market cap, NVIDIA or AMD?",
-  "Which is better for AI, NVIDIA or AMD?",
-  "Which is better for gaming value, and who makes CPUs?",
-  "How is NVIDIA’s market cap written?",
-  "What do the NVIDIA and AMD share and market-cap figures say?",
+  "Which company has the larger market value, NVIDIA or AMD?",
+  "Who designs CPUs, NVIDIA or AMD?",
 ];
 
 const BRIEF_US_ECONOMY_CHINA_FAQS = [
   "Which economy is bigger, the US or China?",
   "What is US vs China nominal GDP?",
   "What is GDP per capita for the US vs China?",
-  "Who has the larger manufacturing share, the US or China?",
   "Which economy is growing faster, the US or China?",
   "Is there one overall winner between the US and China economies?",
-  "Do the US and China nominal GDP figures agree?",
 ];
 
 const BRIEF_USA_CHINA_FAQS = [
@@ -118,17 +85,11 @@ const BRIEF_USA_CHINA_FAQS = [
   "Which country has the larger population, the USA or China?",
   "Which country spends more on the military, the USA or China?",
   "What is GDP per capita for the USA vs China?",
-  "Who leads manufacturing output, the USA or China?",
-  "How do the USA and China population counts compare?",
 ];
 
 const BRIEF_LYFT_UBER_FAQS = [
   "Which is bigger, Uber or Lyft?",
-  "What is Uber vs Lyft US rideshare market share?",
   "Where do Uber and Lyft operate?",
-  "What was Uber and Lyft 2024 annual revenue?",
-  "What platform fee do Uber and Lyft charge?",
-  "How many drivers do Uber and Lyft have, and is the rating a tie?",
   "What services do Uber and Lyft offer?",
 ];
 
@@ -153,13 +114,6 @@ const LYFT_UBER_SCORECARD = [
 
 const BRIEF_CHATGPT_FAQS = [
   "Which AI is better, ChatGPT or Gemini?",
-  "Who has the larger context window, ChatGPT or Gemini?",
-  "Which has real-time web search, ChatGPT or Gemini?",
-  "What inputs do ChatGPT and Gemini accept?",
-  "How much do ChatGPT and Gemini cost per million input tokens?",
-  "Which responds faster, ChatGPT or Gemini?",
-  "What is the output token limit for ChatGPT vs Gemini?",
-  "When does training data stop for ChatGPT and Gemini?",
 ];
 
 /** Reader copy must not point at the page furniture. Word boundaries avoid hits inside real words such as "growth" or "browser". */
@@ -331,18 +285,20 @@ describe("ROO-27 GDP AEO overlay", () => {
     expect(next.keyDifferences).toEqual(stubGdpPage().keyDifferences);
   });
 
-  it("uses the 2026 nominal pair and does not invent a PPP dollar total", () => {
+  it("states the nominal direction and does not repeat conflicting dollar totals", () => {
     const overlay = getEditorialAeoOverlay("us-vs-china-gdp")!;
     const blob = overlayProse(overlay);
-    expect(blob).toMatch(/\$28\.7 trillion vs \$17\.9 trillion/);
-    expect(blob).toMatch(/\$30\+ trillion versus about \$19 trillion/);
-    expect(blob).toMatch(/\$89,000 vs \$13,500/);
-    expect(blob).toMatch(/\$925\.8 billion vs \$296\.5 billion/);
+    expect(blob).toMatch(/United States economy is larger than China’s/);
+    expect(blob).toMatch(/growing faster/);
+    expect(blob).toMatch(/spends more on its military/);
     expect(blob).toMatch(/Neither is named the winner/);
+    expect(blob).not.toMatch(/\$28\.7/);
+    expect(blob).not.toMatch(/\$30\+/);
+    expect(blob).not.toMatch(/\$17\.9/);
+    expect(blob).not.toMatch(/\$89,000/);
+    expect(blob).not.toMatch(/\$925\.8/);
     expect(blob).not.toMatch(/\$28\.8/);
     expect(blob).not.toMatch(/\$18\.5/);
-    expect(blob).not.toMatch(/\$35/);
-    expect(blob).not.toMatch(/\$36/);
     expect(blob).not.toMatch(/282%/);
     expect(blob).not.toMatch(/126%/);
     expect(overlay.quickAnswer.winnerName).toBeNull();
@@ -350,10 +306,10 @@ describe("ROO-27 GDP AEO overlay", () => {
 });
 
 describe("japan-vs-china citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and FAQ to 7 citation questions", () => {
+  it("rewrites speakable Quick Answer and FAQ to the citation questions", () => {
     const overlay = getEditorialAeoOverlay("japan-vs-china");
     expect(overlay).toBeTruthy();
-    expect(overlay!.faqs).toHaveLength(7);
+    expect(overlay!.faqs).toHaveLength(BRIEF_JAPAN_CHINA_FAQS.length);
     expect(overlay!.faqs.map((f) => f.question)).toEqual(BRIEF_JAPAN_CHINA_FAQS);
 
     const original = stubJapanChinaPage();
@@ -365,47 +321,31 @@ describe("japan-vs-china citation AEO overlay", () => {
     expect(next.verdict).toBe(original.verdict);
   });
 
-  it("uses the live nominal pair and does not invent a PPP dollar total", () => {
+  it("states directions and does not repeat conflicting or unofficial totals", () => {
     const overlay = getEditorialAeoOverlay("japan-vs-china")!;
     const perCapita = overlay.faqs.find((f) => f.question.includes("per capita"));
-    expect(perCapita?.answer).toMatch(/\$39,285/);
-    expect(perCapita?.answer).toMatch(/\$12,720/);
+    expect(perCapita?.answer).toMatch(/higher in Japan/);
     const blob = overlayProse(overlay);
+    expect(blob).toMatch(/larger than Japan’s in nominal terms/);
+    expect(blob).toMatch(/live longer/);
+    expect(blob).toMatch(/spends more on its military/);
     expect(blob).not.toMatch(/PPP/i);
-    expect(blob).not.toMatch(/\$17\.7/);
-    expect(blob).not.toMatch(/\$33,800/);
-  });
-
-  it("reuses the live GDP totals ($17.9T vs $4.2T) and per capita", () => {
-    const overlay = getEditorialAeoOverlay("japan-vs-china")!;
-    const blob = [overlay.shortAnswer, ...overlay.faqs.map((f) => f.answer)].join("\n");
-    expect(blob).toMatch(/\$17\.9 trillion/);
-    expect(blob).toMatch(/\$4\.2 trillion/);
-    expect(blob).toMatch(/\$39,285/);
-    expect(blob).toMatch(/\$12,720/);
-    const trillionFigures = blob.match(/\$[\d.]+ trillion/gi) ?? [];
-    const unique = [...new Set(trillionFigures.map((s) => s.toLowerCase()))];
-    expect(unique.sort()).toEqual(["$17.9 trillion", "$4.2 trillion"].sort());
-  });
-
-  it("uses the live defence expenditure and life-expectancy figures", () => {
-    const overlay = getEditorialAeoOverlay("japan-vs-china")!;
-    const military = overlay.faqs.find((f) => f.question.includes("defence"));
-    const qol = overlay.faqs.find((f) => f.question.includes("life expectancy"));
-    expect(military?.answer).toMatch(/€296\.5 billion vs €50\.9 billion/);
-    expect(qol?.answer).toMatch(/84\.6 years vs 78\.2 years/);
-    expect(qol?.answer).toMatch(/0\.920/);
-    expect(qol?.answer).toMatch(/0\.796/);
-    expect(overlayProse(overlay)).not.toMatch(/377,975/);
-    expect(overlayProse(overlay)).not.toMatch(/2\.0 million/);
+    expect(blob).not.toMatch(/\$/);
+    expect(blob).not.toMatch(/€/);
+    expect(blob).not.toMatch(/0\.920/);
+    expect(blob).not.toMatch(/0\.796/);
+    expect(blob).not.toMatch(/84\.6/);
+    expect(blob).not.toMatch(/377,975/);
+    expect(blob).not.toMatch(/2\.0 million/);
+    expect(blob).not.toMatch(/HDI/i);
   });
 });
 
 describe("Messi vs Ronaldo Copilot AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     const overlay = getEditorialAeoOverlay("messi-vs-ronaldo");
     expect(overlay).toBeTruthy();
-    expect(overlay!.faqs).toHaveLength(7);
+    expect(overlay!.faqs).toHaveLength(BRIEF_MESSI_FAQS.length);
     expect(overlay!.faqs.map((f) => f.question)).toEqual(BRIEF_MESSI_FAQS);
     expect(overlay!.quickAnswer.tldr).toBe(overlay!.shortAnswer);
     expect(overlay!.quickAnswer.winnerName).toBeNull();
@@ -432,27 +372,28 @@ describe("Messi vs Ronaldo Copilot AEO overlay", () => {
     );
   });
 
-  it("uses only in-repo mock scorecard/FAQ numbers and says unknown for missing stats", () => {
+  it("keeps the Ballon d'Or count and the 2022 World Cup, and drops unverified goal totals", () => {
     const overlay = getEditorialAeoOverlay("messi-vs-ronaldo")!;
     const allowed = mockMessiAllowedNumbers();
-    for (const n of ["810", "895", "890", "129", "130", "2025"]) allowed.add(n);
     const prose = overlayProse(overlay);
 
     for (const n of numbersIn(prose)) {
       expect(allowed.has(n), `overlay invented number ${n} not present in mock messi-vs-ronaldo data`).toBe(true);
     }
 
+    expect(prose).toMatch(/8 Ballon d'Or/);
+    expect(prose).toMatch(/won 5/);
+    expect(prose).toMatch(/2022 World Cup/);
     expect(prose).not.toMatch(/\b14[0-9]\b/);
     expect(prose).not.toMatch(/\b900\b/);
-    expect(prose).not.toMatch(/\b9\b/);
-
-    const dated = overlay.faqs.find((f) => f.question.includes("2025"));
-    expect(dated?.answer).toMatch(/810/);
-    expect(dated?.answer).toMatch(/890/);
+    expect(prose).not.toMatch(/\b810\b/);
+    expect(prose).not.toMatch(/\b890\b/);
+    expect(prose).not.toMatch(/\b895\b/);
     expect(prose).not.toMatch(/\b838\b/);
     expect(prose).not.toMatch(/\b899\b/);
     expect(prose).not.toMatch(/\b369\b/);
     expect(prose).not.toMatch(/\b112\b/);
+    expect(prose).not.toMatch(/Champions League/);
   });
 
   it("does not self-contradict quoted (A vs B) order", () => {
@@ -499,10 +440,10 @@ function mockPs5AllowedNumbers(): Set<string> {
 }
 
 describe("ps5-vs-xbox-series-x citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     const overlay = getEditorialAeoOverlay("ps5-vs-xbox-series-x");
     expect(overlay).toBeTruthy();
-    expect(overlay!.faqs).toHaveLength(8);
+    expect(overlay!.faqs).toHaveLength(BRIEF_PS5_FAQS.length);
     expect(overlay!.faqs.map((f) => f.question)).toEqual(BRIEF_PS5_FAQS);
     expect(overlay!.quickAnswer.tldr).toBe(overlay!.shortAnswer);
     expect(overlay!.quickAnswer.winnerName).toBeNull();
@@ -533,27 +474,24 @@ describe("ps5-vs-xbox-series-x citation AEO overlay", () => {
     );
   });
 
-  it("uses live GPU, SSD, price, storage, and subscription figures", () => {
+  it("keeps the official SSD speeds and drops figures that do not match one official spec", () => {
     const overlay = getEditorialAeoOverlay("ps5-vs-xbox-series-x")!;
     const allowed = mockPs5AllowedNumbers();
-    for (const n of ["825", "11.99", "9.99", "280", "500", "25", "15", "40", "000", "1", "4", "360"]) {
-      allowed.add(n);
-    }
     const prose = overlayProse(overlay);
 
     for (const n of numbersIn(prose)) {
       expect(allowed.has(n), `overlay invented number ${n} not present in live ps5-vs-xbox-series-x figures`).toBe(true);
     }
 
-    expect(prose).toMatch(/12 TFLOPS vs 10\.28 TFLOPS/);
     expect(prose).toMatch(/5\.5 GB\/s vs 2\.4 GB\/s/);
-    expect(prose).toMatch(/\$499/);
-    expect(prose).toMatch(/825 GB usable/);
-    expect(prose).toMatch(/\$11\.99\/month versus \$9\.99\/month/);
+    expect(prose).toMatch(/GPU is rated higher/);
+    expect(prose).not.toMatch(/10\.28/);
+    expect(prose).not.toMatch(/12 TFLOPS/);
+    expect(prose).not.toMatch(/\$499/);
+    expect(prose).not.toMatch(/825/);
+    expect(prose).not.toMatch(/11\.99/);
+    expect(prose).not.toMatch(/9\.99/);
     expect(prose).not.toMatch(/\b50\s*M/i);
-    expect(prose).not.toMatch(/12\.15/);
-    expect(prose).not.toMatch(/\$15/);
-    expect(prose).not.toMatch(/\b21\s*M/i);
     expect(prose).not.toMatch(/4K/);
   });
 
@@ -642,87 +580,73 @@ function expectCitationOverlay(
 }
 
 describe("figma-vs-sketch citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     expect(getEditorialAeoOverlay("sketch-vs-figma")).toBeNull();
     expectCitationOverlay("figma-vs-sketch", BRIEF_FIGMA_FAQS);
   });
 
-  it("keeps winnerName null and cites live share, seats, and prices", () => {
+  it("keeps the browser and Mac-editor facts and drops unverified prices and shares", () => {
     const overlay = getEditorialAeoOverlay("figma-vs-sketch")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/~80% of designers vs ~15% of designers/);
-    expect(prose).toMatch(/4M\+ vs ~1M/);
-    expect(prose).toMatch(/Free \/ \$12\+\/mo/);
-    expect(prose).toMatch(/\$9\/mo or \$99\/yr/);
+    expect(prose).toMatch(/web browser/);
+    expect(prose).toMatch(/Mac app/);
+    expect(prose).toMatch(/free Starter plan/);
     expect(prose).toMatch(/Neither is named the winner/);
+    expect(prose).not.toMatch(/~80%/);
+    expect(prose).not.toMatch(/4M\+/);
+    expect(prose).not.toMatch(/\$12\+/);
+    expect(prose).not.toMatch(/\$9\/mo/);
     expect(prose).not.toMatch(/3 projects/);
-    expect(prose).not.toMatch(/\b20\s*billion/i);
-    expect(prose).not.toMatch(/\b2023\b/);
   });
 });
 
 describe("canva-vs-photoshop citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     expect(getEditorialAeoOverlay("photoshop-vs-canva")).toBeNull();
-    expectCitationOverlay("canva-vs-photoshop", BRIEF_CANVA_FAQS, ["000", "10", "12.99"]);
+    expectCitationOverlay("canva-vs-photoshop", BRIEF_CANVA_FAQS);
   });
 
-  it("keeps winnerName null and cites both printed Canva prices without inventing a third", () => {
+  it("keeps the product roles and drops conflicting prices and user counts", () => {
     const overlay = getEditorialAeoOverlay("canva-vs-photoshop")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/Free\/\$13\/mo vs \$22\.99\/mo/);
-    expect(prose).toMatch(/Free \/ \$12\.99/);
-    expect(prose).toMatch(/170M\+ registered users/);
-    expect(prose).toMatch(/~30M paid subscribers|about 30M paid subscribers/);
-    expect(prose).toMatch(/not the same kind of count/);
-    expect(prose).toMatch(/10,000\+/);
-    expect(prose).toMatch(/massive/);
+    expect(prose).toMatch(/layouts made from templates/);
+    expect(prose).toMatch(/photo editor/);
+    expect(prose).not.toMatch(/\$13/);
+    expect(prose).not.toMatch(/12\.99/);
+    expect(prose).not.toMatch(/22\.99/);
+    expect(prose).not.toMatch(/170M/);
+    expect(prose).not.toMatch(/10,000/);
     expect(prose).not.toMatch(/\b54\.99\b/);
-    expect(prose).not.toMatch(/\b250,?000\b/);
   });
 });
 
 describe("chatgpt-vs-gemini citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     expect(getEditorialAeoOverlay("gemini-vs-chatgpt")).toBeNull();
-    expectCitationOverlay("chatgpt-vs-gemini", BRIEF_CHATGPT_FAQS, [
-      "1",
-      "000",
-      "128",
-      "256",
-      "32",
-      "65",
-      "2.50",
-      "0.075",
-      "0.8",
-      "1.2",
-      "2024",
-    ]);
+    expectCitationOverlay("chatgpt-vs-gemini", BRIEF_CHATGPT_FAQS);
   });
 
-  it("keeps winnerName null, treats monthly users as a tie, and marks missing specs unknown", () => {
+  it("names the makers and drops conflicting model specs", () => {
     const overlay = getEditorialAeoOverlay("chatgpt-vs-gemini")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/1,000,000 tokens vs 128,000 tokens/);
-    expect(prose).toMatch(/256,000 tokens/);
-    expect(prose).toMatch(/\$2\.50/);
-    expect(prose).toMatch(/\$0\.075/);
-    expect(prose).toMatch(/0\.8 seconds vs 1\.2 seconds/);
+    expect(prose).toMatch(/OpenAI makes ChatGPT/);
+    expect(prose).toMatch(/Google makes Gemini/);
+    expect(prose).not.toMatch(/1,000,000/);
+    expect(prose).not.toMatch(/128,000/);
+    expect(prose).not.toMatch(/256,000/);
+    expect(prose).not.toMatch(/\$2\.50/);
+    expect(prose).not.toMatch(/\$0\.075/);
+    expect(prose).not.toMatch(/0\.8 seconds/);
     expect(prose).not.toMatch(/200M/);
-    expect(prose).not.toMatch(/\$19\.99/);
-    expect(prose).not.toMatch(/GPT-3\.5/);
-    expect(prose).not.toMatch(/DALL-E/);
-    expect(prose).not.toMatch(/94\.2/);
-    expect(prose).not.toMatch(/HumanEval/);
     expect(prose).not.toMatch(/benchmark/i);
   });
 });
 
 describe("cursor-vs-copilot citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     expect(getEditorialAeoOverlay("copilot-vs-cursor")).toBeNull();
     expect(getEditorialAeoOverlay("cursor-vs-github-copilot")).toBeNull();
     expectCitationOverlay("cursor-vs-copilot", BRIEF_CURSOR_FAQS);
@@ -732,14 +656,14 @@ describe("cursor-vs-copilot citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("cursor-vs-copilot")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/\$10\/mo vs \$20\/mo/);
-    expect(prose).toMatch(/roughly \$192\/yr vs \$100\/yr/);
-    expect(prose).toMatch(/\$40\/user\/mo vs \$19\/user\/mo/);
-    expect(prose).toMatch(/\$39\/mo/);
-    expect(prose).toMatch(/\$39\/user\/mo/);
-    expect(prose).toMatch(/two months free annually/);
-    expect(prose).toMatch(/effectively a tie/);
-    expect(prose).toMatch(/SOC 2/);
+    expect(prose).toMatch(/\$10 per month vs \$20 per month/);
+    expect(prose).toMatch(/\$40 per user per month vs \$19 per user per month/);
+    expect(prose).toMatch(/\$39 per month/);
+    expect(prose).toMatch(/\$39 per user per month/);
+    expect(prose).not.toMatch(/\$192/);
+    expect(prose).not.toMatch(/\$100/);
+    expect(prose).not.toMatch(/two months free/);
+    expect(prose).not.toMatch(/SOC 2/);
     expect(prose).not.toMatch(/\b3\.7\b/);
     expect(prose).not.toMatch(/\bGPT-4o\b/);
     expect(prose).not.toMatch(/\b55\b/);
@@ -751,22 +675,22 @@ describe("cursor-vs-copilot citation AEO overlay", () => {
 });
 
 describe("android-vs-ios citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     expect(getEditorialAeoOverlay("ios-vs-android")).toBeNull();
-    expectCitationOverlay("android-vs-ios", BRIEF_ANDROID_FAQS, ["71", "2025"]);
+    expectCitationOverlay("android-vs-ios", BRIEF_ANDROID_FAQS);
   });
 
-  it("keeps winnerName null and cites the extra-row share, not the shadowed base cells", () => {
+  it("keeps the worldwide-share direction and drops conflicting percentages", () => {
     const overlay = getEditorialAeoOverlay("android-vs-ios")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/72% vs 28%/);
-    expect(prose).toMatch(/2–3 years/);
-    expect(prose).toMatch(/5–6 years/);
-    expect(prose).toMatch(/extensive/i);
-    expect(prose).toMatch(/limited/i);
-    expect(prose).toMatch(/excellent/i);
+    expect(prose).toMatch(/more phones worldwide than iOS/);
     expect(prose).toMatch(/Neither is named the winner/);
+    expect(prose).not.toMatch(/72%/);
+    expect(prose).not.toMatch(/71%/);
+    expect(prose).not.toMatch(/28%/);
+    expect(prose).not.toMatch(/2–3 years/);
+    expect(prose).not.toMatch(/5–6 years/);
     expect(prose).not.toMatch(/~27%/);
     expect(prose).not.toMatch(/~44%/);
     expect(prose).not.toMatch(/~56%/);
@@ -776,7 +700,7 @@ describe("android-vs-ios citation AEO overlay", () => {
 });
 
 describe("nvidia-vs-amd citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     expect(getEditorialAeoOverlay("amd-vs-nvidia")).toBeNull();
     expectCitationOverlay("nvidia-vs-amd", BRIEF_NVIDIA_FAQS);
   });
@@ -785,10 +709,12 @@ describe("nvidia-vs-amd citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("nvidia-vs-amd")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/\$2\.5T\+ vs \$250B/);
-    expect(prose).toMatch(/\$2\.5 trillion versus \$250 billion/);
-    expect(prose).toMatch(/80% vs 20%/);
-    expect(prose).toMatch(/dominant versus growing/i);
+    expect(prose).toMatch(/market value is larger/);
+    expect(prose).toMatch(/AMD designs CPUs/);
+    expect(prose).not.toMatch(/\$2\.5T/);
+    expect(prose).not.toMatch(/\$250B/);
+    expect(prose).not.toMatch(/80% vs 20%/);
+    expect(prose).not.toMatch(/dominant versus growing/i);
     expect(prose).not.toMatch(/\$2T\+/);
     expect(prose).not.toMatch(/\b4090\b/);
     expect(prose).not.toMatch(/\b7800\b/);
@@ -801,30 +727,22 @@ describe("nvidia-vs-amd citation AEO overlay", () => {
 });
 
 describe("us-economy-vs-china-economy citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
-    expectCitationOverlay("us-economy-vs-china-economy", BRIEF_US_ECONOMY_CHINA_FAQS, [
-      "17.9",
-      "398",
-      "720",
-      "2025",
-      "2026",
-      "4.6",
-      "4.8",
-      "2.0",
-    ]);
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
+    expectCitationOverlay("us-economy-vs-china-economy", BRIEF_US_ECONOMY_CHINA_FAQS);
   });
 
-  it("keeps winnerName null and cites only the extra-row scorecard", () => {
+  it("keeps winnerName null and does not repeat conflicting dollar totals", () => {
     const overlay = getEditorialAeoOverlay("us-economy-vs-china-economy")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/\$25\.5 trillion vs \$17\.9 trillion/);
-    expect(prose).toMatch(/\$25\.5T versus \$17\.7T/);
-    expect(prose).toMatch(/\$76,398 vs \$12,720/);
-    expect(prose).toMatch(/\$76,300 versus \$12,500/);
-    expect(prose).toMatch(/30% vs 16%/);
-    expect(prose).toMatch(/4\.5% vs 2\.5%/);
+    expect(prose).toMatch(/larger than China’s in nominal terms/);
+    expect(prose).toMatch(/growing faster/);
     expect(prose).toMatch(/Neither is named the winner/);
+    expect(prose).not.toMatch(/\$25\.5/);
+    expect(prose).not.toMatch(/\$17\.9/);
+    expect(prose).not.toMatch(/\$17\.7/);
+    expect(prose).not.toMatch(/30% vs 16%/);
+    expect(prose).not.toMatch(/4\.5% vs 2\.5%/);
     expect(prose).not.toMatch(/27\.4/);
     expect(prose).not.toMatch(/29\.4/);
     expect(prose).not.toMatch(/30\+/);
@@ -837,27 +755,24 @@ describe("us-economy-vs-china-economy citation AEO overlay", () => {
 });
 
 describe("usa-vs-china citation AEO overlay", () => {
-  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     expect(getEditorialAeoOverlay("china-vs-usa")).toBeNull();
-    expectCitationOverlay("usa-vs-china", BRIEF_USA_CHINA_FAQS, [
-      "398",
-      "556",
-      "2026",
-      "0.340",
-      "1.42",
-    ]);
+    expectCitationOverlay("usa-vs-china", BRIEF_USA_CHINA_FAQS);
   });
 
-  it("keeps winnerName null and cites the extra-row scorecard, not the shadowed base cells", () => {
+  it("keeps winnerName null and does not repeat conflicting counts", () => {
     const overlay = getEditorialAeoOverlay("usa-vs-china")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/\$25\.5 trillion vs \$17\.7 trillion/);
-    expect(prose).toMatch(/1\.4 billion vs 333 million/);
-    expect(prose).toMatch(/\$877 billion vs \$292 billion/);
-    expect(prose).toMatch(/\$76,300 vs \$12,500/);
-    expect(prose).toMatch(/#1 for China and #2 for the United States|#2 for the United States and #1 for China/);
-    expect(prose).toMatch(/0\.340 billion/);
+    expect(prose).toMatch(/larger than China’s in nominal terms/);
+    expect(prose).toMatch(/population is larger/);
+    expect(prose).toMatch(/spends more on its military/);
+    expect(prose).not.toMatch(/\$25\.5/);
+    expect(prose).not.toMatch(/\$17\.7/);
+    expect(prose).not.toMatch(/1\.4 billion/);
+    expect(prose).not.toMatch(/\$877/);
+    expect(prose).not.toMatch(/#1/);
+    expect(prose).not.toMatch(/0\.340/);
     expect(prose).not.toMatch(/27\.4/);
     expect(prose).not.toMatch(/335M/);
     expect(prose).not.toMatch(/\$916B/);
@@ -876,7 +791,7 @@ describe("lyft-vs-uber citation AEO overlay", () => {
     expect(getEditorialAeoOverlay("uber-vs-lyft")).toBeNull();
   });
 
-  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+  it("rewrites speakable Quick Answer and visible FAQs 1:1 with FAQPage", () => {
     const overlay = getEditorialAeoOverlay("lyft-vs-uber");
     expect(overlay).toBeTruthy();
     expect(overlay!.faqs.map((f) => f.question)).toEqual(BRIEF_LYFT_UBER_FAQS);
@@ -953,18 +868,17 @@ describe("lyft-vs-uber citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("lyft-vs-uber")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/72 countries across 6 continents/);
-    expect(prose).toMatch(/US and Canada only/);
-    expect(prose).toMatch(/71% vs 29%/);
-    expect(prose).toMatch(/25–30%/);
-    expect(prose).toMatch(/about 25%/);
-    expect(prose).toMatch(/\$38\.1 billion/);
-    expect(prose).toMatch(/\$38\.7 billion/);
-    expect(prose).toMatch(/\$4\.3 billion/);
-    expect(prose).toMatch(/6\+ million globally/);
-    expect(prose).toMatch(/600,000–700,000 in North America/);
-    expect(prose).toMatch(/4\.6\+ star/);
-    expect(prose).toMatch(/tie/i);
+    expect(prose).toMatch(/United States and Canada/);
+    expect(prose).toMatch(/Uber Eats/);
+    expect(prose).toMatch(/cities around the world/);
+    expect(prose).not.toMatch(/72 countries/);
+    expect(prose).not.toMatch(/71%/);
+    expect(prose).not.toMatch(/25–30%/);
+    expect(prose).not.toMatch(/\$38\.1/);
+    expect(prose).not.toMatch(/\$38\.7/);
+    expect(prose).not.toMatch(/\$4\.3/);
+    expect(prose).not.toMatch(/6\+ million/);
+    expect(prose).not.toMatch(/4\.6/);
     expect(prose).toMatch(/Neither is named the winner/);
     expect(prose).not.toMatch(/\b68%/);
     expect(prose).not.toMatch(/\$37/);

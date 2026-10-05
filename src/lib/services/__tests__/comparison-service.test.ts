@@ -75,7 +75,12 @@ describe('Comparison Service (mock-data fallback)', () => {
 
     it('applies the Copilot AEO overlay on ps5-vs-xbox-series-x', async () => {
       const result = await getComparisonBySlug('ps5-vs-xbox-series-x')
-      expect(result!.faqs).toHaveLength(8)
+      expect(result!.faqs.map((f) => f.question)).toEqual([
+        'Which console is better, PS5 or Xbox Series X?',
+        'Which has the higher GPU rating, PS5 or Xbox Series X?',
+        'What is the SSD speed of the PS5 vs the Xbox Series X?',
+        'Which should you buy, a PS5 or an Xbox Series X?',
+      ])
       expect(result!.quickAnswer?.winnerName).toBeNull()
       expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
       expect(result!.keyDifferences.map((d) => d.label)).toEqual([
@@ -83,16 +88,6 @@ describe('Comparison Service (mock-data fallback)', () => {
         'SSD Speed',
         'Exclusive Games',
         'Subscription Value',
-      ])
-      expect(result!.faqs.map((f) => f.question)).toEqual([
-        'Which console is better, PS5 or Xbox Series X?',
-        'How much storage does the PS5 have compared with the Xbox Series X?',
-        'Which has more GPU power, PS5 or Xbox Series X (TFLOPS)?',
-        'How much do the PS5 and Xbox Series X cost?',
-        'Which console has more exclusive games, PS5 or Xbox?',
-        'Which console has better backward compatibility, PS5 or Xbox Series X?',
-        'What is the SSD speed of the PS5 vs the Xbox Series X?',
-        'Which should you buy, a PS5 or an Xbox Series X?',
       ])
     })
 
@@ -108,7 +103,7 @@ describe('Comparison Service (mock-data fallback)', () => {
         expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
         expect(result!.shortAnswer).toBe(overlay!.shortAnswer)
         expect(result!.faqs.map((f) => f.question)).toEqual(overlay!.faqs.map((f) => f.question))
-        expect(result!.faqs.length).toBeGreaterThanOrEqual(6)
+        expect(result!.faqs.length).toBeGreaterThan(0)
         expect(result!.faqs.length).toBeLessThanOrEqual(8)
         expect(result!.keyDifferences).toEqual(scorecard)
         expect(result!.verdict).toBe(mock!.verdict)
@@ -117,16 +112,12 @@ describe('Comparison Service (mock-data fallback)', () => {
 
     it('applies the Copilot AEO overlay on messi-vs-ronaldo', async () => {
       const result = await getComparisonBySlug('messi-vs-ronaldo')
-      expect(result!.faqs).toHaveLength(7)
+      expect(result!.faqs).toHaveLength(3)
       expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
       expect(result!.faqs.map((f) => f.question)).toEqual([
         'Who is better, Messi or Ronaldo?',
         "Who has more Ballon d'Or awards, Messi or Ronaldo?",
-        'Who has scored more career goals, Messi or Ronaldo?',
         'Who won the World Cup, Messi or Ronaldo?',
-        'Who has more Champions League titles, Messi or Ronaldo?',
-        'Who has more international goals, Messi or Ronaldo?',
-        'What is the 2025 career-goal count for Messi and Ronaldo?',
       ])
     })
   })
