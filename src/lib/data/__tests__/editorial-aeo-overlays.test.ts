@@ -103,9 +103,9 @@ const LYFT_UBER_SCORECARD = [
   "Rideshare only",
   "25-30% platform fee",
   "Approximately 25% platform fee",
-  "$38.7 billion",
-  "$38.1 billion",
-  "$4.3 billion",
+  "$43.978 billion, FY2024",
+  "$5.786 billion, FY2024",
+  "2024",
   "6+ million globally",
   "600,000-700,000 in North America",
   "4.6+ stars to remain active",
@@ -282,15 +282,19 @@ describe("ROO-27 GDP AEO overlay", () => {
     expect(next.shortAnswer).toBe(overlay!.shortAnswer);
     expect(next.quickAnswer?.tldr).toBe(overlay!.shortAnswer);
     expect(next.faqs.map((f) => f.question)).toEqual(BRIEF_GDP_FAQS);
-    expect(next.keyDifferences).toEqual(stubGdpPage().keyDifferences);
+    const nominal = next.keyDifferences.find((row) => row.label === "Nominal GDP");
+    expect(nominal?.entityAValue).toContain("$32.38 trillion");
+    expect(nominal?.entityBValue).toContain("$20.85 trillion");
+    expect(next.keyDifferences.some((row) => row.entityAValue.includes("$30+"))).toBe(false);
   });
 
-  it("states the nominal direction and does not repeat conflicting dollar totals", () => {
+  it("states the IMF April 2026 figures and does not repeat conflicting dollar totals", () => {
     const overlay = getEditorialAeoOverlay("us-vs-china-gdp")!;
     const blob = overlayProse(overlay);
-    expect(blob).toMatch(/United States economy is larger than China’s/);
-    expect(blob).toMatch(/growing faster/);
-    expect(blob).toMatch(/spends more on its military/);
+    expect(blob).toMatch(/\$32\.38 trillion vs \$20\.85 trillion/);
+    expect(blob).toMatch(/\$94,430 vs \$14,874/);
+    expect(blob).toMatch(/4\.4% vs 2\.3%/);
+    expect(blob).toMatch(/\$997 billion vs \$314 billion/);
     expect(blob).toMatch(/Neither is named the winner/);
     expect(blob).not.toMatch(/\$28\.7/);
     expect(blob).not.toMatch(/\$30\+/);
@@ -302,6 +306,7 @@ describe("ROO-27 GDP AEO overlay", () => {
     expect(blob).not.toMatch(/282%/);
     expect(blob).not.toMatch(/126%/);
     expect(overlay.quickAnswer.winnerName).toBeNull();
+    expect(overlay.resources?.some((resource) => resource.url.includes("datamapper/api/v1/NGDPD"))).toBe(true);
   });
 });
 
@@ -317,27 +322,36 @@ describe("japan-vs-china citation AEO overlay", () => {
     expect(next.shortAnswer).toBe(overlay!.shortAnswer);
     expect(next.quickAnswer?.tldr).toBe(overlay!.shortAnswer);
     expect(next.faqs.map((f) => f.question)).toEqual(BRIEF_JAPAN_CHINA_FAQS);
-    expect(next.keyDifferences).toEqual(original.keyDifferences);
+    const gdp = next.keyDifferences.find((row) => row.label === "Nominal GDP");
+    expect(gdp?.entityAValue).toContain("$4.38 trillion");
+    expect(gdp?.entityBValue).toContain("$20.85 trillion");
+    const life = next.keyDifferences.find((row) => row.label === "Life expectancy");
+    expect(life?.entityAValue).toContain("84.04");
+    expect(life?.entityBValue).toContain("78.02");
+    const hdi = next.attributes.find((attr) => attr.name === "HDI");
+    expect(hdi?.values.find((value) => value.entityId === "ent-4")?.valueText).toContain("High");
+    expect(hdi?.values.find((value) => value.entityId === "ent-4")?.valueText).not.toMatch(/Very high/);
+    expect(next.keyDifferences.some((row) => row.label === "Population")).toBe(true);
     expect(next.verdict).toBe(original.verdict);
   });
 
-  it("states directions and does not repeat conflicting or unofficial totals", () => {
+  it("states the official totals and does not repeat euros or the old life-expectancy pair", () => {
     const overlay = getEditorialAeoOverlay("japan-vs-china")!;
     const perCapita = overlay.faqs.find((f) => f.question.includes("per capita"));
     expect(perCapita?.answer).toMatch(/higher in Japan/);
     const blob = overlayProse(overlay);
-    expect(blob).toMatch(/larger than Japan’s in nominal terms/);
-    expect(blob).toMatch(/live longer/);
-    expect(blob).toMatch(/spends more on its military/);
-    expect(blob).not.toMatch(/PPP/i);
-    expect(blob).not.toMatch(/\$/);
+    expect(blob).toMatch(/\$20\.85 trillion vs \$4\.38 trillion/);
+    expect(blob).toMatch(/\$35,703 vs \$14,874/);
+    expect(blob).toMatch(/\$314 billion vs \$55\.3 billion/);
+    expect(blob).toMatch(/84\.04 years/);
+    expect(blob).toMatch(/78\.02 years/);
+    expect(blob).toMatch(/0\.797/);
+    expect(blob).toMatch(/High/);
     expect(blob).not.toMatch(/€/);
     expect(blob).not.toMatch(/0\.920/);
-    expect(blob).not.toMatch(/0\.796/);
     expect(blob).not.toMatch(/84\.6/);
     expect(blob).not.toMatch(/377,975/);
-    expect(blob).not.toMatch(/2\.0 million/);
-    expect(blob).not.toMatch(/HDI/i);
+    expect(blob).not.toMatch(/Very High/);
   });
 });
 
@@ -451,13 +465,17 @@ describe("ps5-vs-xbox-series-x citation AEO overlay", () => {
 
     const mock = getMockComparison("ps5-vs-xbox-series-x");
     expect(mock).toBeTruthy();
-    const scorecard = mock!.keyDifferences.map((d) => ({ ...d }));
     const next = applyEditorialAeoOverlay(mock!);
     expect(next.shortAnswer).toBe(overlay!.shortAnswer);
     expect(next.quickAnswer?.tldr).toBe(overlay!.shortAnswer);
     expect(next.faqs).toEqual(overlay!.faqs);
     expect(next.faqs.map((f) => f.question)).toEqual(BRIEF_PS5_FAQS);
-    expect(next.keyDifferences).toEqual(scorecard);
+    const gpu = next.keyDifferences.find((row) => row.label === "GPU");
+    expect(gpu?.entityAValue).toContain("10.3 TFLOPS");
+    expect(gpu?.entityBValue).toContain("12 TFLOPS");
+    const drive = next.keyDifferences.find((row) => row.label === "SSD capacity");
+    expect(drive?.entityAValue).toMatch(/825GB/);
+    expect(drive?.entityAValue).toMatch(/drive size/);
     expect(next.verdict).toBe(mock!.verdict);
 
     const schemas = comparisonPageSchema(next) as Array<Record<string, unknown>>;
@@ -484,11 +502,11 @@ describe("ps5-vs-xbox-series-x citation AEO overlay", () => {
     }
 
     expect(prose).toMatch(/5\.5 GB\/s vs 2\.4 GB\/s/);
-    expect(prose).toMatch(/GPU is rated higher/);
+    expect(prose).toMatch(/12 TFLOPS vs 10\.3 TFLOPS/);
+    expect(prose).toMatch(/825GB/);
+    expect(prose).toMatch(/drive size/);
     expect(prose).not.toMatch(/10\.28/);
-    expect(prose).not.toMatch(/12 TFLOPS/);
     expect(prose).not.toMatch(/\$499/);
-    expect(prose).not.toMatch(/825/);
     expect(prose).not.toMatch(/11\.99/);
     expect(prose).not.toMatch(/9\.99/);
     expect(prose).not.toMatch(/\b50\s*M/i);
@@ -547,7 +565,18 @@ function expectCitationOverlay(
   expect(next.shortAnswer).toBe(overlay!.shortAnswer);
   expect(next.quickAnswer?.tldr).toBe(overlay!.shortAnswer);
   expect(next.faqs).toEqual(overlay!.faqs);
-  expect(next.keyDifferences).toEqual(scorecard);
+  if (overlay!.metricMerge && overlay!.facts) {
+    for (const fact of overlay!.facts) {
+      const row = next.keyDifferences.find((diff) => diff.label === fact.label);
+      expect(row, `${slug} ${fact.label}`).toBeTruthy();
+      const texts = [row!.entityAValue, row!.entityBValue];
+      for (const cell of fact.cells) {
+        expect(texts, `${slug} ${fact.label}`).toContain(cell.text);
+      }
+    }
+  } else {
+    expect(next.keyDifferences).toEqual(scorecard);
+  }
   expect(next.verdict).toBe(mock!.verdict);
 
   const schemas = comparisonPageSchema(next) as Array<Record<string, unknown>>;
@@ -592,11 +621,12 @@ describe("figma-vs-sketch citation AEO overlay", () => {
     expect(prose).toMatch(/web browser/);
     expect(prose).toMatch(/Mac app/);
     expect(prose).toMatch(/free Starter plan/);
+    expect(prose).toMatch(/\$16\/mo/);
+    expect(prose).toMatch(/does not list a \$9\/mo plan or a \$99\/yr plan/);
     expect(prose).toMatch(/Neither is named the winner/);
     expect(prose).not.toMatch(/~80%/);
     expect(prose).not.toMatch(/4M\+/);
     expect(prose).not.toMatch(/\$12\+/);
-    expect(prose).not.toMatch(/\$9\/mo/);
     expect(prose).not.toMatch(/3 projects/);
   });
 });
@@ -657,11 +687,12 @@ describe("cursor-vs-copilot citation AEO overlay", () => {
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
     expect(prose).toMatch(/\$10 per month vs \$20 per month/);
-    expect(prose).toMatch(/\$40 per user per month vs \$19 per user per month/);
+    expect(prose).toMatch(/Teams is \$40 per user per month/);
     expect(prose).toMatch(/\$39 per month/);
-    expect(prose).toMatch(/\$39 per user per month/);
+    expect(prose).toMatch(/\$100 per month/);
     expect(prose).not.toMatch(/\$192/);
-    expect(prose).not.toMatch(/\$100/);
+    expect(prose).not.toMatch(/\$100\/yr/);
+    expect(prose).not.toMatch(/\$19 per user/);
     expect(prose).not.toMatch(/two months free/);
     expect(prose).not.toMatch(/SOC 2/);
     expect(prose).not.toMatch(/\b3\.7\b/);
@@ -684,7 +715,8 @@ describe("android-vs-ios citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("android-vs-ios")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/more phones worldwide than iOS/);
+    expect(prose).toMatch(/67\.61% vs 32\.36%/);
+    expect(prose).toMatch(/August 2026/);
     expect(prose).toMatch(/Neither is named the winner/);
     expect(prose).not.toMatch(/72%/);
     expect(prose).not.toMatch(/71%/);
@@ -709,7 +741,8 @@ describe("nvidia-vs-amd citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("nvidia-vs-amd")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/market value is larger/);
+    expect(prose).toMatch(/\$5\.563 trillion as of October 1, 2026/);
+    expect(prose).toMatch(/\$1\.034 trillion as of October 2, 2026/);
     expect(prose).toMatch(/AMD designs CPUs/);
     expect(prose).not.toMatch(/\$2\.5T/);
     expect(prose).not.toMatch(/\$250B/);
@@ -735,8 +768,9 @@ describe("us-economy-vs-china-economy citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("us-economy-vs-china-economy")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/larger than China’s in nominal terms/);
-    expect(prose).toMatch(/growing faster/);
+    expect(prose).toMatch(/\$32\.38 trillion vs \$20\.85 trillion/);
+    expect(prose).toMatch(/\$94,430 vs \$14,874/);
+    expect(prose).toMatch(/4\.4% vs 2\.3%/);
     expect(prose).toMatch(/Neither is named the winner/);
     expect(prose).not.toMatch(/\$25\.5/);
     expect(prose).not.toMatch(/\$17\.9/);
@@ -764,9 +798,9 @@ describe("usa-vs-china citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("usa-vs-china")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/larger than China’s in nominal terms/);
+    expect(prose).toMatch(/\$32\.38 trillion vs \$20\.85 trillion/);
+    expect(prose).toMatch(/\$997 billion vs \$314 billion/);
     expect(prose).toMatch(/population is larger/);
-    expect(prose).toMatch(/spends more on its military/);
     expect(prose).not.toMatch(/\$25\.5/);
     expect(prose).not.toMatch(/\$17\.7/);
     expect(prose).not.toMatch(/1\.4 billion/);
@@ -827,12 +861,14 @@ describe("lyft-vs-uber citation AEO overlay", () => {
         status: "published",
       },
     };
-    const scorecard = page.keyDifferences.map((d) => ({ ...d }));
     const next = applyEditorialAeoOverlay(page);
     expect(next.shortAnswer).toBe(overlay!.shortAnswer);
     expect(next.quickAnswer?.tldr).toBe(overlay!.shortAnswer);
     expect(next.faqs).toEqual(overlay!.faqs);
-    expect(next.keyDifferences).toEqual(scorecard);
+    const revenue = next.keyDifferences.find((row) => row.label === "Annual Revenue");
+    expect(revenue?.entityAValue).toContain("$43.978 billion");
+    expect(revenue?.entityBValue).toContain("$5.786 billion");
+    expect(next.keyDifferences.some((row) => row.entityAValue === "71%")).toBe(true);
     expect(next.verdict).toBe(page.verdict);
 
     const schemas = comparisonPageSchema(next) as Array<Record<string, unknown>>;
@@ -868,6 +904,7 @@ describe("lyft-vs-uber citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("lyft-vs-uber")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
+    expect(prose).toMatch(/\$43\.978 billion vs \$5\.786 billion/);
     expect(prose).toMatch(/United States and Canada/);
     expect(prose).toMatch(/Uber Eats/);
     expect(prose).toMatch(/cities around the world/);

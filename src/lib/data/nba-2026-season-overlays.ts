@@ -20,7 +20,13 @@ import type {
  * "per reports" or as betting lines, so they are left out.
  */
 
-export type NamedCell = { match: string; text: string; winner?: boolean };
+export type NamedCell = {
+  match: string;
+  text: string;
+  winner?: boolean;
+  /** Extra entity names or slugs that should receive this cell. */
+  also?: string[];
+};
 
 export type NamedFact = { label: string; cells: NamedCell[] };
 
