@@ -40,6 +40,7 @@ import { MACBOOK_AIR_VS_IPAD_AIR } from "./macbook-air-vs-ipad-air";
 import { GALAXY_Z_FLIP_8_VS_S26_ULTRA } from "./galaxy-z-flip-8-vs-galaxy-s26-ultra";
 import { GALAXY_S25_VS_GALAXY_S25_FE } from "./galaxy-s25-vs-galaxy-s25-fe";
 import { GALAXY_S25_VS_GALAXY_S25_PLUS } from "./galaxy-s25-vs-galaxy-s25-plus";
+import { MAC_MINI_M6_VS_WINDOWS_PC } from "./mac-mini-m6-vs-windows-pc";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -97,6 +98,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [GALAXY_Z_FLIP_8_VS_S26_ULTRA.slug]: GALAXY_Z_FLIP_8_VS_S26_ULTRA,
   [GALAXY_S25_VS_GALAXY_S25_FE.slug]: GALAXY_S25_VS_GALAXY_S25_FE,
   [GALAXY_S25_VS_GALAXY_S25_PLUS.slug]: GALAXY_S25_VS_GALAXY_S25_PLUS,
+  [MAC_MINI_M6_VS_WINDOWS_PC.slug]: MAC_MINI_M6_VS_WINDOWS_PC,
 };
 
 /**
