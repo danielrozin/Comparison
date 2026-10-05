@@ -40,13 +40,13 @@ import {
  */
 
 const GDP_SHORT_ANSWER =
-  "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. SIPRI estimates 2024 military expenditure at $997 billion for the United States and an estimated $314 billion for China. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. The United States spends more on its military ($997 billion vs $314 billion). China’s economy is growing faster. Neither is named the winner.";
+  "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. SIPRI estimates 2024 military expenditure at $997 billion for the United States and an estimated $314 billion for China. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. The United States spends more on its military ($997 billion vs $314 billion). China’s economy is growing faster (4.4% vs 2.3%). Neither is named the winner.";
 
 const GDP_FAQS: FAQData[] = [
   {
     question: "Is China’s economy bigger than the US?",
     answer:
-      "It depends on the measure. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. China’s economy is growing faster. Neither is named the winner.",
+      "It depends on the measure. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. China’s economy is growing faster (4.4% vs 2.3%). Neither is named the winner.",
   },
   {
     question: "What is US vs China nominal GDP?",
@@ -71,12 +71,12 @@ const GDP_FAQS: FAQData[] = [
   {
     question: "Will China overtake the US in nominal GDP this decade?",
     answer:
-      "China’s economy is growing faster. Faster growth does not by itself name a year when China would become larger in nominal terms. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. Neither is named the winner.",
+      "The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. China’s economy is growing faster (4.4% vs 2.3%). Faster growth does not by itself name a year when China would become larger in nominal terms. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. Neither is named the winner.",
   },
   {
     question: "Which GDP measure should journalists and students cite?",
     answer:
-      "Use nominal GDP for the size of the economy in dollars, and output per person for the typical level of output. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. Output per person is higher in the United States. China’s economy is growing faster. Name the measure. Neither is named the winner.",
+      "Use nominal GDP for the size of the economy in dollars, output per person for the typical level of output, and real GDP growth for the pace of expansion. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. Output per person is higher in the United States. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. China’s economy is growing faster (4.4% vs 2.3%). Name the measure. Neither is named the winner.",
   },
 ];
 
@@ -86,22 +86,22 @@ const GDP_QUICK_ANSWER: QuickAnswerTLDR = {
   winnerReason:
     "By metric only: the United States on nominal size, output per person, and military spending; China on the pace of growth.",
   keyFact:
-    "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. China’s economy is growing faster. Neither is named the winner.",
+    "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. China’s economy is growing faster (4.4% vs 2.3%). Neither is named the winner.",
 };
 
 const JAPAN_CHINA_SHORT_ANSWER =
-  "The IMF estimates Japan’s 2026 real GDP growth at 0.7% and China’s at 4.4%. China’s economy is growing faster (4.4% vs 0.7%). SIPRI estimates 2024 military expenditure at $55.3 billion for Japan and an estimated $314 billion for China. China spends more ($314 billion vs $55.3 billion). China’s economy is larger than Japan’s in nominal terms. Output per person is higher in Japan. China’s population is larger, and people in Japan live longer. Neither is named the winner.";
+  "The IMF estimates Japan’s 2026 nominal GDP at $4.38 trillion and China’s at $20.85 trillion. China’s economy is larger in nominal terms ($20.85 trillion vs $4.38 trillion). The IMF estimates Japan’s 2026 real GDP growth at 0.7% and China’s at 4.4%. China’s economy is growing faster (4.4% vs 0.7%). SIPRI estimates 2024 military expenditure at $55.3 billion for Japan and an estimated $314 billion for China. China spends more ($314 billion vs $55.3 billion). The World Bank estimates 2024 life expectancy at 84.04 years in Japan and 78.02 years in China. People in Japan live longer (84.04 years vs 78.02 years). UNDP’s 2025 Human Development Report lists 2023 HDI at 0.925 for Japan and 0.797 for China. Japan’s HDI is higher (0.925 vs 0.797). Output per person is higher in Japan. China’s population is larger. Neither is named the winner.";
 
 const JAPAN_CHINA_FAQS: FAQData[] = [
   {
     question: "Is China’s economy bigger than Japan’s?",
     answer:
-      "In nominal terms, yes. China’s economy is larger than Japan’s. Output per person is higher in Japan. China’s economy is growing faster (4.4% vs 0.7%). Neither is named the winner.",
+      "In nominal terms, yes. The IMF estimates Japan’s 2026 nominal GDP at $4.38 trillion and China’s at $20.85 trillion. China’s economy is larger in nominal terms ($20.85 trillion vs $4.38 trillion). Output per person is higher in Japan. China’s economy is growing faster (4.4% vs 0.7%). Neither is named the winner.",
   },
   {
     question: "What is Japan vs China GDP?",
     answer:
-      "China’s economy is larger than Japan’s in nominal terms.",
+      "The IMF estimates Japan’s 2026 nominal GDP at $4.38 trillion and China’s at $20.85 trillion. China’s economy is larger in nominal terms ($20.85 trillion vs $4.38 trillion).",
   },
   {
     question: "What is Japan vs China GDP per capita?",
@@ -121,7 +121,7 @@ const JAPAN_CHINA_FAQS: FAQData[] = [
   {
     question: "Which country has higher life expectancy, Japan or China?",
     answer:
-      "Japan. People in Japan live longer than people in China.",
+      "Japan. The World Bank estimates 2024 life expectancy at 84.04 years in Japan and 78.02 years in China. People in Japan live longer (84.04 years vs 78.02 years).",
   },
 ];
 
@@ -131,7 +131,7 @@ const JAPAN_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
   winnerReason:
     "By metric only: China on nominal size, population, and military spending; Japan on output per person and life expectancy.",
   keyFact:
-    "The IMF estimates Japan’s 2026 real GDP growth at 0.7% and China’s at 4.4%. SIPRI estimates 2024 military expenditure at $55.3 billion for Japan and an estimated $314 billion for China. Neither is named the winner.",
+    "The IMF estimates Japan’s 2026 nominal GDP at $4.38 trillion and China’s at $20.85 trillion. The IMF estimates Japan’s 2026 real GDP growth at 0.7% and China’s at 4.4%. SIPRI estimates 2024 military expenditure at $55.3 billion for Japan and an estimated $314 billion for China. The World Bank estimates 2024 life expectancy at 84.04 years in Japan and 78.02 years in China. UNDP’s 2025 Human Development Report lists 2023 HDI at 0.925 for Japan and 0.797 for China. Neither is named the winner.",
 };
 
 const MESSI_SHORT_ANSWER =
@@ -372,18 +372,18 @@ const NVIDIA_QUICK_ANSWER: QuickAnswerTLDR = {
 };
 
 const US_ECONOMY_CHINA_SHORT_ANSWER =
-  "The United States economy is larger than China’s in nominal terms. Output per person is higher in the United States. China’s economy is growing faster. Neither is named the winner.";
+  "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. China’s economy is growing faster (4.4% vs 2.3%). Neither is named the winner.";
 
 const US_ECONOMY_CHINA_FAQS: FAQData[] = [
   {
     question: "Which economy is bigger, the US or China?",
     answer:
-      "Neither is named the winner. The United States economy is larger than China’s in nominal terms, and output per person is higher in the United States. China’s economy is growing faster.",
+      "Neither is named the winner. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. China’s economy is growing faster (4.4% vs 2.3%).",
   },
   {
     question: "What is US vs China nominal GDP?",
     answer:
-      "The United States economy is larger than China’s in nominal terms.",
+      "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion).",
   },
   {
     question: "What is GDP per capita for the US vs China?",
@@ -393,12 +393,12 @@ const US_ECONOMY_CHINA_FAQS: FAQData[] = [
   {
     question: "Which economy is growing faster, the US or China?",
     answer:
-      "China’s economy is growing faster than the United States economy.",
+      "The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. China’s economy is growing faster (4.4% vs 2.3%).",
   },
   {
     question: "Is there one overall winner between the US and China economies?",
     answer:
-      "Neither is named the winner. The United States is ahead on nominal size and on output per person. China’s economy is growing faster.",
+      "Neither is named the winner. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. China’s economy is growing faster (4.4% vs 2.3%).",
   },
 ];
 
@@ -408,22 +408,22 @@ const US_ECONOMY_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
   winnerReason:
     "By metric only: the United States on nominal size and output per person; China on the pace of growth.",
   keyFact:
-    "The United States economy is larger than China’s in nominal terms. China’s economy is growing faster. Neither is named the winner.",
+    "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. China’s economy is growing faster (4.4% vs 2.3%). Neither is named the winner.",
 };
 
 const USA_CHINA_SHORT_ANSWER =
-  "The United States economy is larger than China’s in nominal terms. Output per person is higher in the United States. The United States spends more on its military. China’s economy is growing faster. China’s population is larger. Neither is named the winner.";
+  "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. SIPRI estimates 2024 military expenditure at $997 billion for the United States and an estimated $314 billion for China. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. The United States spends more on its military ($997 billion vs $314 billion). China’s economy is growing faster (4.4% vs 2.3%). China’s population is larger. Neither is named the winner.";
 
 const USA_CHINA_FAQS: FAQData[] = [
   {
     question: "Which is ahead, the USA or China?",
     answer:
-      "Neither is named the winner. The United States economy is larger than China’s in nominal terms. Output per person is higher in the United States. The United States spends more on its military. China’s economy is growing faster. China’s population is larger.",
+      "Neither is named the winner. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. SIPRI estimates 2024 military expenditure at $997 billion for the United States and an estimated $314 billion for China. The United States spends more on its military ($997 billion vs $314 billion). The IMF estimates 2026 real GDP growth at 2.3% in the United States and 4.4% in China. China’s economy is growing faster (4.4% vs 2.3%). China’s population is larger.",
   },
   {
     question: "What is USA vs China GDP?",
     answer:
-      "The United States economy is larger than China’s in nominal terms.",
+      "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion).",
   },
   {
     question: "Which country has the larger population, the USA or China?",
@@ -433,7 +433,7 @@ const USA_CHINA_FAQS: FAQData[] = [
   {
     question: "Which country spends more on the military, the USA or China?",
     answer:
-      "The United States spends more on its military than China.",
+      "The United States. SIPRI estimates 2024 military expenditure at $997 billion for the United States and an estimated $314 billion for China. The United States spends more ($997 billion vs $314 billion).",
   },
   {
     question: "What is GDP per capita for the USA vs China?",
@@ -448,7 +448,7 @@ const USA_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
   winnerReason:
     "By metric only: the United States on nominal size, output per person, and military spending; China on population.",
   keyFact:
-    "The United States economy is larger than China’s in nominal terms. China’s population is larger. Neither is named the winner.",
+    "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. SIPRI estimates 2024 military expenditure at $997 billion for the United States and an estimated $314 billion for China. China’s population is larger. Neither is named the winner.",
 };
 
 const LYFT_UBER_SHORT_ANSWER =
