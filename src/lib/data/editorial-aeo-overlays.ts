@@ -635,7 +635,7 @@ const US_ECONOMY_CHINA_FAQS: FAQData[] = [
   {
     question: "Which economy is bigger, the US or China?",
     answer:
-      "This page does not name a single overall winner. On this page’s Key Differences scorecard the US figure is higher on the Nominal GDP row ($25.5T vs $17.7T) and on the GDP per Capita row ($76,300 vs $12,500). China’s figure is higher on the Manufacturing Share row (30% vs 16%) and on the GDP Growth Rate row (4.5% vs 2.5%). The US column is first on every row. Quote the row.",
+      "This page does not name a single overall winner. On this page’s Key Differences scorecard the US figure is higher on the Nominal GDP row ($25.5T vs $17.7T) and on the GDP per Capita row ($76,300 vs $12,500). China’s figure is higher on the Manufacturing Share row (30% vs 16%) and on the GDP Growth Rate row (4.5% vs 2.5%). The US column is first on every row. Name the metric.",
   },
   {
     question: "What is US vs China nominal GDP on this page?",
@@ -645,7 +645,7 @@ const US_ECONOMY_CHINA_FAQS: FAQData[] = [
   {
     question: "What is GDP per capita for the US vs China on this page?",
     answer:
-      "On this page’s GDP per Capita row the cells are $76,300 for the US and $12,500 for China. The US figure is higher ($76,300 vs $12,500). Cite that row when you say who is richer per person.",
+      "On this page’s GDP per Capita row the cells are $76,300 for the US and $12,500 for China. The US figure is higher ($76,300 vs $12,500). Name GDP per capita when you say who is richer per person.",
   },
   {
     question: "Who has the larger manufacturing share on this page?",
@@ -675,7 +675,7 @@ const US_ECONOMY_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
   winnerReason:
     "By metric only: US Nominal GDP and GDP per Capita; China Manufacturing Share and GDP Growth Rate.",
   keyFact:
-    "No single scorecard winner. The Nominal GDP row is $25.5T vs $17.7T. The Manufacturing Share row is 16% vs 30%. Cite the row. A second nominal GDP figure is unknown on this scorecard.",
+    "No single scorecard winner. The Nominal GDP row is $25.5T vs $17.7T. The Manufacturing Share row is 16% vs 30%. Name the metric. A second nominal GDP figure is unknown on this scorecard.",
 };
 
 // Printed by getMockComparison("usa-vs-china") — extra row overwrites base.
@@ -689,7 +689,7 @@ const USA_CHINA_FAQS: FAQData[] = [
   {
     question: "Which is ahead, the USA or China?",
     answer:
-      "This page does not name a single overall winner. On this page’s Key Differences scorecard the US figure is higher on the GDP row ($25.5T vs $17.7T), the Military Spending row ($877B vs $292B), and the GDP per Capita row ($76,300 vs $12,500). China’s figure is higher on the Population row (1.4B vs 333M). The Manufacturing Output row prints #2 for the United States and #1 for China, and that row’s winner is China. Quote the row.",
+      "This page does not name a single overall winner. On this page’s Key Differences scorecard the US figure is higher on the GDP row ($25.5T vs $17.7T), the Military Spending row ($877B vs $292B), and the GDP per Capita row ($76,300 vs $12,500). China’s figure is higher on the Population row (1.4B vs 333M). The Manufacturing Output row prints #2 for the United States and #1 for China, and that row’s winner is China. Name the metric.",
   },
   {
     question: "What is USA vs China GDP on this page?",
@@ -729,7 +729,7 @@ const USA_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
   winnerReason:
     "By metric only: US GDP, military spending, and GDP per Capita; China population and manufacturing output.",
   keyFact:
-    "No single scorecard winner. The GDP row is $25.5T vs $17.7T. The Population row is 333M vs 1.4B. The Military Spending row is $877B vs $292B. Cite the row.",
+    "No single scorecard winner. The GDP row is $25.5T vs $17.7T. The Population row is 333M vs 1.4B. The Military Spending row is $877B vs $292B. Name the metric.",
 };
 
 // Published /compare/lyft-vs-uber Key Differences scorecard.
@@ -748,7 +748,7 @@ const LYFT_UBER_FAQS: FAQData[] = [
   {
     question: "Which is bigger, Uber or Lyft?",
     answer:
-      "This page does not name a single overall winner. On this page’s Key Differences scorecard Uber’s figure is higher on the US Rideshare Market Share row (71% vs 29%) and on the 2024 Annual Revenue row ($38.7 billion vs $4.3 billion). The Global Market Presence row is 72 countries across 6 continents vs US and Canada only, and that row’s winner is Uber. The Revenue Diversification row’s winner is Uber. Lyft’s platform fee is the winner on the Driver Commission Rate row. The Average Driver Rating Requirements row is a tie (4.6+ stars to remain active vs 4.6+ stars to remain active). Quote the row.",
+      "This page does not name a single overall winner. On this page’s Key Differences scorecard Uber’s figure is higher on the US Rideshare Market Share row (71% vs 29%) and on the 2024 Annual Revenue row ($38.7 billion vs $4.3 billion). The Global Market Presence row is 72 countries across 6 continents vs US and Canada only, and that row’s winner is Uber. The Revenue Diversification row’s winner is Uber. Lyft’s platform fee is the winner on the Driver Commission Rate row. The Average Driver Rating Requirements row is a tie (4.6+ stars to remain active vs 4.6+ stars to remain active). Name the metric.",
   },
   {
     question: "What is Uber vs Lyft US rideshare market share on this page?",
