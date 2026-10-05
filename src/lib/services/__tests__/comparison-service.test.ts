@@ -89,9 +89,9 @@ describe('Comparison Service (mock-data fallback)', () => {
         'How much storage does the PS5 have compared with the Xbox Series X?',
         'Which has more GPU power, PS5 or Xbox Series X (TFLOPS)?',
         'How much do the PS5 and Xbox Series X cost?',
-        'Which console has better exclusive games, PS5 or Xbox?',
+        'Which console has more exclusive games, PS5 or Xbox?',
         'Which console has better backward compatibility, PS5 or Xbox Series X?',
-        'Do the PS5 and Xbox Series X support 4K at 120Hz?',
+        'What is the SSD speed of the PS5 vs the Xbox Series X?',
         'Which should you buy, a PS5 or an Xbox Series X?',
       ])
     })
@@ -125,8 +125,8 @@ describe('Comparison Service (mock-data fallback)', () => {
         'Who has scored more career goals, Messi or Ronaldo?',
         'Who won the World Cup, Messi or Ronaldo?',
         'Who has more Champions League titles, Messi or Ronaldo?',
-        'Who has more career assists, Messi or Ronaldo?',
-        'Which Messi vs Ronaldo stats does this page not print?',
+        'Who has more international goals, Messi or Ronaldo?',
+        'What is the 2025 career-goal count for Messi and Ronaldo?',
       ])
     })
   })
