@@ -22,6 +22,7 @@ import {
 import { resolveUsChinaGdpRedirect } from "@/lib/redirects/us-china-gdp-cluster";
 import { videoObjectSchema, selfHostedVideoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { assembleCompareJsonLd } from "@/lib/seo/compare-jsonld";
+import { presentComparisonMetrics } from "@/lib/comparison/metric-table-guard";
 import { resolveEntityPageStatuses } from "@/lib/seo/entity-page-indexable";
 import { getPrisma } from "@/lib/db/prisma";
 import { provisionalPageNeedsRegeneration } from "@/lib/generation/comparison-content";
@@ -533,7 +534,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     status: entityStatusBySlug.get(entity.slug) ?? "draft",
   }));
 
-  const enrichedComparison = { ...comparison, entities: mergedEntitiesWithStatus } as Comparison;
+  // ROO-154: collapse duplicate and contradictory metric rows before the table
+  // and JSON-LD are built. The stored attributes are left unchanged.
+  const enrichedComparison = presentComparisonMetrics({
+    ...comparison,
+    entities: mergedEntitiesWithStatus,
+  }) as Comparison;
 
   // Fallback to trending if fewer than 3 related comparisons
   let sidebarComparisons = enrichedComparison.relatedComparisons;

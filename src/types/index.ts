@@ -96,6 +96,10 @@ export interface ComparisonAttribute {
     valueNumber: number | null;
     valueBoolean: boolean | null;
     winner?: boolean;
+    /** Citation label copied from AttributeValue.source. Used by the render-time metric guard. */
+    source?: string | null;
+    /** ISO time of AttributeValue.updatedAt or asOfDate. Used to prefer the latest sourced row. */
+    updatedAt?: string | null;
   }[];
 }
 
