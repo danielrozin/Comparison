@@ -1,6 +1,6 @@
 /**
  * Blog Article Generator Service
- * Uses Claude AI + Tavily enrichment to generate SEO-focused blog articles.
+ * Uses Claude AI plus Apify web search to generate SEO-focused blog articles.
  * Server-side only.
  */
 
@@ -59,7 +59,7 @@ export async function generateBlogArticle(
   topic: string,
   gscData?: { query: string; impressions: number }
 ): Promise<BlogArticle> {
-  // Enrich with Tavily data
+  // Enrich with Apify web search. A missing token or a provider error yields no snippets.
   let enrichmentContext = "";
   try {
     const tavilyResults = await searchTavily(topic, 5);
@@ -69,7 +69,7 @@ export async function generateBlogArticle(
         .join("\n")}`;
     }
   } catch {
-    // Tavily enrichment is optional
+    // Web search enrichment is optional
   }
 
   const anthropic = new Anthropic();

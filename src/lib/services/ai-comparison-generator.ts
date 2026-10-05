@@ -7,7 +7,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { ComparisonPageData, CitationStats, QuickAnswerTLDR } from "@/types";
 import { citationSourcesFromResults, distinctSources } from "@/lib/generation/citation-sources";
-import { enrichComparisonData } from "./tavily-service";
+import { enrichComparisonData } from "./apify-search";
 import { fetchEntityImages } from "@/lib/services/image-service";
 import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { COMPARISON_CATEGORIES, validateComparisonCategory } from "@/lib/utils/categories";
@@ -167,7 +167,9 @@ export async function generateComparison(
   try {
     const client = getClient();
 
-    // Fetch real-time web data via Tavily (graceful — skipped on failure)
+    // Fetch real-time web data via Apify (graceful — skipped on failure).
+    // The search helper logs `search_provider_error:<code> provider=apify`
+    // and does not throw for a missing token, a non-2xx, or a timeout.
     let tavilyContext = "";
     let tavilySources: { name: string; url?: string }[] = [];
     if (!options?.skipEnrichment) {
@@ -176,7 +178,8 @@ export async function generateComparison(
         tavilyContext = enrichment.context;
         tavilySources = citationSourcesFromResults(enrichment.sources);
       } catch (err) {
-        console.warn("Tavily enrichment failed, proceeding without:", err);
+        const name = err instanceof Error && err.name ? err.name : "Error";
+        console.warn(`search_provider_error:network provider=apify (${name})`);
       }
     }
 
@@ -503,7 +506,7 @@ export async function generateMultiComparison(
   try {
     const client = getClient();
 
-    // Enrich with the first 2 entities (Tavily helper is 2-arg). Better than nothing.
+    // Enrich with the first 2 entities (the search helper is 2-arg). Better than nothing.
     let tavilyContext = "";
     let tavilySources: { name: string; url?: string }[] = [];
     if (!options?.skipEnrichment) {
@@ -512,7 +515,8 @@ export async function generateMultiComparison(
         tavilyContext = enrichment.context;
         tavilySources = citationSourcesFromResults(enrichment.sources);
       } catch (err) {
-        console.warn("Tavily enrichment failed, proceeding without:", err);
+        const name = err instanceof Error && err.name ? err.name : "Error";
+        console.warn(`search_provider_error:network provider=apify (${name})`);
       }
     }
 

@@ -106,7 +106,7 @@ vi.mock('@anthropic-ai/sdk', () => {
   return { default: MockAnthropic }
 })
 
-vi.mock('@/lib/services/tavily', () => ({
+vi.mock('@/lib/services/apify-search', () => ({
   enrichComparisonData: vi.fn().mockResolvedValue({ context: '', sources: [] }),
 }))
 

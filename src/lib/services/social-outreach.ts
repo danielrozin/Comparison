@@ -299,7 +299,7 @@ export async function findRedditQuestions(
 }
 
 // ---------------------------------------------------------------------------
-// Quora (via Tavily)
+// Quora (via Apify web search)
 // ---------------------------------------------------------------------------
 
 export async function findQuoraQuestions(

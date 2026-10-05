@@ -2,8 +2,8 @@
  * Content Discovery Service
  * Pulls comparison topics and blog ideas from multiple data sources:
  * - Reddit (public JSON API)
- * - Quora (via Tavily search)
- * - Tavily (trending comparison topics)
+ * - Quora (via Apify web search)
+ * - Apify web search (trending comparison topics)
  * - DataForSEO (keyword discovery)
  *
  * All sources are queried in parallel with graceful failure handling.
@@ -199,7 +199,7 @@ export async function discoverFromReddit(
 }
 
 // ---------------------------------------------------------------------------
-// Quora (via Tavily site-search)
+// Quora (via Apify web search, site:quora.com)
 // ---------------------------------------------------------------------------
 
 export async function discoverFromQuora(
@@ -243,7 +243,7 @@ export async function discoverFromQuora(
 }
 
 // ---------------------------------------------------------------------------
-// Tavily (trending comparison topics)
+// Web search (trending comparison topics). The stored source label is still "tavily".
 // ---------------------------------------------------------------------------
 
 export async function discoverFromTavily(
@@ -291,8 +291,8 @@ export async function discoverFromTavily(
           sourceUrl: r.url,
         });
       }
-    } catch (err) {
-      console.warn(`Tavily discovery failed for ${cats}:`, err instanceof Error ? err.message : err);
+    } catch {
+      console.warn(`search_provider_error:network provider=apify (discovery ${cats})`);
     }
   }
 
@@ -712,8 +712,8 @@ export async function discoverTopics(options?: {
         console.warn("Quora discovery failed entirely:", err);
         return [] as DiscoveredTopic[];
       }),
-      discoverFromTavily(categories).catch((err) => {
-        console.warn("Tavily discovery failed entirely:", err);
+      discoverFromTavily(categories).catch(() => {
+        console.warn("search_provider_error:network provider=apify (discovery)");
         return [] as DiscoveredTopic[];
       }),
       // DataForSEO: discover for each requested category

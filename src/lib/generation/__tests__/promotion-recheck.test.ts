@@ -219,6 +219,7 @@ describe("runPromotionRecheck", () => {
     });
     expect(warn).toHaveBeenCalledTimes(1);
     const warning = String(warn.mock.calls[0]?.[0]);
+    expect(warning).toContain("provider=apify");
     expect(warning).toContain("search_provider_error:429 x1");
     expect(warning).toContain("search_provider_error:timeout x1");
     expect(warning).not.toContain("test-key");
