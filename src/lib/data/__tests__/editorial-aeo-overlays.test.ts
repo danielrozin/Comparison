@@ -293,7 +293,9 @@ describe("ROO-27 GDP AEO overlay", () => {
     const blob = overlayProse(overlay);
     expect(blob).toMatch(/The IMF estimates US nominal GDP at \$32\.38 trillion in 2026/);
     expect(blob).toMatch(/\$32\.38 trillion vs \$20\.85 trillion/);
-    expect(blob).toMatch(/\$94,430 vs \$14,874/);
+    expect(blob).toMatch(/Output per person is higher in the United States/);
+    expect(blob).not.toMatch(/\$94,430/);
+    expect(blob).not.toMatch(/\$14,874/);
     expect(blob).toMatch(/\$997 billion vs \$314 billion/);
     expect(blob).toMatch(/growing faster/);
     expect(blob).not.toMatch(/2\.3%/);
@@ -309,6 +311,12 @@ describe("ROO-27 GDP AEO overlay", () => {
     expect(blob).not.toMatch(/282%/);
     expect(blob).not.toMatch(/126%/);
     expect(overlay.quickAnswer.winnerName).toBeNull();
+    const sourceUrls = [
+      ...(overlay.resources ?? []).map((resource) => resource.url),
+      ...(overlay.citationStats?.sources ?? []).map((source) => source.url),
+    ].filter((url): url is string => Boolean(url));
+    expect(sourceUrls.some((url) => url.includes("worldometers.info"))).toBe(false);
+    expect(sourceUrls.some((url) => url.includes("imf.org"))).toBe(true);
     expect(overlay.resources?.some((resource) => resource.url.includes("datamapper/api/v1/NGDPD"))).toBe(true);
   });
 });

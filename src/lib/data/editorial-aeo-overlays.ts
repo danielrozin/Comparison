@@ -40,13 +40,13 @@ import {
  */
 
 const GDP_SHORT_ANSWER =
-  "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The IMF estimates GDP per person at $94,430 in the United States and $14,874 in China in 2026. SIPRI estimates 2024 military expenditure at $997 billion for the United States and an estimated $314 billion for China. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States ($94,430 vs $14,874). The United States spends more on its military ($997 billion vs $314 billion). China’s economy is growing faster. Neither is named the winner.";
+  "The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. SIPRI estimates 2024 military expenditure at $997 billion for the United States and an estimated $314 billion for China. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. The United States spends more on its military ($997 billion vs $314 billion). China’s economy is growing faster. Neither is named the winner.";
 
 const GDP_FAQS: FAQData[] = [
   {
     question: "Is China’s economy bigger than the US?",
     answer:
-      "It depends on the measure. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States ($94,430 vs $14,874). China’s economy is growing faster. Neither is named the winner.",
+      "It depends on the measure. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. The United States economy is larger in nominal terms ($32.38 trillion vs $20.85 trillion). Output per person is higher in the United States. China’s economy is growing faster. Neither is named the winner.",
   },
   {
     question: "What is US vs China nominal GDP?",
@@ -66,7 +66,7 @@ const GDP_FAQS: FAQData[] = [
   {
     question: "What is GDP per capita for the US vs China?",
     answer:
-      "The IMF estimates GDP per person at $94,430 in the United States and $14,874 in China in 2026. Output per person is higher in the United States ($94,430 vs $14,874).",
+      "Output per person is higher in the United States than in China.",
   },
   {
     question: "Will China overtake the US in nominal GDP this decade?",
@@ -76,7 +76,7 @@ const GDP_FAQS: FAQData[] = [
   {
     question: "Which GDP measure should journalists and students cite?",
     answer:
-      "Use nominal GDP for the size of the economy in dollars, and output per person for the typical level of output. The IMF estimates the United States ahead on both in 2026 ($32.38 trillion vs $20.85 trillion, and $94,430 vs $14,874). China’s economy is growing faster. Name the measure. Neither is named the winner.",
+      "Use nominal GDP for the size of the economy in dollars, and output per person for the typical level of output. The IMF estimates US nominal GDP at $32.38 trillion in 2026 and China’s at $20.85 trillion. Output per person is higher in the United States. China’s economy is growing faster. Name the measure. Neither is named the winner.",
   },
 ];
 
