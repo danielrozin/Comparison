@@ -35,9 +35,9 @@ describe("inspectComparisonMetrics", () => {
     expect(commission?.values.some((value) => value.includes("75–80%"))).toBe(true);
 
     const revenue = conflict(lyftVsUberFixture(), "annual revenue");
-    expect(revenue?.kept).toContain("$38.7 billion");
+    expect(revenue?.kept).toContain("$39.7 billion");
     expect(revenue?.values.some((value) => value.includes("$37.2 billion"))).toBe(true);
-    expect(revenue?.values.some((value) => value.includes("$39.7 billion"))).toBe(true);
+    expect(revenue?.values.some((value) => value.includes("$38.7 billion"))).toBe(true);
   });
 });
 

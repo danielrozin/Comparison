@@ -57,15 +57,19 @@ describe("canonicalizeMetricName", () => {
     );
   });
 
-  it("matches equivalent figures and rejects nearby but different ones", () => {
+  it("matches a figure inside a range or within ±5%, and rejects a wider gap", () => {
     expect(valuesMatch("$30+ trillion", "$30.0–30.5T")).toBe(true);
+    expect(valuesMatch("$31 trillion", "$30+ trillion")).toBe(true);
+    expect(valuesMatch("$28.7T", "$30+ trillion")).toBe(true);
     expect(valuesMatch("$38.7 billion", "$38.7B")).toBe(true);
+    expect(valuesMatch("$39.7 billion", "$38.7 billion")).toBe(true);
+    expect(valuesMatch("$37.2 billion", "$38.7 billion")).toBe(true);
     expect(valuesMatch("approximately 25% platform fee", "approximately 25%")).toBe(true);
     expect(valuesMatch("$27.4T", "$30+ trillion")).toBe(false);
-    expect(valuesMatch("$37.2 billion", "$38.7 billion")).toBe(false);
     expect(valuesMatch("75–80%", "approximately 25%")).toBe(false);
     expect(valuesMatch("77%", "282%")).toBe(false);
     expect(valuesMatch("US and Canada", "1 (US only)")).toBe(false);
+    expect(valuesMatch("38.7", "$38.7 billion")).toBe(false);
   });
 });
 
@@ -134,8 +138,10 @@ describe("lyft-vs-uber fixture", () => {
 
     const revenue = guarded.filter((attr) => canonicalizeMetricName(attr.name, null, ["Uber", "Lyft"]) === "annual revenue");
     expect(revenue).toHaveLength(1);
-    expect(cell(revenue[0], "uber")).toBe("$38.7 billion");
+    // $39.7B is within ±5% of the $38.7B scorecard and is the newest sourced row.
+    expect(cell(revenue[0], "uber")).toBe("$39.7 billion");
     expect(cell(revenue[0], "lyft")).toBe("$4.3 billion");
+    expect(revenue[0].values.some((value) => value.valueText?.includes("75"))).toBe(false);
   });
 
   it("drops geographic coverage that contradicts US and Canada, and keeps the rating tie", () => {
@@ -234,23 +240,62 @@ describe("guard preference rules", () => {
     expect(guardComparisonAttributes(page)[0].id).toBe("prose");
   });
 
-  it("drops a row whose value contradicts the scorecard instead of keeping a false winner", () => {
+  it("keeps a scorecard metric from the scorecard when the stored gap is over 15%", () => {
     const page = bare([
       metric("bad", "25-30% platform fee", "75–80%", { winner: "b" }),
     ], {
       keyDifferences: [{ label: "Headcount", entityAValue: "25-30% platform fee", entityBValue: "approximately 25% platform fee", winner: "b" }],
     });
-    expect(guardComparisonAttributes(page)).toHaveLength(0);
+    const guarded = guardComparisonAttributes(page);
+    expect(guarded).toHaveLength(1);
+    expect(guarded[0].id).toBe("scorecard:headcount");
+    expect(cell(guarded[0], "b")).toBe("approximately 25% platform fee");
+    expect(guarded[0].values.some((value) => value.valueText?.includes("75"))).toBe(false);
+    expect(guarded[0].values.find((value) => value.entityId === "b")?.winner).toBe(true);
   });
 
-  it("clears a winner that disagrees with the scorecard on an otherwise matching row", () => {
+  it("drops an opposite winner and renders the scorecard cells instead", () => {
     const page = bare([
       metric("row", "10", "20", { winner: "a" }),
     ], {
       keyDifferences: [{ label: "Headcount", entityAValue: "10", entityBValue: "20", winner: "b" }],
     });
     const guarded = guardComparisonAttributes(page);
+    expect(guarded).toHaveLength(1);
+    expect(guarded[0].id).not.toBe("row");
+    expect(cell(guarded[0], "a")).toBe("10");
+    expect(cell(guarded[0], "b")).toBe("20");
+    expect(guarded[0].values.find((value) => value.entityId === "a")?.winner).toBeUndefined();
+    expect(guarded[0].values.find((value) => value.entityId === "b")?.winner).toBe(true);
+  });
+
+  it("keeps the closest row within about 15% and clears its winner", () => {
+    const page = bare([
+      metric("near", "110", "220", { winner: "b" }),
+    ], {
+      keyDifferences: [{ label: "Headcount", entityAValue: "100", entityBValue: "200", winner: "b" }],
+    });
+    const guarded = guardComparisonAttributes(page);
+    expect(guarded).toHaveLength(1);
+    expect(guarded[0].id).toBe("near");
+    expect(cell(guarded[0], "a")).toBe("110");
     expect(guarded[0].values.every((value) => value.winner == null)).toBe(true);
+  });
+
+  it("still yields a nominal-GDP row when every stored value conflicts", () => {
+    const page = bare([
+      { ...metric("pasted", "$17.9T", "$17.9T"), name: "Total GDP" },
+      { ...metric("wrong", "$10T", "$40T", { winner: "b" }), name: "GDP (nominal)" },
+    ], {
+      keyDifferences: [{ label: "Nominal GDP", entityAValue: "$30+ trillion", entityBValue: "about $19 trillion", winner: "a" }],
+    });
+    const guarded = guardComparisonAttributes(page);
+    const nominal = guarded.filter((attr) => canonicalizeMetricName(attr.name, attr.unit, ["Alpha", "Beta"]) === "nominal gdp");
+    expect(nominal).toHaveLength(1);
+    expect(cell(nominal[0], "a")).toBe("$30+ trillion");
+    expect(cell(nominal[0], "b")).toBe("about $19 trillion");
+    expect(nominal[0].values.some((value) => value.valueText?.includes("17.9") || value.valueText?.includes("75"))).toBe(false);
+    expect(nominal[0].values.find((value) => value.entityId === "a")?.winner).toBe(true);
   });
 
   it("drops a value copied from the other entity", () => {

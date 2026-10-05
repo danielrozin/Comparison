@@ -10,7 +10,10 @@
 
 import type { ComparisonAttribute, ComparisonPageData, KeyDifference } from "@/types";
 
-/** Flip to false to render stored attribute rows with no cleanup. */
+/**
+ * On by default. Set COMPARE_METRIC_DEDUPE=0 (or false/off) and redeploy
+ * to render the stored rows again. The flag is read when the page is built.
+ */
 export const COMPARE_METRIC_DEDUPE_ENABLED = true;
 
 /** Key Facts and Full Comparison share this cap. Scorecard metrics stay first. */
@@ -54,6 +57,7 @@ interface Range {
 }
 
 interface ScorecardRef {
+  label: string;
   cells: string[];
   winner?: "a" | "b" | "tie";
 }
@@ -68,6 +72,7 @@ interface RankedRow {
   recency: number;
   identical: boolean;
   copied: boolean;
+  side: "a" | "b" | "tie" | null;
 }
 
 export function canonicalizeMetricName(
@@ -240,28 +245,72 @@ function rangesOverlap(a: Range, b: Range): boolean {
   return a.max >= b.min && b.max >= a.min;
 }
 
-/** True when two cells are the same figure, allowing unit and wording variants. */
-export function valuesMatch(left: string | null | undefined, right: string | null | undefined): boolean {
+/** A stored cell may sit this far from the scorecard figure and still match it. */
+const SCORECARD_VALUE_TOLERANCE = 0.05;
+
+/** A farther cell can still be shown, with its winner cleared, up to this gap. */
+const SCORECARD_NEAR_TOLERANCE = 0.15;
+
+function finiteMagnitude(range: Range): number {
+  let magnitude = 0;
+  if (Number.isFinite(range.min)) magnitude = Math.max(magnitude, Math.abs(range.min));
+  if (Number.isFinite(range.max)) magnitude = Math.max(magnitude, Math.abs(range.max));
+  return magnitude;
+}
+
+/**
+ * Distance between two ranges as a fraction of the larger finite magnitude.
+ * Overlap, including a point inside an open range such as "30+", is 0.
+ * Suffixes are already scaled, so 38.7 and 38.7 billion are not the same unit.
+ */
+function rangeRelativeGap(a: Range, b: Range): number {
+  if (rangesOverlap(a, b)) return 0;
+  const gap = a.max < b.min ? b.min - a.max : a.min - b.max;
+  const scale = Math.max(finiteMagnitude(a), finiteMagnitude(b));
+  if (!Number.isFinite(gap) || scale === 0) return Number.POSITIVE_INFINITY;
+  return gap / scale;
+}
+
+function figuresAgree(
+  left: string | null | undefined,
+  right: string | null | undefined,
+  tolerance: number,
+): boolean {
   if (!left || !right) return false;
   const a = normalizeText(left);
   const b = normalizeText(right);
   if (!a || !b) return false;
   if (a === b) return true;
-  const shorter = a.length <= b.length ? a : b;
-  const longer = a.length <= b.length ? b : a;
-  if (shorter.length >= 4 && longer.includes(shorter)) return true;
 
   const ra = parsePrimaryRange(left);
   const rb = parsePrimaryRange(right);
-  if (!ra || !rb || !rangesOverlap(ra, rb)) return false;
-
-  const wordsA = distinctiveWords(left);
-  const wordsB = distinctiveWords(right);
-  if (wordsA.length > 0 && wordsB.length > 0) {
-    const shared = wordsA.some((word) => wordsB.includes(word));
-    if (!shared) return false;
+  if (ra && rb) {
+    if (rangeRelativeGap(ra, rb) > tolerance) return false;
+    const wordsA = distinctiveWords(left);
+    const wordsB = distinctiveWords(right);
+    if (wordsA.length > 0 && wordsB.length > 0) {
+      const shared = wordsA.some((word) => wordsB.includes(word));
+      if (!shared) return false;
+    }
+    return true;
   }
-  return true;
+
+  const shorter = a.length <= b.length ? a : b;
+  const longer = a.length <= b.length ? b : a;
+  return shorter.length >= 4 && longer.includes(shorter);
+}
+
+/**
+ * True when two cells are the same figure. A number also matches when it
+ * falls inside the other range, or sits within ±5% of it, at the same scale.
+ */
+export function valuesMatch(left: string | null | undefined, right: string | null | undefined): boolean {
+  return figuresAgree(left, right, SCORECARD_VALUE_TOLERANCE);
+}
+
+/** Exact text or overlapping ranges only. Used so close-but-different cells are not treated as copies. */
+function sameFigure(left: string | null | undefined, right: string | null | undefined): boolean {
+  return figuresAgree(left, right, 0);
 }
 
 function entityLabels(page: ComparisonPageData): string[] {
@@ -296,6 +345,7 @@ function scorecardRef(diff: KeyDifference): ScorecardRef {
     ? diff.values.map((value) => value ?? "")
     : [diff.entityAValue ?? "", diff.entityBValue ?? ""];
   return {
+    label: diff.label,
     cells,
     ...(diff.winner ? { winner: diff.winner } : {}),
   };
@@ -311,7 +361,7 @@ function cellsMatch(actual: string[], expected: string[]): boolean {
 function isIdentical(cells: string[]): boolean {
   if (cells.length < 2) return false;
   if (cells.some((cell) => !cell || cell === "—" || cell === "-")) return false;
-  return cells.every((cell) => valuesMatch(cell, cells[0]));
+  return cells.every((cell) => sameFigure(cell, cells[0]));
 }
 
 function quickProse(page: ComparisonPageData): string {
@@ -379,7 +429,7 @@ function markCrossCopies(rows: RankedRow[]): void {
   const clusterFor = (cell: string): FigureCluster | null => {
     const text = cell.trim();
     if (!text || text === "—" || text === "-") return null;
-    const found = clusters.find((cluster) => valuesMatch(cluster.sample, text));
+    const found = clusters.find((cluster) => sameFigure(cluster.sample, text));
     if (found) return found;
     const created: FigureCluster = {
       sample: text,
@@ -418,12 +468,12 @@ function markCrossCopies(rows: RankedRow[]): void {
 
   for (const row of rows) {
     row.copied = row.cells.some((cell, entity) => {
-      const cluster = clusters.find((item) => valuesMatch(item.sample, cell));
+      const cluster = clusters.find((item) => sameFigure(item.sample, cell));
       if (!cluster) return false;
       const home = ownerOf(cluster);
       if (home < 0 || home === entity) return false;
       const homeCell = row.cells[home];
-      return !homeCell || !valuesMatch(homeCell, cell);
+      return !homeCell || !sameFigure(homeCell, cell);
     });
   }
 }
@@ -489,6 +539,7 @@ function prepare(page: ComparisonPageData): Prepared {
       recency: meta.recency,
       identical: isIdentical(cells),
       copied: false,
+      side: winnerSide(attr, page),
     };
     if (!groups.has(key)) {
       groups.set(key, []);
@@ -517,9 +568,10 @@ export function guardComparisonAttributes(page: ComparisonPageData): ComparisonA
   for (const key of prepared.groupOrder) {
     const rows = prepared.groups.get(key) ?? [];
     const scorecard = prepared.scorecards.get(key);
-    const selected = chooseRow(rows, scorecard);
-    if (!selected) continue;
-    kept.push({ key, index: selected.index, attr: alignWinner(page, selected, scorecard) });
+    const choice = chooseRow(rows, scorecard);
+    const attr = materialize(page, choice, scorecard, key);
+    if (!choice || !attr) continue;
+    kept.push({ key, index: choice.row?.index ?? Number.MAX_SAFE_INTEGER, attr });
   }
 
   const scorecardOrder = new Map<string, number>();
@@ -550,19 +602,130 @@ export function guardComparisonAttributes(page: ComparisonPageData): ComparisonA
   return capped;
 }
 
-function chooseRow(rows: RankedRow[], scorecard: ScorecardRef | undefined): RankedRow | null {
-  const matching = rows.filter((row) => row.scorecard);
-  const pool = matching.length > 0
-    ? matching
-    : rows.filter((row) => !row.identical && !row.copied);
-  if (pool.length === 0) return null;
+interface RowChoice {
+  row: RankedRow | null;
+  clearWinner: boolean;
+  fromScorecard: boolean;
+}
 
+function isOppositeWinner(row: RankedRow, scorecard: ScorecardRef | undefined): boolean {
+  if (!scorecard?.winner || scorecard.winner === "tie") return false;
+  if (row.side !== "a" && row.side !== "b") return false;
+  return row.side !== scorecard.winner;
+}
+
+function cellGap(actual: string, expected: string): number {
+  const left = parsePrimaryRange(actual);
+  const right = parsePrimaryRange(expected);
+  if (left && right) return rangeRelativeGap(left, right);
+  return valuesMatch(actual, expected) ? 0 : Number.POSITIVE_INFINITY;
+}
+
+function rowGap(row: RankedRow, scorecard: ScorecardRef): number {
+  const width = Math.min(row.cells.length, scorecard.cells.length);
+  let worst = 0;
+  for (let index = 0; index < width; index += 1) {
+    const gap = cellGap(row.cells[index] ?? "", scorecard.cells[index] ?? "");
+    if (gap > worst) worst = gap;
+  }
+  return worst;
+}
+
+function compareMatches(scorecard: ScorecardRef): (a: RankedRow, b: RankedRow) => number {
+  return (a, b) => {
+    if (a.hasSource !== b.hasSource) return a.hasSource ? -1 : 1;
+    if (a.hasSource && b.hasSource && a.recency !== b.recency) return b.recency - a.recency;
+    const gapDelta = rowGap(a, scorecard) - rowGap(b, scorecard);
+    if (gapDelta !== 0) return gapDelta;
+    return a.index - b.index;
+  };
+}
+
+function closestWithin(rows: RankedRow[], scorecard: ScorecardRef): RankedRow | null {
+  const eligible = rows.filter((row) => !row.copied && !row.identical && !isOppositeWinner(row, scorecard));
+  const ranked = eligible
+    .map((row) => ({ row, gap: rowGap(row, scorecard) }))
+    .filter((item) => item.gap <= SCORECARD_NEAR_TOLERANCE)
+    .sort((a, b) => {
+      if (a.gap !== b.gap) return a.gap - b.gap;
+      return compareRank(a.row, b.row);
+    });
+  return ranked[0]?.row ?? null;
+}
+
+/**
+ * Prefer a scorecard match, and among matches the newest row that has a source.
+ * A near miss (about 15%) is kept with its winner cleared. A wider gap, or a
+ * winner that points the other way, is not kept. A scorecard metric is never
+ * dropped: the scorecard cells are rendered instead.
+ */
+function chooseRow(rows: RankedRow[], scorecard: ScorecardRef | undefined): RowChoice | null {
+  if (scorecard) {
+    const matching = rows.filter((row) => row.scorecard && !isOppositeWinner(row, scorecard));
+    if (matching.length > 0) {
+      const best = [...matching].sort(compareMatches(scorecard))[0];
+      if (best) return { row: best, clearWinner: false, fromScorecard: false };
+    }
+    const near = closestWithin(rows, scorecard);
+    if (near) return { row: near, clearWinner: true, fromScorecard: false };
+    return { row: null, clearWinner: false, fromScorecard: true };
+  }
+
+  const pool = rows.filter((row) => !row.identical && !row.copied);
   const best = [...pool].sort(compareRank)[0];
   if (!best) return null;
-  if (scorecard && !best.scorecard) return null;
-  if (best.identical && !best.scorecard) return null;
-  if (best.copied && !best.scorecard) return null;
-  return best;
+  return { row: best, clearWinner: false, fromScorecard: false };
+}
+
+function pointNumber(text: string): number | null {
+  const range = parsePrimaryRange(text);
+  if (!range || !Number.isFinite(range.min) || !Number.isFinite(range.max)) return null;
+  if (range.min !== range.max) return null;
+  return range.min;
+}
+
+function attributeFromScorecard(
+  page: ComparisonPageData,
+  scorecard: ScorecardRef,
+  key: string,
+): ComparisonAttribute {
+  const values = page.entities.map((entity, index) => {
+    const text = scorecard.cells[index] ?? "";
+    return {
+      entityId: entity.id,
+      valueText: text,
+      valueNumber: pointNumber(text),
+      valueBoolean: null,
+      ...(scorecard.winner === "a" && index === 0 ? { winner: true as const } : {}),
+      ...(scorecard.winner === "b" && index === 1 ? { winner: true as const } : {}),
+      ...(scorecard.winner === "tie" ? { winner: false as const } : {}),
+    };
+  });
+  return {
+    id: `scorecard:${key}`,
+    slug: `scorecard-${key.replace(/\s+/g, "-")}`,
+    name: scorecard.label,
+    unit: null,
+    category: null,
+    dataType: values.some((value) => value.valueNumber != null) ? "number" : "text",
+    higherIsBetter: null,
+    values,
+  };
+}
+
+function materialize(
+  page: ComparisonPageData,
+  choice: RowChoice | null,
+  scorecard: ScorecardRef | undefined,
+  key: string,
+): ComparisonAttribute | null {
+  if (!choice) return null;
+  if (choice.fromScorecard) {
+    return scorecard ? attributeFromScorecard(page, scorecard, key) : null;
+  }
+  if (!choice.row) return null;
+  if (choice.clearWinner) return withoutWinner(choice.row.attr);
+  return alignWinner(page, choice.row, scorecard);
 }
 
 function alignWinner(
@@ -629,14 +792,23 @@ function formatStoredRow(page: ComparisonPageData, row: RankedRow): string {
   return `${row.attr.name} — ${cells.join(" | ")}`;
 }
 
+function formatScorecardRow(page: ComparisonPageData, scorecard: ScorecardRef): string {
+  const cells = page.entities.map((entity, index) => {
+    const cell = scorecard.cells[index]?.trim();
+    return `${entity.name}: ${cell || "—"}`;
+  });
+  return `${scorecard.label} — ${cells.join(" | ")}`;
+}
+
 function isConflictGroup(
   rows: RankedRow[],
-  selected: RankedRow | null,
+  choice: RowChoice | null,
   scorecard: ScorecardRef | undefined,
 ): boolean {
   if (rows.length === 0) return false;
-  if (!selected || rows.length > 1) return true;
-  const row = rows[0];
+  if (!choice || choice.fromScorecard || choice.clearWinner || rows.length > 1) return true;
+  const row = choice.row ?? rows[0];
+  if (!row) return true;
   if (row.copied && !row.scorecard) return true;
   if (row.identical && !row.scorecard) return true;
   if (scorecard && !row.scorecard) return true;
@@ -664,11 +836,16 @@ export function inspectComparisonMetrics(page: ComparisonPageData): MetricInspec
       if (row.copied) copiedRowCount += 1;
       if (scorecard && !row.scorecard) conflictingRowCount += 1;
     }
-    const selected = chooseRow(rows, scorecard);
-    if (!isConflictGroup(rows, selected, scorecard)) continue;
+    const choice = chooseRow(rows, scorecard);
+    if (!isConflictGroup(rows, choice, scorecard)) continue;
+    const kept = choice?.fromScorecard && scorecard
+      ? formatScorecardRow(page, scorecard)
+      : choice?.row
+        ? formatStoredRow(page, choice.row)
+        : null;
     conflicts.push({
       metric: key,
-      kept: selected ? formatStoredRow(page, selected) : null,
+      kept,
       values: rows.map((row) => formatStoredRow(page, row)),
     });
   }
