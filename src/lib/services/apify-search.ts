@@ -66,19 +66,23 @@ const RAG_WEB_BROWSER_ACTOR = "apify~rag-web-browser";
 /**
  * HTTP abort for on-demand generation.
  *
- * A warm `rag-web-browser` search takes about 14s. The generate route
- * `maxDuration` is 60s and the model call is capped at 45s, so a search that
- * uses the full 17s plus a full model call can run past 60s. 17s is still the
- * search budget: it covers that warm run. The actor’s own
- * `requestTimeoutSecs` is shorter, so it can return pages it already fetched.
+ * Measured `rag-web-browser` runs often need 12–27s, but the generate route
+ * `maxDuration` is 60s and the model call is capped at 45s. This search stays
+ * at 17s so the route is not made longer. Promotion uses a separate budget.
  */
 export const APIFY_SEARCH_TIMEOUT_MS = 17_000;
 
 /**
- * HTTP abort for one promotion enrichment. The cron’s `maxDuration` is 120s
- * and it may run six enrichments in a row: 6 × 18s = 108s.
+ * HTTP abort for one promotion enrichment.
+ *
+ * The cron `maxDuration` is 120s. One enrichment fires three searches at
+ * once, so this is the wait for the whole enrichment, not for one search.
+ * 65s gives the actor a 60s run (successes were observed up to ~27s, and a
+ * cold start needs room past that) and 5s for Apify to return the dataset
+ * or the TIMED-OUT body before this client gives up. The cron only starts
+ * another enrichment while the rest of the 120s can hold this wait.
  */
-export const APIFY_PROMOTION_SEARCH_TIMEOUT_MS = 18_000;
+export const APIFY_PROMOTION_SEARCH_TIMEOUT_MS = 65_000;
 
 /**
  * Run memory in MB (must be a power of two). An enrichment fires three
@@ -151,6 +155,9 @@ export async function searchWebDetailed(
       logProviderFailure("missing_key", logFailures);
       return { ok: false, results: [], error: { type: "missing_key" } };
     }
+    // A client abort and Apify's HTTP 400 `status: TIMED-OUT` both land here.
+    // Either way the page has no finished search, so it must not be stored as
+    // "zero sources" and must not count toward the promotion attempt cap.
     if (result.failure === "timeout") {
       logProviderFailure("timeout", logFailures);
       return { ok: false, results: [], error: { type: "timeout" } };
@@ -246,13 +253,28 @@ function clampMaxResults(maxResults: number): number {
 }
 
 /**
- * Platform `timeout` is a second under the HTTP abort. `requestTimeoutSecs`
- * is a second under that, so the actor can hand back partial pages.
+ * Split one HTTP wait into the platform run timeout and the actor's own
+ * request budget.
+ *
+ * On the 17s on-demand wait there is only a second of slack. The generate
+ * route cannot spare more.
+ *
+ * On a promotion wait the actor's documented example request budget is 40s.
+ * That sits 15s under the platform kill, and the HTTP client sits 5s past
+ * the kill. A cold start then has time to boot, the actor can return pages
+ * it already fetched, and Apify can send the body before we abort. When
+ * those two clocks are a second apart, Apify kills the run and answers
+ * HTTP 400 `status: TIMED-OUT` with an empty dataset.
  */
 function actorBudgets(timeoutMs: number): { requestTimeoutSecs: number; runTimeoutSecs: number } {
   const httpSecs = Math.max(1, Math.ceil(timeoutMs / 1000));
-  const runTimeoutSecs = Math.max(1, httpSecs - 1);
-  const requestTimeoutSecs = Math.max(1, runTimeoutSecs - 1);
+  if (httpSecs < 40) {
+    const runTimeoutSecs = Math.max(1, httpSecs - 1);
+    const requestTimeoutSecs = Math.max(1, runTimeoutSecs - 1);
+    return { requestTimeoutSecs, runTimeoutSecs };
+  }
+  const runTimeoutSecs = Math.max(1, httpSecs - 5);
+  const requestTimeoutSecs = Math.max(1, Math.min(40, runTimeoutSecs - 15));
   return { requestTimeoutSecs, runTimeoutSecs };
 }
 
