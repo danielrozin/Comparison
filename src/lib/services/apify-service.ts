@@ -160,7 +160,11 @@ export async function runApifyActorSync(
       signal: controller.signal,
     });
     if (!response.ok) {
-      return { ok: false, status: response.status, items: [], failure: "http" };
+      // A run the platform kills comes back as HTTP 400, not as a client abort:
+      // {"error":{"type":"run-failed","message":"... status: TIMED-OUT."}}
+      // That is a timeout. Other 400s (bad input, a FAILED run) stay http errors.
+      const failure = (await apifySyncFailureFromError(response)) ?? "http";
+      return { ok: false, status: response.status, items: [], failure };
     }
     const data: unknown = await response.json();
     if (!Array.isArray(data)) {
@@ -212,6 +216,42 @@ function isAbortError(error: unknown): boolean {
   if (!error || typeof error !== "object") return false;
   const name = (error as { name?: unknown }).name;
   return name === "AbortError" || name === "TimeoutError";
+}
+
+/** Error bodies are small JSON. Ignore anything larger instead of logging it. */
+const APIFY_ERROR_BODY_MAX_CHARS = 4_000;
+
+/**
+ * Read a failed sync response and return "timeout" when Apify says the run
+ * was TIMED-OUT. Returns null for every other failure so the caller keeps
+ * the HTTP status. The body is not logged: it can carry a run id.
+ */
+async function apifySyncFailureFromError(response: Response): Promise<ApifySyncFailure | null> {
+  let text = "";
+  try {
+    text = await response.text();
+  } catch {
+    return null;
+  }
+  return isApifyRunTimedOut(text) ? "timeout" : null;
+}
+
+function isApifyRunTimedOut(text: string): boolean {
+  const sample = text.slice(0, APIFY_ERROR_BODY_MAX_CHARS);
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(sample);
+  } catch {
+    return false;
+  }
+  if (!parsed || typeof parsed !== "object") return false;
+  const error = (parsed as { error?: unknown }).error;
+  if (!error || typeof error !== "object") return false;
+  const record = error as { message?: unknown; status?: unknown };
+  if (typeof record.status === "string" && record.status.toUpperCase() === "TIMED-OUT") {
+    return true;
+  }
+  return typeof record.message === "string" && /status:\s*TIMED-OUT\b/i.test(record.message);
 }
 
 async function startApifyRun(

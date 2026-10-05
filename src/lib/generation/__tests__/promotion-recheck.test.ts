@@ -2,10 +2,12 @@ import { describe, expect, it, vi } from "vitest";
 import {
   anthropicCallsAllowed,
   eligiblePromotionCandidates,
+  PROMOTION_SEARCH_TIME_BUDGET_MS,
   promotionRecheckLimitsFromEnv,
   runPromotionRecheck,
   type PromotionRecheckDeps,
 } from "@/lib/generation/promotion-recheck";
+import { APIFY_PROMOTION_SEARCH_TIMEOUT_MS } from "@/lib/services/apify-search";
 import { provisionalRecheckQuery } from "@/lib/services/comparison-service";
 import type { ComparisonPageData } from "@/types";
 
@@ -127,7 +129,15 @@ describe("runPromotionRecheck", () => {
     expect(report.processed).toBe(1);
   });
 
-  it("stops starting searches once 90s of the 120s cron have elapsed", async () => {
+  it("leaves room to finish a search and save before the 120s cron is killed", () => {
+    expect(PROMOTION_SEARCH_TIME_BUDGET_MS).toBeGreaterThan(0);
+    expect(APIFY_PROMOTION_SEARCH_TIMEOUT_MS).toBeGreaterThan(30_000);
+    expect(PROMOTION_SEARCH_TIME_BUDGET_MS + APIFY_PROMOTION_SEARCH_TIMEOUT_MS).toBeLessThan(
+      120_000,
+    );
+  });
+
+  it("stops starting searches once the cron no longer has time for one full search", async () => {
     const start = new Date("2026-10-03T21:00:00.000Z").getTime();
     let now = start;
     const pages = {
@@ -137,7 +147,7 @@ describe("runPromotionRecheck", () => {
     const { deps, save } = harness(pages);
     deps.now = () => new Date(now);
     const enrich = vi.fn(async () => {
-      now += 90_000;
+      now += PROMOTION_SEARCH_TIME_BUDGET_MS;
       return [
         { name: "rei.com", url: "https://www.rei.com/canoe" },
         { name: "wikipedia.org", url: "https://en.wikipedia.org/wiki/Kayak" },

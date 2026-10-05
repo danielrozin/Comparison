@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  APIFY_PROMOTION_SEARCH_TIMEOUT_MS,
+  APIFY_SEARCH_TIMEOUT_MS,
   enrichComparisonData,
   SEARCH_PROVIDER,
   searchWeb,
@@ -43,6 +45,7 @@ function jsonResponse(body: unknown, status = 201) {
     status,
     statusText: status === 201 ? "Created" : "Error",
     json: async () => body,
+    text: async () => JSON.stringify(body),
   };
 }
 
@@ -241,6 +244,92 @@ describe("Apify web search", () => {
     );
     expect(fetchMock).not.toHaveBeenCalled();
     expect(await searchWeb("cambodia vs laos")).toEqual([]);
+  });
+
+  it("keeps the on-demand search inside the 60s generate route", () => {
+    // The model call is capped at 45s. Growing this search would push a full
+    // generate past the route limit. Promotion has its own longer budget.
+    expect(APIFY_SEARCH_TIMEOUT_MS).toBeLessThanOrEqual(17_000);
+    expect(APIFY_SEARCH_TIMEOUT_MS + 45_000).toBeLessThanOrEqual(62_000);
+  });
+
+  it("gives a promotion search a run timeout above the measured 27s successes", async () => {
+    vi.stubEnv("APIFY_API_TOKEN", TOKEN);
+    const fetchMock = vi.fn<
+      (url: string, init?: RequestInit) => Promise<ReturnType<typeof jsonResponse>>
+    >(async () => jsonResponse([ragHit]));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await searchWebDetailed("cambodia vs laos", 5, undefined, {
+      timeoutMs: APIFY_PROMOTION_SEARCH_TIMEOUT_MS,
+      logFailures: false,
+    });
+
+    const [url, init] = fetchMock.mock.calls[0] ?? [];
+    expect(String(url)).toBe(
+      "https://api.apify.com/v2/acts/apify~rag-web-browser/run-sync-get-dataset-items?timeout=60&memory=4096",
+    );
+    const body = JSON.parse(String(init?.body));
+    // The actor's own example request budget is 40s. It stays under the 60s
+    // platform kill so a cold start is not the same moment as the page timeout.
+    expect(body.requestTimeoutSecs).toBe(40);
+    expect(body.requestTimeoutSecs).toBeLessThan(60);
+    expect(APIFY_PROMOTION_SEARCH_TIMEOUT_MS).toBeGreaterThan(60_000);
+  });
+
+  it("classifies Apify's HTTP 400 TIMED-OUT run as a timeout, not a generic 400", async () => {
+    vi.stubEnv("APIFY_API_TOKEN", TOKEN);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        jsonResponse(
+          {
+            error: {
+              type: "run-failed",
+              message:
+                "Actor run did not succeed (run ID: run-should-not-be-logged, status: TIMED-OUT).",
+            },
+          },
+          400,
+        ),
+      ),
+    );
+
+    const timedOut = await searchWebDetailed("cambodia vs laos");
+
+    expect(timedOut).toEqual({ ok: false, results: [], error: { type: "timeout" } });
+    expect(webSearchProviderErrorReason(timedOut.ok ? { type: "network" } : timedOut.error)).toBe(
+      "search_provider_error:timeout",
+    );
+    expect(warn).toHaveBeenCalledWith(
+      `search_provider_error:timeout provider=${SEARCH_PROVIDER}`,
+    );
+    expect(warn.mock.calls.flat().join(" ")).not.toContain("run-should-not-be-logged");
+    expect(warn.mock.calls.flat().join(" ")).not.toContain(TOKEN);
+  });
+
+  it("keeps a failed actor run and a bad input as HTTP errors", async () => {
+    vi.stubEnv("APIFY_API_TOKEN", TOKEN);
+    const bodies = [
+      {
+        error: {
+          type: "run-failed",
+          message: "Actor run did not succeed (run ID: run-should-not-be-logged, status: FAILED).",
+        },
+      },
+      { error: { type: "invalid-input", message: "Field input.query is required" } },
+    ];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => jsonResponse(bodies.shift(), 400)),
+    );
+
+    const failed = await searchWebDetailed("cambodia vs laos");
+    const invalid = await searchWebDetailed("cambodia vs laos");
+
+    expect(failed).toEqual({ ok: false, results: [], error: { type: "http", status: 400 } });
+    expect(invalid).toEqual({ ok: false, results: [], error: { type: "http", status: 400 } });
+    expect(warn.mock.calls.flat().join(" ")).not.toContain("run-should-not-be-logged");
   });
 
   it("classifies an aborted request as a timeout", async () => {

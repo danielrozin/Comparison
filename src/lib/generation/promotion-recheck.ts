@@ -35,8 +35,24 @@ import {
   enrichComparisonData,
 } from "@/lib/services/apify-search";
 
-/** Leave the last 30s of the 120s cron for the search already in flight. */
-export const PROMOTION_SEARCH_TIME_BUDGET_MS = 90_000;
+/** Vercel `maxDuration` on `/api/cron/promote-provisional`. */
+const PROMOTION_CRON_MAX_MS = 120_000;
+
+/**
+ * Save and cache warm after the search returns. A search started with less
+ * than one full search plus this slack would still be running when Vercel
+ * kills the function, and the page would stay in the queue.
+ */
+const PROMOTION_AFTER_SEARCH_MS = 15_000;
+
+/**
+ * Do not start another enrichment once this much of the cron has elapsed.
+ * One enrichment waits up to `APIFY_PROMOTION_SEARCH_TIMEOUT_MS` (three
+ * searches at once). A fast run still fits a second enrichment; a run that
+ * uses the full wait does one, and the rest stay queued for the next cron.
+ */
+export const PROMOTION_SEARCH_TIME_BUDGET_MS =
+  PROMOTION_CRON_MAX_MS - APIFY_PROMOTION_SEARCH_TIMEOUT_MS - PROMOTION_AFTER_SEARCH_MS;
 
 export const DEFAULT_PROMOTION_RECHECK_BATCH = 10;
 export const DEFAULT_PROMOTION_MAX_ATTEMPTS = 5;
