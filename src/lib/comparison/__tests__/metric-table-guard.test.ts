@@ -48,6 +48,10 @@ describe("canonicalizeMetricName", () => {
     expect(canonicalizeMetricName("Revenue Diversification", null, ["Uber", "Lyft"])).not.toBe(
       "annual revenue",
     );
+    expect(canonicalizeMetricName("Nominal GDP Size", null, labels)).toBe("nominal gdp");
+    expect(canonicalizeMetricName("Manufacturing as % of GDP", null, labels)).not.toBe("nominal gdp");
+    expect(canonicalizeMetricName("Healthcare Spending (% of GDP)", null, labels)).not.toBe("nominal gdp");
+    expect(canonicalizeMetricName("R&D Spending as % of GDP", null, labels)).not.toBe("nominal gdp");
     expect(canonicalizeMetricName("Geographic Coverage", null, ["Uber", "Lyft"])).toBe(
       canonicalizeMetricName("Global Market Presence", null, ["Uber", "Lyft"]),
     );

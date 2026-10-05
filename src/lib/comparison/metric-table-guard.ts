@@ -95,9 +95,16 @@ export function canonicalizeMetricName(
 
   const entityTokens = new Set<string>();
   for (const label of entityLabels) {
-    for (const part of label.toLowerCase().split(/[^a-z0-9]+/)) {
+    const parts = label.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+    for (const part of parts) {
       if (part.length >= 2 && !PROTECTED_TOKENS.has(part)) entityTokens.add(part);
     }
+    const joined = parts.join(" ");
+    if (joined.includes("united states")) {
+      entityTokens.add("us");
+      entityTokens.add("usa");
+    }
+    if (joined.includes("united kingdom")) entityTokens.add("uk");
   }
 
   const tokens = text
@@ -115,7 +122,7 @@ function canonicalFromTokens(tokens: string[]): string {
     return set.has("ppp") ? "gdp per capita ppp" : "gdp per capita";
   }
   if (set.has("ppp") && set.has("gdp")) return "gdp ppp";
-  if (set.has("gdp")) return "nominal gdp";
+  if (isNominalGdp(set)) return "nominal gdp";
   if (set.has("commission") || (set.has("platform") && set.has("fee"))) return "driver commission";
   if (isAnnualRevenue(set)) return "annual revenue";
   if (
@@ -135,6 +142,17 @@ function canonicalFromTokens(tokens: string[]): string {
   const generic = tokens.filter((token) => !FILLER_TOKENS.has(token));
   const used = generic.length > 0 ? generic : tokens;
   return [...used].sort().join(" ");
+}
+
+/**
+ * "Nominal GDP" and "GDP (nominal)" are one metric. "Manufacturing as % of GDP"
+ * and "R&D spending as % of GDP" are different metrics and stay separate.
+ */
+function isNominalGdp(tokens: Set<string>): boolean {
+  if (!tokens.has("gdp")) return false;
+  const allowed = new Set(["gdp", "nominal", "gross", "domestic", "product", "annual", "current"]);
+  const extras = [...tokens].filter((token) => !allowed.has(token) && !FILLER_TOKENS.has(token));
+  return extras.length === 0;
 }
 
 /** Dollar revenue, not "revenue diversification" or "revenue growth". */
@@ -576,27 +594,69 @@ export interface MetricQualityScore {
   copiedRowCount: number;
 }
 
-/** Read-only quality score. Counts the stored rows and the rows the guard would keep. */
-export function scoreComparisonMetrics(page: ComparisonPageData): MetricQualityScore {
+/** One canonical metric that the guard would collapse or drop. */
+export interface MetricConflict {
+  /** Canonical name, such as "nominal gdp". */
+  metric: string;
+  /** Stored row the guard keeps. Null when every row for this metric is dropped. */
+  kept: string | null;
+  /** Every stored row, including the kept one. Each line is "Name — Entity: value | Entity: value". */
+  values: string[];
+}
+
+export interface MetricInspection extends MetricQualityScore {
+  conflicts: MetricConflict[];
+}
+
+function emptyInspection(slug: string, rawRowCount: number): MetricInspection {
+  return {
+    slug,
+    rawRowCount,
+    guardedRowCount: rawRowCount,
+    duplicateGroupCount: 0,
+    conflictingRowCount: 0,
+    identicalRowCount: 0,
+    copiedRowCount: 0,
+    conflicts: [],
+  };
+}
+
+function formatStoredRow(page: ComparisonPageData, row: RankedRow): string {
+  const cells = page.entities.map((entity, index) => {
+    const cell = row.cells[index]?.trim();
+    return `${entity.name}: ${cell || "—"}`;
+  });
+  return `${row.attr.name} — ${cells.join(" | ")}`;
+}
+
+function isConflictGroup(
+  rows: RankedRow[],
+  selected: RankedRow | null,
+  scorecard: ScorecardRef | undefined,
+): boolean {
+  if (rows.length === 0) return false;
+  if (!selected || rows.length > 1) return true;
+  const row = rows[0];
+  if (row.copied && !row.scorecard) return true;
+  if (row.identical && !row.scorecard) return true;
+  if (scorecard && !row.scorecard) return true;
+  return false;
+}
+
+/** Read-only inspection: counts plus the conflicting values and the kept row. */
+export function inspectComparisonMetrics(page: ComparisonPageData): MetricInspection {
   const rawRowCount = page.attributes.length;
-  if (page.entities.length < 2) {
-    return {
-      slug: page.slug,
-      rawRowCount,
-      guardedRowCount: rawRowCount,
-      duplicateGroupCount: 0,
-      conflictingRowCount: 0,
-      identicalRowCount: 0,
-      copiedRowCount: 0,
-    };
-  }
+  if (page.entities.length < 2) return emptyInspection(page.slug, rawRowCount);
 
   const prepared = prepare(page);
   let duplicateGroupCount = 0;
   let conflictingRowCount = 0;
   let identicalRowCount = 0;
   let copiedRowCount = 0;
-  for (const [key, rows] of prepared.groups) {
+  const conflicts: MetricConflict[] = [];
+
+  for (const key of prepared.groupOrder) {
+    const rows = prepared.groups.get(key) ?? [];
     if (rows.length > 1) duplicateGroupCount += 1;
     const scorecard = prepared.scorecards.get(key);
     for (const row of rows) {
@@ -604,6 +664,13 @@ export function scoreComparisonMetrics(page: ComparisonPageData): MetricQualityS
       if (row.copied) copiedRowCount += 1;
       if (scorecard && !row.scorecard) conflictingRowCount += 1;
     }
+    const selected = chooseRow(rows, scorecard);
+    if (!isConflictGroup(rows, selected, scorecard)) continue;
+    conflicts.push({
+      metric: key,
+      kept: selected ? formatStoredRow(page, selected) : null,
+      values: rows.map((row) => formatStoredRow(page, row)),
+    });
   }
 
   return {
@@ -614,6 +681,21 @@ export function scoreComparisonMetrics(page: ComparisonPageData): MetricQualityS
     conflictingRowCount,
     identicalRowCount,
     copiedRowCount,
+    conflicts,
+  };
+}
+
+/** Read-only quality score. Counts the stored rows and the rows the guard would keep. */
+export function scoreComparisonMetrics(page: ComparisonPageData): MetricQualityScore {
+  const inspection = inspectComparisonMetrics(page);
+  return {
+    slug: inspection.slug,
+    rawRowCount: inspection.rawRowCount,
+    guardedRowCount: inspection.guardedRowCount,
+    duplicateGroupCount: inspection.duplicateGroupCount,
+    conflictingRowCount: inspection.conflictingRowCount,
+    identicalRowCount: inspection.identicalRowCount,
+    copiedRowCount: inspection.copiedRowCount,
   };
 }
 

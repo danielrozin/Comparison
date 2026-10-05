@@ -4,6 +4,10 @@
  * Read-only. It never inserts, updates, or deletes. With a real DATABASE_URL
  * it reads published comparisons. Otherwise it scores the in-repo fixtures.
  *
+ * Priority slugs are listed first, in a fixed order, each with the conflicting
+ * values and the value the guard keeps. The next tier follows. Every other
+ * page is then ranked. Conflict lists for the ranked pages are omitted.
+ *
  * The report is written under reports/ (gitignored). Pass --stdout to skip
  * the file. Pass --out <path> to choose a different path.
  *
@@ -14,15 +18,21 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { ComparisonAttribute, ComparisonPageData, KeyDifference } from "../src/types";
+import { applyEditorialAeoOverlay } from "../src/lib/data/editorial-aeo-overlays";
+import { getEditorialComparison, mergeEditorialEnrichment } from "../src/lib/data/editorial-compares";
 import {
-  isCompareMetricDedupeEnabled,
-  scoreComparisonMetrics,
-  type MetricQualityScore,
-} from "../src/lib/comparison/metric-table-guard";
+  buildCompareMetricAudit,
+  COMPARE_AUDIT_WORST_LIMIT,
+  NEXT_TIER_COMPARE_SLUGS,
+  PRIORITY_COMPARE_SLUGS,
+  type AuditedComparePage,
+  type CompareMetricAudit,
+} from "../src/lib/comparison/metric-audit";
+import { isCompareMetricDedupeEnabled } from "../src/lib/comparison/metric-table-guard";
 import { lyftVsUberFixture, usVsChinaGdpFixture } from "../src/lib/comparison/metric-table-fixtures";
 
-const WORST_LIMIT = 50;
 const DEFAULT_OUT = path.join("reports", "compare-metric-dupes.local.json");
+const FOCUS_SLUGS = [...PRIORITY_COMPARE_SLUGS, ...NEXT_TIER_COMPARE_SLUGS];
 
 interface Report {
   generatedAt: string;
@@ -32,7 +42,10 @@ interface Report {
   pagesWithDuplicates: number;
   pagesWithConflicts: number;
   pagesWithIdenticalRows: number;
-  worst: MetricQualityScore[];
+  priority: AuditedComparePage[];
+  nextTier: AuditedComparePage[];
+  /** Other pages, worst first. Conflict lists are empty here. */
+  ranked: AuditedComparePage[];
 }
 
 function arg(name: string): string | null {
@@ -41,25 +54,51 @@ function arg(name: string): string | null {
   return process.argv[index + 1] ?? null;
 }
 
-function severity(score: MetricQualityScore): number {
-  return score.duplicateGroupCount * 10 + score.conflictingRowCount + score.identicalRowCount + score.copiedRowCount;
+function countPages(audit: CompareMetricAudit, pick: (page: AuditedComparePage) => boolean): number {
+  return [...audit.priority, ...audit.nextTier, ...audit.ranked].filter((page) => page.found && pick(page)).length;
 }
 
 function reportFor(pages: ComparisonPageData[], mode: Report["mode"]): Report {
-  const scores = pages
-    .map((page) => scoreComparisonMetrics(page))
-    .filter((score) => score.rawRowCount > 0);
-  const worst = [...scores].sort((a, b) => severity(b) - severity(a) || b.rawRowCount - a.rawRowCount).slice(0, WORST_LIMIT);
+  const audit = buildCompareMetricAudit(pages, Number.MAX_SAFE_INTEGER);
+  const counted = { ...audit };
   return {
     generatedAt: new Date().toISOString(),
     mode,
     guardEnabled: isCompareMetricDedupeEnabled(),
-    pageCount: scores.length,
-    pagesWithDuplicates: scores.filter((score) => score.duplicateGroupCount > 0).length,
-    pagesWithConflicts: scores.filter((score) => score.conflictingRowCount > 0).length,
-    pagesWithIdenticalRows: scores.filter((score) => score.identicalRowCount > 0).length,
-    worst,
+    pageCount: pages.length,
+    pagesWithDuplicates: countPages(counted, (page) => page.duplicateGroupCount > 0),
+    pagesWithConflicts: countPages(counted, (page) => page.conflictingRowCount > 0),
+    pagesWithIdenticalRows: countPages(counted, (page) => page.identicalRowCount > 0),
+    priority: audit.priority,
+    nextTier: audit.nextTier,
+    ranked: audit.ranked.slice(0, COMPARE_AUDIT_WORST_LIMIT),
   };
+}
+
+function pageSummary(page: AuditedComparePage): string {
+  if (!page.found) return `${page.slug}  not loaded`;
+  return `${page.slug}  raw ${page.rawRowCount} -> guarded ${page.guardedRowCount}`
+    + `  dupes ${page.duplicateGroupCount}  conflicts ${page.conflictingRowCount}`
+    + `  identical ${page.identicalRowCount}  copied ${page.copiedRowCount}`
+    + `  conflict metrics ${page.conflicts.length}`;
+}
+
+function printConflicts(page: AuditedComparePage): void {
+  if (!page.found) {
+    console.log("    (no stored or editorial page for this slug)");
+    return;
+  }
+  if (page.conflicts.length === 0) {
+    console.log("    (no conflicting metrics)");
+    return;
+  }
+  for (const conflict of page.conflicts) {
+    console.log(`    ${conflict.metric}`);
+    console.log(`      kept: ${conflict.kept ?? "(dropped)"}`);
+    for (const value of conflict.values) {
+      console.log(`      - ${value}`);
+    }
+  }
 }
 
 function printReport(report: Report): void {
@@ -69,15 +108,63 @@ function printReport(report: Report): void {
   console.log(`Pages with duplicate metric groups: ${report.pagesWithDuplicates}`);
   console.log(`Pages with scorecard conflicts: ${report.pagesWithConflicts}`);
   console.log(`Pages with identical-column rows: ${report.pagesWithIdenticalRows}`);
-  console.log(`Worst ${report.worst.length}:`);
-  for (const score of report.worst) {
-    console.log(
-      `  ${score.slug}  raw ${score.rawRowCount} -> guarded ${score.guardedRowCount}` +
-        `  dupes ${score.duplicateGroupCount}  conflicts ${score.conflictingRowCount}` +
-        `  identical ${score.identicalRowCount}  copied ${score.copiedRowCount}`,
-    );
+  console.log("Priority:");
+  for (const page of report.priority) {
+    console.log(`  ${pageSummary(page)}`);
+    printConflicts(page);
+  }
+  console.log("Next tier:");
+  for (const page of report.nextTier) {
+    console.log(`  ${pageSummary(page)}`);
+    printConflicts(page);
+  }
+  console.log(`Ranked rest (worst ${report.ranked.length}):`);
+  for (const page of report.ranked) {
+    console.log(`  ${pageSummary(page)}`);
   }
 }
+
+const AUDIT_SELECT = {
+  slug: true,
+  title: true,
+  shortAnswer: true,
+  keyDifferences: true,
+  content: true,
+  entities: {
+    orderBy: { position: "asc" as const },
+    select: {
+      position: true,
+      entity: {
+        select: {
+          id: true,
+          slug: true,
+          name: true,
+          attributeValues: {
+            select: {
+              valueText: true,
+              valueNumber: true,
+              valueBoolean: true,
+              source: true,
+              updatedAt: true,
+              asOfDate: true,
+              attribute: {
+                select: {
+                  id: true,
+                  slug: true,
+                  name: true,
+                  unit: true,
+                  category: true,
+                  dataType: true,
+                  higherIsBetter: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
 
 function stamp(value: Date | string | null | undefined): string | null {
   if (value instanceof Date) return value.toISOString();
@@ -95,53 +182,23 @@ async function loadPublishedPages(): Promise<ComparisonPageData[] | null> {
   const prisma = getPrisma();
   if (!prisma) return null;
 
-  // findMany is the only Prisma call. This script must not write.
-  const rows = await prisma.comparison.findMany({
-    where: { status: "published" },
-    select: {
-      slug: true,
-      title: true,
-      shortAnswer: true,
-      keyDifferences: true,
-      content: true,
-      entities: {
-        orderBy: { position: "asc" },
-        select: {
-          position: true,
-          entity: {
-            select: {
-              id: true,
-              slug: true,
-              name: true,
-              attributeValues: {
-                select: {
-                  valueText: true,
-                  valueNumber: true,
-                  valueBoolean: true,
-                  source: true,
-                  updatedAt: true,
-                  asOfDate: true,
-                  attribute: {
-                    select: {
-                      id: true,
-                      slug: true,
-                      name: true,
-                      unit: true,
-                      category: true,
-                      dataType: true,
-                      higherIsBetter: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
+  // Both calls are findMany reads. This script must not write.
+  const focusRows = await prisma.comparison.findMany({
+    where: { slug: { in: FOCUS_SLUGS } },
+    select: AUDIT_SELECT,
   });
+  let restRows: AuditRow[] = [];
+  try {
+    restRows = await prisma.comparison.findMany({
+      where: { status: "published", slug: { notIn: FOCUS_SLUGS } },
+      select: AUDIT_SELECT,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`Ranking query failed (${message}). Priority pages are still scored.`);
+  }
 
-  return rows.map((row) => toPage(row));
+  return [...focusRows, ...restRows].map((row) => toPage(row));
 }
 
 interface AuditAttributeValue {
@@ -257,6 +314,23 @@ function toPage(row: AuditRow): ComparisonPageData {
   };
 }
 
+/** Score the page the compare template renders, including editorial replacements. */
+function asRendered(page: ComparisonPageData): ComparisonPageData {
+  return applyEditorialAeoOverlay(mergeEditorialEnrichment(page, getEditorialComparison(page.slug)));
+}
+
+function withEditorialFallbacks(pages: ComparisonPageData[]): ComparisonPageData[] {
+  const seen = new Set(pages.map((page) => page.slug));
+  const extras: ComparisonPageData[] = [];
+  for (const slug of FOCUS_SLUGS) {
+    if (seen.has(slug)) continue;
+    const editorial = getEditorialComparison(slug);
+    if (!editorial) continue;
+    extras.push(asRendered(editorial));
+  }
+  return [...pages.map(asRendered), ...extras];
+}
+
 async function main(): Promise<void> {
   let pages: ComparisonPageData[] | null = null;
   let mode: Report["mode"] = "fixtures";
@@ -273,6 +347,7 @@ async function main(): Promise<void> {
     pages = [usVsChinaGdpFixture(), lyftVsUberFixture()];
     mode = "fixtures";
   }
+  pages = withEditorialFallbacks(pages);
 
   const report = reportFor(pages, mode);
   printReport(report);
