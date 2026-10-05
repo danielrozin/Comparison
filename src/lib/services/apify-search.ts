@@ -1,9 +1,9 @@
 /**
  * Web search for on-demand comparison generation and provisional promotion.
  *
- * Uses the Apify actor `apify/rag-web-browser` through the sync dataset
- * endpoint. The token is read from `APIFY_API_TOKEN` and sent only as a
- * Bearer header — never in the URL, the logs, or the request body.
+ * Uses the Apify actor `apify/rag-web-browser` through the shared client in
+ * `apify-service` (`runApifyActorSync`). That client reads `APIFY_API_TOKEN`
+ * and sends it as a Bearer header.
  * Server-side only. Do not import this from a client component.
  *
  * Actor reference (checked against the current actor page):
@@ -13,6 +13,8 @@
  * Each dataset item has `metadata.url`, `metadata.title`, and `markdown`.
  * A page that did not finish loading may only have `searchResult`.
  */
+
+import { runApifyActorSync } from "@/lib/services/apify-service";
 
 export interface WebSearchResult {
   url: string;
@@ -59,8 +61,7 @@ export interface EnrichmentResult {
 /** Name stored next to `search_provider_error:<code>` in logs. */
 export const SEARCH_PROVIDER = "apify";
 
-const APIFY_ACTOR_ENDPOINT =
-  "https://api.apify.com/v2/acts/apify~rag-web-browser/run-sync-get-dataset-items";
+const RAG_WEB_BROWSER_ACTOR = "apify~rag-web-browser";
 
 /**
  * HTTP abort for on-demand generation.
@@ -123,68 +124,48 @@ export async function searchWebDetailed(
 ): Promise<WebSearchOutcome> {
   const logFailures = options?.logFailures !== false;
   const waitMs = options?.timeoutMs ?? timeoutMs;
-  const token = readApifyToken();
-  if (!token) {
-    logProviderFailure("missing_key", logFailures);
-    return { ok: false, results: [], error: { type: "missing_key" } };
-  }
-
   const cappedResults = clampMaxResults(maxResults);
   const { requestTimeoutSecs, runTimeoutSecs } = actorBudgets(waitMs);
-  const endpoint = new URL(APIFY_ACTOR_ENDPOINT);
-  endpoint.searchParams.set("timeout", String(runTimeoutSecs));
-  endpoint.searchParams.set("memory", String(ACTOR_MEMORY_MB));
 
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), waitMs);
+  const result = await runApifyActorSync(
+    RAG_WEB_BROWSER_ACTOR,
+    {
+      query,
+      maxResults: cappedResults,
+      outputFormats: ["markdown"],
+      // Plain HTML is about twice as fast as the headless browser. The
+      // pages we cite (articles, specs, references) are mostly static.
+      // https://apify.com/apify/rag-web-browser — "Scraping tool"
+      scrapingTool: "raw-http",
+      requestTimeoutSecs,
+    },
+    {
+      timeoutMs: waitMs,
+      query: { timeout: runTimeoutSecs, memory: ACTOR_MEMORY_MB },
+    },
+  );
 
-  try {
-    const response = await fetch(endpoint.toString(), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        query,
-        maxResults: cappedResults,
-        outputFormats: ["markdown"],
-        // Plain HTML is about twice as fast as the headless browser. The
-        // pages we cite (articles, specs, references) are mostly static.
-        // https://apify.com/apify/rag-web-browser — "Scraping tool"
-        scrapingTool: "raw-http",
-        requestTimeoutSecs,
-      }),
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      logProviderFailure(String(response.status), logFailures);
-      return { ok: false, results: [], error: { type: "http", status: response.status } };
+  if (!result.ok) {
+    if (result.failure === "missing_token") {
+      logProviderFailure("missing_key", logFailures);
+      return { ok: false, results: [], error: { type: "missing_key" } };
     }
-
-    const data: unknown = await response.json();
-    // A 2xx body that is not the dataset array is not "zero hits". Counting
-    // it as an empty search would burn a promotion attempt.
-    if (!Array.isArray(data)) {
-      logProviderFailure("network", logFailures);
-      return { ok: false, results: [], error: { type: "network" } };
-    }
-    const results = data
-      .map((row) => mapRagItem(row))
-      .filter((row): row is WebSearchResult => row !== null);
-    return { ok: true, results };
-  } catch (error) {
-    if (isAbortError(error)) {
+    if (result.failure === "timeout") {
       logProviderFailure("timeout", logFailures);
       return { ok: false, results: [], error: { type: "timeout" } };
     }
-    // The error text can echo the request. Log the code only, never the token.
+    if (result.failure === "http" && result.status != null) {
+      logProviderFailure(String(result.status), logFailures);
+      return { ok: false, results: [], error: { type: "http", status: result.status } };
+    }
     logProviderFailure("network", logFailures);
     return { ok: false, results: [], error: { type: "network" } };
-  } finally {
-    clearTimeout(timer);
   }
+
+  const results = result.items
+    .map((row) => mapRagItem(row))
+    .filter((row): row is WebSearchResult => row !== null);
+  return { ok: true, results };
 }
 
 /**
@@ -258,13 +239,6 @@ export async function enrichComparisonData(
   return returnSources ? { context, sources: allResults, providerError } : context;
 }
 
-function readApifyToken(): string | null {
-  const raw = process.env.APIFY_API_TOKEN;
-  if (typeof raw !== "string") return null;
-  const token = raw.trim();
-  return token.length > 0 ? token : null;
-}
-
 function clampMaxResults(maxResults: number): number {
   if (!Number.isFinite(maxResults)) return 5;
   return Math.min(MAX_RESULTS_CAP, Math.max(1, Math.floor(maxResults)));
@@ -319,10 +293,4 @@ function clipSnippet(value: string): string {
   const text = value.replace(/\s+/g, " ").trim();
   if (text.length <= MAX_SNIPPET_CHARS) return text;
   return text.slice(0, MAX_SNIPPET_CHARS).trim();
-}
-
-function isAbortError(error: unknown): boolean {
-  if (!error || typeof error !== "object") return false;
-  const name = (error as { name?: unknown }).name;
-  return name === "AbortError" || name === "TimeoutError";
 }

@@ -2,8 +2,9 @@
  * Tavily is not the web search provider anymore.
  *
  * These names stay so older imports keep compiling. Every call goes to
- * Apify (`APIFY_API_TOKEN`) through `apify-search`. Nothing in this module
- * reads `TAVILY_API_KEY` or calls api.tavily.com.
+ * Apify through `apify-search`, which uses the shared client in
+ * `apify-service`. Nothing in this module reads `TAVILY_API_KEY` or calls
+ * api.tavily.com.
  */
 
 export {

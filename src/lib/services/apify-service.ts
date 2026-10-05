@@ -1,9 +1,14 @@
 /**
- * Apify Service — Competitor scraping and content gap analysis.
+ * Apify Service — the one place the app calls api.apify.com.
  *
- * Provides two scraping modes:
- *   1. Apify actor-based (requires APIFY_API_TOKEN and credits)
- *   2. Simple fetch-based (free, works for public sitemaps)
+ * Every caller reads `APIFY_API_TOKEN` through `readApifyToken` and sends it
+ * with `apifyFetch` as a Bearer header. The token is never put in the URL.
+ *
+ * Two kinds of work share that client:
+ *   1. Competitor scraping (cheerio actor, async run + dataset poll) and a
+ *      free sitemap fetch that does not call Apify.
+ *   2. Synchronous actor runs (`runApifyActorSync`), used by web search and
+ *      social discovery.
  *
  * Uses Redis (optional) to persist run metadata and content gaps.
  */
@@ -102,19 +107,101 @@ function parseComparisonUrl(
 // Apify helpers
 // ---------------------------------------------------------------------------
 
-const APIFY_BASE = "https://api.apify.com/v2";
+export const APIFY_API_BASE = "https://api.apify.com/v2";
 
-function getToken(): string {
-  const t = process.env.APIFY_API_TOKEN;
-  if (!t) throw new Error("APIFY_API_TOKEN is not set");
-  return t;
+/** The only reader of `APIFY_API_TOKEN`. Blank and whitespace-only values count as unset. */
+export function readApifyToken(): string | null {
+  const raw = process.env.APIFY_API_TOKEN;
+  if (typeof raw !== "string") return null;
+  const token = raw.trim();
+  return token.length > 0 ? token : null;
+}
+
+export type ApifySyncFailure = "missing_token" | "timeout" | "network" | "http";
+
+export type ApifySyncResult =
+  | { ok: true; status: number; items: unknown[] }
+  | { ok: false; status: number | null; items: []; failure: ApifySyncFailure };
+
+export interface ApifySyncOptions {
+  /** HTTP abort for this call. */
+  timeoutMs?: number;
+  /** Actor run query params. `timeout` is seconds, `memory` is megabytes. */
+  query?: Record<string, string | number>;
+}
+
+/**
+ * POST /acts/:actorId/run-sync-get-dataset-items.
+ * A missing token does not call the network. Failures are returned, not thrown,
+ * and the token is not included in any message.
+ */
+export async function runApifyActorSync(
+  actorId: string,
+  input: unknown,
+  options?: ApifySyncOptions,
+): Promise<ApifySyncResult> {
+  if (!readApifyToken()) {
+    return { ok: false, status: null, items: [], failure: "missing_token" };
+  }
+
+  const timeoutMs = options?.timeoutMs ?? 60_000;
+  const endpoint = new URL(`${APIFY_API_BASE}/acts/${actorId}/run-sync-get-dataset-items`);
+  for (const [key, value] of Object.entries(options?.query ?? {})) {
+    endpoint.searchParams.set(key, String(value));
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await apifyFetch(endpoint.toString(), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      return { ok: false, status: response.status, items: [], failure: "http" };
+    }
+    const data: unknown = await response.json();
+    if (!Array.isArray(data)) {
+      return { ok: false, status: response.status, items: [], failure: "network" };
+    }
+    return { ok: true, status: response.status, items: data };
+  } catch (error) {
+    if (isAbortError(error)) {
+      return { ok: false, status: null, items: [], failure: "timeout" };
+    }
+    return { ok: false, status: null, items: [], failure: "network" };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/** Authenticated request. Throws when the token is missing. Never puts the token in the URL. */
+export async function apifyFetch(path: string, init: RequestInit = {}): Promise<Response> {
+  const token = readApifyToken();
+  if (!token) throw new Error("APIFY_API_TOKEN is not set");
+  const url = path.startsWith("http")
+    ? path
+    : `${APIFY_API_BASE}${path.startsWith("/") ? path : `/${path}`}`;
+  const headers = new Headers(init.headers);
+  headers.set("Authorization", `Bearer ${token}`);
+  if (init.body != null && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+  return fetch(url, { ...init, headers });
+}
+
+function isAbortError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const name = (error as { name?: unknown }).name;
+  return name === "AbortError" || name === "TimeoutError";
 }
 
 async function startApifyRun(
   domain: string,
   mode: "sitemap" | "listing"
 ): Promise<string> {
-  const token = getToken();
   const actorId = "apify~cheerio-scraper";
 
   const startUrls =
@@ -152,14 +239,11 @@ async function startApifyRun(
     maxConcurrency: 5,
   };
 
-  const res = await fetch(
-    `${APIFY_BASE}/acts/${actorId}/runs?token=${token}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }
-  );
+  const res = await apifyFetch(`/acts/${actorId}/runs`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 
   if (!res.ok) {
     const text = await res.text();
@@ -180,11 +264,7 @@ async function startApifyRun(
 export async function getApifyRunStatus(
   runId: string
 ): Promise<{ status: string; items?: unknown[] }> {
-  const token = getToken();
-
-  const statusRes = await fetch(
-    `${APIFY_BASE}/actor-runs/${runId}?token=${token}`
-  );
+  const statusRes = await apifyFetch(`/actor-runs/${encodeURIComponent(runId)}`);
   if (!statusRes.ok) {
     throw new Error(`Failed to get run status: ${statusRes.status}`);
   }
@@ -193,8 +273,8 @@ export async function getApifyRunStatus(
 
   if (status === "SUCCEEDED") {
     const datasetId = statusJson.data.defaultDatasetId;
-    const itemsRes = await fetch(
-      `${APIFY_BASE}/datasets/${datasetId}/items?token=${token}&format=json`
+    const itemsRes = await apifyFetch(
+      `/datasets/${encodeURIComponent(datasetId)}/items?format=json`,
     );
     if (!itemsRes.ok) {
       throw new Error(`Failed to get dataset items: ${itemsRes.status}`);

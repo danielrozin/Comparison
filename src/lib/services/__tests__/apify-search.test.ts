@@ -25,6 +25,17 @@ const ragHit = {
   markdown: "  Cambodia is a country in Southeast Asia.\n\nIt borders Laos.  ",
 };
 
+function headerValue(headers: HeadersInit | undefined, name: string): string | null {
+  if (!headers) return null;
+  if (headers instanceof Headers) return headers.get(name);
+  if (Array.isArray(headers)) {
+    const found = headers.find(([key]) => key.toLowerCase() === name);
+    return found ? found[1] : null;
+  }
+  const record = headers as Record<string, string>;
+  return record[name] ?? record[name.toLowerCase()] ?? null;
+}
+
 function jsonResponse(body: unknown, status = 201) {
   return {
     ok: status >= 200 && status < 300,
@@ -88,8 +99,7 @@ describe("Apify web search", () => {
     );
     expect(String(url)).not.toContain(TOKEN);
     expect(String(url)).not.toContain("token=");
-    const headers = init?.headers as Record<string, string>;
-    expect(headers.Authorization).toBe(`Bearer ${TOKEN}`);
+    expect(headerValue(init?.headers, "authorization")).toBe(`Bearer ${TOKEN}`);
     const body = JSON.parse(String(init?.body));
     expect(body).toMatchObject({
       query: "cambodia vs laos",
