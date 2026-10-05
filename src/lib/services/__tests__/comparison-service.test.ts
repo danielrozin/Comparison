@@ -84,11 +84,16 @@ describe('Comparison Service (mock-data fallback)', () => {
       expect(result!.quickAnswer?.winnerName).toBeNull()
       expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
       expect(result!.keyDifferences.map((d) => d.label)).toEqual([
-        'GPU Power',
+        'GPU',
+        'SSD capacity',
+        'Subscription',
         'SSD Speed',
         'Exclusive Games',
-        'Subscription Value',
       ])
+      const gpu = result!.keyDifferences.find((row) => row.label === 'GPU')
+      expect(gpu?.entityAValue).toContain('10.3 TFLOPS')
+      expect(gpu?.entityBValue).toContain('12 TFLOPS')
+      expect(result!.keyDifferences.find((row) => row.label === 'SSD capacity')?.entityAValue).toMatch(/825GB/)
     })
 
     it('applies citation AEO overlays on figma, canva, chatgpt, cursor, android, and nvidia compares', async () => {
@@ -105,7 +110,16 @@ describe('Comparison Service (mock-data fallback)', () => {
         expect(result!.faqs.map((f) => f.question)).toEqual(overlay!.faqs.map((f) => f.question))
         expect(result!.faqs.length).toBeGreaterThan(0)
         expect(result!.faqs.length).toBeLessThanOrEqual(8)
-        expect(result!.keyDifferences).toEqual(scorecard)
+        if (overlay!.metricMerge && overlay!.facts) {
+          for (const fact of overlay!.facts) {
+            const row = result!.keyDifferences.find((diff) => diff.label === fact.label)
+            expect(row, `${slug} ${fact.label}`).toBeTruthy()
+            const texts = [row!.entityAValue, row!.entityBValue]
+            for (const cell of fact.cells) expect(texts).toContain(cell.text)
+          }
+        } else {
+          expect(result!.keyDifferences).toEqual(scorecard)
+        }
         expect(result!.verdict).toBe(mock!.verdict)
       }
     })
