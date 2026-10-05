@@ -127,6 +127,34 @@ describe("runPromotionRecheck", () => {
     expect(report.processed).toBe(1);
   });
 
+  it("stops starting searches once 90s of the 120s cron have elapsed", async () => {
+    const start = new Date("2026-10-03T21:00:00.000Z").getTime();
+    let now = start;
+    const pages = {
+      "one-vs-two": page({ slug: "one-vs-two" }),
+      "three-vs-four": page({ slug: "three-vs-four" }),
+    };
+    const { deps, save } = harness(pages);
+    deps.now = () => new Date(now);
+    const enrich = vi.fn(async () => {
+      now += 90_000;
+      return [
+        { name: "rei.com", url: "https://www.rei.com/canoe" },
+        { name: "wikipedia.org", url: "https://en.wikipedia.org/wiki/Kayak" },
+      ];
+    });
+    deps.enrich = enrich;
+
+    const report = await runPromotionRecheck(deps);
+
+    expect(enrich).toHaveBeenCalledTimes(1);
+    expect(enrich).toHaveBeenCalledWith("Canoe", "Kayak");
+    expect(report.deferred).toBe(1);
+    expect(report.tavilyCalls).toBe(1);
+    expect(save).toHaveBeenCalledTimes(1);
+    expect(save).toHaveBeenCalledWith(expect.objectContaining({ slug: "one-vs-two" }));
+  });
+
   it("does not spend Tavily when the attribute table cannot pass", async () => {
     const polluted = page({
       attributes: Array.from({ length: 6 }, (_, index) => ({
@@ -219,6 +247,7 @@ describe("runPromotionRecheck", () => {
     });
     expect(warn).toHaveBeenCalledTimes(1);
     const warning = String(warn.mock.calls[0]?.[0]);
+    expect(warning).toContain("provider=apify");
     expect(warning).toContain("search_provider_error:429 x1");
     expect(warning).toContain("search_provider_error:timeout x1");
     expect(warning).not.toContain("test-key");

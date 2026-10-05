@@ -2,13 +2,14 @@
  * Content Discovery Service
  * Pulls comparison topics and blog ideas from multiple data sources:
  * - Reddit (public JSON API)
- * - Quora (via Tavily search)
- * - Tavily (trending comparison topics)
+ * - Quora (via Apify web search)
+ * - Apify web search (trending comparison topics)
  * - DataForSEO (keyword discovery)
  *
  * All sources are queried in parallel with graceful failure handling.
  */
 
+import { readApifyToken, runApifyActorSync } from "@/lib/services/apify-service";
 import { searchTavily } from "@/lib/services/tavily-service";
 import { discoverByCategory, type DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
 
@@ -199,7 +200,7 @@ export async function discoverFromReddit(
 }
 
 // ---------------------------------------------------------------------------
-// Quora (via Tavily site-search)
+// Quora (via Apify web search, site:quora.com)
 // ---------------------------------------------------------------------------
 
 export async function discoverFromQuora(
@@ -243,7 +244,7 @@ export async function discoverFromQuora(
 }
 
 // ---------------------------------------------------------------------------
-// Tavily (trending comparison topics)
+// Web search (trending comparison topics). The stored source label is still "tavily".
 // ---------------------------------------------------------------------------
 
 export async function discoverFromTavily(
@@ -291,8 +292,8 @@ export async function discoverFromTavily(
           sourceUrl: r.url,
         });
       }
-    } catch (err) {
-      console.warn(`Tavily discovery failed for ${cats}:`, err instanceof Error ? err.message : err);
+    } catch {
+      console.warn(`search_provider_error:network provider=apify (discovery ${cats})`);
     }
   }
 
@@ -370,37 +371,20 @@ export async function discoverFromGSC(): Promise<DiscoveredTopic[]> {
 // Apify Social Media Scrapers (Twitter/X, Facebook, Instagram)
 // ---------------------------------------------------------------------------
 
-const APIFY_BASE = "https://api.apify.com/v2";
-
-function getApifyToken(): string | null {
-  return process.env.APIFY_API_TOKEN || null;
-}
-
-/** Run an Apify actor synchronously and return dataset items (with timeout). */
-async function runApifyActorSync(
+/** Social discovery keeps the old "empty list on HTTP failure" behavior. Timeouts still throw. */
+async function loadApifyDataset(
   actorId: string,
   input: Record<string, unknown>,
-  timeoutMs = 60_000
+  timeoutMs = 60_000,
 ): Promise<Record<string, unknown>[]> {
-  const token = getApifyToken();
-  if (!token) return [];
-
-  const res = await fetch(
-    `${APIFY_BASE}/acts/${actorId}/run-sync-get-dataset-items?token=${token}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
-      signal: AbortSignal.timeout(timeoutMs),
-    }
-  );
-
-  if (!res.ok) {
-    console.warn(`Apify actor ${actorId} failed: ${res.status}`);
+  const result = await runApifyActorSync(actorId, input, { timeoutMs });
+  if (result.ok) return result.items as Record<string, unknown>[];
+  if (result.failure === "http") {
+    console.warn(`Apify actor ${actorId} failed: ${result.status}`);
     return [];
   }
-
-  return (await res.json()) as Record<string, unknown>[];
+  if (result.failure === "missing_token") return [];
+  throw new Error(`Apify actor ${actorId} failed (${result.failure})`);
 }
 
 /**
@@ -408,7 +392,7 @@ async function runApifyActorSync(
  * Uses the Tweet Scraper V2 actor to find tweets with comparison keywords.
  */
 export async function discoverFromTwitter(): Promise<DiscoveredTopic[]> {
-  if (!getApifyToken()) return [];
+  if (!readApifyToken()) return [];
 
   const topics: DiscoveredTopic[] = [];
   const searchQueries = [
@@ -421,7 +405,7 @@ export async function discoverFromTwitter(): Promise<DiscoveredTopic[]> {
 
   try {
     // apidojo~tweet-scraper (134M+ runs, most popular Twitter actor)
-    const items = await runApifyActorSync("apidojo~tweet-scraper", {
+    const items = await loadApifyDataset("apidojo~tweet-scraper", {
       searchTerms: searchQueries,
       maxTweets: 100,
       searchMode: "live",
@@ -463,13 +447,13 @@ export async function discoverFromTwitter(): Promise<DiscoveredTopic[]> {
  * Searches public Facebook posts for comparison discussions.
  */
 export async function discoverFromFacebook(): Promise<DiscoveredTopic[]> {
-  if (!getApifyToken()) return [];
+  if (!readApifyToken()) return [];
 
   const topics: DiscoveredTopic[] = [];
 
   try {
     // apify~facebook-posts-scraper for public post search
-    const items = await runApifyActorSync("apify~facebook-posts-scraper", {
+    const items = await loadApifyDataset("apify~facebook-posts-scraper", {
       searchType: "posts",
       searchQueries: ["vs comparison 2026", "versus which is better", "compared to review", "which one is better buy"],
       maxPosts: 100,
@@ -513,14 +497,14 @@ export async function discoverFromFacebook(): Promise<DiscoveredTopic[]> {
  * Searches Instagram hashtags and posts for comparison content.
  */
 export async function discoverFromInstagram(): Promise<DiscoveredTopic[]> {
-  if (!getApifyToken()) return [];
+  if (!readApifyToken()) return [];
 
   const topics: DiscoveredTopic[] = [];
   const hashtags = ["vs", "versus", "comparison", "whichisbetter", "headtohead", "review2026"];
 
   try {
     // apify~instagram-scraper (107M+ runs, most popular Instagram actor)
-    const items = await runApifyActorSync("apify~instagram-scraper", {
+    const items = await loadApifyDataset("apify~instagram-scraper", {
       search: hashtags.join(" "),
       searchType: "hashtag",
       resultsLimit: 100,
@@ -562,13 +546,13 @@ export async function discoverFromInstagram(): Promise<DiscoveredTopic[]> {
  * Uses the TikTok Scraper actor to find comparison videos.
  */
 export async function discoverFromTikTok(): Promise<DiscoveredTopic[]> {
-  if (!getApifyToken()) return [];
+  if (!readApifyToken()) return [];
 
   const topics: DiscoveredTopic[] = [];
 
   try {
     // clockworks~tiktok-scraper (72M+ runs)
-    const items = await runApifyActorSync("clockworks~tiktok-scraper", {
+    const items = await loadApifyDataset("clockworks~tiktok-scraper", {
       searchQueries: ["vs comparison", "versus which is better", "vs review 2026"],
       resultsPerPage: 50,
       shouldDownloadVideos: false,
@@ -611,13 +595,13 @@ export async function discoverFromTikTok(): Promise<DiscoveredTopic[]> {
  * Searches for comparison/review videos.
  */
 export async function discoverFromYouTube(): Promise<DiscoveredTopic[]> {
-  if (!getApifyToken()) return [];
+  if (!readApifyToken()) return [];
 
   const topics: DiscoveredTopic[] = [];
 
   try {
     // streamers~youtube-scraper (13M+ runs)
-    const items = await runApifyActorSync("streamers~youtube-scraper", {
+    const items = await loadApifyDataset("streamers~youtube-scraper", {
       searchKeywords: ["vs comparison 2026", "versus which is better", "head to head review"],
       maxResults: 50,
     }, 120_000);
@@ -658,7 +642,7 @@ export async function discoverFromYouTube(): Promise<DiscoveredTopic[]> {
  * Twitter/X, Facebook, Instagram, TikTok, YouTube — all in parallel.
  */
 export async function discoverFromSocialMedia(): Promise<DiscoveredTopic[]> {
-  if (!getApifyToken()) {
+  if (!readApifyToken()) {
     console.warn("Social media discovery skipped: APIFY_API_TOKEN not set");
     return [];
   }
@@ -712,8 +696,8 @@ export async function discoverTopics(options?: {
         console.warn("Quora discovery failed entirely:", err);
         return [] as DiscoveredTopic[];
       }),
-      discoverFromTavily(categories).catch((err) => {
-        console.warn("Tavily discovery failed entirely:", err);
+      discoverFromTavily(categories).catch(() => {
+        console.warn("search_provider_error:network provider=apify (discovery)");
         return [] as DiscoveredTopic[];
       }),
       // DataForSEO: discover for each requested category

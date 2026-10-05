@@ -1,5 +1,5 @@
 /**
- * Turn Tavily hits into the citation list the promotion gate counts.
+ * Turn web-search hits into the citation list the promotion gate counts.
  *
  * A source is one website, not one search result. `www.rei.com/a` and
  * `rei.com/b` are the same source. Results with no usable URL are dropped

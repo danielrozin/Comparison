@@ -36,7 +36,7 @@ vi.mock("@anthropic-ai/sdk", () => {
   return { default: Anthropic };
 });
 
-vi.mock("@/lib/services/tavily-service", () => ({
+vi.mock("@/lib/services/apify-search", () => ({
   enrichComparisonData: vi.fn(async () => ({
     context: "Canoes are open. Kayaks are covered.",
     sources: [

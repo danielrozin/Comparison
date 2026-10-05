@@ -5,9 +5,10 @@
  * jobs paused. This job only re-reads pages that a visitor already requested.
  * It runs only when PROMOTION_RECHECK_ENABLED=true.
  *
- * Spend: Tavily is used to fill a source list that is still under 2. This job
+ * Spend: Apify web search fills a source list that is still under 2. This job
  * does not call Anthropic. PROMOTION_RECHECK_ANTHROPIC_CAP defaults to 0 and
  * `anthropicCallsAllowed` is the only gate a future repair call may pass.
+ * The search budget env is still `PROMOTION_RECHECK_TAVILY_CAP`.
  */
 
 import type { ComparisonPageData } from "@/types";
@@ -29,7 +30,13 @@ import {
   getComparisonBySlug,
   listProvisionalUserComparisons,
 } from "@/lib/services/comparison-service";
-import { enrichComparisonData } from "@/lib/services/tavily-service";
+import {
+  APIFY_PROMOTION_SEARCH_TIMEOUT_MS,
+  enrichComparisonData,
+} from "@/lib/services/apify-search";
+
+/** Leave the last 30s of the 120s cron for the search already in flight. */
+export const PROMOTION_SEARCH_TIME_BUDGET_MS = 90_000;
 
 export const DEFAULT_PROMOTION_RECHECK_BATCH = 10;
 export const DEFAULT_PROMOTION_MAX_ATTEMPTS = 5;
@@ -141,6 +148,7 @@ export async function runPromotionRecheck(deps: PromotionRecheckDeps): Promise<P
 
   const rows = eligiblePromotionCandidates(await deps.loadCandidates(), deps.limits.maxAttempts);
   const providerFailures: { slug: string; reason: string }[] = [];
+  const startedAt = deps.now().getTime();
 
   for (const row of rows) {
     if (report.processed >= deps.limits.batch) break;
@@ -159,7 +167,7 @@ export async function runPromotionRecheck(deps: PromotionRecheckDeps): Promise<P
     let citationStats = comparison.citationStats ?? null;
     const preview = assessUserGenerationPromotion(comparison);
     // Sources cannot repair a table that does not compare both sides. Skip
-    // Tavily on those rows so a polluted entity (Kayak.com metrics on `kayak`)
+    // web search on those rows so a polluted entity (Kayak.com metrics on `kayak`)
     // does not spend a search on every retry.
     const attributesBlockPromotion = preview.reasons.some(
       (reason) => reason.includes("substantive attributes") || reason.includes("content-depth score"),
@@ -167,6 +175,12 @@ export async function runPromotionRecheck(deps: PromotionRecheckDeps): Promise<P
     const needsSources = userGenerationSourceCount(comparison) < MIN_USER_GENERATION_SOURCES;
     if (needsSources && !attributesBlockPromotion) {
       if (report.tavilyCalls >= deps.limits.tavilyCap) {
+        report.deferred += 1;
+        continue;
+      }
+      // A search started after this point can still be running when the
+      // 120s function is killed. Leave the page in the queue.
+      if (deps.now().getTime() - startedAt >= PROMOTION_SEARCH_TIME_BUDGET_MS) {
         report.deferred += 1;
         continue;
       }
@@ -217,7 +231,7 @@ function warnProviderFailures(failures: { slug: string; reason: string }[]): voi
     .map(([reason, count]) => `${reason} x${count}`)
     .join(", ");
   console.warn(
-    `[promote-provisional] ${failures.length} search provider failure(s); attempts not counted (${summary})`,
+    `[promote-provisional] ${failures.length} search provider failure(s) provider=apify; attempts not counted (${summary})`,
   );
 }
 
@@ -326,8 +340,11 @@ export async function executePromotionRecheck(): Promise<PromotionRecheckReport>
     ),
     loadComparison: (slug) => getComparisonBySlug(slug),
     enrich: async (entityA, entityB) => {
-      // Per-request Tavily warnings stay off. runPromotionRecheck logs one summary.
-      const enrichment = await enrichComparisonData(entityA, entityB, true, { logFailures: false });
+      // Per-request search warnings stay off. runPromotionRecheck logs one summary.
+      const enrichment = await enrichComparisonData(entityA, entityB, true, {
+        logFailures: false,
+        timeoutMs: APIFY_PROMOTION_SEARCH_TIMEOUT_MS,
+      });
       return {
         sources: citationSourcesFromResults(enrichment.sources),
         providerError: enrichment.providerError,

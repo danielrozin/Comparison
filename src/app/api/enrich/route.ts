@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     const entityA = existing.entities[0].name;
     const entityB = existing.entities[1].name;
 
-    // Regenerate with Tavily enrichment (skipEnrichment = false)
+    // Regenerate with Apify web-search enrichment (skipEnrichment = false)
     const result = await generateComparison(entityA, entityB, slug);
 
     if (!result.success || !result.comparison) {

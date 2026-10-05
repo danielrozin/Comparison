@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
 
 const retrySchema = z.object({
   slugs: z.array(z.string().min(1).max(200)).min(1).max(20),
-  /** Skip Tavily enrichment (faster, more reliable on stuck slugs). */
+  /** Skip web-search enrichment (faster, more reliable on stuck slugs). */
   skipEnrichment: z.boolean().optional(),
   /** Force regeneration even if a saved comparison already exists. */
   force: z.boolean().optional(),
