@@ -78,6 +78,7 @@ describe("Mac mini M6 vs Windows PC", () => {
     expect(text).toContain("$899");
     expect(text).toContain("$1,699");
     expect(text).toContain("$1,899");
+    expect(text).toContain("3840");
     expect(text).toContain("3328");
     expect(text).toContain("2560");
     expect(text).toContain("8 GB GDDR7");
@@ -90,6 +91,10 @@ describe("Mac mini M6 vs Windows PC", () => {
     expect(page().citationStats?.sources.map((source) => source.url)).toEqual(
       page().resources?.map((resource) => resource.url),
     );
+    expect(page().citationStats?.sources.map((source) => source.url)).toContain(
+      "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5060-family/",
+    );
+    expect(page().citationStats?.sourceCount).toBe(4);
     for (const source of page().citationStats?.sources ?? []) {
       expect(source.url).toMatch(/^https:\/\/www\.(apple|nvidia)\.com\//);
     }
