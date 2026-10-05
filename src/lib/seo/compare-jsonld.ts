@@ -8,6 +8,7 @@ import {
   type ComparisonVoteData,
 } from "@/lib/seo/schema";
 import { labelUnreviewedCompareJsonLd } from "@/lib/editorial/human-reviewed";
+import { alignJsonLdToRenderedMetrics } from "@/lib/comparison/metric-table-guard";
 
 export interface AssembledCompareJsonLd {
   /** Single JSON-LD document the compare template puts in the first script tag. */
@@ -538,6 +539,7 @@ export function assembleCompareJsonLd(args: {
   }
   document = dedupeFaqPages(document);
   document = alignFaqToVisibleFaqs(document, comparison);
+  document = alignJsonLdToRenderedMetrics(document, comparison);
 
   return {
     document: labelUnreviewedCompareJsonLd(document, slug),

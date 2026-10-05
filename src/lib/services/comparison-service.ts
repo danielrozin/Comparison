@@ -143,6 +143,9 @@ interface PrismaComparisonRow {
         valueText: string | null;
         valueNumber: number | null;
         valueBoolean: boolean | null;
+        source?: string | null;
+        updatedAt?: Date | string | null;
+        asOfDate?: Date | string | null;
         attribute: {
           id: string;
           slug: string;
@@ -198,6 +201,8 @@ function transformToPageData(
         valueNumber: number | null;
         valueBoolean: boolean | null;
         winner?: boolean;
+        source?: string | null;
+        updatedAt?: string | null;
       }[];
     }
   >();
@@ -211,11 +216,20 @@ function transformToPageData(
         });
       }
       const entry = attributeMap.get(av.attribute.id)!;
+      const measuredAt = av.updatedAt ?? av.asOfDate;
+      const updatedAt = measuredAt instanceof Date
+        ? measuredAt.toISOString()
+        : typeof measuredAt === "string"
+          ? measuredAt
+          : null;
+      const source = typeof av.source === "string" && av.source.trim() ? av.source.trim() : null;
       entry.values.push({
         entityId: ce.entity.id,
         valueText: av.valueText,
         valueNumber: av.valueNumber,
         valueBoolean: av.valueBoolean,
+        ...(source ? { source } : {}),
+        ...(updatedAt ? { updatedAt } : {}),
       });
     }
   }
