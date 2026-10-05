@@ -291,10 +291,15 @@ describe("ROO-27 GDP AEO overlay", () => {
   it("states the IMF April 2026 figures and does not repeat conflicting dollar totals", () => {
     const overlay = getEditorialAeoOverlay("us-vs-china-gdp")!;
     const blob = overlayProse(overlay);
+    expect(blob).toMatch(/The IMF estimates US nominal GDP at \$32\.38 trillion in 2026/);
     expect(blob).toMatch(/\$32\.38 trillion vs \$20\.85 trillion/);
-    expect(blob).toMatch(/\$94,430 vs \$14,874/);
-    expect(blob).toMatch(/4\.4% vs 2\.3%/);
+    expect(blob).toMatch(/Output per person is higher in the United States/);
+    expect(blob).not.toMatch(/\$94,430/);
+    expect(blob).not.toMatch(/\$14,874/);
     expect(blob).toMatch(/\$997 billion vs \$314 billion/);
+    expect(blob).toMatch(/growing faster/);
+    expect(blob).not.toMatch(/2\.3%/);
+    expect(blob).not.toMatch(/4\.4%/);
     expect(blob).toMatch(/Neither is named the winner/);
     expect(blob).not.toMatch(/\$28\.7/);
     expect(blob).not.toMatch(/\$30\+/);
@@ -306,6 +311,12 @@ describe("ROO-27 GDP AEO overlay", () => {
     expect(blob).not.toMatch(/282%/);
     expect(blob).not.toMatch(/126%/);
     expect(overlay.quickAnswer.winnerName).toBeNull();
+    const sourceUrls = [
+      ...(overlay.resources ?? []).map((resource) => resource.url),
+      ...(overlay.citationStats?.sources ?? []).map((source) => source.url),
+    ].filter((url): url is string => Boolean(url));
+    expect(sourceUrls.some((url) => url.includes("worldometers.info"))).toBe(false);
+    expect(sourceUrls.some((url) => url.includes("imf.org"))).toBe(true);
     expect(overlay.resources?.some((resource) => resource.url.includes("datamapper/api/v1/NGDPD"))).toBe(true);
   });
 });
@@ -340,18 +351,25 @@ describe("japan-vs-china citation AEO overlay", () => {
     const perCapita = overlay.faqs.find((f) => f.question.includes("per capita"));
     expect(perCapita?.answer).toMatch(/higher in Japan/);
     const blob = overlayProse(overlay);
-    expect(blob).toMatch(/\$20\.85 trillion vs \$4\.38 trillion/);
-    expect(blob).toMatch(/\$35,703 vs \$14,874/);
+    expect(blob).toMatch(/The IMF estimates Japan’s 2026 real GDP growth at 0\.7%/);
+    expect(blob).toMatch(/4\.4% vs 0\.7%/);
     expect(blob).toMatch(/\$314 billion vs \$55\.3 billion/);
-    expect(blob).toMatch(/84\.04 years/);
-    expect(blob).toMatch(/78\.02 years/);
-    expect(blob).toMatch(/0\.797/);
-    expect(blob).toMatch(/High/);
+    expect(blob).toMatch(/larger than Japan’s in nominal terms/);
+    expect(blob).toMatch(/live longer/);
+    expect(blob).not.toMatch(/\$20\.85/);
+    expect(blob).not.toMatch(/\$4\.38/);
+    expect(blob).not.toMatch(/\$35,703/);
+    expect(blob).not.toMatch(/84\.04/);
+    expect(blob).not.toMatch(/78\.02/);
+    expect(blob).not.toMatch(/0\.797/);
+    expect(blob).not.toMatch(/0\.925/);
     expect(blob).not.toMatch(/€/);
     expect(blob).not.toMatch(/0\.920/);
     expect(blob).not.toMatch(/84\.6/);
     expect(blob).not.toMatch(/377,975/);
     expect(blob).not.toMatch(/Very High/);
+    expect(blob).not.toMatch(/1\.417/);
+    expect(blob).not.toMatch(/1\.42/);
   });
 });
 
@@ -768,10 +786,15 @@ describe("us-economy-vs-china-economy citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("us-economy-vs-china-economy")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/\$32\.38 trillion vs \$20\.85 trillion/);
-    expect(prose).toMatch(/\$94,430 vs \$14,874/);
-    expect(prose).toMatch(/4\.4% vs 2\.3%/);
+    expect(prose).toMatch(/larger than China’s in nominal terms/);
+    expect(prose).toMatch(/Output per person is higher in the United States/);
+    expect(prose).toMatch(/growing faster/);
     expect(prose).toMatch(/Neither is named the winner/);
+    expect(prose).not.toMatch(/\$32\.38/);
+    expect(prose).not.toMatch(/\$20\.85/);
+    expect(prose).not.toMatch(/\$94,430/);
+    expect(prose).not.toMatch(/2\.3%/);
+    expect(prose).not.toMatch(/4\.4%/);
     expect(prose).not.toMatch(/\$25\.5/);
     expect(prose).not.toMatch(/\$17\.9/);
     expect(prose).not.toMatch(/\$17\.7/);
@@ -798,9 +821,15 @@ describe("usa-vs-china citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("usa-vs-china")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
-    expect(prose).toMatch(/\$32\.38 trillion vs \$20\.85 trillion/);
-    expect(prose).toMatch(/\$997 billion vs \$314 billion/);
+    expect(prose).toMatch(/larger than China’s in nominal terms/);
+    expect(prose).toMatch(/spends more on its military/);
     expect(prose).toMatch(/population is larger/);
+    expect(prose).not.toMatch(/\$32\.38/);
+    expect(prose).not.toMatch(/\$20\.85/);
+    expect(prose).not.toMatch(/\$997/);
+    expect(prose).not.toMatch(/\$314/);
+    expect(prose).not.toMatch(/2\.3%/);
+    expect(prose).not.toMatch(/4\.4%/);
     expect(prose).not.toMatch(/\$25\.5/);
     expect(prose).not.toMatch(/\$17\.7/);
     expect(prose).not.toMatch(/1\.4 billion/);
@@ -904,6 +933,8 @@ describe("lyft-vs-uber citation AEO overlay", () => {
     const overlay = getEditorialAeoOverlay("lyft-vs-uber")!;
     expect(overlay.quickAnswer.winnerName).toBeNull();
     const prose = overlayProse(overlay);
+    expect(prose).toMatch(/Uber reports 2024 revenue of \$43\.978 billion/);
+    expect(prose).toMatch(/Lyft reports 2024 revenue of \$5\.786 billion/);
     expect(prose).toMatch(/\$43\.978 billion vs \$5\.786 billion/);
     expect(prose).toMatch(/United States and Canada/);
     expect(prose).toMatch(/Uber Eats/);
