@@ -426,8 +426,9 @@ function withoutWinner(attr: ComparisonAttribute): ComparisonAttribute {
     ...attr,
     values: attr.values.map((value) => {
       if (value.winner == null) return value;
-      const { winner: _winner, ...rest } = value;
-      return rest;
+      const next = { ...value };
+      delete next.winner;
+      return next;
     }),
   };
 }
