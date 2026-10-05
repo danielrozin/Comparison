@@ -398,7 +398,8 @@ export const NVIDIA_SCORECARD = pack(
 /**
  * True when a stored row is the same metric as an official replacement.
  * Matching is exact on the canonical name, plus a few labels the live tables
- * use for that same metric ("Total GDP", "Military Budget", "HDI Rank").
+ * use for that same metric ("Total GDP", "Military Budget", "HDI Rank",
+ * "Expected Growth Rate 2026").
  */
 export function metricHit(canonical: string, metric: string): boolean {
   if (!canonical) return false;
@@ -408,7 +409,10 @@ export function metricHit(canonical: string, metric: string): boolean {
     return !/(capita|growth|ppp|debt|manufactur)/.test(canonical);
   }
   if (metric === "gdp per capita") return canonical === "gdp per capita";
-  if (metric === "gdp growth") return canonical === "gdp growth";
+  // "Expected Growth Rate 2026" drops the year and the filler word "rate",
+  // so it canonicalizes to "expected growth" and used to survive next to the
+  // IMF real-growth row. It is the same metric.
+  if (metric === "gdp growth") return canonical === "gdp growth" || canonical === "expected growth";
   if (metric === "defense spending") {
     const military = canonical.includes("defense") || canonical.includes("military");
     const money =

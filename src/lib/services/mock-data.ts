@@ -81,7 +81,7 @@ const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlo
   },
   "japan-vs-china": {
     id: "comp-2", slug: "japan-vs-china", title: "Japan vs China",
-    shortAnswer: "The IMF World Economic Outlook of April 2026 puts 2026 nominal GDP at $4.38 trillion for Japan and $20.85 trillion for China. Output per person is $35,703 in Japan and $14,874 in China. Real growth in 2026 is 0.7% in Japan and 4.4% in China. SIPRI’s 2024 military expenditure is $55.3 billion for Japan and an estimated $314 billion for China. World Bank 2024 life expectancy is 84.04 years in Japan and 78.02 years in China. UNDP HDR 2025 lists 2023 HDI at 0.925 (Very high, rank 23) for Japan and 0.797 (High, rank 78) for China. The 2022 value 0.796 is also High.",
+    shortAnswer: "The IMF World Economic Outlook of April 2026 puts 2026 nominal GDP at $4.38 trillion for Japan and $20.85 trillion for China. Output per person is $35,703 in Japan and $14,874 in China. Real growth in 2026 is 0.7% in Japan and 4.4% in China. SIPRI’s 2024 military expenditure is $55.3 billion for Japan and an estimated $314 billion for China. World Bank 2024 life expectancy is 84.04 years in Japan and 78.02 years in China. UNDP HDR 2025 lists 2023 HDI at 0.925 (Very high, rank 23) for Japan and 0.797 (High, rank 78) for China.",
     keyDifferences: [
       { label: "Population", entityAValue: "125M", entityBValue: "1.4B", winner: "b" },
       { label: "Nominal GDP", entityAValue: "$4.38 trillion, IMF WEO April 2026", entityBValue: "$20.85 trillion, IMF WEO April 2026", winner: "b" },
@@ -559,8 +559,8 @@ const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlo
     verdict: "The USA leads in total GDP, military, and per-capita wealth. China leads in population and manufacturing output and is narrowing the economic gap rapidly. This is the defining geopolitical rivalry of the 21st century.",
     category: "countries",
     entities: [
-      { id: "ent-27", slug: "usa", name: "United States", shortDesc: "World's largest economy, leading military superpower, $27.4T GDP", imageUrl: null, entityType: "country", position: 0,
-        pros: ["Largest economy ($27.4T)", "Dominant military ($916B budget)", "Global reserve currency (USD)", "Tech innovation leader", "World's most powerful air force"],
+      { id: "ent-27", slug: "usa", name: "United States", shortDesc: "World's largest economy and leading military superpower", imageUrl: null, entityType: "country", position: 0,
+        pros: ["Largest nominal economy ($32.38 trillion, IMF WEO April 2026)", "SIPRI 2024 military expenditure $997 billion", "Global reserve currency (USD)", "Tech innovation leader", "World's most powerful air force"],
         cons: ["High national debt ($34T+)", "Income inequality", "Healthcare costs", "Political polarization"],
         bestFor: "Economic power, military strength, and technological leadership" },
       { id: "ent-28", slug: "china-usa", name: "China", shortDesc: "World's most populous country, 2nd largest economy, rising superpower", imageUrl: null, entityType: "country", position: 1,
@@ -1827,13 +1827,13 @@ const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlo
     verdict: "The US leads in nominal GDP, per-capita wealth, and financial markets. China leads in PPP GDP and growth rate. The economic balance of power is shifting toward China in absolute terms.",
     category: "economy",
     entities: [
-      { id: "ent-97", slug: "us-economy", name: "US Economy", shortDesc: "World's largest nominal GDP ($27.4T), reserve currency, innovation leader", imageUrl: null, entityType: "concept", position: 0,
-        pros: ["World's largest nominal GDP", "USD global reserve currency", "$46T stock market cap", "Silicon Valley innovation ecosystem", "World's largest consumer market"],
-        cons: ["$34T national debt", "2.5% growth rate (slower than China)", "Income inequality", "Healthcare cost burden"],
+      { id: "ent-97", slug: "us-economy", name: "US Economy", shortDesc: "World's largest nominal GDP ($32.38 trillion, IMF WEO April 2026), reserve currency, innovation leader", imageUrl: null, entityType: "concept", position: 0,
+        pros: ["World's largest nominal GDP ($32.38 trillion, IMF WEO April 2026)", "USD global reserve currency", "$46T stock market cap", "Silicon Valley innovation ecosystem", "World's largest consumer market"],
+        cons: ["$34T national debt", "2.3% real GDP growth in 2026, slower than China (IMF WEO April 2026)", "Income inequality", "Healthcare cost burden"],
         bestFor: "Financial innovation, technology, and per-capita wealth" },
-      { id: "ent-98", slug: "china-economy", name: "China Economy", shortDesc: "World's largest PPP economy ($35T), manufacturing powerhouse, 5.2% growth", imageUrl: null, entityType: "concept", position: 1,
-        pros: ["World's largest PPP economy ($35T)", "5.2% annual growth rate", "World's largest manufacturer", "Largest exporter ($3.7T exports/yr)", "Middle class of 400M+"],
-        cons: ["Lower GDP per capita ($12,500)", "Property debt crisis (Evergrande)", "Aging population challenge", "Limited financial market openness"],
+      { id: "ent-98", slug: "china-economy", name: "China Economy", shortDesc: "Second-largest nominal GDP ($20.85 trillion, IMF WEO April 2026) and a manufacturing powerhouse", imageUrl: null, entityType: "concept", position: 1,
+        pros: ["Larger economy in purchasing-power terms", "4.4% real GDP growth in 2026, IMF WEO April 2026", "World's largest manufacturer", "Largest exporter ($3.7T exports/yr)", "Middle class of 400M+"],
+        cons: ["GDP per capita of $14,874, IMF WEO April 2026", "Property debt crisis (Evergrande)", "Aging population challenge", "Limited financial market openness"],
         bestFor: "Manufacturing scale, growth trajectory, and PPP economic dominance" },
     ],
     attributes: [
