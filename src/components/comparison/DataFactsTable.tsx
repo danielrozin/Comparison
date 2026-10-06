@@ -60,9 +60,14 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                 const numA = aVal?.valueNumber;
                 const numB = bVal?.valueNumber;
 
+                const sameKind = showsLimitRatio(
+                  attr.name,
+                  aVal?.valueText ?? "",
+                  bVal?.valueText ?? "",
+                );
                 let diff: string | null = null;
                 let diffColor = "text-text-secondary";
-                if (numA != null && numB != null && numB !== 0) {
+                if (sameKind && numA != null && numB != null && numB !== 0) {
                   const pct = ((numA - numB) / Math.abs(numB)) * 100;
                   if (Math.abs(pct) >= 1) {
                     const sign = pct > 0 ? "+" : "";
@@ -100,7 +105,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                       </span>
                     </td>
                     <td className="px-4 py-3 w-24">
-                      {numA != null && numB != null ? (
+                      {sameKind && numA != null && numB != null ? (
                         <div className="flex flex-col items-center gap-1" aria-hidden="true">
                           <div className="w-full h-2 rounded-full overflow-hidden bg-surface-alt flex">
                             {(() => {
@@ -143,6 +148,32 @@ function WinnerBadge() {
       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
     </svg>
   );
+}
+
+/** Cap / maximum rows. "Market cap" matches too; same-kind dollar caps still get a ratio. */
+const LIMIT_METRIC = /\b(maximum|maxima|limit|limits|ceiling|cap)\b/i;
+
+/**
+ * A percent in the Ratio column compares two numbers of the same kind.
+ * A limit row whose cells are different kinds of cap — a monthly limit next
+ * to a per-item maximum, or "any amount" next to a hard cap — has no ratio.
+ * Other rows, and limits of the same kind, keep the percent.
+ */
+export function showsLimitRatio(name: string, left: string, right: string): boolean {
+  if (!LIMIT_METRIC.test(name)) return true;
+  return limitKind(left) === limitKind(right);
+}
+
+function limitKind(text: string): string {
+  const value = text.toLowerCase();
+  const kinds: string[] = [];
+  if (/\bany amount\b|\bunlimited\b|\bno (?:maximum|limit|cap)\b/.test(value)) kinds.push("unbounded");
+  if (/\ba month\b|\bper month\b|\bmonthly\b/.test(value)) kinds.push("month");
+  if (/\ba year\b|\bper year\b|\byearly\b|\bannually\b|\bannual\b/.test(value)) kinds.push("year");
+  if (/\ba day\b|\bper day\b|\bdaily\b/.test(value)) kinds.push("day");
+  if (/\ba week\b|\bper week\b|\bweekly\b/.test(value)) kinds.push("week");
+  if (/\beach\b/.test(value)) kinds.push("each");
+  return kinds.length > 0 ? kinds.sort().join("+") : "plain";
 }
 
 function formatNumber(n: number): string {
