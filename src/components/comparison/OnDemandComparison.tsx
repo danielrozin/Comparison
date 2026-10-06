@@ -9,7 +9,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { isAutomatedClient } from "@/lib/analytics/automated-client";
+import { isHeadlessAutomationClient } from "@/lib/analytics/automated-client";
 import { isKnownCrawlerUserAgent } from "@/lib/generation/crawler-ua";
 import { lastSearchAttachment } from "@/lib/search/search-session";
 import {
@@ -60,7 +60,9 @@ export function OnDemandComparison({
   }, [phase]);
 
   useEffect(() => {
-    if (isAutomatedClient() || isKnownCrawlerUserAgent(navigator.userAgent)) return;
+    // ROO-97 headless clients skip generation. The ROO-159 analytics
+    // window-size skip stays out of this effect, so the page is unchanged.
+    if (isHeadlessAutomationClient() || isKnownCrawlerUserAgent(navigator.userAgent)) return;
 
     let cancelled = false;
     const reloadKey = `avb-built:${slug}`;

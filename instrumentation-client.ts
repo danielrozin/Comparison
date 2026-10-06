@@ -49,8 +49,10 @@ function experimentAssignments(): Record<string, string> {
 }
 
 const token = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
-// ROO-97: webdriver and known headless UAs never init. posthog.capture is a
-// no-op until init, so client events are not sent. Server events use posthog-node.
+// ROO-97 / ROO-159: webdriver, known headless UAs, and the Linux Chrome
+// 150/154 window never init. posthog.capture is a no-op until init, so
+// client events are not sent. Server events use posthog-node. The page
+// itself is unchanged.
 if (token && analyticsAllowed() && !isAutomatedClient()) {
   posthog.init(token, {
     api_host: "/ingest",
