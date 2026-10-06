@@ -1,7 +1,11 @@
 /**
  * ROO-165 — the in-article comparison card is a real link, and the click
  * carries placement, position, the article slug, and the comparison slug.
+ *
+ * The body-click test uses raw anchors on purpose. Article prose is HTML,
+ * not Next `<Link>` components.
  */
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { fireEvent, render, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
