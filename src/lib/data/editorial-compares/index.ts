@@ -44,13 +44,15 @@ import { MAC_MINI_M6_VS_WINDOWS_PC } from "./mac-mini-m6-vs-windows-pc";
 import { CASHIERS_CHECK_VS_MONEY_ORDER } from "./cashiers-check-vs-money-order";
 import { CASHIERS_CHECK_VS_CERTIFIED_CHECK } from "./cashiers-check-vs-certified-check";
 import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
+import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
 export { EDITORIAL_COMPARE_PUBLISHED_AT, EDITORIAL_COMPARE_UPDATED_AT } from "./types";
 
 /**
- * ROO-27 / ROO-28 — human-reviewed messaging compares shipped in-repo.
+ * ROO-27 / ROO-28 — messaging compares shipped in-repo.
+ * Human-reviewed labeling is HUMAN_REVIEWED_SLUGS, not this pack.
  *
  * These are not the bundled mock fixtures. They carry `metadata.status =
  * "published"` so `/compare/[slug]`, FAQ/answer APIs, sitemap, and entity
@@ -105,6 +107,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CASHIERS_CHECK_VS_MONEY_ORDER.slug]: CASHIERS_CHECK_VS_MONEY_ORDER,
   [CASHIERS_CHECK_VS_CERTIFIED_CHECK.slug]: CASHIERS_CHECK_VS_CERTIFIED_CHECK,
   [RX_9070_XT_VS_RTX_5080.slug]: RX_9070_XT_VS_RTX_5080,
+  [GALAXY_S26_VS_GALAXY_S26_ULTRA.slug]: GALAXY_S26_VS_GALAXY_S26_ULTRA,
 };
 
 /**

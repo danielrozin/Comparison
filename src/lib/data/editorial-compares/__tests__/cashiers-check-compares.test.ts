@@ -128,6 +128,8 @@ describe("cashier's check compares", () => {
     expect(moneyText).toContain("$15");
     expect(moneyText).toContain("$5");
     expect(moneyText).toContain("$6,000");
+    expect(moneyText).toContain("June 14, 2026");
+    expect(moneyText).not.toContain("March 15, 2026");
     expect(moneyText).toContain("$2,000");
     expect(moneyText).toContain("$8");
     expect(moneyText).toContain("$6,725");
@@ -140,6 +142,8 @@ describe("cashier's check compares", () => {
     expect(certifiedText).toContain("set aside");
     expect(certifiedText).toContain("on presentment");
     expect(certifiedText).toContain("$10");
+    expect(certifiedText).toContain("June 14, 2026");
+    expect(certifiedText).not.toContain("March 15, 2026");
     expect(certifiedText).toContain("$15");
     expect(certifiedText).toContain("90 days");
     expect(certifiedText).toContain("Wisconsin");

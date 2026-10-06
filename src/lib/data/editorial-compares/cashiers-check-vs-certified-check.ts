@@ -89,7 +89,7 @@ Regulation CC says a certified check is a check the drawee bank certifies by the
 
 Fees, limits, and where to get one (US)
 
-Chase's personal fee schedule, effective March 15, 2026, lists a cashier's check at $10 per check, purchased at a branch, for any amount and to a payee you designate. Chase says Premier Plus Checking and Private Client Checking do not pay a Chase fee for a cashier's check. Chase says a Sapphire Checking customer pays no Chase fee for a cashier's check, and that Sapphire Checking is no longer available for new account openings. Bank of America lists a $15 fee for a checking or savings customer, waived for customers enrolled in Preferred Rewards. Bank of America says it will not provide a cashier's check without a checking or savings account. Wells Fargo lists $10 for each cashier's check. Checking and savings customers can order one online for up to $2,000, or in person for a larger amount, with a $6,000 monthly limit per customer. Delivery of an online order to a U.S. address adds $8. Wells Fargo says it does not deliver to P.O. Boxes, and to allow up to 3 business days for Alaska and Hawaii. Wells Fargo says some accounts offer fee waivers. Confirm the fee with the bank.
+Chase's personal fee schedule, effective June 14, 2026, lists a cashier's check at $10 per check, purchased at a branch, for any amount and to a payee you designate. Chase says Premier Plus Checking and Private Client Checking do not pay a Chase fee for a cashier's check. Chase says a Sapphire Checking customer pays no Chase fee for a cashier's check, and that Sapphire Checking is no longer available for new account openings. Bank of America lists a $15 fee for a checking or savings customer, waived for customers enrolled in Preferred Rewards. Bank of America says it will not provide a cashier's check without a checking or savings account. Wells Fargo lists $10 for each cashier's check. Checking and savings customers can order one online for up to $2,000, or in person for a larger amount, with a $6,000 monthly limit per customer. Delivery of an online order to a U.S. address adds $8. Wells Fargo says it does not deliver to P.O. Boxes, and to allow up to 3 business days for Alaska and Hawaii. Wells Fargo says some accounts offer fee waivers. Confirm the fee with the bank.
 
 Chase's personal fee schedule states a cashier's check fee and a money order fee. It does not state a certified-check fee. Bank of America's financial center FAQ states the $15 cashier's check fee and does not state a certified-check fee. Wells Fargo's fee schedule states the $10 cashier's check fee and does not state a certified-check fee. Confirm with the bank whether it will certify a check and what it charges.
 
@@ -146,7 +146,7 @@ const SOURCES: { name: string; url: string; description: string }[] = [
     name: "Chase personal fee schedule",
     url: CHASE_FEES,
     description:
-      "Effective March 15, 2026. Cashier's check $10 at a branch, for any amount. Premier Plus Checking and Private Client Checking pay no Chase fee. No certified-check fee is stated.",
+      "Effective June 14, 2026. Cashier's check $10 at a branch, for any amount. Premier Plus Checking and Private Client Checking pay no Chase fee. No certified-check fee is stated.",
   },
   {
     name: "Chase Sapphire Checking fees",
