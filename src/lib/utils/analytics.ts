@@ -295,13 +295,33 @@ export function trackShareClick(platform: string, page: string) {
   posthog.capture("share_clicked", { platform, page });
 }
 
-export function trackRelatedComparisonClick(sourcePage: string, targetPage: string) {
-  trackEvent("related_comparison_click", { source_page: sourcePage, target_page: targetPage });
-  // ROO-30: was GA-only — PostHog never saw blog-hub/home CTA clicks
-  posthog.capture("related_comparison_click", {
+export type RelatedComparisonClickExtra = {
+  /** Where on the site the link sits, e.g. blog_inline_card or blog_body_link. */
+  placement?: string;
+  /** top = after the first heading, mid = about 60% down the article. */
+  position?: string;
+  /** Blog article slug, separate from source_page which is the full /blog/ path. */
+  article_slug?: string;
+};
+
+export function trackRelatedComparisonClick(
+  sourcePage: string,
+  targetPage: string,
+  extra?: RelatedComparisonClickExtra,
+) {
+  const props: Record<string, string> = {
     source_page: sourcePage,
     target_page: targetPage,
-  });
+  };
+  // Only attach the extra fields when a caller sets them, so older clicks
+  // keep the original two properties.
+  if (extra?.placement) props.placement = extra.placement;
+  if (extra?.position) props.position = extra.position;
+  if (extra?.article_slug) props.article_slug = extra.article_slug;
+
+  trackEvent("related_comparison_click", props);
+  // ROO-30: was GA-only — PostHog never saw blog-hub/home CTA clicks
+  posthog.capture("related_comparison_click", props);
 }
 
 export function trackReviewSubmission(product: string, rating: number) {
