@@ -80,6 +80,9 @@ export function canonicalizeMetricName(
   unit?: string | null,
   entityLabels: string[] = [],
 ): string {
+  // A missing or non-text name is not a metric. Callers skip an empty key
+  // instead of throwing, so one bad row cannot 500 the page.
+  if (typeof name !== "string" || !name.trim()) return "";
   let text = name.toLowerCase();
   text = text.replace(/\(([^)]*)\)/g, " $1 ");
   text = text.replace(/&/g, " and ");
@@ -92,7 +95,7 @@ export function canonicalizeMetricName(
   text = text.replace(/\b(?:19|20)\d{2}\b/g, " ");
 
   const unitTokens = new Set(UNIT_TOKENS);
-  if (unit) {
+  if (typeof unit === "string" && unit.trim()) {
     for (const part of unit.toLowerCase().split(/[^a-z0-9]+/)) {
       if (part) unitTokens.add(part);
     }
@@ -100,6 +103,7 @@ export function canonicalizeMetricName(
 
   const entityTokens = new Set<string>();
   for (const label of entityLabels) {
+    if (typeof label !== "string" || !label.trim()) continue;
     const parts = label.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
     for (const part of parts) {
       if (part.length >= 2 && !PROTECTED_TOKENS.has(part)) entityTokens.add(part);
@@ -218,6 +222,7 @@ function stripNumberCommas(value: string): string {
 
 /** Pull one numeric range out of a cell. Suffixes apply to the whole range. */
 export function parsePrimaryRange(value: string): Range | null {
+  if (typeof value !== "string" || !value.trim()) return null;
   const text = stripNumberCommas(value.toLowerCase().replace(/[$€£¥~]/g, " "));
   const match = text.match(
     /(\d+(?:\.\d+)?)\s*(\+|[-–—]|to)?\s*(\d+(?:\.\d+)?)?\s*(trillion|billion|million|thousand|percent|tn|bn|mn|%|(?:(?<![a-z])[tmbk](?![a-z])))?/,
@@ -276,6 +281,7 @@ function figuresAgree(
   right: string | null | undefined,
   tolerance: number,
 ): boolean {
+  if (typeof left !== "string" || typeof right !== "string") return false;
   if (!left || !right) return false;
   const a = normalizeText(left);
   const b = normalizeText(right);
@@ -317,11 +323,21 @@ function entityLabels(page: ComparisonPageData): string[] {
   return page.entities.flatMap((entity) => [entity.name, entity.slug]);
 }
 
+/** Text, a finite number, or a boolean. Anything else is a missing cell, not a crash. */
+function cellString(value: unknown): string {
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  if (typeof value === "boolean") return value ? "yes" : "no";
+  return "";
+}
+
 function cellText(attr: ComparisonAttribute, entityId: string, index: number): string {
-  const value = attr.values.find((entry) => entry.entityId === entityId) ?? attr.values[index];
-  if (!value) return "";
-  if (value.valueText && value.valueText.trim()) return value.valueText.trim();
-  if (value.valueNumber != null && Number.isFinite(value.valueNumber)) return String(value.valueNumber);
+  if (!Array.isArray(attr.values)) return "";
+  const value = attr.values.find((entry) => entry?.entityId === entityId) ?? attr.values[index];
+  if (!value || typeof value !== "object") return "";
+  const text = cellString(value.valueText);
+  if (text) return text;
+  if (typeof value.valueNumber === "number" && Number.isFinite(value.valueNumber)) return String(value.valueNumber);
   if (value.valueBoolean != null) return value.valueBoolean ? "yes" : "no";
   return "";
 }
@@ -330,25 +346,64 @@ function rowCells(attr: ComparisonAttribute, page: ComparisonPageData): string[]
   return page.entities.map((entity, index) => cellText(attr, entity.id, index));
 }
 
+function keyDifferencesOf(page: ComparisonPageData): KeyDifference[] {
+  return Array.isArray(page.keyDifferences) ? page.keyDifferences : [];
+}
+
 function scorecardMap(page: ComparisonPageData, labels: string[]): Map<string, ScorecardRef> {
   const map = new Map<string, ScorecardRef>();
-  for (const diff of page.keyDifferences ?? []) {
-    const key = canonicalizeMetricName(diff.label, null, labels);
+  for (const diff of keyDifferencesOf(page)) {
+    const ref = safeScorecardRef(diff);
+    if (!ref) continue;
+    const key = canonicalizeMetricName(ref.label, null, labels);
     if (!key || map.has(key)) continue;
-    map.set(key, scorecardRef(diff));
+    map.set(key, ref);
   }
   return map;
 }
 
-function scorecardRef(diff: KeyDifference): ScorecardRef {
-  const cells = diff.values && diff.values.length >= 2
-    ? diff.values.map((value) => value ?? "")
-    : [diff.entityAValue ?? "", diff.entityBValue ?? ""];
+/**
+ * A scorecard row the guard can trust. Returns null for a row that would
+ * blank or crash the table: no label, or the legacy 3-way shape
+ * `{ attribute, values: { slug: text }, winner: slug }` used by
+ * figma-vs-sketch-vs-adobe-xd and zoom-vs-google-meet-vs-teams.
+ * Those rows are skipped. The attribute table still renders.
+ */
+function scorecardRef(diff: KeyDifference): ScorecardRef | null {
+  if (!diff || typeof diff !== "object") return null;
+  if (typeof diff.label !== "string" || !diff.label.trim()) return null;
+
+  const rawValues = diff.values as unknown;
+  // An object map is not a position-indexed values[]. Falling through to
+  // entityAValue/entityBValue would store two blank cells and replace a
+  // real metric with an empty scorecard row.
+  if (rawValues && typeof rawValues === "object" && !Array.isArray(rawValues)) return null;
+
+  let cells: string[];
+  if (Array.isArray(rawValues)) {
+    if (rawValues.length < 2) return null;
+    cells = rawValues.map((value) => cellString(value));
+  } else {
+    cells = [cellString(diff.entityAValue), cellString(diff.entityBValue)];
+  }
+  if (!cells.some((cell) => cell.length > 0)) return null;
+
+  const winner = diff.winner === "a" || diff.winner === "b" || diff.winner === "tie"
+    ? diff.winner
+    : undefined;
   return {
-    label: diff.label,
+    label: diff.label.trim(),
     cells,
-    ...(diff.winner ? { winner: diff.winner } : {}),
+    ...(winner ? { winner } : {}),
   };
+}
+
+function safeScorecardRef(diff: KeyDifference): ScorecardRef | null {
+  try {
+    return scorecardRef(diff);
+  } catch {
+    return null;
+  }
 }
 
 function cellsMatch(actual: string[], expected: string[]): boolean {
@@ -401,7 +456,9 @@ function numberRanges(prose: string): Range[] {
 function rowMeta(attr: ComparisonAttribute): { hasSource: boolean; recency: number } {
   let hasSource = false;
   let recency = 0;
+  if (!Array.isArray(attr.values)) return { hasSource, recency };
   for (const value of attr.values) {
+    if (!value || typeof value !== "object") continue;
     if (value.source && value.source.trim()) hasSource = true;
     if (!value.updatedAt) continue;
     const stamp = Date.parse(value.updatedAt);
@@ -479,8 +536,9 @@ function markCrossCopies(rows: RankedRow[]): void {
 }
 
 function winnerSide(attr: ComparisonAttribute, page: ComparisonPageData): "a" | "b" | "tie" | null {
-  const left = attr.values.find((value) => value.entityId === page.entities[0]?.id) ?? attr.values[0];
-  const right = attr.values.find((value) => value.entityId === page.entities[1]?.id) ?? attr.values[1];
+  if (!Array.isArray(attr.values)) return null;
+  const left = attr.values.find((value) => value?.entityId === page.entities[0]?.id) ?? attr.values[0];
+  const right = attr.values.find((value) => value?.entityId === page.entities[1]?.id) ?? attr.values[1];
   if (!left && !right) return null;
   if (left?.winner === true && right?.winner === true) return "tie";
   if (left?.winner === true) return "a";
@@ -525,27 +583,33 @@ function prepare(page: ComparisonPageData): Prepared {
   const groupOrder: string[] = [];
 
   page.attributes.forEach((attr, index) => {
-    const key = canonicalizeMetricName(attr.name, attr.unit, labels) || `row ${index}`;
-    const cells = rowCells(attr, page);
-    const scorecard = scorecards.get(key);
-    const meta = rowMeta(attr);
-    const ranked: RankedRow = {
-      attr,
-      index,
-      cells,
-      scorecard: scorecard ? cellsMatch(cells, scorecard.cells) : false,
-      quick: matchesQuick(cells, prose),
-      hasSource: meta.hasSource,
-      recency: meta.recency,
-      identical: isIdentical(cells),
-      copied: false,
-      side: winnerSide(attr, page),
-    };
-    if (!groups.has(key)) {
-      groups.set(key, []);
-      groupOrder.push(key);
+    // One broken attribute is dropped. The other rows still render.
+    try {
+      if (!attr || typeof attr.name !== "string" || !Array.isArray(attr.values)) return;
+      const key = canonicalizeMetricName(attr.name, attr.unit, labels) || `row ${index}`;
+      const cells = rowCells(attr, page);
+      const scorecard = scorecards.get(key);
+      const meta = rowMeta(attr);
+      const ranked: RankedRow = {
+        attr,
+        index,
+        cells,
+        scorecard: scorecard ? cellsMatch(cells, scorecard.cells) : false,
+        quick: matchesQuick(cells, prose),
+        hasSource: meta.hasSource,
+        recency: meta.recency,
+        identical: isIdentical(cells),
+        copied: false,
+        side: winnerSide(attr, page),
+      };
+      if (!groups.has(key)) {
+        groups.set(key, []);
+        groupOrder.push(key);
+      }
+      groups.get(key)!.push(ranked);
+    } catch {
+      // Leave this row out of the table.
     }
-    groups.get(key)!.push(ranked);
   });
 
   for (const rows of groups.values()) {
@@ -560,24 +624,31 @@ function prepare(page: ComparisonPageData): Prepared {
  * Returns the original array when nothing changes.
  */
 export function guardComparisonAttributes(page: ComparisonPageData): ComparisonAttribute[] {
-  if (page.entities.length < 2 || page.attributes.length === 0) return page.attributes;
+  if (!Array.isArray(page.entities) || page.entities.length < 2) return page.attributes ?? [];
+  if (!Array.isArray(page.attributes) || page.attributes.length === 0) return page.attributes ?? [];
 
   const prepared = prepare(page);
   const kept: { key: string; index: number; attr: ComparisonAttribute }[] = [];
 
   for (const key of prepared.groupOrder) {
-    const rows = prepared.groups.get(key) ?? [];
-    const scorecard = prepared.scorecards.get(key);
-    const choice = chooseRow(rows, scorecard);
-    const attr = materialize(page, choice, scorecard, key);
-    if (!choice || !attr) continue;
-    kept.push({ key, index: choice.row?.index ?? Number.MAX_SAFE_INTEGER, attr });
+    try {
+      const rows = prepared.groups.get(key) ?? [];
+      const scorecard = prepared.scorecards.get(key);
+      const choice = chooseRow(rows, scorecard);
+      const attr = materialize(page, choice, scorecard, key);
+      if (!choice || !attr) continue;
+      kept.push({ key, index: choice.row?.index ?? Number.MAX_SAFE_INTEGER, attr });
+    } catch {
+      // Drop this metric. The rest of the table still renders.
+    }
   }
 
   const scorecardOrder = new Map<string, number>();
   let cursor = 0;
-  for (const diff of page.keyDifferences ?? []) {
-    const key = canonicalizeMetricName(diff.label, null, prepared.labels);
+  for (const diff of keyDifferencesOf(page)) {
+    const ref = safeScorecardRef(diff);
+    if (!ref) continue;
+    const key = canonicalizeMetricName(ref.label, null, prepared.labels);
     if (!key || scorecardOrder.has(key)) continue;
     scorecardOrder.set(key, cursor);
     cursor += 1;
@@ -742,9 +813,15 @@ function alignWinner(
 /** Apply the guard when the flag is on. Does not mutate the input page. */
 export function presentComparisonMetrics<T extends ComparisonPageData>(page: T): T {
   if (!isCompareMetricDedupeEnabled()) return page;
-  const attributes = guardComparisonAttributes(page);
-  if (attributes === page.attributes) return page;
-  return { ...page, attributes };
+  try {
+    const attributes = guardComparisonAttributes(page);
+    if (attributes === page.attributes) return page;
+    return { ...page, attributes };
+  } catch (error) {
+    // The table section falls back to the stored rows. The page still renders.
+    console.warn("compare metric guard skipped", page?.slug, error);
+    return page;
+  }
 }
 
 export interface MetricQualityScore {
