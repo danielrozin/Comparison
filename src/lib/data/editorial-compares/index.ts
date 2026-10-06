@@ -49,7 +49,8 @@ export type { EditorialComparison } from "./types";
 export { EDITORIAL_COMPARE_PUBLISHED_AT, EDITORIAL_COMPARE_UPDATED_AT } from "./types";
 
 /**
- * ROO-27 / ROO-28 — human-reviewed messaging compares shipped in-repo.
+ * ROO-27 / ROO-28 — messaging compares shipped in-repo.
+ * Human-reviewed labeling is HUMAN_REVIEWED_SLUGS, not this pack.
  *
  * These are not the bundled mock fixtures. They carry `metadata.status =
  * "published"` so `/compare/[slug]`, FAQ/answer APIs, sitemap, and entity

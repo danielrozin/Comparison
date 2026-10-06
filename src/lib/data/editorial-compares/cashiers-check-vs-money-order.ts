@@ -95,7 +95,7 @@ Fees, limits, and where to get one (US)
 
 USPS says a domestic money order can be up to $1,000. USPS lists $2.65 for $0.01 to $500, $3.75 for $500.01 to $1,000, and $0.85 for a postal military money order issued by a military facility. Notice 123, effective October 4, 2026, matches those three fees and the $1,000 maximum. USPS says you buy one at any Post Office with cash or a debit card, and that you cannot pay with a credit card. You pay the face amount plus the issuing fee. USPS says domestic money orders never expire and do not accrue interest, and that a Post Office cashes one for free for the exact amount on the order.
 
-Chase's personal fee schedule, effective March 15, 2026, lists a money order as a check issued by you, purchased at a branch, for an amount up to $1,000, at $5 per check. The same schedule lists a cashier's check as a check issued by the bank, purchased at a branch, for any amount and to a payee you designate, at $10 per check. Chase says Premier Plus Checking and Private Client Checking do not pay a Chase fee for a money order or a cashier's check. Chase says a Sapphire Checking customer pays no Chase fee for a money order or a cashier's check, and that Sapphire Checking is no longer available for new account openings.
+Chase's personal fee schedule, effective June 14, 2026, lists a money order as a check issued by you, purchased at a branch, for an amount up to $1,000, at $5 per check. The same schedule lists a cashier's check as a check issued by the bank, purchased at a branch, for any amount and to a payee you designate, at $10 per check. Chase says Premier Plus Checking and Private Client Checking do not pay a Chase fee for a money order or a cashier's check. Chase says a Sapphire Checking customer pays no Chase fee for a money order or a cashier's check, and that Sapphire Checking is no longer available for new account openings.
 
 Bank of America says a checking or savings customer can get a cashier's check for a $15 fee, waived for customers enrolled in Preferred Rewards. Bank of America says it will not provide a cashier's check without a checking or savings account. Wells Fargo lists $10 for each cashier's check. Wells Fargo says checking and savings customers can order one online for up to $2,000, or in person for a larger amount, subject to a $6,000 monthly limit per customer. An online order delivered to a U.S. address adds an $8 delivery charge. Wells Fargo says delivery is limited to addresses in the United States, not to P.O. Boxes, and to allow up to 3 business days for Alaska and Hawaii. Wells Fargo lists $5 per money order, up to $1,000 each, for checking and savings customers. Wells Fargo says some accounts offer fee waivers. Confirm the fee with the bank.
 
@@ -174,7 +174,7 @@ const SOURCES: { name: string; url: string; description: string }[] = [
     name: "Chase personal fee schedule",
     url: CHASE_FEES,
     description:
-      "Effective March 15, 2026. Money order $5, up to $1,000, at a branch. Cashier's check $10, at a branch, for any amount. Premier Plus Checking and Private Client Checking pay no Chase fee for either.",
+      "Effective June 14, 2026. Money order $5, up to $1,000, at a branch. Cashier's check $10, at a branch, for any amount. Premier Plus Checking and Private Client Checking pay no Chase fee for either.",
   },
   {
     name: "Chase Sapphire Checking fees",
