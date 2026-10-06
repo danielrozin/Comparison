@@ -21,7 +21,7 @@ const CLARITY_PROJECT = "w2svnzrk4f";
 const CUSTOM_EVENTS = [
   { name: "comparison_search", category: "discovery", description: "User searches for a comparison", params: ["search_term", "result_type"] },
   { name: "comparison_view", category: "consideration", description: "User views a comparison page", params: ["comparison_slug", "category"] },
-  { name: "related_comparison_click", category: "exploration", description: "User clicks a related comparison", params: ["source_page", "target_page"] },
+  { name: "related_comparison_click", category: "exploration", description: "User clicks a related comparison", params: ["source_page", "target_page", "placement", "position", "article_slug"] },
   { name: "affiliate_click", category: "conversion", description: "User clicks a product affiliate CTA", params: ["product", "position", "page"] },
   { name: "embed_cta_click", category: "partnership", description: "User clicks embed button", params: ["comparison_slug", "page"] },
   { name: "embed_key_registration", category: "partnership", description: "User registers for embed key", params: ["tier"] },
