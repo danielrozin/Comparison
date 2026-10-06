@@ -41,6 +41,8 @@ import { GALAXY_Z_FLIP_8_VS_S26_ULTRA } from "./galaxy-z-flip-8-vs-galaxy-s26-ul
 import { GALAXY_S25_VS_GALAXY_S25_FE } from "./galaxy-s25-vs-galaxy-s25-fe";
 import { GALAXY_S25_VS_GALAXY_S25_PLUS } from "./galaxy-s25-vs-galaxy-s25-plus";
 import { MAC_MINI_M6_VS_WINDOWS_PC } from "./mac-mini-m6-vs-windows-pc";
+import { CASHIERS_CHECK_VS_MONEY_ORDER } from "./cashiers-check-vs-money-order";
+import { CASHIERS_CHECK_VS_CERTIFIED_CHECK } from "./cashiers-check-vs-certified-check";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import type { EditorialComparison } from "./types";
 
@@ -100,6 +102,8 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [GALAXY_S25_VS_GALAXY_S25_FE.slug]: GALAXY_S25_VS_GALAXY_S25_FE,
   [GALAXY_S25_VS_GALAXY_S25_PLUS.slug]: GALAXY_S25_VS_GALAXY_S25_PLUS,
   [MAC_MINI_M6_VS_WINDOWS_PC.slug]: MAC_MINI_M6_VS_WINDOWS_PC,
+  [CASHIERS_CHECK_VS_MONEY_ORDER.slug]: CASHIERS_CHECK_VS_MONEY_ORDER,
+  [CASHIERS_CHECK_VS_CERTIFIED_CHECK.slug]: CASHIERS_CHECK_VS_CERTIFIED_CHECK,
   [GALAXY_S26_VS_GALAXY_S26_ULTRA.slug]: GALAXY_S26_VS_GALAXY_S26_ULTRA,
 };
 
