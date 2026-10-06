@@ -6,7 +6,7 @@ import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
-import { resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
+import { filterLiveCompareSlugs, resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
@@ -18,7 +18,12 @@ import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
-import { BlogInlineCompareCtas } from "@/components/blog/BlogInlineCompareCtas";
+import { BlogArticleProse, type ArticleRenderPart } from "@/components/blog/BlogArticleProse";
+import {
+  composeBlogArticleParts,
+  decisionComparesForBlog,
+  selectInlineComparisonSlugs,
+} from "@/lib/blog/inline-comparison-card";
 import {
   CASHIERS_CHECK_BLOG_SLUG,
   CASHIERS_CHECK_SOURCE_PAGE,
@@ -419,15 +424,37 @@ export default async function BlogPostPage({
   const renderedContent = await resolveCompareLinksInHtml(renderMarkdown(article.content));
   const toc = extractTOC(article.content);
 
-  // Fetch actual comparison titles for related comparisons
-  const comparisonTitles = article.relatedComparisonSlugs?.length
-    ? await getComparisonTitlesBySlugs(article.relatedComparisonSlugs)
-    : {};
-
   // ROO-119 / ROO-127: a few landers get compare links under the intro.
   // Links use the same live-slug list as the hero CTA. Other posts keep a
   // single content block.
   const liveCompareSlugs = article.relatedComparisonSlugs ?? [];
+  // ROO-165: a few posts name the decision pages explicitly. Drop any
+  // slug that is not published yet (PR #373), then do not backfill the
+  // card with a different comparison.
+  const mappedDecisions = decisionComparesForBlog(slug);
+  const liveDecisionSlugs = mappedDecisions.length
+    ? await filterLiveCompareSlugs(mappedDecisions.map((item) => item.slug))
+    : [];
+  const inlineCardSlugs = selectInlineComparisonSlugs({
+    bodyHtml: renderedContent,
+    relatedSlugs: liveCompareSlugs,
+    preferredSlugs: liveDecisionSlugs,
+    preferMappedOnly: mappedDecisions.length > 0,
+  });
+  const decisionTitles = Object.fromEntries(
+    mappedDecisions.map((item) => [item.slug, item.title]),
+  );
+  const comparisonTitleSlugs = Array.from(new Set([...liveCompareSlugs, ...inlineCardSlugs]));
+  const comparisonTitles = comparisonTitleSlugs.length
+    ? await getComparisonTitlesBySlugs(comparisonTitleSlugs)
+    : {};
+  const inlineCardLinks = inlineCardSlugs.map((compareSlug) => ({
+    slug: compareSlug,
+    title:
+      comparisonTitles[compareSlug] ||
+      decisionTitles[compareSlug] ||
+      compareSlug.replace(/-/g, " "),
+  }));
   const inlineCompare =
     slug === CASHIERS_CHECK_BLOG_SLUG
       ? {
@@ -445,6 +472,31 @@ export default async function BlogPostPage({
       ? splitHtmlAtCompareCtas(renderedContent)
       : null;
   const liveCompareSlugSet = new Set(liveCompareSlugs);
+  const hasNbaCtas = Boolean(sectionCtas?.some((part) => part.kind === "cta"));
+  // The card is a template-level insert. The older intro CTA stays on the
+  // landers that already had one, and only when the NBA section CTAs are
+  // not already splitting this article.
+  let articleParts: ArticleRenderPart[] = composeBlogArticleParts(renderedContent, {
+    cards: inlineCardLinks.length > 0,
+    introCta: !hasNbaCtas && Boolean(inlineParts && inlineCompare),
+  });
+  if (hasNbaCtas) {
+    const expanded: ArticleRenderPart[] = [];
+    for (const part of articleParts) {
+      if (part.kind !== "html") {
+        expanded.push(part);
+        continue;
+      }
+      for (const piece of splitHtmlAtCompareCtas(part.html)) {
+        if (piece.kind === "html") {
+          expanded.push({ kind: "html", html: piece.html });
+        } else {
+          expanded.push({ kind: "nba-cta", slug: piece.slug, label: piece.label });
+        }
+      }
+    }
+    articleParts = expanded;
+  }
 
   const articleUrl = `${SITE_URL}/blog/${slug}`;
   const extras = getBlogSchemaExtras(slug);
@@ -943,49 +995,22 @@ export default async function BlogPostPage({
           <div className={`flex gap-8 items-start ${toc.length >= 2 ? "xl:grid xl:grid-cols-[1fr_220px]" : ""}`}>
             <article id="blog-article-body" className="min-w-0 flex-1">
               <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
-                {sectionCtas?.some((part) => part.kind === "cta") ? (
-                  <>
-                    {sectionCtas.map((part, index) =>
-                      part.kind === "html" ? (
-                        part.html.trim() ? (
-                          <div
-                            key={`html-${index}`}
-                            className="prose-custom"
-                            dangerouslySetInnerHTML={{ __html: part.html }}
-                          />
-                        ) : null
-                      ) : liveCompareSlugSet.has(part.slug) ? (
-                        <BlogInlineCompareCtas
-                          key={`cta-${part.slug}-${index}`}
-                          sourcePage={NBA_SEASON_PREVIEW_SOURCE_PAGE}
-                          heading={part.label}
-                          links={[{ slug: part.slug, label: "See the comparison" }]}
-                        />
-                      ) : null,
-                    )}
-                  </>
-                ) : inlineParts && inlineCompare ? (
-                  <>
-                    <div
-                      className="prose-custom"
-                      dangerouslySetInnerHTML={{ __html: inlineParts.lead }}
-                    />
-                    <BlogInlineCompareCtas
-                      sourcePage={inlineCompare.sourcePage}
-                      links={inlineCompare.links}
-                      heading={inlineCompare.heading}
-                    />
-                    <div
-                      className="prose-custom"
-                      dangerouslySetInnerHTML={{ __html: inlineParts.rest }}
-                    />
-                  </>
-                ) : (
-                  <div
-                    className="prose-custom"
-                    dangerouslySetInnerHTML={{ __html: renderedContent }}
-                  />
-                )}
+                <BlogArticleProse
+                  parts={articleParts}
+                  articleSlug={slug}
+                  links={inlineCardLinks}
+                  intro={
+                    !hasNbaCtas && inlineParts && inlineCompare
+                      ? {
+                          sourcePage: inlineCompare.sourcePage,
+                          heading: inlineCompare.heading,
+                          links: inlineCompare.links,
+                        }
+                      : null
+                  }
+                  nbaSourcePage={hasNbaCtas ? NBA_SEASON_PREVIEW_SOURCE_PAGE : undefined}
+                  liveSlugs={liveCompareSlugSet}
+                />
               </div>
 
           {/* Ad: after article content */}
