@@ -43,6 +43,8 @@ import { GALAXY_S25_VS_GALAXY_S25_PLUS } from "./galaxy-s25-vs-galaxy-s25-plus";
 import { MAC_MINI_M6_VS_WINDOWS_PC } from "./mac-mini-m6-vs-windows-pc";
 import { CASHIERS_CHECK_VS_MONEY_ORDER } from "./cashiers-check-vs-money-order";
 import { CASHIERS_CHECK_VS_CERTIFIED_CHECK } from "./cashiers-check-vs-certified-check";
+import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
+import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -104,6 +106,8 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MAC_MINI_M6_VS_WINDOWS_PC.slug]: MAC_MINI_M6_VS_WINDOWS_PC,
   [CASHIERS_CHECK_VS_MONEY_ORDER.slug]: CASHIERS_CHECK_VS_MONEY_ORDER,
   [CASHIERS_CHECK_VS_CERTIFIED_CHECK.slug]: CASHIERS_CHECK_VS_CERTIFIED_CHECK,
+  [RX_9070_XT_VS_RTX_5080.slug]: RX_9070_XT_VS_RTX_5080,
+  [GALAXY_S26_VS_GALAXY_S26_ULTRA.slug]: GALAXY_S26_VS_GALAXY_S26_ULTRA,
 };
 
 /**
