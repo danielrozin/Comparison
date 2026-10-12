@@ -431,6 +431,8 @@ export default function BrowserComparison2026Page() {
                   sourcePage={BROWSER_COMPARISON_SOURCE_PAGE}
                   links={BROWSER_COMPARISON_COMPARE_LINKS}
                   heading={BROWSER_COMPARISON_CTA_HEADING}
+                  placement="hero_card"
+                  variant="cards"
                 />
               </div>
               <p id="page-intro" className="mt-2 text-cyan-100 text-base sm:text-lg leading-relaxed max-w-3xl">
