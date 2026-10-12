@@ -35,7 +35,7 @@ All five work offline in some form. Organic Maps says it supports 100% of its fe
 | CoMaps | OpenStreetMap | Search and routing | Free | iOS, Android (Google Play, F-Droid, AppGallery) |
 | OsmAnd | OpenStreetMap | Maps and navigation | Mostly free; Maps+ and OsmAnd Pro paid | iOS, Android |
 | Magic Earth | OpenStreetMap | Premium feature | Freemium; Premium subscription | iOS, Android, CarPlay, Apple Watch |
-| HERE WeGo | HERE | Downloadable regions | Free | iOS, Android, CarPlay |
+| HERE WeGo | HERE | Downloadable regions | Free | iOS (App Store), CarPlay |
 
 *Table: Google-free map apps by data source, offline support, price model, and platforms, October 12, 2026.*
 
