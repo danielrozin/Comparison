@@ -76,6 +76,7 @@ export function BlogArticleProse({
               key={`nba-${part.slug}-${index}`}
               sourcePage={nbaSourcePage}
               heading={part.label}
+              placement="blog_section_cta"
               links={[{ slug: part.slug, label: "See the comparison" }]}
             />
           );

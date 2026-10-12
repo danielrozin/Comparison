@@ -54,6 +54,7 @@ describe("browser comparison compare CTAs", () => {
       expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
         BROWSER_COMPARISON_SOURCE_PAGE,
         link.slug,
+        expect.objectContaining({ placement: expect.any(String) }),
       );
     }
   });
@@ -83,5 +84,14 @@ describe("browser comparison compare CTAs", () => {
     expect(page).toContain("sourcePage={BROWSER_COMPARISON_SOURCE_PAGE}");
     expect(page).toContain("links={BROWSER_COMPARISON_COMPARE_LINKS}");
     expect(page).toContain("heading={BROWSER_COMPARISON_CTA_HEADING}");
+  });
+});
+
+describe("ROO-114 browser hero cards", () => {
+  it("renders the hero as cards tagged placement=hero_card", async () => {
+    const { readFileSync } = await import("node:fs");
+    const page = readFileSync("src/app/browser-comparison-2026/page.tsx", "utf8");
+    expect(page).toContain('placement="hero_card"');
+    expect(page).toContain('variant="cards"');
   });
 });

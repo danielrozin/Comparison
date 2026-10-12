@@ -1468,10 +1468,13 @@ describe("NBA 2026-27 new compares", () => {
       expect(page.schemaMarkup).toBeUndefined();
       expect(page.quickAnswer?.winnerName).toBeNull();
       expect(page.quickAnswer?.tldr).toBe(page.shortAnswer);
-      expect(page.faqs).toHaveLength(6);
+      const refreshed = slug === "knicks-vs-76ers";
+      expect(page.faqs).toHaveLength(refreshed ? 9 : 6);
       expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
-      expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
-      expect(pageText(page)).toContain("Stats as of October 3, 2026");
+      expect(page.metadata.updatedAt).toBe(refreshed ? "2026-10-12T00:00:00Z" : "2026-10-03T00:00:00Z");
+      expect(pageText(page)).toContain(
+        refreshed ? "Stats as of October 12, 2026" : "Stats as of October 3, 2026"
+      );
       expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
       expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
       const description = clampDescription(page.metadata.metaDescription);
@@ -1501,9 +1504,16 @@ describe("NBA 2026-27 new compares", () => {
     expect(urls).not.toMatch(/\/entity\/philadelphia-76ers/);
     expect(urls).toContain("/entity/new-york-knicks");
     expect(page.relatedComparisons.map((item) => item.slug)).toEqual([
+      "knicks-vs-spurs",
+      "embiid-vs-jokic",
+      "durant-vs-lebron",
+      "lebron-james-vs-stephen-curry",
       "lebron-vs-jordan",
       "kobe-bryant-vs-lebron-james",
     ]);
+    expect(pageText(page)).toContain("Next game: Tue Oct 20, 2026");
+    expect(pageText(page)).toContain("Madison Square Garden");
+    expect(pageText(page)).toContain("144-114");
     for (const slug of [
       "76ers-vs-knicks",
       "new-york-knicks-vs-philadelphia-76ers",

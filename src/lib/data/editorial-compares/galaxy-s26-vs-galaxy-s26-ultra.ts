@@ -8,7 +8,7 @@ import type { EditorialComparison } from "./types";
  * Galaxy S26 compare, and the US Galaxy S26 and Galaxy S26 Ultra phones.
  * No benchmark scores. No image-quality scores. No street prices.
  * No page-level winner. No viewing-angle claim for Privacy Display.
- * Chips are labeled by region. US chips come from Samsung's US phones.
+ * Chips are labeled by region.
  */
 
 const S26 = "galaxy-s26";
@@ -51,12 +51,12 @@ const FAQS = [
   {
     question: "Does the Galaxy S26 support the S Pen?",
     answer:
-      "No. Samsung US Support says the Galaxy S26, Galaxy S26+, and Galaxy S26 FE do not support S Pen functionality. Samsung UK lists S Pen support on the Galaxy S26 Ultra. Samsung's US Galaxy S26 Ultra phone says the Ultra has a built-in S Pen.",
+      "No. Samsung US Support says the Galaxy S26, Galaxy S26+, and Galaxy S26 FE do not support S Pen functionality. Samsung UK lists S Pen support on the Galaxy S26 Ultra. Samsung US says the Ultra has a built-in S Pen.",
   },
   {
     question: "Which chip is in the Galaxy S26 and the Galaxy S26 Ultra?",
     answer:
-      "In the UK, Samsung lists the Exynos 2600 (2nm) for the Galaxy S26 and the Snapdragon 8 Elite Gen 5 for Galaxy (3nm) for the Galaxy S26 Ultra. Samsung's US Galaxy S26 phone lists the Exynos 2600 for the Galaxy S26 and the Galaxy S26+. Samsung's US Galaxy S26 Ultra phone lists Snapdragon 8 Elite Gen 5 for Galaxy. Samsung UK says models may vary by country, so check Samsung for the country you buy in.",
+      "In the UK, Samsung lists the Exynos 2600 (2nm) for the Galaxy S26 and the Snapdragon 8 Elite Gen 5 for Galaxy (3nm) for the Galaxy S26 Ultra. Samsung US lists the Exynos 2600 for the Galaxy S26 and the Galaxy S26+. Samsung US lists Snapdragon 8 Elite Gen 5 for Galaxy. Samsung UK says models may vary by country, so check Samsung for the country you buy in.",
   },
 ];
 
@@ -76,17 +76,17 @@ Samsung UK lists the body as 71.7 x 149.6 x 7.2 mm and 167 g for the Galaxy S26,
 
 S Pen
 
-Samsung US Support says the Galaxy S26, Galaxy S26+, and Galaxy S26 FE do not support S Pen functionality. Samsung UK lists S Pen support on the Galaxy S26 Ultra. Samsung's US Galaxy S26 Ultra phone says the Ultra has a built-in S Pen. If you will not use the pen, that is not a reason to buy the Ultra.
+Samsung US Support says the Galaxy S26, Galaxy S26+, and Galaxy S26 FE do not support S Pen functionality. Samsung UK lists S Pen support on the Galaxy S26 Ultra. Samsung US says the Ultra has a built-in S Pen. If you will not use the pen, that is not a reason to buy the Ultra.
 
 Privacy Display
 
-Samsung UK lists a built-in Privacy Display on the Galaxy S26 Ultra. Samsung's US Galaxy S26 Ultra phone also lists a built-in Privacy Display. Samsung's US Galaxy S26 phone does not list a Privacy Display for the Galaxy S26. You can try it in a store before you buy.
+Samsung UK lists a built-in Privacy Display on the Galaxy S26 Ultra. Samsung US also lists a built-in Privacy Display on the Ultra. Samsung US does not list a Privacy Display for the Galaxy S26.
 
 Cameras
 
 The hardware is different. Samsung US Support lists a 12 MP ultrawide camera, a 50 MP wide camera, a 10 MP telephoto with 3x zoom and up to 30x Space Zoom, and a 12 MP selfie camera on the Galaxy S26. Video recording there is FHD and 4K at 60 fps, and 8K at 30 fps. Samsung UK lists the same rear cameras as 12 MP at F2.2, 50 MP at F1.8, and 10 MP at F2.4, with 3x optical zoom, 2x optical quality zoom, and digital zoom up to 30x.
 
-On the Galaxy S26 Ultra, Samsung US Support lists a 50 MP ultrawide camera, a 200 MP wide camera, a 10 MP telephoto with 3x zoom, a 50 MP telephoto with up to 100x Space Zoom, and a 12 MP selfie camera. Video recording there is FHD and 4K at 120 fps, and 8K at 30 fps. Samsung UK lists those rear cameras as 50 MP at F1.9, 200 MP at F1.4, 10 MP at F2.4, and 50 MP at F2.9, with optical zoom at 5x and 3x, optical quality zoom at 10x and 2x, and digital zoom up to 100x. Samsung's US Galaxy S26 Ultra phone also lists 5x optical zoom on the 50 MP telephoto.
+On the Galaxy S26 Ultra, Samsung US Support lists a 50 MP ultrawide camera, a 200 MP wide camera, a 10 MP telephoto with 3x zoom, a 50 MP telephoto with up to 100x Space Zoom, and a 12 MP selfie camera. Video recording there is FHD and 4K at 120 fps, and 8K at 30 fps. Samsung UK lists those rear cameras as 50 MP at F1.9, 200 MP at F1.4, 10 MP at F2.4, and 50 MP at F2.9, with optical zoom at 5x and 3x, optical quality zoom at 10x and 2x, and digital zoom up to 100x. Samsung US also lists 5x optical zoom on the 50 MP telephoto.
 
 The Ultra has more camera hardware: a 200 MP wide camera against a 50 MP wide camera, a 50 MP ultrawide camera against a 12 MP ultrawide camera, and an extra 50 MP telephoto with 5x optical zoom. Whether that matters depends on zoom and low-light use.
 
@@ -94,19 +94,19 @@ Battery and charging
 
 Samsung US Support lists a 4,300 mAh battery on the Galaxy S26, with wired Super Fast Charging up to 25W, Fast Wireless Charging up to 15W, and Wireless PowerShare. The Galaxy S26 Ultra is a 5,000 mAh battery, with wired Super Fast Charging 3.0 up to 60W, Super Fast Wireless Charging up to 25W, and Wireless PowerShare. Samsung UK lists the same typical capacities: 4,300 mAh and 5,000 mAh.
 
-Samsung Ireland lists video playback of up to 30 hours for the Galaxy S26 and up to 31 hours for the Galaxy S26 Ultra. Samsung's US Galaxy S26 phone also lists up to 30 hours of video on the Galaxy S26. Samsung's US Galaxy S26 Ultra phone lists 31 hours of video playback for the Ultra. Samsung Ireland says actual battery life varies, and says Super Fast Charging 3.0 on the Ultra gets around 75% in up to 30 minutes. The hour ratings are close. The capacity and the wired charging rate are not.
+Samsung Ireland lists video playback of up to 30 hours for the Galaxy S26 and up to 31 hours for the Galaxy S26 Ultra. Samsung US also lists up to 30 hours of video on the Galaxy S26. Samsung US lists 31 hours of video playback for the Ultra. Samsung Ireland says actual battery life varies, and says Super Fast Charging 3.0 on the Ultra gets around 75% in up to 30 minutes. The hour ratings are close. The capacity and the wired charging rate are not.
 
 Chip, by region
 
-In the UK, Samsung lists the Exynos 2600 (2nm) for the Galaxy S26 and the Snapdragon 8 Elite Gen 5 for Galaxy (3nm) for the Galaxy S26 Ultra. Samsung's US Galaxy S26 phone lists the Exynos 2600 for the Galaxy S26 and the Galaxy S26+. Samsung's US Galaxy S26 Ultra phone lists Snapdragon 8 Elite Gen 5 for Galaxy. Samsung UK says models may vary by country, so check Samsung for the country you buy in. Those names are not a speed score.
+In the UK, Samsung lists the Exynos 2600 (2nm) for the Galaxy S26 and the Snapdragon 8 Elite Gen 5 for Galaxy (3nm) for the Galaxy S26 Ultra. Samsung US lists the Exynos 2600 for the Galaxy S26 and the Galaxy S26+. Samsung US lists Snapdragon 8 Elite Gen 5 for Galaxy. Samsung UK says models may vary by country, so check Samsung for the country you buy in. Those names are not a speed score.
 
 Memory and storage, by region
 
-Samsung US Support lists 12 GB of memory with 256 GB or 512 GB of storage on the Galaxy S26. On the Ultra, Samsung US Support lists 12 GB of memory with 256 GB or 512 GB, or 16 GB of memory with 1 TB. Samsung's US Galaxy S26 phone lists the same 12 GB with 256 GB or 512 GB. Samsung UK lists 12 GB of memory and 256 GB or 512 GB of storage on the Galaxy S26, and 12 GB or 16 GB of memory with 256 GB, 512 GB, or 1 TB on the Ultra. Samsung US Support says external SD cards are not supported.
+Samsung US Support lists 12 GB of memory with 256 GB or 512 GB of storage on the Galaxy S26. On the Ultra, Samsung US Support lists 12 GB of memory with 256 GB or 512 GB, or 16 GB of memory with 1 TB. Samsung US lists the same 12 GB with 256 GB or 512 GB. Samsung UK lists 12 GB of memory and 256 GB or 512 GB of storage on the Galaxy S26, and 12 GB or 16 GB of memory with 256 GB, 512 GB, or 1 TB on the Ultra. Samsung US Support says external SD cards are not supported.
 
 Who should buy which
 
-Buy the Galaxy S26 Ultra if you will use the S Pen, the 5x telephoto and zoom up to 100x, or the 5,000 mAh battery with up to 60W charging, and you want the 6.9-inch QHD+ screen. Buy the Galaxy S26 if you want the smaller, lighter phone for everyday photos. You can try Privacy Display in a store. Galaxy Z Flip8 vs Galaxy S26 Ultra covers a lighter folding phone against the Ultra. Galaxy Z Fold 7 vs Galaxy S26 Ultra covers the book-style fold against the same slab. Galaxy S25 vs Galaxy S25 Plus covers the previous compact Galaxy S phone against its Plus.`;
+Buy the Galaxy S26 Ultra if you will use the S Pen, the 5x telephoto and zoom up to 100x, or the 5,000 mAh battery with up to 60W charging, and you want the 6.9-inch QHD+ screen. Buy the Galaxy S26 if you want the smaller, lighter phone for everyday photos. Galaxy Z Flip8 vs Galaxy S26 Ultra covers a lighter folding phone against the Ultra. Galaxy Z Fold 7 vs Galaxy S26 Ultra covers the book-style fold against the same slab. Galaxy S25 vs Galaxy S25 Plus covers the previous compact Galaxy S phone against its Plus.`;
 
 const SPEC = "Specs";
 
@@ -131,7 +131,7 @@ export const GALAXY_S26_VS_GALAXY_S26_ULTRA: EditorialComparison = buildEditoria
         "6.3-inch FHD+ Dynamic AMOLED 2X, 120 Hz adaptive (Samsung US Support)",
         "Samsung UK: 71.7 x 149.6 x 7.2 mm, 167 g",
         "50 MP wide, 12 MP ultrawide, 10 MP 3x telephoto, 12 MP selfie (Samsung US Support)",
-        "Exynos 2600 in the UK and on Samsung's US Galaxy S26 phone",
+        "Exynos 2600 in the UK and in the US",
       ],
       cons: [
         "4,300 mAh and wired charging up to 25W, against 5,000 mAh and up to 60W on the Ultra",
@@ -152,11 +152,10 @@ export const GALAXY_S26_VS_GALAXY_S26_ULTRA: EditorialComparison = buildEditoria
         "S Pen. Samsung US Support says the Galaxy S26 does not support it",
         "200 MP wide, 50 MP ultrawide, 10 MP 3x, and 50 MP 5x telephoto (Samsung UK)",
         "5,000 mAh, Super Fast Charging 3.0 up to 60W, wireless up to 25W (Samsung US Support)",
-        "Built-in Privacy Display (Samsung UK and Samsung's US Galaxy S26 Ultra phone)",
+        "Built-in Privacy Display (Samsung UK and Samsung US)",
       ],
       cons: [
         "Heavier and larger: Samsung UK lists 214 g and 78.1 x 163.6 x 7.9 mm",
-        "You can try Privacy Display in a store before you buy",
       ],
       bestFor: "Best if you will use the S Pen, 5x zoom, or the larger battery",
     },
@@ -214,7 +213,7 @@ export const GALAXY_S26_VS_GALAXY_S26_ULTRA: EditorialComparison = buildEditoria
       S26,
       ULTRA,
       "Samsung US Support: no S Pen support on the Galaxy S26, Galaxy S26+, or Galaxy S26 FE",
-      "Samsung UK lists S Pen support. Samsung's US Galaxy S26 Ultra phone: built-in S Pen",
+      "Samsung UK lists S Pen support. Samsung US: built-in S Pen",
       "b"
     ),
     textAttr(
@@ -261,8 +260,8 @@ export const GALAXY_S26_VS_GALAXY_S26_ULTRA: EditorialComparison = buildEditoria
       SPEC,
       S26,
       ULTRA,
-      "UK: Exynos 2600 (2nm). Samsung's US Galaxy S26 phone: Exynos 2600. Models may vary by country",
-      "UK: Snapdragon 8 Elite Gen 5 for Galaxy (3nm). Samsung's US Galaxy S26 Ultra phone: Snapdragon 8 Elite Gen 5 for Galaxy. Models may vary by country"
+      "UK: Exynos 2600 (2nm). Samsung US: Exynos 2600. Models may vary by country",
+      "UK: Snapdragon 8 Elite Gen 5 for Galaxy (3nm). Samsung US: Snapdragon 8 Elite Gen 5 for Galaxy. Models may vary by country"
     ),
     textAttr(
       "storage",
@@ -279,8 +278,8 @@ export const GALAXY_S26_VS_GALAXY_S26_ULTRA: EditorialComparison = buildEditoria
       SPEC,
       S26,
       ULTRA,
-      "Samsung's US Galaxy S26 phone does not list a Privacy Display for the Galaxy S26",
-      "Samsung UK and Samsung's US Galaxy S26 Ultra phone list a built-in Privacy Display. Try it in a store"
+      "Samsung US does not list a Privacy Display for the Galaxy S26",
+      "Samsung UK and Samsung US list a built-in Privacy Display"
     ),
   ],
   faqs: FAQS,
