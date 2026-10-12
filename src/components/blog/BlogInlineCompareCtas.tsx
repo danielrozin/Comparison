@@ -17,6 +17,7 @@ export function BlogInlineCompareCtas({
   links,
   heading = "Compare banks and money-transfer apps",
   placement = "blog_intro_cta",
+  variant = "links",
 }: {
   sourcePage: string;
   links: readonly BlogInlineCompareLink[];
@@ -24,6 +25,8 @@ export function BlogInlineCompareCtas({
   heading?: string;
   /** ROO-180: `placement` on related_comparison_click. */
   placement?: string;
+  /** ROO-114: "cards" renders each link as a tappable card row. */
+  variant?: "links" | "cards";
 }) {
   if (links.length === 0) return null;
 
@@ -42,9 +45,20 @@ export function BlogInlineCompareCtas({
               source={sourcePage}
               placement={placement}
               position={String(index + 1)}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary-700 hover:text-primary-800 underline underline-offset-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+              className={
+                variant === "cards"
+                  ? "flex items-center gap-3 min-h-11 w-full rounded-lg border border-primary-100 bg-white px-3 py-2.5 text-sm font-semibold text-primary-800 hover:border-primary-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  : "inline-flex items-center gap-2 text-sm font-semibold text-primary-700 hover:text-primary-800 underline underline-offset-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+              }
             >
-              {link.label}
+              {variant === "cards" ? (
+                <>
+                  <span className="min-w-0 flex-1 break-words">{link.label}</span>
+                  <span aria-hidden="true" className="text-primary-500">&rarr;</span>
+                </>
+              ) : (
+                link.label
+              )}
             </TrackedCompareLink>
           </li>
         ))}

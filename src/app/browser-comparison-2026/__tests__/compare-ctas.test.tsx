@@ -86,3 +86,12 @@ describe("browser comparison compare CTAs", () => {
     expect(page).toContain("heading={BROWSER_COMPARISON_CTA_HEADING}");
   });
 });
+
+describe("ROO-114 browser hero cards", () => {
+  it("renders the hero as cards tagged placement=hero_card", async () => {
+    const { readFileSync } = await import("node:fs");
+    const page = readFileSync("src/app/browser-comparison-2026/page.tsx", "utf8");
+    expect(page).toContain('placement="hero_card"');
+    expect(page).toContain('variant="cards"');
+  });
+});
