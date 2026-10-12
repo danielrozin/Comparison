@@ -12,6 +12,7 @@ import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { sanitizeCheckoutDistinctId } from "@/lib/analytics/checkout-identity";
 import { captureComparisonViewed } from "@/lib/analytics/comparison-view-capture";
+import type { MissingLandingMode, MissingLandingReferrerType } from "@/lib/analytics/missing-comparison-landing";
 import { capturePricingViewed } from "@/lib/analytics/pricing-view-capture";
 import {
   normalizeQuery,
@@ -504,6 +505,19 @@ export function trackCompareMissingViewed(props: CompareMissingViewedProps) {
     search_id: props.search_id,
     query_raw: props.query_raw,
     referrer_path: props.referrer_path,
+  });
+}
+
+/** ROO-193: a /compare URL with no live page (404 shell or builder). */
+export function trackMissingComparisonLanding(props: {
+  slug: string;
+  referrer_type: MissingLandingReferrerType;
+  mode: MissingLandingMode;
+}) {
+  captureClient("missing_comparison_landing", {
+    slug: props.slug,
+    referrer_type: props.referrer_type,
+    mode: props.mode,
   });
 }
 

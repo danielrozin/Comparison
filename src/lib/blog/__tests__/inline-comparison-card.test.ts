@@ -219,3 +219,55 @@ describe("composeBlogArticleParts", () => {
     ]);
   });
 });
+
+import {
+  pairSlugCandidatesFromBlogSlug as roo180Pairs,
+  selectInlineComparisonSlugs as roo180Select,
+} from "@/lib/blog/inline-comparison-card";
+
+describe("ROO-180 pair candidates from blog slug", () => {
+  it("normalises a long blog slug into compare pairs, longest first", () => {
+    const out = roo180Pairs("imax-vs-dolby-cinema-which-is-better-2026");
+    expect(out[0]).toBe("imax-vs-dolby-cinema");
+    expect(out).toContain("dolby-cinema-vs-imax");
+    expect(out).toContain("imax-vs-dolby");
+  });
+
+  it("drops lead words and years", () => {
+    const out = roo180Pairs("best-delta-vs-united-2026-guide");
+    expect(out).toContain("delta-vs-united");
+    expect(out.every((s) => !s.startsWith("best-"))).toBe(true);
+  });
+
+  it("returns nothing when the slug has no pair", () => {
+    expect(roo180Pairs("how-to-get-a-cashiers-check")).toEqual([]);
+    expect(roo180Pairs("vs-something")).toEqual([]);
+  });
+});
+
+describe("ROO-180 card selection fallbacks", () => {
+  it("puts live slug pairs ahead of body links", () => {
+    expect(
+      roo180Select({
+        bodyHtml: '<a href="/compare/x-vs-y">x</a>',
+        relatedSlugs: [],
+        pairSlugs: ["imax-vs-dolby-cinema"],
+      }),
+    ).toEqual(["imax-vs-dolby-cinema", "x-vs-y"]);
+  });
+
+  it("uses popular fallbacks only when nothing else matched", () => {
+    expect(
+      roo180Select({ bodyHtml: "", relatedSlugs: [], fallbackSlugs: ["a-vs-b", "c-vs-d"] }),
+    ).toEqual(["a-vs-b", "c-vs-d"]);
+    expect(
+      roo180Select({ bodyHtml: "", relatedSlugs: ["r-vs-s"], fallbackSlugs: ["a-vs-b"] }),
+    ).toEqual(["r-vs-s"]);
+  });
+
+  it("keeps mapped-only articles free of fallbacks", () => {
+    expect(
+      roo180Select({ bodyHtml: "", relatedSlugs: [], preferMappedOnly: true, fallbackSlugs: ["a-vs-b"] }),
+    ).toEqual([]);
+  });
+});
