@@ -406,6 +406,16 @@ export interface SearchSubmittedProps {
   source_page?: string;
 }
 
+/** ROO-155 — "Compare something else" box under the verdict on a compare page. */
+export function trackCompareNextSearch(query: string, sourceSlug: string) {
+  captureClient("comparison_search_performed", {
+    search_term: query,
+    result_type: "compare_next_form",
+    placement: "compare_next",
+    source_page: `/compare/${sourceSlug}`,
+  }, { ga: false });
+}
+
 /** One event per submitted query: what they typed, where, and where it went. */
 export function trackSearchSubmitted(props: SearchSubmittedProps) {
   const trimmed = props.query_raw.trim();
