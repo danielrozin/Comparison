@@ -124,7 +124,7 @@ export default async function sitemap({
       { url: `${SITE_URL}/password-manager-comparison/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/probability-vs-statistics`, lastModified: "2026-07-30", changeFrequency: "monthly", priority: 0.8 },
       { url: `${SITE_URL}/q1-2026-ai-battles`, lastModified: "2026-06-12", changeFrequency: "monthly", priority: 0.8 },
-      { url: `${SITE_URL}/how-we-write-verdicts`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
+      { url: `${SITE_URL}/how-we-write-verdicts`, lastModified: "2026-07-10", changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/who-is-this-for`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/requests`, lastModified: ABOUT_DATE, changeFrequency: "weekly", priority: 0.5 },
       { url: `${SITE_URL}/pricing`, lastModified: "2026-08-23", changeFrequency: "weekly", priority: 0.8 },
@@ -135,7 +135,7 @@ export default async function sitemap({
       { url: `${SITE_URL}/best`, lastModified: maxComparisonDate, changeFrequency: "weekly", priority: 0.7 },
       { url: `${SITE_URL}/authors`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       // Author page
-      { url: `${SITE_URL}/authors/daniel-rozin`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
+      { url: `${SITE_URL}/authors/daniel-rozin`, lastModified: "2026-07-11", changeFrequency: "monthly", priority: 0.5 },
       // FAQ competitor comparison pages
       { url: `${SITE_URL}/faq/comparison-sites`, lastModified: FAQ_DATE, changeFrequency: "monthly", priority: 0.7 },
       { url: `${SITE_URL}/faq/diffen`, lastModified: FAQ_DATE, changeFrequency: "monthly", priority: 0.6 },

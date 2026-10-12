@@ -4,6 +4,12 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import crypto from "node:crypto";
 import { NextRequest } from "next/server";
+import { lookupMember } from "@/lib/monetization/members";
+import {
+  membershipTestEvents,
+  resetMembershipTestDb,
+  setMembershipDbFailWrites,
+} from "@/lib/monetization/__tests__/in-memory-membership-db";
 
 const capture = vi.fn();
 const flushPostHog = vi.fn().mockResolvedValue(undefined);
@@ -22,11 +28,13 @@ const redisState = vi.hoisted(() => {
     strings,
     lists,
     sets,
+    enabled: true,
     reset() {
       hashes.clear();
       strings.clear();
       lists.clear();
       sets.clear();
+      api.enabled = true;
     },
     async sadd(key: string, member: string) {
       let set = sets.get(key);
@@ -66,8 +74,13 @@ const redisState = vi.hoisted(() => {
 });
 
 vi.mock("@/lib/services/redis", () => ({
-  getRedis: () => redisState,
+  getRedis: () => (redisState.enabled ? redisState : null),
 }));
+
+vi.mock("@/lib/db/prisma", async () => {
+  const db = await import("@/lib/monetization/__tests__/in-memory-membership-db");
+  return { getPrisma: () => db.getMembershipTestPrisma() };
+});
 
 vi.mock("@/lib/services/email", () => ({
   sendNotificationEmail: (...args: unknown[]) => sendNotificationEmail(...args),
@@ -108,6 +121,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
     sendMemberWelcomeEmail.mockClear();
     sendMemberWelcomeEmail.mockResolvedValue({ success: true, method: "resend" });
     redisState.reset();
+    resetMembershipTestDb();
   });
 
   afterEach(() => {
@@ -116,6 +130,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
     } else {
       process.env.STRIPE_WEBHOOK_SECRET = previousSecret;
     }
+    vi.unstubAllGlobals();
   });
 
   it("keeps checkout_completed and also captures purchase with $revenue", async () => {
@@ -130,7 +145,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
           subscription: "sub_xyz",
           amount_total: 4900,
           currency: "USD",
-          metadata: { plan: "pro", interval: "year", src: "header" },
+          metadata: { app: "aversusb", plan: "pro", interval: "year", src: "header" },
         },
       },
     });
@@ -192,6 +207,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
           amount_total: 4900,
           currency: "usd",
           metadata: {
+            app: "aversusb",
             plan: "pro",
             interval: "year",
             src: "header",
@@ -237,6 +253,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
           customer: "cus_abc",
           amount_total: 900,
           currency: "usd",
+          metadata: { app: "aversusb", plan: "pro", interval: "month", src: "header" },
         },
       },
     });
@@ -261,6 +278,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
           customer: "cus_fallback",
           amount_total: 900,
           currency: "usd",
+          metadata: { app: "aversusb", plan: "pro", interval: "month", src: "header" },
         },
       },
     });
@@ -288,7 +306,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
           status: "canceled",
           canceled_at: 1_700_000_000,
           cancellation_details: { reason: "cancellation_requested" },
-          metadata: { plan: "pro", interval: "year", src: "header" },
+          metadata: { app: "aversusb", plan: "pro", interval: "year", src: "header" },
         },
       },
     });
@@ -328,6 +346,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
           customer: "cus_gone",
           status: "canceled",
           metadata: {
+            app: "aversusb",
             plan: "pro",
             interval: "year",
             src: "header",
@@ -359,7 +378,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
           subscription: "sub_hash",
           amount_total: 4900,
           currency: "usd",
-          metadata: { plan: "pro", interval: "year", src: "header" },
+          metadata: { app: "aversusb", plan: "pro", interval: "year", src: "header" },
         },
       },
     });
@@ -399,7 +418,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
             subscription: "sub_hash",
             amount_total: 900,
             currency: "usd",
-            metadata: { plan: "pro", interval: "month", src: "pricing" },
+            metadata: { app: "aversusb", plan: "pro", interval: "month", src: "pricing" },
           },
         },
       }),
@@ -415,7 +434,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
             id: "sub_hash",
             customer: "cus_hash",
             status: "past_due",
-            metadata: { plan: "pro", interval: "month" },
+            metadata: { app: "aversusb", plan: "pro", interval: "month" },
           },
         },
       }),
@@ -441,7 +460,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
             subscription: "sub_hash",
             amount_total: 4900,
             currency: "usd",
-            metadata: { plan: "pro", interval: "year", src: "header" },
+            metadata: { app: "aversusb", plan: "pro", interval: "year", src: "header" },
           },
         },
       }),
@@ -458,7 +477,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
             id: "sub_hash",
             customer: "cus_hash",
             status: "canceled",
-            metadata: { plan: "pro", interval: "year", src: "header" },
+            metadata: { app: "aversusb", plan: "pro", interval: "year", src: "header" },
           },
         },
       }),
@@ -479,5 +498,500 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
         subject: expect.stringContaining("sub_hash"),
       }),
     );
+  });
+
+  it("grants, updates, and revokes access in Postgres when Redis is not configured", async () => {
+    redisState.enabled = false;
+
+    const completed = await postWebhook(
+      JSON.stringify({
+        id: "evt_pg_completed",
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            id: "cs_pg",
+            customer_details: { email: "Buyer@Example.com" },
+            customer: "cus_pg",
+            subscription: "sub_pg",
+            amount_total: 4900,
+            currency: "usd",
+            metadata: { app: "aversusb", plan: "pro", interval: "year", src: "header" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(completed.status).toBe(200);
+    const granted = await lookupMember("buyer@example.com");
+    expect(granted).toMatchObject({
+      available: true,
+      member: expect.objectContaining({
+        active: true,
+        plan: "pro",
+        status: "active",
+        stripeCustomer: "cus_pg",
+        stripeSubscription: "sub_pg",
+      }),
+    });
+
+    const updated = await postWebhook(
+      JSON.stringify({
+        id: "evt_pg_updated",
+        type: "customer.subscription.updated",
+        data: {
+          object: {
+            id: "sub_pg",
+            customer: "cus_pg",
+            status: "past_due",
+            metadata: { app: "aversusb", plan: "pro", interval: "year" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(updated.status).toBe(200);
+    const pastDue = await lookupMember("buyer@example.com");
+    expect(pastDue.available && pastDue.member).toMatchObject({
+      status: "past_due",
+      active: false,
+      plan: "pro",
+    });
+
+    const deleted = await postWebhook(
+      JSON.stringify({
+        id: "evt_pg_deleted",
+        type: "customer.subscription.deleted",
+        data: {
+          object: {
+            id: "sub_pg",
+            customer: "cus_pg",
+            status: "canceled",
+            metadata: { app: "aversusb", plan: "pro", interval: "year" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(deleted.status).toBe(200);
+    const revoked = await lookupMember("buyer@example.com");
+    expect(revoked.available && revoked.member).toMatchObject({
+      status: "canceled",
+      active: false,
+      plan: "pro",
+    });
+    expect(redisState.hashes.size).toBe(0);
+  });
+
+  it("sends the welcome and founder alert once when Stripe retries the same event", async () => {
+    const payload = JSON.stringify({
+      id: "evt_retry_once",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_retry",
+          customer_details: { email: "buyer@example.com" },
+          customer: "cus_retry",
+          subscription: "sub_retry",
+          amount_total: 900,
+          currency: "usd",
+          metadata: { app: "aversusb", plan: "pro", interval: "month", src: "pricing" },
+        },
+      },
+    });
+
+    const first = await postWebhook(payload, secret);
+    const second = await postWebhook(payload, secret);
+    expect(first.status).toBe(200);
+    expect(second.status).toBe(200);
+    expect(await second.json()).toMatchObject({ received: true, duplicate: true });
+    expect(sendMemberWelcomeEmail).toHaveBeenCalledTimes(1);
+    expect(sendNotificationEmail).toHaveBeenCalledTimes(1);
+    expect(membershipTestEvents()).toHaveLength(1);
+  });
+
+  it("returns 500 and skips the welcome email when the membership write fails", async () => {
+    setMembershipDbFailWrites(true);
+    const payload = JSON.stringify({
+      id: "evt_persist_fail",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_fail",
+          customer_details: { email: "buyer@example.com" },
+          customer: "cus_fail",
+          subscription: "sub_fail",
+          amount_total: 4900,
+          currency: "usd",
+          metadata: { app: "aversusb", plan: "pro", interval: "year", src: "header" },
+        },
+      },
+    });
+
+    const failed = await postWebhook(payload, secret);
+    expect(failed.status).toBe(500);
+    expect(sendMemberWelcomeEmail).not.toHaveBeenCalled();
+    expect(sendNotificationEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: expect.stringContaining("WARNING: membership was NOT recorded in Postgres"),
+      }),
+    );
+    expect(membershipTestEvents()).toHaveLength(0);
+    const missing = await lookupMember("buyer@example.com");
+    expect(missing).toEqual({ available: true, member: null });
+
+    setMembershipDbFailWrites(false);
+    sendNotificationEmail.mockClear();
+    const retried = await postWebhook(payload, secret);
+    expect(retried.status).toBe(200);
+    expect(sendMemberWelcomeEmail).toHaveBeenCalledTimes(1);
+    expect(sendNotificationEmail).toHaveBeenCalledTimes(1);
+    const granted = await lookupMember("buyer@example.com");
+    expect(granted.available && granted.member?.active).toBe(true);
+  });
+
+  it("does not say Stripe will retry when checkout has no buyer email", async () => {
+    const payload = JSON.stringify({
+      id: "evt_no_email",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_no_email",
+          customer: "cus_no_email",
+          subscription: "sub_no_email",
+          amount_total: 4900,
+          currency: "usd",
+          metadata: { app: "aversusb", plan: "pro", interval: "year", src: "header" },
+        },
+      },
+    });
+
+    const res = await postWebhook(payload, secret);
+    expect(res.status).toBe(200);
+    expect(sendMemberWelcomeEmail).not.toHaveBeenCalled();
+    const message = String(sendNotificationEmail.mock.calls[0]?.[0]?.message ?? "");
+    expect(message).toContain("no buyer email");
+    expect(message).toContain("Stripe will not retry");
+    expect(message).not.toContain("Stripe will retry this event");
+    expect(membershipTestEvents().map((event) => event.id)).toEqual(["evt_no_email"]);
+
+    sendNotificationEmail.mockClear();
+    const again = await postWebhook(payload, secret);
+    expect(again.status).toBe(200);
+    expect(await again.json()).toMatchObject({ duplicate: true });
+    expect(sendNotificationEmail).not.toHaveBeenCalled();
+  });
+
+  it("ignores a Scan2Remember checkout with no member, email, alert, or PostHog call", async () => {
+    const fetchMock = vi.fn(() => {
+      throw new Error("Stripe must not be called for a foreign checkout");
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const payload = JSON.stringify({
+      id: "evt_scan2remember",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_live_b1fyVXK4test",
+          customer_details: { email: "scan@example.com" },
+          customer: "cus_scan",
+          subscription: "sub_scan",
+          amount_total: 499,
+          currency: "usd",
+          success_url: "https://app.scan2remember.com/plus/success",
+          metadata: {
+            intro_offer: "1",
+            price_id: "price_1T9Nf7Rubzz9nfe2GtZALW5s",
+            user_id: "user_123",
+          },
+          line_items: {
+            data: [{ price: { id: "price_1T9Nf7Rubzz9nfe2GtZALW5s" } }],
+          },
+        },
+      },
+    });
+
+    const res = await postWebhook(payload, secret);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ received: true, ignored: "foreign_app" });
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(sendMemberWelcomeEmail).not.toHaveBeenCalled();
+    expect(sendNotificationEmail).not.toHaveBeenCalled();
+    expect(capture).not.toHaveBeenCalled();
+    expect(flushPostHog).not.toHaveBeenCalled();
+    expect(redisState.hashes.size).toBe(0);
+    expect(redisState.lists.size).toBe(0);
+    expect(membershipTestEvents()).toHaveLength(0);
+    const member = await lookupMember("scan@example.com");
+    expect(member).toEqual({ available: true, member: null });
+  });
+
+  it("ignores a foreign subscription.deleted and does not revoke an AversusB member", async () => {
+    await postWebhook(
+      JSON.stringify({
+        id: "evt_ours_before_foreign_delete",
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            customer_details: { email: "buyer@example.com" },
+            customer: "cus_ours",
+            subscription: "sub_ours",
+            amount_total: 4900,
+            currency: "usd",
+            metadata: { app: "aversusb", plan: "pro", interval: "year", src: "header" },
+          },
+        },
+      }),
+      secret,
+    );
+    sendNotificationEmail.mockClear();
+    sendMemberWelcomeEmail.mockClear();
+    capture.mockClear();
+    flushPostHog.mockClear();
+
+    const res = await postWebhook(
+      JSON.stringify({
+        id: "evt_foreign_deleted",
+        type: "customer.subscription.deleted",
+        data: {
+          object: {
+            id: "sub_foreign",
+            customer: "cus_foreign",
+            status: "canceled",
+            metadata: { user_id: "user_123" },
+            items: { data: [{ price: { id: "price_1T9Nf7Rubzz9nfe2GtZALW5s" } }] },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ received: true, ignored: "foreign_app" });
+    expect(sendNotificationEmail).not.toHaveBeenCalled();
+    expect(sendMemberWelcomeEmail).not.toHaveBeenCalled();
+    expect(capture).not.toHaveBeenCalled();
+    expect(flushPostHog).not.toHaveBeenCalled();
+    const member = await lookupMember("buyer@example.com");
+    expect(member.available && member.member).toMatchObject({
+      status: "active",
+      active: true,
+      stripeSubscription: "sub_ours",
+    });
+  });
+
+  it("still processes a checkout tagged metadata.app=aversusb", async () => {
+    const res = await postWebhook(
+      JSON.stringify({
+        id: "evt_tagged_ok",
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            id: "cs_tagged",
+            customer_details: { email: "member@example.com" },
+            customer: "cus_tagged",
+            subscription: "sub_tagged",
+            amount_total: 4900,
+            currency: "usd",
+            metadata: { app: "aversusb", plan: "pro", interval: "year", src: "pricing" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ received: true });
+    const member = await lookupMember("member@example.com");
+    expect(member.available && member.member).toMatchObject({
+      active: true,
+      plan: "pro",
+      interval: "year",
+    });
+    expect(sendMemberWelcomeEmail).toHaveBeenCalled();
+    expect(sendNotificationEmail).toHaveBeenCalled();
+    expect(capture).toHaveBeenCalledWith(expect.objectContaining({ event: "purchase" }));
+  });
+
+  it("processes a checkout with no app tag when the line item is an AversusB price, including Business", async () => {
+    const previousYear = process.env.STRIPE_PRICE_PRO_YEARLY;
+    const previousBusiness = process.env.STRIPE_PRICE_BUSINESS_MONTHLY;
+    process.env.STRIPE_PRICE_PRO_YEARLY = "price_pro_year";
+    process.env.STRIPE_PRICE_BUSINESS_MONTHLY = "price_business_month";
+    try {
+      const pro = await postWebhook(
+        JSON.stringify({
+          id: "evt_price_fallback_pro",
+          type: "checkout.session.completed",
+          data: {
+            object: {
+              id: "cs_price_pro",
+              customer_details: { email: "pro-price@example.com" },
+              customer: "cus_price_pro",
+              subscription: "sub_price_pro",
+              amount_total: 4900,
+              currency: "usd",
+              metadata: { plan: "pro", interval: "year", src: "pricing" },
+              line_items: { data: [{ price: { id: "price_pro_year" } }] },
+            },
+          },
+        }),
+        secret,
+      );
+      expect(pro.status).toBe(200);
+      expect(await pro.json()).toEqual({ received: true });
+
+      const business = await postWebhook(
+        JSON.stringify({
+          id: "evt_price_fallback_biz",
+          type: "checkout.session.completed",
+          data: {
+            object: {
+              id: "cs_price_biz",
+              customer_details: { email: "biz-price@example.com" },
+              customer: "cus_price_biz",
+              subscription: "sub_price_biz",
+              amount_total: 4900,
+              currency: "usd",
+              metadata: { plan: "business", interval: "month", src: "pricing" },
+              line_items: { data: [{ price: "price_business_month" }] },
+            },
+          },
+        }),
+        secret,
+      );
+      expect(business.status).toBe(200);
+      const bizMember = await lookupMember("biz-price@example.com");
+      expect(bizMember.available && bizMember.member).toMatchObject({
+        plan: "business",
+        interval: "month",
+        active: true,
+      });
+    } finally {
+      if (previousYear === undefined) delete process.env.STRIPE_PRICE_PRO_YEARLY;
+      else process.env.STRIPE_PRICE_PRO_YEARLY = previousYear;
+      if (previousBusiness === undefined) delete process.env.STRIPE_PRICE_BUSINESS_MONTHLY;
+      else process.env.STRIPE_PRICE_BUSINESS_MONTHLY = previousBusiness;
+    }
+  });
+
+  it("reads line items when a transition checkout has no app tag and no price in the payload", async () => {
+    const previousKey = process.env.STRIPE_SECRET_KEY;
+    const previousYear = process.env.STRIPE_PRICE_PRO_YEARLY;
+    process.env.STRIPE_SECRET_KEY = "sk_test_transition";
+    process.env.STRIPE_PRICE_PRO_YEARLY = "price_pro_year";
+    const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
+      expect(init?.method ?? "GET").toBe("GET");
+      expect(String(url)).toContain("/checkout/sessions/cs_transition/line_items");
+      return {
+        ok: true,
+        json: async () => ({ data: [{ price: { id: "price_pro_year" } }] }),
+      };
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    try {
+      const res = await postWebhook(
+        JSON.stringify({
+          id: "evt_transition",
+          type: "checkout.session.completed",
+          data: {
+            object: {
+              id: "cs_transition",
+              customer_details: { email: "transition@example.com" },
+              customer: "cus_transition",
+              subscription: "sub_transition",
+              amount_total: 4900,
+              currency: "usd",
+              metadata: { plan: "pro", interval: "year", src: "header" },
+            },
+          },
+        }),
+        secret,
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({ received: true });
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      const member = await lookupMember("transition@example.com");
+      expect(member.available && member.member?.active).toBe(true);
+    } finally {
+      if (previousKey === undefined) delete process.env.STRIPE_SECRET_KEY;
+      else process.env.STRIPE_SECRET_KEY = previousKey;
+      if (previousYear === undefined) delete process.env.STRIPE_PRICE_PRO_YEARLY;
+      else process.env.STRIPE_PRICE_PRO_YEARLY = previousYear;
+    }
+  });
+
+  it("ignores an AversusB-tagged checkout with a missing or invalid plan", async () => {
+    const res = await postWebhook(
+      JSON.stringify({
+        id: "evt_bad_plan",
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            id: "cs_bad_plan",
+            customer_details: { email: "bad-plan@example.com" },
+            customer: "cus_bad",
+            subscription: "sub_bad",
+            amount_total: 4900,
+            currency: "usd",
+            metadata: { app: "aversusb", plan: "unknown", interval: "year", src: "header" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ received: true, ignored: "invalid_plan" });
+    expect(sendMemberWelcomeEmail).not.toHaveBeenCalled();
+    expect(sendNotificationEmail).not.toHaveBeenCalled();
+    expect(capture).not.toHaveBeenCalled();
+    expect(membershipTestEvents()).toHaveLength(0);
+    const member = await lookupMember("bad-plan@example.com");
+    expect(member).toEqual({ available: true, member: null });
+  });
+
+  it("accepts a subscription event by price id when metadata.app is absent", async () => {
+    const previousYear = process.env.STRIPE_PRICE_PRO_YEARLY;
+    process.env.STRIPE_PRICE_PRO_YEARLY = "price_pro_year";
+    try {
+      await postWebhook(
+        JSON.stringify({
+          id: "evt_sub_seed",
+          type: "checkout.session.completed",
+          data: {
+            object: {
+              customer_details: { email: "sub-price@example.com" },
+              customer: "cus_sub_price",
+              subscription: "sub_price",
+              amount_total: 900,
+              currency: "usd",
+              metadata: { app: "aversusb", plan: "pro", interval: "month", src: "pricing" },
+            },
+          },
+        }),
+        secret,
+      );
+      const res = await postWebhook(
+        JSON.stringify({
+          id: "evt_sub_price_update",
+          type: "customer.subscription.updated",
+          data: {
+            object: {
+              id: "sub_price",
+              customer: "cus_sub_price",
+              status: "past_due",
+              metadata: { plan: "pro", interval: "month" },
+              items: { data: [{ price: { id: "price_pro_year" } }] },
+            },
+          },
+        }),
+        secret,
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({ received: true });
+      const member = await lookupMember("sub-price@example.com");
+      expect(member.available && member.member).toMatchObject({ status: "past_due", active: false });
+    } finally {
+      if (previousYear === undefined) delete process.env.STRIPE_PRICE_PRO_YEARLY;
+      else process.env.STRIPE_PRICE_PRO_YEARLY = previousYear;
+    }
   });
 });

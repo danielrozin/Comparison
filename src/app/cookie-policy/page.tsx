@@ -92,7 +92,7 @@ const webPageSchema = {
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
-  hasPart: { "@type": "FAQPage", "@id": `${PAGE_URL}#faq` },
+  hasPart: { "@id": `${PAGE_URL}#faq` },
   breadcrumb: {
     "@type": "BreadcrumbList",
     "@id": `${PAGE_URL}#breadcrumbs`,

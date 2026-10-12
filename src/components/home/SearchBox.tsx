@@ -2,8 +2,14 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { slugify } from "@/lib/utils/slugify";
-import { trackComparisonSearch } from "@/lib/utils/analytics";
+import { parseComparisonQuery } from "@/lib/parse-comparison-query";
+import { bindFlushOnPageHide } from "@/lib/search/flush-on-page-hide";
+import { suggestExistingComparison } from "@/lib/search/did-you-mean";
+import { compareSlugForQuery, settledSearchResults } from "@/lib/search/resolve-search-destination";
+import { normalizeQuery, searchIdFor } from "@/lib/search/search-session";
+import { trackPickedResult, trackSubmittedQuery } from "@/lib/search/track-search";
+import { trackSearchResultsShown, type SearchResultsShownProps } from "@/lib/utils/analytics";
+import { DidYouMean } from "@/components/search/DidYouMean";
 import Link from "next/link";
 import { CategoryIcon } from "@/lib/utils/category-icons";
 
@@ -27,25 +33,6 @@ const TYPING_SUGGESTIONS = [
   "Tesla vs BMW",
 ];
 
-function parseComparison(input: string): [string, string] | null {
-  const trimmed = input.trim();
-  const patterns = [
-    /^compare\s+(.+?)\s+(?:to|and|with|vs\.?)\s+(.+)$/i,
-    /^differences?\s+between\s+(.+?)\s+and\s+(.+)$/i,
-    /^(.+?)\s+compared\s+(?:to|with)\s+(.+)$/i,
-    /^(.+?)\s+(?:vs\.?|versus|compared\s+to|against)\s+(.+)$/i,
-    /^(.+?)\s+[-–—]\s+(.+)$/,
-    /^(.{2,40}?)\s+or\s+(.{2,40})$/i,
-  ];
-  for (const pattern of patterns) {
-    const match = trimmed.match(pattern);
-    if (match && match[1].trim() && match[2].trim()) {
-      return [match[1].trim(), match[2].trim()];
-    }
-  }
-  return null;
-}
-
 function formatTitle(title: string): { a: string; b: string } | null {
   const match = title.match(/^(.+?)\s+vs\.?\s+(.+)$/i);
   if (match) return { a: match[1], b: match[2] };
@@ -56,6 +43,7 @@ export function SearchBox() {
   const [query, setQuery] = useState("");
   const [popular, setPopular] = useState<PopularComparison[]>([]);
   const [liveResults, setLiveResults] = useState<SearchResult[]>([]);
+  const [resultsQuery, setResultsQuery] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -66,6 +54,20 @@ export function SearchBox() {
   const listboxId = "search-listbox";
   const router = useRouter();
   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+  const pendingShown = useRef<SearchResultsShownProps | null>(null);
+  const firedShown = useRef(new Set<string>());
+  const pickLock = useRef(false);
+
+  const flushShown = useCallback(() => {
+    const pending = pendingShown.current;
+    if (!pending) return;
+    const key = `home:${normalizeQuery(pending.query_raw)}`;
+    if (firedShown.current.has(key)) return;
+    firedShown.current.add(key);
+    trackSearchResultsShown(pending);
+  }, []);
+
+  useEffect(() => bindFlushOnPageHide(flushShown), [flushShown]);
 
   // Cycle typing suggestions — paused when user prefers reduced motion
   useEffect(() => {
@@ -87,22 +89,42 @@ export function SearchBox() {
   // Live search with debounce
   useEffect(() => {
     if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    // Drop the previous query's rows immediately so Enter cannot treat them
+    // as the answer for the text that is on screen now.
+    setLiveResults([]);
+    setResultsQuery(null);
     if (!query.trim() || query.trim().length < 2) {
-      setLiveResults([]);
       setIsSearching(false);
       return;
     }
     setIsSearching(true);
+    let cancelled = false;
+    const requested = query.trim();
     searchTimeout.current = setTimeout(() => {
-      fetch(`/api/search?q=${encodeURIComponent(query.trim())}&limit=8`)
+      const started = performance.now();
+      fetch(`/api/search?q=${encodeURIComponent(requested)}&limit=8`)
         .then((r) => r.json())
         .then((data) => {
-          setLiveResults(data.results || []);
+          if (cancelled) return;
+          const results: SearchResult[] = data.results || [];
+          setLiveResults(results);
+          setResultsQuery(requested);
           setIsSearching(false);
+          pendingShown.current = {
+            search_id: searchIdFor(requested),
+            query_raw: requested,
+            surface: "home",
+            result_count: results.length,
+            top_slugs: results.slice(0, 5).map((result) => result.slug),
+            latency_ms: Math.round(performance.now() - started),
+          };
         })
-        .catch(() => setIsSearching(false));
+        .catch(() => {
+          if (!cancelled) setIsSearching(false);
+        });
     }, 280);
     return () => {
+      cancelled = true;
       if (searchTimeout.current) clearTimeout(searchTimeout.current);
     };
   }, [query]);
@@ -132,26 +154,63 @@ export function SearchBox() {
     (e: React.FormEvent) => {
       e.preventDefault();
       if (!query.trim()) return;
+      flushShown();
       setShowDropdown(false);
 
-      // If an item is keyboard-selected, navigate to it
+      // If an item is keyboard-selected, navigate to it. The keydown handler
+      // may also call this; pickLock keeps the events to one search id.
+      const settled = settledSearchResults(query, resultsQuery, liveResults);
       if (activeIndex >= 0 && allItems[activeIndex]) {
-        router.push(`/compare/${allItems[activeIndex].slug}`);
+        if (pickLock.current) return;
+        pickLock.current = true;
+        const item = allItems[activeIndex];
+        trackSubmittedQuery({
+          query,
+          surface: "home",
+          destination: "dropdown_item",
+          results: settled ? liveResults : [],
+          resultsQuery: settled?.query ?? null,
+          dropdownCount: allItems.length,
+        });
+        trackPickedResult({
+          query,
+          surface: "home",
+          slug: item.slug,
+          position: activeIndex + 1,
+          resultCount: allItems.length,
+          resultKind: "comparison",
+        });
+        router.push(`/compare/${item.slug}`);
         return;
       }
 
-      const parsed = parseComparison(query);
-      if (parsed) {
-        const slug = `${slugify(parsed[0])}-vs-${slugify(parsed[1])}`;
-        trackComparisonSearch(query.trim(), "comparison");
-        router.push(`/compare/${slug}`);
+      const compareSlug = compareSlugForQuery(query, settled);
+      if (compareSlug) {
+        trackSubmittedQuery({
+          query,
+          surface: "home",
+          destination: "compare",
+          results: settled ? liveResults : [],
+          resultsQuery: settled?.query ?? null,
+          dropdownCount: settled?.slugs.length ?? 0,
+          legacyResultType: "comparison",
+        });
+        router.push(`/compare/${compareSlug}`);
         return;
       }
 
-      trackComparisonSearch(query.trim(), "general");
+      trackSubmittedQuery({
+        query,
+        surface: "home",
+        destination: "search_page",
+        results: settled ? liveResults : [],
+        resultsQuery: settled?.query ?? null,
+        dropdownCount: settled?.slugs.length ?? 0,
+        legacyResultType: "general",
+      });
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     },
-    [query, router, activeIndex, allItems]
+    [query, router, activeIndex, allItems, liveResults, resultsQuery, flushShown]
   );
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -168,13 +227,34 @@ export function SearchBox() {
       setActiveIndex(-1);
     } else if (e.key === "Enter" && activeIndex >= 0 && allItems[activeIndex]) {
       e.preventDefault();
-      router.push(`/compare/${allItems[activeIndex].slug}`);
+      if (pickLock.current) return;
+      pickLock.current = true;
+      flushShown();
+      const item = allItems[activeIndex];
+      trackSubmittedQuery({
+        query,
+        surface: "home",
+        destination: "dropdown_item",
+        results: settledSearchResults(query, resultsQuery, liveResults) ? liveResults : [],
+        resultsQuery: settledSearchResults(query, resultsQuery, liveResults)?.query ?? null,
+        dropdownCount: allItems.length,
+      });
+      trackPickedResult({
+        query,
+        surface: "home",
+        slug: item.slug,
+        position: activeIndex + 1,
+        resultCount: allItems.length,
+        resultKind: "comparison",
+      });
+      router.push(`/compare/${item.slug}`);
       setShowDropdown(false);
     }
   }
 
   const showingLive = query.trim().length >= 2;
   const hasResults = allItems.length > 0;
+  const suggestion = showingLive ? suggestExistingComparison(query, liveResults) : null;
 
   return (
     <div ref={wrapperRef} className="relative">
@@ -217,7 +297,11 @@ export function SearchBox() {
               setShowDropdown(true);
               setIsFocused(true);
             }}
-            onBlur={() => setIsFocused(false)}
+            onBlur={() => {
+              setIsFocused(false);
+              flushShown();
+              pickLock.current = false;
+            }}
             onKeyDown={handleKeyDown}
             placeholder={`Try "${TYPING_SUGGESTIONS[suggestionIndex]}"`}
             className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-text text-base sm:text-lg placeholder:text-text-secondary/50 border-2 border-transparent focus:border-primary-300 focus:ring-4 focus:ring-primary-300/60 outline-none transition-all duration-200"
@@ -246,12 +330,7 @@ export function SearchBox() {
 
       {/* Dropdown */}
       {showDropdown && hasResults && (
-        <div
-          id={listboxId}
-          role="listbox"
-          aria-label="Search suggestions"
-          className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-border/80 overflow-hidden z-50 animate-slide-up"
-        >
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-border/80 overflow-hidden z-50 animate-slide-up">
           {/* Header — aria-hidden: non-option content must not appear inside role="listbox" */}
           <div aria-hidden="true" className="px-4 py-2.5 border-b border-border/50 flex items-center justify-between bg-surface-alt/60">
             <p className="text-xs font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
@@ -276,7 +355,26 @@ export function SearchBox() {
             </kbd>
           </div>
 
-          <div className="max-h-72 overflow-y-auto">
+          {suggestion && (
+            <DidYouMean
+              title={suggestion.title}
+              href={`/compare/${suggestion.slug}`}
+              onSelect={() => {
+                flushShown();
+                trackPickedResult({
+                  query,
+                  surface: "home",
+                  slug: suggestion.slug,
+                  position: 1,
+                  resultCount: liveResults.length,
+                  resultKind: "comparison",
+                });
+                setShowDropdown(false);
+              }}
+            />
+          )}
+
+          <div id={listboxId} role="listbox" aria-label="Search suggestions" className="max-h-72 overflow-y-auto">
             {allItems.map((item, idx) => {
               const parts = formatTitle(item.title);
               const isActive = idx === activeIndex;
@@ -299,7 +397,18 @@ export function SearchBox() {
                   role="option"
                   aria-selected={isActive}
                   href={`/compare/${item.slug}`}
-                  onClick={() => setShowDropdown(false)}
+                  onClick={() => {
+                    flushShown();
+                    trackPickedResult({
+                      query,
+                      surface: "home",
+                      slug: item.slug,
+                      position: idx + 1,
+                      resultCount: allItems.length,
+                      resultKind: "comparison",
+                    });
+                    setShowDropdown(false);
+                  }}
                   className={`flex items-center gap-3 px-4 py-3 transition-all duration-100 border-l-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${
                     isActive
                       ? "bg-primary-50/80 border-l-primary-500"
@@ -336,6 +445,15 @@ export function SearchBox() {
                 <button
                   type="button"
                   onClick={() => {
+                    flushShown();
+                    trackSubmittedQuery({
+                      query,
+                      surface: "home",
+                      destination: "search_page",
+                      results: settledSearchResults(query, resultsQuery, liveResults) ? liveResults : [],
+                      resultsQuery,
+                      dropdownCount: liveResults.length,
+                    });
                     setShowDropdown(false);
                     router.push(`/search?q=${encodeURIComponent(query.trim())}`);
                   }}
@@ -359,28 +477,29 @@ export function SearchBox() {
         <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-border z-50 animate-slide-up overflow-hidden">
           {/* "Will compare" preview when A vs B detected */}
           {(() => {
-            const parsed = parseComparison(query);
-            if (parsed) {
+            const parsed = parseComparisonQuery(query);
+            const willOpenCompare = compareSlugForQuery(query, settledSearchResults(query, resultsQuery, liveResults));
+            if (willOpenCompare && parsed.entityA && parsed.entityB) {
               return (
                 <div className="px-4 py-4">
-                  <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">Generate new comparison</p>
+                  <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">Create this comparison</p>
                   <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-100 rounded-xl">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                      {parsed[0].charAt(0).toUpperCase()}
+                      {parsed.entityA.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-text truncate">{parsed[0]}</p>
+                      <p className="font-semibold text-sm text-text truncate">{parsed.entityA}</p>
                     </div>
                     <span className="text-xs font-black text-white bg-gradient-to-r from-primary-600 to-accent-600 px-2 py-1 rounded-full flex-shrink-0">VS</span>
                     <div className="flex-1 min-w-0 text-right">
-                      <p className="font-semibold text-sm text-text truncate">{parsed[1]}</p>
+                      <p className="font-semibold text-sm text-text truncate">{parsed.entityB}</p>
                     </div>
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent-500 to-accent-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                      {parsed[1].charAt(0).toUpperCase()}
+                      {parsed.entityB.charAt(0).toUpperCase()}
                     </div>
                   </div>
                   <p className="text-xs text-text-secondary/70 mt-2 text-center">
-                    Press <kbd className="px-1.5 py-0.5 bg-surface-alt border border-border rounded text-xs font-mono">Enter</kbd> to generate this comparison
+                    Press <kbd className="px-1.5 py-0.5 bg-surface-alt border border-border rounded text-xs font-mono">Enter</kbd> to create this comparison
                   </p>
                 </div>
               );

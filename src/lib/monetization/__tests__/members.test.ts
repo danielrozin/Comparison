@@ -42,11 +42,18 @@ vi.mock("@/lib/services/redis", () => ({
   getRedis: () => (redisBox.enabled ? redisBox : null),
 }));
 
+vi.mock("@/lib/db/prisma", async () => {
+  const db = await import("./in-memory-membership-db");
+  return { getPrisma: () => db.getMembershipTestPrisma() };
+});
+
 import { lookupMember, revokeMember, upsertMember } from "../members";
+import { resetMembershipTestDb, setMembershipDbEnabled } from "./in-memory-membership-db";
 
 describe("monetization member hash", () => {
   beforeEach(() => {
     redisBox.reset();
+    resetMembershipTestDb();
   });
 
   it("upserts monetization:member:{email} for O(1) lookup", async () => {
@@ -183,7 +190,7 @@ describe("monetization member hash", () => {
     expect(redisBox.hashes.get("monetization:member:buyer@example.com")?.active).toBe("1");
   });
 
-  it("skips the hash when Redis is not configured", async () => {
+  it("grants access through Postgres when Redis is not configured", async () => {
     redisBox.enabled = false;
     const ok = await upsertMember({
       email: "buyer@example.com",
@@ -192,9 +199,28 @@ describe("monetization member hash", () => {
       status: "active",
       replaceSubscription: true,
     });
-    expect(ok).toBe(false);
+    expect(ok).toBe(true);
     expect(redisBox.hashes.size).toBe(0);
 
+    const lookedUp = await lookupMember("buyer@example.com");
+    expect(lookedUp.available).toBe(true);
+    if (lookedUp.available) {
+      expect(lookedUp.member?.active).toBe(true);
+      expect(lookedUp.member?.plan).toBe("pro");
+      expect(lookedUp.member?.status).toBe("active");
+    }
+  });
+
+  it("reports the membership store unavailable when Postgres is not configured", async () => {
+    setMembershipDbEnabled(false);
+    const ok = await upsertMember({
+      email: "buyer@example.com",
+      plan: "pro",
+      interval: "month",
+      status: "active",
+      replaceSubscription: true,
+    });
+    expect(ok).toBe(false);
     const lookedUp = await lookupMember("buyer@example.com");
     expect(lookedUp).toEqual({ available: false });
   });

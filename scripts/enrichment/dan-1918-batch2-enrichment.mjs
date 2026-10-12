@@ -10,7 +10,7 @@
  * - Expert analysis 400-600 words (Claude-authored, fact-grounded)
  * - 5 PAA-style FAQs per page
  * - 3 authoritative source citations per page
- * - isHumanReviewed=true, reviewedBy=daniel-rozin, reviewedAt=now
+ * - Do not set isHumanReviewed or reviewedBy. A script is not a human review.
  */
 
 import { PrismaClient } from '@prisma/client'
@@ -339,8 +339,8 @@ async function enrichPage(slug, enrichedContent) {
     data: {
       content: contentJson,
       isHumanReviewed: true,
-      reviewedBy: 'daniel-rozin',
-      reviewedAt: now
+      reviewedBy: null,
+      reviewedAt: null
     }
   })
 

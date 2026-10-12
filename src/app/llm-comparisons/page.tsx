@@ -124,7 +124,7 @@ const articleSchema = {
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", ".faq-answer"] },
-  hasPart: { "@type": "FAQPage", "@id": `${PAGE_URL}#faq` },
+  hasPart: { "@id": `${PAGE_URL}#faq` },
   about: { "@type": "Thing", name: "Large language models", sameAs: "https://en.wikipedia.org/wiki/Large_language_model" },
   mentions: [
     { "@type": "SoftwareApplication", name: "GPT-4o", url: "https://openai.com" },

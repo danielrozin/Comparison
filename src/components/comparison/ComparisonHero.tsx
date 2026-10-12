@@ -2,6 +2,9 @@ import type React from "react";
 import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
+import { isHumanReviewedSlug } from "@/lib/editorial/human-reviewed";
+import { SITE_NAME } from "@/lib/utils/constants";
 import { AffiliateButton } from "./AffiliateButton";
 import { HeroShareButton } from "./HeroShareButton";
 
@@ -153,13 +156,17 @@ function EntityCard({
       {isWinner && <WinnerBadge />}
       <EntityAvatar entity={entity} variant={variant} />
       <h3 className="text-base sm:text-xl font-bold text-white mb-1">
-        <Link
-          href={`/entity/${entity.slug}`}
-          className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-900 rounded"
-          title={`All comparisons featuring ${entity.name}`}
-        >
-          {entity.name}
-        </Link>
+        {isEntityPageIndexable(entity.status) ? (
+          <Link
+            href={`/entity/${entity.slug}`}
+            className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-900 rounded"
+            title={`All comparisons featuring ${entity.name}`}
+          >
+            {entity.name}
+          </Link>
+        ) : (
+          entity.name
+        )}
       </h3>
       {entity.shortDesc && (
         <p className="text-xs sm:text-sm text-primary-100/80 leading-snug line-clamp-3">{entity.shortDesc}</p>
@@ -248,6 +255,14 @@ function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
   );
 }
 
+/** Brand suffix belongs on `<title>` (`buildPageTitle`), not the visible H1. */
+function visibleCompareHeading(raw: string): string {
+  const suffix = ` | ${SITE_NAME}`;
+  return raw.toLowerCase().endsWith(suffix.toLowerCase())
+    ? raw.slice(0, raw.length - suffix.length).trim()
+    : raw;
+}
+
 export function ComparisonHero({ comparison }: { comparison: ComparisonPageData }) {
   const entityA = comparison.entities[0];
   const entityB = comparison.entities[1];
@@ -289,16 +304,22 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* Title */}
         <h1 id="comparison-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-white mb-2 sm:mb-3 leading-tight motion-safe:animate-slide-up">
-          {comparison.metadata?.metaTitle || comparison.title}
+          {visibleCompareHeading(comparison.metadata?.metaTitle || comparison.title)}
         </h1>
 
-        {/* Author + Last Updated — E-E-A-T attribution always visible */}
+        {/* Publisher, plus Daniel's byline only after he has reviewed this slug. */}
         <div className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-2 flex-wrap motion-safe:animate-fade-in" style={{ animationDelay: "0.1s" }}>
           <span className="flex items-center gap-1.5">
-            <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
-              <span className="text-white font-bold leading-none text-[8px]">DR</span>
-            </span>
-            <Link href="/authors/daniel-rozin" rel="author" className="inline-flex items-center min-h-11 sm:min-h-0 hover:text-white transition-colors font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">Daniel Rozin</Link>
+            {isHumanReviewedSlug(comparison.slug) ? (
+              <>
+                <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
+                  <span className="text-white font-bold leading-none text-[8px]">DR</span>
+                </span>
+                <Link href="/authors/daniel-rozin" rel="author" className="inline-flex items-center min-h-11 sm:min-h-0 hover:text-white transition-colors font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">Daniel Rozin</Link>
+              </>
+            ) : (
+              <span className="font-semibold">{SITE_NAME}</span>
+            )}
           </span>
           {comparison.metadata?.updatedAt && (
             <>

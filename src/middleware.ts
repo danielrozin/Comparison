@@ -3,13 +3,20 @@ import {
   compareHtmlSuffixRedirectPath,
   HTML_SUFFIX_COMPARE_STATUS,
 } from "@/lib/redirects/html-suffix-compare";
+import {
+  isUnknownCategoryPath,
+  isUnknownSubcategoryPath,
+  UNKNOWN_CATEGORY_404_REWRITE,
+} from "@/lib/seo/category-page-path";
 
 // Simple in-memory rate limiter (per-instance; works on Edge Runtime)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 const RATE_LIMITS: Record<string, { windowMs: number; maxRequests: number }> = {
   "/api/v1/": { windowMs: 60_000, maxRequests: 60 },
-  "/api/comparisons/generate": { windowMs: 60_000, maxRequests: 5 },
+  // Burst guard only. The durable cap (3/IP/hour, 10/IP/day, daily global)
+  // lives in Postgres. Polling an in-flight generation needs more than 5/min.
+  "/api/comparisons/generate": { windowMs: 60_000, maxRequests: 20 },
   "/api/custom-compare": { windowMs: 60_000, maxRequests: 8 },
   "/api/billing-portal": { windowMs: 60_000, maxRequests: 8 },
   "/api/comments": { windowMs: 60_000, maxRequests: 10 },
@@ -139,6 +146,28 @@ export function middleware(request: NextRequest) {
 
   // For non-API routes, set geo cookie + security headers
   if (!pathname.startsWith("/api/")) {
+    // Known parent + unknown child streams a 200 from loading.tsx before
+    // the subcategory notFound() can change the status. Rewrite to a
+    // top-level slug the category route already 404s.
+    if (isUnknownSubcategoryPath(pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = UNKNOWN_CATEGORY_404_REWRITE;
+      const rewritten = NextResponse.rewrite(url);
+      const country = request.headers.get("x-vercel-ip-country") || "";
+      rewritten.cookies.set("consent_region", EU_COUNTRIES.has(country) ? "eu" : "other", {
+        path: "/",
+        maxAge: 86400,
+        sameSite: "lax",
+        httpOnly: false,
+      });
+      rewritten.headers.set("X-Content-Type-Options", "nosniff");
+      rewritten.headers.set("Referrer-Policy", "origin-when-cross-origin");
+      rewritten.headers.set("X-DNS-Prefetch-Control", "on");
+      rewritten.headers.set("Content-Language", "en");
+      rewritten.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return rewritten;
+    }
+
     const response = NextResponse.next();
     const country = request.headers.get("x-vercel-ip-country") || "";
     const isEU = EU_COUNTRIES.has(country);
@@ -155,6 +184,11 @@ export function middleware(request: NextRequest) {
     // Content-Language — explicit English declaration for AI language classifiers
     // and international search engines (Bing, Yandex, Baidu).
     response.headers.set("Content-Language", "en");
+    // Unknown /category/* must not be index,follow if a soft 200 still
+    // slips out. The layout and dynamicParams=false are what return 404.
+    if (isUnknownCategoryPath(pathname)) {
+      response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    }
     // X-Pingback — machine-readable pingback discovery for WordPress/Ghost CMS platforms.
     // When they link to aversusb.net they auto-POST to this endpoint; accelerates
     // backlink discovery before Googlebot crawls the referring page.
@@ -204,8 +238,9 @@ export function middleware(request: NextRequest) {
           ].join(", ")
         );
       }
-    } else if (pathname.startsWith("/category/")) {
-      // Strip trailing slash and extract category (and optional subcategory)
+    } else if (pathname.startsWith("/category/") && !isUnknownCategoryPath(pathname)) {
+      // Strip trailing slash and extract category (and optional subcategory).
+      // Unknown slugs are real 404s — do not advertise them with cite-as.
       const catPath = pathname.replace(/\/$/, "").replace("/category/", "");
       const slug = catPath.split("/")[0];
       if (slug) {

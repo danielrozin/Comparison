@@ -31,7 +31,7 @@ const FAQS = [
   {
     question: "Which is better for everyday family chat?",
     answer:
-      "It depends who is already installed. If the goal is private family chat with default end-to-end encryption, Signal matches that job. If the family already lives in Telegram groups or Channels, Telegram is easier — but default cloud chats are not end-to-end encrypted. There is no MAU ranking on this page.",
+      "It depends who is already installed. If the goal is private family chat with default end-to-end encryption, Signal matches that job. If the family already lives in Telegram groups or Channels, Telegram is easier — but default cloud chats are not end-to-end encrypted. There is no MAU ranking.",
   },
   {
     question: "Signal vs Telegram for business — which should teams use?",
@@ -45,7 +45,7 @@ const FAQS = [
   },
 ];
 
-const EXPERT_ANALYSIS = `This page compares Signal and Telegram by use-case: default privacy versus large-community features. It does not invent user counts.
+const EXPERT_ANALYSIS = `Signal or Telegram depends on default privacy versus large-community features. No user counts are added.
 
 Privacy and encryption
 
@@ -55,9 +55,7 @@ Features and communities
 
 Telegram documents large groups, unlimited-audience Channels, bots, and large file transfers. Those are the reasons people pick Telegram for public communities. Signal’s feature set is narrower and privacy-oriented (disappearing messages, sealed sender, usernames).
 
-Choose Signal if every participant can install it and you want default end-to-end encryption. Choose Telegram if you need Channels, bots, or very large groups and accept that default cloud chats are not end-to-end encrypted. Related: Signal vs WhatsApp; WhatsApp vs Telegram.
-
-Sources: Signal documentation and Support; Telegram FAQ (Secret Chats, groups, Channels).`;
+Choose Signal if every participant can install it and you want default end-to-end encryption. Choose Telegram if you need Channels, bots, or very large groups and accept that default cloud chats are not end-to-end encrypted. Related: Signal vs WhatsApp; WhatsApp vs Telegram.`;
 
 export const SIGNAL_VS_TELEGRAM: EditorialComparison = buildEditorialComparison({
   slug: "signal-vs-telegram",

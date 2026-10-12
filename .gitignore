@@ -65,6 +65,9 @@ hyperframes/**/.hyperframes/
 scripts/data/*.json
 gsc-recovery-daily.json
 
+# ROO-154 compare-metric dry-run reports (local/CI output, not source)
+reports/
+
 # DAN-2518 batch archive audit trail + rollback files (run artifacts, not source)
 archive-batches/
 

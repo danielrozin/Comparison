@@ -1,4 +1,11 @@
+import { initBotId } from "botid/client/core";
 import posthog from "posthog-js";
+
+// Vercel BotID protects POST /api/comparisons/generate. It runs even when
+// analytics consent is off — it is bot detection, not a tracking call.
+initBotId({
+  protect: [{ path: "/api/comparisons/generate", method: "POST" }],
+});
 import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { captureComparisonViewedFromLocation } from "@/lib/analytics/comparison-view-capture";
@@ -42,8 +49,10 @@ function experimentAssignments(): Record<string, string> {
 }
 
 const token = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
-// ROO-97: webdriver and known headless UAs never init. posthog.capture is a
-// no-op until init, so client events are not sent. Server events use posthog-node.
+// ROO-97 / ROO-159: webdriver, known headless UAs, and the Linux Chrome
+// 150/154 window never init. posthog.capture is a no-op until init, so
+// client events are not sent. Server events use posthog-node. The page
+// itself is unchanged.
 if (token && analyticsAllowed() && !isAutomatedClient()) {
   posthog.init(token, {
     api_host: "/ingest",

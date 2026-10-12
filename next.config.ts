@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
+import { withBotId } from "botid/next/config";
 import { withSentryConfig } from "@sentry/nextjs";
 import { BLOG_REDIRECTS } from "./src/lib/redirects/blog-redirects";
 import { VS_REDIRECTS } from "./src/lib/redirects/vs-redirects";
 import { COMPARE_REDIRECTS } from "./src/lib/redirects/compare-redirects";
 import { ENTITY_REDIRECTS } from "./src/lib/redirects/entity-redirects";
+import { CATEGORY_SOFT_404_REDIRECTS } from "./src/lib/redirects/category-soft-404-redirects";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -21,7 +23,13 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
-    return [...BLOG_REDIRECTS, ...VS_REDIRECTS, ...COMPARE_REDIRECTS, ...ENTITY_REDIRECTS];
+    return [
+      ...BLOG_REDIRECTS,
+      ...VS_REDIRECTS,
+      ...COMPARE_REDIRECTS,
+      ...CATEGORY_SOFT_404_REDIRECTS,
+      ...ENTITY_REDIRECTS,
+    ];
   },
 
   async rewrites() {
@@ -180,11 +188,13 @@ const nextConfig: NextConfig = {
 
 const sentryEnabled = !!(process.env.SENTRY_ORG && process.env.SENTRY_PROJECT);
 
+const configWithBotId = withBotId(nextConfig);
+
 export default sentryEnabled
-  ? withSentryConfig(nextConfig, {
+  ? withSentryConfig(configWithBotId, {
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
       silent: !process.env.CI,
       widenClientFileUpload: true,
     })
-  : nextConfig;
+  : configWithBotId;

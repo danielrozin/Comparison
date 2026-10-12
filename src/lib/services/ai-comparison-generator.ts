@@ -6,12 +6,14 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import type { ComparisonPageData, CitationStats, QuickAnswerTLDR } from "@/types";
-import { enrichComparisonData, type TavilyResult } from "./tavily-service";
+import { citationSourcesFromResults, distinctSources } from "@/lib/generation/citation-sources";
+import { enrichComparisonData } from "./apify-search";
 import { fetchEntityImages } from "@/lib/services/image-service";
 import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { COMPARISON_CATEGORIES, validateComparisonCategory } from "@/lib/utils/categories";
 import { assessComparisonQuality } from "@/lib/services/comparison-quality";
 import { findSelfContradictions, describeContradictions } from "@/lib/services/numeric-claim-guard";
+import { isHumanReviewedSlug } from "@/lib/editorial/human-reviewed";
 
 // Cap each Claude call at 45s so a slow upstream can't blow past the
 // 60s Vercel function budget and leave the user-facing route hanging
@@ -160,27 +162,24 @@ export async function generateComparison(
   entityA: string,
   entityB: string,
   slug: string,
-  options?: { skipEnrichment?: boolean }
+  options?: { skipEnrichment?: boolean; keepBelowQualityBar?: boolean }
 ): Promise<GenerationResult> {
   try {
     const client = getClient();
 
-    // Fetch real-time web data via Tavily (graceful — skipped on failure)
+    // Fetch real-time web data via Apify (graceful — skipped on failure).
+    // The search helper logs `search_provider_error:<code> provider=apify`
+    // and does not throw for a missing token, a non-2xx, or a timeout.
     let tavilyContext = "";
     let tavilySources: { name: string; url?: string }[] = [];
     if (!options?.skipEnrichment) {
       try {
         const enrichment = await enrichComparisonData(entityA, entityB, true);
         tavilyContext = enrichment.context;
-        tavilySources = enrichment.sources.map((s) => {
-          try {
-            return { name: new URL(s.url).hostname.replace(/^www\./, ""), url: s.url };
-          } catch {
-            return { name: s.title || "web source", url: s.url };
-          }
-        });
+        tavilySources = citationSourcesFromResults(enrichment.sources);
       } catch (err) {
-        console.warn("Tavily enrichment failed, proceeding without:", err);
+        const name = err instanceof Error && err.name ? err.name : "Error";
+        console.warn(`search_provider_error:network provider=apify (${name})`);
       }
     }
 
@@ -235,9 +234,15 @@ export async function generateComparison(
       return { success: false, comparison: null, error: "Failed to parse AI response as JSON", errorStage: "parse" };
     }
 
+    // One stamp for every generated id. Calling Date.now() again for each
+    // attribute value used to miss the entity id whenever the millisecond
+    // rolled over, and saveComparison then dropped every value.
+    const generatedAt = Date.now();
+    const entityIds = [`gen-ent-0-${generatedAt}`, `gen-ent-1-${generatedAt}`];
+
     // Transform into ComparisonPageData
     const comparison: ComparisonPageData = {
-      id: `gen-${Date.now()}`,
+      id: `gen-${generatedAt}`,
       slug,
       title: data.title || `${entityA} vs ${entityB}`,
       shortAnswer: data.shortAnswer || null,
@@ -250,7 +255,7 @@ export async function generateComparison(
       verdict: data.verdict || null,
       category: validateComparisonCategory(data.category || "", data.title || `${entityA} vs ${entityB}`, entityA, entityB),
       entities: (data.entities || []).map((e: Record<string, unknown>, idx: number) => ({
-        id: `gen-ent-${idx}-${Date.now()}`,
+        id: entityIds[idx] ?? `gen-ent-${idx}-${generatedAt}`,
         slug: String(e.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/g, ""),
         name: String(e.name || ""),
         shortDesc: String(e.shortDesc || ""),
@@ -262,7 +267,7 @@ export async function generateComparison(
         bestFor: e.bestFor ? String(e.bestFor) : null,
       })),
       attributes: (data.attributes || []).map((attr: Record<string, unknown>, idx: number) => ({
-        id: `gen-attr-${idx}-${Date.now()}`,
+        id: `gen-attr-${idx}-${generatedAt}`,
         slug: String(attr.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
         name: String(attr.name || ""),
         unit: attr.unit ? String(attr.unit) : null,
@@ -271,14 +276,14 @@ export async function generateComparison(
         higherIsBetter: typeof attr.higherIsBetter === "boolean" ? attr.higherIsBetter : null,
         values: [
           {
-            entityId: `gen-ent-0-${Date.now()}`,
+            entityId: entityIds[0],
             valueText: attr.entityAValue ? String(attr.entityAValue) : null,
             valueNumber: typeof attr.entityANumber === "number" ? attr.entityANumber : null,
             valueBoolean: null,
             winner: attr.winner === "a" ? true : attr.winner === "b" ? false : undefined,
           },
           {
-            entityId: `gen-ent-1-${Date.now()}`,
+            entityId: entityIds[1],
             valueText: attr.entityBValue ? String(attr.entityBValue) : null,
             valueNumber: typeof attr.entityBNumber === "number" ? attr.entityBNumber : null,
             valueBoolean: null,
@@ -298,7 +303,8 @@ export async function generateComparison(
         publishedAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         isAutoGenerated: true,
-        isHumanReviewed: false,
+        // A generated page is not a human review. Only HUMAN_REVIEWED_SLUGS may say so.
+        isHumanReviewed: isHumanReviewedSlug(slug),
         viewCount: 0,
       },
       citationStats: buildCitationStats(data, tavilySources),
@@ -338,12 +344,16 @@ export async function generateComparison(
       console.warn(
         `Quality gate rejected ${slug} (score ${quality.score}): ${quality.reasons.join("; ")}`
       );
-      return {
-        success: false,
-        comparison: null,
-        error: `Generation failed quality gate: ${quality.reasons.join("; ")}`,
-        errorStage: "quality",
-      };
+      // Cron/batch still drop thin pages. A visitor request keeps the draft
+      // so it can be stored as provisional (live, noindex) instead of a dead end.
+      if (!options?.keepBelowQualityBar) {
+        return {
+          success: false,
+          comparison: null,
+          error: `Generation failed quality gate: ${quality.reasons.join("; ")}`,
+          errorStage: "quality",
+        };
+      }
     }
 
     const contradictions = findSelfContradictions(comparison);
@@ -376,13 +386,7 @@ function buildCitationStats(
   tavilySources: { name: string; url?: string }[]
 ): CitationStats {
   const aiStats = (data.citationStats || {}) as Record<string, unknown>;
-  // Deduplicate sources by hostname
-  const seen = new Set<string>();
-  const uniqueSources = tavilySources.filter((s) => {
-    if (seen.has(s.name)) return false;
-    seen.add(s.name);
-    return true;
-  });
+  const uniqueSources = distinctSources(tavilySources);
 
   return {
     sourceCount: uniqueSources.length,
@@ -489,7 +493,7 @@ NUMERIC CLAIM RULES (DAN-2188):
 export async function generateMultiComparison(
   entityNames: string[],
   slug: string,
-  options?: { skipEnrichment?: boolean }
+  options?: { skipEnrichment?: boolean; keepBelowQualityBar?: boolean }
 ): Promise<GenerationResult> {
   const names = entityNames.map((n) => n.trim()).filter((n) => n.length > 0);
   if (names.length < 2) {
@@ -502,22 +506,17 @@ export async function generateMultiComparison(
   try {
     const client = getClient();
 
-    // Enrich with the first 2 entities (Tavily helper is 2-arg). Better than nothing.
+    // Enrich with the first 2 entities (the search helper is 2-arg). Better than nothing.
     let tavilyContext = "";
     let tavilySources: { name: string; url?: string }[] = [];
     if (!options?.skipEnrichment) {
       try {
         const enrichment = await enrichComparisonData(names[0], names[1], true);
         tavilyContext = enrichment.context;
-        tavilySources = enrichment.sources.map((s) => {
-          try {
-            return { name: new URL(s.url).hostname.replace(/^www\./, ""), url: s.url };
-          } catch {
-            return { name: s.title || "web source", url: s.url };
-          }
-        });
+        tavilySources = citationSourcesFromResults(enrichment.sources);
       } catch (err) {
-        console.warn("Tavily enrichment failed, proceeding without:", err);
+        const name = err instanceof Error && err.name ? err.name : "Error";
+        console.warn(`search_provider_error:network provider=apify (${name})`);
       }
     }
 
@@ -658,7 +657,8 @@ export async function generateMultiComparison(
         publishedAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         isAutoGenerated: true,
-        isHumanReviewed: false,
+        // A generated page is not a human review. Only HUMAN_REVIEWED_SLUGS may say so.
+        isHumanReviewed: isHumanReviewedSlug(slug),
         viewCount: 0,
       },
       citationStats: buildCitationStats(data, tavilySources),

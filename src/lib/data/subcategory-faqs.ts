@@ -416,7 +416,7 @@ export const SUBCATEGORY_FAQS: Record<string, Record<string, CategoryFaq[]>> = {
       {
         question: "What are the most popular basketball comparisons?",
         answer:
-          "Top comparisons include LeBron James vs Michael Jordan, Steph Curry vs Kobe Bryant, Kevin Durant vs LeBron, Nikola Jokić vs Joel Embiid, and franchise comparisons like Lakers vs Celtics by championship count.",
+          "Top comparisons include [LeBron James vs Michael Jordan](/compare/lebron-vs-jordan), [Steph Curry vs Kobe Bryant](/compare/kobe-bryant-vs-steph-curry), [Kevin Durant vs LeBron](/compare/durant-vs-lebron), [Nikola Jokić vs Joel Embiid](/compare/embiid-vs-jokic), and franchise comparisons like [Lakers vs Celtics](/compare/lakers-vs-celtics) by championship count.",
       },
       {
         question: "Is LeBron James or Michael Jordan the GOAT?",
@@ -993,4 +993,42 @@ export const SUBCATEGORY_FAQS: Record<string, Record<string, CategoryFaq[]>> = {
 
 export function getSubcategoryFaqs(categorySlug: string, subcategorySlug: string): CategoryFaq[] {
   return SUBCATEGORY_FAQS[categorySlug]?.[subcategorySlug] ?? [];
+}
+
+/** One piece of an FAQ answer. A link is written in the source as [label](/path). */
+export type FaqAnswerSegment =
+  | { type: "text"; text: string }
+  | { type: "link"; label: string; href: string };
+
+function faqLinkPattern(): RegExp {
+  return /\[([^\]]+)\]\(([^)\s]+)\)/g;
+}
+
+/**
+ * Split an FAQ answer into text and links.
+ * The stored string stays plain data. The page turns each link into a real anchor.
+ */
+export function faqAnswerSegments(answer: string): FaqAnswerSegment[] {
+  const segments: FaqAnswerSegment[] = [];
+  let last = 0;
+  for (const match of answer.matchAll(faqLinkPattern())) {
+    const index = match.index ?? 0;
+    if (index > last) {
+      segments.push({ type: "text", text: answer.slice(last, index) });
+    }
+    segments.push({ type: "link", label: match[1], href: match[2] });
+    last = index + match[0].length;
+  }
+  if (last < answer.length) {
+    segments.push({ type: "text", text: answer.slice(last) });
+  }
+  if (segments.length === 0) {
+    segments.push({ type: "text", text: answer });
+  }
+  return segments;
+}
+
+/** FAQ schema wants the words a person reads, without the [label](url) markup. */
+export function faqAnswerPlainText(answer: string): string {
+  return answer.replace(faqLinkPattern(), "$1");
 }
