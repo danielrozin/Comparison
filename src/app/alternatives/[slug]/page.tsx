@@ -9,6 +9,16 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { getPrisma } from "@/lib/db/prisma";
+import { GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG } from "@/lib/data/google-maps-alternatives-blog";
+
+/** In-repo guides linked from an alternatives page (ROO-183). */
+const ALTERNATIVES_GUIDES: Record<string, { href: string; label: string; blurb: string }> = {
+  "google-maps": {
+    href: `/blog/${GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG}`,
+    label: "Google Maps alternatives that don't use Google",
+    blurb: "Organic Maps, CoMaps, OsmAnd, Magic Earth, and HERE WeGo on offline maps, privacy, and public transport. Waze is owned by Google.",
+  },
+};
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -517,6 +527,16 @@ export default async function AlternativesPage({ params }: PageProps) {
             className="inline-block px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg hover:shadow-md transition-all duration-150"
           >
             Search for a comparison
+          </Link>
+        </div>
+      )}
+
+      {ALTERNATIVES_GUIDES[slug] && (
+        <div className="mt-10 rounded-lg border border-border bg-white p-5">
+          <h2 className="text-xl font-bold text-text mb-2">Alternatives that don&apos;t use Google</h2>
+          <p className="text-sm text-text-secondary mb-3">{ALTERNATIVES_GUIDES[slug].blurb}</p>
+          <Link href={ALTERNATIVES_GUIDES[slug].href} className="text-primary-600 font-semibold hover:underline">
+            {ALTERNATIVES_GUIDES[slug].label}
           </Link>
         </div>
       )}
