@@ -47,7 +47,11 @@ export default function robots(): MetadataRoute.Robots {
           "/developers/dashboard",
           "/survey",
           "/*?*sort=",
-          "/*?*page=",
+          // Pagination only. `/*?*page=` also matched `?source_page=` and
+          // `?target_page=` on internal links, so it is anchored to the
+          // start of a query parameter here.
+          "/*?page=",
+          "/*&page=",
           "/*?*ref=",
           "/*?*utm_",
           "/*?*fbclid=",
