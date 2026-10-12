@@ -319,7 +319,7 @@ function toolPageSchema(slug: string, title: string, description: string, publis
           "@id": url,
         },
         hasPart: [
-          { "@type": "FAQPage", "@id": `${url}#faq` },
+          { "@id": `${url}#faq` },
         ],
       },
       {

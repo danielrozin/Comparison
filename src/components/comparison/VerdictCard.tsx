@@ -13,6 +13,37 @@ interface VerdictCardProps {
   entities: ComparisonEntityData[];
   attributes: ComparisonAttribute[];
   comparisonSlug: string;
+  /**
+   * `quickAnswer.winnerName`.
+   * Null or blank: the scorecard has no single overall winner, so the
+   * score bar must not crown one even when the numbers differ.
+   * A name: keep the score-based crown.
+   * Omitted: score-based crown, for callers that have not opted in.
+   */
+  winnerName?: string | null;
+}
+
+/** Higher score wins. Equal scores (or no scores) are a tie. */
+function scoreWinnerIdx(scores: { scoreA: number; scoreB: number } | null): number {
+  if (!scores) return -1;
+  if (scores.scoreA > scores.scoreB) return 0;
+  if (scores.scoreB > scores.scoreA) return 1;
+  return -1;
+}
+
+/**
+ * Page-level crown for the verdict score bar.
+ * An explicit null/blank winnerName refuses an overall winner (metric-by-metric
+ * only). A set name keeps the historical higher-score crown.
+ */
+export function resolveVerdictWinnerIdx(
+  scores: { scoreA: number; scoreB: number } | null,
+  winnerName?: string | null,
+): number {
+  const byScore = scoreWinnerIdx(scores);
+  if (winnerName === undefined) return byScore;
+  if (winnerName === null || winnerName.trim() === "") return -1;
+  return byScore;
 }
 
 function TrophyIcon({ className }: { className?: string }) {
@@ -53,7 +84,7 @@ function computeScores(
   return { scoreA, scoreB };
 }
 
-export function VerdictCard({ verdict, shortAnswer, entities, attributes, comparisonSlug }: VerdictCardProps) {
+export function VerdictCard({ verdict, shortAnswer, entities, attributes, comparisonSlug, winnerName }: VerdictCardProps) {
   const entityA = entities[0];
   const entityB = entities[1];
   if (!entityA || !entityB) return null;
@@ -62,7 +93,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
   if (!verdictText) return null;
 
   const scores = computeScores(entities, attributes);
-  const winnerIdx = scores ? (scores.scoreA > scores.scoreB ? 0 : scores.scoreB > scores.scoreA ? 1 : -1) : -1;
+  const winnerIdx = resolveVerdictWinnerIdx(scores, winnerName);
 
   return (
     <ScrollReveal delay={80}>

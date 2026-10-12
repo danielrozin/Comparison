@@ -73,6 +73,13 @@ export interface ComparisonEntityData {
   cons: string[];
   bestFor: string | null;
   affiliateLinks?: AffiliateLink[];
+  /**
+   * Entity row status. Compare pages link to `/entity/{slug}` only when
+   * `isEntityPageIndexable(status)` is true — the same robots predicate as
+   * the entity page. Unset means the caller has not resolved it (treated as
+   * not indexable, so a missing lookup cannot emit a noindex URL).
+   */
+  status?: string | null;
 }
 
 export interface ComparisonAttribute {
@@ -89,6 +96,10 @@ export interface ComparisonAttribute {
     valueNumber: number | null;
     valueBoolean: boolean | null;
     winner?: boolean;
+    /** Citation label copied from AttributeValue.source. Used by the render-time metric guard. */
+    source?: string | null;
+    /** ISO time of AttributeValue.updatedAt or asOfDate. Used to prefer the latest sourced row. */
+    updatedAt?: string | null;
   }[];
 }
 
@@ -125,6 +136,11 @@ export interface ComparisonMetadata {
   // DAN-1890: DB lifecycle status ("published" | "archived" | ...). Consumed by
   // /compare/[slug] to noindex archived rows (missing/other → indexable).
   status?: string;
+  /**
+   * False when a fresh database read found a provisional auto-generated row
+   * with no visitor attribute table. Absent on older cached payloads.
+   */
+  visitorTableSaved?: boolean;
 }
 
 // ============================================================

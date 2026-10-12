@@ -22,7 +22,8 @@ import {
   getComparisonSlugsExisting,
   incrementViewCount,
 } from '../comparison-service'
-import { getAllMockSlugs } from '../mock-data'
+import { getAllMockSlugs, getMockComparison } from '../mock-data'
+import { getEditorialAeoOverlay } from '@/lib/data/editorial-aeo-overlays'
 
 describe('Comparison Service (mock-data fallback)', () => {
   beforeEach(() => {
@@ -71,6 +72,68 @@ describe('Comparison Service (mock-data fallback)', () => {
       expect(result!.faqs[0]).toHaveProperty('question')
       expect(result!.faqs[0]).toHaveProperty('answer')
     })
+
+    it('applies the Copilot AEO overlay on ps5-vs-xbox-series-x', async () => {
+      const result = await getComparisonBySlug('ps5-vs-xbox-series-x')
+      expect(result!.faqs.map((f) => f.question)).toEqual([
+        'Which console is better, PS5 or Xbox Series X?',
+        'Which has the higher GPU rating, PS5 or Xbox Series X?',
+        'What is the SSD speed of the PS5 vs the Xbox Series X?',
+        'Which should you buy, a PS5 or an Xbox Series X?',
+      ])
+      expect(result!.quickAnswer?.winnerName).toBeNull()
+      expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
+      expect(result!.keyDifferences.map((d) => d.label)).toEqual([
+        'GPU',
+        'SSD capacity',
+        'Subscription',
+        'SSD Speed',
+        'Exclusive Games',
+      ])
+      const gpu = result!.keyDifferences.find((row) => row.label === 'GPU')
+      expect(gpu?.entityAValue).toContain('10.3 TFLOPS')
+      expect(gpu?.entityBValue).toContain('12 TFLOPS')
+      expect(result!.keyDifferences.find((row) => row.label === 'SSD capacity')?.entityAValue).toMatch(/825GB/)
+    })
+
+    it('applies citation AEO overlays on figma, canva, chatgpt, cursor, android, and nvidia compares', async () => {
+      for (const slug of ['figma-vs-sketch', 'canva-vs-photoshop', 'chatgpt-vs-gemini', 'cursor-vs-copilot', 'android-vs-ios', 'nvidia-vs-amd']) {
+        const mock = getMockComparison(slug)
+        expect(mock).not.toBeNull()
+        const scorecard = mock!.keyDifferences.map((d) => ({ ...d }))
+        const result = await getComparisonBySlug(slug)
+        const overlay = getEditorialAeoOverlay(slug)
+        expect(overlay).not.toBeNull()
+        expect(result!.quickAnswer?.winnerName).toBeNull()
+        expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
+        expect(result!.shortAnswer).toBe(overlay!.shortAnswer)
+        expect(result!.faqs.map((f) => f.question)).toEqual(overlay!.faqs.map((f) => f.question))
+        expect(result!.faqs.length).toBeGreaterThan(0)
+        expect(result!.faqs.length).toBeLessThanOrEqual(8)
+        if (overlay!.metricMerge && overlay!.facts) {
+          for (const fact of overlay!.facts) {
+            const row = result!.keyDifferences.find((diff) => diff.label === fact.label)
+            expect(row, `${slug} ${fact.label}`).toBeTruthy()
+            const texts = [row!.entityAValue, row!.entityBValue]
+            for (const cell of fact.cells) expect(texts).toContain(cell.text)
+          }
+        } else {
+          expect(result!.keyDifferences).toEqual(scorecard)
+        }
+        expect(result!.verdict).toBe(mock!.verdict)
+      }
+    })
+
+    it('applies the Copilot AEO overlay on messi-vs-ronaldo', async () => {
+      const result = await getComparisonBySlug('messi-vs-ronaldo')
+      expect(result!.faqs).toHaveLength(3)
+      expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
+      expect(result!.faqs.map((f) => f.question)).toEqual([
+        'Who is better, Messi or Ronaldo?',
+        "Who has more Ballon d'Or awards, Messi or Ronaldo?",
+        'Who won the World Cup, Messi or Ronaldo?',
+      ])
+    })
   })
 
   describe('searchComparisons', () => {
@@ -89,6 +152,30 @@ describe('Comparison Service (mock-data fallback)', () => {
     it('respects limit parameter', async () => {
       const results = await searchComparisons('vs', 2)
       expect(results.length).toBeLessThanOrEqual(2)
+    })
+
+    // ROO-18: hub/site search must never surface these known stale /compare 404s.
+    it('resolves separator and qualifier queries onto live pages', async () => {
+      const messi = await searchComparisons('messi x ronaldo', 5)
+      expect(messi.map((row) => row.slug)).toContain('messi-vs-ronaldo')
+
+      const japan = await searchComparisons('japan vs china in economic terms', 5)
+      expect(japan.map((row) => row.slug)).toContain('japan-vs-china')
+
+      const stays = await searchComparisons('vrbo vs airbnb: for hosts', 5)
+      expect(stays.map((row) => row.slug)).toContain('airbnb-vs-vrbo')
+    })
+
+    it('never returns known dead compare slugs from smoke (ROO-18)', async () => {
+      const results = await searchComparisons('iphone', 50)
+      const slugs = results.map((r) => r.slug)
+      for (const dead of [
+        'iphone-vs-android',
+        'iphone-15-vs-iphone-se',
+        'oneplus-vs-iphone',
+      ]) {
+        expect(slugs).not.toContain(dead)
+      }
     })
   })
 

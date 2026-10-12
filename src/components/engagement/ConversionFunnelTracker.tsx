@@ -16,7 +16,13 @@ export function ConversionFunnelTracker({
   useEffect(() => {
     const page = `/compare/${slug}`;
 
-    // Step 1: Page view + comparison_view GA4 event
+    // Step 1: Page view + comparison_view.
+    // PostHog `comparison_viewed` also fires from the client bootstrap
+    // (instrumentation-client) so a load that never hydrates this chunk still
+    // counts. trackComparisonView dedupes that PostHog event per slug;
+    // GA / Meta / Clarity still run here once React mounts. Client-side
+    // navigations do not re-run the bootstrap, so this effect remains the
+    // fire path for those visits.
     if (!firedRef.current.has("page_view")) {
       firedRef.current.add("page_view");
       trackConversionFunnel("page_view", page, { category });

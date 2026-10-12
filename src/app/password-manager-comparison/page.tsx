@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { personAuthorNode } from "@/lib/seo/schema";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 
 const PAGE_URL = `${SITE_URL}/password-manager-comparison`;
 const PAGE_TITLE = `Best Password Managers Compared (2026) | ${SITE_NAME}`;
@@ -378,6 +379,8 @@ export default function PasswordManagerComparisonPage() {
               <h1 id="pm-hero-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight leading-tight">
                 Best Password Managers Compared (2026)
               </h1>
+              {/* ROO-50: under the title, before the long intro, so the cookie banner cannot cover it. */}
+              <SoftPricingLine src="password-manager-comparison" tone="onDark" className="mt-3" />
               <p id="page-intro" className="mt-2 text-teal-100 text-sm sm:text-base leading-relaxed">
                 An independent, citation-backed comparison of 10 leading password managers — encryption,
                 zero-knowledge architecture, third-party audits, pricing, and platform support.
@@ -402,7 +405,7 @@ export default function PasswordManagerComparisonPage() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" aria-hidden="true">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>

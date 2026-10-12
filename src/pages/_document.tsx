@@ -1,4 +1,4 @@
-import { Html, Head, Main, NextScript } from "next/document";
+import NextDocument, { Html, Head, Main, NextScript, type DocumentContext, type DocumentInitialProps } from "next/document";
 import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema, YOUTUBE_CHANNEL_URL } from "@/lib/seo/schema";
 import { SITE_URL } from "@/lib/utils/constants";
 
@@ -13,10 +13,18 @@ import { SITE_URL } from "@/lib/utils/constants";
 // `--font-inter` CSS variable cascades from a display:contents wrapper there.
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
 
-export default function Document() {
+type CustomDocumentProps = DocumentInitialProps & { omitSitewideJsonLd?: boolean };
+
+export default function Document({ omitSitewideJsonLd }: { omitSitewideJsonLd?: boolean }) {
   return (
     <Html lang="en">
       <Head>
+        {/* Impact.com site-ownership verification. Impact reads the `value`
+            attribute; Next.js `metadata.other` would emit `content` instead.
+            Pages Router /compare pages do not use the App Router root layout.
+            React's meta types only allow `content`, so this one attribute is exempt. */}
+        {/* @ts-expect-error Impact.com requires the non-standard `value` attribute. */}
+        <meta name="impact-site-verification" value="6c9a227a-f292-4a99-884e-977f8dbf815a" />
         {/* theme-color + color-scheme — parity with layout.tsx */}
         <meta name="theme-color" content="#1a56db" />
         <meta name="color-scheme" content="light" />
@@ -71,42 +79,50 @@ export default function Document() {
             __html: `(function(){var c=document.cookie.match(/(?:^|; )cookie_consent=([^;]*)/);if(c){try{var s=JSON.parse(decodeURIComponent(c[1]));if(!s.analytics)return}catch(e){return}}else{if(document.cookie.indexOf('consent_region=eu')!==-1)return}(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","w2svnzrk4f")})();`,
           }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema()),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(webSiteSchema()),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(dataCatalogSchema()),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(siteNavigationSchema()),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(definedTermSetSchema()),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(webApplicationSchema()),
-          }}
-        />
+        {/* P1: hard 404s must not ship sitewide Organization/WebSite/DataCatalog
+            JSON-LD — crawlers treated the 404 document as if the missing slug
+            were a real catalog page (live audit 2026-09-20). App Router 404s
+            still inherit src/app/layout.tsx graphs; that is a follow-up. */}
+        {!omitSitewideJsonLd && (
+          <>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(organizationSchema()),
+              }}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(webSiteSchema()),
+              }}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(dataCatalogSchema()),
+              }}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(siteNavigationSchema()),
+              }}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(definedTermSetSchema()),
+              }}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify(webApplicationSchema()),
+              }}
+            />
+          </>
+        )}
       </Head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
         <Main />
@@ -115,3 +131,13 @@ export default function Document() {
     </Html>
   );
 }
+
+Document.getInitialProps = async (ctx: DocumentContext): Promise<CustomDocumentProps> => {
+  const initialProps = await NextDocument.getInitialProps(ctx);
+  const isNotFound = ctx.res?.statusCode === 404;
+  if (isNotFound && ctx.res) {
+    ctx.res.removeHeader("Link");
+    ctx.res.setHeader("X-Robots-Tag", "noindex, nofollow");
+  }
+  return { ...initialProps, omitSitewideJsonLd: isNotFound };
+};

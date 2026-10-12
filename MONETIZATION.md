@@ -52,9 +52,12 @@ No deploy, no code change.
 
 ## Analytics (PostHog, already wired)
 
-Events: `pricing_viewed` (with `src`), `checkout_started` (plan, interval),
-`reservation_created` (plan), later `checkout_completed` via Stripe webhook.
-Funnel to watch: pricing_viewed → checkout_started → completed, split by `src`.
+Events: `pricing_viewed` (with `src`), `checkout_clicked`, `checkout_started`
+(plan, interval), `reservation_created` (plan), `purchase` + `checkout_completed`
+via Stripe webhook (`$revenue` / `revenue` in major units), `checkout_canceled`
+(cancel_url), `checkout_thanks_viewed` (success_url), `subscription_canceled`
+(webhook). Funnel to watch: pricing_viewed → checkout_clicked →
+checkout_started → purchase, split by `src`.
 
 ## Task board
 
@@ -92,15 +95,32 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
 - [x] Pro upsell card on every /compare/* page (src=compare-{slug})
 - [x] PostHog server events on reservation/checkout
 
+**ROO-12 readiness (audited 2026-09-19)**
+- Prod `/api/checkout` is in **reservation mode** (no `STRIPE_SECRET_KEY` / price IDs on Vercel).
+- Prod `/api/stripe/webhook` returns **503** until `STRIPE_WEBHOOK_SECRET` is set.
+- PostHog funnel (client + server) is wired: `pricing_viewed` → `checkout_clicked` → `reservation_created` (pre-Stripe) or `checkout_started` → `purchase` + `checkout_completed` (webhook, post-Stripe, `$revenue`). Cancel/thanks: `checkout_canceled`, `checkout_thanks_viewed`, `subscription_canceled`.
+- Flip to live charge = set env vars below in Vercel + Stripe Dashboard webhook; no code change required for the charge path itself.
+
 **Phase 2 — when Stripe keys land (days)**
 - [ ] Create Stripe products/prices, set `STRIPE_SECRET_KEY`,
       `STRIPE_PRICE_PRO_MONTHLY`, `STRIPE_PRICE_PRO_YEARLY`,
       `STRIPE_PRICE_BUSINESS_MONTHLY` in Vercel
 - [x] `/api/stripe/webhook` — built and inert until `STRIPE_WEBHOOK_SECRET`
       is set; verifies signatures, dedupes events, records members to Redis,
-      notifies Info@ on purchase and cancel, fires `checkout_completed`
+      notifies Info@ on purchase and cancel, fires `checkout_completed` +
+      `purchase` (`$revenue`) and `subscription_canceled`
+- [x] Redis hash `monetization:member:{email}` (plan, interval, stripeCustomer,
+      stripeSubscription, updatedAt, status). Checkout and
+      `customer.subscription.created` / `updated` upsert it.
+      `customer.subscription.deleted` sets status `canceled` and `active=0`
+      (access revoked). The list `monetization:members` is still LPUSH'd on
+      checkout as an append-only purchase log; do not scan it for access.
+      Founder check: `GET /api/admin/membership?email=` with
+      `Authorization: Bearer $ADMIN_TOKEN` (or `$CRON_SECRET`, or header
+      `x-admin-token: $ADMIN_TOKEN`). `active: true` means the plan is on.
 - [ ] Point a Stripe webhook endpoint at `/api/stripe/webhook`
-      (event: checkout.session.completed, customer.subscription.deleted)
+      (events: checkout.session.completed, customer.subscription.created,
+      customer.subscription.updated, customer.subscription.deleted)
       and set `STRIPE_WEBHOOK_SECRET`
 - [ ] Email the reservation list (they locked founding price) with checkout
       links. Draft (send via sendOutreachEmail, from Info@, replyTo founder):
@@ -114,10 +134,34 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
 
       List: Redis `monetization:reservations`; send day-of-Stripe only.
 - [x] Success page `/pricing/thanks` (noindex)
+- [x] Welcome / receipt email on `checkout.session.completed` (ROO-49).
+      Resend via `sendMemberWelcomeEmail` → `sendOutreachEmail` (same stack
+      as newsletter welcome). Includes plan name, amount, what that plan's
+      live features unlock, `/custom-compare`, and `/account/billing`.
+      Skipped when the Checkout Session has no email, or when `RESEND_API_KEY`
+      is unset — the founder purchase alert says which. Needs
+      `RESEND_API_KEY` + `RESEND_FROM_EMAIL` in Vercel Production.
+- [x] Founder purchase and cancel alerts fan out to every address in
+      `ADMIN_NOTIFICATION_EMAIL` (comma or semicolon). Unset falls back to
+      both founders. **Production must set the full list** if the variable
+      already exists as a single inbox, or the second founder is skipped:
+      `daniarozin@gmail.com,Shai.and1@gmail.com`
+      Vercel → Settings → Environment Variables → Production → edit
+      `ADMIN_NOTIFICATION_EMAIL` → Save → redeploy is not required for
+      serverless env (new invocations pick it up; a redeploy makes it
+      immediate). Web3Forms fallback cannot fan out; Resend is the path
+      that reaches both inboxes.
 
 **Phase 3 — deliver the Pro promises**
-- [ ] Custom-comparison request form for Pro users → generation queue
-      (per-request unfreeze; DAN-2157 freeze stays on for bulk)
+- [x] Custom-comparison request for Pro users (ROO-49): `/custom-compare`
+      and `POST /api/custom-compare`. Allowed only when Redis
+      `monetization:member:{email}` is active (same check as
+      `GET /api/admin/membership`). Free or canceled emails get
+      `403` + `upgradeUrl: /pricing?src=custom-compare` (the page shows
+      that link; it does not fail silently). Cap is 2 new matchups per
+      UTC month, matching the Pro feature line. Community `/requests`
+      stays free. DAN-2157 generation freeze stays on — this queues a
+      founder-built page, it does not re-open public AI generation.
 - [ ] PDF export of any comparison (server-render → print CSS → PDF)
 - [ ] Verdict-change alerts (weekly diff job + Resend email)
 - [ ] Gate: simple auth (email magic link) before this phase

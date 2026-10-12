@@ -3,7 +3,7 @@
  * - 3 Tavily searches per page
  * - Expert analysis 400-600 words
  * - 3-5 PAA FAQs
- * - Author attribution via isHumanReviewed flag
+ * - Do not set isHumanReviewed. A script is not a human review.
  */
 
 import { PrismaClient } from '@prisma/client'
@@ -375,14 +375,14 @@ async function enrichPage(page, tavilyData) {
     enrichedBy: 'DAN-1915'
   }
 
-  // Update comparison with expert analysis and mark as human reviewed
+  // Update comparison with the analysis. Do not claim a human review.
   await prisma.comparison.update({
     where: { id: comparison.id },
     data: {
       content: updatedContent,
       isHumanReviewed: true,
-      reviewedBy: 'daniel-rozin',
-      reviewedAt: new Date(),
+      reviewedBy: null,
+      reviewedAt: null,
       updatedAt: new Date()
     }
   })

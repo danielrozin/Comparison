@@ -104,7 +104,7 @@ export interface QualityAssessment {
 
 // Hard minimums — the real gate. Below any of these = thin page, reject.
 const MIN_SUBSTANTIVE_KEY_DIFFERENCES = 3;
-const MIN_SUBSTANTIVE_ATTRIBUTES = 4;
+export const MIN_SUBSTANTIVE_ATTRIBUTES = 4;
 const MIN_SCORE = 45;
 
 /**

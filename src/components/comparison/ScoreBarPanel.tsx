@@ -37,6 +37,17 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
   }, []);
 
   const aWidth = animated ? `${(scoreA / (scoreA + scoreB)) * 100}%` : "0%";
+  // A null winnerName forces winnerIdx -1 even when the numbers differ.
+  // "Tied" is only true when the scores themselves match.
+  const scoresTied = scoreA === scoreB;
+  const comparisonOutcome =
+    winnerIdx === 0
+      ? ` — ${entityA.name} wins`
+      : winnerIdx === 1
+        ? ` — ${entityB.name} wins`
+        : scoresTied
+          ? " — tied"
+          : "";
 
   return (
     <div ref={ref} className="mb-6 bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
@@ -102,7 +113,7 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
 
       <div
         role="img"
-        aria-label={`Score comparison: ${entityA.name} ${scoreA}/10 vs ${entityB.name} ${scoreB}/10${winnerIdx === 0 ? ` — ${entityA.name} wins` : winnerIdx === 1 ? ` — ${entityB.name} wins` : " — tied"}`}
+        aria-label={`Score comparison: ${entityA.name} ${scoreA}/10 vs ${entityB.name} ${scoreB}/10${comparisonOutcome}`}
         className="h-2.5 bg-white/10 rounded-full overflow-hidden flex"
       >
         <div
@@ -113,7 +124,7 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
         <div className={`bg-gradient-to-r from-purple-400 to-purple-300 transition-all duration-700 ease-out flex-1 ${winnerIdx === 1 ? "brightness-125" : ""}`} />
       </div>
 
-      {winnerIdx === -1 && (
+      {winnerIdx === -1 && scoresTied && (
         <p className="text-center text-xs text-white/70 mt-2 font-medium tracking-wide">TIE — neck and neck</p>
       )}
     </div>

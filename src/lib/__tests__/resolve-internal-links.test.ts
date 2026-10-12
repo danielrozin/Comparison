@@ -28,6 +28,7 @@ vi.mock('@/lib/services/blog-generator', () => ({
 import {
   resolveCompareLinksInHtml,
   filterLiveCompareSlugs,
+  filterLiveSearchComparisons,
   filterLiveInternalLinks,
 } from '@/lib/seo/resolve-internal-links'
 
@@ -128,5 +129,57 @@ describe('filterLiveInternalLinks', () => {
     resolveCanonicalComparisonSlugs.mockResolvedValue(new Set(['nordvpn-vs-surfshark']))
     const [link] = await filterLiveInternalLinks([{ href: '/compare/surfshark-vs-nordvpn', label: 'VPNs' }])
     expect(link.href).toBe('/compare/nordvpn-vs-surfshark')
+  })
+})
+
+describe('filterLiveSearchComparisons (ROO-18)', () => {
+  // Known stale hub-search hits from 2026-09-14 prod smoke (ROO-18).
+  const KNOWN_DEAD = [
+    'iphone-vs-android',
+    'iphone-15-vs-iphone-se',
+    'oneplus-vs-iphone',
+  ] as const
+
+  it('drops known dead /compare search hits and keeps live ones', async () => {
+    resolveCanonicalComparisonSlugs.mockResolvedValue(new Set(['android-vs-iphone', 'chatgpt-vs-claude']))
+    const out = await filterLiveSearchComparisons([
+      { slug: 'iphone-vs-android', title: 'iPhone vs Android' },
+      { slug: 'chatgpt-vs-claude', title: 'ChatGPT vs Claude' },
+      { slug: 'iphone-15-vs-iphone-se', title: 'iPhone 15 vs iPhone SE' },
+      { slug: 'oneplus-vs-iphone', title: 'OnePlus vs iPhone' },
+    ])
+    expect(out.map((r) => r.slug)).toEqual(['chatgpt-vs-claude'])
+    for (const dead of KNOWN_DEAD) {
+      expect(out.map((r) => r.slug)).not.toContain(dead)
+    }
+  })
+
+  it('folds a retired search hit onto its survivor slug', async () => {
+    getConsolidatedCompareSlug.mockImplementation((s: string) =>
+      s === 'iphone-vs-android' ? 'android-vs-iphone' : null
+    )
+    resolveCanonicalComparisonSlugs.mockResolvedValue(new Set(['android-vs-iphone']))
+    const out = await filterLiveSearchComparisons([
+      { slug: 'iphone-vs-android', title: 'iPhone vs Android' },
+      { slug: 'oneplus-vs-iphone', title: 'OnePlus vs iPhone' },
+    ])
+    expect(out).toEqual([{ slug: 'android-vs-iphone', title: 'iPhone vs Android' }])
+  })
+
+  it('preserves rank order and dedupes folded duplicates', async () => {
+    getConsolidatedCompareSlug.mockImplementation((s: string) =>
+      s === 'claude-vs-chatgpt' ? 'chatgpt-vs-claude' : null
+    )
+    resolveCanonicalComparisonSlugs.mockResolvedValue(
+      new Set(['nordvpn-vs-surfshark', 'chatgpt-vs-claude'])
+    )
+    const out = await filterLiveSearchComparisons([
+      { slug: 'nordvpn-vs-surfshark', title: 'NordVPN vs Surfshark', rank: 1 },
+      { slug: 'claude-vs-chatgpt', title: 'Claude vs ChatGPT', rank: 2 },
+      { slug: 'chatgpt-vs-claude', title: 'ChatGPT vs Claude', rank: 3 },
+      { slug: 'expressvpn-vs-nordvpn', title: 'ExpressVPN vs NordVPN', rank: 4 },
+    ])
+    expect(out.map((r) => r.slug)).toEqual(['nordvpn-vs-surfshark', 'chatgpt-vs-claude'])
+    expect(out[1].rank).toBe(2) // first folded hit wins metadata
   })
 })

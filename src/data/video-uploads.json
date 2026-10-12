@@ -5256,6 +5256,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-09-01T09:55:18.520Z"
+    },
+    {
+      "slug": "harvard-vs-stanford",
+      "title": "Harvard vs Stanford",
+      "entityA": "Harvard University",
+      "entityB": "Stanford University",
+      "category": "education",
+      "renderer": "v3",
+      "asOf": "September 2026",
+      "videoFile": "harvard-vs-stanford.mp4",
+      "durationSeconds": 48,
+      "transcript": "Harvard was 249 years old before Stanford existed. Stanford still caught up. One school owns the old money and the old power. The other owns the future. Harvard predates the United States by 140 years. Nobody in America is older. Fifty billion dollars. That's not a college fund, that's a sovereign wealth fund. Three percent versus three point seven. Both reject roughly everyone who applies. Stanford alumni have raised more venture capital than any school on Earth. Harvard Law sits at number one. Everyone else is arguing over second. Harvard University wins it 3 to 1.",
+      "chapters": [
+        {
+          "name": "Harvard University vs Stanford University",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 14
+        },
+        {
+          "name": "Round 1: Founded",
+          "startOffset": 14,
+          "endOffset": 21
+        },
+        {
+          "name": "Round 2: Endowment",
+          "startOffset": 21,
+          "endOffset": 27
+        },
+        {
+          "name": "Round 3: Acceptance Rate (2024)",
+          "startOffset": 27,
+          "endOffset": 33
+        },
+        {
+          "name": "Round 4: Tech/Entrepreneurship",
+          "startOffset": 33,
+          "endOffset": 39
+        },
+        {
+          "name": "Round 5: Law School Prestige",
+          "startOffset": 39,
+          "endOffset": 44
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 44,
+          "endOffset": 51
+        }
+      ],
+      "youtubeTitle": "Harvard University vs Stanford University",
+      "youtubeDescription": "...,. Harics.\n\nFigures accurate as of September 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/harvard-vs-stanford\n\nFull comparison: https://www.aversusb.net/compare/harvard-vs-stanford",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-09-02T09:28:16.297Z"
     }
   ]
 }

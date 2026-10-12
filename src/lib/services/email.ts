@@ -9,8 +9,9 @@
  * domain the key does not authorize returns a 403 and drops the mail (DAN-323).
  *
  * Fallback transport: Web3Forms. NOTE — Web3Forms' API ignores the `to` field and
- * always delivers to the access-key owner's mailbox, so it is only a best-effort
- * fallback for ADMIN notifications (never for external recipients).
+ * always delivers to the access-key owner's mailbox, so it cannot fan-out to
+ * multiple founders. It is only a best-effort fallback for ADMIN notifications
+ * (never for external recipients).
  *
  * Historical bug (DAN-1204): admin notifications ran Web3Forms FIRST and returned
  * its `success` verbatim. Web3Forms accepts the submission (success:true) but the
@@ -24,9 +25,48 @@ import { Resend } from "resend";
 // Whitespace-hardened base URL (DAN-1033) — the env var has shipped with a
 // trailing space; importing the normalized constant keeps embed snippets clean.
 import { SITE_URL } from "@/lib/utils/constants";
+import { buildMemberWelcomeEmail } from "@/lib/monetization/welcome-email";
+import { resendFromAddress, resendNotificationFromAddress } from "@/lib/services/resend-from";
 
-const NOTIFICATION_EMAIL =
-  process.env.ADMIN_NOTIFICATION_EMAIL || "daniarozin@gmail.com";
+/** Both founders receive admin alerts when ADMIN_NOTIFICATION_EMAIL is unset. */
+export const DEFAULT_ADMIN_NOTIFICATION_EMAILS = [
+  "daniarozin@gmail.com",
+  "Shai.and1@gmail.com",
+] as const;
+
+/**
+ * Parse ADMIN_NOTIFICATION_EMAIL as a comma/semicolon-separated list.
+ * Empty / unset values fall back to both founders so purchase and cancel
+ * alerts never silently go to a single inbox.
+ */
+export function parseAdminNotificationEmails(
+  raw: string | undefined | null
+): string[] {
+  const parsed = (raw ?? "")
+    .split(/[,;]/)
+    .map((value) => value.trim())
+    .filter((value) => value.length > 0);
+
+  if (parsed.length === 0) {
+    return [...DEFAULT_ADMIN_NOTIFICATION_EMAILS];
+  }
+
+  const seen = new Set<string>();
+  const unique: string[] = [];
+  for (const email of parsed) {
+    const key = email.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(email);
+  }
+  return unique;
+}
+
+const NOTIFICATION_EMAILS = parseAdminNotificationEmails(
+  process.env.ADMIN_NOTIFICATION_EMAIL
+);
+// Outreach reply-to stays a single address (Resend replyTo / mail clients).
+const NOTIFICATION_REPLY_TO = NOTIFICATION_EMAILS[0];
 const WEB3FORMS_URL = "https://api.web3forms.com/submit";
 const WEB3FORMS_KEY = process.env.WEB3FORMS_ACCESS_KEY || "";
 
@@ -38,17 +78,13 @@ function getResend(): Resend | null {
   return _resend;
 }
 
-const RESEND_FROM =
-  process.env.RESEND_FROM_EMAIL || "A Versus B <hello@aversusb-mail.com>";
-
 // Admin/transactional notifications MUST send from a domain that is VERIFIED on
 // the Resend key, or Resend rejects the send with a 403 ("domain is not
 // verified") and the founder silently receives nothing (DAN-323). The production
 // key authorizes aversusb.net, so notifications default to the same verified
-// aversusb.net sender as the rest of the app (RESEND_FROM). RESEND_NOTIFICATION_FROM
-// is an optional override for environments whose key verifies a different domain.
-const NOTIFICATION_FROM =
-  process.env.RESEND_NOTIFICATION_FROM || RESEND_FROM;
+// aversusb.net sender as the rest of the app. RESEND_NOTIFICATION_FROM is an
+// optional override. Both are read on each send so a trailing newline in the
+// env var is stripped (see resendFromAddress).
 
 // ─── Outreach email (Resend only) ───────────────────────────────────
 
@@ -67,12 +103,12 @@ export async function sendOutreachEmail(opts: {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: RESEND_FROM,
+      from: resendFromAddress(),
       to: opts.to,
       subject: opts.subject,
       html: opts.html,
       text: opts.text,
-      replyTo: opts.replyTo || NOTIFICATION_EMAIL,
+      replyTo: opts.replyTo || NOTIFICATION_REPLY_TO,
       tags: opts.tags,
     });
 
@@ -87,6 +123,39 @@ export async function sendOutreachEmail(opts: {
     console.error("Resend send failed:", msg);
     return { success: false, error: msg };
   }
+}
+
+/**
+ * Paid-checkout welcome / receipt (ROO-49). Same Resend sender as the rest of
+ * the product — no second mail stack. Fails honestly when RESEND_API_KEY is
+ * unset so the webhook can say so in the founder alert.
+ */
+export async function sendMemberWelcomeEmail(opts: {
+  to: string;
+  planId: string;
+  interval: string;
+  amountMajor?: number | null;
+  currency?: string | null;
+}): Promise<{ success: boolean; method: string; error?: string }> {
+  const built = buildMemberWelcomeEmail({
+    planId: opts.planId,
+    interval: opts.interval,
+    amountMajor: opts.amountMajor,
+    currency: opts.currency,
+  });
+  const result = await sendOutreachEmail({
+    to: opts.to,
+    subject: built.subject,
+    html: built.html,
+    text: built.text,
+    tags: [{ name: "type", value: "member_welcome" }],
+  });
+  if (!result.success) {
+    console.error(`[EMAIL][welcome][fail] -> ${opts.to} | ${result.error ?? "unknown"}`);
+    return { success: false, method: "undelivered", error: result.error };
+  }
+  console.log(`[EMAIL][welcome][ok] -> ${opts.to} | id=${result.id ?? "?"}`);
+  return { success: true, method: "resend" };
 }
 
 // ─── Batch outreach (up to 100 at a time) ───────────────────────────
@@ -107,12 +176,12 @@ export async function sendBatchOutreachEmails(
   }
 
   const batch = emails.map((e) => ({
-    from: RESEND_FROM,
+    from: resendFromAddress(),
     to: e.to,
     subject: e.subject,
     html: e.html,
     text: e.text,
-    replyTo: e.replyTo || NOTIFICATION_EMAIL,
+    replyTo: e.replyTo || NOTIFICATION_REPLY_TO,
     tags: e.tags,
   }));
 
@@ -156,27 +225,28 @@ export async function sendNotificationEmail(opts: {
   if (resend) {
     try {
       const { data, error } = await resend.emails.send({
-        from: NOTIFICATION_FROM,
-        to: NOTIFICATION_EMAIL,
+        from: resendNotificationFromAddress(),
+        to: NOTIFICATION_EMAILS,
         subject,
         text,
       });
       if (!error) {
         console.log(
-          `[EMAIL][resend][ok] ${context} -> ${NOTIFICATION_EMAIL} | id=${data?.id ?? "?"}`
+          `[EMAIL][resend][ok] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | id=${data?.id ?? "?"}`
         );
         return { success: true, method: "resend" };
       }
       console.error(
-        `[EMAIL][resend][fail] ${context} -> ${NOTIFICATION_EMAIL} | ${error.message}`
+        `[EMAIL][resend][fail] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | ${error.message}`
       );
     } catch (err) {
       console.error(`[EMAIL][resend][throw] ${context} |`, err);
     }
   }
 
-  // 2) Fallback: Web3Forms — delivers to the key owner's mailbox only (the `to`
-  //    field is ignored), so it is a best-effort fallback for admin alerts.
+  // 2) Fallback: Web3Forms — its API ignores `to` and always delivers to the
+  //    access-key owner's mailbox only, so it cannot fan-out to every admin
+  //    recipient. Best-effort fallback for admin alerts, not a multi-inbox path.
   if (WEB3FORMS_KEY) {
     try {
       const res = await fetch(WEB3FORMS_URL, {
@@ -204,7 +274,7 @@ export async function sendNotificationEmail(opts: {
 
   // 3) Last resort: log so the submission is recoverable from serverless logs.
   console.error(
-    `[EMAIL][undelivered] ${context} -> ${NOTIFICATION_EMAIL} | subject="${opts.subject}" message="${opts.message}" from=${opts.senderEmail || "Anonymous"} page=${opts.pageUrl || "N/A"}`
+    `[EMAIL][undelivered] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | subject="${opts.subject}" message="${opts.message}" from=${opts.senderEmail || "Anonymous"} page=${opts.pageUrl || "N/A"}`
   );
   return { success: false, method: "undelivered" };
 }
@@ -254,7 +324,7 @@ export async function sendPartnerKeyEmail(opts: {
   if (resend) {
     try {
       const { error } = await resend.emails.send({
-        from: RESEND_FROM,
+        from: resendFromAddress(),
         to: opts.partnerEmail,
         subject: "[A Versus B] Your Embed Partner Key",
         text: messageLines.join("\n"),

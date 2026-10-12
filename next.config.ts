@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
+import { withBotId } from "botid/next/config";
 import { withSentryConfig } from "@sentry/nextjs";
 import { BLOG_REDIRECTS } from "./src/lib/redirects/blog-redirects";
 import { VS_REDIRECTS } from "./src/lib/redirects/vs-redirects";
 import { COMPARE_REDIRECTS } from "./src/lib/redirects/compare-redirects";
 import { ENTITY_REDIRECTS } from "./src/lib/redirects/entity-redirects";
+import { CATEGORY_SOFT_404_REDIRECTS } from "./src/lib/redirects/category-soft-404-redirects";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -21,7 +23,13 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
-    return [...BLOG_REDIRECTS, ...VS_REDIRECTS, ...COMPARE_REDIRECTS, ...ENTITY_REDIRECTS];
+    return [
+      ...BLOG_REDIRECTS,
+      ...VS_REDIRECTS,
+      ...COMPARE_REDIRECTS,
+      ...CATEGORY_SOFT_404_REDIRECTS,
+      ...ENTITY_REDIRECTS,
+    ];
   },
 
   async rewrites() {
@@ -41,6 +49,14 @@ const nextConfig: NextConfig = {
     ];
   },
   skipTrailingSlashRedirect: true,
+
+  // public/videos (~290MB of mp4s) must not be NFT-traced into serverless
+  // functions. sitemap/video.xml calls selfHostedVideoExists (fs.stat) which
+  // otherwise bundles every mp4 and blows the 250MB Vercel function limit
+  // (seen as sitemap/video.xml.rsc ~317MB after ROO-9 #246 compile).
+  outputFileTracingExcludes: {
+    "*": ["./public/videos/**"],
+  },
 
   async headers() {
     return [
@@ -74,17 +90,16 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Compare pages: add Link rel=describedby pointing to the knowledge graph API.
-        // W3C Linked Data standard; AI crawlers that follow HTTP Link headers (Perplexity,
-        // Googlebot, DuckDuckGo) can discover JSON-LD without parsing HTML.
-        // Vary: Accept — tells Vercel/CDN to cache separate versions for HTML vs JSON-LD
-        // requests (content negotiation is active on /compare/* via middleware).
+        // Compare pages: Vary: Accept — content negotiation is active on
+        // /compare/* via middleware (Accept: application/ld+json → 303).
+        //
+        // ROO-24 / P0-2: do NOT stamp citation Link headers here. next.config
+        // headers() match `/compare/:slug` even when getStaticProps returns
+        // notFound, so a missing slug advertised /api/faq/{slug} etc. Live
+        // pages still get Link headers from middleware (only when the slug
+        // is not a redirect source) plus HTML <link> tags in MetaHead.
         source: "/compare/:slug",
         headers: [
-          {
-            key: "Link",
-            value: "</api/knowledge-graph/:slug>; rel=\"describedby\"; type=\"application/ld+json\", </api/comparisons/:slug>; rel=\"alternate\"; type=\"application/json\", </api/faq/:slug>; rel=\"alternate\"; type=\"application/json\", </api/v1/related/:slug>; rel=\"related\"; type=\"application/json\", </api/answer/:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"AI Answer\"",
-          },
           {
             key: "Vary",
             value: "Accept",
@@ -173,11 +188,13 @@ const nextConfig: NextConfig = {
 
 const sentryEnabled = !!(process.env.SENTRY_ORG && process.env.SENTRY_PROJECT);
 
+const configWithBotId = withBotId(nextConfig);
+
 export default sentryEnabled
-  ? withSentryConfig(nextConfig, {
+  ? withSentryConfig(configWithBotId, {
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
       silent: !process.env.CI,
       widenClientFileUpload: true,
     })
-  : nextConfig;
+  : configWithBotId;

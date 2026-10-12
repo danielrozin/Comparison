@@ -201,6 +201,12 @@ export default function RequestsPage() {
               Don&apos;t want to wait for votes? Pro members get any comparison built within 24 hours →
             </Link>
           </p>
+          <p className="mt-3 text-sm text-primary-100">
+            Already a member?{" "}
+            <Link href="/custom-compare" className="font-semibold text-white underline underline-offset-2">
+              Request it here
+            </Link>
+          </p>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">

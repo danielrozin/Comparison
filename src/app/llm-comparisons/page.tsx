@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { JsonLd } from "@/components/schema/JsonLd";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 
 const PAGE_URL = `${SITE_URL}/llm-comparisons`;
 const PAGE_TITLE = `LLM Comparison 2026: GPT-4o vs Claude vs Gemini vs Llama | ${SITE_NAME}`;
@@ -123,7 +124,7 @@ const articleSchema = {
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", ".faq-answer"] },
-  hasPart: { "@type": "FAQPage", "@id": `${PAGE_URL}#faq` },
+  hasPart: { "@id": `${PAGE_URL}#faq` },
   about: { "@type": "Thing", name: "Large language models", sameAs: "https://en.wikipedia.org/wiki/Large_language_model" },
   mentions: [
     { "@type": "SoftwareApplication", name: "GPT-4o", url: "https://openai.com" },
@@ -415,6 +416,8 @@ export default function LLMComparisonsPage() {
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
                 LLM Comparison 2026
               </h1>
+              {/* ROO-50: under the title, before the long intro, so the cookie banner cannot cover it. */}
+              <SoftPricingLine src="llm-comparisons" tone="onDark" className="mt-3" />
               <p id="page-intro" className="mt-2 text-purple-100 text-base sm:text-lg leading-relaxed max-w-3xl">
                 An independent, citation-backed comparison of 12 leading large language models — covering
                 parameter count, context window, modalities, license, and knowledge cutoff.
@@ -441,7 +444,7 @@ export default function LLMComparisonsPage() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>

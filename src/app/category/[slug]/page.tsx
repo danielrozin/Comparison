@@ -5,6 +5,11 @@ import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
+import {
+  categoryHubCount,
+  comparisonsForSubcategory,
+  mergeEditorialCategoryComparisons,
+} from "@/lib/categories/hub-comparisons";
 import { getFeaturedForCategory } from "@/lib/data/featured-comparisons";
 import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { getCategoryFaqs } from "@/lib/data/category-faqs";
@@ -25,11 +30,15 @@ export async function generateStaticParams() {
   return CATEGORIES.map((cat) => ({ slug: cat.slug }));
 }
 
+// Slugs outside generateStaticParams 404 at the router, before loading.tsx
+// can stream a 200. Unknown /category/* used to stay 200 with index,follow.
+export const dynamicParams = false;
+
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const { page: pageParam } = await searchParams;
   const category = CATEGORIES.find((c) => c.slug === slug);
-  if (!category) return { title: "Category Not Found" };
+  if (!category) notFound();
+  const { page: pageParam } = await searchParams;
 
   const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
   const baseUrl = `${SITE_URL}/category/${slug}`;
@@ -93,16 +102,6 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   };
 }
 
-function getSubcategoryComparisons<T extends { slug: string; title: string }>(
-  comparisons: T[],
-  subcat: SubcategoryDef
-): T[] {
-  return comparisons.filter((comp) => {
-    const lower = comp.title.toLowerCase() + " " + comp.slug.toLowerCase();
-    return subcat.keywords.some((kw) => lower.includes(kw));
-  });
-}
-
 // Generate a deterministic rating from a slug (seeded pseudo-random, 3.2-4.9 range)
 function getComparisonRating(slug: string): number {
   let hash = 0;
@@ -147,16 +146,18 @@ function filterByRating<T extends { slug: string }>(
 
 export default async function CategoryPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const sp = await searchParams;
   const category = CATEGORIES.find((c) => c.slug === slug);
-
   if (!category) notFound();
+
+  const sp = await searchParams;
 
   const page = Math.max(1, parseInt(sp.page || "1", 10) || 1);
   const sort = (sp.sort as SortOption) || "trending";
   const ratingFilter = (sp.rating as RatingFilter) || "all";
 
-  const { comparisons: allComparisons, total: dbTotal } = await getComparisonsByCategory(slug, 500);
+  const { comparisons: dbComparisons, total: dbTotal } = await getComparisonsByCategory(slug, 500);
+  const allComparisons = mergeEditorialCategoryComparisons(slug, dbComparisons);
+  const hubTotal = categoryHubCount(dbTotal, dbComparisons, allComparisons);
   const featured = getFeaturedForCategory(slug);
   const activeSubcategories = getSubcategoriesForSlug(slug);
   const hasSubcategories = activeSubcategories.length > 0;
@@ -172,7 +173,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   const subcategoryData: { subcat: SubcategoryDef; items: typeof allComparisons }[] = [];
   if (hasSubcategories) {
     for (const subcat of activeSubcategories) {
-      const items = getSubcategoryComparisons(allComparisons, subcat);
+      const items = comparisonsForSubcategory(allComparisons, subcat);
       subcategoryData.push({ subcat, items });
     }
   }
@@ -208,6 +209,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     travel: "https://en.wikipedia.org/wiki/Travel",
   };
   const categoryWikiUrl = CATEGORY_WIKIPEDIA[slug];
+  const categoryFaqs = getCategoryFaqs(slug);
   const categorySchemaObj = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -307,9 +309,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         name: c.title,
         url: `${SITE_URL}/compare/${c.slug}`,
       })),
-      // FAQPage hasPart reference — AI crawlers follow this edge to the typed FAQPage
-      // schema node, resolving structured Q&A without re-parsing the full CollectionPage.
-      { "@type": "FAQPage", "@id": `${categoryUrl}#faq`, name: `${category.name} FAQ`, url: categoryUrl },
+      // FAQPage hasPart reference — only when this category has a FAQPage node.
+      ...(categoryFaqs.length > 0
+        ? [{ "@id": `${categoryUrl}#faq`, name: `${category.name} FAQ`, url: categoryUrl }]
+        : []),
     ],
     timeRequired: "PT2M",
     wordCount: 400,
@@ -377,7 +380,6 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       target: { "@type": "EntryPoint", urlTemplate: categoryUrl },
     },
   };
-  const categoryFaqs = getCategoryFaqs(slug);
   const categoryFaqSchema = categoryFaqs.length > 0
     ? faqSchema(
         categoryFaqs,
@@ -513,7 +515,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                   <svg className="w-3.5 h-3.5 text-primary-300" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
                   </svg>
-                  {dbTotal.toLocaleString()} comparisons
+                  {hubTotal.toLocaleString()} comparisons
                 </span>
                 {hasSubcategories && subcategoryData.filter(s => s.items.length > 0).length > 0 && (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/15 rounded-full text-xs font-semibold text-white backdrop-blur-sm">

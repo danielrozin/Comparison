@@ -4,13 +4,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CATEGORIES, SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
-import { listBlogArticles } from "@/lib/services/blog-generator";
-import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { blogReadMinutes, listBlogArticles } from "@/lib/services/blog-generator";
+import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { SearchBox } from "@/components/home/SearchBox";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { FeaturedComparisons } from "@/components/home/FeaturedComparisons";
+import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
+import { HomeFooterCompareCTA } from "@/components/home/HomeFooterCompareCTA";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
+import { HOME_COMPARE_CHIP_CANDIDATES } from "@/lib/data/home-compare-constants";
+import { filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
@@ -59,9 +63,47 @@ export default async function HomePage() {
     getTrendingComparisons(10),
     getLatestComparisons(8),
     getTotalComparisonsCount(),
-    listBlogArticles({ limit: 3, status: "published" }),
+    listBlogArticles({ limit: 3, status: "published", includeReadTime: true }),
   ]);
   const blogArticles = blogResult.articles;
+
+  // ROO-16: live-filter curated chips (DAN-2581) — never emit dead /compare hrefs
+  const chipCandidateSlugs = [
+    ...FEATURED_COMPARISONS.map((f) => f.slug),
+    ...HOME_COMPARE_CHIP_CANDIDATES.map((c) => c.slug),
+  ];
+  const liveChipSlugs = await filterLiveCompareSlugs(chipCandidateSlugs);
+  const liveChipSet = new Set(liveChipSlugs);
+
+  const featuredLive = FEATURED_COMPARISONS.filter((f) => liveChipSet.has(f.slug));
+  const labelBySlug = new Map<string, string>([
+    ...HOME_COMPARE_CHIP_CANDIDATES.map((c) => [c.slug, c.label] as const),
+    ...FEATURED_COMPARISONS.map((f) => [f.slug, f.anchor] as const),
+    ...trending.map((t) => [t.slug, t.title] as const),
+  ]);
+
+  // Prefer curated featured primary; fall back to first trending (already live from DB)
+  const primarySlug = featuredLive[0]?.slug ?? trending[0]?.slug ?? null;
+  const primaryTitle =
+    featuredLive[0]?.anchor ??
+    (primarySlug ? labelBySlug.get(primarySlug) ?? null : null);
+
+  // Chips: curated live first, then trending fillers (deduped), max 6
+  const chipSlugs: string[] = [];
+  for (const slug of liveChipSlugs) {
+    if (!chipSlugs.includes(slug)) chipSlugs.push(slug);
+    if (chipSlugs.length >= 6) break;
+  }
+  if (chipSlugs.length < 6) {
+    for (const t of trending) {
+      if (!chipSlugs.includes(t.slug)) chipSlugs.push(t.slug);
+      if (chipSlugs.length >= 6) break;
+    }
+  }
+  const homeCompareChips = chipSlugs.map((slug) => ({
+    slug,
+    label: labelBySlug.get(slug) || slug.replace(/-/g, " "),
+  }));
 
   const homeOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Compare Anything")}&type=home`;
   const homeToday = new Date().toISOString().slice(0, 10);
@@ -167,16 +209,6 @@ export default async function HomePage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema([
-          { question: "What is A Versus B?", answer: `A Versus B (aversusb.net) is a free comparison platform with ${totalCount.toLocaleString()} side-by-side comparisons across technology, sports, countries, products, software, and more. Each comparison includes a short answer, attribute table, verdict, FAQs, and community votes.` },
-          { question: "How do I compare two things on A Versus B?", answer: "Search for any two entities in the search bar (e.g., 'iPhone vs Samsung') or navigate directly to aversusb.net/compare/{entity-a}-vs-{entity-b}. The comparison page shows you side-by-side attributes, a winner verdict, and community vote results." },
-          { question: "Is A Versus B free to use?", answer: "Yes, A Versus B is completely free. All comparison data is accessible without registration, and content is licensed under CC BY 4.0 — free to cite with attribution." },
-          { question: "How accurate are the comparisons on A Versus B?", answer: "Each comparison is researched from multiple sources and reviewed editorially. We cite our sources and publish our methodology at aversusb.net/how-we-write-verdicts. Data is updated regularly as products and information change." },
-          { question: "What categories does A Versus B cover?", answer: "A Versus B covers 17+ categories including technology, software, sports, countries, automotive, companies, health, finance, entertainment, gaming, products, and brands — with more being added regularly." },
-        ])) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema({
           title: `${SITE_NAME} — Compare Anything`,
           description: HOME_DESC,
@@ -276,24 +308,12 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Quick example chips */}
-            <div className="flex flex-wrap justify-center gap-2 mt-5 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-              {[
-                { label: "Messi vs Ronaldo", href: "/compare/messi-vs-ronaldo" },
-                { label: "Japan vs China", href: "/compare/japan-vs-china" },
-                { label: "iPhone vs Samsung", href: "/compare/iphone-17-vs-samsung-s26" },
-                { label: "WW1 vs WW2", href: "/compare/ww1-vs-ww2" },
-              ].map((example) => (
-                <Link
-                  key={example.href}
-                  href={example.href}
-                  className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3.5 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all backdrop-blur-sm"
-                >
-                  <span className="text-xs text-white/40" aria-hidden="true">↗</span>
-                  {example.label}
-                </Link>
-              ))}
-            </div>
+            {/* ROO-16: primary path into live /compare + tracked chips */}
+            <HomeCompareCTA
+              primarySlug={primarySlug}
+              primaryTitle={primaryTitle}
+              chips={homeCompareChips}
+            />
 
             {/* Category pill links */}
             <div className="mt-6 animate-fade-in" style={{ animationDelay: "0.5s" }}>
@@ -595,7 +615,7 @@ export default async function HomePage() {
                 "from-rose-500 to-pink-600",
               ];
               const grad = gradients[idx % gradients.length];
-              const readMins = Math.max(1, Math.ceil(article.content.split(/\s+/).length / 200));
+              const readMins = blogReadMinutes(article);
               return (
                 <li key={article.slug} className="flex">
                 <Link
@@ -698,35 +718,8 @@ export default async function HomePage() {
       {/* Newsletter Signup */}
       <NewsletterSignup source="homepage" />
 
-      {/* CTA */}
-      <section aria-labelledby="cta-heading" className="bg-gradient-to-br from-primary-700 via-primary-600 to-accent-700 text-white py-16 relative overflow-hidden">
-        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
-          <defs>
-            <pattern id="home-cta-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
-              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#home-cta-grid)"/>
-        </svg>
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 id="cta-heading" className="text-2xl sm:text-3xl font-display font-bold mb-4">
-            Ready to Compare?
-          </h2>
-          <p className="text-primary-100 mb-8">
-            Start with any comparison — sports, countries, products, or anything else.
-          </p>
-          <Link
-            href="/#search"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary-700 font-bold rounded-full hover:bg-primary-50 transition-colors shadow-lg"
-          >
-            Start Comparing
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </Link>
-        </div>
-      </section>
+      {/* ROO-16: footer CTA → live compare / trending (not soft /#search) */}
+      <HomeFooterCompareCTA primarySlug={primarySlug} primaryTitle={primaryTitle} />
     </>
   );
 }

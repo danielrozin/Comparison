@@ -1,24 +1,64 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { getRedis } from "@/lib/services/redis";
-import { sendNotificationEmail } from "@/lib/services/email";
-import { getPostHogClient } from "@/lib/posthog-server";
+import { getPrisma } from "@/lib/db/prisma";
+import { sendMemberWelcomeEmail, sendNotificationEmail } from "@/lib/services/email";
+import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
+import { MEMBERS_LIST_KEY, normalizeMemberEmail, revokeMember, upsertMember, type MemberUpsert } from "@/lib/monetization/members";
+import { claimStripeEvent } from "@/lib/monetization/stripe-events";
+import { MembershipStoreError } from "@/lib/monetization/prisma-errors";
+import { checkoutEventDistinctId } from "@/lib/analytics/checkout-identity";
+import { aversusbOwnedPriceIds } from "@/lib/monetization/backfill-pro-members";
+import {
+  readMembershipPlan,
+  resolveCheckoutOwnership,
+  subscriptionBelongsToAversusB,
+  priceIdOf,
+  type CheckoutOwnershipSession,
+  type SubscriptionOwnership,
+} from "@/lib/monetization/stripe-app";
 
 /**
  * POST /api/stripe/webhook — Phase 2 of MONETIZATION.md.
+ *
+ * The Stripe account is shared with Scan2Remember and RookMentor. After the
+ * signature check, and before any membership write, processed-event row,
+ * Redis key, email, founder alert, or PostHog capture, the event must be
+ * an AversusB checkout or subscription. Anything else returns 200 with
+ * ignored: "foreign_app" so Stripe does not retry it.
  *
  * Inert until STRIPE_WEBHOOK_SECRET is set (returns 503 so Stripe retries
  * nothing before launch). Once live it verifies the signature manually (no
  * SDK dependency, same as /api/checkout), records the subscription in Redis
  * and notifies Info@ so the founder can onboard the customer the same day.
  *
- * Deliberately does NOT auto-email the customer yet: the welcome email is a
- * founder-signed onboarding message during launch week, which converts a
- * buyer into a user far better than a template. Automate it in Phase 3.
+ * On checkout.session.completed the buyer gets a Resend welcome / receipt
+ * (plan, manage-billing link, what that plan unlocks) when the email is real.
+ * Founder alerts still go through sendNotificationEmail, which fans out to
+ * every address in ADMIN_NOTIFICATION_EMAIL.
+ *
+ * PostHog (ROO-41): checkout.session.completed → checkout_completed + purchase
+ * ($revenue in major units). customer.subscription.deleted → subscription_canceled.
+ *
+ * PostHog identity (ROO-40): those captures use the distinct id stored on the
+ * Checkout Session (`metadata.posthog_distinct_id`, then `client_reference_id`).
+ * The Stripe email is only a fallback so one person owns pricing → purchase.
+ *
+ * Membership: checkout and subscription create/update upsert the Postgres
+ * `pro_members` row. subscription.deleted sets that row to canceled.
+ * Redis, when configured, only mirrors the row. If the membership write
+ * fails the route returns 500 so Stripe retries, and the welcome email
+ * for that attempt is not sent. Founder alerts still go out, with a
+ * warning line when the row was not saved. Emails are sent only after
+ * the event id is claimed, so a retry does not send them again.
  */
 
-const MEMBERS_KEY = "monetization:members"; // list of JSON records
-const EVENTS_SEEN_KEY = "monetization:stripe-events"; // set, idempotency
+const MEMBERSHIP_NOT_RECORDED =
+  "WARNING: membership was NOT recorded in Postgres. Stripe will retry this event. Do not treat this customer as Pro until a later alert omits this warning.";
+
+/** Checkout with no buyer email is acknowledged on purpose, so Stripe will not retry it. */
+const CHECKOUT_WITHOUT_EMAIL =
+  "WARNING: membership was NOT recorded in Postgres because the Checkout Session had no buyer email. This event was acknowledged, so Stripe will not retry it.";
 
 function verifyStripeSignature(payload: string, header: string, secret: string): boolean {
   // Stripe-Signature: t=<ts>,v1=<hmac>[,v1=...]
@@ -40,6 +80,73 @@ function verifyStripeSignature(payload: string, header: string, secret: string):
         crypto.timingSafeEqual(Buffer.from(sig, "hex"), Buffer.from(expected, "hex"))
       );
     });
+}
+
+type EventGate =
+  | { action: "process"; plan: string; interval: string; src: string }
+  | { action: "ignore"; reason: "foreign_app" | "invalid_plan" }
+  | { action: "retry" };
+
+function eventMetadata(object: Record<string, unknown>): Record<string, unknown> | null {
+  const metadata = object.metadata;
+  if (!metadata || typeof metadata !== "object") return null;
+  return metadata as Record<string, unknown>;
+}
+
+/**
+ * GET only. Used when a checkout payload has no app tag and no price, so a
+ * session created before metadata.app was added can still be recognized.
+ * Returns null when the read fails (caller asks Stripe to retry).
+ */
+async function fetchCheckoutLinePriceIds(sessionId: string): Promise<string[] | null> {
+  const secret = (process.env.STRIPE_SECRET_KEY ?? "").replace(/[\r\n]+/g, "").trim();
+  if (!secret) return null;
+  try {
+    const res = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}/line_items?limit=20`,
+      { method: "GET", headers: { Authorization: `Bearer ${secret}` } }
+    );
+    if (!res.ok) return null;
+    const body = (await res.json()) as { data?: Array<{ price?: unknown }> };
+    const ids: string[] = [];
+    for (const item of body.data ?? []) {
+      const id = priceIdOf(item?.price);
+      if (id) ids.push(id);
+    }
+    return ids;
+  } catch {
+    return null;
+  }
+}
+
+async function gateStripeEvent(event: {
+  type?: string;
+  data?: { object?: Record<string, unknown> };
+}): Promise<EventGate> {
+  const type = event.type ?? "";
+  const object = event.data?.object ?? {};
+  const prices = new Set(aversusbOwnedPriceIds().keys());
+  const metadata = eventMetadata(object);
+
+  if (type === "checkout.session.completed") {
+    const owned = await resolveCheckoutOwnership(
+      object as CheckoutOwnershipSession,
+      prices,
+      fetchCheckoutLinePriceIds
+    );
+    if (owned === "retry") return { action: "retry" };
+    if (!owned) return { action: "ignore", reason: "foreign_app" };
+  } else if (type.startsWith("customer.subscription.")) {
+    if (!subscriptionBelongsToAversusB(object as SubscriptionOwnership, prices)) {
+      return { action: "ignore", reason: "foreign_app" };
+    }
+  } else {
+    return { action: "ignore", reason: "foreign_app" };
+  }
+
+  const plan = readMembershipPlan(metadata);
+  if (!plan) return { action: "ignore", reason: "invalid_plan" };
+  return { action: "process", ...plan };
 }
 
 export async function POST(request: NextRequest) {
@@ -64,74 +171,305 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Malformed event" }, { status: 400 });
   }
 
-  // Idempotency — Stripe retries; process each event once.
-  const redis = getRedis();
-  if (redis) {
-    try {
-      const first = await redis.sadd(EVENTS_SEEN_KEY, event.id);
-      if (first === 0) return NextResponse.json({ received: true, duplicate: true });
-    } catch {}
+  const gate = await gateStripeEvent(event);
+  if (gate.action === "retry") {
+    console.error(`[stripe-webhook] could not confirm app id=${event.id} type=${event.type}`);
+    return NextResponse.json({ error: "Could not confirm app" }, { status: 500 });
   }
+  if (gate.action === "ignore") {
+    console.info(`[stripe-webhook] ignored ${gate.reason} id=${event.id} type=${event.type}`);
+    return NextResponse.json({ received: true, ignored: gate.reason });
+  }
+
+  const redis = getRedis();
 
   if (event.type === "checkout.session.completed") {
     const s = (event.data?.object ?? {}) as {
+      id?: string;
       customer_email?: string;
       customer_details?: { email?: string };
       customer?: string;
       subscription?: string;
       amount_total?: number;
       currency?: string;
-      metadata?: { plan?: string; interval?: string; src?: string };
+      client_reference_id?: string;
+      metadata?: { plan?: string; interval?: string; src?: string; posthog_distinct_id?: string };
     };
-    const email = s.customer_details?.email || s.customer_email || "unknown";
+    const email = s.customer_details?.email || s.customer_email || "";
+    // The browser id from session create. Do not replace it with the email —
+    // that split pricing_viewed (anon) from purchase (email) in funnel 0vnNHD98.
+    const distinctId =
+      checkoutEventDistinctId({
+        posthogDistinctId: s.metadata?.posthog_distinct_id,
+        clientReferenceId: s.client_reference_id,
+        email,
+        fallback: s.customer || "unknown",
+      }) || "unknown";
     const record = {
       email,
-      plan: s.metadata?.plan ?? "unknown",
-      interval: s.metadata?.interval ?? "unknown",
-      src: s.metadata?.src ?? "unknown",
+      plan: gate.plan,
+      interval: gate.interval,
+      src: gate.src,
       stripeCustomer: s.customer ?? null,
       stripeSubscription: s.subscription ?? null,
       amountTotal: s.amount_total ?? null,
       currency: s.currency ?? "usd",
       at: new Date().toISOString(),
     };
+    // Stripe amount_total is the smallest currency unit (cents). PostHog
+    // revenue tiles / funnel `purchase` expect major units via `$revenue`.
+    const revenue = (record.amountTotal ?? 0) / 100;
+
+    let saved = false;
+    try {
+      requireMembershipDatabase();
+      saved = await upsertMember({
+        email: record.email,
+        plan: record.plan,
+        interval: record.interval,
+        stripeCustomer: record.stripeCustomer,
+        stripeSubscription: record.stripeSubscription,
+        src: record.src,
+        status: "active",
+        replaceSubscription: true,
+      });
+    } catch (err) {
+      console.error("[membership] checkout upsert failed:", err);
+      await notifyMembershipFailure(
+        `⚠️ PAID but NOT SAVED: ${record.plan} (${record.interval}) — ${record.email}`,
+        `New paying member: ${record.email} bought ${record.plan}/${record.interval} for ${revenue.toFixed(2)} ${record.currency.toUpperCase()} (src: ${record.src}). ${MEMBERSHIP_NOT_RECORDED} ${errorText(err)}`
+      );
+      return NextResponse.json({ error: "Membership persist failed" }, { status: 500 });
+    }
+
+    const duplicate = await acknowledgeEvent(event.id, event.type);
+    if (duplicate) return duplicate;
 
     if (redis) {
       try {
-        await redis.lpush(MEMBERS_KEY, JSON.stringify(record));
+        // Append-only purchase log. Access checks use pro_members, not this list.
+        await redis.lpush(MEMBERS_LIST_KEY, JSON.stringify(record));
       } catch {}
     }
+
+    const welcomeTo = saved ? normalizeMemberEmail(email) : null;
+    let welcomeNote = "Welcome email: skipped (no buyer email on the Checkout Session).";
+    if (welcomeTo) {
+      try {
+        const welcome = await sendMemberWelcomeEmail({
+          to: welcomeTo,
+          planId: record.plan,
+          interval: record.interval,
+          amountMajor: revenue,
+          currency: record.currency,
+        });
+        welcomeNote = welcome.success
+          ? `Welcome email: sent to ${welcomeTo} via ${welcome.method}.`
+          : `Welcome email: NOT sent to ${welcomeTo} (${welcome.error || welcome.method}). Check RESEND_API_KEY and RESEND_FROM_EMAIL.`;
+      } catch (err) {
+        console.error("[email] member welcome failed:", err);
+        welcomeNote = `Welcome email: NOT sent to ${welcomeTo} (threw). Check RESEND_API_KEY and RESEND_FROM_EMAIL.`;
+      }
+    }
+    const recordedNote = saved ? "" : ` ${CHECKOUT_WITHOUT_EMAIL}`;
     try {
       await sendNotificationEmail({
-        subject: `🎉 PAID: ${record.plan} (${record.interval}) — ${email}`,
+        subject: `🎉 PAID: ${record.plan} (${record.interval}) — ${record.email}`,
         type: "monetization",
-        message: `New paying member: ${email} bought ${record.plan}/${record.interval} for ${((record.amountTotal ?? 0) / 100).toFixed(2)} ${record.currency.toUpperCase()} (src: ${record.src}). Send the founder welcome email today — onboarding instructions are in MONETIZATION.md Phase 2.`,
+        message: `New paying member: ${record.email} bought ${record.plan}/${record.interval} for ${revenue.toFixed(2)} ${record.currency.toUpperCase()} (src: ${record.src}). ${welcomeNote}${recordedNote}`,
       });
     } catch {}
     try {
-      getPostHogClient().capture({
-        distinctId: email,
+      // ROO-12 / ROO-31: await flush — serverless freeze was dropping server events
+      const ph = getPostHogClient();
+      ph.capture({
+        distinctId,
         event: "checkout_completed",
         properties: {
           plan: record.plan,
           interval: record.interval,
           src: record.src,
-          amount: (record.amountTotal ?? 0) / 100,
+          amount: revenue,
         },
       });
-    } catch {}
+      // ROO-41: keep checkout_completed; also emit `purchase` so dashboard
+      // 2116269 / funnel 0vnNHD98 can convert on `$revenue`.
+      ph.capture({
+        distinctId,
+        event: "purchase",
+        properties: {
+          $revenue: revenue,
+          revenue,
+          currency: record.currency.toLowerCase(),
+          plan: record.plan,
+          interval: record.interval,
+          src: record.src,
+          stripe_session_id: s.id ?? null,
+          stripe_customer: record.stripeCustomer,
+          stripe_subscription: record.stripeSubscription,
+        },
+      });
+      await flushPostHog();
+    } catch (err) {
+      console.error("[posthog] checkout_completed/purchase capture failed:", err);
+    }
+    return NextResponse.json({ received: true });
+  }
+
+  if (
+    event.type === "customer.subscription.created" ||
+    event.type === "customer.subscription.updated"
+  ) {
+    const s = (event.data?.object ?? {}) as {
+      id?: string;
+      customer?: string;
+      status?: string;
+      metadata?: { plan?: string; interval?: string; src?: string; email?: string };
+    };
+    try {
+      await saveSubscriptionMember({
+        email: s.metadata?.email,
+        plan: s.metadata?.plan,
+        interval: s.metadata?.interval,
+        src: s.metadata?.src,
+        stripeCustomer: s.customer,
+        stripeSubscription: s.id,
+        status: s.status || "active",
+        currentPeriodEnd: periodEndFromUnix(
+          (event.data?.object as { current_period_end?: unknown } | undefined)?.current_period_end
+        ),
+        replaceSubscription: false,
+      });
+    } catch (err) {
+      console.error("[membership] subscription upsert failed:", err);
+      await notifyMembershipFailure(
+        `⚠️ Subscription not saved: ${s.id ?? "unknown"}`,
+        `Stripe subscription ${s.id ?? "?"} (customer ${s.customer ?? "?"}) could not be written to pro_members. ${MEMBERSHIP_NOT_RECORDED} ${errorText(err)}`
+      );
+      return NextResponse.json({ error: "Membership persist failed" }, { status: 500 });
+    }
+    const duplicate = await acknowledgeEvent(event.id, event.type);
+    if (duplicate) return duplicate;
+    return NextResponse.json({ received: true });
   }
 
   if (event.type === "customer.subscription.deleted") {
-    const s = (event.data?.object ?? {}) as { id?: string; customer?: string };
+    const s = (event.data?.object ?? {}) as {
+      id?: string;
+      customer?: string;
+      status?: string;
+      canceled_at?: number;
+      cancellation_details?: { reason?: string; comment?: string; feedback?: string };
+      metadata?: {
+        plan?: string;
+        interval?: string;
+        src?: string;
+        email?: string;
+        posthog_distinct_id?: string;
+      };
+    };
+    let memberEmail = s.metadata?.email ?? null;
+    let accessOff = false;
+    try {
+      requireMembershipDatabase();
+      const revoked = await revokeMember({
+        email: s.metadata?.email,
+        stripeCustomer: s.customer,
+        stripeSubscription: s.id,
+      });
+      memberEmail = revoked.email ?? memberEmail;
+      accessOff = revoked.revoked;
+    } catch (err) {
+      console.error("[membership] revoke failed:", err);
+      await notifyMembershipFailure(
+        `⚠️ Subscription canceled but NOT SAVED: ${s.id ?? "unknown"}`,
+        `Stripe subscription ${s.id ?? "?"} (customer ${s.customer ?? "?"}, member ${memberEmail || "unknown"}) was canceled, but the pro_members row was not updated. ${MEMBERSHIP_NOT_RECORDED} ${errorText(err)}`
+      );
+      return NextResponse.json({ error: "Membership persist failed" }, { status: 500 });
+    }
+    const duplicate = await acknowledgeEvent(event.id, event.type);
+    if (duplicate) return duplicate;
+    // Founder inboxes (sendNotificationEmail) stay on this path. Revoke is
+    // the pro_members update above; the email is still the same-day cancel notice.
+    // sendNotificationEmail delivers to every ADMIN_NOTIFICATION_EMAIL.
     try {
       await sendNotificationEmail({
         subject: `⚠️ Subscription canceled: ${s.id ?? "unknown"}`,
         type: "monetization",
-        message: `Stripe subscription ${s.id ?? "?"} (customer ${s.customer ?? "?"}) was canceled. Worth a one-line "what was missing?" email.`,
+        message: accessOff
+          ? `Stripe subscription ${s.id ?? "?"} (customer ${s.customer ?? "?"}, member ${memberEmail || "unknown"}) was canceled. Access is off on pro_members. Worth a one-line "what was missing?" email.`
+          : `Stripe subscription ${s.id ?? "?"} (customer ${s.customer ?? "?"}, member ${memberEmail || "unknown"}) was canceled in Stripe. The stored pro_members subscription did not match, so access was left unchanged.`,
       });
     } catch {}
+    try {
+      getPostHogClient().capture({
+        distinctId:
+          checkoutEventDistinctId({
+            posthogDistinctId: s.metadata?.posthog_distinct_id,
+            fallback: s.customer || s.id || "unknown",
+          }) || "unknown",
+        event: "subscription_canceled",
+        properties: {
+          stripe_subscription: s.id ?? null,
+          stripe_customer: s.customer ?? null,
+          status: s.status ?? "canceled",
+          cancellation_reason: s.cancellation_details?.reason ?? null,
+          canceled_at: s.canceled_at ?? null,
+          plan: s.metadata?.plan ?? null,
+          interval: s.metadata?.interval ?? null,
+          src: s.metadata?.src ?? null,
+        },
+      });
+      await flushPostHog();
+    } catch (err) {
+      console.error("[posthog] subscription_canceled capture failed:", err);
+    }
+    return NextResponse.json({ received: true });
   }
 
+  // Owned subscription events we do not act on (for example trial_will_end)
+  // are acknowledged with no write, email, or analytics.
   return NextResponse.json({ received: true });
+}
+
+function requireMembershipDatabase(): void {
+  if (!getPrisma()) throw new MembershipStoreError();
+}
+
+function periodEndFromUnix(value: unknown): Date | null | undefined {
+  if (value == null || value === "") return undefined;
+  const seconds = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(seconds) || seconds <= 0) return undefined;
+  return new Date(seconds * 1000);
+}
+
+async function saveSubscriptionMember(input: MemberUpsert): Promise<boolean> {
+  requireMembershipDatabase();
+  return upsertMember(input);
+}
+
+function errorText(err: unknown): string {
+  return err instanceof Error ? err.message : "unknown error";
+}
+
+async function notifyMembershipFailure(subject: string, message: string): Promise<void> {
+  try {
+    await sendNotificationEmail({ subject, type: "monetization", message });
+  } catch (err) {
+    console.error("[membership] failure alert failed:", err);
+  }
+}
+
+/** null when this delivery owns the event. A response when it must stop. */
+async function acknowledgeEvent(eventId: string, type: string): Promise<NextResponse | null> {
+  try {
+    const claim = await claimStripeEvent(eventId, type);
+    if (claim === "duplicate") {
+      return NextResponse.json({ received: true, duplicate: true });
+    }
+    return null;
+  } catch (err) {
+    console.error("[membership] event claim failed:", err);
+    return NextResponse.json({ error: "Membership persist failed" }, { status: 500 });
+  }
 }

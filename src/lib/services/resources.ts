@@ -4,53 +4,12 @@
  */
 
 import type { ComparisonResource, ComparisonEntityData } from "@/types";
-
-// Wikipedia article name mappings for entities that don't map 1:1
-const WIKIPEDIA_OVERRIDES: Record<string, string> = {
-  // Military
-  "israel-idf": "Israel_Defense_Forces",
-  "iran-military": "Armed_Forces_of_the_Islamic_Republic_of_Iran",
-  "iran-armed-forces": "Armed_Forces_of_the_Islamic_Republic_of_Iran",
-  "us-military": "United_States_Armed_Forces",
-  "f-35": "Lockheed_Martin_F-35_Lightning_II",
-  "f-35-lightning": "Lockheed_Martin_F-35_Lightning_II",
-  "su-57": "Sukhoi_Su-57",
-  "f-22-raptor": "Lockheed_Martin_F-22_Raptor",
-  "b-2-spirit": "Northrop_Grumman_B-2_Spirit",
-  "b-52": "Boeing_B-52_Stratofortress",
-  "m1-abrams": "M1_Abrams",
-  "t-90m": "T-90",
-  "iron-dome": "Iron_Dome",
-  "s-400": "S-400_missile_system",
-  "f-15-eagle": "McDonnell_Douglas_F-15_Eagle",
-  "f-16": "General_Dynamics_F-16_Fighting_Falcon",
-  "patriot-missile": "MIM-104_Patriot",
-  "s-300": "S-300_missile_system",
-  "ah-64-apache": "Boeing_AH-64_Apache",
-  "ka-52": "Kamov_Ka-52",
-  "barrett-m82": "Barrett_M82",
-  "dragunov-svd": "Dragunov_sniper_rifle",
-  // Sports
-  "lionel-messi": "Lionel_Messi",
-  "cristiano-ronaldo": "Cristiano_Ronaldo",
-  "lebron-james": "LeBron_James",
-  "michael-jordan": "Michael_Jordan",
-  // Technology
-  "bitcoin": "Bitcoin",
-  "ethereum": "Ethereum",
-  "chatgpt": "ChatGPT",
-  // Countries
-  "usa": "United_States",
-  "china": "China",
-  // Brands
-  "mercedes-benz": "Mercedes-Benz",
-  "bmw": "BMW",
-};
+import { resolveEntityWikipediaUrl } from "@/lib/services/wikipedia-url";
 
 // Relationship Wikipedia articles for common comparison pairs
 const RELATIONSHIP_ARTICLES: Record<string, { title: string; article: string }> = {
   "israel-vs-iran": { title: "Iran\u2013Israel relations", article: "Iran%E2%80%93Israel_relations" },
-  "israel-vs-iran-military": { title: "Iran\u2013Israel conflict", article: "Iran%E2%80%93Israel_conflict_(2023%E2%80%93present)" },
+  "israel-vs-iran-military": { title: "Iran\u2013Israel conflict", article: "Iran%E2%80%93Israel_conflict" },
   "us-military-vs-iran": { title: "Iran\u2013United States relations", article: "Iran%E2%80%93United_States_relations" },
   "usa-vs-china": { title: "China\u2013United States relations", article: "China%E2%80%93United_States_relations" },
   "us-economy-vs-china-economy": { title: "China\u2013US economic relations", article: "China%E2%80%93United_States_trade_war" },
@@ -180,17 +139,6 @@ const YOUTUBE_VIDEOS: Record<string, { videoId: string; title: string }[]> = {
   ],
 };
 
-function entityToWikipedia(entity: ComparisonEntityData): string {
-  // Check overrides first
-  if (WIKIPEDIA_OVERRIDES[entity.slug]) {
-    return WIKIPEDIA_OVERRIDES[entity.slug];
-  }
-  // Convert name to Wikipedia format: "LeBron James" -> "LeBron_James"
-  return entity.name
-    .replace(/\s+/g, "_")
-    .replace(/[()]/g, "");
-}
-
 export function generateResources(
   slug: string,
   entities: ComparisonEntityData[],
@@ -202,13 +150,13 @@ export function generateResources(
     resources.push({
       type: "wikipedia",
       label: `${entities[0].name} on Wikipedia`,
-      url: `https://en.wikipedia.org/wiki/${entityToWikipedia(entities[0])}`,
+      url: resolveEntityWikipediaUrl(entities[0]),
       description: entities[0].shortDesc || undefined,
     });
     resources.push({
       type: "wikipedia",
       label: `${entities[1].name} on Wikipedia`,
-      url: `https://en.wikipedia.org/wiki/${entityToWikipedia(entities[1])}`,
+      url: resolveEntityWikipediaUrl(entities[1]),
       description: entities[1].shortDesc || undefined,
     });
   }

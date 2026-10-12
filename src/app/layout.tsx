@@ -34,7 +34,6 @@ const getPublishedComparisonCount = unstable_cache(
   { revalidate: 3600 }
 );
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
-import { PostHogInit } from "@/components/analytics/PostHogInit";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
@@ -122,6 +121,11 @@ export default async function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        {/* Impact.com site-ownership verification. Impact reads the `value`
+            attribute; Next.js `metadata.other` would emit `content` instead.
+            React's meta types only allow `content`, so this one attribute is exempt. */}
+        {/* @ts-expect-error Impact.com requires the non-standard `value` attribute. */}
+        <meta name="impact-site-verification" value="6c9a227a-f292-4a99-884e-977f8dbf815a" />
         {/* theme-color — browser chrome and Android home-screen splash color */}
         <meta name="theme-color" content="#1a56db" />
         {/* color-scheme — tells browser to apply light-mode native controls (inputs, scrollbars)
@@ -232,7 +236,6 @@ export default async function RootLayout({
         <MetaPixel />
         <ClarityTags />
         <FirstTouchAttribution />
-        <PostHogInit />
         <ExperimentProviderServer>
           <Header />
           <main id="main-content" className="flex-1">{children}</main>

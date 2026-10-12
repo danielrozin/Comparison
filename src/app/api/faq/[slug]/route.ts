@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { comparisonRobotsTag } from "@/lib/seo/comparison-robots-tag";
 
 // /api/faq/[slug] — structured FAQ pairs for a comparison page.
 //
@@ -107,6 +108,7 @@ export async function GET(
     {
       headers: {
         ...BASE_HEADERS,
+        "X-Robots-Tag": comparisonRobotsTag(comparison.metadata?.status),
         "X-Source-URL": url,
         "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
         ETag: etag,

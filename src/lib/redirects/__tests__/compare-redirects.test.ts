@@ -104,6 +104,71 @@ describe("COMPARE_REDIRECTS", () => {
     });
   });
 
+  describe("ROO-27 messaging compares", () => {
+    const CANONICALS = [
+      "signal-vs-whatsapp",
+      "signal-vs-telegram",
+      "whatsapp-vs-telegram",
+    ];
+    const ALIASES: Record<string, string> = {
+      "whatsapp-vs-signal": "signal-vs-whatsapp",
+      "signal-vs-whatsapp-2026": "signal-vs-whatsapp",
+      "telegram-vs-signal": "signal-vs-telegram",
+      "whatsapp-vs-telegram-2026": "whatsapp-vs-telegram",
+    };
+
+    it("does not redirect the new messaging canonicals", () => {
+      for (const slug of CANONICALS) {
+        expect(getConsolidatedCompareSlug(slug), slug).toBeNull();
+        expect(
+          COMPARE_REDIRECTS.some((r) => r.source === `/compare/${slug}`),
+          `${slug} must not be a redirect source`,
+        ).toBe(false);
+      }
+    });
+
+    it("folds reverse-order and phrasing aliases onto those canonicals", () => {
+      for (const [from, to] of Object.entries(ALIASES)) {
+        expect(getConsolidatedCompareSlug(from), from).toBe(to);
+      }
+    });
+  });
+
+  describe("ROO-24 US↔China GDP soft-404 cluster", () => {
+    const CANONICAL = "us-vs-china-gdp";
+    const SAMPLES = [
+      "china-vs-united-states-gdp-comparison-2026",
+      "current-nominal-gdp-us-vs-china-2026",
+      "china-vs-us-gdp-nominal-2026",
+      "american-economy-vs-china",
+    ];
+    const LIVE_RELATED = [
+      "us-economy-vs-china-economy",
+      "usa-vs-china",
+      "china-vs-us-gdp-military-tech-comparison-2026",
+      "us-nominal-gdp-vs-china-2026",
+      "usa-vs-china-vs-india-gdp-2026",
+    ];
+
+    it("folds Product soft-404 samples onto the locked canonical in one hop", () => {
+      for (const from of SAMPLES) {
+        expect(getConsolidatedCompareSlug(from), from).toBe(CANONICAL);
+        expect(getConsolidatedCompareSlug(CANONICAL)).toBeNull();
+      }
+    });
+
+    it("never redirects live related pages", () => {
+      expect(getConsolidatedCompareSlug(CANONICAL)).toBeNull();
+      for (const live of LIVE_RELATED) {
+        expect(getConsolidatedCompareSlug(live), live).toBeNull();
+        expect(
+          COMPARE_REDIRECTS.some((r) => r.source === `/compare/${live}`),
+          `${live} must not be a redirect source`,
+        ).toBe(false);
+      }
+    });
+  });
+
   describe("DAN-2323 cron-drift keyword-suffixed near-duplicates", () => {
     // Post-2026-07-14 enrichment-cron drift: keyword-suffixed variants of matchups
     // that already have a clean canonical 200. Each folds into the clean canonical
@@ -191,6 +256,72 @@ describe("COMPARE_REDIRECTS", () => {
           getConsolidatedCompareSlug(dest),
           `${r.source} -> ${r.destination}, but ${dest} is itself a redirect source`,
         ).toBeNull();
+      }
+    });
+
+    it("301s both Michael Jordan / LeBron 404s to the live lebron-vs-jordan page", () => {
+      for (const from of ["michael-jordan-vs-lebron-james", "lebron-james-vs-michael-jordan"]) {
+        expect(getConsolidatedCompareSlug(from)).toBe("lebron-vs-jordan");
+        const hit = COMPARE_REDIRECTS.find((redirect) => redirect.source === `/compare/${from}`);
+        expect(hit?.destination).toBe("/compare/lebron-vs-jordan");
+        expect(hit?.statusCode).toBe(301);
+      }
+      expect(getConsolidatedCompareSlug("lebron-vs-jordan")).toBeNull();
+      expect(COMPARE_REDIRECTS.some((redirect) => redirect.source === "/compare/lebron-vs-jordan")).toBe(
+        false
+      );
+    });
+
+    it("301s Curry and Kobe 404s to the new career pages in one hop", () => {
+      const cases: [string, string][] = [
+        ["curry-vs-lebron", "lebron-james-vs-stephen-curry"],
+        ["stephen-curry-vs-lebron-james", "lebron-james-vs-stephen-curry"],
+        ["kobe-vs-jordan", "jordan-vs-kobe"],
+        ["kobe-bryant-vs-michael-jordan", "jordan-vs-kobe"],
+        ["michael-jordan-vs-kobe-bryant", "jordan-vs-kobe"],
+      ];
+      for (const [from, to] of cases) {
+        expect(getConsolidatedCompareSlug(from)).toBe(to);
+        const hit = COMPARE_REDIRECTS.find((redirect) => redirect.source === `/compare/${from}`);
+        expect(hit?.destination).toBe(`/compare/${to}`);
+        expect(hit?.statusCode).toBe(301);
+        expect(getConsolidatedCompareSlug(to)).toBeNull();
+      }
+    });
+
+    it("301s SGA and Sixers short aliases straight to the live pages", () => {
+      const pairs: [string, string][] = [
+        ["sga-vs-wembanyama", "shai-gilgeous-alexander-vs-victor-wembanyama"],
+        ["wembanyama-vs-sga", "shai-gilgeous-alexander-vs-victor-wembanyama"],
+        ["knicks-vs-sixers", "knicks-vs-76ers"],
+        ["sixers-vs-knicks", "knicks-vs-76ers"],
+      ];
+      for (const [from, to] of pairs) {
+        expect(getConsolidatedCompareSlug(from), from).toBe(to);
+        expect(getConsolidatedCompareSlug(to), `${to} must stay a page`).toBeNull();
+        const hit = COMPARE_REDIRECTS.find((redirect) => redirect.source === `/compare/${from}`);
+        expect(hit?.destination).toBe(`/compare/${to}`);
+        expect(hit?.statusCode).toBe(301);
+      }
+    });
+
+    it("301s Spurs/Thunder and Knicks/Spurs legacy slugs in one hop", () => {
+      const pairs: [string, string][] = [
+        [
+          "san-antonio-spurs-vs-oklahoma-city-thunder-match-player-stats",
+          "oklahoma-city-thunder-vs-spurs",
+        ],
+        ["san-antonio-spurs-vs-oklahoma-city-thunder", "oklahoma-city-thunder-vs-spurs"],
+        ["oklahoma-city-thunder-vs-san-antonio-spurs", "oklahoma-city-thunder-vs-spurs"],
+        ["new-york-knicks-vs-san-antonio-spurs", "knicks-vs-spurs"],
+        ["san-antonio-spurs-vs-new-york-knicks", "knicks-vs-spurs"],
+      ];
+      for (const [from, to] of pairs) {
+        expect(getConsolidatedCompareSlug(from), from).toBe(to);
+        expect(getConsolidatedCompareSlug(to), `${to} must stay a page`).toBeNull();
+        const hit = COMPARE_REDIRECTS.find((redirect) => redirect.source === `/compare/${from}`);
+        expect(hit?.destination).toBe(`/compare/${to}`);
+        expect(hit?.statusCode).toBe(301);
       }
     });
 

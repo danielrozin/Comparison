@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { comparisonRobotsTag } from "@/lib/seo/comparison-robots-tag";
 import { entitySchemaType } from "@/lib/seo/schema";
+import { resolveEntityWikipediaUrl } from "@/lib/services/wikipedia-url";
 
 // /api/knowledge-graph/[slug] — JSON-LD knowledge graph for a comparison.
 //
@@ -91,9 +93,7 @@ export async function GET(
           caption: entity.name,
         },
       } : {}),
-      sameAs: [
-        `https://en.wikipedia.org/wiki/${encodeURIComponent(entity.name.replace(/ /g, "_"))}`,
-      ],
+      sameAs: [resolveEntityWikipediaUrl(entity)],
       subjectOf: { "@type": "Article", "@id": `${url}#article` },
     };
   });
@@ -225,7 +225,7 @@ export async function GET(
       citation: comparison.entities.map((e) => ({
         "@type": "CreativeWork",
         name: `${e.name} — Wikipedia`,
-        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+        url: resolveEntityWikipediaUrl(e),
       })),
       // teaches — explicit decision-intent signal for AI topic classifiers
       teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
@@ -410,69 +410,6 @@ export async function GET(
     });
   }
 
-  // Add ClaimReview node for the verdict when present — tells AI fact-checkers and
-  // Google that the verdict is a reviewed claim, not speculation.
-  // itemReviewed must be @type Claim (not CreativeWork/WebPage) per Google Fact Check spec.
-  // reviewRating must use TRUE/FALSE/MIXTURE tokens, not numeric 1-5.
-  if (comparison.verdict || comparison.shortAnswer) {
-    const entityNames = comparison.entities.map((e) => e.name);
-    const claimText = entityNames.length >= 2
-      ? `${entityNames[0]} is better than ${entityNames[1]}`
-      : comparison.title;
-    const verdictLower = (comparison.verdict ?? "").toLowerCase();
-    const ratingToken =
-      entityNames[0] && verdictLower === entityNames[0].toLowerCase()
-        ? "TRUE"
-        : entityNames[1] && verdictLower === entityNames[1].toLowerCase()
-        ? "FALSE"
-        : "MIXTURE";
-    graph.push({
-      "@type": "ClaimReview",
-      "@id": `${url}#claimreview`,
-      url,
-      inLanguage: "en-US",
-      isAccessibleForFree: true,
-      conditionsOfAccess: "Free",
-      claimReviewed: claimText,
-      ...(comparison.shortAnswer ? { reviewBody: comparison.shortAnswer } : {}),
-      ...(comparison.metadata?.publishedAt ? { datePublished: new Date(comparison.metadata.publishedAt).toISOString().slice(0, 10) } : {}),
-      ...(updatedAt ? { dateModified: new Date(updatedAt).toISOString().slice(0, 10) } : {}),
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: ratingToken,
-        bestRating: "TRUE",
-        worstRating: "FALSE",
-        alternateName:
-          ratingToken === "TRUE"
-            ? `${entityNames[0]} wins`
-            : ratingToken === "FALSE"
-            ? `${entityNames[1]} wins`
-            : "Depends on use case — see analysis",
-      },
-      author: {
-        "@type": "Organization",
-        "@id": `${SITE_URL}/#organization`,
-        name: SITE_NAME,
-        url: SITE_URL,
-      },
-      publisher: {
-        "@type": "Organization",
-        "@id": `${SITE_URL}/#organization`,
-        name: SITE_NAME,
-        url: SITE_URL,
-      },
-      itemReviewed: {
-        "@type": "Claim",
-        inLanguage: "en-US",
-        name: claimText,
-        ...(comparison.shortAnswer ? { text: comparison.shortAnswer.slice(0, 300) } : {}),
-        author: { "@type": "Thing", name: "Internet consensus" },
-        appearance: { "@type": "WebPage", "@id": url, url },
-        firstAppearance: { "@type": "WebPage", "@id": url, url },
-      },
-    });
-  }
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": graph,
@@ -493,6 +430,7 @@ export async function GET(
     status: 200,
     headers: {
       ...HEADERS,
+      "X-Robots-Tag": comparisonRobotsTag(comparison.metadata?.status),
       "Content-Type": "application/ld+json",
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
       "X-Source-URL": comparisonUrl,

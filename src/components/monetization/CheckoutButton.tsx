@@ -1,7 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { identifySubscriber, trackCheckoutClicked } from "@/lib/utils/analytics";
+import { normalizeCheckoutEmail } from "@/lib/analytics/checkout-identity";
+import {
+  getCheckoutDistinctId,
+  identifySubscriber,
+  trackCheckoutClicked,
+} from "@/lib/utils/analytics";
+
+/** Reservation mode answers 400 with this idea. Any other 400 is a real error. */
+function isReservationEmailError(error: unknown): boolean {
+  return typeof error === "string" && /email/i.test(error);
+}
 
 /**
  * The one buy button. POSTs to /api/checkout:
@@ -15,12 +25,15 @@ export function CheckoutButton({
   src,
   label,
   className,
+  paymentsLive = false,
 }: {
   plan: string;
   interval: string;
   src: string;
   label: string;
   className?: string;
+  /** This interval has a Stripe price. The note under the button says so. */
+  paymentsLive?: boolean;
 }) {
   const [phase, setPhase] = useState<"idle" | "email" | "busy" | "done" | "error">("idle");
   const [email, setEmail] = useState("");
@@ -29,25 +42,46 @@ export function CheckoutButton({
   async function submit(withEmail: boolean) {
     setPhase("busy");
     if (!withEmail) trackCheckoutClicked(plan, interval, src); // first click only, not the email re-submit
+
+    // Snapshot the id that already owns this browser's funnel events, then
+    // alias it to the email when we know one. Identify runs before the
+    // redirect (and before the request, so the alias has time to send).
+    // The session still stores the pre-identify id — see ROO-40.
+    const posthogDistinctId = getCheckoutDistinctId();
+    const typedEmail = withEmail ? normalizeCheckoutEmail(email) : undefined;
+    const knownEmail = typedEmail || normalizeCheckoutEmail(posthogDistinctId);
+    if (knownEmail) identifySubscriber(knownEmail);
+
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan, interval, src, ...(withEmail ? { email } : {}) }),
+        body: JSON.stringify({
+          plan,
+          interval,
+          src,
+          ...(withEmail && email.trim() ? { email: email.trim() } : {}),
+          ...(posthogDistinctId ? { posthogDistinctId } : {}),
+        }),
       });
       const data = await res.json();
       if (data.mode === "stripe" && data.url) {
+        // Call again immediately before navigation so PostHog can flush the
+        // $identify on page unload if the first call is still queued.
+        if (knownEmail) identifySubscriber(knownEmail);
         window.location.assign(data.url);
         return;
       }
       if (res.ok && data.mode === "reservation") {
-        if (email) identifySubscriber(email);
+        if (typedEmail) identifySubscriber(typedEmail);
         setMessage(data.message);
         setPhase("done");
         return;
       }
-      // reservation mode needs an email — reveal the field
-      if (res.status === 400 && !withEmail) {
+      // reservation mode needs an email — reveal the field.
+      // A different 400 (unknown plan, and so on) must not pretend checkout
+      // is still "nothing charged today" once Stripe is the live path.
+      if (res.status === 400 && !withEmail && isReservationEmailError(data.error)) {
         setPhase("email");
         return;
       }
@@ -109,6 +143,11 @@ export function CheckoutButton({
       <button type="button" onClick={() => void submit(false)} disabled={phase === "busy"} className={className}>
         {phase === "busy" ? "One moment…" : label}
       </button>
+      {paymentsLive && (
+        <p className="text-[11px] text-text-secondary leading-snug">
+          Continues on Stripe. Your card is entered there, not on this site.
+        </p>
+      )}
       {phase === "error" && <p className="text-xs text-red-600">{message}</p>}
     </div>
   );

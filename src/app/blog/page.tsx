@@ -1,21 +1,63 @@
 import type { Metadata } from "next";
+import { EDITORIAL_TEAM_NAME, blogAuthorName } from "@/lib/editorial/blog-authorship";
+import { isHumanReviewedSlug } from "@/lib/editorial/human-reviewed";
 import Link from "next/link";
-import { listBlogArticles } from "@/lib/services/blog-generator";
+import { cache } from "react";
+import { notFound } from "next/navigation";
+import { blogReadMinutes, listBlogArticles } from "@/lib/services/blog-generator";
+import {
+  BLOG_LIST_PAGE_SIZE,
+  blogListPageIsOutOfRange,
+  parseBlogListPage,
+} from "@/lib/blog/list-page";
+import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { Pagination } from "@/components/ui/Pagination";
+import { HomeCompareCTA, TrackedCompareLink } from "@/components/home/HomeCompareCTA";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
+import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
+import { HOME_COMPARE_CHIP_CANDIDATES } from "@/lib/data/home-compare-constants";
+import {
+  BLOG_COMPARE_SOFT_HREF,
+  BLOG_HUB_COMPARE_SOURCE,
+} from "@/lib/data/blog-compare-constants";
+import {
+  articleCompareCandidates,
+  firstLiveCompareSlug,
+} from "@/lib/data/blog-hub-compare";
+import { filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
+import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 
 const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Blog — ${SITE_NAME}`)}&type=blog`;
+
+const loadPublishedBlogList = cache((category: string | undefined, page: number) =>
+  listBlogArticles({
+    category,
+    limit: BLOG_LIST_PAGE_SIZE,
+    offset: (page - 1) * BLOG_LIST_PAGE_SIZE,
+    status: "published",
+    includeReadTime: true,
+  }),
+);
+
+async function publishedBlogList(search: { page?: string; category?: string }) {
+  const page = parseBlogListPage(search.page);
+  if (page === "invalid") notFound();
+  const category = search.category && search.category !== "all" ? search.category : undefined;
+  const result = await loadPublishedBlogList(category, page);
+  if (blogListPageIsOutOfRange(page, result.total, BLOG_LIST_PAGE_SIZE)) notFound();
+  return { page, category, ...result };
+}
 
 export async function generateMetadata({
   searchParams,
 }: {
   searchParams: Promise<{ page?: string; category?: string }>;
 }): Promise<Metadata> {
-  const { page: pageParam } = await searchParams;
-  const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
+  const { page } = await publishedBlogList(await searchParams);
   const baseUrl = `${SITE_URL}/blog`;
   const canonicalUrl = page > 1 ? `${baseUrl}?page=${page}` : baseUrl;
 
@@ -52,7 +94,7 @@ export async function generateMetadata({
     },
     other: {
       "citation_title": `Blog — ${SITE_NAME}`,
-      "citation_author": "Daniel Rozin",
+      "citation_author": EDITORIAL_TEAM_NAME,
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": blogDescription,
@@ -60,7 +102,7 @@ export async function generateMetadata({
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
       "DC.title": `Blog — ${SITE_NAME}`,
-      "DC.creator": "Daniel Rozin",
+      "DC.creator": EDITORIAL_TEAM_NAME,
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.description": blogDescription,
@@ -95,11 +137,6 @@ const CATEGORIES = [
   "food",
   "automotive",
 ];
-
-function estimateReadTime(content: string): number {
-  const words = content.split(/\s+/).length;
-  return Math.max(1, Math.ceil(words / 200));
-}
 
 function formatDate(date: Date | string | null | undefined): string {
   if (!date) return "";
@@ -231,20 +268,12 @@ export default async function BlogPage({
   searchParams: Promise<{ category?: string; page?: string }>;
 }) {
   const params = await searchParams;
-  const category =
-    params.category && params.category !== "all"
-      ? params.category
-      : undefined;
-  const page = Math.max(1, parseInt(params.page || "1", 10));
-  const limit = 12;
+  const [{ page, category, articles, total }, trending] = await Promise.all([
+    publishedBlogList(params),
+    getTrendingComparisons(10),
+  ]);
+  const limit = BLOG_LIST_PAGE_SIZE;
   const offset = (page - 1) * limit;
-
-  const { articles, total } = await listBlogArticles({
-    category,
-    limit,
-    offset,
-    status: "published",
-  });
 
   const totalPages = Math.ceil(total / limit);
   const activeCategory = params.category || "all";
@@ -350,7 +379,7 @@ export default async function BlogPage({
     // hasPart[] — ItemList + FAQPage edges for AI graph traversal.
     hasPart: [
       { "@type": "ItemList", name: "Latest Articles", url: `${SITE_URL}/blog` },
-      { "@type": "FAQPage", "@id": `${SITE_URL}/blog#faq` },
+      { "@id": `${SITE_URL}/blog#faq` },
     ],
     // speakable — upgraded to include .faq-answer so voice assistants can extract structured answers.
     speakable: {
@@ -409,6 +438,61 @@ export default async function BlogPage({
     `${SITE_URL}/blog#breadcrumb`
   );
 
+  // ROO-23: hub → compare — reuse HomeCompareCTA with live primary + chips
+  // (ROO-9 only linked /search + /trending; chips were untracked text links).
+  // DAN-2581: never emit dead /compare hrefs. `trending` fetched above in Promise.all.
+  const chipCandidateSlugs = [
+    ...FEATURED_COMPARISONS.map((f) => f.slug),
+    ...HOME_COMPARE_CHIP_CANDIDATES.map((c) => c.slug),
+    ...articles.flatMap((article) =>
+      articleCompareCandidates(article.slug, article.relatedComparisonSlugs),
+    ),
+  ];
+  const liveChipSlugs = await filterLiveCompareSlugs(chipCandidateSlugs);
+  const liveChipSet = new Set(liveChipSlugs);
+
+  const featuredLive = FEATURED_COMPARISONS.filter((f) => liveChipSet.has(f.slug));
+  const labelBySlug = new Map<string, string>([
+    ...HOME_COMPARE_CHIP_CANDIDATES.map((c) => [c.slug, c.label] as const),
+    ...FEATURED_COMPARISONS.map((f) => [f.slug, f.anchor] as const),
+    ...trending.map((t) => [t.slug, t.title] as const),
+  ]);
+
+  const primarySlug = featuredLive[0]?.slug ?? trending[0]?.slug ?? null;
+  const primaryTitle =
+    featuredLive[0]?.anchor ??
+    (primarySlug ? labelBySlug.get(primarySlug) ?? null : null);
+
+  const chipSlugs: string[] = [];
+  for (const slug of liveChipSlugs) {
+    if (!chipSlugs.includes(slug)) chipSlugs.push(slug);
+    if (chipSlugs.length >= 6) break;
+  }
+  if (chipSlugs.length < 6) {
+    for (const t of trending) {
+      if (!chipSlugs.includes(t.slug)) chipSlugs.push(t.slug);
+      if (chipSlugs.length >= 6) break;
+    }
+  }
+  const blogHubCompareChips = chipSlugs.map((slug) => ({
+    slug,
+    label: labelBySlug.get(slug) || slug.replace(/-/g, " "),
+  }));
+
+  // Per-card compare link: the article the visitor is about to open, not a
+  // generic featured slug. Only slugs that survived the live filter above.
+  const cardCompareSlug = new Map<string, string>();
+  for (const article of articles) {
+    const chosen = firstLiveCompareSlug(
+      articleCompareCandidates(article.slug, article.relatedComparisonSlugs),
+      liveChipSet,
+    );
+    if (chosen) cardCompareSlug.set(article.slug, chosen);
+  }
+  const cardCompareTitles = await getComparisonTitlesBySlugs(
+    Array.from(new Set(cardCompareSlug.values())),
+  );
+
   return (
     <>
       <script
@@ -441,9 +525,9 @@ export default async function BlogPage({
           </defs>
           <rect width="100%" height="100%" fill="url(#blog-hero-grid)"/>
         </svg>
-        <div className="hidden sm:block absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative text-center">
-          <nav className="mb-6 flex justify-start" aria-label="Breadcrumb">
+        <div className="hidden sm:block absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-6 sm:pt-10 sm:pb-10 relative text-center">
+          <nav className="mb-3 sm:mb-6 flex justify-start" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
               <li>
                 <Link href="/" className="hover:text-white transition-colors flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
@@ -461,21 +545,43 @@ export default async function BlogPage({
               <li className="text-white font-medium" aria-current="page">Blog</li>
             </ol>
           </nav>
+          {/* ROO-51 / ROO-53: compare cards sit under the breadcrumb, above the
+              title. On a ~667px phone the cookie banner (z-60) covers a CTA
+              under the headline. Two named /compare cards stay in the clear
+              band above that banner. Trending is omitted — /trending never
+              mounts /compare/*. */}
+          <HomeCompareCTA
+            variant="solid"
+            showTrending={false}
+            mobileLead
+            popularCards
+            primarySlug={primarySlug}
+            primaryTitle={primaryTitle}
+            chips={blogHubCompareChips}
+            source={BLOG_HUB_COMPARE_SOURCE}
+            placement="blog_hub_hero"
+            softHref={BLOG_COMPARE_SOFT_HREF}
+          />
+          {/* ROO-50: this line used to follow the headline. On a ~700px phone
+              the cookie banner (fixed, z-60, ~362px tall) covered it, so the
+              tap hit Accept / Reject and pricing_cta_click never fired.
+              It stays a text link under the compare lead. */}
+          <SoftPricingLine src="blog" tone="onDark" className="mt-2 mb-3 sm:mt-3 sm:mb-4 text-center" />
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm ring-1 ring-white/20 text-sm font-medium text-primary-100 mb-5">
             <svg className="w-4 h-4 text-primary-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
             <span>Expert Comparison Guides</span>
           </div>
-          <h1 id="blog-hero-heading" className="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight mb-4">
+          <h1 id="blog-hero-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-3">
             The Comparison Blog
           </h1>
-          <p className="blog-hero-description text-lg text-primary-200 max-w-2xl mx-auto">
+          <p className="blog-hero-description text-base sm:text-lg text-primary-200 max-w-2xl mx-auto">
             Expert guides, in-depth analyses, and data-driven insights to help
             you compare and choose the best options.
           </p>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
@@ -539,11 +645,12 @@ export default async function BlogPage({
                 const isNew = article.publishedAt
                   ? Date.now() - new Date(article.publishedAt).getTime() < 7 * 24 * 60 * 60 * 1000
                   : false;
+                const compareSlug = cardCompareSlug.get(article.slug);
                 return (
-                <li key={article.slug} className="flex">
+                <li key={article.slug} className="flex flex-col">
                 <Link
                   href={`/blog/${article.slug}`}
-                  className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col w-full"
+                  className={`group bg-white ${compareSlug ? "rounded-t-xl" : "rounded-xl"} border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col w-full flex-1`}
                 >
                   {/* Card header — gradient with title text overlay */}
                   <div className={`h-36 bg-gradient-to-br ${getBlogCardGradient(article.category)} flex flex-col justify-end relative overflow-hidden`}>
@@ -580,7 +687,7 @@ export default async function BlogPage({
                         </span>
                       )}
                       <span className="text-xs text-text-secondary">
-                        {estimateReadTime(article.content)} min read
+                        {blogReadMinutes(article)} min read
                       </span>
                     </div>
 
@@ -598,9 +705,9 @@ export default async function BlogPage({
                     <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
                       <div className="flex items-center gap-1.5 min-w-0">
                         <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm" aria-hidden="true">
-                          <span className="text-white font-bold leading-none text-[8px]">DR</span>
+                          <span className="text-white font-bold leading-none text-[8px]">{isHumanReviewedSlug(article.slug) ? "DR" : "AB"}</span>
                         </div>
-                        <span className="truncate">Daniel Rozin</span>
+                        <span className="truncate">{blogAuthorName(article.slug)}</span>
                         {article.publishedAt && (
                           <>
                             <span aria-hidden="true" className="flex-shrink-0">·</span>
@@ -614,6 +721,19 @@ export default async function BlogPage({
                     </div>
                   </div>
                 </Link>
+                {compareSlug && (
+                  <TrackedCompareLink
+                    slug={compareSlug}
+                    source={BLOG_HUB_COMPARE_SOURCE}
+                    placement="blog_hub_article_card"
+                    className="flex items-center justify-between gap-2 px-4 py-2.5 bg-primary-50 border border-t-0 border-primary-200 rounded-b-xl text-sm font-semibold text-primary-800 hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                  >
+                    <span className="truncate">
+                      Compare: {cardCompareTitles[compareSlug] || compareSlug.replace(/-/g, " ")}
+                    </span>
+                    <span aria-hidden="true">&rarr;</span>
+                  </TrackedCompareLink>
+                )}
                 </li>
                 );
               })}

@@ -1,7 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { NotFoundViewTracker } from "@/components/analytics/NotFoundViewTracker";
+import { MissingCompareCta } from "@/components/monetization/MissingCompareCta";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
-import { CATEGORIES } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_NAME } from "@/lib/utils/constants";
 import { CategoryIcon } from "@/lib/utils/category-icons";
+
+export const metadata: Metadata = {
+  title: `Page not found | ${SITE_NAME}`,
+  robots: { index: false, follow: false },
+};
 
 export default async function NotFound() {
   let trending: { slug: string; title: string; category: string }[] = [];
@@ -17,6 +25,7 @@ export default async function NotFound() {
 
   return (
     <div className="min-h-screen bg-surface">
+      <NotFoundViewTracker />
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
         <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
@@ -55,6 +64,7 @@ export default async function NotFound() {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
+              <input type="hidden" name="surface" value="not_found_form" />
               <input
                 autoComplete="off"
                 type="search"
@@ -87,6 +97,9 @@ export default async function NotFound() {
             >
               Browse Trending
             </Link>
+            <MissingCompareCta className="px-6 py-2.5 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors backdrop-blur-sm ring-1 ring-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-800">
+              Request a custom comparison
+            </MissingCompareCta>
           </div>
         </div>
 

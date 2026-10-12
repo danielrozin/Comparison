@@ -4,7 +4,9 @@
  */
 
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { isHumanReviewedSlug } from "@/lib/editorial/human-reviewed";
 import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
+import { resolveEntityWikipediaUrl } from "@/lib/services/wikipedia-url";
 import type { ComparisonPageData, FAQData, CitationStats } from "@/types";
 
 // ============================================================
@@ -49,6 +51,27 @@ export function contentAuthorArray() {
     personAuthorNode(),
     { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   ];
+}
+
+function organizationAuthorNode() {
+  return { "@type": "Organization" as const, "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL };
+}
+
+/**
+ * Article author for a compare page. Daniel is the author only when the slug
+ * is on HUMAN_REVIEWED_SLUGS. Every other page is authored by A Versus B.
+ */
+function comparisonArticleAuthor(slug: string) {
+  return isHumanReviewedSlug(slug) ? contentAuthorArray() : organizationAuthorNode();
+}
+
+/** reviewedBy / lastReviewed only when Daniel has actually reviewed the slug. */
+function comparisonReviewSignals(slug: string, updatedAt: string) {
+  if (!isHumanReviewedSlug(slug)) return {};
+  return {
+    lastReviewed: updatedAt,
+    reviewedBy: [personAuthorNode(), organizationAuthorNode()],
+  };
 }
 
 // ============================================================
@@ -263,8 +286,7 @@ export function dataCatalogSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FAL
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     creativeWorkStatus: "Published",
-    datePublished: "2024-01-01",
-    dateModified: new Date().toISOString(),
+    datePublished: "2026-03-15",
     inLanguage: "en-US",
     // potentialAction: SearchAction lets AI routers know the catalog is queryable by keyword —
     // same pattern as WebSite SearchAction but scoped to the DataCatalog entity.
@@ -298,8 +320,7 @@ export function dataCatalogSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FAL
       // This is a primary signal Dataset Search uses to rank dataset importance and
       // display corpus size in the "dataset overview" card.
       numberOfItems,
-      datePublished: "2024-01-01",
-      dateModified: new Date().toISOString(),
+      datePublished: "2026-03-15",
       keywords: ["comparison", "vs", "versus", "benchmark", "review", "analysis"],
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
@@ -368,7 +389,7 @@ export function dataCatalogSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FAL
           encodingFormat: "application/json",
           contentUrl: `${SITE_URL}/api/answer/{slug}`,
           name: "A Versus B AI Answer API",
-          description: "Pre-packaged, citation-ready answer with shortAnswer, verdict, keyDifferences, winner, confidence, and ClaimReview JSON-LD",
+          description: "Pre-packaged, citation-ready answer with shortAnswer, verdict, keyDifferences, winner, and confidence",
           potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/answer/{slug}` } },
         },
         {
@@ -439,9 +460,8 @@ export function webSiteSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FALLBAC
     keywords: "vs, versus, compare, comparison, side-by-side, which is better, best, alternatives, review, technology, sports, products",
     inLanguage: "en-US",
     availableLanguage: { "@type": "Language", name: "English", alternateName: "en" },
-    datePublished: "2024-01-01",
-    dateCreated: "2024-01-01",
-    dateModified: new Date().toISOString(),
+    datePublished: "2026-03-15",
+    dateCreated: "2026-03-15",
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
@@ -662,13 +682,15 @@ const WIKIDATA_Q_MAP: Record<string, string> = {
  * AI models (ChatGPT, Perplexity, Gemini) use sameAs to unambiguously
  * resolve entities during knowledge-graph grounding and citation merging.
  */
-export function entityWikipediaSameAs(name: string): string[] {
+export function entityWikipediaSameAs(name: string, slug?: string): string[] {
   if (!name || name.trim().length === 0) return [];
-  const wikiSlug = name.trim().replace(/ /g, "_");
-  const urls = [
-    `https://en.wikipedia.org/wiki/${encodeURIComponent(wikiSlug)}`,
-    `https://dbpedia.org/resource/${encodeURIComponent(wikiSlug)}`,
-  ];
+  const wikiUrl = resolveEntityWikipediaUrl({ name, slug });
+  const urls = [wikiUrl];
+  // DBpedia only when we resolved a real article. A search URL is not a resource.
+  if (wikiUrl.includes("/wiki/")) {
+    const title = wikiUrl.slice(wikiUrl.indexOf("/wiki/") + "/wiki/".length);
+    urls.push(`https://dbpedia.org/resource/${title}`);
+  }
   // Append Wikidata entity URL when Q-ID is known — third knowledge-graph anchor
   // that AI crawlers resolve via the Wikidata API for entity disambiguation.
   const qId = WIKIDATA_Q_MAP[name.trim()] ?? WIKIDATA_Q_MAP[name.trim().split(" ")[0]];
@@ -709,8 +731,7 @@ export function webApplicationSchema() {
     teaches: "How to compare products, technologies, sports figures, and countries side-by-side using structured data and expert-reviewed analysis",
     educationalUse: "comparison",
     releaseNotes: `${SITE_URL}/changelog`,
-    datePublished: "2024-01-01",
-    dateModified: new Date().toISOString(),
+    datePublished: "2026-03-15",
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
@@ -929,8 +950,8 @@ export function comparisonPageSchema(
     datePublished: comparison.metadata.publishedAt,
     dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    // author — [Person, Organization] via shared helper for DRY E-E-A-T coverage.
-    author: contentAuthorArray(),
+    // Daniel is the author only for slugs on HUMAN_REVIEWED_SLUGS.
+    author: comparisonArticleAuthor(comparison.slug),
     // correction — when updatedAt is materially later than publishedAt, emit a CorrectionComment.
     // Google E-E-A-T evaluators treat this as content-maintenance evidence (editorial accountability).
     // AI crawlers (Perplexity, ChatGPT) also weight this positively as a source-reliability signal.
@@ -939,12 +960,16 @@ export function comparisonPageSchema(
         const pub = comparison.metadata.publishedAt ? new Date(comparison.metadata.publishedAt).getTime() : 0;
         const upd = comparison.metadata.updatedAt ? new Date(comparison.metadata.updatedAt).getTime() : 0;
         if (upd > pub + 60_000) {
+          const reviewed = isHumanReviewedSlug(comparison.slug);
+          const updatedOn = new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10);
           return {
             correction: {
               "@type": "CorrectionComment",
               "@id": `${url}#correction`,
               name: `Updated: ${comparison.title}`,
-              text: `This comparison was reviewed and updated on ${new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10)} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
+              text: reviewed
+                ? `This comparison was reviewed and updated on ${updatedOn} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`
+                : `This comparison was updated on ${updatedOn} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
               dateCreated: new Date(comparison.metadata.updatedAt).toISOString(),
               url: `${SITE_URL}/how-we-write-verdicts`,
               author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -989,7 +1014,7 @@ export function comparisonPageSchema(
       // #key-facts — entity-level factual claims. #comparison-table — the structured attribute
       // grid; AI data-mode crawlers extract column headers + values directly from this section.
       // #faq — Q&A pairs; Google AI Overviews cite FAQ answers verbatim for voice results.
-      // #expert-analysis — human-reviewed analysis; high E-E-A-T signal for AI content extraction.
+      // #expert-analysis — analysis section anchor (the visible heading is "Analysis").
       cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#expert-analysis", "#faq"],
     },
     // accessMode signals content type to AI classifiers and accessibility crawlers.
@@ -1060,7 +1085,7 @@ export function comparisonPageSchema(
           },
         }),
         ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
-        sameAs: entityWikipediaSameAs(e.name),
+        sameAs: entityWikipediaSameAs(e.name, e.slug),
         subjectOf: { "@type": "Article", "@id": `${url}#article` },
         // mainEntityOfPage — cross-page graph edge from entity node (inside Article about[])
         // to the entity's canonical ProfilePage. AI crawlers follow this to the profile
@@ -1129,7 +1154,7 @@ export function comparisonPageSchema(
         // disambiguation; previously only Wikipedia was emitted (DBpedia was dropped).
         ...(schType === "Country" && {
           additionalType: "https://schema.org/Country",
-          sameAs: entityWikipediaSameAs(e.name),
+          sameAs: entityWikipediaSameAs(e.name, e.slug),
           // geo: GeoShape signals this is a geo-typed entity to Google Geo crawlers and
           // Perplexity/ChatGPT country-query routing — parity with multi-entity path.
           geo: { "@type": "GeoShape", name: e.name },
@@ -1165,7 +1190,7 @@ export function comparisonPageSchema(
       "@id": `${SITE_URL}/entity/${e.slug}`,
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
-      sameAs: entityWikipediaSameAs(e.name),
+      sameAs: entityWikipediaSameAs(e.name, e.slug),
     })),
     // articleSection — tells Google/AI models the category domain of this comparison.
     ...(comparison.category && { articleSection: comparison.category }),
@@ -1174,9 +1199,8 @@ export function comparisonPageSchema(
     // timeRequired — estimated reading time (ISO8601 duration); Google and AI engines
     // use this for content classification and featured-snippet slot selection.
     timeRequired: `PT${Math.ceil(Math.max(300, (comparison.attributes.length * 40) + (hasFaqs ? comparison.faqs.length * 80 : 0)) / 200)}M`,
-    // lastReviewed — freshness signal for AI fact-checkers and Google's QA systems.
-    lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    // lastReviewed + reviewedBy only when Daniel has reviewed this slug.
+    ...comparisonReviewSignals(comparison.slug, comparison.metadata.updatedAt),
     // contentReferenceTime — ISO 8601 date that the data in this article is "as of".
     // LLMs (ChatGPT, Perplexity, Claude) use this to give time-qualified answers:
     // "According to A Versus B (as of June 2026), ..." instead of treating the data
@@ -1302,13 +1326,16 @@ export function comparisonPageSchema(
             ...(domain && { publisher: { "@type": "Organization", name: domain } }),
           };
         }),
-      ...comparison.entities.map((e) => ({
-        "@type": "Article",
-        "@id": `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
-        name: `${e.name} — Wikipedia`,
-        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
-        publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
-      })),
+      ...comparison.entities.map((e) => {
+        const wikipediaUrl = resolveEntityWikipediaUrl(e);
+        return {
+          "@type": "Article",
+          "@id": wikipediaUrl,
+          name: `${e.name} — Wikipedia`,
+          url: wikipediaUrl,
+          publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
+        };
+      }),
     ],
     // potentialAction — ReadAction lets AI crawlers understand that this article
     // is readable at its canonical URL; CompareAction tells AI/Google that this page
@@ -1343,7 +1370,7 @@ export function comparisonPageSchema(
       const howtoEligible = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy", "entertainment", "companies"]);
       const hasHowTo = Boolean(comparison.category && howtoEligible.has(comparison.category) && comparison.attributes.length >= 3);
       const parts = [
-        ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
+        ...(hasFaqs ? [{ "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@id": `${url}#dataset` }] : []),
         // DefinedTermSet — Article→DefinedTermSet graph edge so AI crawlers discover the
         // attribute vocabulary directly from the Article node without loading the Dataset first.
@@ -1423,69 +1450,6 @@ export function comparisonPageSchema(
     // AI Overviews for US queries) use locationCreated to correctly scope the data origin.
     locationCreated: { "@type": "Country", name: "United States" },
   });
-
-  // 1b. ClaimReview — standalone type required by Schema.org and Google Fact Check.
-  // claimReviewed/reviewRating were previously misplaced as Article properties.
-  // A proper ClaimReview node signals to AI fact-checking systems (Google Fact Check,
-  // Perplexity truth mode, ChatGPT factual validation) that this page evaluates a
-  // specific factual claim, enabling the Fact Check rich result and AI trust boost.
-  if (comparison.shortAnswer && comparison.entities.length >= 2) {
-    const crClaimText = `${comparison.entities[0].name} is better than ${comparison.entities[1].name}`;
-    const crVerdictLower = (comparison.verdict ?? "").toLowerCase();
-    const crRating =
-      comparison.entities[0].name && crVerdictLower === comparison.entities[0].name.toLowerCase()
-        ? "TRUE"
-        : comparison.entities[1].name && crVerdictLower === comparison.entities[1].name.toLowerCase()
-        ? "FALSE"
-        : "MIXTURE";
-    schemas.push({
-      "@context": "https://schema.org",
-      "@type": "ClaimReview",
-      "@id": `${url}#claimreview`,
-      url,
-      // inLanguage — language-scoped fact-checking for AI engines; enables language-qualified
-      // citations ("According to [source] (en-US), ...") in ChatGPT, Perplexity, and Google Fact Check.
-      inLanguage: "en-US",
-      isAccessibleForFree: true,
-      conditionsOfAccess: "Free",
-      claimReviewed: crClaimText,
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: crRating,
-        bestRating: "TRUE",
-        worstRating: "FALSE",
-        alternateName:
-          crRating === "TRUE"
-            ? `${comparison.entities[0].name} wins`
-            : crRating === "FALSE"
-            ? `${comparison.entities[1].name} wins`
-            : "Depends on use case — see analysis",
-      },
-      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-      datePublished: comparison.metadata.updatedAt,
-      itemReviewed: {
-        "@type": "Claim",
-        // inLanguage on itemReviewed — language-scopes the reviewed claim for multilingual AI crawlers.
-        inLanguage: "en-US",
-        name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
-        // text — the actual claim text as required by Google Fact Check Tools for rich-result
-        // eligibility; AI fact-checkers (Perplexity truth mode, ChatGPT factual validation)
-        // use text to extract the assertion independently of the claimReviewed field.
-        text: comparison.shortAnswer ? comparison.shortAnswer.slice(0, 400) : `${comparison.entities.map((e) => e.name).join(" vs ")} — a structured side-by-side comparison`,
-        author: { "@type": "Thing", name: "Internet" },
-        datePublished: comparison.metadata.publishedAt,
-        // appearance — current canonical URL of the claim; used by AI fact-checkers
-        // to fetch the live page for verification.
-        appearance: { "@type": "WebPage", "@id": url, url },
-        // firstAppearance — the original publication URL of the claim; when claim and
-        // reviewer are the same page (self-published editorial), both fields point here.
-        // Google Fact Check and AI trust engines (Perplexity truth mode) use this to
-        // establish claim provenance and publication timeline.
-        firstAppearance: { "@type": "WebPage", "@id": url, url },
-      },
-    });
-  }
 
   // 2. ItemList for the compared entities
   schemas.push({
@@ -1914,7 +1878,7 @@ function buildMultiEntityGraph(
       acquireLicensePage: `${SITE_URL}/terms`,
       license: "https://creativecommons.org/licenses/by/4.0/",
     };
-    const wikiSameAs = entityWikipediaSameAs(entity.name);
+    const wikiSameAs = entityWikipediaSameAs(entity.name, entity.slug);
     if (wikiSameAs.length > 0) node.sameAs = wikiSameAs;
     // alternateName — legal-suffix-stripped aliases for AI Knowledge Graph cross-document merging.
     const itemAliases = entityAlternateNames(entity.name);
@@ -1968,7 +1932,7 @@ function buildMultiEntityGraph(
     if (schemaType === "Country") {
       node.additionalType = "https://schema.org/Country";
       // entityWikipediaSameAs gives both Wikipedia + DBpedia; don't narrow to Wikipedia-only.
-      node.sameAs = entityWikipediaSameAs(entity.name);
+      node.sameAs = entityWikipediaSameAs(entity.name, entity.slug);
       // geo: GeoShape signals this is a geo-typed entity to Google Geo crawlers and
       // Perplexity/ChatGPT country-query routing — even without precise coordinates.
       node.geo = { "@type": "GeoShape", name: entity.name };
@@ -2079,8 +2043,7 @@ function buildMultiEntityGraph(
     datePublished: comparison.metadata.publishedAt,
     dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    // author — [Person, Organization] via shared helper for DRY E-E-A-T coverage.
-    author: contentAuthorArray(),
+    author: comparisonArticleAuthor(comparison.slug),
     // correction — CorrectionComment when updatedAt materially exceeds publishedAt.
     // Parity with 2-entity path; Google E-E-A-T and AI source-reliability weighting.
     ...(() => {
@@ -2088,12 +2051,16 @@ function buildMultiEntityGraph(
         const pub = comparison.metadata.publishedAt ? new Date(comparison.metadata.publishedAt).getTime() : 0;
         const upd = comparison.metadata.updatedAt ? new Date(comparison.metadata.updatedAt).getTime() : 0;
         if (upd > pub + 60_000) {
+          const reviewed = isHumanReviewedSlug(comparison.slug);
+          const updatedOn = new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10);
           return {
             correction: {
               "@type": "CorrectionComment",
               "@id": `${url}#correction`,
               name: `Updated: ${comparison.title}`,
-              text: `This comparison was reviewed and updated on ${new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10)} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
+              text: reviewed
+                ? `This comparison was reviewed and updated on ${updatedOn} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`
+                : `This comparison was updated on ${updatedOn} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
               dateCreated: new Date(comparison.metadata.updatedAt).toISOString(),
               url: `${SITE_URL}/how-we-write-verdicts`,
               author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -2198,9 +2165,8 @@ function buildMultiEntityGraph(
     conditionsOfAccess: "Free",
     // interactivityType — multi-entity pages are read-only expositive content.
     interactivityType: "expositive",
-    // lastReviewed + reviewedBy — freshness signal for AI fact-checkers.
-    lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    // lastReviewed + reviewedBy only when Daniel has reviewed this slug.
+    ...comparisonReviewSignals(comparison.slug, comparison.metadata.updatedAt),
     // wordCount — estimated from attribute count × avg words/attribute + FAQ words.
     wordCount: Math.max(400, (comparison.attributes.length * 40) + (comparison.faqs.length * 80)),
     // timeRequired — estimated reading time (ISO8601 duration); Google and AI engines
@@ -2242,7 +2208,7 @@ function buildMultiEntityGraph(
     // sub-document graph edges. ProfilePage nodes create Article→entity traversal paths for AI.
     ...(() => {
       const parts = [
-        ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
+        ...(comparison.faqs.length > 0 ? [{ "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@id": `${url}#dataset` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
         // ItemList — Article→ItemList graph edge for AI to extract the compared entity list.
@@ -2281,13 +2247,16 @@ function buildMultiEntityGraph(
             ...(domain && { publisher: { "@type": "Organization", name: domain } }),
           };
         }),
-      ...comparison.entities.map((e) => ({
-        "@type": "Article",
-        "@id": `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
-        name: `${e.name} — Wikipedia`,
-        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
-        publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
-      })),
+      ...comparison.entities.map((e) => {
+        const wikipediaUrl = resolveEntityWikipediaUrl(e);
+        return {
+          "@type": "Article",
+          "@id": wikipediaUrl,
+          name: `${e.name} — Wikipedia`,
+          url: wikipediaUrl,
+          publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
+        };
+      }),
     ],
     mainEntity: { "@id": itemListId },
     // about[] — primary subjects of this comparison article; @id matches ProfilePage mainEntity.
@@ -2307,7 +2276,7 @@ function buildMultiEntityGraph(
           "@id": `${SITE_URL}/entity/${e.slug}#profilepage`,
           url: `${SITE_URL}/entity/${e.slug}`,
         },
-        sameAs: entityWikipediaSameAs(e.name),
+        sameAs: entityWikipediaSameAs(e.name, e.slug),
       };
     }),
     // @id on each mentions entry matches ProfilePage mainEntity for cross-document merge.
@@ -2317,7 +2286,7 @@ function buildMultiEntityGraph(
       "@id": `${SITE_URL}/entity/${e.slug}`,
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
-      sameAs: entityWikipediaSameAs(e.name),
+      sameAs: entityWikipediaSameAs(e.name, e.slug),
     })),
     // Properties added for feature parity with 2-entity schema
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
@@ -2386,53 +2355,6 @@ function buildMultiEntityGraph(
     ...itemNodes,
     breadcrumbList,
   ];
-
-  // ClaimReview — standalone node (parity with 2-entity schema).
-  if (comparison.shortAnswer && comparison.entities.length >= 2) {
-    const meCrClaimText = `${comparison.entities[0].name} is better than ${comparison.entities[1].name}`;
-    const meCrVerdictLower = (comparison.verdict ?? "").toLowerCase();
-    const meCrRating =
-      comparison.entities[0].name && meCrVerdictLower === comparison.entities[0].name.toLowerCase()
-        ? "TRUE"
-        : comparison.entities[1].name && meCrVerdictLower === comparison.entities[1].name.toLowerCase()
-        ? "FALSE"
-        : "MIXTURE";
-    graph.push({
-      "@type": "ClaimReview",
-      "@id": `${url}#claimreview`,
-      url,
-      inLanguage: "en-US",
-      isAccessibleForFree: true,
-      conditionsOfAccess: "Free",
-      claimReviewed: meCrClaimText,
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: meCrRating,
-        bestRating: "TRUE",
-        worstRating: "FALSE",
-        alternateName:
-          meCrRating === "TRUE"
-            ? `${comparison.entities[0].name} wins`
-            : meCrRating === "FALSE"
-            ? `${comparison.entities[1].name} wins`
-            : "Depends on use case — see analysis",
-      },
-      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-      datePublished: comparison.metadata.updatedAt,
-      itemReviewed: {
-        "@type": "Claim",
-        inLanguage: "en-US",
-        name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
-        // text — required by Google Fact Check Tools for rich-result eligibility.
-        text: comparison.shortAnswer ? comparison.shortAnswer.slice(0, 400) : `${comparison.entities.map((e) => e.name).join(" vs ")} — a structured side-by-side comparison`,
-        author: { "@type": "Thing", name: "Internet" },
-        datePublished: comparison.metadata.publishedAt,
-        appearance: { "@type": "WebPage", "@id": url, url },
-        firstAppearance: { "@type": "WebPage", "@id": url, url },
-      },
-    });
-  }
 
   if (comparison.faqs.length > 0) {
     const faqDatePublished = comparison.metadata.publishedAt ?? new Date().toISOString().slice(0, 10);
@@ -3057,7 +2979,7 @@ export function entityPageSchema(entity: {
         ],
       },
     },
-    sameAs: entityWikipediaSameAs(entity.name),
+    sameAs: entityWikipediaSameAs(entity.name, entity.slug),
   };
 }
 
@@ -3077,7 +2999,7 @@ export function aggregateRatingSchema(entity: {
   const url = `${SITE_URL}/entity/${entity.slug}`;
   const schemaType = entitySchemaType(entity.entityType);
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
-  const wikiSameAs = entityWikipediaSameAs(entity.name);
+  const wikiSameAs = entityWikipediaSameAs(entity.name, entity.slug);
 
   return {
     "@context": "https://schema.org",
@@ -3231,7 +3153,7 @@ export function profilePageSchema(entity: {
     url: `${SITE_URL}/compare/${c.slug}`,
   }));
 
-  const wikiSameAs = entityWikipediaSameAs(entity.name);
+  const wikiSameAs = entityWikipediaSameAs(entity.name, entity.slug);
   // OG image URL — computed early so mainEntity can reference it as a fallback image.
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
   const mainEntity: Record<string, unknown> = {
@@ -3526,22 +3448,6 @@ export function definedTermSetSchema() {
   };
 }
 
-/**
- * ClaimReview schema for comparison verdict pages.
- *
- * ClaimReview is Google's fact-checking schema — it signals that this page reviews
- * a specific claim with an expert verdict. For comparison pages, the "claim" is the
- * common user belief about which entity wins (e.g., "iPhone is better than Samsung").
- * We review that claim with structured evidence.
- *
- * Benefits:
- *  - Google Fact Check Explorer — increases chance of showing a "Fact Check" label
- *  - Perplexity / ChatGPT citations — AI systems prefer pages with ClaimReview when
- *    answering "X vs Y" queries, as the schema signals authority and verifiability
- *  - E-E-A-T: demonstrates the page's role as an authoritative review source
- *
- * Only emits when comparison has a clear verdict.winner.
- */
 // ============================================================
 // Typed DefinedTerm helper — converts a plain "teaches" string into a proper
 // Schema.org DefinedTerm node so AI knowledge graphs can traverse the teaches→
@@ -3557,132 +3463,6 @@ export function teachesDefinedTerm(label: string, pageUrl: string): Record<strin
       "@id": `${SITE_URL}/#definedTermSet`,
       name: "A Versus B Learning Outcomes",
       url: SITE_URL,
-    },
-  };
-}
-
-// ============================================================
-// Blog ClaimReview — emitted for "X vs Y" blog articles. Adds Google Fact Check
-// eligibility + AI fact-checking E-E-A-T signal. Unlike comparison ClaimReview
-// (which has explicit verdicts), blog articles default to MIXTURE when no clear
-// winner is declared, signalling nuanced analysis rather than a binary ruling.
-// ============================================================
-export function blogClaimReviewSchema(opts: {
-  articleUrl: string;
-  entityA: string;
-  entityB: string;
-  shortAnswer?: string;
-  verdict?: string | null;
-  datePublished?: string;
-  dateModified?: string;
-}) {
-  const claimText = `${opts.entityA} is better than ${opts.entityB}`;
-  const verdictLower = (opts.verdict ?? "").toLowerCase();
-  const ratingValue =
-    verdictLower && verdictLower === opts.entityA.toLowerCase()
-      ? "TRUE"
-      : verdictLower && verdictLower === opts.entityB.toLowerCase()
-        ? "FALSE"
-        : "MIXTURE";
-
-  return {
-    "@type": "ClaimReview",
-    "@id": `${opts.articleUrl}#claim-review`,
-    url: opts.articleUrl,
-    inLanguage: "en-US",
-    isAccessibleForFree: true,
-    conditionsOfAccess: "Free",
-    claimReviewed: claimText,
-    datePublished: opts.datePublished ?? new Date().toISOString().slice(0, 10),
-    dateModified: opts.dateModified ?? opts.datePublished ?? new Date().toISOString().slice(0, 10),
-    author: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue,
-      bestRating: "TRUE",
-      worstRating: "FALSE",
-      alternateName:
-        ratingValue === "TRUE"
-          ? `${opts.entityA} wins`
-          : ratingValue === "FALSE"
-            ? `${opts.entityB} wins`
-            : "Depends on use case — see analysis",
-    },
-    itemReviewed: {
-      "@type": "Claim",
-      inLanguage: "en-US",
-      name: claimText,
-      ...(opts.shortAnswer && { text: opts.shortAnswer.slice(0, 300) }),
-      author: { "@type": "Thing", name: "Internet consensus" },
-      appearance: { "@type": "WebPage", "@id": opts.articleUrl, url: opts.articleUrl },
-      firstAppearance: { "@type": "WebPage", "@id": opts.articleUrl, url: opts.articleUrl },
-    },
-  };
-}
-
-export function claimReviewSchema(opts: {
-  slug: string;
-  title: string;
-  entityA: string;
-  entityB: string;
-  verdict: string;
-  shortAnswer: string;
-  datePublished?: string;
-  dateModified?: string;
-}) {
-  const url = `${SITE_URL}/compare/${opts.slug}`;
-  const claimText = `${opts.entityA} is better than ${opts.entityB}`;
-  const verdictLower = opts.verdict.toLowerCase();
-  const ratingValue = verdictLower === opts.entityA.toLowerCase()
-    ? "TRUE"
-    : verdictLower === opts.entityB.toLowerCase()
-    ? "FALSE"
-    : "MIXTURE";
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "ClaimReview",
-    "@id": `${url}#claim-review`,
-    url,
-    inLanguage: "en-US",
-    isAccessibleForFree: true,
-    conditionsOfAccess: "Free",
-    claimReviewed: claimText,
-    datePublished: opts.datePublished ?? new Date().toISOString().slice(0, 10),
-    dateModified: opts.dateModified ?? opts.datePublished ?? new Date().toISOString().slice(0, 10),
-    author: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue,
-      bestRating: "TRUE",
-      worstRating: "FALSE",
-      alternateName: ratingValue === "TRUE"
-        ? `${opts.entityA} wins`
-        : ratingValue === "FALSE"
-        ? `${opts.entityB} wins`
-        : "Depends on use case",
-    },
-    itemReviewed: {
-      "@type": "Claim",
-      inLanguage: "en-US",
-      name: claimText,
-      text: opts.shortAnswer,
-      author: {
-        "@type": "Thing",
-        name: "Internet consensus",
-      },
-      appearance: { "@type": "WebPage", "@id": url, url },
-      firstAppearance: { "@type": "WebPage", "@id": url, url },
     },
   };
 }

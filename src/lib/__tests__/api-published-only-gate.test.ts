@@ -55,6 +55,10 @@ describe('isPublishedComparison', () => {
     expect(isPublishedComparison(comparison('published'), true)).toBe(true)
   })
 
+  it('admits a provisional row so the public API matches the live page', () => {
+    expect(isPublishedComparison(comparison('provisional'), true)).toBe(true)
+  })
+
   // The 10 slugs filed in DAN-2106 were all "archived". They 404 by design;
   // the API must agree with the page rather than contradict it.
   it.each(['archived', 'draft', 'review'])('rejects status %s', (status) => {

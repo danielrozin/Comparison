@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { HubShell } from "@/components/layout/HubShell";
+import { CheckoutThanksTracker } from "@/components/monetization/CheckoutThanksTracker";
 
 const PAGE_TITLE = `You're in — ${SITE_NAME}`;
 
@@ -17,15 +18,25 @@ export const metadata: Metadata = {
  * Stripe Checkout success_url lands here. Kept dependency-free on purpose:
  * whether provisioning is manual (launch week) or webhook-driven (Phase 2),
  * this page is honest either way — payment done, activation by email.
+ * Client fires checkout_thanks_viewed; the webhook fires purchase +
+ * checkout_completed with `$revenue`.
  */
-export default function PricingThanksPage() {
+export default async function PricingThanksPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ session_id?: string }>;
+}) {
+  const { session_id } = await searchParams;
+
   return (
-    <HubShell
-      eyebrow="Confirmed"
-      title="You're in. Welcome aboard."
-      lede="Payment received — your founding price is locked. Your account details and first custom-comparison instructions arrive by email within the hour."
-      breadcrumbLabel="Thanks"
-    >
+    <>
+      <CheckoutThanksTracker sessionId={session_id} />
+      <HubShell
+        eyebrow="Confirmed"
+        title="You're in. Welcome aboard."
+        lede="Payment received — your founding price is locked. Your account details and first custom-comparison instructions arrive by email within the hour."
+        breadcrumbLabel="Thanks"
+      >
       <div className="max-w-xl space-y-6">
         <ol className="space-y-4 text-sm text-text-secondary">
           <li className="flex gap-3">
@@ -34,18 +45,20 @@ export default function PricingThanksPage() {
           </li>
           <li className="flex gap-3">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-600 text-xs font-bold">2</span>
-            <span><strong className="text-text">Activation email.</strong> Within the hour you&apos;ll get a welcome email from Info@aversusb.net with how to request your first custom comparison.</span>
+            <span><strong className="text-text">Activation email.</strong> Within the hour you&apos;ll get a welcome email from {CONTACT_EMAIL} with how to request your first custom comparison.</span>
           </li>
           <li className="flex gap-3">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-600 text-xs font-bold">3</span>
-            <span><strong className="text-text">First request.</strong> Reply to that email with any matchup — it&apos;s live on the site within 24 hours.</span>
+            <span><strong className="text-text">First request.</strong> Use the link in that email, or open{" "}
+              <Link href="/custom-compare" className="text-primary-600 font-medium hover:underline">custom compare</Link>
+              {" "}with the email you paid with. It&apos;s live on the site within 24 hours.</span>
           </li>
         </ol>
 
         <p className="text-sm text-text-secondary">
           Didn&apos;t get the email? Write to{" "}
-          <a href="mailto:Info@aversusb.net" className="text-primary-600 font-medium hover:underline">
-            Info@aversusb.net
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary-600 font-medium hover:underline">
+            {CONTACT_EMAIL}
           </a>{" "}
           and a founder answers — usually the same day.
         </p>
@@ -57,6 +70,7 @@ export default function PricingThanksPage() {
           Browse trending comparisons →
         </Link>
       </div>
-    </HubShell>
+      </HubShell>
+    </>
   );
 }

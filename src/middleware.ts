@@ -1,11 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  compareHtmlSuffixRedirectPath,
+  HTML_SUFFIX_COMPARE_STATUS,
+} from "@/lib/redirects/html-suffix-compare";
+import {
+  isUnknownCategoryPath,
+  isUnknownSubcategoryPath,
+  UNKNOWN_CATEGORY_404_REWRITE,
+} from "@/lib/seo/category-page-path";
 
 // Simple in-memory rate limiter (per-instance; works on Edge Runtime)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 const RATE_LIMITS: Record<string, { windowMs: number; maxRequests: number }> = {
   "/api/v1/": { windowMs: 60_000, maxRequests: 60 },
-  "/api/comparisons/generate": { windowMs: 60_000, maxRequests: 5 },
+  // Burst guard only. The durable cap (3/IP/hour, 10/IP/day, daily global)
+  // lives in Postgres. Polling an in-flight generation needs more than 5/min.
+  "/api/comparisons/generate": { windowMs: 60_000, maxRequests: 20 },
+  "/api/custom-compare": { windowMs: 60_000, maxRequests: 8 },
+  "/api/billing-portal": { windowMs: 60_000, maxRequests: 8 },
   "/api/comments": { windowMs: 60_000, maxRequests: 10 },
   "/api/feedback": { windowMs: 60_000, maxRequests: 5 },
   "/api/consent": { windowMs: 60_000, maxRequests: 5 },
@@ -67,6 +80,19 @@ function cleanupStaleEntries() {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // ROO-25: `/compare/{slug}:{html}` soft-404s. The colon is not a legal
+  // slug character, and a truncated `</b` adds a raw slash, so next.config
+  // redirects and [slug] cannot see the long tail. 301 at the edge.
+  const htmlSuffixDest =
+    compareHtmlSuffixRedirectPath(pathname) ??
+    compareHtmlSuffixRedirectPath(request.url);
+  if (htmlSuffixDest) {
+    const url = request.nextUrl.clone();
+    url.pathname = htmlSuffixDest;
+    url.search = "";
+    return NextResponse.redirect(url, HTML_SUFFIX_COMPARE_STATUS);
+  }
+
   // Content-serving API endpoints that AI crawlers and indexers should be allowed to index.
   // These endpoints serve structured data (JSON-LD, JSON) referenced from HTML pages and llms.txt.
   const CONTENT_API_PATHS = [
@@ -120,6 +146,28 @@ export function middleware(request: NextRequest) {
 
   // For non-API routes, set geo cookie + security headers
   if (!pathname.startsWith("/api/")) {
+    // Known parent + unknown child streams a 200 from loading.tsx before
+    // the subcategory notFound() can change the status. Rewrite to a
+    // top-level slug the category route already 404s.
+    if (isUnknownSubcategoryPath(pathname)) {
+      const url = request.nextUrl.clone();
+      url.pathname = UNKNOWN_CATEGORY_404_REWRITE;
+      const rewritten = NextResponse.rewrite(url);
+      const country = request.headers.get("x-vercel-ip-country") || "";
+      rewritten.cookies.set("consent_region", EU_COUNTRIES.has(country) ? "eu" : "other", {
+        path: "/",
+        maxAge: 86400,
+        sameSite: "lax",
+        httpOnly: false,
+      });
+      rewritten.headers.set("X-Content-Type-Options", "nosniff");
+      rewritten.headers.set("Referrer-Policy", "origin-when-cross-origin");
+      rewritten.headers.set("X-DNS-Prefetch-Control", "on");
+      rewritten.headers.set("Content-Language", "en");
+      rewritten.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return rewritten;
+    }
+
     const response = NextResponse.next();
     const country = request.headers.get("x-vercel-ip-country") || "";
     const isEU = EU_COUNTRIES.has(country);
@@ -136,6 +184,11 @@ export function middleware(request: NextRequest) {
     // Content-Language — explicit English declaration for AI language classifiers
     // and international search engines (Bing, Yandex, Baidu).
     response.headers.set("Content-Language", "en");
+    // Unknown /category/* must not be index,follow if a soft 200 still
+    // slips out. The layout and dynamicParams=false are what return 404.
+    if (isUnknownCategoryPath(pathname)) {
+      response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    }
     // X-Pingback — machine-readable pingback discovery for WordPress/Ghost CMS platforms.
     // When they link to aversusb.net they auto-POST to this endpoint; accelerates
     // backlink discovery before Googlebot crawls the referring page.
@@ -156,23 +209,12 @@ export function middleware(request: NextRequest) {
     // structured-data alternatives without parsing HTML. Having JSON-LD reachable via
     // Link header is the fastest path for LLM crawlers (Perplexity, ChatGPT-User,
     // ClaudeBot) to find citation-ready data in a single HEAD request.
-    if (pathname.startsWith("/compare/")) {
-      const slug = pathname.replace("/compare/", "").replace(/\/$/, "");
-      if (slug) {
-        response.headers.set(
-          "Link",
-          [
-            `<${SITE}/api/v1/schema/${slug}>; rel="describedby"; type="application/ld+json"; title="Schema.org JSON-LD"`,
-            `<${SITE}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD"`,
-            `<${SITE}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"; title="Knowledge Graph"`,
-            `<${SITE}/api/comparisons/${slug}>; rel="alternate"; type="application/json"; title="Comparison JSON"`,
-            `<${SITE}/api/answer/${slug}>; rel="alternate"; type="application/json"; title="AI Answer"`,
-            `<${SITE}/api/faq/${slug}>; rel="alternate"; type="application/json"; title="FAQ Pairs"`,
-            `<${SITE}/compare/${slug}>; rel="cite-as"`,
-          ].join(", ")
-        );
-      }
-    } else if (pathname.startsWith("/blog/")) {
+    // ROO-24 / P0-2: do not emit compare schema/FAQ/answer Link headers here.
+    // Middleware runs before getStaticProps and cannot tell a live 200 from a
+    // hard 404, so a missing slug used to advertise /api/faq/{slug} etc.
+    // Live compares still expose those alternates as HTML <link> in MetaHead.
+    // next.config headers() must not stamp them either (same slug-blind match).
+    if (pathname.startsWith("/blog/")) {
       const slug = pathname.replace("/blog/", "").replace(/\/$/, "");
       if (slug) {
         response.headers.set(
@@ -196,8 +238,9 @@ export function middleware(request: NextRequest) {
           ].join(", ")
         );
       }
-    } else if (pathname.startsWith("/category/")) {
-      // Strip trailing slash and extract category (and optional subcategory)
+    } else if (pathname.startsWith("/category/") && !isUnknownCategoryPath(pathname)) {
+      // Strip trailing slash and extract category (and optional subcategory).
+      // Unknown slugs are real 404s — do not advertise them with cite-as.
       const catPath = pathname.replace(/\/$/, "").replace("/category/", "");
       const slug = catPath.split("/")[0];
       if (slug) {

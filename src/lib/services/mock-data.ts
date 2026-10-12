@@ -6,6 +6,7 @@
 import type { ComparisonPageData, TrendingComparison, RelatedComparison } from "@/types";
 import { getExtraComparisons, getExtraTrendingData } from "./mock-data-extra";
 import { FAQ_EXPANSION } from "@/lib/data/faq-expansion";
+import { listEditorialComparisons } from "@/lib/data/editorial-compares";
 
 const EXTRA_COMPARISONS = getExtraComparisons();
 
@@ -80,14 +81,16 @@ const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlo
   },
   "japan-vs-china": {
     id: "comp-2", slug: "japan-vs-china", title: "Japan vs China",
-    shortAnswer: "China has a much larger economy (GDP $17.7T vs $4.2T), population (1.4B vs 125M), and military, while Japan leads in GDP per capita ($33,800 vs $12,500), technology innovation, life expectancy, and quality of life indices.",
+    shortAnswer: "The IMF World Economic Outlook of April 2026 puts 2026 nominal GDP at $4.38 trillion for Japan and $20.85 trillion for China. Output per person is $35,703 in Japan and $14,874 in China. Real growth in 2026 is 0.7% in Japan and 4.4% in China. SIPRI’s 2024 military expenditure is $55.3 billion for Japan and an estimated $314 billion for China. World Bank 2024 life expectancy is 84.04 years in Japan and 78.02 years in China. UNDP HDR 2025 lists 2023 HDI at 0.925 (Very high, rank 23) for Japan and 0.797 (High, rank 78) for China.",
     keyDifferences: [
       { label: "Population", entityAValue: "125M", entityBValue: "1.4B", winner: "b" },
-      { label: "GDP", entityAValue: "$4.2T", entityBValue: "$17.7T", winner: "b" },
-      { label: "GDP per Capita", entityAValue: "$33,800", entityBValue: "$12,500", winner: "a" },
-      { label: "Life Expectancy", entityAValue: "84.6 years", entityBValue: "78.2 years", winner: "a" },
+      { label: "Nominal GDP", entityAValue: "$4.38 trillion, IMF WEO April 2026", entityBValue: "$20.85 trillion, IMF WEO April 2026", winner: "b" },
+      { label: "GDP per capita", entityAValue: "$35,703, IMF WEO April 2026", entityBValue: "$14,874, IMF WEO April 2026", winner: "a" },
+      { label: "2026 real GDP growth", entityAValue: "0.7%, IMF WEO April 2026", entityBValue: "4.4%, IMF WEO April 2026", winner: "b" },
+      { label: "Defense spending", entityAValue: "$55.3 billion, SIPRI 2024", entityBValue: "$314 billion estimated, SIPRI 2024", winner: "b" },
+      { label: "Life expectancy", entityAValue: "84.04 years, World Bank 2024", entityBValue: "78.02 years, World Bank 2024", winner: "a" },
       { label: "Military Personnel", entityAValue: "247K", entityBValue: "2.0M", winner: "b" },
-      { label: "HDI Rank", entityAValue: "#19", entityBValue: "#75", winner: "a" },
+      { label: "HDI", entityAValue: "0.925, Very high, rank 23, UNDP HDR 2025 (2023)", entityBValue: "0.797, High, rank 78, UNDP HDR 2025 (2023)", winner: "a" },
     ],
     verdict: "China dominates in scale — economy, population, and military size. Japan leads in quality of life, technology density, and per-capita wealth. The comparison depends on what dimension matters most to you.",
     category: "countries",
@@ -105,14 +108,14 @@ const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlo
       { id: "attr-10", slug: "population", name: "Population", unit: "people", category: "Demographics", dataType: "number", higherIsBetter: null,
         values: [{ entityId: "ent-3", valueText: "125,000,000", valueNumber: 125000000, valueBoolean: null }, { entityId: "ent-4", valueText: "1,400,000,000", valueNumber: 1400000000, valueBoolean: null }] },
       { id: "attr-11", slug: "gdp", name: "GDP", unit: "USD", category: "Economy", dataType: "number", higherIsBetter: true,
-        values: [{ entityId: "ent-3", valueText: "$4.2 Trillion", valueNumber: 4200000000000, valueBoolean: null, winner: false }, { entityId: "ent-4", valueText: "$17.7 Trillion", valueNumber: 17700000000000, valueBoolean: null, winner: true }] },
+        values: [{ entityId: "ent-3", valueText: "$4.38 trillion, IMF WEO April 2026", valueNumber: 4380000000000, valueBoolean: null, winner: false }, { entityId: "ent-4", valueText: "$20.85 trillion, IMF WEO April 2026", valueNumber: 20850000000000, valueBoolean: null, winner: true }] },
       { id: "attr-12", slug: "gdp-per-capita", name: "GDP per Capita", unit: "USD", category: "Economy", dataType: "number", higherIsBetter: true,
-        values: [{ entityId: "ent-3", valueText: "$33,800", valueNumber: 33800, valueBoolean: null, winner: true }, { entityId: "ent-4", valueText: "$12,500", valueNumber: 12500, valueBoolean: null, winner: false }] },
+        values: [{ entityId: "ent-3", valueText: "$35,703, IMF WEO April 2026", valueNumber: 35703, valueBoolean: null, winner: true }, { entityId: "ent-4", valueText: "$14,874, IMF WEO April 2026", valueNumber: 14874, valueBoolean: null, winner: false }] },
       { id: "attr-13", slug: "life-expectancy", name: "Life Expectancy", unit: "years", category: "Quality of Life", dataType: "number", higherIsBetter: true,
-        values: [{ entityId: "ent-3", valueText: "84.6", valueNumber: 84.6, valueBoolean: null, winner: true }, { entityId: "ent-4", valueText: "78.2", valueNumber: 78.2, valueBoolean: null, winner: false }] },
+        values: [{ entityId: "ent-3", valueText: "84.04 years, World Bank 2024", valueNumber: 84.04, valueBoolean: null, winner: true }, { entityId: "ent-4", valueText: "78.02 years, World Bank 2024", valueNumber: 78.02, valueBoolean: null, winner: false }] },
     ],
     faqs: [
-      { question: "Which country has a larger economy, Japan or China?", answer: "China has a significantly larger economy with a GDP of approximately $17.7 trillion compared to Japan's $4.2 trillion. However, Japan has a higher GDP per capita at $33,800 vs China's $12,500." },
+      { question: "Which country has a larger economy, Japan or China?", answer: "The IMF World Economic Outlook of April 2026 puts 2026 nominal GDP at $4.38 trillion for Japan and $20.85 trillion for China. Output per person is $35,703 in Japan and $14,874 in China." },
       { question: "Which country has a stronger military?", answer: "China has a larger military with approximately 2 million active personnel compared to Japan's 247,000. China also has a larger defense budget and nuclear weapons capability." },
     ],
     relatedComparisons: [
@@ -544,20 +547,20 @@ const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlo
   },
   "usa-vs-china": {
     id: "comp-14", slug: "usa-vs-china", title: "USA vs China",
-    shortAnswer: "The USA has the world's largest economy at $27.4 trillion GDP and leads in military spending ($916B/year). China has the world's largest population at 1.4 billion and is the largest manufacturer, with GDP of $17.7 trillion.",
+    shortAnswer: "The IMF World Economic Outlook of April 2026 puts 2026 nominal GDP at $32.38 trillion for the United States and $20.85 trillion for China. Output per person is $94,430 in the United States and $14,874 in China. SIPRI’s 2024 military expenditure is $997 billion for the United States and an estimated $314 billion for China.",
     keyDifferences: [
-      { label: "GDP", entityAValue: "$27.4T", entityBValue: "$17.7T", winner: "a" },
+      { label: "GDP", entityAValue: "$32.38 trillion, IMF WEO April 2026", entityBValue: "$20.85 trillion, IMF WEO April 2026", winner: "a" },
       { label: "Population", entityAValue: "335M", entityBValue: "1.4B", winner: "b" },
-      { label: "Military Spending", entityAValue: "$916B", entityBValue: "$224B", winner: "a" },
-      { label: "GDP per Capita", entityAValue: "$80,300", entityBValue: "$12,500", winner: "a" },
+      { label: "Military Spending", entityAValue: "$997 billion, SIPRI 2024", entityBValue: "$314 billion estimated, SIPRI 2024", winner: "a" },
+      { label: "GDP per Capita", entityAValue: "$94,430, IMF WEO April 2026", entityBValue: "$14,874, IMF WEO April 2026", winner: "a" },
       { label: "Nuclear Warheads", entityAValue: "5,550", entityBValue: "~500", winner: "a" },
       { label: "HDI Rank", entityAValue: "#21", entityBValue: "#75", winner: "a" },
     ],
     verdict: "The USA leads in total GDP, military, and per-capita wealth. China leads in population and manufacturing output and is narrowing the economic gap rapidly. This is the defining geopolitical rivalry of the 21st century.",
     category: "countries",
     entities: [
-      { id: "ent-27", slug: "usa", name: "United States", shortDesc: "World's largest economy, leading military superpower, $27.4T GDP", imageUrl: null, entityType: "country", position: 0,
-        pros: ["Largest economy ($27.4T)", "Dominant military ($916B budget)", "Global reserve currency (USD)", "Tech innovation leader", "World's most powerful air force"],
+      { id: "ent-27", slug: "usa", name: "United States", shortDesc: "World's largest economy and leading military superpower", imageUrl: null, entityType: "country", position: 0,
+        pros: ["Largest nominal economy ($32.38 trillion, IMF WEO April 2026)", "SIPRI 2024 military expenditure $997 billion", "Global reserve currency (USD)", "Tech innovation leader", "World's most powerful air force"],
         cons: ["High national debt ($34T+)", "Income inequality", "Healthcare costs", "Political polarization"],
         bestFor: "Economic power, military strength, and technological leadership" },
       { id: "ent-28", slug: "china-usa", name: "China", shortDesc: "World's most populous country, 2nd largest economy, rising superpower", imageUrl: null, entityType: "country", position: 1,
@@ -567,13 +570,13 @@ const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlo
     ],
     attributes: [
       { id: "attr-uc1", slug: "gdp-uc", name: "GDP (Nominal)", unit: "USD", category: "Economy", dataType: "number", higherIsBetter: true,
-        values: [{ entityId: "ent-27", valueText: "$27.4 Trillion", valueNumber: 27400000000000, valueBoolean: null, winner: true }, { entityId: "ent-28", valueText: "$17.7 Trillion", valueNumber: 17700000000000, valueBoolean: null, winner: false }] },
+        values: [{ entityId: "ent-27", valueText: "$32.38 trillion, IMF WEO April 2026", valueNumber: 32380000000000, valueBoolean: null, winner: true }, { entityId: "ent-28", valueText: "$20.85 trillion, IMF WEO April 2026", valueNumber: 20850000000000, valueBoolean: null, winner: false }] },
       { id: "attr-uc2", slug: "mil-spend-uc", name: "Military Spending", unit: "USD/yr", category: "Military", dataType: "number", higherIsBetter: null,
-        values: [{ entityId: "ent-27", valueText: "$916 Billion", valueNumber: 916000000000, valueBoolean: null }, { entityId: "ent-28", valueText: "$224 Billion", valueNumber: 224000000000, valueBoolean: null }] },
+        values: [{ entityId: "ent-27", valueText: "$997 billion, SIPRI 2024", valueNumber: 997000000000, valueBoolean: null }, { entityId: "ent-28", valueText: "$314 billion estimated, SIPRI 2024", valueNumber: 314000000000, valueBoolean: null }] },
     ],
     faqs: [
-      { question: "Which country has the larger economy?", answer: "The USA has the world's largest nominal GDP at $27.4 trillion. China is second at $17.7 trillion, though by Purchasing Power Parity (PPP), China's economy is actually larger." },
-      { question: "Which country has the stronger military?", answer: "The USA spends far more on defense ($916B vs $224B) and has the world's most advanced military technology and the largest navy. China has the world's largest army by personnel." },
+      { question: "Which country has the larger economy?", answer: "The IMF World Economic Outlook of April 2026 puts 2026 nominal GDP at $32.38 trillion for the United States and $20.85 trillion for China." },
+      { question: "Which country has the stronger military?", answer: "SIPRI’s 2024 military expenditure is $997 billion for the United States and an estimated $314 billion for China." },
     ],
     relatedComparisons: [
       { slug: "japan-vs-china", title: "Japan vs China", category: "countries" },
@@ -916,9 +919,9 @@ const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlo
   },
   "android-vs-ios": {
     id: "comp-24", slug: "android-vs-ios", title: "Android vs iOS",
-    shortAnswer: "Android has ~72% global smartphone market share versus iOS at ~27%. iOS leads in app quality, security, privacy, and user satisfaction among premium users.",
+    shortAnswer: "StatCounter’s August 2026 worldwide mobile operating-system share is 67.61% for Android and 32.36% for iOS. iOS leads in app quality, security, privacy, and user satisfaction among premium users.",
     keyDifferences: [
-      { label: "Global Market Share", entityAValue: "~72%", entityBValue: "~27%", winner: "a" },
+      { label: "Global Market Share", entityAValue: "67.61%, StatCounter August 2026", entityBValue: "32.36%, StatCounter August 2026", winner: "a" },
       { label: "US Market Share", entityAValue: "~44%", entityBValue: "~56%", winner: "b" },
       { label: "Customization", entityAValue: "Excellent", entityBValue: "Limited", winner: "a" },
       { label: "App Revenue per User", entityAValue: "Lower", entityBValue: "2x higher", winner: "b" },
@@ -1813,34 +1816,34 @@ const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlo
   },
   "us-economy-vs-china-economy": {
     id: "comp-49", slug: "us-economy-vs-china-economy", title: "US Economy vs China Economy",
-    shortAnswer: "The US has the world's largest nominal GDP at $27.4 trillion. China's nominal GDP of $17.7 trillion is growing faster (5.2% vs 2.5% for the US), and by Purchasing Power Parity (PPP), China's economy at $35T is already the world's largest.",
+    shortAnswer: "The IMF World Economic Outlook of April 2026 puts 2026 nominal GDP at $32.38 trillion for the United States and $20.85 trillion for China. Output per person is $94,430 in the United States and $14,874 in China. Real growth in 2026 is 2.3% in the United States and 4.4% in China.",
     keyDifferences: [
-      { label: "Nominal GDP", entityAValue: "$27.4T", entityBValue: "$17.7T", winner: "a" },
-      { label: "GDP (PPP)", entityAValue: "$27.4T", entityBValue: "$35T (largest)", winner: "b" },
-      { label: "GDP Growth Rate", entityAValue: "2.5%/yr", entityBValue: "5.2%/yr", winner: "b" },
-      { label: "GDP per Capita", entityAValue: "$80,300", entityBValue: "$12,500", winner: "a" },
+      { label: "Nominal GDP", entityAValue: "$32.38 trillion, IMF WEO April 2026", entityBValue: "$20.85 trillion, IMF WEO April 2026", winner: "a" },
+      { label: "GDP (PPP)", entityAValue: "Not quoted in dollars here", entityBValue: "Not quoted in dollars here", winner: "tie" },
+      { label: "2026 real GDP growth", entityAValue: "2.3%, IMF WEO April 2026", entityBValue: "4.4%, IMF WEO April 2026", winner: "b" },
+      { label: "GDP per Capita", entityAValue: "$94,430, IMF WEO April 2026", entityBValue: "$14,874, IMF WEO April 2026", winner: "a" },
       { label: "Stock Market (total cap)", entityAValue: "$46T (NYSE+NASDAQ)", entityBValue: "$10T", winner: "a" },
     ],
     verdict: "The US leads in nominal GDP, per-capita wealth, and financial markets. China leads in PPP GDP and growth rate. The economic balance of power is shifting toward China in absolute terms.",
     category: "economy",
     entities: [
-      { id: "ent-97", slug: "us-economy", name: "US Economy", shortDesc: "World's largest nominal GDP ($27.4T), reserve currency, innovation leader", imageUrl: null, entityType: "concept", position: 0,
-        pros: ["World's largest nominal GDP", "USD global reserve currency", "$46T stock market cap", "Silicon Valley innovation ecosystem", "World's largest consumer market"],
-        cons: ["$34T national debt", "2.5% growth rate (slower than China)", "Income inequality", "Healthcare cost burden"],
+      { id: "ent-97", slug: "us-economy", name: "US Economy", shortDesc: "World's largest nominal GDP ($32.38 trillion, IMF WEO April 2026), reserve currency, innovation leader", imageUrl: null, entityType: "concept", position: 0,
+        pros: ["World's largest nominal GDP ($32.38 trillion, IMF WEO April 2026)", "USD global reserve currency", "$46T stock market cap", "Silicon Valley innovation ecosystem", "World's largest consumer market"],
+        cons: ["$34T national debt", "2.3% real GDP growth in 2026, slower than China (IMF WEO April 2026)", "Income inequality", "Healthcare cost burden"],
         bestFor: "Financial innovation, technology, and per-capita wealth" },
-      { id: "ent-98", slug: "china-economy", name: "China Economy", shortDesc: "World's largest PPP economy ($35T), manufacturing powerhouse, 5.2% growth", imageUrl: null, entityType: "concept", position: 1,
-        pros: ["World's largest PPP economy ($35T)", "5.2% annual growth rate", "World's largest manufacturer", "Largest exporter ($3.7T exports/yr)", "Middle class of 400M+"],
-        cons: ["Lower GDP per capita ($12,500)", "Property debt crisis (Evergrande)", "Aging population challenge", "Limited financial market openness"],
+      { id: "ent-98", slug: "china-economy", name: "China Economy", shortDesc: "Second-largest nominal GDP ($20.85 trillion, IMF WEO April 2026) and a manufacturing powerhouse", imageUrl: null, entityType: "concept", position: 1,
+        pros: ["Larger economy in purchasing-power terms", "4.4% real GDP growth in 2026, IMF WEO April 2026", "World's largest manufacturer", "Largest exporter ($3.7T exports/yr)", "Middle class of 400M+"],
+        cons: ["GDP per capita of $14,874, IMF WEO April 2026", "Property debt crisis (Evergrande)", "Aging population challenge", "Limited financial market openness"],
         bestFor: "Manufacturing scale, growth trajectory, and PPP economic dominance" },
     ],
     attributes: [
       { id: "attr-ue1", slug: "nominal-gdp-ue", name: "Nominal GDP", unit: "USD", category: "Economy", dataType: "number", higherIsBetter: true,
-        values: [{ entityId: "ent-97", valueText: "$27.4 Trillion", valueNumber: 27400000000000, valueBoolean: null, winner: true }, { entityId: "ent-98", valueText: "$17.7 Trillion", valueNumber: 17700000000000, valueBoolean: null, winner: false }] },
+        values: [{ entityId: "ent-97", valueText: "$32.38 trillion, IMF WEO April 2026", valueNumber: 32380000000000, valueBoolean: null, winner: true }, { entityId: "ent-98", valueText: "$20.85 trillion, IMF WEO April 2026", valueNumber: 20850000000000, valueBoolean: null, winner: false }] },
       { id: "attr-ue2", slug: "gdp-growth-ue", name: "GDP Growth Rate", unit: "%", category: "Economy", dataType: "number", higherIsBetter: true,
-        values: [{ entityId: "ent-97", valueText: "2.5%", valueNumber: 2.5, valueBoolean: null, winner: false }, { entityId: "ent-98", valueText: "5.2%", valueNumber: 5.2, valueBoolean: null, winner: true }] },
+        values: [{ entityId: "ent-97", valueText: "2.3%, IMF WEO April 2026", valueNumber: 2.3, valueBoolean: null, winner: false }, { entityId: "ent-98", valueText: "4.4%, IMF WEO April 2026", valueNumber: 4.4, valueBoolean: null, winner: true }] },
     ],
     faqs: [
-      { question: "Is China's economy bigger than the USA's?", answer: "By nominal GDP, the US ($27.4T) is larger than China ($17.7T). By Purchasing Power Parity (PPP), China's economy at ~$35T is already the world's largest." },
+      { question: "Is China's economy bigger than the USA's?", answer: "By nominal GDP in the IMF World Economic Outlook of April 2026, the United States at $32.38 trillion is larger than China at $20.85 trillion. Real growth in 2026 is 4.4% in China and 2.3% in the United States." },
       { question: "When will China overtake the US economically?", answer: "The IMF now forecasts China may not surpass the US in nominal GDP until 2035-2040 at the earliest, due to China's slowing growth, property crisis, and demographic challenges." },
     ],
     relatedComparisons: [
@@ -2005,6 +2008,7 @@ const MOCK_COMPARISONS: Record<string, ComparisonPageData> = {
     Object.entries(MOCK_COMPARISONS_BASE).map(([k, v]) => [k, { ...v, relatedBlogPosts: [] }])
   ),
   ...EXTRA_COMPARISONS,
+  ...Object.fromEntries(listEditorialComparisons().map((c) => [c.slug, c])),
 };
 
 const EXTRA_TRENDING = getExtraTrendingData();

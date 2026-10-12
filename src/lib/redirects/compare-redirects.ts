@@ -31,6 +31,8 @@ import { RIVALRY_CONSOLIDATIONS_DAN2078 } from "./compare-rivalry-redirects.dan2
 import { BATCH_ARCHIVE_CONSOLIDATIONS_DAN2518 } from "./compare-batch-archive-redirects.generated";
 import { RECOVERY_CONSOLIDATIONS_404 } from "./compare-404-recovery.generated";
 import { BACKWARDS_REDIRECT_SOURCES } from "./compare-backwards-redirects.generated";
+import { US_CHINA_GDP_CLUSTER_REDIRECTS } from "./us-china-gdp-cluster";
+import { NOT_FOUND_CLEANUP_CONSOLIDATIONS } from "./not-found-cleanup-redirects";
 
 // DAN-1169: PS5 Pro vs Xbox Series X intent split across two live pages; keep the
 // keyword-aligned page (the one Semrush shows ranking) and fold the short dup in.
@@ -150,6 +152,18 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   "real-madrid-vs-barcelona-total-titles-comparison-2026":
     "real-madrid-vs-barcelona-total-trophies-comparison-2026",
   "nfl-ratings-vs-nba-ratings": "nfl-vs-nba-viewership",
+
+  // ROO-27: messaging cluster — reverse-order + phrasing aliases onto the
+  // new live canonicals. Do not add the canonical slugs themselves as sources.
+  "whatsapp-vs-signal": "signal-vs-whatsapp",
+  "signal-vs-whatsapp-2026": "signal-vs-whatsapp",
+  "signal-vs-whatsapp-comparison": "signal-vs-whatsapp",
+  "signal-vs-whatsapp-comparison-2026": "signal-vs-whatsapp",
+  "telegram-vs-signal": "signal-vs-telegram",
+  "signal-vs-telegram-2026": "signal-vs-telegram",
+  "signal-vs-telegram-comparison": "signal-vs-telegram",
+  "whatsapp-vs-telegram-2026": "whatsapp-vs-telegram",
+  "whatsapp-vs-telegram-comparison": "whatsapp-vs-telegram",
 };
 
 // DAN-1265: entity-alias duplicates — same comparison, different entity naming.
@@ -263,6 +277,9 @@ const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   // requested and 404'd on, with each destination verified to return 200. That
   // is stronger evidence than a slug-shape rule, so it wins on collision.
   ...RECOVERY_CONSOLIDATIONS_404,
+  // 404 cleanup: explicit aliases whose targets were checked as live 200s.
+  // Later than recovery so a listed source cannot be pointed at a 404.
+  ...NOT_FOUND_CLEANUP_CONSOLIDATIONS,
 };
 
 // DAN-2078: the rivalry layer's survivor is authoritative over an earlier layer that
@@ -272,6 +289,16 @@ const COMPARE_CONSOLIDATIONS: Record<string, string> = {
 // is the exact shape of the DAN-2065 inversion: a live page 308ing away to a page we
 // meant to retire. Same remedy as SURVIVOR_OVERRIDES below: delete the survivor's key.
 for (const survivor of Object.values(RIVALRY_CONSOLIDATIONS_DAN2078)) {
+  delete COMPARE_CONSOLIDATIONS[survivor];
+}
+
+// ROO-27: the new messaging canonicals must never appear as redirect sources,
+// including if an older generated layer mapped them onto an archived sibling.
+for (const survivor of [
+  "signal-vs-whatsapp",
+  "signal-vs-telegram",
+  "whatsapp-vs-telegram",
+]) {
   delete COMPARE_CONSOLIDATIONS[survivor];
 }
 
@@ -372,14 +399,32 @@ export const COMPARE_REDIRECTS: CompareRedirect[] = Object.entries(
   statusCode: 301 as const,
 }));
 
+// ROO-24: GDP phrasing aliases were never catalog pages, so they stay out of
+// safeConsolidations (corpus math). They still 301 at the edge and are included
+// in REDIRECTED_COMPARE_SLUGS so the sitemap exclusion matches the edge table.
+// Skip any key already in the consolidation map so we never emit two rules.
+for (const [from, to] of Object.entries(US_CHINA_GDP_CLUSTER_REDIRECTS)) {
+  if (from === to) continue;
+  if (safeConsolidations[from]) continue;
+  COMPARE_REDIRECTS.push({
+    source: `/compare/${from}`,
+    destination: `/compare/${to}`,
+    statusCode: 301,
+  });
+}
+
 /**
  * Runtime lookup for the consolidation map (same data the edge redirects use).
  * Returns the survivor slug a retired comparison slug should fold into, or null
  * if the slug is not a known duplicate. Used by the generation route to refuse
  * recreating an archived duplicate (DAN-1265 source prevention).
+ *
+ * ROO-24 explicit GDP aliases are included here so CompareLink / getStaticProps
+ * resolve them in one hop. Pattern-only aliases are resolved separately in
+ * getStaticProps after the unpublished gate (see resolveUsChinaGdpRedirect).
  */
 export function getConsolidatedCompareSlug(slug: string): string | null {
-  return safeConsolidations[slug] ?? null;
+  return safeConsolidations[slug] ?? US_CHINA_GDP_CLUSTER_REDIRECTS[slug] ?? null;
 }
 
 /**
@@ -396,16 +441,30 @@ export function getConsolidatedCompareSlug(slug: string): string | null {
  * emits comparison pages must exclude these — use `canonicalComparisonWhere()`
  * (src/lib/db/canonical-comparisons.ts) rather than filtering by status alone.
  *
- * ADDING A SLUG HERE SHRINKS THE PUBLISHED CATALOG. DAN-2078 folded 14 rivalries into
- * their survivors and left CANONICAL_COMPARISON_COUNT_FALLBACK at 468 while the live
- * catalog fell to 454, so every page's JSON-LD overstated the corpus by 14. If you add
- * to `safeConsolidations`, re-run `scripts/dan2067-verify.ts` and lower that constant in
- * the same PR — the guard in src/lib/seo/__tests__/corpus-count-truthfulness.test.ts
- * will fail the build until you do.
+ * ADDING A *published* SLUG HERE SHRINKS THE PUBLISHED CATALOG. DAN-2078 folded
+ * 14 rivalries into their survivors and left CANONICAL_COMPARISON_COUNT_FALLBACK
+ * at 468 while the live catalog fell to 454, so every page's JSON-LD overstated
+ * the corpus by 14. If you add a live page to `safeConsolidations`, re-run
+ * `scripts/dan2067-verify.ts` and lower that constant in the same PR — the guard
+ * in src/lib/seo/__tests__/corpus-count-truthfulness.test.ts will fail the build
+ * until you do.
+ *
+ * ROO-24 GDP aliases are 404s that were never catalog pages. They still belong
+ * in this list so `canonicalComparisonWhere()` matches the edge redirect table
+ * (a published row that later appears as an alias must not re-enter the sitemap).
+ * They do not lower CANONICAL_COMPARISON_COUNT_FALLBACK.
+ *
+ * NEVER_PUBLISHED_ALIASES are in this list for the same sitemap reason.
+ * corpus-count-truthfulness leaves them out of the retired-page tally.
+ * Add a never-published alias to that set instead of lowering the fallback.
  */
-export const REDIRECTED_COMPARE_SLUGS: string[] = Object.keys(safeConsolidations);
+export { NEVER_PUBLISHED_ALIASES } from "./not-found-cleanup-redirects";
 
-/** True when `slug` 308s at the edge — i.e. it is a redirect, not a page. */
+export const REDIRECTED_COMPARE_SLUGS: string[] = COMPARE_REDIRECTS.map((r) =>
+  r.source.replace("/compare/", ""),
+);
+
+/** True when `slug` 301s at the edge — i.e. it is a redirect, not a page. */
 export function isRedirectedCompareSlug(slug: string): boolean {
-  return slug in safeConsolidations;
+  return slug in safeConsolidations || slug in US_CHINA_GDP_CLUSTER_REDIRECTS;
 }

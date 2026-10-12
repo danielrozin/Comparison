@@ -2,12 +2,19 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
+import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
 import { TrendingCard } from "@/components/home/TrendingCard";
+import {
+  HOME_COMPARE_SOFT_HREF,
+  TRENDING_COMPARE_SOURCE,
+} from "@/lib/data/home-compare-constants";
+import { buildTrendingCompareCta } from "@/lib/data/trending-compare-cta";
 import { Pagination } from "@/components/ui/Pagination";
 import { TrendingSortSelect } from "@/components/ui/TrendingSortSelect";
 import { personAuthorNode, breadcrumbSchema, teachesDefinedTerm, faqSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { CategoryIcon } from "@/lib/utils/category-icons";
 
 export const revalidate = 300; // ISR: revalidate trending page every 5 minutes
@@ -164,6 +171,13 @@ export default async function TrendingPage({ searchParams }: PageProps) {
   }
   // "views" is the default from getTrendingComparisons (already sorted by viewCount)
 
+  // ROO-47: hero CTA uses the ranked list (category filter when one is
+  // active), not the current page slice, so page 2 still opens on a live
+  // /compare. Cards below keep ?source_page=trending for ROO-48.
+  const trendingCompare = buildTrendingCompareCta(
+    filtered.length > 0 ? filtered : allTrending,
+  );
+
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const safePage = Math.min(page, Math.max(1, totalPages));
   const startIdx = (safePage - 1) * ITEMS_PER_PAGE;
@@ -254,7 +268,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     // hasPart[] — structural sub-documents: the ItemList and FAQPage are formal parts of this CollectionPage.
     hasPart: [
       { "@type": "ItemList", "@id": `${SITE_URL}/trending#itemlist` },
-      { "@type": "FAQPage", "@id": `${SITE_URL}/trending#faq` },
+      { "@id": `${SITE_URL}/trending#faq` },
     ],
     locationCreated: { "@type": "Country", name: "United States" },
   };
@@ -364,9 +378,9 @@ export default async function TrendingPage({ searchParams }: PageProps) {
           </defs>
           <rect width="100%" height="100%" fill="url(#trending-grid)"/>
         </svg>
-        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
-          <nav className="mb-5" aria-label="Breadcrumb">
+        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-6 sm:py-14 relative">
+          <nav className="mb-3 sm:mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-orange-200">
               <li>
                 <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
@@ -384,6 +398,29 @@ export default async function TrendingPage({ searchParams }: PageProps) {
               <li className="text-white font-medium" aria-current="page">Trending</li>
             </ol>
           </nav>
+          {/* ROO-51 / ROO-53: same lead placement as /blog. Named compare cards
+              sit under the breadcrumb so a 390×667 phone can tap one above the
+              cookie banner. Solid card on desktop. No self-link to /trending. */}
+          <HomeCompareCTA
+            variant="solid"
+            mobileLead
+            popularCards
+            primarySlug={trendingCompare.primarySlug}
+            primaryTitle={trendingCompare.primaryTitle}
+            chips={trendingCompare.chips}
+            source={TRENDING_COMPARE_SOURCE}
+            softHref={HOME_COMPARE_SOFT_HREF}
+            showTrending={false}
+          />
+          {/* ROO-50: text link under the compare lead. The copy at the bottom
+              of the list sits under the cookie banner once you scroll there. */}
+          <SoftPricingLine
+            src="trending"
+            tone="onDark"
+            lead="Need a matchup that isn't on this list?"
+            label="Lock the Pro founding price"
+            className="mt-2 mb-3 sm:mt-3 sm:mb-4"
+          />
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
               <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
@@ -404,7 +441,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
@@ -489,7 +526,12 @@ export default async function TrendingPage({ searchParams }: PageProps) {
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
           {trending.map((item, index) => (
             <li key={item.slug} className="flex">
-              <TrendingCard comparison={item} rank={startIdx + index + 1} />
+              <TrendingCard
+                comparison={item}
+                rank={startIdx + index + 1}
+                trackSource={TRENDING_COMPARE_SOURCE}
+                emphasizeCta
+              />
             </li>
           ))}
         </ul>
@@ -526,6 +568,12 @@ export default async function TrendingPage({ searchParams }: PageProps) {
         {safePage === 1 && (
           <div className="mt-16">
             <NewsletterSignup source="trending" />
+            <SoftPricingLine
+              src="trending"
+              lead="Need a matchup that isn't on this list?"
+              label="Lock the Pro founding price"
+              className="mt-6 text-center"
+            />
           </div>
         )}
       </div>

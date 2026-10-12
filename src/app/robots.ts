@@ -28,22 +28,30 @@ export default function robots(): MetadataRoute.Robots {
           "/api/sitemap",
           "/api/answer/",
           "/.well-known/",
-          // JS/CSS bundles + image optimizer MUST stay crawlable — Google
-          // renders pages before indexing, and a blanket /_next/ block makes
-          // every page render broken in its eyes (hurts mobile-friendliness
-          // and CWV assessment). Longest-match wins over the /_next/ disallow.
+          // Explicit allows for the JS/CSS bundles and the image optimizer.
+          // `Allow: /` already covers them; they stay so the intent is obvious
+          // next to the /api/ allows above.
           "/_next/static/",
           "/_next/image",
         ],
+        // Do not add `Disallow: /_next/`. Search crawlers (Googlebot, bingbot,
+        // …) inherit this * group. `/_next/static/` is the JS and CSS they
+        // need to render a page, and `/_next/image` is the image optimizer.
+        // The more specific Allow lines do not make a parent Disallow safe:
+        // many crawlers ignore Allow or skip longest-match, and `/_next/data/`
+        // (Pages Router JSON for /compare/[slug]) was never covered by them.
         disallow: [
           "/api/",
           "/admin/",
-          "/_next/",
           "/embed/",
           "/developers/dashboard",
           "/survey",
           "/*?*sort=",
-          "/*?*page=",
+          // Pagination only. `/*?*page=` also matched `?source_page=` and
+          // `?target_page=` on internal links, so it is anchored to the
+          // start of a query parameter here.
+          "/*?page=",
+          "/*&page=",
           "/*?*ref=",
           "/*?*utm_",
           "/*?*fbclid=",
@@ -231,9 +239,14 @@ export default function robots(): MetadataRoute.Robots {
     // and markdown (llms.txt, ai.txt) URLs, which Search Console reports as
     // fetch errors. Child sitemaps 0-4/images/video are already referenced by
     // the sitemap.xml index and must not be double-listed.
+    //
+    // P1 (live audit 2026-09-20): do not declare /sitemap/news.xml. That
+    // urlset is empty whenever no blog article was published in the last
+    // 48h (Google News window). An empty declared news sitemap is a
+    // crawl-quality fail. Re-add the URL only when the news route emits
+    // at least one <url>.
     sitemap: [
       "https://www.aversusb.net/sitemap.xml",
-      "https://www.aversusb.net/sitemap/news.xml",
     ],
   };
 }
