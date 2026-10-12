@@ -28,6 +28,7 @@ const COMPARE_PATH = /^\/compare\/([^/]+)$/;
 const capturedSlugs = new Set<string>();
 
 type NextData = {
+  page?: string;
   props?: {
     pageProps?: {
       comparison?: { category?: string | null };
@@ -44,6 +45,23 @@ export function parseCompareSlug(pathname: string): string | null {
     return decodeURIComponent(raw);
   } catch {
     return raw;
+  }
+}
+
+/**
+ * ROO-193 — a missing /compare URL renders the Pages Router 404 on the same
+ * path. Its payload names page "/404" (or "/_error"). That is not a view.
+ */
+export function isNotFoundPayload(
+  doc: Pick<Document, "getElementById"> | null | undefined,
+): boolean {
+  const raw = doc?.getElementById("__NEXT_DATA__")?.textContent;
+  if (!raw) return false;
+  try {
+    const page = (JSON.parse(raw) as NextData).page;
+    return page === "/404" || page === "/_error";
+  } catch {
+    return false;
   }
 }
 
@@ -101,6 +119,7 @@ export function captureComparisonViewedFromLocation(
   if (!slug) return false;
   const categorySource =
     doc === undefined ? (typeof document !== "undefined" ? document : null) : doc;
+  if (isNotFoundPayload(categorySource)) return false;
   const sourcePage = new URLSearchParams(location.search).get("source_page")?.trim() || undefined;
   return captureComparisonViewed(slug, readCompareCategory(categorySource), sourcePage, {
     sendInstantly: true,

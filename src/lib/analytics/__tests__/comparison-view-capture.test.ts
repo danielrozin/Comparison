@@ -98,6 +98,21 @@ describe("comparison_viewed early fire path (ROO-48)", () => {
     );
   });
 
+  it("ROO-193: does not capture on a missing compare URL that rendered the 404", () => {
+    window.history.pushState({}, "", "/compare/python-vs-golang");
+    const script = document.createElement("script");
+    script.id = "__NEXT_DATA__";
+    script.type = "application/json";
+    script.textContent = JSON.stringify({ page: "/404", props: { pageProps: {} } });
+    document.body.appendChild(script);
+    try {
+      expect(captureComparisonViewedFromLocation()).toBe(false);
+      expect(capture).not.toHaveBeenCalled();
+    } finally {
+      script.remove();
+    }
+  });
+
   it("does not capture on non-compare documents", () => {
     window.history.pushState({}, "", "/blog/best-design-tools");
     expect(captureComparisonViewedFromLocation()).toBe(false);

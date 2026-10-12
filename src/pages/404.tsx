@@ -13,7 +13,12 @@ import { selectCustomCompareEscapes, type CustomCompareEscape } from "@/lib/data
 import { filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { lastSearchAttachment } from "@/lib/search/search-session";
-import { trackCompareMissingViewed, trackMatchupRequested, type MatchupCta } from "@/lib/utils/analytics";
+import {
+  trackCompareMissingViewed,
+  trackMatchupRequested,
+  trackRelatedComparisonClick,
+  type MatchupCta,
+} from "@/lib/utils/analytics";
 import { SITE_NAME } from "@/lib/utils/constants";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 
@@ -240,6 +245,11 @@ function MissingCompareBody({
               <li key={item.slug}>
                 <Link
                   href={`/compare/${item.slug}`}
+                  onClick={() =>
+                    trackRelatedComparisonClick(slug ? `/compare/${slug}` : "/404", item.slug, {
+                      placement: "missing_compare_popular",
+                    })
+                  }
                   className="inline-flex min-h-11 items-center text-sm font-semibold text-primary-700 underline underline-offset-2 hover:text-primary-800"
                 >
                   {item.label}
@@ -268,13 +278,6 @@ function MissingCompareBody({
             className="inline-flex items-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700"
           >
             Request this comparison
-          </Link>
-          <Link
-            href="/pricing?src=missing-compare"
-            onClick={() => trackMissingCta("pricing", slug)}
-            className="inline-flex items-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-text hover:bg-surface-alt"
-          >
-            See Pro pricing
           </Link>
         </div>
       )}
