@@ -529,6 +529,11 @@ export function trackMatchupRequested(props: MatchupRequestedProps) {
 }
 
 /** `/custom-compare` mounted in a real browser. Bots are dropped by captureClient. */
+/** ROO-132 — /custom-compare sent a visitor to the on-demand builder. */
+export function trackCustomCompareBuildStarted(slug: string) {
+  captureClient("custom_compare_build_started", { page: "/custom-compare", slug }, { sendInstantly: true });
+}
+
 export function trackCustomCompareViewed() {
   captureClient("custom_compare_viewed", { page: "/custom-compare" }, { sendInstantly: true });
 }
