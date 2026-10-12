@@ -1846,13 +1846,10 @@ describe("NBA batch 3 compares", () => {
       expect(page.schemaMarkup).toBeUndefined();
       expect(page.quickAnswer?.winnerName).toBeNull();
       expect(page.quickAnswer?.tldr).toBe(page.shortAnswer);
-      const refreshed = slug === "knicks-vs-76ers";
-      expect(page.faqs).toHaveLength(refreshed ? 9 : 6);
+      expect(page.faqs).toHaveLength(6);
       expect(faqQuestions(page)).toEqual(page.faqs.map((faq) => faq.question));
-      expect(page.metadata.updatedAt).toBe(refreshed ? "2026-10-12T00:00:00Z" : "2026-10-03T00:00:00Z");
-      expect(pageText(page)).toContain(
-        refreshed ? "Stats as of October 12, 2026" : "Stats as of October 3, 2026"
-      );
+      expect(page.metadata.updatedAt).toBe("2026-10-03T00:00:00Z");
+      expect(pageText(page)).toContain("Stats as of October 3, 2026");
       expect(pageText(page)).not.toMatch(/will win|predicted winner|odds/i);
       expect(buildPageTitle(page.metadata.metaTitle).length).toBeLessThanOrEqual(60);
       const description = clampDescription(page.metadata.metaDescription);
