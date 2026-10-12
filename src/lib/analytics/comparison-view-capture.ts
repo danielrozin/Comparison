@@ -28,6 +28,7 @@ const COMPARE_PATH = /^\/compare\/([^/]+)$/;
 const capturedSlugs = new Set<string>();
 
 type NextData = {
+  page?: string;
   props?: {
     pageProps?: {
       comparison?: { category?: string | null };
@@ -44,6 +45,23 @@ export function parseCompareSlug(pathname: string): string | null {
     return decodeURIComponent(raw);
   } catch {
     return raw;
+  }
+}
+
+/**
+ * ROO-193: true when the Pages Router served the 404 page (missing compare,
+ * on-demand builder). Those URLs fire `missing_comparison_landing` instead.
+ */
+export function isNotFoundDocument(
+  doc: Pick<Document, "getElementById"> | null | undefined,
+): boolean {
+  const raw = doc?.getElementById("__NEXT_DATA__")?.textContent;
+  if (!raw) return false;
+  try {
+    const page = (JSON.parse(raw) as NextData).page;
+    return page === "/404" || page === "/_error";
+  } catch {
+    return false;
   }
 }
 
@@ -101,6 +119,7 @@ export function captureComparisonViewedFromLocation(
   if (!slug) return false;
   const categorySource =
     doc === undefined ? (typeof document !== "undefined" ? document : null) : doc;
+  if (isNotFoundDocument(categorySource)) return false;
   const sourcePage = new URLSearchParams(location.search).get("source_page")?.trim() || undefined;
   return captureComparisonViewed(slug, readCompareCategory(categorySource), sourcePage, {
     sendInstantly: true,
