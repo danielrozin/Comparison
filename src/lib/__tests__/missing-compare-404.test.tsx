@@ -48,9 +48,11 @@ vi.mock("@/components/comparison/OnDemandComparison", () => ({
   ),
 }));
 
+const trackMissingComparisonLanding = vi.hoisted(() => vi.fn());
 vi.mock("@/lib/utils/analytics", () => ({
   trackCompareMissingViewed: vi.fn(),
   trackMatchupRequested: vi.fn(),
+  trackMissingComparisonLanding,
 }));
 
 vi.mock("@/lib/services/comparison-service", () => ({
@@ -82,6 +84,9 @@ describe("missing-compare 404 server HTML", () => {
     expect(html).toContain('name="surface" value="not_found_form"');
     expect(html).toContain('name="q"');
     expect(html).not.toMatch(/24 hours/i);
+    // ROO-193: the first render (crawlers, search landers) has no Pro pricing.
+    expect(html).not.toContain("See Pro pricing");
+    expect(html).not.toMatch(/Pro members can request/);
 
     for (const item of popular) {
       expect(html).toContain(`href="/compare/${item.slug}"`);
@@ -163,6 +168,23 @@ describe("missing-compare 404 client resolve", () => {
       expect(screen.queryByRole("link", { name: "Request this comparison" })).not.toBeInTheDocument();
     },
   );
+
+  it("builds search-engine landings and fires missing_comparison_landing", async () => {
+    trackMissingComparisonLanding.mockClear();
+    setComparePath("deel-vs-remote");
+    Object.defineProperty(document, "referrer", { value: "https://www.google.com/", configurable: true });
+    render(<PagesNotFound generationEnabled popular={[]} />);
+
+    const builder = await screen.findByTestId("on-demand-builder");
+    expect(builder).toHaveAttribute("data-slug", "deel-vs-remote");
+    expect(screen.queryByText("See Pro pricing")).not.toBeInTheDocument();
+    expect(trackMissingComparisonLanding).toHaveBeenCalledWith({
+      slug: "deel-vs-remote",
+      referrer_type: "search_engine",
+      mode: "build",
+    });
+    Object.defineProperty(document, "referrer", { value: "", configurable: true });
+  });
 
   it("still builds an already-canonical missing pair", async () => {
     setComparePath("canoe-vs-kayak");

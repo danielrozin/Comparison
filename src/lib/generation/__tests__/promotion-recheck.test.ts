@@ -245,12 +245,13 @@ describe("runPromotionRecheck", () => {
       { slug: "cambodia-vs-laos", reasons: ["search_provider_error:429"], attempt: 4 },
       { slug: "peru-vs-chile", reasons: ["search_provider_error:timeout"], attempt: 1 },
     ]);
-    expect(log).toHaveBeenCalledWith("generation_promotion_failed", {
+    expect(log).not.toHaveBeenCalledWith("generation_promotion_failed", expect.anything());
+    expect(log).toHaveBeenCalledWith("generation_promotion_deferred", {
       slug: "cambodia-vs-laos",
       reasons: ["search_provider_error:429"],
       attempt: 4,
     });
-    expect(log).toHaveBeenCalledWith("generation_promotion_failed", {
+    expect(log).toHaveBeenCalledWith("generation_promotion_deferred", {
       slug: "peru-vs-chile",
       reasons: ["search_provider_error:timeout"],
       attempt: 1,

@@ -139,7 +139,7 @@ export interface PromotionRecheckDeps {
   }) => Promise<boolean>;
   revalidate: (slug: string, promoted: boolean) => Promise<void>;
   log: (
-    event: "generation_promoted" | "generation_promotion_failed",
+    event: "generation_promoted" | "generation_promotion_failed" | "generation_promotion_deferred",
     properties: { slug: string; reasons: string[]; attempt: number },
   ) => Promise<void>;
   limits: PromotionRecheckLimits;
@@ -283,7 +283,10 @@ async function recordProviderFailure(
   const attempt = readPromotionState(row.content).attempts;
   report.processed += 1;
   report.failed.push({ slug: row.slug, reasons: [providerError], attempt });
-  await deps.log("generation_promotion_failed", {
+  // ROO-193: 7 of 12 generation_promotion_failed events since Oct 3 were
+  // provider outages (search_provider_error:401/400) re-logged every cron
+  // run for one slug. They are deferrals, not gate failures.
+  await deps.log("generation_promotion_deferred", {
     slug: row.slug,
     reasons: [providerError],
     attempt,
