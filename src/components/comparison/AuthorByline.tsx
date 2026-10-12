@@ -1,9 +1,15 @@
 import Link from "next/link";
+import { AI_CONTENT_LABEL, AI_DISCLOSURE, EDITORIAL_TEAM_NAME } from "@/lib/editorial/blog-authorship";
 
 interface AuthorBylineProps {
   updatedAt: string;
   isHumanReviewed: boolean;
   wordCount?: number;
+  /**
+   * "editorial" renders the organization byline with the AI disclosure.
+   * Callers pass "person" only for slugs on HUMAN_REVIEWED_SLUGS.
+   */
+  variant?: "person" | "editorial";
 }
 
 function readingTime(wordCount?: number): number | null {
@@ -11,7 +17,7 @@ function readingTime(wordCount?: number): number | null {
   return Math.max(1, Math.round(wordCount / 200));
 }
 
-export function AuthorByline({ updatedAt, isHumanReviewed, wordCount }: AuthorBylineProps) {
+export function AuthorByline({ updatedAt, isHumanReviewed, wordCount, variant = "person" }: AuthorBylineProps) {
   const mins = readingTime(wordCount);
   const formattedDate = new Date(updatedAt).toLocaleDateString("en-US", {
     year: "numeric",
@@ -19,6 +25,30 @@ export function AuthorByline({ updatedAt, isHumanReviewed, wordCount }: AuthorBy
     day: "numeric",
     timeZone: "UTC",
   });
+
+  if (variant === "editorial") {
+    return (
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3" data-testid="editorial-byline">
+        <div className="flex items-center gap-2 flex-wrap text-xs text-text-secondary">
+          <span className="inline-flex items-center font-semibold text-primary-700 bg-primary-50 border border-primary-200 rounded-full px-2 py-0.5 leading-none">
+            {AI_CONTENT_LABEL}
+          </span>
+          <Link href="/about" className="font-semibold text-text hover:text-primary-700 transition-colors">
+            {EDITORIAL_TEAM_NAME}
+          </Link>
+          <span aria-hidden="true">·</span>
+          <time dateTime={updatedAt}>Updated {formattedDate}</time>
+          {mins && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>{mins} min read</span>
+            </>
+          )}
+        </div>
+        <p className="mt-1 text-xs text-text-secondary" data-testid="ai-disclosure">{AI_DISCLOSURE}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3">

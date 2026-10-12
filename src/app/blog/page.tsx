@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { EDITORIAL_TEAM_NAME, blogAuthorName } from "@/lib/editorial/blog-authorship";
+import { isHumanReviewedSlug } from "@/lib/editorial/human-reviewed";
 import Link from "next/link";
 import { cache } from "react";
 import { notFound } from "next/navigation";
@@ -92,7 +94,7 @@ export async function generateMetadata({
     },
     other: {
       "citation_title": `Blog — ${SITE_NAME}`,
-      "citation_author": "Daniel Rozin",
+      "citation_author": EDITORIAL_TEAM_NAME,
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": blogDescription,
@@ -100,7 +102,7 @@ export async function generateMetadata({
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
       "DC.title": `Blog — ${SITE_NAME}`,
-      "DC.creator": "Daniel Rozin",
+      "DC.creator": EDITORIAL_TEAM_NAME,
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.description": blogDescription,
@@ -557,6 +559,7 @@ export default async function BlogPage({
             primaryTitle={primaryTitle}
             chips={blogHubCompareChips}
             source={BLOG_HUB_COMPARE_SOURCE}
+            placement="blog_hub_hero"
             softHref={BLOG_COMPARE_SOFT_HREF}
           />
           {/* ROO-50: this line used to follow the headline. On a ~700px phone
@@ -702,9 +705,9 @@ export default async function BlogPage({
                     <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
                       <div className="flex items-center gap-1.5 min-w-0">
                         <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm" aria-hidden="true">
-                          <span className="text-white font-bold leading-none text-[8px]">DR</span>
+                          <span className="text-white font-bold leading-none text-[8px]">{isHumanReviewedSlug(article.slug) ? "DR" : "AB"}</span>
                         </div>
-                        <span className="truncate">Daniel Rozin</span>
+                        <span className="truncate">{blogAuthorName(article.slug)}</span>
                         {article.publishedAt && (
                           <>
                             <span aria-hidden="true" className="flex-shrink-0">·</span>
@@ -722,6 +725,7 @@ export default async function BlogPage({
                   <TrackedCompareLink
                     slug={compareSlug}
                     source={BLOG_HUB_COMPARE_SOURCE}
+                    placement="blog_hub_article_card"
                     className="flex items-center justify-between gap-2 px-4 py-2.5 bg-primary-50 border border-t-0 border-primary-200 rounded-b-xl text-sm font-semibold text-primary-800 hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                   >
                     <span className="truncate">

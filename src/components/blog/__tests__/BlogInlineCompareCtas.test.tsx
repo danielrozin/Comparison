@@ -59,6 +59,7 @@ describe("BlogInlineCompareCtas", () => {
       expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
         CASHIERS_CHECK_SOURCE_PAGE,
         link.slug,
+        expect.objectContaining({ placement: expect.any(String) }),
       );
     }
   });
@@ -163,6 +164,7 @@ describe("ROO-127 organic lander compare targets", () => {
         expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
           lander.sourcePage,
           link.slug,
+          expect.objectContaining({ placement: expect.any(String) }),
         );
       }
     }

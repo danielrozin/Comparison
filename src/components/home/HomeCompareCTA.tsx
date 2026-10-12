@@ -23,6 +23,8 @@ export interface HomeCompareCTAProps {
   chips?: HomeCompareChip[];
   /** PostHog source_page for related_comparison_click (default: home). */
   source?: string;
+  /** ROO-180: `placement` on related_comparison_click (e.g. blog_hero_cta). */
+  placement?: string;
   /**
    * Soft explore href when no live primary (e.g. /search on /blog hub).
    * When set, the primary button is a Link instead of focusSearch —
@@ -63,15 +65,23 @@ export function TrackedCompareLink({
   source,
   className,
   children,
+  placement,
+  position,
 }: {
   slug: string;
   source: string;
   className?: string;
   children: ReactNode;
+  /** ROO-180: sent as `placement` on related_comparison_click when set. */
+  placement?: string;
+  position?: string;
 }) {
   const href = `/compare/${slug}?source_page=${encodeURIComponent(source)}`;
+  const extra = placement ? { placement, ...(position ? { position } : {}) } : undefined;
   return (
-    <Link href={href} onClick={() => trackRelatedComparisonClick(source, slug)} className={className}>
+    <Link href={href} onClick={() =>
+        extra ? trackRelatedComparisonClick(source, slug, extra) : trackRelatedComparisonClick(source, slug)
+      } className={className}>
       {children}
     </Link>
   );
@@ -87,6 +97,7 @@ export function HomeCompareCTA({
   primaryTitle,
   chips = [],
   source = HOME_COMPARE_SOURCE,
+  placement,
   softHref,
   variant = "glass",
   showTrending = true,
@@ -131,7 +142,8 @@ export function HomeCompareCTA({
   }
 
   function track(target: string) {
-    trackRelatedComparisonClick(source, target);
+    if (placement) trackRelatedComparisonClick(source, target, { placement });
+    else trackRelatedComparisonClick(source, target);
   }
 
   function focusSearch() {
