@@ -20,6 +20,8 @@ import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
 import { BlogArticleProse, type ArticleRenderPart } from "@/components/blog/BlogArticleProse";
+import type { InlineComparisonLink } from "@/components/blog/BlogInlineComparisonCard";
+import { generatedCompareTitle, topicBuildSlug, topicCompareCandidates } from "@/lib/blog/blog-topic-compare";
 import {
   composeBlogArticleParts,
   decisionComparesForBlog,
@@ -436,12 +438,24 @@ export default async function BlogPostPage({
   const liveDecisionSlugs = mappedDecisions.length
     ? await filterLiveCompareSlugs(mappedDecisions.map((item) => item.slug))
     : [];
+  // ROO-180: match the post's own X vs Y (slug + title, both orders,
+  // brand suffixes and -2026/-lounge/-review stripped) against live pages.
+  const topicCandidates = mappedDecisions.length ? [] : topicCompareCandidates(slug, article.title);
+  const liveTopicSlugs = topicCandidates.length
+    ? (await filterLiveCompareSlugs(topicCandidates)).slice(0, 1)
+    : [];
   const inlineCardSlugs = selectInlineComparisonSlugs({
     bodyHtml: renderedContent,
     relatedSlugs: liveCompareSlugs,
     preferredSlugs: liveDecisionSlugs,
     preferMappedOnly: mappedDecisions.length > 0,
+    topicSlugs: liveTopicSlugs,
   });
+  // No live match but the topic is clearly X vs Y: link the builder (nofollow).
+  const topicBuild =
+    inlineCardSlugs.length === 0 && mappedDecisions.length === 0
+      ? topicBuildSlug(slug, article.title)
+      : null;
   const decisionTitles = Object.fromEntries(
     mappedDecisions.map((item) => [item.slug, item.title]),
   );
@@ -449,13 +463,16 @@ export default async function BlogPostPage({
   const comparisonTitles = comparisonTitleSlugs.length
     ? await getComparisonTitlesBySlugs(comparisonTitleSlugs)
     : {};
-  const inlineCardLinks = inlineCardSlugs.map((compareSlug) => ({
+  const inlineCardLinks: InlineComparisonLink[] = inlineCardSlugs.map((compareSlug) => ({
     slug: compareSlug,
     title:
       comparisonTitles[compareSlug] ||
       decisionTitles[compareSlug] ||
       compareSlug.replace(/-/g, " "),
   }));
+  if (topicBuild) {
+    inlineCardLinks.push({ slug: topicBuild, title: generatedCompareTitle(topicBuild), generated: true });
+  }
   const inlineCompare =
     slug === CASHIERS_CHECK_BLOG_SLUG
       ? {

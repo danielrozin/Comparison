@@ -97,6 +97,8 @@ export function selectInlineComparisonSlugs(input: {
   relatedSlugs: readonly string[];
   preferredSlugs?: readonly string[];
   preferMappedOnly?: boolean;
+  /** ROO-180: live compares matched from the post's own slug/title. First. */
+  topicSlugs?: readonly string[];
   limit?: number;
 }): string[] {
   const limit = input.limit ?? INLINE_COMPARISON_CARD_LIMIT;
@@ -112,6 +114,8 @@ export function selectInlineComparisonSlugs(input: {
 
   for (const slug of input.preferredSlugs ?? []) push(slug);
   if (input.preferMappedOnly) return picked;
+
+  for (const slug of input.topicSlugs ?? []) push(slug);
 
   for (const slug of extractBodyCompareSlugs(input.bodyHtml)) push(slug);
   for (const slug of input.relatedSlugs) push(slug);
