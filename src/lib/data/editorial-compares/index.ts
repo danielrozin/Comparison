@@ -22,6 +22,7 @@ import { OKLAHOMA_CITY_THUNDER_VS_SPURS } from "./oklahoma-city-thunder-vs-spurs
 import { KNICKS_VS_SPURS } from "./knicks-vs-spurs";
 import { FLAGG_VS_WEMBANYAMA } from "./flagg-vs-wembanyama";
 import { APPLE_WATCH_SERIES_12_VS_FITBIT_AIR } from "./apple-watch-series-12-vs-fitbit-air";
+import { APPLE_WATCH_SERIES_12_VS_WHOOP } from "./apple-watch-series-12-vs-whoop";
 import { DAMIAN_LILLARD_VS_JA_MORANT } from "./damian-lillard-vs-ja-morant";
 import { LEBRON_JAMES_VS_STEPHEN_CURRY } from "./lebron-james-vs-stephen-curry";
 import { JORDAN_VS_KOBE } from "./jordan-vs-kobe";
@@ -85,6 +86,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [KNICKS_VS_SPURS.slug]: KNICKS_VS_SPURS,
   [FLAGG_VS_WEMBANYAMA.slug]: FLAGG_VS_WEMBANYAMA,
   [APPLE_WATCH_SERIES_12_VS_FITBIT_AIR.slug]: APPLE_WATCH_SERIES_12_VS_FITBIT_AIR,
+  [APPLE_WATCH_SERIES_12_VS_WHOOP.slug]: APPLE_WATCH_SERIES_12_VS_WHOOP,
   [DAMIAN_LILLARD_VS_JA_MORANT.slug]: DAMIAN_LILLARD_VS_JA_MORANT,
   [LEBRON_JAMES_VS_STEPHEN_CURRY.slug]: LEBRON_JAMES_VS_STEPHEN_CURRY,
   [JORDAN_VS_KOBE.slug]: JORDAN_VS_KOBE,
