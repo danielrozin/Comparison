@@ -1053,14 +1053,15 @@ export default async function BlogPostPage({
                   and collapses if the script is blocked. suppressHydrationWarning:
                   publisher.js adds data-initialized and aria-live before React
                   hydrates this empty div. */}
-              <div className="mt-3">
-                <div
-                  google-add-preferred-source-btn=""
-                  data-lang="en"
-                  data-theme="light"
-                  suppressHydrationWarning
-                />
-              </div>
+              {/* ROO-142: static inner HTML so React never reconciles the
+                  nodes publisher.js injects before hydration (#418 HTML). */}
+              <div
+                className="mt-3"
+                suppressHydrationWarning
+                dangerouslySetInnerHTML={{
+                  __html: '<div google-add-preferred-source-btn="" data-lang="en" data-theme="light"></div>',
+                }}
+              />
             </div>
           </section>
 
