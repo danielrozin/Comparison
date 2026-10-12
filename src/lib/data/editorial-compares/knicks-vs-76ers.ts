@@ -18,19 +18,69 @@ const SERIES =
   "https://www.basketball-reference.com/playoffs/2026-nba-eastern-conference-semifinals-76ers-vs-knicks.html";
 const SIGNING = "https://www.nba.com/news/lebron-james-free-agency-sixers-2026";
 const SCHEDULE = "https://www.nba.com/games?date=2026-10-20";
+const NEXT_GAME_URL =
+  "https://www.nba.com/knicks/game/0022600002-sixers-vs-knicks-new-york-ny-10-20-2026";
+const LAST_MEETING_URL = "https://www.nba.com/game/nyk-vs-phi-0042500214";
+const SWEEP_STORY = "https://www.nba.com/news/knicks-76ers-2026-playoffs-game-4-takeaways";
 
-const SOURCE_DATE = "2026-10-03";
+/**
+ * Next game. After the final buzzer, set `result` to the final score
+ * (for example "Knicks 110, 76ers 100") and the copy below switches over.
+ */
+export const NEXT_GAME: {
+  date: string;
+  dateLabel: string;
+  matchup: string;
+  tipoff: string;
+  venue: string;
+  watch: string;
+  result: string | null;
+} = {
+  date: "2026-10-20",
+  dateLabel: "Tue Oct 20, 2026",
+  matchup: "76ers at Knicks",
+  tipoff: "7:00 pm ET",
+  venue: "Madison Square Garden, New York",
+  watch: "NBC and Peacock (national)",
+  result: null,
+};
+
+const NEXT_GAME_LINE = NEXT_GAME.result
+  ? `Final, ${NEXT_GAME.dateLabel}: ${NEXT_GAME.result} (${NEXT_GAME.matchup}, ${NEXT_GAME.venue}).`
+  : `Next game: ${NEXT_GAME.dateLabel}. ${NEXT_GAME.matchup}, ${NEXT_GAME.tipoff}, ${NEXT_GAME.venue}. TV: ${NEXT_GAME.watch}.`;
+
+const LAST_MEETING_LINE =
+  "Last meeting: May 10, 2026, Game 4 of the East semifinals in Philadelphia. Knicks 144, 76ers 114, completing a 4-0 sweep.";
+
+const SOURCE_DATE = "2026-10-12";
 const PUBLISHED = "2026-10-03T00:00:00Z";
-const AS_OF = "October 3, 2026";
+const AS_OF = "October 12, 2026";
+const UPDATED = "2026-10-12T00:00:00Z";
 
 const H2H_CAT = `Head-to-head · Basketball-Reference Knicks table`;
 const PLAYOFF_CAT = `2026 playoffs · Basketball-Reference`;
 const SEASON_CAT = `2026-27 season · Stats as of ${AS_OF}`;
 
 const SHORT_ANSWER =
-  "On the Knicks head-to-head table, the Knicks are 214-267 against the 76ers in 481 games. In the 2026 playoffs the Knicks swept the 76ers 4-0 in the Eastern Conference semifinals, then won the championship by beating the Spurs 4-1. LeBron James signed with the 76ers in July 2026. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log. NBA.com lists the 76ers at the Knicks on October 20, 2026, at 7:00 pm ET. There is no forecast for that game.";
+  `${NEXT_GAME_LINE} ${LAST_MEETING_LINE} ` +
+  "On the Knicks head-to-head table, the Knicks are 214-267 against the 76ers in 481 games. In the 2026 playoffs the Knicks swept the 76ers 4-0 in the Eastern Conference semifinals, then won the championship by beating the Spurs 4-1. LeBron James signed with the 76ers in July 2026. Stats as of October 12, 2026, Basketball-Reference has no 2026-27 regular-season game log. NBA.com lists the 76ers at the Knicks on October 20, 2026, at 7:00 pm ET. There is no forecast for that game.";
 
 const FAQS = [
+  {
+    question: "When do the Knicks play the 76ers next?",
+    answer: NEXT_GAME.result
+      ? `The teams met on ${NEXT_GAME.dateLabel} at ${NEXT_GAME.venue}. Final: ${NEXT_GAME.result}. They meet again on October 30, 2026, in Philadelphia.`
+      : `${NEXT_GAME.dateLabel}, the Knicks' regular-season opener. The 76ers play at the Knicks at ${NEXT_GAME.venue}, tipoff ${NEXT_GAME.tipoff}. The next meeting after that is October 30, 2026, in Philadelphia.`,
+  },
+  {
+    question: "Where can I watch Knicks vs 76ers?",
+    answer: `The October 20, 2026 game is on ${NEXT_GAME.watch}. Local radio options vary by market.`,
+  },
+  {
+    question: "When did the Knicks and 76ers last play?",
+    answer:
+      "May 10, 2026, in Game 4 of the Eastern Conference semifinals in Philadelphia. The Knicks won 144-114 to finish a 4-0 sweep. Miles McBride scored 25 points with seven 3-pointers, and the Knicks tied the NBA playoff record with 25 3-pointers.",
+  },
   {
     question: "What is the Knicks' record against the 76ers?",
     answer:
@@ -54,7 +104,7 @@ const FAQS = [
   {
     question: "When do the 76ers play the Knicks to open 2026-27?",
     answer:
-      "NBA.com's games page for October 20, 2026 lists Philadelphia at New York at 7:00 pm ET. That is a schedule fact. Stats as of October 3, 2026, Basketball-Reference has no 2026-27 regular-season game log for either team. There is no forecast for the opener or the season series.",
+      "NBA.com's games page for October 20, 2026 lists Philadelphia at New York at 7:00 pm ET. That is a schedule fact. Stats as of October 12, 2026, Basketball-Reference has no 2026-27 regular-season game log for either team. There is no forecast for the opener or the season series.",
   },
   {
     question: "Which older Knicks-76ers playoff series are included?",
@@ -63,15 +113,21 @@ const FAQS = [
   },
 ];
 
-const VERDICT = `Head-to-head table: Knicks 214 wins, 267 losses in 481 games.
+const VERDICT = `${NEXT_GAME_LINE}
+
+${LAST_MEETING_LINE}
+
+Head-to-head table: Knicks 214 wins, 267 losses in 481 games.
 
 2026 Eastern Conference semifinals: Knicks swept the 76ers 4-0.
 
 2026 NBA Finals: Knicks beat the Spurs 4-1 and are the league champion on Basketball-Reference's 2026 playoff page.
 
-2026-27 season: LeBron James signed with the 76ers in July 2026. Stats as of October 3, 2026, there is no regular-season game log. The 76ers are at the Knicks on October 20, 2026, at 7:00 pm ET. Neither is named the winner of that game, and there is no forecast for it.`;
+2026-27 season: LeBron James signed with the 76ers in July 2026. Stats as of October 12, 2026, there is no regular-season game log. The 76ers are at the Knicks on October 20, 2026, at 7:00 pm ET. Neither is named the winner of that game, and there is no forecast for it.`;
 
-const EXPERT_ANALYSIS = `The Knicks are 214-267 against the 76ers in 481 games on the Knicks head-to-head table. In the 2026 playoffs they swept the 76ers 4-0, then beat the Spurs 4-1 for the championship. LeBron James signed with the 76ers in July 2026. There is no 2026-27 forecast.
+const EXPERT_ANALYSIS = `${NEXT_GAME_LINE} ${LAST_MEETING_LINE}
+
+The Knicks are 214-267 against the 76ers in 481 games on the Knicks head-to-head table. In the 2026 playoffs they swept the 76ers 4-0, then beat the Spurs 4-1 for the championship. LeBron James signed with the 76ers in July 2026. There is no 2026-27 forecast.
 
 2026-27 season. Stats as of ${AS_OF}. No regular-season game log is on Basketball-Reference for this matchup, so no 2026-27 scoring line or projection is quoted. NBA.com lists Philadelphia at New York on October 20, 2026, at 7:00 pm ET. That is the schedule. It is not a pick. LeBron's move is a roster fact: NBA.com says he announced it Friday, that it became official on Sunday, that his posts are dated July 24, 2026, and that the 76ers' post is dated July 27, 2026. The story says the 76ers went 45-37 and were swept by the Knicks in the second round.
 
@@ -88,7 +144,7 @@ const BUILT = buildEditorialComparison({
   verdict: VERDICT,
   category: "sports",
   publishedAt: PUBLISHED,
-  updatedAt: PUBLISHED,
+  updatedAt: UPDATED,
   entities: [
     {
       id: NYK,
@@ -134,6 +190,18 @@ const BUILT = buildEditorialComparison({
     },
   ],
   keyDifferences: [
+    {
+      label: NEXT_GAME.result ? `Final, ${NEXT_GAME.dateLabel}` : `Next game, ${NEXT_GAME.dateLabel}`,
+      entityAValue: NEXT_GAME.result ?? `Home, ${NEXT_GAME.tipoff}, Madison Square Garden`,
+      entityBValue: NEXT_GAME.result ?? `Away, ${NEXT_GAME.tipoff}`,
+      winner: "tie",
+    },
+    {
+      label: "Last meeting (May 10, 2026)",
+      entityAValue: "Won 144-114 in Philadelphia",
+      entityBValue: "Lost 114-144 at home",
+      winner: "a",
+    },
     {
       label: "Head-to-head row",
       entityAValue: "214 wins, 267 losses in 481 games",
@@ -192,6 +260,10 @@ const BUILT = buildEditorialComparison({
   ],
   faqs: FAQS,
   relatedComparisons: [
+    { slug: "knicks-vs-spurs", title: "Knicks vs Spurs", category: "sports" },
+    { slug: "embiid-vs-jokic", title: "Embiid vs Jokic", category: "sports" },
+    { slug: "durant-vs-lebron", title: "Durant vs LeBron", category: "sports" },
+    { slug: "lebron-james-vs-stephen-curry", title: "LeBron vs Curry", category: "sports" },
     { slug: "lebron-vs-jordan", title: "LeBron vs Jordan", category: "sports" },
     { slug: "kobe-bryant-vs-lebron-james", title: "Kobe vs LeBron", category: "sports" },
   ],
@@ -205,8 +277,8 @@ const BUILT = buildEditorialComparison({
       "Knicks are 214-267 against the 76ers in 481 games on the Knicks head-to-head table. They swept the 76ers 4-0 in the 2026 East semifinals and beat the Spurs 4-1 in the Finals. The October 20 opener is a schedule fact.",
   },
   citationStats: {
-    sourceCount: 5,
-    dataPointCount: 7,
+    sourceCount: 8,
+    dataPointCount: 10,
     reviewsAnalyzed: null,
     preferencePercent: null,
     preferenceEntity: null,
@@ -217,6 +289,9 @@ const BUILT = buildEditorialComparison({
       { name: `Basketball-Reference — 2026 East semifinals, 76ers vs Knicks`, url: SERIES },
       { name: `NBA.com — LeBron signs with the 76ers`, url: SIGNING },
       { name: `NBA.com — games on October 20, 2026`, url: SCHEDULE },
+      { name: `NBA.com — 76ers at Knicks, October 20, 2026`, url: NEXT_GAME_URL },
+      { name: `NBA.com — Knicks at 76ers, May 10, 2026 (Game 4)`, url: LAST_MEETING_URL },
+      { name: `NBA.com — Knicks sweep 76ers in East semifinals`, url: SWEEP_STORY },
     ],
   },
   resources: [
@@ -251,6 +326,18 @@ const BUILT = buildEditorialComparison({
       description: `Philadelphia at New York, 7:00 pm ET. Schedule fact only.`,
     },
     {
+      type: "external",
+      label: "NBA.com: 76ers at Knicks, October 20, 2026",
+      url: NEXT_GAME_URL,
+      description: `Tuesday, October 20, 2026, 7:00 pm ET, Madison Square Garden. National TV: NBC, Peacock.`,
+    },
+    {
+      type: "external",
+      label: "NBA.com: Game 4, May 10, 2026",
+      url: LAST_MEETING_URL,
+      description: `Knicks 144, 76ers 114 in Philadelphia. Knicks win the series 4-0.`,
+    },
+    {
       type: "blog",
       label: "New York Knicks hub",
       url: "/entity/new-york-knicks",
@@ -261,6 +348,6 @@ const BUILT = buildEditorialComparison({
 });
 
 BUILT.metadata.metaDescription =
-  "Knicks are 214-267 against the 76ers on Basketball-Reference. The 2026-27 block is dated October 3, 2026, with no game prediction.";
+  "Knicks are 214-267 against the 76ers on Basketball-Reference. Next game: Oct 20, 2026, 7:00 pm ET at MSG. No prediction.";
 
 export const KNICKS_VS_76ERS: EditorialComparison = BUILT;
