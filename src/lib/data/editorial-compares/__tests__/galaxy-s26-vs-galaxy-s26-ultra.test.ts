@@ -93,7 +93,8 @@ describe("Galaxy S26 vs Galaxy S26 Ultra", () => {
     expect(text).toContain("Exynos 2600");
     expect(text).toContain("Snapdragon 8 Elite Gen 5 for Galaxy");
     expect(text).toContain("Privacy Display");
-    expect(text).toContain("try it in a store");
+    expect(text).not.toMatch(/in a store/i);
+    expect(text).not.toMatch(/Samsung's US Galaxy/);
     expect(text).toContain("30 hours");
     expect(text).toContain("31 hours");
     expect(text).not.toMatch(/Geekbench|AnTuTu|\% faster|image-quality score/i);
