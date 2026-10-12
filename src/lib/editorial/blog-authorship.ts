@@ -47,4 +47,20 @@ export function blogReviewFields(
   return { ...(reviewedAt && { lastReviewed: reviewedAt }), reviewedBy: reviewers };
 }
 
+/**
+ * Generated post bodies open with a hardcoded "By Daniel Rozin | A Versus B |
+ * <date>" line. Drop it unless the slug is allowlisted, so the body never
+ * claims a byline the page does not.
+ */
+const INLINE_DANIEL_BYLINE = /^[ \t]*[*_]{0,3}\s*(?:written\s+)?by\s+daniel\s+rozin\b[^\n]*\n?/gim;
+
+export function stripUnreviewedBodyByline(
+  content: string | null | undefined,
+  slug: string | null | undefined,
+): string {
+  if (!content) return content ?? "";
+  if (isHumanReviewedBlogSlug(slug)) return content;
+  return content.replace(INLINE_DANIEL_BYLINE, "");
+}
+
 export { SITE_NAME };

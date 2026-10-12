@@ -6,7 +6,7 @@ import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
-import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug } from "@/lib/editorial/blog-authorship";
+import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug, stripUnreviewedBodyByline } from "@/lib/editorial/blog-authorship";
 import { filterLiveCompareSlugs, resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares";
 
@@ -413,6 +413,7 @@ export default async function BlogPostPage({
   // live-filters — never invent dead /compare hrefs.
   const article = {
     ...rawArticle,
+    content: stripUnreviewedBodyByline(rawArticle.content, slug),
     relatedComparisonSlugs: await resolveBlogRelatedCompareSlugs(
       slug,
       rawArticle.relatedComparisonSlugs ?? []
