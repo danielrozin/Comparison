@@ -6,6 +6,7 @@ import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
+import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug } from "@/lib/editorial/blog-authorship";
 import { filterLiveCompareSlugs, resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares";
 
@@ -315,7 +316,7 @@ export async function generateMetadata({
       locale: "en_US",
       publishedTime: article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined,
       modifiedTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
-      authors: [`${SITE_URL}/authors/daniel-rozin`],
+      authors: blogOgAuthors(slug),
       section: article.category ?? "Comparisons",
       tags: article.tags ?? [],
       images: [{ url: ogImage, secureUrl: ogImage, type: "image/png", width: 1200, height: 630, alt: article.title }],
@@ -331,7 +332,7 @@ export async function generateMetadata({
     // citable metadata and attribute content to the correct source.
     other: {
       "citation_title": article.metaTitle || article.title,
-      "citation_author": "Daniel Rozin",
+      "citation_author": blogAuthorName(slug),
       "citation_publication_date": article.publishedAt
         ? new Date(article.publishedAt).toISOString().slice(0, 10)
         : new Date().toISOString().slice(0, 10),
@@ -345,7 +346,7 @@ export async function generateMetadata({
         : new Date().toISOString().slice(0, 10),
       "DC.title": article.metaTitle || article.title,
       "DC.description": (article.metaDescription || article.excerpt || "").slice(0, 300),
-      "DC.creator": "Daniel Rozin",
+      "DC.creator": blogAuthorName(slug),
       "DC.date": article.publishedAt
         ? new Date(article.publishedAt).toISOString().slice(0, 10)
         : new Date().toISOString().slice(0, 10),
@@ -550,7 +551,9 @@ export default async function BlogPostPage({
     // timeRequired — estimated reading time derived from actual word count ÷ 200 wpm.
     timeRequired: wordCount ? `PT${Math.ceil(wordCount / 200)}M` : "PT3M",
     inLanguage: "en-US",
-    author: extras?.author
+    author: !isHumanReviewedBlogSlug(slug)
+      ? editorialTeamAuthorNode()
+      : extras?.author
       ? {
           "@type": "Person",
           name: extras.author.name,
@@ -630,8 +633,12 @@ export default async function BlogPostPage({
     // Yahoo News) to correctly attribute the publication geography in article bylines.
     ...(isRecent && { dateline: "Online, United States" }),
     // lastReviewed / reviewedBy — explicit freshness signal for AI crawlers.
-    lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    // Only for slugs on HUMAN_REVIEWED_SLUGS.
+    ...blogReviewFields(
+      slug,
+      article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
+      [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    ),
     // contentReferenceTime — tells LLMs the "as of" date for data in this article,
     // enabling time-qualified citations instead of treating content as timeless.
     contentReferenceTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
@@ -942,14 +949,22 @@ export default async function BlogPostPage({
             )}
 
             <div className="flex flex-wrap items-center gap-3 mt-6">
-              <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all">
-                  <span className="text-white font-bold text-xs tracking-tight select-none">DR</span>
-                </div>
-                <span className="font-semibold">Daniel Rozin</span>
-                <span className="text-primary-300/60" aria-hidden="true">·</span>
-                <span>Editor-in-Chief</span>
-              </Link>
+              {isHumanReviewedBlogSlug(slug) ? (
+                <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all">
+                    <span className="text-white font-bold text-xs tracking-tight select-none">DR</span>
+                  </div>
+                  <span className="font-semibold">Daniel Rozin</span>
+                  <span className="text-primary-300/60" aria-hidden="true">·</span>
+                  <span>Editor-in-Chief</span>
+                </Link>
+              ) : (
+                <Link href="/about" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors">
+                  <span className="font-semibold">Analysis</span>
+                  <span className="text-primary-300/60" aria-hidden="true">·</span>
+                  <span>AversusB Editorial Team</span>
+                </Link>
+              )}
               {article.publishedAt && (
                 <>
                   <span className="w-px h-4 bg-white/20" aria-hidden="true" />
@@ -984,7 +999,8 @@ export default async function BlogPostPage({
           <div className="max-w-4xl mx-auto">
             <AuthorByline
               updatedAt={article.updatedAt ? new Date(article.updatedAt as string).toISOString() : new Date().toISOString()}
-              isHumanReviewed={true}
+              isHumanReviewed={isHumanReviewedBlogSlug(slug)}
+              variant={isHumanReviewedBlogSlug(slug) ? "person" : "editorial"}
               wordCount={wordCount}
             />
           </div>
