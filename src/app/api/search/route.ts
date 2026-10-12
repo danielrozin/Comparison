@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { searchComparisons } from "@/lib/services/comparison-service";
 import { filterLiveSearchComparisons } from "@/lib/seo/resolve-internal-links";
+import { suggestExistingComparison } from "@/lib/search/did-you-mean";
+import { parseComparisonQuery } from "@/lib/parse-comparison-query";
 import { SITE_URL } from "@/lib/utils/constants";
 
 const SEARCH_HEADERS = {
@@ -29,5 +31,17 @@ export async function GET(request: NextRequest) {
     url: `${SITE_URL}/compare/${r.slug}`,
   }));
 
-  return NextResponse.json({ query, results }, { headers: SEARCH_HEADERS });
+  const parsed = parseComparisonQuery(query);
+  const suggestion = suggestExistingComparison(query, results);
+
+  return NextResponse.json(
+    {
+      query,
+      results,
+      suggestion,
+      parsed_slug: parsed.slug,
+      canonical_slug_exists: Boolean(parsed.slug && results.some((row) => row.slug === parsed.slug)),
+    },
+    { headers: SEARCH_HEADERS },
+  );
 }

@@ -16,6 +16,7 @@ import { EmbedButton } from "@/components/comparison/EmbedButton";
 import { CommentSection } from "@/components/engagement/CommentSection";
 import { InterceptSurvey } from "@/components/engagement/InterceptSurvey";
 import { humanizeEntityName } from "@/lib/utils/humanize";
+import { categoryPagePath } from "@/lib/seo/category-page-path";
 import { QuickSectionNav } from "./QuickSectionNav";
 
 const FUN_FACTS = [
@@ -252,6 +253,8 @@ export function DynamicComparison({ slug }: { slug: string }) {
   // Ready state — render the full comparison
   if (!comparison) return null;
 
+  const categoryHref = categoryPagePath(comparison.category);
+
   return (
     <>
       {/* Breadcrumbs */}
@@ -265,7 +268,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
               <span className="sr-only sm:not-sr-only">Home</span>
             </Link>
           </li>
-          {comparison.category && (
+          {categoryHref && (
             <>
               <li aria-hidden="true">
                 <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -273,7 +276,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
                 </svg>
               </li>
               <li>
-                <Link href={`/category/${comparison.category}`} className="hover:text-primary-600 transition-colors capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded">
+                <Link href={categoryHref} className="hover:text-primary-600 transition-colors capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded">
                   {comparison.category}
                 </Link>
               </li>

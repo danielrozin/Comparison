@@ -35,8 +35,8 @@ export const DEAD_REDIRECT_SOURCES_DAN2045: string[] = [
   "cloudflare-vs-aws",
   // -> airtable-vs-coda (archived); source is archived
   "coda-vs-airtable",
-  // -> binance-vs-coinbase (archived); source is archived
-  "coinbase-vs-binance",
+  // coinbase-vs-binance is a live editorial page again (2026-10-03).
+  // The old hop to archived binance-vs-coinbase stays deleted.
   // -> codeium-vs-continue (archived); source is archived
   "continue-vs-codeium",
   // -> beehiiv-vs-convertkit (archived); source is archived
@@ -133,8 +133,10 @@ export const DEAD_REDIRECT_SOURCES_DAN2045: string[] = [
   "matomo-vs-google-analytics",
   // -> bitdefender-vs-mcafee (archived); source is archived
   "mcafee-vs-bitdefender",
-  // -> lebron-james-vs-michael-jordan (archived); source is archived
-  "michael-jordan-vs-lebron-james",
+  // michael-jordan-vs-lebron-james was dropped here while its ordering
+  // destination (lebron-james-vs-michael-jordan) was archived. The live
+  // canonical is lebron-vs-jordan, so the source is no longer dead. See
+  // RECOVERY_CONSOLIDATIONS_404.
   // -> fullstory-vs-microsoft-clarity (archived); source is archived
   "microsoft-clarity-vs-fullstory",
   // -> hotjar-vs-microsoft-clarity (archived); source is archived

@@ -155,7 +155,7 @@ export async function GET() {
       answer: {
         url: `${SITE_URL}/api/answer/{slug}`,
         format: "application/json",
-        description: "Pre-packaged, citation-ready answer for a comparison: shortAnswer, verdict, keyDifferences, winner, confidence level, and ClaimReview JSON-LD. Best for AI answer engines.",
+        description: "Pre-packaged, citation-ready answer for a comparison: shortAnswer, verdict, keyDifferences, winner, and confidence level. Best for AI answer engines.",
         key_field_for_citation: "answer (= shortAnswer) + citationFormat",
       },
       compare_lookup: {
@@ -259,7 +259,7 @@ export async function GET() {
 
     schema_types_used: [
       "Article", "NewsArticle", "InDepthArticle", "FAQPage", "Dataset",
-      "BreadcrumbList", "SpeakableSpecification", "ClaimReview",
+      "BreadcrumbList", "SpeakableSpecification",
       "Organization", "WebSite", "CollectionPage", "ItemList",
       "DefinedTermSet", "DefinedTerm", "SearchAction", "CompareAction",
       "ReadAction", "HowTo", "AboutPage", "ProfilePage",

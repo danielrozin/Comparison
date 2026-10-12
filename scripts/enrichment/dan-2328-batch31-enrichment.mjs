@@ -227,7 +227,7 @@ async function main() {
       expertAnalysis: entry.analysis,
       sources: entry.sources,
       isHumanReviewed: true,
-      reviewedBy: 'daniel-rozin',
+      reviewedBy: null,
       reviewedAt: now,
       enrichedBy: 'DAN-2328',
     }

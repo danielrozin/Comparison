@@ -9,9 +9,16 @@ import {
 } from "@/lib/services/clarity-service";
 import posthog from "posthog-js";
 import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
+import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { sanitizeCheckoutDistinctId } from "@/lib/analytics/checkout-identity";
 import { captureComparisonViewed } from "@/lib/analytics/comparison-view-capture";
+import type { MissingLandingMode, MissingLandingReferrerType } from "@/lib/analytics/missing-comparison-landing";
 import { capturePricingViewed } from "@/lib/analytics/pricing-view-capture";
+import {
+  normalizeQuery,
+  type SearchDestination,
+  type SearchSurface,
+} from "@/lib/search/search-session";
 
 /**
  * GA event names whose action is already sent to PostHog by a direct
@@ -21,7 +28,8 @@ import { capturePricingViewed } from "@/lib/analytics/pricing-view-capture";
  *
  * Same name: pricing_cta_click, checkout_clicked, checkout_canceled,
  * checkout_thanks_viewed, related_comparison_click, comparison_generated,
- * ux_study_banner_shown, pricing_viewed.
+ * ux_study_banner_shown, pricing_viewed, custom_compare_viewed,
+ * custom_compare_gated, custom_compare_error.
  * Different PostHog name: affiliate_click, comparison_vote, newsletter_signup,
  * share_click, comparison_search, comparison_view, comment_submission,
  * track_comparison_submit, verdict_feedback_vote_up/down,
@@ -40,6 +48,20 @@ const ALREADY_CAPTURED_IN_POSTHOG = new Set([
   "related_comparison_click",
   "comparison_search",
   "comparison_generated",
+  "compare_not_found",
+  "generation_requested",
+  "search_parsed",
+  "search_submitted",
+  "search_results_shown",
+  "search_result_clicked",
+  "compare_missing_viewed",
+  "matchup_requested",
+  "not_found_viewed",
+  "custom_compare_viewed",
+  "custom_compare_gated",
+  "custom_compare_error",
+  "search_page_opened",
+  "comparison_search_performed",
   "comparison_view",
   "comment_submission",
   "track_comparison_submit",
@@ -193,7 +215,7 @@ export function trackPricingViewed(src: string) {
  * Soft pricing CTA click on a lander, before `/pricing` mounts.
  * `src` is the same value as `?src=` on the href, so `pricing_viewed`
  * (fired on the pricing page) can be broken down by lander.
- * `placement` is which control was clicked (`soft-line`, `pro-upsell`).
+ * `placement` is which control was clicked (`soft-line`, `pro-upsell`, `under-verdict-pro`).
  */
 export function trackPricingCtaClick(src: string, placement = "soft-line") {
   const props = { src, placement };
@@ -274,13 +296,33 @@ export function trackShareClick(platform: string, page: string) {
   posthog.capture("share_clicked", { platform, page });
 }
 
-export function trackRelatedComparisonClick(sourcePage: string, targetPage: string) {
-  trackEvent("related_comparison_click", { source_page: sourcePage, target_page: targetPage });
-  // ROO-30: was GA-only — PostHog never saw blog-hub/home CTA clicks
-  posthog.capture("related_comparison_click", {
+export type RelatedComparisonClickExtra = {
+  /** Where on the site the link sits, e.g. blog_inline_card or blog_body_link. */
+  placement?: string;
+  /** top = after the first heading, mid = about 60% down the article. */
+  position?: string;
+  /** Blog article slug, separate from source_page which is the full /blog/ path. */
+  article_slug?: string;
+};
+
+export function trackRelatedComparisonClick(
+  sourcePage: string,
+  targetPage: string,
+  extra?: RelatedComparisonClickExtra,
+) {
+  const props: Record<string, string> = {
     source_page: sourcePage,
     target_page: targetPage,
-  });
+  };
+  // Only attach the extra fields when a caller sets them, so older clicks
+  // keep the original two properties.
+  if (extra?.placement) props.placement = extra.placement;
+  if (extra?.position) props.position = extra.position;
+  if (extra?.article_slug) props.article_slug = extra.article_slug;
+
+  trackEvent("related_comparison_click", props);
+  // ROO-30: was GA-only — PostHog never saw blog-hub/home CTA clicks
+  posthog.capture("related_comparison_click", props);
 }
 
 export function trackReviewSubmission(product: string, rating: number) {
@@ -298,11 +340,277 @@ export function trackFunnelStep(step: string, page: string, value?: number) {
   trackEvent("funnel_step", { step, page, ...(value !== undefined ? { value } : {}) });
 }
 
-export function trackComparisonSearch(query: string, resultType: string, resultCount?: number) {
+type CaptureValue = string | number | boolean | string[] | null;
+
+function captureClient(
+  eventName: string,
+  params: Record<string, CaptureValue>,
+  options?: { ga?: boolean; sendInstantly?: boolean },
+) {
+  if (typeof window === "undefined" || isAutomatedClient()) return;
+  if (options?.ga !== false) {
+    const gaParams: Record<string, string | number> = {};
+    for (const [key, value] of Object.entries(params)) {
+      if (value === null) continue;
+      if (typeof value === "boolean") gaParams[key] = value ? 1 : 0;
+      else if (Array.isArray(value)) gaParams[key] = value.join(",");
+      else gaParams[key] = value;
+    }
+    trackEvent(eventName, gaParams);
+  }
+  if (!analyticsAllowed()) return;
+  // Bouncers often leave before the default flush. send_instantly keeps a
+  // page-view or a failed submit from disappearing with the tab. Omit the
+  // third argument otherwise so existing capture assertions stay two-arg.
+  if (options?.sendInstantly) {
+    posthog.capture(eventName, params, { send_instantly: true });
+    return;
+  }
+  posthog.capture(eventName, params);
+}
+
+export function trackComparisonSearch(
+  query: string,
+  resultType: string,
+  resultCount?: number,
+  surface?: SearchSurface,
+) {
+  const result_count = resultCount ?? 0;
   trackEvent("comparison_search", { search_term: query, result_type: resultType });
   trackMetaEvent("Search", { search_string: query, content_category: resultType });
-  clarityTagSearch(query, resultCount ?? 0);
-  posthog.capture("comparison_search_performed", { search_term: query, result_type: resultType, result_count: resultCount ?? 0 });
+  clarityTagSearch(query, result_count);
+  // PostHog goes through the same bot + consent gate as the newer search
+  // events. `ga: false` keeps the existing GA name (`comparison_search`)
+  // instead of also sending `comparison_search_performed` to GA.
+  captureClient(
+    "comparison_search_performed",
+    {
+      search_term: query,
+      result_type: resultType,
+      result_count,
+      ...(surface ? { surface } : {}),
+    },
+    { ga: false },
+  );
+}
+
+export interface SearchSubmittedProps {
+  search_id: string;
+  query_raw: string;
+  surface: SearchSurface;
+  parsed: boolean;
+  parsed_slug: string | null;
+  /** False when the slug is not in this query's results. Null when those results are not in yet. */
+  canonical_slug_exists: boolean | null;
+  destination: SearchDestination;
+  dropdown_result_count: number;
+  source_page?: string;
+}
+
+/** One event per submitted query: what they typed, where, and where it went. */
+export function trackSearchSubmitted(props: SearchSubmittedProps) {
+  const trimmed = props.query_raw.trim();
+  captureClient("search_submitted", {
+    search_id: props.search_id,
+    query_raw: props.query_raw,
+    query_normalized: normalizeQuery(props.query_raw),
+    surface: props.surface,
+    parsed: props.parsed,
+    parsed_slug: props.parsed_slug ?? "",
+    canonical_slug_exists: props.canonical_slug_exists,
+    destination: props.destination,
+    dropdown_result_count: props.dropdown_result_count,
+    source_page: props.source_page ?? "",
+    query_length: trimmed.length,
+    word_count: trimmed ? trimmed.split(/\s+/).length : 0,
+  });
+}
+
+export interface SearchResultsShownProps {
+  search_id: string;
+  query_raw: string;
+  surface: SearchSurface;
+  result_count: number;
+  top_slugs: string[];
+  latency_ms: number;
+}
+
+/** Real result count. `zero_result` is the content-gap flag. */
+export function trackSearchResultsShown(props: SearchResultsShownProps) {
+  captureClient("search_results_shown", {
+    search_id: props.search_id,
+    query_raw: props.query_raw,
+    query_normalized: normalizeQuery(props.query_raw),
+    surface: props.surface,
+    result_count: props.result_count,
+    zero_result: props.result_count === 0,
+    top_slugs: props.top_slugs.slice(0, 5),
+    latency_ms: props.latency_ms,
+  });
+}
+
+export type SearchResultKind = "comparison" | "category" | "create_new";
+
+export interface SearchResultClickedProps {
+  search_id: string;
+  query_raw: string;
+  surface: SearchSurface;
+  slug: string;
+  position: number;
+  result_count: number;
+  result_kind: SearchResultKind;
+}
+
+/** A click or Enter on a shown result, including "Create this comparison". */
+export function trackSearchResultClicked(props: SearchResultClickedProps) {
+  captureClient("search_result_clicked", {
+    search_id: props.search_id,
+    query_raw: props.query_raw,
+    query_normalized: normalizeQuery(props.query_raw),
+    surface: props.surface,
+    slug: props.slug,
+    position: props.position,
+    result_count: props.result_count,
+    result_kind: props.result_kind,
+  });
+}
+
+export interface CompareMissingViewedProps {
+  slug: string;
+  canonical_slug: string;
+  mode: "request" | "plain" | "build";
+  generation_enabled: boolean;
+  from_search: boolean;
+  search_id: string;
+  query_raw: string;
+  referrer_path: string;
+}
+
+/** The generic App Router 404 mounted in a browser. Bots are dropped by captureClient. */
+export function trackNotFoundViewed(path: string, referrer: string) {
+  captureClient("not_found_viewed", { path, referrer });
+}
+
+/**
+ * Someone opened a /compare URL we don't have. Fires in every 404 mode,
+ * including when visitor generation is off.
+ */
+export function trackCompareMissingViewed(props: CompareMissingViewedProps) {
+  captureClient("compare_missing_viewed", {
+    slug: props.slug,
+    canonical_slug: props.canonical_slug,
+    mode: props.mode,
+    generation_enabled: props.generation_enabled,
+    from_search: props.from_search,
+    search_id: props.search_id,
+    query_raw: props.query_raw,
+    referrer_path: props.referrer_path,
+  });
+}
+
+/** ROO-193: a /compare URL with no live page (404 shell or builder). */
+export function trackMissingComparisonLanding(props: {
+  slug: string;
+  referrer_type: MissingLandingReferrerType;
+  mode: MissingLandingMode;
+}) {
+  captureClient("missing_comparison_landing", {
+    slug: props.slug,
+    referrer_type: props.referrer_type,
+    mode: props.mode,
+  });
+}
+
+export type MatchupCta = "request" | "pricing" | "search" | "contact" | "create_on_search" | "request_form";
+
+export interface MatchupRequestedProps {
+  slug: string;
+  cta: MatchupCta;
+  from_search: boolean;
+  search_id: string;
+  query_raw: string;
+}
+
+/** A request, pricing, or create click for a matchup we don't have yet. */
+export function trackMatchupRequested(props: MatchupRequestedProps) {
+  captureClient("matchup_requested", {
+    slug: props.slug,
+    cta: props.cta,
+    from_search: props.from_search,
+    search_id: props.search_id,
+    query_raw: props.query_raw,
+  });
+}
+
+/** `/custom-compare` mounted in a real browser. Bots are dropped by captureClient. */
+export function trackCustomCompareViewed() {
+  captureClient("custom_compare_viewed", { page: "/custom-compare" }, { sendInstantly: true });
+}
+
+/**
+ * The form refused the submit because the email is not an active member.
+ * `reason` is the API code (`upgrade_required`).
+ */
+export function trackCustomCompareGated(reason: string) {
+  captureClient(
+    "custom_compare_gated",
+    { page: "/custom-compare", reason },
+    { sendInstantly: true },
+  );
+}
+
+/**
+ * The form could not finish: membership store down, network, validation, or quota.
+ * `reason` is the API code, or `network` when the request never returned.
+ */
+export function trackCustomCompareError(reason: string) {
+  captureClient(
+    "custom_compare_error",
+    { page: "/custom-compare", reason },
+    { sendInstantly: true },
+  );
+}
+
+/** Empty /search opened from a blog or home link (no query typed yet). */
+export function trackSearchPageOpened(sourcePage: string) {
+  captureClient("search_page_opened", { source_page: sourcePage });
+}
+
+/** Fired when a missing comparison URL shows the building shell. */
+export function trackCompareNotFound(
+  slug: string,
+  source: string,
+  extra?: { search_id?: string; from_search?: boolean; query_raw?: string },
+) {
+  captureClient("compare_not_found", {
+    slug,
+    source,
+    search_id: extra?.search_id ?? "",
+    from_search: extra?.from_search ?? false,
+    query_raw: extra?.query_raw ?? "",
+  });
+}
+
+/** Fired in the browser the moment we ask the server to build a page. */
+export function trackGenerationRequested(
+  slug: string,
+  reason: string,
+  durationMs: number,
+  extra?: { search_id?: string; from_search?: boolean; query_raw?: string },
+) {
+  captureClient("generation_requested", {
+    slug,
+    reason,
+    duration_ms: durationMs,
+    search_id: extra?.search_id ?? "",
+    from_search: extra?.from_search ?? false,
+    query_raw: extra?.query_raw ?? "",
+  });
+}
+
+/** Fired when a search box or /search?q= runs the shared parser. */
+export function trackSearchParsed(raw: string, slug: string | null, parsed: boolean) {
+  captureClient("search_parsed", { raw, slug: slug ?? "", parsed });
 }
 
 export function trackComparisonGenerated(slug: string, category: string) {

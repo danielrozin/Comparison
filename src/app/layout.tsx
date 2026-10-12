@@ -121,6 +121,11 @@ export default async function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        {/* Impact.com site-ownership verification. Impact reads the `value`
+            attribute; Next.js `metadata.other` would emit `content` instead.
+            React's meta types only allow `content`, so this one attribute is exempt. */}
+        {/* @ts-expect-error Impact.com requires the non-standard `value` attribute. */}
+        <meta name="impact-site-verification" value="6c9a227a-f292-4a99-884e-977f8dbf815a" />
         {/* theme-color — browser chrome and Android home-screen splash color */}
         <meta name="theme-color" content="#1a56db" />
         {/* color-scheme — tells browser to apply light-mode native controls (inputs, scrollbars)

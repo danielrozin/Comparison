@@ -3,6 +3,7 @@ import {
   startScrape,
   scrapeSimple,
   findContentGaps,
+  readApifyToken,
 } from "@/lib/services/apify-service";
 import { getRedis } from "@/lib/services/redis";
 
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Apify mode: start async run
-    if (!process.env.APIFY_API_TOKEN) {
+    if (!readApifyToken()) {
       return NextResponse.json(
         { error: "APIFY_API_TOKEN is not configured. Use simple=true for basic scraping." },
         { status: 400 }

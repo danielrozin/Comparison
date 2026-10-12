@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
-import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
+import { getComparisonTitlesBySlugs, getTrendingComparisons } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs, blogClaimReviewSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
-import { resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
+import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug } from "@/lib/editorial/blog-authorship";
+import { filterLiveCompareSlugs, resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
@@ -18,7 +19,26 @@ import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
+import { BlogArticleProse, type ArticleRenderPart } from "@/components/blog/BlogArticleProse";
+import {
+  composeBlogArticleParts,
+  decisionComparesForBlog,
+  pairSlugCandidatesFromBlogSlug,
+  selectInlineComparisonSlugs,
+} from "@/lib/blog/inline-comparison-card";
+import {
+  CASHIERS_CHECK_BLOG_SLUG,
+  CASHIERS_CHECK_SOURCE_PAGE,
+  selectCashiersCheckCompareLinks,
+  splitHtmlAfterIntro,
+} from "@/lib/data/cashiers-check-blog-cta";
+import { selectOrganicLanderCompare } from "@/lib/data/organic-lander-compare-ctas";
 import { BLOG_COMPARE_SOFT_HREF } from "@/lib/data/blog-compare-constants";
+import {
+  NBA_SEASON_PREVIEW_BLOG_SLUG,
+  NBA_SEASON_PREVIEW_SOURCE_PAGE,
+  splitHtmlAtCompareCtas,
+} from "@/lib/data/nba-season-preview-blog";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
 
 // ---------- Tag-type inference ----------
@@ -297,7 +317,7 @@ export async function generateMetadata({
       locale: "en_US",
       publishedTime: article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined,
       modifiedTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
-      authors: [`${SITE_URL}/authors/daniel-rozin`],
+      authors: blogOgAuthors(slug),
       section: article.category ?? "Comparisons",
       tags: article.tags ?? [],
       images: [{ url: ogImage, secureUrl: ogImage, type: "image/png", width: 1200, height: 630, alt: article.title }],
@@ -313,7 +333,7 @@ export async function generateMetadata({
     // citable metadata and attribute content to the correct source.
     other: {
       "citation_title": article.metaTitle || article.title,
-      "citation_author": "Daniel Rozin",
+      "citation_author": blogAuthorName(slug),
       "citation_publication_date": article.publishedAt
         ? new Date(article.publishedAt).toISOString().slice(0, 10)
         : new Date().toISOString().slice(0, 10),
@@ -327,7 +347,7 @@ export async function generateMetadata({
         : new Date().toISOString().slice(0, 10),
       "DC.title": article.metaTitle || article.title,
       "DC.description": (article.metaDescription || article.excerpt || "").slice(0, 300),
-      "DC.creator": "Daniel Rozin",
+      "DC.creator": blogAuthorName(slug),
       "DC.date": article.publishedAt
         ? new Date(article.publishedAt).toISOString().slice(0, 10)
         : new Date().toISOString().slice(0, 10),
@@ -406,10 +426,98 @@ export default async function BlogPostPage({
   const renderedContent = await resolveCompareLinksInHtml(renderMarkdown(article.content));
   const toc = extractTOC(article.content);
 
-  // Fetch actual comparison titles for related comparisons
-  const comparisonTitles = article.relatedComparisonSlugs?.length
-    ? await getComparisonTitlesBySlugs(article.relatedComparisonSlugs)
+  // ROO-119 / ROO-127: a few landers get compare links under the intro.
+  // Links use the same live-slug list as the hero CTA. Other posts keep a
+  // single content block.
+  const liveCompareSlugs = article.relatedComparisonSlugs ?? [];
+  // ROO-165: a few posts name the decision pages explicitly. Drop any
+  // slug that is not published yet (PR #373), then do not backfill the
+  // card with a different comparison.
+  const mappedDecisions = decisionComparesForBlog(slug);
+  const liveDecisionSlugs = mappedDecisions.length
+    ? await filterLiveCompareSlugs(mappedDecisions.map((item) => item.slug))
+    : [];
+  // ROO-180: the blog slug often names the pair (imax-vs-dolby-cinema-…).
+  // Normalise it into compare slugs and keep only the live ones.
+  const pairCandidates = mappedDecisions.length ? [] : pairSlugCandidatesFromBlogSlug(slug);
+  const livePairSlugs = pairCandidates.length
+    ? await filterLiveCompareSlugs(pairCandidates).catch(() => [] as string[])
+    : [];
+  // ROO-180: last resort so the card never renders empty — popular live compares.
+  const needsFallback =
+    mappedDecisions.length === 0 &&
+    livePairSlugs.length === 0 &&
+    liveCompareSlugs.length === 0 &&
+    !/href="\/compare\//i.test(renderedContent);
+  const fallbackCardSlugs = needsFallback
+    ? await getTrendingComparisons(6)
+        .then((rows) => filterLiveCompareSlugs(rows.map((row) => row.slug)))
+        .catch(() => [] as string[])
+    : [];
+  const inlineCardSlugs = selectInlineComparisonSlugs({
+    bodyHtml: renderedContent,
+    relatedSlugs: liveCompareSlugs,
+    preferredSlugs: liveDecisionSlugs,
+    preferMappedOnly: mappedDecisions.length > 0,
+    pairSlugs: livePairSlugs,
+    fallbackSlugs: fallbackCardSlugs,
+  });
+  const decisionTitles = Object.fromEntries(
+    mappedDecisions.map((item) => [item.slug, item.title]),
+  );
+  const comparisonTitleSlugs = Array.from(new Set([...liveCompareSlugs, ...inlineCardSlugs]));
+  const comparisonTitles = comparisonTitleSlugs.length
+    ? await getComparisonTitlesBySlugs(comparisonTitleSlugs)
     : {};
+  const inlineCardLinks = inlineCardSlugs.map((compareSlug) => ({
+    slug: compareSlug,
+    title:
+      comparisonTitles[compareSlug] ||
+      decisionTitles[compareSlug] ||
+      compareSlug.replace(/-/g, " "),
+  }));
+  const inlineCompare =
+    slug === CASHIERS_CHECK_BLOG_SLUG
+      ? {
+          sourcePage: CASHIERS_CHECK_SOURCE_PAGE,
+          heading: undefined as string | undefined,
+          links: selectCashiersCheckCompareLinks(liveCompareSlugs),
+        }
+      : selectOrganicLanderCompare(slug, liveCompareSlugs);
+  const inlineParts =
+    inlineCompare && inlineCompare.links.length >= 2
+      ? splitHtmlAfterIntro(renderedContent)
+      : null;
+  const sectionCtas =
+    slug === NBA_SEASON_PREVIEW_BLOG_SLUG
+      ? splitHtmlAtCompareCtas(renderedContent)
+      : null;
+  const liveCompareSlugSet = new Set(liveCompareSlugs);
+  const hasNbaCtas = Boolean(sectionCtas?.some((part) => part.kind === "cta"));
+  // The card is a template-level insert. The older intro CTA stays on the
+  // landers that already had one, and only when the NBA section CTAs are
+  // not already splitting this article.
+  let articleParts: ArticleRenderPart[] = composeBlogArticleParts(renderedContent, {
+    cards: inlineCardLinks.length > 0,
+    introCta: !hasNbaCtas && Boolean(inlineParts && inlineCompare),
+  });
+  if (hasNbaCtas) {
+    const expanded: ArticleRenderPart[] = [];
+    for (const part of articleParts) {
+      if (part.kind !== "html") {
+        expanded.push(part);
+        continue;
+      }
+      for (const piece of splitHtmlAtCompareCtas(part.html)) {
+        if (piece.kind === "html") {
+          expanded.push({ kind: "html", html: piece.html });
+        } else {
+          expanded.push({ kind: "nba-cta", slug: piece.slug, label: piece.label });
+        }
+      }
+    }
+    articleParts = expanded;
+  }
 
   const articleUrl = `${SITE_URL}/blog/${slug}`;
   const extras = getBlogSchemaExtras(slug);
@@ -463,7 +571,9 @@ export default async function BlogPostPage({
     // timeRequired — estimated reading time derived from actual word count ÷ 200 wpm.
     timeRequired: wordCount ? `PT${Math.ceil(wordCount / 200)}M` : "PT3M",
     inLanguage: "en-US",
-    author: extras?.author
+    author: !isHumanReviewedBlogSlug(slug)
+      ? editorialTeamAuthorNode()
+      : extras?.author
       ? {
           "@type": "Person",
           name: extras.author.name,
@@ -543,8 +653,12 @@ export default async function BlogPostPage({
     // Yahoo News) to correctly attribute the publication geography in article bylines.
     ...(isRecent && { dateline: "Online, United States" }),
     // lastReviewed / reviewedBy — explicit freshness signal for AI crawlers.
-    lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    // Only for slugs on HUMAN_REVIEWED_SLUGS.
+    ...blogReviewFields(
+      slug,
+      article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
+      [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    ),
     // contentReferenceTime — tells LLMs the "as of" date for data in this article,
     // enabling time-qualified citations instead of treating content as timeless.
     contentReferenceTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
@@ -701,7 +815,7 @@ export default async function BlogPostPage({
     graph.push(faqSchema(extras.faqs, `${articleUrl}#faq`));
     // Merge FAQPage into hasPart — if HowTo was already set, emit an array.
     const existingPart = (articleSchema as Record<string, unknown>).hasPart;
-    const faqPart = { "@type": "FAQPage", "@id": `${articleUrl}#faq` };
+    const faqPart = { "@id": `${articleUrl}#faq` };
     (articleSchema as Record<string, unknown>).hasPart = existingPart
       ? [existingPart, faqPart]
       : faqPart;
@@ -719,27 +833,6 @@ export default async function BlogPostPage({
         item: { "@type": "WebPage", "@id": `${articleUrl}#${it.anchor}`, name: it.name, url: `${articleUrl}#${it.anchor}` },
       })),
     });
-  }
-
-  // ClaimReview — for "X vs Y" blog articles; adds Google Fact Check eligibility and
-  // AI fact-checking E-E-A-T signal. Parse entities from title: "X vs Y ..." pattern.
-  const vsMatch = article.title.match(/^(.+?)\s+vs\.?\s+(.+?)(?:\s*[:|—]|$)/i);
-  if (vsMatch) {
-    const [, blogEntityA, blogEntityB] = vsMatch;
-    graph.push(blogClaimReviewSchema({
-      articleUrl,
-      entityA: blogEntityA.trim(),
-      entityB: blogEntityB.trim(),
-      shortAnswer: article.excerpt ?? undefined,
-      datePublished: article.publishedAt ? new Date(article.publishedAt).toISOString().slice(0, 10) : undefined,
-      dateModified: article.updatedAt ? new Date(article.updatedAt).toISOString().slice(0, 10) : undefined,
-    }));
-    // hasPart — formal Article→ClaimReview graph edge.
-    const existingPart = (articleSchema as Record<string, unknown>).hasPart;
-    const claimPart = { "@type": "ClaimReview", "@id": `${articleUrl}#claim-review` };
-    (articleSchema as Record<string, unknown>).hasPart = existingPart
-      ? Array.isArray(existingPart) ? [...existingPart, claimPart] : [existingPart, claimPart]
-      : claimPart;
   }
 
   // WebPage node — @id uses #webpage anchor for explicit cross-document merging;
@@ -859,6 +952,7 @@ export default async function BlogPostPage({
                 label: comparisonTitles[compareSlug] || compareSlug.replace(/-/g, " "),
               }))}
               source={slug}
+              placement="blog_hero_cta"
               softHref={BLOG_COMPARE_SOFT_HREF}
             />
             {/* ROO-50: text link under the compare lead, above the headline,
@@ -876,14 +970,22 @@ export default async function BlogPostPage({
             )}
 
             <div className="flex flex-wrap items-center gap-3 mt-6">
-              <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all">
-                  <span className="text-white font-bold text-xs tracking-tight select-none">DR</span>
-                </div>
-                <span className="font-semibold">Daniel Rozin</span>
-                <span className="text-primary-300/60" aria-hidden="true">·</span>
-                <span>Editor-in-Chief</span>
-              </Link>
+              {isHumanReviewedBlogSlug(slug) ? (
+                <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all">
+                    <span className="text-white font-bold text-xs tracking-tight select-none">DR</span>
+                  </div>
+                  <span className="font-semibold">Daniel Rozin</span>
+                  <span className="text-primary-300/60" aria-hidden="true">·</span>
+                  <span>Editor-in-Chief</span>
+                </Link>
+              ) : (
+                <Link href="/about" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors">
+                  <span className="font-semibold">Analysis</span>
+                  <span className="text-primary-300/60" aria-hidden="true">·</span>
+                  <span>AversusB Editorial Team</span>
+                </Link>
+              )}
               {article.publishedAt && (
                 <>
                   <span className="w-px h-4 bg-white/20" aria-hidden="true" />
@@ -918,7 +1020,8 @@ export default async function BlogPostPage({
           <div className="max-w-4xl mx-auto">
             <AuthorByline
               updatedAt={article.updatedAt ? new Date(article.updatedAt as string).toISOString() : new Date().toISOString()}
-              isHumanReviewed={true}
+              isHumanReviewed={isHumanReviewedBlogSlug(slug)}
+              variant={isHumanReviewedBlogSlug(slug) ? "person" : "editorial"}
               wordCount={wordCount}
             />
           </div>
@@ -929,9 +1032,21 @@ export default async function BlogPostPage({
           <div className={`flex gap-8 items-start ${toc.length >= 2 ? "xl:grid xl:grid-cols-[1fr_220px]" : ""}`}>
             <article id="blog-article-body" className="min-w-0 flex-1">
               <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
-                <div
-                  className="prose-custom"
-                  dangerouslySetInnerHTML={{ __html: renderedContent }}
+                <BlogArticleProse
+                  parts={articleParts}
+                  articleSlug={slug}
+                  links={inlineCardLinks}
+                  intro={
+                    !hasNbaCtas && inlineParts && inlineCompare
+                      ? {
+                          sourcePage: inlineCompare.sourcePage,
+                          heading: inlineCompare.heading,
+                          links: inlineCompare.links,
+                        }
+                      : null
+                  }
+                  nbaSourcePage={hasNbaCtas ? NBA_SEASON_PREVIEW_SOURCE_PAGE : undefined}
+                  liveSlugs={liveCompareSlugSet}
                 />
               </div>
 
@@ -972,10 +1087,18 @@ export default async function BlogPostPage({
               {/* Google Preferred Sources — articles are what Top Stories
                   surfaces, so the share box is where the ask belongs. Google's
                   script (loaded in the head) hydrates this div; it stays empty
-                  and collapses if the script is blocked. */}
-              <div className="mt-3">
-                <div google-add-preferred-source-btn="" data-lang="en" data-theme="light"></div>
-              </div>
+                  and collapses if the script is blocked. suppressHydrationWarning:
+                  publisher.js adds data-initialized and aria-live before React
+                  hydrates this empty div. */}
+              {/* ROO-142: static inner HTML so React never reconciles the
+                  nodes publisher.js injects before hydration (#418 HTML). */}
+              <div
+                className="mt-3"
+                suppressHydrationWarning
+                dangerouslySetInnerHTML={{
+                  __html: '<div google-add-preferred-source-btn="" data-lang="en" data-theme="light"></div>',
+                }}
+              />
             </div>
           </section>
 

@@ -4,6 +4,12 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { personAuthorNode } from "@/lib/seo/schema";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
+import { BlogInlineCompareCtas } from "@/components/blog/BlogInlineCompareCtas";
+import {
+  BROWSER_COMPARISON_COMPARE_LINKS,
+  BROWSER_COMPARISON_CTA_HEADING,
+  BROWSER_COMPARISON_SOURCE_PAGE,
+} from "@/lib/data/browser-comparison-cta";
 
 const PAGE_URL = `${SITE_URL}/browser-comparison-2026`;
 const PAGE_TITLE = `Best Web Browsers Compared (2026) | ${SITE_NAME}`;
@@ -146,7 +152,7 @@ const articleSchema = {
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", "#quick-answer", ".faq-answer"] },
-  hasPart: [{ "@type": "FAQPage", "@id": `${PAGE_URL}#faq` }],
+  hasPart: [{ "@id": `${PAGE_URL}#faq` }],
   about: { "@type": "Thing", name: "Web browsers", sameAs: "https://en.wikipedia.org/wiki/Web_browser" },
   mentions: [
     { "@type": "SoftwareApplication", name: "Google Chrome", url: "https://www.google.com/chrome/" },
@@ -418,6 +424,17 @@ export default function BrowserComparison2026Page() {
               {/* ROO-50: under the title, before the long intro. A line after
                   the intro sits inside the cookie banner on a ~700px phone. */}
               <SoftPricingLine src="browser-comparison-2026" tone="onDark" className="mt-3" />
+              {/* ROO-114: before the long intro, same band as SoftPricingLine.
+                  A block after the intro sits inside the cookie banner on a short phone. */}
+              <div className="mt-4 max-w-xl [&_nav]:my-0 [&_nav]:bg-white">
+                <BlogInlineCompareCtas
+                  sourcePage={BROWSER_COMPARISON_SOURCE_PAGE}
+                  links={BROWSER_COMPARISON_COMPARE_LINKS}
+                  heading={BROWSER_COMPARISON_CTA_HEADING}
+                  placement="hero_card"
+                  variant="cards"
+                />
+              </div>
               <p id="page-intro" className="mt-2 text-cyan-100 text-base sm:text-lg leading-relaxed max-w-3xl">
                 {QUICK_ANSWER}
               </p>

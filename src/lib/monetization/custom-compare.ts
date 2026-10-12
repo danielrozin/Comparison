@@ -5,9 +5,11 @@
  * per month — request any matchup, built for you within 24 hours."
  * Community suggestions on /requests stay free. This path is the fast lane.
  *
- * Access is the Redis hash from ROO-42 (`monetization:member:{email}`).
- * `active` is true only for Stripe status active or trialing. Cancel sets
- * active to 0, so a canceled member is denied here with no extra revoke step.
+ * Access is the Postgres `pro_members` row (`lookupMember`). `active` is
+ * true only for Stripe status active or trialing. Cancel sets status to
+ * canceled, so a canceled member is denied here with no extra revoke step.
+ * The monthly quota is `pro_custom_compare_usage` (one row per member per
+ * month). Redis is not required.
  *
  * There is no login yet. The buyer proves membership by submitting the email
  * they paid with — the same key the webhook writes.
@@ -17,6 +19,7 @@ import { getPrisma } from "@/lib/db/prisma";
 import { sendNotificationEmail } from "@/lib/services/email";
 import { getRedis } from "@/lib/services/redis";
 import { lookupMember, normalizeMemberEmail, type MemberRecord } from "@/lib/monetization/members";
+import { isUniqueConstraintError } from "@/lib/monetization/prisma-errors";
 import { SITE_URL } from "@/lib/utils/constants";
 
 /** Matches the Pro feature line in `plans.ts`. Business includes everything in Pro. */
@@ -24,8 +27,6 @@ export const CUSTOM_COMPARE_MONTHLY_LIMIT = 2;
 
 export const CUSTOM_COMPARE_UPGRADE_PATH = "/pricing?src=custom-compare";
 export const CUSTOM_COMPARE_LOG_KEY = "monetization:custom-compares";
-
-const PAIR_TTL_SECONDS = 40 * 24 * 60 * 60;
 
 export interface CustomCompareInput {
   entityA: string;
@@ -70,6 +71,80 @@ export function customCompareMonthKey(email: string, now = new Date()): string {
   return `monetization:custom-compare:${email}:${now.toISOString().slice(0, 7)}`;
 }
 
+type QuotaOutcome = { kind: "added" | "already" | "limit"; used: number };
+
+/**
+ * Append one matchup only when the month is still under the limit and the
+ * pair is new. Postgres takes a row lock for this UPDATE, so two requests
+ * cannot both pass the count check. The unique (email, month) constraint
+ * covers the first insert of the month.
+ *
+ * Value order is part of the query: pair, email, month, limit, pair.
+ */
+async function conditionalAppendPair(
+  email: string,
+  month: string,
+  pair: string
+): Promise<number> {
+  const prisma = getPrisma();
+  if (!prisma) throw new Error("membership database unavailable");
+  const updated = await prisma.$executeRaw`
+    UPDATE "pro_custom_compare_usage"
+    SET "pair_keys" = array_append("pair_keys", ${pair}),
+        "updated_at" = CURRENT_TIMESTAMP
+    WHERE "email" = ${email}
+      AND "month" = ${month}
+      AND cardinality("pair_keys") < ${CUSTOM_COMPARE_MONTHLY_LIMIT}
+      AND NOT (${pair} = ANY("pair_keys"))
+  `;
+  return Number(updated);
+}
+
+async function reserveCustomComparePair(
+  email: string,
+  month: string,
+  pair: string
+): Promise<QuotaOutcome> {
+  const prisma = getPrisma();
+  if (!prisma) throw new Error("membership database unavailable");
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const updated = await conditionalAppendPair(email, month, pair);
+    if (updated === 1) {
+      const row = await prisma.proCustomCompareUsage.findUnique({
+        where: { email_month: { email, month } },
+      });
+      return { kind: "added", used: row?.pairKeys.length ?? 1 };
+    }
+
+    const existing = await prisma.proCustomCompareUsage.findUnique({
+      where: { email_month: { email, month } },
+    });
+    if (!existing) {
+      try {
+        await prisma.proCustomCompareUsage.create({
+          data: { email, month, pairKeys: [pair] },
+        });
+        return { kind: "added", used: 1 };
+      } catch (err) {
+        if (!isUniqueConstraintError(err) || attempt === 1) throw err;
+        continue;
+      }
+    }
+    if (existing.pairKeys.includes(pair)) {
+      return { kind: "already", used: existing.pairKeys.length };
+    }
+    if (existing.pairKeys.length >= CUSTOM_COMPARE_MONTHLY_LIMIT) {
+      return { kind: "limit", used: existing.pairKeys.length };
+    }
+  }
+
+  const latest = await prisma.proCustomCompareUsage.findUnique({
+    where: { email_month: { email, month } },
+  });
+  return { kind: "limit", used: latest?.pairKeys.length ?? CUSTOM_COMPARE_MONTHLY_LIMIT };
+}
+
 function upgradeDenied(member: MemberRecord | null): CustomCompareResult {
   const lapsed = member && !member.active;
   return {
@@ -77,8 +152,8 @@ function upgradeDenied(member: MemberRecord | null): CustomCompareResult {
     status: 403,
     code: "upgrade_required",
     error: lapsed
-      ? "Your membership is not active, so custom comparisons are paused. Renew on pricing, or open Manage billing if you only need to update a card."
-      : "Custom comparisons are a Pro feature. Free accounts can still suggest a matchup on the requests page and vote. Pro publishes a requested matchup within 24 hours.",
+      ? "Your membership is not active, so this request was not submitted. Renew on pricing, or open Manage billing if you only need to update a card."
+      : "Custom comparisons are a Pro feature, so this request was not submitted. Nothing was queued.",
     upgradeUrl: CUSTOM_COMPARE_UPGRADE_PATH,
     billingUrl: "/account/billing",
   };
@@ -119,8 +194,8 @@ export async function submitCustomCompare(
     return upgradeDenied(lookup.member);
   }
 
-  const redis = getRedis();
-  if (!redis) {
+  const prisma = getPrisma();
+  if (!prisma) {
     return {
       ok: false,
       status: 503,
@@ -129,14 +204,22 @@ export async function submitCustomCompare(
     };
   }
 
-  const monthKey = customCompareMonthKey(email, now);
+  const month = now.toISOString().slice(0, 7);
   const pair = customComparePairKey(entityA, entityB);
-  const added = await redis.sadd(monthKey, pair);
-  const used = await redis.scard(monthKey);
-  await redis.expire(monthKey, PAIR_TTL_SECONDS);
+  let quota: { kind: "added" | "already" | "limit"; used: number };
+  try {
+    quota = await reserveCustomComparePair(email, month, pair);
+  } catch (err) {
+    console.error("[custom-compare] quota write failed:", err);
+    return {
+      ok: false,
+      status: 503,
+      code: "unavailable",
+      error: "We could not check membership just now. Nothing was submitted. Please try again in a minute.",
+    };
+  }
 
-  if (added === 1 && used > CUSTOM_COMPARE_MONTHLY_LIMIT) {
-    await redis.srem(monthKey, pair);
+  if (quota.kind === "limit") {
     return {
       ok: false,
       status: 429,
@@ -147,8 +230,8 @@ export async function submitCustomCompare(
     };
   }
 
-  const remaining = Math.max(0, CUSTOM_COMPARE_MONTHLY_LIMIT - used);
-  if (added === 0) {
+  const remaining = Math.max(0, CUSTOM_COMPARE_MONTHLY_LIMIT - quota.used);
+  if (quota.kind === "already") {
     return {
       ok: true,
       status: 200,
@@ -167,7 +250,14 @@ export async function submitCustomCompare(
     note: (input.note ?? "").trim().slice(0, 500),
     at: now.toISOString(),
   };
-  await redis.lpush(CUSTOM_COMPARE_LOG_KEY, JSON.stringify(record));
+  const redis = getRedis();
+  if (redis) {
+    try {
+      await redis.lpush(CUSTOM_COMPARE_LOG_KEY, JSON.stringify(record));
+    } catch (err) {
+      console.error("[custom-compare] redis log failed:", err);
+    }
+  }
 
   try {
     await sendNotificationEmail({
@@ -212,8 +302,8 @@ export async function submitCustomCompare(
       });
     }
   } catch (err) {
-    // Redis already has the request and founders were emailed. A database
-    // miss should not look like a failed submit to the member.
+    // The quota row is already saved and founders were emailed. A miss on
+    // the public request table should not look like a failed submit.
     console.error("[custom-compare] request row failed:", err);
   }
 

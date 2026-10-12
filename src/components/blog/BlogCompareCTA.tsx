@@ -26,7 +26,9 @@ export function BlogCompareCTA({
 }: BlogCompareCTAProps) {
   const [showSticky, setShowSticky] = useState(false);
   const hasPrimary = Boolean(primarySlug);
-  const href = hasPrimary ? `/compare/${primarySlug}` : softHref;
+  const href = hasPrimary
+    ? `/compare/${primarySlug}`
+    : `${softHref}${softHref.includes("?") ? "&" : "?"}source_page=${encodeURIComponent(blogSlug)}`;
   const label = hasPrimary
     ? primaryTitle || primarySlug!.replace(/-/g, " ")
     : "Explore side-by-side comparisons";

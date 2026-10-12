@@ -85,6 +85,8 @@ describe("POST /api/checkout (ROO-40)", () => {
     expect(params.get("subscription_data[metadata][posthog_distinct_id]")).toBe("ph_anon_019");
     expect(params.get("customer_email")).toBe("Buyer@Example.com");
     expect(params.get("metadata[plan]")).toBe("pro");
+    expect(params.get("metadata[app]")).toBe("aversusb");
+    expect(params.get("subscription_data[metadata][app]")).toBe("aversusb");
     // Stripe substitutes this placeholder. It has to survive form encoding
     // as the literal token, and cancel must return to /pricing.
     expect(params.get("success_url")).toBe(

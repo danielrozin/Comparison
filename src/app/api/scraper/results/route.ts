@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getApifyRunStatus } from "@/lib/services/apify-service";
+import { getApifyRunStatus, readApifyToken } from "@/lib/services/apify-service";
 import { getRedis } from "@/lib/services/redis";
 import type { ScrapedComparison } from "@/lib/services/apify-service";
 
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Poll Apify for run status
-    if (!process.env.APIFY_API_TOKEN) {
+    if (!readApifyToken()) {
       return NextResponse.json(
         { error: "APIFY_API_TOKEN is not configured" },
         { status: 400 }

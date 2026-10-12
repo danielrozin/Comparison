@@ -6,7 +6,7 @@
 export const FAQ_EXPANSION: Record<string, { question: string; answer: string }[]> = {
   "japan-vs-china": [
     { question: "Which country is bigger in size?", answer: "China is much larger, covering approximately 9.6 million km² compared to Japan's 377,975 km². China is the 3rd or 4th largest country in the world, while Japan ranks 62nd." },
-    { question: "Which country has a stronger economy?", answer: "China has a larger total GDP ($17.7 trillion) as the world's second-largest economy, but Japan has a significantly higher GDP per capita ($33,800 vs $12,500), indicating higher individual prosperity." },
+    { question: "Which country has a stronger economy?", answer: "The IMF World Economic Outlook of April 2026 puts 2026 nominal GDP at $20.85 trillion for China and $4.38 trillion for Japan. Output per person is $35,703 in Japan and $14,874 in China." },
     { question: "Which country is safer to visit?", answer: "Japan is consistently ranked as one of the safest countries in the world with extremely low crime rates. China is also generally safe for tourists but has higher property crime rates and more complex travel logistics." },
   ],
   "iphone-17-vs-samsung-s26": [
@@ -17,7 +17,7 @@ export const FAQ_EXPANSION: Record<string, { question: string; answer: string }[
   "ps5-vs-xbox-series-x": [
     { question: "Which console has better exclusives?", answer: "PS5 traditionally has stronger exclusives like God of War, Spider-Man, and Horizon. Xbox has bolstered its library with Bethesda and Activision acquisitions (Starfield, Call of Duty), though many Xbox exclusives also come to PC." },
     { question: "Is Game Pass better than PS Plus?", answer: "Xbox Game Pass includes day-one first-party releases and a larger library for a similar price. PS Plus Premium offers classic game streaming and trials. For value, Game Pass is generally considered the better deal." },
-    { question: "Which console is more powerful?", answer: "The Xbox Series X has a slight edge in raw GPU power (12 TFLOPS vs 10.28 TFLOPS), but the PS5's custom SSD is faster, leading to shorter load times. In practice, multiplatform games perform similarly on both." },
+    { question: "Which console is more powerful?", answer: "Microsoft rates the Xbox Series X GPU at 12 TFLOPS and Sony rates the PS5 GPU at 10.3 TFLOPS. Sony rates the PS5 SSD at 5.5 GB/s raw and lists 825GB as the drive size, not usable space." },
   ],
   "chatgpt-vs-claude": [
     { question: "Which AI is better for coding?", answer: "Both are excellent at coding. Claude tends to excel at longer code analysis and generation thanks to its larger context window, while ChatGPT has a broader plugin ecosystem including code execution. The best choice depends on your specific workflow." },
@@ -67,8 +67,8 @@ export const FAQ_EXPANSION: Record<string, { question: string; answer: string }[
     { question: "What is DLSS vs FSR?", answer: "DLSS (NVIDIA) and FSR (AMD) are AI upscaling technologies that boost frame rates. DLSS uses dedicated AI hardware (Tensor cores) for higher quality, while FSR works on any GPU but with slightly lower quality at equivalent settings." },
   ],
   "usa-vs-china": [
-    { question: "Which country has a larger economy?", answer: "The United States has a larger nominal GDP (~$26.9 trillion vs ~$17.7 trillion). However, when measured by purchasing power parity (PPP), China's economy is arguably larger due to lower domestic costs." },
-    { question: "Which country has a stronger military?", answer: "The US has the world's strongest military with the largest defense budget ($886 billion), most advanced technology, and global force projection. China has the world's largest military by personnel (2 million active) and is rapidly modernizing." },
+    { question: "Which country has a larger economy?", answer: "The IMF World Economic Outlook of April 2026 puts 2026 nominal GDP at $32.38 trillion for the United States and $20.85 trillion for China. Output per person is $94,430 in the United States and $14,874 in China. Real growth in 2026 is 2.3% in the United States and 4.4% in China." },
+    { question: "Which country has a stronger military?", answer: "SIPRI’s 2024 military expenditure is $997 billion for the United States and an estimated $314 billion for China." },
     { question: "Which country leads in technology?", answer: "The US leads in software, AI, semiconductors, and biotech. China leads in manufacturing, 5G infrastructure, and electric vehicles. Both are competing intensely in AI, quantum computing, and space technology." },
   ],
   "coca-cola-vs-pepsi": [

@@ -44,15 +44,15 @@ export function BlogRelatedComparisons({
           </p>
           <div className="flex flex-wrap gap-2">
             <Link
-              href={BLOG_COMPARE_SOFT_HREF}
-              onClick={() => trackRelatedComparisonClick(blogSlug, BLOG_COMPARE_SOFT_HREF)}
+              href={`${BLOG_COMPARE_SOFT_HREF}?source_page=${encodeURIComponent(blogSlug)}`}
+              onClick={() => trackRelatedComparisonClick(blogSlug, BLOG_COMPARE_SOFT_HREF, { placement: "blog_related_soft" })}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
               Search comparisons
             </Link>
             <Link
               href="/trending"
-              onClick={() => trackRelatedComparisonClick(blogSlug, "/trending")}
+              onClick={() => trackRelatedComparisonClick(blogSlug, "/trending", { placement: "blog_related_soft" })}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-primary-700 bg-primary-50 border border-primary-200 hover:bg-primary-100 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
               Trending
@@ -90,7 +90,7 @@ export function BlogRelatedComparisons({
               <li key={compSlug} className="flex">
                 <Link
                   href={`/compare/${compSlug}`}
-                  onClick={() => trackRelatedComparisonClick(blogSlug, compSlug)}
+                  onClick={() => trackRelatedComparisonClick(blogSlug, compSlug, { placement: "blog_related_rail" })}
                   className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface-alt/30 hover:border-primary-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   <div className="relative flex-shrink-0 h-9" style={{ width: "50px" }} aria-hidden="true">

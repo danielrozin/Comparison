@@ -268,7 +268,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     // hasPart[] — structural sub-documents: the ItemList and FAQPage are formal parts of this CollectionPage.
     hasPart: [
       { "@type": "ItemList", "@id": `${SITE_URL}/trending#itemlist` },
-      { "@type": "FAQPage", "@id": `${SITE_URL}/trending#faq` },
+      { "@id": `${SITE_URL}/trending#faq` },
     ],
     locationCreated: { "@type": "Country", name: "United States" },
   };

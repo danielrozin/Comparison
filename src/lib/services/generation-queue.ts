@@ -10,7 +10,7 @@
  *   - Each job has a unique ID, retry count, and timestamps
  *   - Workers process N jobs concurrently (configurable)
  *   - Failed jobs retry up to 3 times with exponential backoff
- *   - Entity enrichment data is cached for 24h to avoid duplicate Tavily calls
+ *   - Entity enrichment data is cached for 24h to avoid duplicate web searches
  */
 
 import { getRedis } from "./redis";

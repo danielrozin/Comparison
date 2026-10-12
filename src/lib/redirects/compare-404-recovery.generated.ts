@@ -50,9 +50,335 @@ export const RECOVERY_CONSOLIDATIONS_404: Record<string, string> = {
   // the survivor, not another redirect.
   "f-15-vs-f-16": "f-16-vs-f-15",
   "mercedes-vs-bmw": "bmw-vs-mercedes",
+  // Both full-name orders 404. jordan-vs-lebron already folds into the live page.
+  // Confirmed 2026-10-03: these two are 404, /compare/lebron-vs-jordan is 200.
   "michael-jordan-vs-lebron-james": "lebron-vs-jordan",
+  "lebron-james-vs-michael-jordan": "lebron-vs-jordan",
+  // Short NBA aliases. Both orders point at the live page so the alphabetical
+  // shell cannot insert a hop (sixers-vs-knicks would otherwise become
+  // knicks-vs-sixers, and wembanyama-vs-sga would become sga-vs-wembanyama).
+  // Confirmed 2026-10-03: these four 404 or end on a 404. Destinations are the
+  // published editorial pages.
+  "sga-vs-wembanyama": "shai-gilgeous-alexander-vs-victor-wembanyama",
+  "wembanyama-vs-sga": "shai-gilgeous-alexander-vs-victor-wembanyama",
+  "knicks-vs-sixers": "knicks-vs-76ers",
+  "sixers-vs-knicks": "knicks-vs-76ers",
+  // Spurs vs Thunder / Knicks vs Spurs full names. Both orders are sources so
+  // the alphabetical shell cannot insert a hop. Confirmed 2026-10-03:
+  // san-antonio-spurs-vs-oklahoma-city-thunder 301s to
+  // oklahoma-city-thunder-vs-san-antonio-spurs, which 404s; the Knicks full-name
+  // order does the same onto new-york-knicks-vs-san-antonio-spurs.
+  // The -match-player-stats slug is a published, indexed page (title
+  // "Spurs vs Thunder 2026: 52-30 Record Comparison", championship-odds rows).
+  // Mapping it here runs before the DB lookup and adds it to
+  // REDIRECTED_COMPARE_SLUGS, which canonicalComparisonWhere() excludes from
+  // the sitemap. Repo and sitemap/1.xml had no other legacy slug for
+  // Knicks/Spurs, Thunder/Spurs, or Flagg/Wembanyama.
+  "san-antonio-spurs-vs-oklahoma-city-thunder-match-player-stats":
+    "oklahoma-city-thunder-vs-spurs",
+  "san-antonio-spurs-vs-oklahoma-city-thunder": "oklahoma-city-thunder-vs-spurs",
+  "oklahoma-city-thunder-vs-san-antonio-spurs": "oklahoma-city-thunder-vs-spurs",
+  // Short and reversed Thunder/Spurs names. Confirmed 2026-10-03: each is a
+  // 404, or a 301 whose alphabetical shell lands on a 404. Both orders are
+  // sources so the shell cannot insert a hop.
+  "thunder-vs-spurs": "oklahoma-city-thunder-vs-spurs",
+  "spurs-vs-thunder": "oklahoma-city-thunder-vs-spurs",
+  "okc-vs-spurs": "oklahoma-city-thunder-vs-spurs",
+  "spurs-vs-okc": "oklahoma-city-thunder-vs-spurs",
+  "okc-thunder-vs-spurs": "oklahoma-city-thunder-vs-spurs",
+  "spurs-vs-okc-thunder": "oklahoma-city-thunder-vs-spurs",
+  "thunder-vs-san-antonio-spurs": "oklahoma-city-thunder-vs-spurs",
+  "san-antonio-spurs-vs-thunder": "oklahoma-city-thunder-vs-spurs",
+  "okc-vs-san-antonio-spurs": "oklahoma-city-thunder-vs-spurs",
+  "san-antonio-spurs-vs-okc": "oklahoma-city-thunder-vs-spurs",
+  "new-york-knicks-vs-san-antonio-spurs": "knicks-vs-spurs",
+  "san-antonio-spurs-vs-new-york-knicks": "knicks-vs-spurs",
+  // Batch 3 name orders and -match-player-stats forms. Confirmed 2026-10-03
+  // on the live site, sitemap/0.xml through sitemap/images.xml, and the repo:
+  // none of these slugs is a 200 or a sitemap URL. Each is a 404, or a 301
+  // whose alphabetical shell lands on a 404. Both orders are sources so the
+  // shell cannot insert a hop. No odds or records title was found for these
+  // pairs. Destinations are the new editorial pages, and the sources join
+  // REDIRECTED_COMPARE_SLUGS so canonicalComparisonWhere() keeps them out of
+  // the comparison sitemap.
+  "ja-morant-vs-damian-lillard": "damian-lillard-vs-ja-morant",
+  "ja-morant-vs-damian-lillard-match-player-stats": "damian-lillard-vs-ja-morant",
+  "damian-lillard-vs-ja-morant-match-player-stats": "damian-lillard-vs-ja-morant",
+  "ja-morant-match-player-stats-vs-damian-lillard": "damian-lillard-vs-ja-morant",
+  "damian-lillard-match-player-stats-vs-ja-morant": "damian-lillard-vs-ja-morant",
+  "ja-morant-vs-lillard": "damian-lillard-vs-ja-morant",
+  "lillard-vs-ja-morant": "damian-lillard-vs-ja-morant",
+  "ja-morant-vs-lillard-match-player-stats": "damian-lillard-vs-ja-morant",
+  "lillard-vs-ja-morant-match-player-stats": "damian-lillard-vs-ja-morant",
+  "ja-morant-match-player-stats-vs-lillard": "damian-lillard-vs-ja-morant",
+  "lillard-match-player-stats-vs-ja-morant": "damian-lillard-vs-ja-morant",
+  "morant-vs-damian-lillard": "damian-lillard-vs-ja-morant",
+  "damian-lillard-vs-morant": "damian-lillard-vs-ja-morant",
+  "morant-vs-damian-lillard-match-player-stats": "damian-lillard-vs-ja-morant",
+  "damian-lillard-vs-morant-match-player-stats": "damian-lillard-vs-ja-morant",
+  "morant-match-player-stats-vs-damian-lillard": "damian-lillard-vs-ja-morant",
+  "damian-lillard-match-player-stats-vs-morant": "damian-lillard-vs-ja-morant",
+  "morant-vs-lillard": "damian-lillard-vs-ja-morant",
+  "lillard-vs-morant": "damian-lillard-vs-ja-morant",
+  "morant-vs-lillard-match-player-stats": "damian-lillard-vs-ja-morant",
+  "lillard-vs-morant-match-player-stats": "damian-lillard-vs-ja-morant",
+  "morant-match-player-stats-vs-lillard": "damian-lillard-vs-ja-morant",
+  "lillard-match-player-stats-vs-morant": "damian-lillard-vs-ja-morant",
+  "stephen-curry-vs-lebron-james": "lebron-james-vs-stephen-curry",
+  "lebron-james-vs-stephen-curry-match-player-stats": "lebron-james-vs-stephen-curry",
+  "stephen-curry-vs-lebron-james-match-player-stats": "lebron-james-vs-stephen-curry",
+  "lebron-james-match-player-stats-vs-stephen-curry": "lebron-james-vs-stephen-curry",
+  "stephen-curry-match-player-stats-vs-lebron-james": "lebron-james-vs-stephen-curry",
+  "lebron-james-vs-curry": "lebron-james-vs-stephen-curry",
+  "curry-vs-lebron-james": "lebron-james-vs-stephen-curry",
+  "lebron-james-vs-curry-match-player-stats": "lebron-james-vs-stephen-curry",
+  "curry-vs-lebron-james-match-player-stats": "lebron-james-vs-stephen-curry",
+  "lebron-james-match-player-stats-vs-curry": "lebron-james-vs-stephen-curry",
+  "curry-match-player-stats-vs-lebron-james": "lebron-james-vs-stephen-curry",
+  "lebron-vs-stephen-curry": "lebron-james-vs-stephen-curry",
+  "stephen-curry-vs-lebron": "lebron-james-vs-stephen-curry",
+  "lebron-vs-stephen-curry-match-player-stats": "lebron-james-vs-stephen-curry",
+  "stephen-curry-vs-lebron-match-player-stats": "lebron-james-vs-stephen-curry",
+  "lebron-match-player-stats-vs-stephen-curry": "lebron-james-vs-stephen-curry",
+  "stephen-curry-match-player-stats-vs-lebron": "lebron-james-vs-stephen-curry",
+  "lebron-vs-curry": "lebron-james-vs-stephen-curry",
+  "curry-vs-lebron": "lebron-james-vs-stephen-curry",
+  "lebron-vs-curry-match-player-stats": "lebron-james-vs-stephen-curry",
+  "curry-vs-lebron-match-player-stats": "lebron-james-vs-stephen-curry",
+  "lebron-match-player-stats-vs-curry": "lebron-james-vs-stephen-curry",
+  "curry-match-player-stats-vs-lebron": "lebron-james-vs-stephen-curry",
+  "kobe-vs-jordan": "jordan-vs-kobe",
+  "jordan-vs-kobe-match-player-stats": "jordan-vs-kobe",
+  "kobe-vs-jordan-match-player-stats": "jordan-vs-kobe",
+  "jordan-match-player-stats-vs-kobe": "jordan-vs-kobe",
+  "kobe-match-player-stats-vs-jordan": "jordan-vs-kobe",
+  "jordan-vs-kobe-bryant": "jordan-vs-kobe",
+  "kobe-bryant-vs-jordan": "jordan-vs-kobe",
+  "jordan-vs-kobe-bryant-match-player-stats": "jordan-vs-kobe",
+  "kobe-bryant-vs-jordan-match-player-stats": "jordan-vs-kobe",
+  "jordan-match-player-stats-vs-kobe-bryant": "jordan-vs-kobe",
+  "kobe-bryant-match-player-stats-vs-jordan": "jordan-vs-kobe",
+  "michael-jordan-vs-kobe": "jordan-vs-kobe",
+  "kobe-vs-michael-jordan": "jordan-vs-kobe",
+  "michael-jordan-vs-kobe-match-player-stats": "jordan-vs-kobe",
+  "kobe-vs-michael-jordan-match-player-stats": "jordan-vs-kobe",
+  "michael-jordan-match-player-stats-vs-kobe": "jordan-vs-kobe",
+  "kobe-match-player-stats-vs-michael-jordan": "jordan-vs-kobe",
+  "michael-jordan-vs-kobe-bryant": "jordan-vs-kobe",
+  "kobe-bryant-vs-michael-jordan": "jordan-vs-kobe",
+  "michael-jordan-vs-kobe-bryant-match-player-stats": "jordan-vs-kobe",
+  "kobe-bryant-vs-michael-jordan-match-player-stats": "jordan-vs-kobe",
+  "michael-jordan-match-player-stats-vs-kobe-bryant": "jordan-vs-kobe",
+  "kobe-bryant-match-player-stats-vs-michael-jordan": "jordan-vs-kobe",
+  // Batch 4 name orders and -match-player-stats forms. Confirmed 2026-10-03
+  // on the live site, sitemap/0.xml through sitemap/images.xml, and the repo:
+  // none of these slugs is a 200 or a sitemap URL. Each is a 404, or a 301
+  // whose alphabetical shell lands on a 404. Both orders are sources so the
+  // shell cannot insert a hop. No odds or records title was found for these
+  // pairs. houston-rockets-vs-lakers-match-player-stats is a different pair
+  // and is not mapped. Destinations are the new editorial pages, and the
+  // sources join REDIRECTED_COMPARE_SLUGS so canonicalComparisonWhere() keeps
+  // them out of the comparison sitemap.
+  "kon-knueppel-vs-cooper-flagg": "cooper-flagg-vs-kon-knueppel",
+  "cooper-flagg-vs-kon-knueppel-match-player-stats": "cooper-flagg-vs-kon-knueppel",
+  "kon-knueppel-vs-cooper-flagg-match-player-stats": "cooper-flagg-vs-kon-knueppel",
+  "cooper-flagg-match-player-stats-vs-kon-knueppel": "cooper-flagg-vs-kon-knueppel",
+  "kon-knueppel-match-player-stats-vs-cooper-flagg": "cooper-flagg-vs-kon-knueppel",
+  "cooper-flagg-vs-knueppel": "cooper-flagg-vs-kon-knueppel",
+  "knueppel-vs-cooper-flagg": "cooper-flagg-vs-kon-knueppel",
+  "cooper-flagg-vs-knueppel-match-player-stats": "cooper-flagg-vs-kon-knueppel",
+  "knueppel-vs-cooper-flagg-match-player-stats": "cooper-flagg-vs-kon-knueppel",
+  "cooper-flagg-match-player-stats-vs-knueppel": "cooper-flagg-vs-kon-knueppel",
+  "knueppel-match-player-stats-vs-cooper-flagg": "cooper-flagg-vs-kon-knueppel",
+  "flagg-vs-kon-knueppel": "cooper-flagg-vs-kon-knueppel",
+  "kon-knueppel-vs-flagg": "cooper-flagg-vs-kon-knueppel",
+  "flagg-vs-kon-knueppel-match-player-stats": "cooper-flagg-vs-kon-knueppel",
+  "kon-knueppel-vs-flagg-match-player-stats": "cooper-flagg-vs-kon-knueppel",
+  "flagg-match-player-stats-vs-kon-knueppel": "cooper-flagg-vs-kon-knueppel",
+  "kon-knueppel-match-player-stats-vs-flagg": "cooper-flagg-vs-kon-knueppel",
+  "flagg-vs-knueppel": "cooper-flagg-vs-kon-knueppel",
+  "knueppel-vs-flagg": "cooper-flagg-vs-kon-knueppel",
+  "flagg-vs-knueppel-match-player-stats": "cooper-flagg-vs-kon-knueppel",
+  "knueppel-vs-flagg-match-player-stats": "cooper-flagg-vs-kon-knueppel",
+  "flagg-match-player-stats-vs-knueppel": "cooper-flagg-vs-kon-knueppel",
+  "knueppel-match-player-stats-vs-flagg": "cooper-flagg-vs-kon-knueppel",
+  "celtics-vs-lakers": "lakers-vs-celtics",
+  "lakers-vs-celtics-match-player-stats": "lakers-vs-celtics",
+  "celtics-vs-lakers-match-player-stats": "lakers-vs-celtics",
+  "lakers-match-player-stats-vs-celtics": "lakers-vs-celtics",
+  "celtics-match-player-stats-vs-lakers": "lakers-vs-celtics",
+  "lakers-vs-boston-celtics": "lakers-vs-celtics",
+  "boston-celtics-vs-lakers": "lakers-vs-celtics",
+  "lakers-vs-boston-celtics-match-player-stats": "lakers-vs-celtics",
+  "boston-celtics-vs-lakers-match-player-stats": "lakers-vs-celtics",
+  "lakers-match-player-stats-vs-boston-celtics": "lakers-vs-celtics",
+  "boston-celtics-match-player-stats-vs-lakers": "lakers-vs-celtics",
+  "los-angeles-lakers-vs-celtics": "lakers-vs-celtics",
+  "celtics-vs-los-angeles-lakers": "lakers-vs-celtics",
+  "los-angeles-lakers-vs-celtics-match-player-stats": "lakers-vs-celtics",
+  "celtics-vs-los-angeles-lakers-match-player-stats": "lakers-vs-celtics",
+  "los-angeles-lakers-match-player-stats-vs-celtics": "lakers-vs-celtics",
+  "celtics-match-player-stats-vs-los-angeles-lakers": "lakers-vs-celtics",
+  "los-angeles-lakers-vs-boston-celtics": "lakers-vs-celtics",
+  "boston-celtics-vs-los-angeles-lakers": "lakers-vs-celtics",
+  "los-angeles-lakers-vs-boston-celtics-match-player-stats": "lakers-vs-celtics",
+  "boston-celtics-vs-los-angeles-lakers-match-player-stats": "lakers-vs-celtics",
+  "los-angeles-lakers-match-player-stats-vs-boston-celtics": "lakers-vs-celtics",
+  "boston-celtics-match-player-stats-vs-los-angeles-lakers": "lakers-vs-celtics",
+  "la-lakers-vs-celtics": "lakers-vs-celtics",
+  "celtics-vs-la-lakers": "lakers-vs-celtics",
+  "la-lakers-vs-celtics-match-player-stats": "lakers-vs-celtics",
+  "celtics-vs-la-lakers-match-player-stats": "lakers-vs-celtics",
+  "la-lakers-match-player-stats-vs-celtics": "lakers-vs-celtics",
+  "celtics-match-player-stats-vs-la-lakers": "lakers-vs-celtics",
+  "la-lakers-vs-boston-celtics": "lakers-vs-celtics",
+  "boston-celtics-vs-la-lakers": "lakers-vs-celtics",
+  "la-lakers-vs-boston-celtics-match-player-stats": "lakers-vs-celtics",
+  "boston-celtics-vs-la-lakers-match-player-stats": "lakers-vs-celtics",
+  "la-lakers-match-player-stats-vs-boston-celtics": "lakers-vs-celtics",
+  "boston-celtics-match-player-stats-vs-la-lakers": "lakers-vs-celtics",
+  "lebron-vs-durant": "durant-vs-lebron",
+  "durant-vs-lebron-match-player-stats": "durant-vs-lebron",
+  "lebron-vs-durant-match-player-stats": "durant-vs-lebron",
+  "durant-match-player-stats-vs-lebron": "durant-vs-lebron",
+  "lebron-match-player-stats-vs-durant": "durant-vs-lebron",
+  "durant-vs-lebron-james": "durant-vs-lebron",
+  "lebron-james-vs-durant": "durant-vs-lebron",
+  "durant-vs-lebron-james-match-player-stats": "durant-vs-lebron",
+  "lebron-james-vs-durant-match-player-stats": "durant-vs-lebron",
+  "durant-match-player-stats-vs-lebron-james": "durant-vs-lebron",
+  "lebron-james-match-player-stats-vs-durant": "durant-vs-lebron",
+  "kevin-durant-vs-lebron": "durant-vs-lebron",
+  "lebron-vs-kevin-durant": "durant-vs-lebron",
+  "kevin-durant-vs-lebron-match-player-stats": "durant-vs-lebron",
+  "lebron-vs-kevin-durant-match-player-stats": "durant-vs-lebron",
+  "kevin-durant-match-player-stats-vs-lebron": "durant-vs-lebron",
+  "lebron-match-player-stats-vs-kevin-durant": "durant-vs-lebron",
+  "kevin-durant-vs-lebron-james": "durant-vs-lebron",
+  "lebron-james-vs-kevin-durant": "durant-vs-lebron",
+  "kevin-durant-vs-lebron-james-match-player-stats": "durant-vs-lebron",
+  "lebron-james-vs-kevin-durant-match-player-stats": "durant-vs-lebron",
+  "kevin-durant-match-player-stats-vs-lebron-james": "durant-vs-lebron",
+  "lebron-james-match-player-stats-vs-kevin-durant": "durant-vs-lebron",
+  // Batch 5 name orders and -match-player-stats forms.
+  // The hub hrefs are these canonical slugs, so the pages are not redirect sources.
+  // Confirmed 2026-10-03 on the live site, sitemap/0.xml through
+  // sitemap/images.xml, and the repo: none of these slugs is a 200
+  // or a sitemap URL. Each is a 404, or a 301 whose alphabetical
+  // shell lands on a 404. Both orders are sources so the shell
+  // cannot insert a hop. No odds or records title was found for
+  // Embiid/Jokic or Kobe/Curry. Destinations are the new editorial
+  // pages, and the sources join REDIRECTED_COMPARE_SLUGS so
+  // canonicalComparisonWhere() keeps them out of the comparison sitemap.
+  "joel-embiid-vs-nikola-jokic": "embiid-vs-jokic",
+  "joel-embiid-vs-nikola-jokic-match-player-stats": "embiid-vs-jokic",
+  "joel-embiid-match-player-stats-vs-nikola-jokic": "embiid-vs-jokic",
+  "nikola-jokic-vs-joel-embiid": "embiid-vs-jokic",
+  "nikola-jokic-vs-joel-embiid-match-player-stats": "embiid-vs-jokic",
+  "nikola-jokic-match-player-stats-vs-joel-embiid": "embiid-vs-jokic",
+  "joel-embiid-vs-jokic": "embiid-vs-jokic",
+  "joel-embiid-vs-jokic-match-player-stats": "embiid-vs-jokic",
+  "joel-embiid-match-player-stats-vs-jokic": "embiid-vs-jokic",
+  "jokic-vs-joel-embiid": "embiid-vs-jokic",
+  "jokic-vs-joel-embiid-match-player-stats": "embiid-vs-jokic",
+  "jokic-match-player-stats-vs-joel-embiid": "embiid-vs-jokic",
+  "embiid-vs-nikola-jokic": "embiid-vs-jokic",
+  "embiid-vs-nikola-jokic-match-player-stats": "embiid-vs-jokic",
+  "embiid-match-player-stats-vs-nikola-jokic": "embiid-vs-jokic",
+  "nikola-jokic-vs-embiid": "embiid-vs-jokic",
+  "nikola-jokic-vs-embiid-match-player-stats": "embiid-vs-jokic",
+  "nikola-jokic-match-player-stats-vs-embiid": "embiid-vs-jokic",
+  "embiid-vs-jokic-match-player-stats": "embiid-vs-jokic",
+  "embiid-match-player-stats-vs-jokic": "embiid-vs-jokic",
+  "jokic-vs-embiid": "embiid-vs-jokic",
+  "jokic-vs-embiid-match-player-stats": "embiid-vs-jokic",
+  "jokic-match-player-stats-vs-embiid": "embiid-vs-jokic",
+  "kobe-vs-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-match-player-stats-vs-curry": "kobe-bryant-vs-steph-curry",
+  "curry-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "curry-vs-kobe-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "curry-match-player-stats-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-steph-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-steph-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-match-player-stats-vs-steph-curry": "kobe-bryant-vs-steph-curry",
+  "steph-curry-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "steph-curry-vs-kobe-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "steph-curry-match-player-stats-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-stephen-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-vs-stephen-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-match-player-stats-vs-stephen-curry": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-vs-kobe-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-match-player-stats-vs-kobe": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-match-player-stats-vs-curry": "kobe-bryant-vs-steph-curry",
+  "curry-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "curry-vs-kobe-bryant-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "curry-match-player-stats-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-steph-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-match-player-stats-vs-steph-curry": "kobe-bryant-vs-steph-curry",
+  "steph-curry-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "steph-curry-vs-kobe-bryant-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "steph-curry-match-player-stats-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-stephen-curry": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-vs-stephen-curry-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "kobe-bryant-match-player-stats-vs-stephen-curry": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-vs-kobe-bryant-match-player-stats": "kobe-bryant-vs-steph-curry",
+  "stephen-curry-match-player-stats-vs-kobe-bryant": "kobe-bryant-vs-steph-curry",
   "14-inch-vs-16-inch-macbook-pro": "macbook-pro-14-vs-16-inch",
+  // Kindle vs Kobo name orders. Confirmed 2026-10-03: each is a 404, or a 301
+  // whose alphabetical shell lands on a 404. The canonical is the new page.
+  "kobo-vs-kindle": "kindle-vs-kobo",
+  "amazon-kindle-vs-kobo": "kindle-vs-kobo",
+  "kobo-vs-amazon-kindle": "kindle-vs-kobo",
+  "amazon-kindle-vs-rakuten-kobo": "kindle-vs-kobo",
+  "rakuten-kobo-vs-amazon-kindle": "kindle-vs-kobo",
+  "kindle-vs-rakuten-kobo": "kindle-vs-kobo",
+  "rakuten-kobo-vs-kindle": "kindle-vs-kobo",
   "japan-vs-china-economy-comparison-2026": "china-vs-japan-economy-comparison-2026",
   "cristiano-ronaldo-vs-neymar-career-stats-comparison-2026":
     "neymar-vs-cristiano-ronaldo-career-stats-comparison-2026",
+  // Java vs TypeScript name orders. java-vs-typescript is the alphabetical
+  // survivor and is not a redirect source.
+  "typescript-vs-java": "java-vs-typescript",
+  "ts-vs-java": "java-vs-typescript",
+  "java-vs-ts": "java-vs-typescript",
+  // Honda vs Ford name orders. Confirmed 2026-10-03: each was a 404, or a 301
+  // whose shell landed on a 404. Both orders are sources so the alphabetical
+  // shell cannot insert a hop. honda-vs-ford itself is not a redirect source.
+  "ford-vs-honda": "honda-vs-ford",
+  "honda-motor-vs-ford-motor": "honda-vs-ford",
+  "ford-motor-vs-honda-motor": "honda-vs-ford",
+  "honda-motor-company-vs-ford-motor-company": "honda-vs-ford",
+  "ford-motor-company-vs-honda-motor-company": "honda-vs-ford",
+  "honda-vs-ford-motor": "honda-vs-ford",
+  "ford-motor-vs-honda": "honda-vs-ford",
+  // Microsoft Word vs LibreOffice Writer name orders. Confirmed 2026-10-03:
+  // each is a 404, or a 301 whose alphabetical shell lands on a 404. Both
+  // orders are sources so the shell cannot insert a hop.
+  "libreoffice-vs-microsoft-word": "microsoft-word-vs-libreoffice",
+  "word-vs-libreoffice": "microsoft-word-vs-libreoffice",
+  "libreoffice-vs-word": "microsoft-word-vs-libreoffice",
+  "ms-word-vs-libreoffice-writer": "microsoft-word-vs-libreoffice",
+  "libreoffice-writer-vs-ms-word": "microsoft-word-vs-libreoffice",
+  "microsoft-word-vs-libreoffice-writer": "microsoft-word-vs-libreoffice",
+  "libreoffice-writer-vs-microsoft-word": "microsoft-word-vs-libreoffice",
+  "ms-word-vs-libreoffice": "microsoft-word-vs-libreoffice",
+  "libreoffice-vs-ms-word": "microsoft-word-vs-libreoffice",
+  "word-vs-libreoffice-writer": "microsoft-word-vs-libreoffice",
+  "libreoffice-writer-vs-word": "microsoft-word-vs-libreoffice",
+  // Coinbase vs Binance name orders. Confirmed 2026-10-03: each URL 404s.
+  // coinbase-vs-binance itself is the new page, not a redirect source.
+  // Binance.US slugs are a different company and are not redirected here.
+  "binance-vs-coinbase": "coinbase-vs-binance",
+  "coinbase-exchange-vs-binance": "coinbase-vs-binance",
+  "binance-vs-coinbase-exchange": "coinbase-vs-binance",
+  "coinbase-vs-binance-exchange": "coinbase-vs-binance",
+  "binance-exchange-vs-coinbase": "coinbase-vs-binance",
+  // Venmo vs Zelle. venmo-vs-zelle is the alphabetical survivor and is not a
+  // redirect source.
+  "zelle-vs-venmo": "venmo-vs-zelle",
 };

@@ -50,7 +50,9 @@ export const ORDERING_CONSOLIDATIONS: Record<string, string> = {
   "greenhouse-vs-bamboohr": "bamboohr-vs-greenhouse",
   "chase-vs-bank-of-america": "bank-of-america-vs-chase",
   "shopify-vs-bigcommerce": "bigcommerce-vs-shopify",
-  "coinbase-vs-binance": "binance-vs-coinbase",
+  // coinbase-vs-binance is the live page again (2026-10-03). The old
+  // alphabetical hop pointed at archived binance-vs-coinbase, which 404s.
+  // Name-order aliases live in compare-404-recovery.generated.ts.
   "mcafee-vs-bitdefender": "bitdefender-vs-mcafee",
   "norton-vs-bitdefender": "bitdefender-vs-norton",
   "mercedes-c-class-vs-bmw-3-series": "bmw-3-series-vs-mercedes-c-class",

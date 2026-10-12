@@ -3,7 +3,7 @@ import type { EditorialComparison } from "./types";
 
 /**
  * ROO-115 — Galaxy S24 Ultra vs Galaxy S25 Ultra.
- * Specs below were checked against pages fetched on 2026-09-28.
+ * Specs below were checked against sources on 2026-09-28.
  * GSMArena compare (idPhone1=13322 is the S25 Ultra, idPhone2=12771 is the S24 Ultra),
  * Digital Trends (updated February 10, 2025), Samsung's US S25 Ultra page, and
  * Samsung's Levant S24 Ultra page. The Reddit summary is from the Arctic Shift
@@ -70,23 +70,23 @@ const VERDICT = `Best value: Galaxy S24 Ultra (on sale). A discounted S24 Ultra 
 
 Best upgrade: Galaxy S25 Ultra (chip, display, ultrawide). Choose it for the Snapdragon 8 Elite for Galaxy chip, the 6.9-inch display, the 50MP ultrawide, and the lighter 218 g body.
 
-There is no single winner on this page.`;
+Neither is better for everyone; it depends on whether you want the discounted S24 Ultra or the S25 Ultra's newer hardware.`;
 
-const EXPERT_ANALYSIS = `If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite for Galaxy chip, the larger 6.9-inch display, the 50MP ultrawide, and a lighter body. This page does not crown one phone.
+const EXPERT_ANALYSIS = `If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite for Galaxy chip, the larger 6.9-inch display, the 50MP ultrawide, and a lighter body. Neither is better for everyone; it depends on whether you want the discounted S24 Ultra or the S25 Ultra's newer hardware.
 
 Spec snapshot
 
-GSMArena lists the S24 Ultra at 232 g or 233 g and the S25 Ultra at 218 g. Digital Trends lists 233 g and 218 g, and says the S25 Ultra is 15 grams lighter. Both spec sheets list a 3120 x 1440 resolution, a 120Hz refresh rate, and 2,600 nits of peak brightness. GSMArena calls both panels Dynamic LTPO AMOLED 2X. Samsung's S24 Ultra page says that display can reach a peak brightness of up to 2600 nits, and that the screen measures 6.8 inches. Samsung's S25 Ultra page says the screen is 6.9 inches in the full rectangle and 6.8 inches once the rounded corners are accounted for.
+GSMArena lists the S24 Ultra at 232 g or 233 g and the S25 Ultra at 218 g. Digital Trends lists 233 g and 218 g, and says the S25 Ultra is 15 grams lighter. Both spec sheets list a 3120 x 1440 resolution, a 120Hz refresh rate, and 2,600 nits of peak brightness. GSMArena calls both panels Dynamic LTPO AMOLED 2X. Samsung says the S24 Ultra display can reach a peak brightness of up to 2600 nits, and that the screen measures 6.8 inches. Samsung says the S25 Ultra screen is 6.9 inches in the full rectangle and 6.8 inches once the rounded corners are accounted for.
 
 Samsung names the chips Snapdragon 8 Gen 3 for Galaxy on the S24 Ultra and Snapdragon 8 Elite for Galaxy on the S25 Ultra. GSMArena's compare lists those same chipsets.
 
-Cameras match on three modules. Both have a 200MP main camera, a 10MP 3x telephoto, and a 50MP 5x periscope (Digital Trends and GSMArena). Samsung's S24 Ultra page lists a 12MP ultrawide. Samsung's S25 Ultra page lists an upgraded 50MP ultrawide. That ultrawide is the clear hardware gap.
+Cameras match on three modules. Both have a 200MP main camera, a 10MP 3x telephoto, and a 50MP 5x periscope (Digital Trends and GSMArena). Samsung lists a 12MP ultrawide for the S24 Ultra. Samsung lists an upgraded 50MP ultrawide for the S25 Ultra. That ultrawide is the clear hardware gap.
 
 Battery and daily use
 
 Both phones use a 5,000 mAh battery, 45W wired charging, and 15W wireless charging (GSMArena and Digital Trends). GSMArena also lists 65% in 30 minutes on wired charging for both, and 4.5W reverse wireless for both. The S25 Ultra is Qi2 Ready, which Digital Trends says still needs a compatible magnetic case.
 
-Samsung's S24 Ultra page calls 5,000 mAh the typical capacity, lists a 4,855 mAh rated capacity, and claims up to 30 hours of video playback. Samsung's S25 Ultra page lists 5,000 mAh and claims up to 31 hours of video playback. Those hour figures are Samsung's claims, not a lab result on this page. Digital Trends called the battery round a tie: in that review, both phones were described as lasting through two days of use, with the same 45W charging.
+Samsung's S24 Ultra page calls 5,000 mAh the typical capacity, lists a 4,855 mAh rated capacity, and claims up to 30 hours of video playback. Samsung lists 5,000 mAh for the S25 Ultra and claims up to 31 hours of video playback. Those hour figures are Samsung's claims, not a separate lab result. Digital Trends called the battery round a tie: in that review, both phones were described as lasting through two days of use, with the same 45W charging.
 
 Camera
 
@@ -96,7 +96,7 @@ Performance and gaming
 
 Digital Trends gives gaming to the S25 Ultra because of the Snapdragon 8 Elite for Galaxy chip plus a larger vapor chamber and new thermal material. Samsung's S25 Ultra page describes the same larger vapor chamber and new thermal interface material, and says they are there for a smoother, cooler gaming session. In the Digital Trends review, Asphalt Legends: Unite at maximum settings did not overheat the S25 Ultra, including in performance mode.
 
-The S24 Ultra is still described as strong for everyday use and games. Digital Trends says a reviewer spent over 30 minutes on demanding titles such as Asphalt 9: Legends, the phone barely got warm, and it never got too hot to hold, including during stress tests. The same article says most people probably will not see much difference in daily use.
+The S24 Ultra is still described as strong for everyday use and games. Digital Trends says a reviewer spent over 30 minutes on demanding titles such as Asphalt 9: Legends, the phone barely got warm, and it never got too hot to hold, including during stress tests. Digital Trends says most people probably will not see much difference in daily use.
 
 S Pen and software support
 
@@ -112,7 +112,7 @@ Buy the Galaxy S25 Ultra if those upgrades are the point: Snapdragon 8 Elite for
 
 Community takeaway
 
-On September 27, 2026, a post on r/samsunggalaxy asked which phone to buy. The asker listed €545 for the S24 Ultra and €665 for the S25 Ultra, and asked whether the extra €120 was worth it for camera, battery, performance, display, and gaming, and whether to wait for Black Friday 2026. Those euro figures are the asker's prices in that post. This page does not treat them as a current store price.
+On September 27, 2026, a post on r/samsunggalaxy asked which phone to buy. The asker listed €545 for the S24 Ultra and €665 for the S25 Ultra, and asked whether the extra €120 was worth it for camera, battery, performance, display, and gaming, and whether to wait for Black Friday 2026. Those euro figures are the asker's prices in that post. They are not a current store price.
 
 That thread had three comments. One person would take the S24 Ultra and use the €120 for something else, and would not wait for Black Friday. One person asked how the battery life compares, and the thread did not answer with a test. One person said it depends: the S24 Ultra for the design and a Bluetooth S Pen, the S25 Ultra for more power and the better ultrawide.
 

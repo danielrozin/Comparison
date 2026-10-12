@@ -204,7 +204,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     ],
     locationCreated: { "@type": "Country", name: "United States" },
     // hasPart — links CollectionPage to FAQPage for AI graph traversal.
-    hasPart: [{ "@type": "FAQPage", "@id": `${REVIEWS_URL}#faq` }],
+    hasPart: [{ "@id": `${REVIEWS_URL}#faq` }],
   };
 
   const reviewsFaqSchema = {
