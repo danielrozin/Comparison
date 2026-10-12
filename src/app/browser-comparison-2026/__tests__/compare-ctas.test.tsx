@@ -54,6 +54,7 @@ describe("browser comparison compare CTAs", () => {
       expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
         BROWSER_COMPARISON_SOURCE_PAGE,
         link.slug,
+        expect.objectContaining({ placement: expect.any(String) }),
       );
     }
   });

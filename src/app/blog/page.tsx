@@ -557,6 +557,7 @@ export default async function BlogPage({
             primaryTitle={primaryTitle}
             chips={blogHubCompareChips}
             source={BLOG_HUB_COMPARE_SOURCE}
+            placement="blog_hub_hero"
             softHref={BLOG_COMPARE_SOFT_HREF}
           />
           {/* ROO-50: this line used to follow the headline. On a ~700px phone
@@ -722,6 +723,7 @@ export default async function BlogPage({
                   <TrackedCompareLink
                     slug={compareSlug}
                     source={BLOG_HUB_COMPARE_SOURCE}
+                    placement="blog_hub_article_card"
                     className="flex items-center justify-between gap-2 px-4 py-2.5 bg-primary-50 border border-t-0 border-primary-200 rounded-b-xl text-sm font-semibold text-primary-800 hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                   >
                     <span className="truncate">

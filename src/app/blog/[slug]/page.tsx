@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
-import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
+import { getComparisonTitlesBySlugs, getTrendingComparisons } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
@@ -22,6 +22,7 @@ import { BlogArticleProse, type ArticleRenderPart } from "@/components/blog/Blog
 import {
   composeBlogArticleParts,
   decisionComparesForBlog,
+  pairSlugCandidatesFromBlogSlug,
   selectInlineComparisonSlugs,
 } from "@/lib/blog/inline-comparison-card";
 import {
@@ -435,11 +436,30 @@ export default async function BlogPostPage({
   const liveDecisionSlugs = mappedDecisions.length
     ? await filterLiveCompareSlugs(mappedDecisions.map((item) => item.slug))
     : [];
+  // ROO-180: the blog slug often names the pair (imax-vs-dolby-cinema-…).
+  // Normalise it into compare slugs and keep only the live ones.
+  const pairCandidates = mappedDecisions.length ? [] : pairSlugCandidatesFromBlogSlug(slug);
+  const livePairSlugs = pairCandidates.length
+    ? await filterLiveCompareSlugs(pairCandidates).catch(() => [] as string[])
+    : [];
+  // ROO-180: last resort so the card never renders empty — popular live compares.
+  const needsFallback =
+    mappedDecisions.length === 0 &&
+    livePairSlugs.length === 0 &&
+    liveCompareSlugs.length === 0 &&
+    !/href="\/compare\//i.test(renderedContent);
+  const fallbackCardSlugs = needsFallback
+    ? await getTrendingComparisons(6)
+        .then((rows) => filterLiveCompareSlugs(rows.map((row) => row.slug)))
+        .catch(() => [] as string[])
+    : [];
   const inlineCardSlugs = selectInlineComparisonSlugs({
     bodyHtml: renderedContent,
     relatedSlugs: liveCompareSlugs,
     preferredSlugs: liveDecisionSlugs,
     preferMappedOnly: mappedDecisions.length > 0,
+    pairSlugs: livePairSlugs,
+    fallbackSlugs: fallbackCardSlugs,
   });
   const decisionTitles = Object.fromEntries(
     mappedDecisions.map((item) => [item.slug, item.title]),
@@ -925,6 +945,7 @@ export default async function BlogPostPage({
                 label: comparisonTitles[compareSlug] || compareSlug.replace(/-/g, " "),
               }))}
               source={slug}
+              placement="blog_hero_cta"
               softHref={BLOG_COMPARE_SOFT_HREF}
             />
             {/* ROO-50: text link under the compare lead, above the headline,

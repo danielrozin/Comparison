@@ -16,11 +16,14 @@ export function BlogInlineCompareCtas({
   sourcePage,
   links,
   heading = "Compare banks and money-transfer apps",
+  placement = "blog_intro_cta",
 }: {
   sourcePage: string;
   links: readonly BlogInlineCompareLink[];
   /** Visible label above the links. Cashier's check keeps the default. */
   heading?: string;
+  /** ROO-180: `placement` on related_comparison_click. */
+  placement?: string;
 }) {
   if (links.length === 0) return null;
 
@@ -32,11 +35,13 @@ export function BlogInlineCompareCtas({
     >
       <p className="text-sm font-semibold text-text">{heading}</p>
       <ul className="mt-2 flex flex-col gap-2 list-none m-0 p-0">
-        {links.map((link) => (
+        {links.map((link, index) => (
           <li key={link.slug}>
             <TrackedCompareLink
               slug={link.slug}
               source={sourcePage}
+              placement={placement}
+              position={String(index + 1)}
               className="inline-flex items-center gap-2 text-sm font-semibold text-primary-700 hover:text-primary-800 underline underline-offset-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
               {link.label}
