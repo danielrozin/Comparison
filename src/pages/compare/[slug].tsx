@@ -37,6 +37,7 @@ import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { CompareNextStepCTA } from "@/components/comparison/CompareNextStepCTA";
 import { CompareUnderVerdictNextStep } from "@/components/comparison/CompareUnderVerdictNextStep";
+import { CompareNextCards } from "@/components/comparison/CompareNextCards";
 import { buildCompareNextChips, type CompareNextChip } from "@/lib/data/build-compare-next-chips";
 import { ProUpsellCard } from "@/components/monetization/ProUpsellCard";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
@@ -1107,6 +1108,9 @@ export default function ComparisonPage(props: Props) {
         />
       )}
 
+      {/* ROO-155: "Compare next" cards + search right after the verdict */}
+      <CompareNextCards slug={slug} chips={nextStepChips} />
+
       {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
       <TrackComparisonCard comparisonSlug={comparison.slug} comparisonTitle={comparison.title} />
 
@@ -1460,6 +1464,9 @@ function MultiEntityLayout({
               <p className="text-base text-text leading-relaxed whitespace-pre-line">{comparison.verdict}</p>
             </section>
           )}
+
+          {/* ROO-155: same "Compare next" block after the multi-entity verdict */}
+          <CompareNextCards slug={slug} chips={nextStepChips} />
 
           {/* Newsletter */}
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
