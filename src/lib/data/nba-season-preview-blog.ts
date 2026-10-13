@@ -8,6 +8,7 @@
  */
 
 import type { BlogArticle } from "@/lib/services/blog-generator";
+import { GOOGLE_MAPS_ALTERNATIVES_ARTICLE } from "@/lib/data/google-maps-alternatives-blog";
 
 export const NBA_SEASON_PREVIEW_BLOG_SLUG = "2026-27-nba-season-preview-10-debates";
 
@@ -131,7 +132,10 @@ export const NBA_SEASON_PREVIEW_ARTICLE: BlogArticle = {
   viewCount: 0,
 };
 
-const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [NBA_SEASON_PREVIEW_ARTICLE];
+const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
+  NBA_SEASON_PREVIEW_ARTICLE,
+  GOOGLE_MAPS_ALTERNATIVES_ARTICLE,
+];
 
 export function findRepoBlogArticle(slug: string): BlogArticle | null {
   return REPO_BLOG_ARTICLES.find((article) => article.slug === slug) ?? null;

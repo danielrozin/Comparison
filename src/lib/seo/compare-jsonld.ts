@@ -51,6 +51,36 @@ export function entitySlugFromPageUrl(value: string): string | null {
   return match ? decodeURIComponent(match[1]) : null;
 }
 
+/**
+ * Slug of an AversusB `/alternatives/{slug}` URL, absolute or relative, with
+ * an optional hash (`#article`). Other hosts return null.
+ */
+export function alternativesSlugFromPageUrl(value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  if (trimmed.startsWith("/")) {
+    const match = trimmed.match(/^\/alternatives\/([^/?#]+)\/?(?:[?#].*)?$/);
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+
+  if (!/^https?:\/\//i.test(trimmed)) return null;
+
+  let url: URL;
+  try {
+    url = new URL(trimmed);
+  } catch {
+    return null;
+  }
+
+  const siteHost = new URL(SITE_URL).hostname.replace(/^www\./, "");
+  const host = url.hostname.replace(/^www\./, "");
+  if (host !== siteHost) return null;
+
+  const match = url.pathname.match(/^\/alternatives\/([^/]+)\/?$/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 function noindexSlugs(entities: ComparisonPageData["entities"]): Set<string> {
   const slugs = new Set<string>();
   for (const entity of entities) {
@@ -61,13 +91,16 @@ function noindexSlugs(entities: ComparisonPageData["entities"]): Set<string> {
 }
 
 function isNoindexEntityUrl(value: string, blocked: Set<string>): boolean {
-  const slug = entitySlugFromPageUrl(value);
+  // ROO-204: `/alternatives/{slug}` 404s for the same entities whose
+  // `/entity/{slug}` page is noindex (#386 gates both on status "published"),
+  // so drop those URLs too.
+  const slug = entitySlugFromPageUrl(value) ?? alternativesSlugFromPageUrl(value);
   return slug != null && blocked.has(slug);
 }
 
 /**
- * Drop `/entity/{slug}` strings (url, @id, sameAs, mainEntity, about, …)
- * when that entity page is noindex. Other schema types and non-URL fields
+ * Drop `/entity/{slug}` and `/alternatives/{slug}` strings (url, @id, sameAs,
+ * mainEntity, about, significantLink, …) when that entity page is noindex. Other schema types and non-URL fields
  * stay. An array that becomes empty is removed so we don't emit `url: []`.
  */
 export function stripNoindexEntityPageUrls<T>(value: T, entities: ComparisonPageData["entities"]): T {

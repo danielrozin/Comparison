@@ -16,6 +16,7 @@ import { CHROME_VS_SAFARI } from "./chrome-vs-safari";
 import { IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA } from "./iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
 import { ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000 } from "./anker-solix-solarbank-4-pro-vs-ecoflow-stream-5000";
 import { IPHONE_17_PRO_VS_IPHONE_18_PRO } from "./iphone-17-pro-vs-iphone-18-pro";
+import { IPHONE_17_PRO_MAX_VS_IPHONE_18_PRO_MAX } from "./iphone-17-pro-max-vs-iphone-18-pro-max";
 import { KNICKS_VS_76ERS } from "./knicks-vs-76ers";
 import { SGA_VS_WEMBANYAMA } from "./shai-gilgeous-alexander-vs-victor-wembanyama";
 import { OKLAHOMA_CITY_THUNDER_VS_SPURS } from "./oklahoma-city-thunder-vs-spurs";
@@ -45,6 +46,7 @@ import { MAC_MINI_M6_VS_WINDOWS_PC } from "./mac-mini-m6-vs-windows-pc";
 import { CASHIERS_CHECK_VS_MONEY_ORDER } from "./cashiers-check-vs-money-order";
 import { CASHIERS_CHECK_VS_CERTIFIED_CHECK } from "./cashiers-check-vs-certified-check";
 import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
+import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import type { EditorialComparison } from "./types";
 
@@ -80,6 +82,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA.slug]: IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA,
   [ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000.slug]: ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000,
   [IPHONE_17_PRO_VS_IPHONE_18_PRO.slug]: IPHONE_17_PRO_VS_IPHONE_18_PRO,
+  [IPHONE_17_PRO_MAX_VS_IPHONE_18_PRO_MAX.slug]: IPHONE_17_PRO_MAX_VS_IPHONE_18_PRO_MAX,
   [KNICKS_VS_76ERS.slug]: KNICKS_VS_76ERS,
   [SGA_VS_WEMBANYAMA.slug]: SGA_VS_WEMBANYAMA,
   [OKLAHOMA_CITY_THUNDER_VS_SPURS.slug]: OKLAHOMA_CITY_THUNDER_VS_SPURS,
@@ -110,6 +113,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CASHIERS_CHECK_VS_CERTIFIED_CHECK.slug]: CASHIERS_CHECK_VS_CERTIFIED_CHECK,
   [RX_9070_XT_VS_RTX_5080.slug]: RX_9070_XT_VS_RTX_5080,
   [GALAXY_S26_VS_GALAXY_S26_ULTRA.slug]: GALAXY_S26_VS_GALAXY_S26_ULTRA,
+  [RX_9060_XT_VS_RTX_5060_TI.slug]: RX_9060_XT_VS_RTX_5060_TI,
 };
 
 /**

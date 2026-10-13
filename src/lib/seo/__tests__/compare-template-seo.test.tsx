@@ -229,6 +229,44 @@ describe("compare template entity links", () => {
     expect(json).toContain("/entity/beta-widget");
   });
 
+  it("ROO-204: omits /alternatives links and JSON-LD URLs when the alternatives page would 404", () => {
+    const page = comparison("published");
+    page.entities = [
+      entity("alpha-widget", "Alpha Widget", "published"),
+      { ...entity("beta-widget", "Beta Widget", "draft"), position: 1 },
+    ];
+    const { html, documents } = renderCompareSurface(page);
+    const json = JSON.stringify(documents);
+
+    expect(html).toContain('href="/alternatives/alpha-widget"');
+    expect(html).not.toContain("/alternatives/beta-widget");
+    expect(json).toContain("/alternatives/alpha-widget");
+    expect(json).not.toContain("/alternatives/beta-widget");
+  });
+
+  it("ROO-204: drops only AversusB /alternatives URLs for unpublished entities", () => {
+    const stripped = stripNoindexEntityPageUrls(
+      {
+        significantLink: [
+          "https://www.aversusb.net/alternatives/alpha-widget",
+          "https://www.aversusb.net/alternatives/beta-widget",
+          "https://example.com/alternatives/alpha-widget",
+          "/alternatives/alpha-widget#article",
+        ],
+      },
+      [
+        entity("alpha-widget", "Alpha Widget", "draft"),
+        entity("beta-widget", "Beta Widget", "published"),
+      ],
+    );
+    expect(stripped).toEqual({
+      significantLink: [
+        "https://www.aversusb.net/alternatives/beta-widget",
+        "https://example.com/alternatives/alpha-widget",
+      ],
+    });
+  });
+
   it("does not treat a Wikidata /entity/ URL as an AversusB entity page", () => {
     const stripped = stripNoindexEntityPageUrls(
       {

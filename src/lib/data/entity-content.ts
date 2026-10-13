@@ -8011,7 +8011,7 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
     category: "technology",
     alternatives: [
       { name: "Apple Maps", slug: "apple-maps", reason: "Better privacy (no Google data collection), improved quality since 2020" },
-      { name: "Waze", slug: "waze", reason: "Best real-time crowd-sourced traffic and hazard alerts (owned by Google)" },
+      { name: "Waze", slug: "waze", reason: "Best real-time crowd-sourced traffic and hazard alerts. Google-owned since 2013, so not a way off Google" },
       { name: "HERE Maps", slug: "here-maps", reason: "Offline maps, better in Europe, used by automakers" },
     ],
     faqs: [
