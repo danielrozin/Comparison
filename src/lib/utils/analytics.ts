@@ -12,6 +12,7 @@ import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { sanitizeCheckoutDistinctId } from "@/lib/analytics/checkout-identity";
 import { captureComparisonViewed } from "@/lib/analytics/comparison-view-capture";
+import type { MissingLandingMode, MissingLandingReferrerType } from "@/lib/analytics/missing-comparison-landing";
 import { capturePricingViewed } from "@/lib/analytics/pricing-view-capture";
 import {
   normalizeQuery,
@@ -302,6 +303,10 @@ export type RelatedComparisonClickExtra = {
   position?: string;
   /** Blog article slug, separate from source_page which is the full /blog/ path. */
   article_slug?: string;
+  /** ROO-180: the /compare slug clicked (same as target_page for blog links). */
+  comparison_slug?: string;
+  /** ROO-180: true when the link opens the on-demand builder (no live page yet). */
+  generated?: boolean;
 };
 
 export function trackRelatedComparisonClick(
@@ -318,10 +323,15 @@ export function trackRelatedComparisonClick(
   if (extra?.placement) props.placement = extra.placement;
   if (extra?.position) props.position = extra.position;
   if (extra?.article_slug) props.article_slug = extra.article_slug;
+  if (extra?.comparison_slug) props.comparison_slug = extra.comparison_slug;
+  if (typeof extra?.generated === "boolean") props.generated = String(extra.generated);
 
   trackEvent("related_comparison_click", props);
   // ROO-30: was GA-only — PostHog never saw blog-hub/home CTA clicks
-  posthog.capture("related_comparison_click", props);
+  posthog.capture(
+    "related_comparison_click",
+    typeof extra?.generated === "boolean" ? { ...props, generated: extra.generated } : props,
+  );
 }
 
 export function trackReviewSubmission(product: string, rating: number) {
@@ -404,6 +414,16 @@ export interface SearchSubmittedProps {
   destination: SearchDestination;
   dropdown_result_count: number;
   source_page?: string;
+}
+
+/** ROO-155 — "Compare something else" box under the verdict on a compare page. */
+export function trackCompareNextSearch(query: string, sourceSlug: string) {
+  captureClient("comparison_search_performed", {
+    search_term: query,
+    result_type: "compare_next_form",
+    placement: "compare_next",
+    source_page: `/compare/${sourceSlug}`,
+  }, { ga: false });
 }
 
 /** One event per submitted query: what they typed, where, and where it went. */
@@ -507,6 +527,27 @@ export function trackCompareMissingViewed(props: CompareMissingViewedProps) {
   });
 }
 
+/** ROO-193: a /compare URL with no live page (404 shell or builder). */
+export function trackMissingComparisonLanding(props: {
+  slug: string;
+  referrer_type: MissingLandingReferrerType;
+  mode: MissingLandingMode;
+}) {
+  captureClient("missing_comparison_landing", {
+    slug: props.slug,
+    referrer_type: props.referrer_type,
+    mode: props.mode,
+  });
+}
+
+/** ROO-165: click on a disclosed community link (e.g. the /compare footer Reddit thread). */
+export function trackCommunityLinkClicked(props: { placement: "compare_footer"; compare_slug: string }) {
+  captureClient("community_link_clicked", {
+    placement: props.placement,
+    compare_slug: props.compare_slug,
+  });
+}
+
 export type MatchupCta = "request" | "pricing" | "search" | "contact" | "create_on_search" | "request_form";
 
 export interface MatchupRequestedProps {
@@ -529,6 +570,11 @@ export function trackMatchupRequested(props: MatchupRequestedProps) {
 }
 
 /** `/custom-compare` mounted in a real browser. Bots are dropped by captureClient. */
+/** ROO-132 — /custom-compare sent a visitor to the on-demand builder. */
+export function trackCustomCompareBuildStarted(slug: string) {
+  captureClient("custom_compare_build_started", { page: "/custom-compare", slug }, { sendInstantly: true });
+}
+
 export function trackCustomCompareViewed() {
   captureClient("custom_compare_viewed", { page: "/custom-compare" }, { sendInstantly: true });
 }

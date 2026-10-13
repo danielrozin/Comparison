@@ -13,7 +13,13 @@ import { selectCustomCompareEscapes, type CustomCompareEscape } from "@/lib/data
 import { filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { lastSearchAttachment } from "@/lib/search/search-session";
-import { trackCompareMissingViewed, trackMatchupRequested, type MatchupCta } from "@/lib/utils/analytics";
+import {
+  trackCompareMissingViewed,
+  trackMatchupRequested,
+  trackMissingComparisonLanding,
+  type MatchupCta,
+} from "@/lib/utils/analytics";
+import { classifyMissingLandingReferrer } from "@/lib/analytics/missing-comparison-landing";
 import { SITE_NAME } from "@/lib/utils/constants";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 
@@ -82,6 +88,16 @@ export default function PagesNotFound({
       search_id: attachment.search_id,
       query_raw: attachment.query_raw,
       referrer_path: referrerPath,
+    });
+    // ROO-193: this URL has no live page, so it never fires comparison_viewed.
+    trackMissingComparisonLanding({
+      slug,
+      referrer_type: classifyMissingLandingReferrer(
+        document.referrer,
+        window.location.hostname,
+        attachment.from_search,
+      ),
+      mode: mode.kind,
     });
   }, [mode, generationEnabled]);
 
@@ -161,7 +177,7 @@ export default function PagesNotFound({
         <meta name="robots" content="noindex, nofollow" />
       </Head>
       {mode.kind === "build" ? (
-        <OnDemandBuilder slug={mode.slug} />
+        <OnDemandBuilder slug={mode.slug} popular={popular} />
       ) : (
         <MissingCompareBody mode={mode} popular={popular} />
       )}
@@ -169,11 +185,12 @@ export default function PagesNotFound({
   );
 }
 
-function OnDemandBuilder({ slug }: { slug: string }) {
+function OnDemandBuilder({ slug, popular }: { slug: string; popular: readonly CustomCompareEscape[] }) {
   const parts = parseComparisonSlug(slug);
   return (
     <OnDemandComparison
       slug={slug}
+      initialRelated={popular.map((item) => ({ slug: item.slug, title: item.label }))}
       entityA={entityLabelFromSlug(parts?.entityA || "A")}
       entityB={entityLabelFromSlug(parts?.entityB || "B")}
     />
@@ -190,6 +207,10 @@ function MissingCompareBody({
   const slug = mode.compareSlug;
   const requestHref = slug ? `/custom-compare?slug=${encodeURIComponent(slug)}` : "/custom-compare";
   const junkCompare = mode.kind === "plain" && Boolean(slug);
+  // ROO-193: Pro copy only after the client resolved this slug as one the
+  // builder cannot make (editorial hold, or generation off). The first
+  // render, which crawlers and search landers see, offers free compares.
+  const showProRequest = mode.kind === "request" && Boolean(slug);
 
   return (
     <div className="max-w-xl mx-auto px-4 py-16 text-center">
@@ -198,7 +219,9 @@ function MissingCompareBody({
       <p className="text-text-secondary mb-6">
         {junkCompare
           ? "That address isn't a comparison we can build. Search for one, or open a popular matchup below."
-          : "Published comparisons stay free. Search for a matchup, or open a popular one below. Pro members can request a comparison that is not published yet."}
+          : showProRequest
+            ? "Published comparisons stay free. Search for a matchup, or open a popular one below. Pro members can request a comparison that is not published yet."
+            : "Published comparisons stay free. Search for a matchup, or open a popular one below."}
       </p>
 
       <form
@@ -269,13 +292,15 @@ function MissingCompareBody({
           >
             Request this comparison
           </Link>
-          <Link
-            href="/pricing?src=missing-compare"
-            onClick={() => trackMissingCta("pricing", slug)}
-            className="inline-flex items-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-text hover:bg-surface-alt"
-          >
-            See Pro pricing
-          </Link>
+          {showProRequest && (
+            <Link
+              href="/pricing?src=missing-compare"
+              onClick={() => trackMissingCta("pricing", slug)}
+              className="inline-flex items-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-text hover:bg-surface-alt"
+            >
+              See Pro pricing
+            </Link>
+          )}
         </div>
       )}
     </div>

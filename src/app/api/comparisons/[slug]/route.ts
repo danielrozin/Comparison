@@ -5,7 +5,7 @@ import {
   getPublishedComparisonBySlug,
 } from "@/lib/services/comparison-service";
 import {
-  isHiddenComparisonStatus,
+  blocksOnDemandBuild,
   relatedComparisonSlugs,
 } from "@/lib/compare-slug-resolution";
 import { SITE_URL } from "@/lib/utils/constants";
@@ -86,5 +86,5 @@ async function pairIsHidden(slug: string): Promise<boolean> {
   const rows = await Promise.all(
     slugs.map((candidate) => getComparisonBySlug(candidate).catch(() => null)),
   );
-  return rows.some((row) => isHiddenComparisonStatus(row?.metadata?.status));
+  return rows.some((row) => blocksOnDemandBuild(row?.metadata));
 }
