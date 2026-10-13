@@ -101,6 +101,8 @@ export function selectInlineComparisonSlugs(input: {
   pairSlugs?: readonly string[];
   /** ROO-180: live popular compares, used only when nothing else matched. */
   fallbackSlugs?: readonly string[];
+  /** ROO-180: live compares matched from the post's own slug/title. First. */
+  topicSlugs?: readonly string[];
   limit?: number;
 }): string[] {
   const limit = input.limit ?? INLINE_COMPARISON_CARD_LIMIT;
@@ -118,6 +120,7 @@ export function selectInlineComparisonSlugs(input: {
   if (input.preferMappedOnly) return picked;
 
   for (const slug of input.pairSlugs ?? []) push(slug);
+  for (const slug of input.topicSlugs ?? []) push(slug);
   for (const slug of extractBodyCompareSlugs(input.bodyHtml)) push(slug);
   for (const slug of input.relatedSlugs) push(slug);
   // ROO-180: never render the card empty when live popular compares exist.
