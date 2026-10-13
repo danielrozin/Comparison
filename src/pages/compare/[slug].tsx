@@ -59,6 +59,7 @@ import {
 } from "@/lib/utils/slugify";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
+import { CompareRedditFooterLink } from "@/components/community/CompareRedditFooterLink";
 import { ExpertAnalysis } from "@/components/comparison/ExpertAnalysis";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
@@ -1280,6 +1281,7 @@ export default function ComparisonPage(props: Props) {
           isHumanReviewed: isHumanReviewedSlug(comparison.slug),
         }}
       />
+      <CompareRedditFooterLink compareSlug={comparison.slug} />
 
       {/* Sticky Affiliate CTA Bar */}
       <StickyAffiliateCTA entities={comparison.entities} category={comparison.category} slug={slug} />
@@ -1530,6 +1532,7 @@ function MultiEntityLayout({
           isHumanReviewed: isHumanReviewedSlug(comparison.slug),
         }}
       />
+      <CompareRedditFooterLink compareSlug={comparison.slug} />
 
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
     </>
