@@ -540,6 +540,14 @@ export function trackMissingComparisonLanding(props: {
   });
 }
 
+/** ROO-165: click on a disclosed community link (e.g. the /compare footer Reddit thread). */
+export function trackCommunityLinkClicked(props: { placement: "compare_footer"; compare_slug: string }) {
+  captureClient("community_link_clicked", {
+    placement: props.placement,
+    compare_slug: props.compare_slug,
+  });
+}
+
 export type MatchupCta = "request" | "pricing" | "search" | "contact" | "create_on_search" | "request_form";
 
 export interface MatchupRequestedProps {
