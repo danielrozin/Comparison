@@ -5374,6 +5374,119 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-12T12:52:30.578Z"
+    },
+    {
+      "slug": "capitalism-vs-socialism",
+      "title": "Capitalism vs Socialism",
+      "entityA": "Capitalism",
+      "entityB": "Socialism",
+      "category": "economy",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "capitalism-vs-socialism.mp4",
+      "durationSeconds": 47,
+      "transcript": "Two systems. One question. Who owns the thing you just built? Capitalism bets on incentives. Socialism bets on fairness. Both bets have a price. Private versus collective ownership. Everything else in this fight flows from that one choice. Capitalism innovates harder because somebody gets rich when it works. That's the engine. Socialism delivers higher equality. Fewer people at the bottom, fewer people at the top. High economic freedom versus restricted. Capitalism lets you try. Socialism decides what gets tried. Capitalism takes it two to one. Pick socialism if you'd trade growth for a floor.",
+      "chapters": [
+        {
+          "name": "Capitalism vs Socialism",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 13
+        },
+        {
+          "name": "Round 1: Ownership",
+          "startOffset": 13,
+          "endOffset": 19
+        },
+        {
+          "name": "Round 2: Innovation",
+          "startOffset": 19,
+          "endOffset": 26
+        },
+        {
+          "name": "Round 3: Equality",
+          "startOffset": 26,
+          "endOffset": 33
+        },
+        {
+          "name": "Round 4: Economic Freedom",
+          "startOffset": 33,
+          "endOffset": 42
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 42,
+          "endOffset": 49
+        }
+      ],
+      "youtubeTitle": "Capitalism vs Socialism: Which System Actually Wins",
+      "youtubeDescription": "A head-to-head breakdown of capitalism and socialism across ownership, innovation, equality, and economic freedom. Capitalism wins on innovation and freedom, socialism wins on equality, and the final score is closer than the argument usually sounds.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/capitalism-vs-socialism\n\nFull comparison: https://www.aversusb.net/compare/capitalism-vs-socialism",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-13T12:35:50.244Z"
+    },
+    {
+      "slug": "kobe-vs-lebron",
+      "title": "Kobe vs Lebron",
+      "entityA": "Kobe",
+      "entityB": "Lebron",
+      "category": "Sports",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "kobe-vs-lebron.mp4",
+      "durationSeconds": 50,
+      "transcript": "Five categories on the table. One guy takes all five. The argument's shorter than you think. This isn't about legacy or rings. It's five numbers, side by side. 58 to 59 percent true shooting against 55. Kobe scored cleaner, shot for shot. Around 50 percent from the field. For a volume scorer, that's absurd. Four MVPs to one. Voters handed Kobe the league four separate times. More career points. The scoring title isn't close, and scoring was the job. More career assists too. So much for the one dimensional gunner label. On these five numbers, Kobe sweeps it. Pick LeBron if longevity and adaptability move you more.",
+      "chapters": [
+        {
+          "name": "Kobe vs Lebron",
+          "startOffset": 0,
+          "endOffset": 8
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 8,
+          "endOffset": 13
+        },
+        {
+          "name": "Round 1: True Shooting %",
+          "startOffset": 13,
+          "endOffset": 21
+        },
+        {
+          "name": "Round 2: Field Goal % (partial data)",
+          "startOffset": 21,
+          "endOffset": 27
+        },
+        {
+          "name": "Round 3: MVP Awards",
+          "startOffset": 27,
+          "endOffset": 33
+        },
+        {
+          "name": "Round 4: Career Points",
+          "startOffset": 33,
+          "endOffset": 40
+        },
+        {
+          "name": "Round 5: Career Assists",
+          "startOffset": 40,
+          "endOffset": 45
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 45,
+          "endOffset": 53
+        }
+      ],
+      "youtubeTitle": "Kobe vs LeBron: The Five Numbers That Settle It",
+      "youtubeDescription": "A straight head-to-head between Kobe Bryant and LeBron James across five categories: true shooting percentage, field goal percentage, MVP awards, career points and career assists. Kobe takes all five on the numbers provided, and we explain what each one actually means.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/kobe-vs-lebron\n\nImage credits:\nImage A by Balon Greyjoy (CC0) — https://commons.wikimedia.org/wiki/File:20190901_Kobe_harbor-1.jpg\nImage B by Erik Drost (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:LeBron_James_(51959977144)_(cropped2).jpg\n\nFull comparison: https://www.aversusb.net/compare/kobe-vs-lebron",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-13T12:43:48.420Z"
     }
   ]
 }

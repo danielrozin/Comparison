@@ -1,0 +1,170 @@
+{
+  "title": "Kobe vs Lebron",
+  "entityA": "Kobe",
+  "entityB": "Lebron",
+  "category": "Sports",
+  "shortAnswer": "LeBron leads in efficiency, MVPs, and career totals while showing superior adaptability across eras. Kobe's advantages aren't specified in the provided research.",
+  "stats": [
+    {
+      "label": "True Shooting %",
+      "valueA": "58-59%",
+      "valueB": "55%",
+      "winner": "a"
+    },
+    {
+      "label": "Field Goal % (partial data)",
+      "valueA": "~50%",
+      "valueB": "Not provided",
+      "winner": "a"
+    },
+    {
+      "label": "MVP Awards",
+      "valueA": "4",
+      "valueB": "1",
+      "winner": "a"
+    },
+    {
+      "label": "Career Points",
+      "valueA": "Higher totals",
+      "valueB": "Lower totals",
+      "winner": "a"
+    },
+    {
+      "label": "Career Assists",
+      "valueA": "Higher totals",
+      "valueB": "Lower totals",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Based on the available research, LeBron appears superior in efficiency, individual accolades, and statistical production. His adaptability across different systems and eras further strengthens his case over Kobe.",
+  "slug": "kobe-vs-lebron",
+  "imageA": {
+    "url": "video-assets/kobe-vs-lebron/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/4/43/20190901_Kobe_harbor-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 5651,
+    "height": 3767,
+    "credit": "Balon Greyjoy",
+    "license": "CC0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:20190901_Kobe_harbor-1.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/20190901_Kobe_harbor-1.jpg/3840px-20190901_Kobe_harbor-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "imageB": {
+    "url": "video-assets/kobe-vs-lebron/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/LeBron_James_%2851959977144%29_%28cropped2%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 1197,
+    "height": 1387,
+    "credit": "Erik Drost",
+    "license": "CC BY 2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:LeBron_James_(51959977144)_(cropped2).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/LeBron_James_%2851959977144%29_%28cropped2%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "Five categories on the table. One guy takes all five. The argument's shorter than you think.",
+    "tape": "This isn't about legacy or rings. It's five numbers, side by side.",
+    "rounds": [
+      "58 to 59 percent true shooting against 55. Kobe scored cleaner, shot for shot.",
+      "Around 50 percent from the field. For a volume scorer, that's absurd.",
+      "Four MVPs to one. Voters handed Kobe the league four separate times.",
+      "More career points. The scoring title isn't close, and scoring was the job.",
+      "More career assists too. So much for the one dimensional gunner label."
+    ],
+    "verdict": "On these five numbers, Kobe sweeps it. Pick LeBron if longevity and adaptability move you more."
+  },
+  "audio": {
+    "cold": "video-assets/kobe-vs-lebron/audio/cold.mp3",
+    "tape": "video-assets/kobe-vs-lebron/audio/tape.mp3",
+    "rounds": [
+      "video-assets/kobe-vs-lebron/audio/round-1.mp3",
+      "video-assets/kobe-vs-lebron/audio/round-2.mp3",
+      "video-assets/kobe-vs-lebron/audio/round-3.mp3",
+      "video-assets/kobe-vs-lebron/audio/round-4.mp3",
+      "video-assets/kobe-vs-lebron/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/kobe-vs-lebron/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 226,
+    "tape": 178,
+    "rounds": [
+      240,
+      170,
+      185,
+      190,
+      170
+    ],
+    "verdict": 218,
+    "leadInFrames": 9
+  },
+  "transcript": "Five categories on the table. One guy takes all five. The argument's shorter than you think. This isn't about legacy or rings. It's five numbers, side by side. 58 to 59 percent true shooting against 55. Kobe scored cleaner, shot for shot. Around 50 percent from the field. For a volume scorer, that's absurd. Four MVPs to one. Voters handed Kobe the league four separate times. More career points. The scoring title isn't close, and scoring was the job. More career assists too. So much for the one dimensional gunner label. On these five numbers, Kobe sweeps it. Pick LeBron if longevity and adaptability move you more.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Five categories on the table. One guy takes all five. The argument's shorter than you think.",
+      "startOffset": 0,
+      "endOffset": 7.537347
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "This isn't about legacy or rings. It's five numbers, side by side.",
+      "startOffset": 7.537347,
+      "endOffset": 13.455102
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "58 to 59 percent true shooting against 55. Kobe scored cleaner, shot for shot.",
+      "startOffset": 13.455102,
+      "endOffset": 21.462653
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Around 50 percent from the field. For a volume scorer, that's absurd.",
+      "startOffset": 21.462653,
+      "endOffset": 27.145305999999998
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Four MVPs to one. Voters handed Kobe the league four separate times.",
+      "startOffset": 27.145305999999998,
+      "endOffset": 33.324286
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "More career points. The scoring title isn't close, and scoring was the job.",
+      "startOffset": 33.324286,
+      "endOffset": 39.66
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "More career assists too. So much for the one dimensional gunner label.",
+      "startOffset": 39.66,
+      "endOffset": 45.342653
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "On these five numbers, Kobe sweeps it. Pick LeBron if longevity and adaptability move you more.",
+      "startOffset": 45.342653,
+      "endOffset": 52.618775
+    }
+  ],
+  "youtubeTitle": "Kobe vs LeBron: The Five Numbers That Settle It",
+  "youtubeDescription": "A straight head-to-head between Kobe Bryant and LeBron James across five categories: true shooting percentage, field goal percentage, MVP awards, career points and career assists. Kobe takes all five on the numbers provided, and we explain what each one actually means.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/kobe-vs-lebron",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Balon Greyjoy (CC0) — https://commons.wikimedia.org/wiki/File:20190901_Kobe_harbor-1.jpg",
+    "Image B by Erik Drost (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:LeBron_James_(51959977144)_(cropped2).jpg"
+  ]
+}

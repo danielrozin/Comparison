@@ -1,0 +1,129 @@
+{
+  "title": "Capitalism vs Socialism",
+  "entityA": "Capitalism",
+  "entityB": "Socialism",
+  "category": "economy",
+  "shortAnswer": "Capitalism emphasizes private ownership, free markets, and profit motive, leading to innovation but also inequality. Socialism emphasizes collective ownership, equality, and social welfare, but can reduce individual incentives and efficiency.",
+  "stats": [
+    {
+      "label": "Ownership",
+      "valueA": "Private",
+      "valueB": "Collective/State",
+      "winner": "tie"
+    },
+    {
+      "label": "Innovation",
+      "valueA": "High",
+      "valueB": "Lower",
+      "winner": "a"
+    },
+    {
+      "label": "Equality",
+      "valueA": "Lower",
+      "valueB": "Higher",
+      "winner": "b"
+    },
+    {
+      "label": "Economic Freedom",
+      "valueA": "High",
+      "valueB": "Restricted",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Most modern economies are mixed systems. Pure capitalism creates inequality; pure socialism reduces innovation. The debate is about the right balance.",
+  "slug": "capitalism-vs-socialism",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Two systems. One question. Who owns the thing you just built?",
+    "tape": "Capitalism bets on incentives. Socialism bets on fairness. Both bets have a price.",
+    "rounds": [
+      "Private versus collective ownership. Everything else in this fight flows from that one choice.",
+      "Capitalism innovates harder because somebody gets rich when it works. That's the engine.",
+      "Socialism delivers higher equality. Fewer people at the bottom, fewer people at the top.",
+      "High economic freedom versus restricted. Capitalism lets you try. Socialism decides what gets tried."
+    ],
+    "verdict": "Capitalism takes it two to one. Pick socialism if you'd trade growth for a floor."
+  },
+  "audio": {
+    "cold": "video-assets/capitalism-vs-socialism/audio/cold.mp3",
+    "tape": "video-assets/capitalism-vs-socialism/audio/tape.mp3",
+    "rounds": [
+      "video-assets/capitalism-vs-socialism/audio/round-1.mp3",
+      "video-assets/capitalism-vs-socialism/audio/round-2.mp3",
+      "video-assets/capitalism-vs-socialism/audio/round-3.mp3",
+      "video-assets/capitalism-vs-socialism/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/capitalism-vs-socialism/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 166,
+    "tape": 218,
+    "rounds": [
+      199,
+      209,
+      197,
+      283
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "Two systems. One question. Who owns the thing you just built? Capitalism bets on incentives. Socialism bets on fairness. Both bets have a price. Private versus collective ownership. Everything else in this fight flows from that one choice. Capitalism innovates harder because somebody gets rich when it works. That's the engine. Socialism delivers higher equality. Fewer people at the bottom, fewer people at the top. High economic freedom versus restricted. Capitalism lets you try. Socialism decides what gets tried. Capitalism takes it two to one. Pick socialism if you'd trade growth for a floor.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Two systems. One question. Who owns the thing you just built?",
+      "startOffset": 0,
+      "endOffset": 5.525918
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Capitalism bets on incentives. Socialism bets on fairness. Both bets have a price.",
+      "startOffset": 5.525918,
+      "endOffset": 12.80204
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Private versus collective ownership. Everything else in this fight flows from that one choice.",
+      "startOffset": 12.80204,
+      "endOffset": 19.451224
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Capitalism innovates harder because somebody gets rich when it works. That's the engine.",
+      "startOffset": 19.451224,
+      "endOffset": 26.413877
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Socialism delivers higher equality. Fewer people at the bottom, fewer people at the top.",
+      "startOffset": 26.413877,
+      "endOffset": 32.984693
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "High economic freedom versus restricted. Capitalism lets you try. Socialism decides what gets tried.",
+      "startOffset": 32.984693,
+      "endOffset": 42.428979
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Capitalism takes it two to one. Pick socialism if you'd trade growth for a floor.",
+      "startOffset": 42.428979,
+      "endOffset": 48.928979
+    }
+  ],
+  "youtubeTitle": "Capitalism vs Socialism: Which System Actually Wins",
+  "youtubeDescription": "A head-to-head breakdown of capitalism and socialism across ownership, innovation, equality, and economic freedom. Capitalism wins on innovation and freedom, socialism wins on equality, and the final score is closer than the argument usually sounds.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/capitalism-vs-socialism",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
