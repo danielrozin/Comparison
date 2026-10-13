@@ -6,7 +6,7 @@ import { getComparisonTitlesBySlugs, getTrendingComparisons } from "@/lib/servic
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
-import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug } from "@/lib/editorial/blog-authorship";
+import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug, stripUnreviewedBodyByline } from "@/lib/editorial/blog-authorship";
 import { filterLiveCompareSlugs, resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares";
 
@@ -20,6 +20,8 @@ import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
 import { BlogArticleProse, type ArticleRenderPart } from "@/components/blog/BlogArticleProse";
+import type { InlineComparisonLink } from "@/components/blog/BlogInlineComparisonCard";
+import { generatedCompareTitle, topicBuildSlug, topicCompareCandidates } from "@/lib/blog/blog-topic-compare";
 import {
   composeBlogArticleParts,
   decisionComparesForBlog,
@@ -414,6 +416,7 @@ export default async function BlogPostPage({
   // live-filters — never invent dead /compare hrefs.
   const article = {
     ...rawArticle,
+    content: stripUnreviewedBodyByline(rawArticle.content, slug),
     relatedComparisonSlugs: await resolveBlogRelatedCompareSlugs(
       slug,
       rawArticle.relatedComparisonSlugs ?? []
@@ -443,10 +446,24 @@ export default async function BlogPostPage({
   const livePairSlugs = pairCandidates.length
     ? await filterLiveCompareSlugs(pairCandidates).catch(() => [] as string[])
     : [];
+  // ROO-180: also match the title, both orders, brand suffixes stripped.
+  const topicCandidates =
+    mappedDecisions.length || livePairSlugs.length ? [] : topicCompareCandidates(slug, article.title);
+  const liveTopicSlugs = topicCandidates.length
+    ? (await filterLiveCompareSlugs(topicCandidates).catch(() => [] as string[])).slice(0, 1)
+    : [];
+  // No live match but the post is clearly X vs Y: link the builder (nofollow)
+  // instead of unrelated popular compares.
+  const topicBuild =
+    mappedDecisions.length === 0 && livePairSlugs.length === 0 && liveTopicSlugs.length === 0
+      ? topicBuildSlug(slug, article.title)
+      : null;
   // ROO-180: last resort so the card never renders empty — popular live compares.
   const needsFallback =
+    !topicBuild &&
     mappedDecisions.length === 0 &&
     livePairSlugs.length === 0 &&
+    liveTopicSlugs.length === 0 &&
     liveCompareSlugs.length === 0 &&
     !/href="\/compare\//i.test(renderedContent);
   const fallbackCardSlugs = needsFallback
@@ -461,6 +478,7 @@ export default async function BlogPostPage({
     preferMappedOnly: mappedDecisions.length > 0,
     pairSlugs: livePairSlugs,
     fallbackSlugs: fallbackCardSlugs,
+    topicSlugs: liveTopicSlugs,
   });
   const decisionTitles = Object.fromEntries(
     mappedDecisions.map((item) => [item.slug, item.title]),
@@ -469,13 +487,16 @@ export default async function BlogPostPage({
   const comparisonTitles = comparisonTitleSlugs.length
     ? await getComparisonTitlesBySlugs(comparisonTitleSlugs)
     : {};
-  const inlineCardLinks = inlineCardSlugs.map((compareSlug) => ({
+  const inlineCardLinks: InlineComparisonLink[] = inlineCardSlugs.map((compareSlug) => ({
     slug: compareSlug,
     title:
       comparisonTitles[compareSlug] ||
       decisionTitles[compareSlug] ||
       compareSlug.replace(/-/g, " "),
   }));
+  if (topicBuild && inlineCardLinks.length === 0) {
+    inlineCardLinks.push({ slug: topicBuild, title: generatedCompareTitle(topicBuild), generated: true });
+  }
   const inlineCompare =
     slug === CASHIERS_CHECK_BLOG_SLUG
       ? {

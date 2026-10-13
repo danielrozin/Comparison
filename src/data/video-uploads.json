@@ -5315,6 +5315,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-09-02T09:28:16.297Z"
+    },
+    {
+      "slug": "midjourney-vs-dall-e",
+      "title": "Midjourney vs DALL-E",
+      "entityA": "Midjourney",
+      "entityB": "DALL-E 3",
+      "category": "technology",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "midjourney-vs-dall-e.mp4",
+      "durationSeconds": 46,
+      "transcript": "One of these wins four rounds out of five and still loses to beauty. Midjourney makes the prettiest picture. DALL-E 3 makes the picture you actually asked for. Midjourney is best in class. Nothing else makes an image look this expensive. DALL-E 3 reads the whole prompt. Midjourney reads the vibe and improvises. Midjourney still lives in Discord. DALL-E 3 is just a chat box. Ask Midjourney for a sign with words and it invents a language. Midjourney runs ten to a hundred and twenty a month. DALL-E rides along with ChatGPT Plus. DALL-E 3 takes it four to one. Pick Midjourney only when the image is the art.",
+      "chapters": [
+        {
+          "name": "Midjourney vs DALL-E 3",
+          "startOffset": 0,
+          "endOffset": 5
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 5,
+          "endOffset": 12
+        },
+        {
+          "name": "Round 1: Image Quality (Artistic)",
+          "startOffset": 12,
+          "endOffset": 18
+        },
+        {
+          "name": "Round 2: Prompt Accuracy",
+          "startOffset": 18,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 3: Ease of Access",
+          "startOffset": 25,
+          "endOffset": 30
+        },
+        {
+          "name": "Round 4: Text in Images",
+          "startOffset": 30,
+          "endOffset": 35
+        },
+        {
+          "name": "Round 5: Cost",
+          "startOffset": 35,
+          "endOffset": 42
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 42,
+          "endOffset": 49
+        }
+      ],
+      "youtubeTitle": "Midjourney vs DALL-E 3: Which AI Image Generator Wins?",
+      "youtubeDescription": "A head-to-head on image quality, prompt accuracy, access, text rendering and price. DALL-E 3 wins four of the five rounds, but Midjourney still owns pure artistic quality. Here is which one fits how you actually work.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/midjourney-vs-dall-e\n\nImage credits:\nImage B by DALL·E 2 (Public domain) — https://commons.wikimedia.org/wiki/File:DALL-E_2_artificial_intelligence_digital_image_generated_photo.jpg\n\nFull comparison: https://www.aversusb.net/compare/midjourney-vs-dall-e",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-12T12:52:30.578Z"
     }
   ]
 }

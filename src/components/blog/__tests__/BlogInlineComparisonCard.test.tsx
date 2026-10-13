@@ -50,6 +50,8 @@ describe("BlogInlineComparisonCard", () => {
         placement: "blog_inline_card",
         position: "top",
         article_slug: ARTICLE,
+        comparison_slug: link.slug,
+        generated: false,
       });
     }
   });
@@ -63,6 +65,8 @@ describe("BlogInlineComparisonCard", () => {
       placement: "blog_inline_card",
       position: "mid",
       article_slug: ARTICLE,
+      comparison_slug: LINKS[0].slug,
+      generated: false,
     });
   });
 
@@ -100,7 +104,7 @@ describe("BlogBodyCompareClickTracker", () => {
     expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
       `/blog/${ARTICLE}`,
       "bank-of-america-vs-chase",
-      { placement: "blog_body_link", article_slug: ARTICLE },
+      expect.objectContaining({ placement: "blog_body_link", article_slug: ARTICLE, generated: false }),
     );
 
     fireEvent.click(view.getByRole("link", { name: "Card link" }));

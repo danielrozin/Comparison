@@ -47,6 +47,8 @@ export function BlogBodyCompareClickTracker({ articleSlug }: { articleSlug: stri
       trackRelatedComparisonClick(`/blog/${articleSlug}`, slug, {
         placement: "blog_body_link",
         article_slug: articleSlug,
+        comparison_slug: slug,
+        generated: false,
       });
     }
 
