@@ -11,7 +11,7 @@ import {
   stripKeywordSuffixSlug,
 } from "@/lib/utils/slugify";
 import { canonicalRequestedComparisonSlug } from "@/lib/parse-comparison-query";
-import { relatedComparisonSlugs } from "@/lib/compare-slug-resolution";
+import { blocksOnDemandBuild, relatedComparisonSlugs } from "@/lib/compare-slug-resolution";
 import {
   getComparisonBySlug,
   isComparisonDbConfigured,
@@ -44,7 +44,6 @@ const generateSchema = z.object({
   slug: z.string().min(1).max(200).regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens"),
 });
 
-const HIDDEN_STATUSES = new Set(["archived", "draft", "review"]);
 
 function clientIp(request: NextRequest): string {
   return (
@@ -63,8 +62,7 @@ function isServable(row: ComparisonPageData | null): row is ComparisonPageData {
 }
 
 function blocksRegeneration(row: ComparisonPageData | null): boolean {
-  const status = row?.metadata?.status;
-  return typeof status === "string" && HIDDEN_STATUSES.has(status);
+  return blocksOnDemandBuild(row?.metadata);
 }
 
 async function loadRow(slug: string): Promise<ComparisonPageData | null> {

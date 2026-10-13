@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { blogAuthorName, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug } from "@/lib/editorial/blog-authorship";
+
+const BLOG_SLUG = "best-ai-assistant-2026";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
@@ -56,14 +59,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": META_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": blogAuthorName(BLOG_SLUG),
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
     "citation_publication_date": PUBLISH_DATE,
     "citation_online_date": MODIFIED_DATE,
     "DC.title": META_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": blogAuthorName(BLOG_SLUG),
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
@@ -111,12 +114,9 @@ const articleSchema = {
   accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
   accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
-  author: {
-    "@type": "Person",
-    "@id": `${SITE_URL}/authors/daniel-rozin#person`,
-    name: "Daniel Rozin",
-    url: `${SITE_URL}/authors/daniel-rozin`,
-  },
+  author: isHumanReviewedBlogSlug(BLOG_SLUG)
+    ? { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` }
+    : editorialTeamAuthorNode(),
   publisher: {
     "@type": "Organization",
     "@id": `${SITE_URL}/#organization`,
@@ -125,8 +125,7 @@ const articleSchema = {
   },
   datePublished: PUBLISH_DATE,
   dateModified: MODIFIED_DATE,
-  lastReviewed: MODIFIED_DATE,
-  reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+  ...blogReviewFields(BLOG_SLUG, MODIFIED_DATE, [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }]),
   mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
       publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,

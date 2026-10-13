@@ -113,7 +113,10 @@ export function InternalLinks({
                   </li>
                 );
               })}
-              {entities.map((entity) => (
+              {/* ROO-204: /alternatives/[slug] returns 404 unless the entity row is
+                  published (#386), the same predicate as the /entity link above.
+                  Only link alternatives pages that are live. */}
+              {entities.filter((entity) => isEntityPageIndexable(entity.status)).map((entity) => (
                 <li key={`alt-${entity.slug}`}>
                   <Link
                     href={`/alternatives/${entity.slug}`}

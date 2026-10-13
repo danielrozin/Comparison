@@ -42,6 +42,26 @@ export async function generateStaticParams() {
   }
 }
 
+/**
+ * Is this a real alternatives slug? The DB entity status decides when the DB
+ * answers; without a DB, curated ENTITY_CONTENT counts. "unknown" means
+ * neither could answer.
+ */
+async function alternativesEntityStatus(slug: string): Promise<"published" | "missing" | "unknown"> {
+  const curated = Boolean(ENTITY_CONTENT[slug]);
+  try {
+    const prisma = getPrisma();
+    if (!prisma) return curated ? "published" : "unknown";
+    const entityRow = await prisma.entity.findUnique({
+      where: { slug },
+      select: { status: true },
+    });
+    return entityRow?.status === "published" ? "published" : "missing";
+  } catch {
+    return curated ? "published" : "unknown";
+  }
+}
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
@@ -49,6 +69,18 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const name = humanizeEntityName(slug);
+  // Unknown slugs 404 in the page below; keep them out of the index and do
+  // not emit invented publish/modified dates for them.
+  const status = await alternativesEntityStatus(slug);
+  if (
+    status === "missing" ||
+    (status === "unknown" && (await getAlternativesForEntity(slug)).length === 0)
+  ) {
+    return {
+      title: `Alternatives to ${name}`,
+      robots: { index: false, follow: false },
+    };
+  }
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Alternatives to ${name}`)}&type=alternatives`;
   const content = ENTITY_CONTENT[slug];
   const altNames = content?.alternatives.slice(0, 3).map((a) => a.name).join(", ");
@@ -129,21 +161,16 @@ export default async function AlternativesPage({ params }: PageProps) {
 
   // DAN-2551: gate on entity status. Draft/archived entities are not canonical
   // pages — same reasoning as the /entity gate added in the same PR.
-  try {
-    const prisma = getPrisma();
-    if (prisma) {
-      const entityRow = await prisma.entity.findUnique({
-        where: { slug },
-        select: { status: true },
-      });
-      if (!entityRow || entityRow.status !== "published") notFound();
-    }
-  } catch {
-    // DB unavailable — allow render; worst case a draft renders once.
-  }
+  const status = await alternativesEntityStatus(slug);
+  if (status === "missing") notFound();
 
   // Find all comparisons that include this entity (DB + mock)
   const alternatives = await getAlternativesForEntity(slug);
+
+  // DB unavailable and nothing curated or comparison-backed: this is not a
+  // real entity (e.g. /alternatives/zzz-not-a-thing). Return a real 404
+  // instead of a 200 shell.
+  if (status === "unknown" && alternatives.length === 0) notFound();
 
   // Merge curated alternatives (from entity-content) with comparison-derived ones.
   //

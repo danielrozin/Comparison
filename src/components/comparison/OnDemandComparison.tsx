@@ -17,7 +17,9 @@ import {
   trackGenerationRequested,
 } from "@/lib/utils/analytics";
 
-type Phase = "building" | "fallback" | "saved";
+// "capped": the site-wide daily generation cap (or a rate limit) refused it.
+// "skipped": a crawler or headless client. No generation, free links only.
+type Phase = "building" | "fallback" | "saved" | "capped" | "skipped";
 
 type Related = { slug: string; title: string };
 
@@ -37,15 +39,23 @@ export function OnDemandComparison({
   slug,
   entityA,
   entityB,
+  initialRelated = [],
 }: {
   slug: string;
   entityA: string;
   entityB: string;
+  /** Live compares from the 404 page's static props, shown while building. */
+  initialRelated?: Related[];
 }) {
   const [phase, setPhase] = useState<Phase>("building");
   const [elapsed, setElapsed] = useState(0);
-  const [related, setRelated] = useState<Related[]>([]);
-  const title = `We're building your comparison of ${entityA} vs ${entityB}`;
+  const [related, setRelated] = useState<Related[]>(() =>
+    initialRelated.filter((item) => item.slug !== slug).slice(0, 4),
+  );
+  const title =
+    phase === "skipped" || phase === "capped"
+      ? `${entityA} vs ${entityB}`
+      : `We're building your comparison of ${entityA} vs ${entityB}`;
 
   useEffect(() => {
     const attachment = lastSearchAttachment();
@@ -62,7 +72,11 @@ export function OnDemandComparison({
   useEffect(() => {
     // ROO-97 headless clients skip generation. The ROO-159 analytics
     // window-size skip stays out of this effect, so the page is unchanged.
-    if (isHeadlessAutomationClient() || isKnownCrawlerUserAgent(navigator.userAgent)) return;
+    // Crawlers still get this page (never blocked); they just do not build.
+    if (isHeadlessAutomationClient() || isKnownCrawlerUserAgent(navigator.userAgent)) {
+      setPhase("skipped");
+      return;
+    }
 
     let cancelled = false;
     const reloadKey = `avb-built:${slug}`;
@@ -72,16 +86,16 @@ export function OnDemandComparison({
         const response = await fetch("/api/v1/trending?limit=4");
         const data = await response.json();
         const items = Array.isArray(data?.comparisons) ? data.comparisons : [];
-        if (!cancelled) {
-          setRelated(
-            items
-              .filter((item: { slug?: string; title?: string }) => item.slug && item.slug !== slug)
-              .slice(0, 4)
-              .map((item: { slug: string; title?: string }) => ({
-                slug: item.slug,
-                title: item.title || item.slug,
-              })),
-          );
+        if (!cancelled && items.length > 0) {
+          const fetched: Related[] = items
+            .filter((item: { slug?: string; title?: string }) => item.slug && item.slug !== slug)
+            .slice(0, 4)
+            .map((item: { slug: string; title?: string }) => ({
+              slug: item.slug,
+              title: item.title || item.slug,
+            }));
+          // Keep the server-rendered live list when we already have one.
+          setRelated((current) => (current.length > 0 ? current : fetched));
         }
       } catch {
         // Related links are optional. The fallback still has search and contact.
@@ -111,6 +125,11 @@ export function OnDemandComparison({
         const data = await response.json().catch(() => ({}));
         if (cancelled) return;
 
+        if (response.status === 429) {
+          setPhase("capped");
+          return;
+        }
+
         if (response.status === 202) {
           await new Promise((resolve) => setTimeout(resolve, 4000));
           continue;
@@ -133,10 +152,10 @@ export function OnDemandComparison({
 
       if (!cancelled) {
         setPhase("fallback");
-        void loadRelated();
       }
     }
 
+    void loadRelated();
     void generate();
     return () => {
       cancelled = true;
@@ -206,10 +225,30 @@ export function OnDemandComparison({
         </div>
       )}
 
-      {phase === "fallback" && (
-        <Fallback entityA={entityA} entityB={entityB} slug={slug} related={related} />
+      {phase === "building" && <RelatedList related={related} />}
+
+      {(phase === "fallback" || phase === "capped" || phase === "skipped") && (
+        <Fallback entityA={entityA} entityB={entityB} slug={slug} related={related} phase={phase} />
       )}
     </div>
+  );
+}
+
+function RelatedList({ related }: { related: Related[] }) {
+  if (related.length === 0) return null;
+  return (
+    <nav aria-label="Related comparisons" className="mt-8 text-left" data-testid="free-related-compares">
+      <p className="text-sm font-semibold text-text mb-2">Free comparisons you can read now</p>
+      <ul className="space-y-2">
+        {related.map((item) => (
+          <li key={item.slug}>
+            <Link href={`/compare/${item.slug}`} className="text-sm text-primary-700 hover:underline">
+              {item.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
 
@@ -218,17 +257,23 @@ function Fallback({
   entityB,
   slug,
   related,
+  phase,
 }: {
   entityA: string;
   entityB: string;
   slug: string;
   related: Related[];
+  phase: "fallback" | "capped" | "skipped";
 }) {
+  const message =
+    phase === "capped"
+      ? `We've built as many new comparisons as we can today. ${entityA} vs ${entityB} isn't ready yet. Try again tomorrow, or read a related comparison below.`
+      : phase === "skipped"
+        ? `${entityA} vs ${entityB} isn't published yet. Search for a similar comparison, or read a related one below.`
+        : `We couldn't finish ${entityA} vs ${entityB} just now. You can search for a similar comparison, or ask us to look at this one.`;
   return (
     <div className="space-y-6">
-      <p className="text-text-secondary">
-        We couldn&apos;t finish {entityA} vs {entityB} just now. You can search for a similar comparison, or ask us to look at this one.
-      </p>
+      <p className="text-text-secondary">{message}</p>
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link
           href="/search"
@@ -243,20 +288,7 @@ function Fallback({
           Request this comparison
         </Link>
       </div>
-      {related.length > 0 && (
-        <div className="text-left">
-          <p className="text-sm font-semibold text-text mb-2">Related comparisons</p>
-          <ul className="space-y-2">
-            {related.map((item) => (
-              <li key={item.slug}>
-                <Link href={`/compare/${item.slug}`} className="text-sm text-primary-700 hover:underline">
-                  {item.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <RelatedList related={related} />
     </div>
   );
 }
