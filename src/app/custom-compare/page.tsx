@@ -3,6 +3,8 @@ import Link from "next/link";
 import { HubShell } from "@/components/layout/HubShell";
 import { CustomCompareEscapes } from "@/components/monetization/CustomCompareEscapes";
 import { CustomCompareForm } from "@/components/monetization/CustomCompareForm";
+import { CustomCompareBuilder } from "@/components/monetization/CustomCompareBuilder";
+import { isUserGenerationEnabled } from "@/lib/generation/user-generation-guard";
 import { CustomCompareViewTracker } from "@/components/monetization/CustomCompareViewTracker";
 import { selectCustomCompareEscapes } from "@/lib/data/custom-compare-escapes";
 import { entitiesFromCompareSlug } from "@/lib/monetization/compare-slug-sides";
@@ -49,6 +51,8 @@ export default async function CustomComparePage({
     >
       <CustomCompareViewTracker />
       <div className="max-w-xl space-y-6">
+        {/* ROO-132: free build path first; only when on-demand generation is on. */}
+        {isUserGenerationEnabled() && <CustomCompareBuilder initialA={initialA} initialB={initialB} />}
         <p className="text-sm text-text-secondary">
           Want a matchup without a membership? Suggest it on{" "}
           <Link href="/requests" className="font-semibold text-primary-600 hover:text-primary-700">
