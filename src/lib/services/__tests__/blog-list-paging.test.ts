@@ -5,6 +5,7 @@
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { NBA_SEASON_PREVIEW_BLOG_SLUG } from "@/lib/data/nba-season-preview-blog";
+import { GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG } from "@/lib/data/google-maps-alternatives-blog";
 
 const mocks = vi.hoisted(() => ({
   findMany: vi.fn(),
@@ -71,13 +72,15 @@ describe("merged blog list paging", () => {
     const page1 = await listBlogArticles({ limit: 12, offset: 0, status: "published" });
     const page2 = await listBlogArticles({ limit: 12, offset: 12, status: "published" });
 
-    expect(page1.total).toBe(14);
-    expect(page2.total).toBe(14);
+    expect(page1.total).toBe(15);
+    expect(page2.total).toBe(15);
     expect(page1.articles.map((article) => article.slug)).toEqual([
+      GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG,
       NBA_SEASON_PREVIEW_BLOG_SLUG,
-      ...DB_POSTS.slice(0, 11).map((post) => post.slug),
+      ...DB_POSTS.slice(0, 10).map((post) => post.slug),
     ]);
     expect(page2.articles.map((article) => article.slug)).toEqual([
+      "db-post-10",
       "db-post-11",
       "db-post-12",
     ]);
@@ -118,9 +121,10 @@ describe("merged blog list paging", () => {
     expect(sql).not.toMatch(/E'\\s/);
     expect(sql).not.toMatch(/\\s/);
     const counted = sqlValues(mocks.queryRaw.mock.calls[0][0]);
-    expect(counted).toEqual(DB_POSTS.slice(0, 11).map((post) => post.slug));
+    expect(counted).toEqual(DB_POSTS.slice(0, 10).map((post) => post.slug));
     expect(counted).not.toContain(NBA_SEASON_PREVIEW_BLOG_SLUG);
-    expect(counted).not.toContain("db-post-11");
+    expect(counted).not.toContain(GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG);
+    expect(counted).not.toContain("db-post-10");
     const dbCard = page1.articles.find((article) => article.slug === "db-post-0");
     expect(dbCard?.content).toBe("");
     expect(dbCard?.contentWordCount).toBe(400);
