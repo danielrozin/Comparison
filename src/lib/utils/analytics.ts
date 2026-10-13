@@ -303,6 +303,10 @@ export type RelatedComparisonClickExtra = {
   position?: string;
   /** Blog article slug, separate from source_page which is the full /blog/ path. */
   article_slug?: string;
+  /** ROO-180: the /compare slug clicked (same as target_page for blog links). */
+  comparison_slug?: string;
+  /** ROO-180: true when the link opens the on-demand builder (no live page yet). */
+  generated?: boolean;
 };
 
 export function trackRelatedComparisonClick(
@@ -319,10 +323,15 @@ export function trackRelatedComparisonClick(
   if (extra?.placement) props.placement = extra.placement;
   if (extra?.position) props.position = extra.position;
   if (extra?.article_slug) props.article_slug = extra.article_slug;
+  if (extra?.comparison_slug) props.comparison_slug = extra.comparison_slug;
+  if (typeof extra?.generated === "boolean") props.generated = String(extra.generated);
 
   trackEvent("related_comparison_click", props);
   // ROO-30: was GA-only — PostHog never saw blog-hub/home CTA clicks
-  posthog.capture("related_comparison_click", props);
+  posthog.capture(
+    "related_comparison_click",
+    typeof extra?.generated === "boolean" ? { ...props, generated: extra.generated } : props,
+  );
 }
 
 export function trackReviewSubmission(product: string, rating: number) {
