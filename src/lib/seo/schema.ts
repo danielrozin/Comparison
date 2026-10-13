@@ -3142,6 +3142,11 @@ export function profilePageSchema(entity: {
   imageUrl: string | null;
   comparisonCount?: number;
   topComparisons?: { slug: string; title: string }[];
+  /**
+   * ROO-204: whether `/alternatives/{slug}` is live (it 404s unless the entity
+   * is published). Defaults to true for existing callers.
+   */
+  alternativesLive?: boolean;
 }) {
   const url = `${SITE_URL}/entity/${entity.slug}`;
   const schemaType = entitySchemaType(entity.entityType);
@@ -3227,7 +3232,7 @@ export function profilePageSchema(entity: {
   // dateCreated/dateModified ("Invalid datetime value").
   const today = new Date().toISOString();
   const significantLinks = [
-    `${SITE_URL}/alternatives/${entity.slug}`,
+    ...(entity.alternativesLive === false ? [] : [`${SITE_URL}/alternatives/${entity.slug}`]),
     ...(entity.topComparisons ?? []).slice(0, 5).map((c) => `${SITE_URL}/compare/${c.slug}`),
   ];
   const profileDesc = entity.shortDesc ||
