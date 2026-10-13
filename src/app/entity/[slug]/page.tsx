@@ -165,11 +165,17 @@ export default async function EntityPage({ params }: PageProps) {
   // pages — the sitemap no longer includes them (DAN-2551 task 4), but a direct
   // URL or a stale crawl would still hit this route without a 404 gate.
   // notFound() emits HTTP 404 so Google removes the URL from its index.
+  //
+  // ROO-204: /alternatives/[slug] 404s unless the entity row is published
+  // (#386). Track that here so this page only links the alternatives page when
+  // it is live. `null` means the DB could not answer.
+  let alternativesStatusPublished: boolean | null = null;
   try {
     const entityRow = await prisma.entity.findUnique({
       where: { slug },
       select: { status: true },
     });
+    alternativesStatusPublished = entityRow?.status === "published";
     if (!entityRow || entityRow.status !== "published") notFound();
   } catch {
     // DB unavailable — allow render; worst case a draft renders once.
@@ -182,6 +188,11 @@ export default async function EntityPage({ params }: PageProps) {
 
   // Find all comparisons that include this entity (DB + mock fallback)
   const relatedComparisons = await getComparisonsForEntity(slug);
+
+  // ROO-204: same rule as alternativesEntityStatus() on /alternatives/[slug]:
+  // published row → live; no DB answer → live when curated or comparison-backed.
+  const alternativesLive =
+    alternativesStatusPublished ?? (Boolean(entityContent) || relatedComparisons.length > 0);
 
   // Determine category from the first comparison
   const primaryCategory = relatedComparisons[0]?.category || null;
@@ -259,6 +270,7 @@ export default async function EntityPage({ params }: PageProps) {
         imageUrl: null,
         comparisonCount: relatedComparisons.length,
         topComparisons: relatedComparisons.slice(0, 10),
+        alternativesLive,
       }),
       // hasPart — formal ProfilePage→FAQPage edge. Google and AI answer engines
       // use hasPart to discover which structured FAQ content belongs to this profile,
@@ -569,21 +581,23 @@ export default async function EntityPage({ params }: PageProps) {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-3 text-center">
-                  <Link
-                    href={`/alternatives/${slug}`}
-                    className="inline-flex items-center min-h-11 sm:min-h-0 text-sm text-primary-600 hover:text-primary-700 font-medium"
-                  >
-                    View all alternatives to {name} <span aria-hidden="true">&rarr;</span>
-                  </Link>
-                </div>
+                {alternativesLive && (
+                  <div className="mt-3 text-center">
+                    <Link
+                      href={`/alternatives/${slug}`}
+                      className="inline-flex items-center min-h-11 sm:min-h-0 text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    >
+                      View all alternatives to {name} <span aria-hidden="true">&rarr;</span>
+                    </Link>
+                  </div>
+                )}
               </section>
             )}
           </>
         )}
 
         {/* Alternatives Link (always visible, even without curated content) */}
-        {!entityContent && relatedComparisons.length > 0 && (
+        {!entityContent && relatedComparisons.length > 0 && alternativesLive && (
           <section aria-labelledby="entity-alt-link-heading" className="mb-8 p-5 bg-white border border-border rounded-xl flex items-center justify-between">
             <div>
               <h2 id="entity-alt-link-heading" className="text-lg font-bold text-text">Alternatives to {name}</h2>
