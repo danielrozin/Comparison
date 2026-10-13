@@ -97,6 +97,10 @@ export function selectInlineComparisonSlugs(input: {
   relatedSlugs: readonly string[];
   preferredSlugs?: readonly string[];
   preferMappedOnly?: boolean;
+  /** ROO-180: live pairs named by the blog slug itself (already live-filtered). */
+  pairSlugs?: readonly string[];
+  /** ROO-180: live popular compares, used only when nothing else matched. */
+  fallbackSlugs?: readonly string[];
   /** ROO-180: live compares matched from the post's own slug/title. First. */
   topicSlugs?: readonly string[];
   limit?: number;
@@ -115,11 +119,81 @@ export function selectInlineComparisonSlugs(input: {
   for (const slug of input.preferredSlugs ?? []) push(slug);
   if (input.preferMappedOnly) return picked;
 
+  for (const slug of input.pairSlugs ?? []) push(slug);
   for (const slug of input.topicSlugs ?? []) push(slug);
-
   for (const slug of extractBodyCompareSlugs(input.bodyHtml)) push(slug);
   for (const slug of input.relatedSlugs) push(slug);
+  // ROO-180: never render the card empty when live popular compares exist.
+  if (picked.length === 0) {
+    for (const slug of input.fallbackSlugs ?? []) push(slug);
+  }
   return picked;
+}
+
+/** Words that end the "b" side of an "a-vs-b" blog slug. */
+const PAIR_STOP_WORDS = new Set([
+  "which", "what", "who", "is", "are", "should", "complete", "full", "guide",
+  "comparison", "compared", "review", "reviews", "explained", "differences",
+  "difference", "for", "in", "to", "and", "or", "the", "a", "an", "pros",
+  "cons", "specs", "better", "best", "vs", "versus", "your", "you", "how",
+]);
+
+/** Words that lead into the "a" side ("best", "how-to") and are not part of it. */
+const PAIR_LEAD_WORDS = new Set([
+  "best", "how", "to", "why", "what", "which", "is", "the", "a", "an", "guide",
+  "choose", "choosing", "pick", "picking", "compare", "comparing",
+]);
+
+function isYearOrNumber(token: string): boolean {
+  return /^\d+$/.test(token);
+}
+
+/**
+ * ROO-180 — compare slugs a blog post's own slug points at.
+ *
+ * "imax-vs-dolby-cinema-which-is-better" gives imax-vs-dolby-cinema,
+ * imax-vs-dolby, and the reversed forms. The page still filters these
+ * through the live-slug check, so nothing here becomes a link unless
+ * that comparison is published. Longest pairs first.
+ */
+export function pairSlugCandidatesFromBlogSlug(blogSlug: string): string[] {
+  const tokens = blogSlug.toLowerCase().split("-").filter(Boolean);
+  const vsIndex = tokens.findIndex((t) => t === "vs" || t === "versus");
+  if (vsIndex <= 0 || vsIndex >= tokens.length - 1) return [];
+
+  const left: string[] = [];
+  for (let i = vsIndex - 1; i >= 0; i -= 1) {
+    const t = tokens[i]!;
+    if (PAIR_LEAD_WORDS.has(t) || isYearOrNumber(t)) break;
+    left.unshift(t);
+    if (left.length >= 3) break;
+  }
+  const right: string[] = [];
+  for (let i = vsIndex + 1; i < tokens.length; i += 1) {
+    const t = tokens[i]!;
+    if (PAIR_STOP_WORDS.has(t) || isYearOrNumber(t)) break;
+    right.push(t);
+    if (right.length >= 3) break;
+  }
+  if (left.length === 0 || right.length === 0) return [];
+
+  const out: string[] = [];
+  const seen = new Set<string>();
+  const add = (slug: string) => {
+    if (!seen.has(slug)) {
+      seen.add(slug);
+      out.push(slug);
+    }
+  };
+  for (let r = right.length; r >= 1; r -= 1) {
+    for (let l = left.length; l >= 1; l -= 1) {
+      const a = left.slice(left.length - l).join("-");
+      const b = right.slice(0, r).join("-");
+      add(`${a}-vs-${b}`);
+      add(`${b}-vs-${a}`);
+    }
+  }
+  return out;
 }
 
 /** Index just after the first </h2>, or the first </h3> when there is no h2. */

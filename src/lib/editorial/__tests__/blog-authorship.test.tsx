@@ -68,3 +68,20 @@ describe("blog pages route authorship through the allowlist", () => {
     expect(src).not.toMatch(/authors: \[`\$\{SITE_URL\}\/authors\/daniel-rozin`\]/);
   });
 });
+
+describe("inline body byline", () => {
+  it("drops the generated 'By Daniel Rozin' line for non-allowlisted posts", async () => {
+    const { stripUnreviewedBodyByline } = await import("@/lib/editorial/blog-authorship");
+    const body = "Intro line\n\n*By Daniel Rozin | A Versus B | June 27, 2027*\n\n## Heading\nDaniel Rozin founded the site.";
+    const out = stripUnreviewedBodyByline(body, "imax-vs-dolby-cinema-2026-is-the-premium-ticket-worth-it");
+    expect(out).not.toMatch(/By Daniel Rozin/);
+    expect(out).toContain("## Heading");
+    expect(out).toContain("Daniel Rozin founded the site.");
+    HUMAN_REVIEWED_SLUGS.push("reviewed-post");
+    try {
+      expect(stripUnreviewedBodyByline(body, "reviewed-post")).toBe(body);
+    } finally {
+      HUMAN_REVIEWED_SLUGS.pop();
+    }
+  });
+});

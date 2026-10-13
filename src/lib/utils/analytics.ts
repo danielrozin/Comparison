@@ -12,6 +12,7 @@ import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { sanitizeCheckoutDistinctId } from "@/lib/analytics/checkout-identity";
 import { captureComparisonViewed } from "@/lib/analytics/comparison-view-capture";
+import type { MissingLandingMode, MissingLandingReferrerType } from "@/lib/analytics/missing-comparison-landing";
 import { capturePricingViewed } from "@/lib/analytics/pricing-view-capture";
 import {
   normalizeQuery,
@@ -415,6 +416,16 @@ export interface SearchSubmittedProps {
   source_page?: string;
 }
 
+/** ROO-155 — "Compare something else" box under the verdict on a compare page. */
+export function trackCompareNextSearch(query: string, sourceSlug: string) {
+  captureClient("comparison_search_performed", {
+    search_term: query,
+    result_type: "compare_next_form",
+    placement: "compare_next",
+    source_page: `/compare/${sourceSlug}`,
+  }, { ga: false });
+}
+
 /** One event per submitted query: what they typed, where, and where it went. */
 export function trackSearchSubmitted(props: SearchSubmittedProps) {
   const trimmed = props.query_raw.trim();
@@ -516,6 +527,19 @@ export function trackCompareMissingViewed(props: CompareMissingViewedProps) {
   });
 }
 
+/** ROO-193: a /compare URL with no live page (404 shell or builder). */
+export function trackMissingComparisonLanding(props: {
+  slug: string;
+  referrer_type: MissingLandingReferrerType;
+  mode: MissingLandingMode;
+}) {
+  captureClient("missing_comparison_landing", {
+    slug: props.slug,
+    referrer_type: props.referrer_type,
+    mode: props.mode,
+  });
+}
+
 export type MatchupCta = "request" | "pricing" | "search" | "contact" | "create_on_search" | "request_form";
 
 export interface MatchupRequestedProps {
@@ -538,6 +562,11 @@ export function trackMatchupRequested(props: MatchupRequestedProps) {
 }
 
 /** `/custom-compare` mounted in a real browser. Bots are dropped by captureClient. */
+/** ROO-132 — /custom-compare sent a visitor to the on-demand builder. */
+export function trackCustomCompareBuildStarted(slug: string) {
+  captureClient("custom_compare_build_started", { page: "/custom-compare", slug }, { sendInstantly: true });
+}
+
 export function trackCustomCompareViewed() {
   captureClient("custom_compare_viewed", { page: "/custom-compare" }, { sendInstantly: true });
 }

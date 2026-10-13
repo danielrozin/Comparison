@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
-import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
+import { getComparisonTitlesBySlugs, getTrendingComparisons } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
-import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug } from "@/lib/editorial/blog-authorship";
+import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug, stripUnreviewedBodyByline } from "@/lib/editorial/blog-authorship";
 import { filterLiveCompareSlugs, resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares";
 
@@ -25,6 +25,7 @@ import { generatedCompareTitle, topicBuildSlug, topicCompareCandidates } from "@
 import {
   composeBlogArticleParts,
   decisionComparesForBlog,
+  pairSlugCandidatesFromBlogSlug,
   selectInlineComparisonSlugs,
 } from "@/lib/blog/inline-comparison-card";
 import {
@@ -415,6 +416,7 @@ export default async function BlogPostPage({
   // live-filters — never invent dead /compare hrefs.
   const article = {
     ...rawArticle,
+    content: stripUnreviewedBodyByline(rawArticle.content, slug),
     relatedComparisonSlugs: await resolveBlogRelatedCompareSlugs(
       slug,
       rawArticle.relatedComparisonSlugs ?? []
@@ -438,24 +440,46 @@ export default async function BlogPostPage({
   const liveDecisionSlugs = mappedDecisions.length
     ? await filterLiveCompareSlugs(mappedDecisions.map((item) => item.slug))
     : [];
-  // ROO-180: match the post's own X vs Y (slug + title, both orders,
-  // brand suffixes and -2026/-lounge/-review stripped) against live pages.
-  const topicCandidates = mappedDecisions.length ? [] : topicCompareCandidates(slug, article.title);
+  // ROO-180: the blog slug often names the pair (imax-vs-dolby-cinema-…).
+  // Normalise it into compare slugs and keep only the live ones.
+  const pairCandidates = mappedDecisions.length ? [] : pairSlugCandidatesFromBlogSlug(slug);
+  const livePairSlugs = pairCandidates.length
+    ? await filterLiveCompareSlugs(pairCandidates).catch(() => [] as string[])
+    : [];
+  // ROO-180: also match the title, both orders, brand suffixes stripped.
+  const topicCandidates =
+    mappedDecisions.length || livePairSlugs.length ? [] : topicCompareCandidates(slug, article.title);
   const liveTopicSlugs = topicCandidates.length
-    ? (await filterLiveCompareSlugs(topicCandidates)).slice(0, 1)
+    ? (await filterLiveCompareSlugs(topicCandidates).catch(() => [] as string[])).slice(0, 1)
+    : [];
+  // No live match but the post is clearly X vs Y: link the builder (nofollow)
+  // instead of unrelated popular compares.
+  const topicBuild =
+    mappedDecisions.length === 0 && livePairSlugs.length === 0 && liveTopicSlugs.length === 0
+      ? topicBuildSlug(slug, article.title)
+      : null;
+  // ROO-180: last resort so the card never renders empty — popular live compares.
+  const needsFallback =
+    !topicBuild &&
+    mappedDecisions.length === 0 &&
+    livePairSlugs.length === 0 &&
+    liveTopicSlugs.length === 0 &&
+    liveCompareSlugs.length === 0 &&
+    !/href="\/compare\//i.test(renderedContent);
+  const fallbackCardSlugs = needsFallback
+    ? await getTrendingComparisons(6)
+        .then((rows) => filterLiveCompareSlugs(rows.map((row) => row.slug)))
+        .catch(() => [] as string[])
     : [];
   const inlineCardSlugs = selectInlineComparisonSlugs({
     bodyHtml: renderedContent,
     relatedSlugs: liveCompareSlugs,
     preferredSlugs: liveDecisionSlugs,
     preferMappedOnly: mappedDecisions.length > 0,
+    pairSlugs: livePairSlugs,
+    fallbackSlugs: fallbackCardSlugs,
     topicSlugs: liveTopicSlugs,
   });
-  // No live match but the topic is clearly X vs Y: link the builder (nofollow).
-  const topicBuild =
-    inlineCardSlugs.length === 0 && mappedDecisions.length === 0
-      ? topicBuildSlug(slug, article.title)
-      : null;
   const decisionTitles = Object.fromEntries(
     mappedDecisions.map((item) => [item.slug, item.title]),
   );
@@ -470,7 +494,7 @@ export default async function BlogPostPage({
       decisionTitles[compareSlug] ||
       compareSlug.replace(/-/g, " "),
   }));
-  if (topicBuild) {
+  if (topicBuild && inlineCardLinks.length === 0) {
     inlineCardLinks.push({ slug: topicBuild, title: generatedCompareTitle(topicBuild), generated: true });
   }
   const inlineCompare =
@@ -949,6 +973,7 @@ export default async function BlogPostPage({
                 label: comparisonTitles[compareSlug] || compareSlug.replace(/-/g, " "),
               }))}
               source={slug}
+              placement="blog_hero_cta"
               softHref={BLOG_COMPARE_SOFT_HREF}
             />
             {/* ROO-50: text link under the compare lead, above the headline,
@@ -1086,14 +1111,15 @@ export default async function BlogPostPage({
                   and collapses if the script is blocked. suppressHydrationWarning:
                   publisher.js adds data-initialized and aria-live before React
                   hydrates this empty div. */}
-              <div className="mt-3">
-                <div
-                  google-add-preferred-source-btn=""
-                  data-lang="en"
-                  data-theme="light"
-                  suppressHydrationWarning
-                />
-              </div>
+              {/* ROO-142: static inner HTML so React never reconciles the
+                  nodes publisher.js injects before hydration (#418 HTML). */}
+              <div
+                className="mt-3"
+                suppressHydrationWarning
+                dangerouslySetInnerHTML={{
+                  __html: '<div google-add-preferred-source-btn="" data-lang="en" data-theme="light"></div>',
+                }}
+              />
             </div>
           </section>
 

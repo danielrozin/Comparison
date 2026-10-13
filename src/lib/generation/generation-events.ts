@@ -6,7 +6,12 @@
 import * as Sentry from "@sentry/nextjs";
 import { flushPostHog, getPostHogClient } from "@/lib/posthog-server";
 
-export type GenerationLifecycleEvent = "generation_promoted" | "generation_promotion_failed";
+export type GenerationLifecycleEvent =
+  | "generation_promoted"
+  | "generation_promotion_failed"
+  // ROO-193: the search provider failed, so the gate never ran. Not a
+  // quality failure; the page stays queued with its attempt count unchanged.
+  | "generation_promotion_deferred";
 
 export async function captureGenerationLifecycle(
   event: GenerationLifecycleEvent,
