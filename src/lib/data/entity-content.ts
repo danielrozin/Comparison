@@ -96,8 +96,8 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
   },
   "iphone-17": {
     description:
-      "The iPhone 17 is Apple's flagship smartphone released in 2025, representing the latest evolution of the world's most popular premium phone line. Building on the iPhone 16's foundation, the iPhone 17 features Apple's A19 Pro chip, a ProMotion display with always-on technology, and a significantly upgraded 48MP triple camera system with improved computational photography. The device introduces a new titanium-aluminum hybrid frame that reduces weight while maintaining durability. With iOS 19, the iPhone 17 brings deeper Apple Intelligence integration, including advanced on-device AI processing for photo editing, text generation, and Siri enhancements. Battery life sees a meaningful improvement with the new stacked battery technology, delivering up to 28 hours of video playback. The iPhone 17 comes in four variants: standard, Plus, Pro, and Pro Max, with the Pro models featuring a periscope telephoto lens capable of 5x optical zoom. It supports USB-C, Wi-Fi 7, and the latest 5G Advanced connectivity.",
-    highlights: ["A19 Pro chip", "48MP triple camera", "Apple Intelligence AI", "Up to 28h battery life"],
+      "The iPhone 17 is Apple's 6.3-inch iPhone with an A19 chip, a 6-core CPU with 2 performance and 4 efficiency cores, and a 5-core GPU. The Super Retina XDR display has ProMotion with refresh rates up to 120Hz, an Always-On display, and the Dynamic Island. On the back is a 48MP Dual Fusion camera system: a 48MP Fusion Main camera and a 48MP Fusion Ultra Wide camera with a 120-degree field of view, with 2x optical-quality zoom and a 4x optical zoom range. The front camera is an 18MP Center Stage camera. Apple rates battery life at up to 30 hours of video playback and up to 27 hours of streamed video, and says it reaches 50% charge in 20 minutes with a 40W adapter or higher. It weighs 177 grams, comes in 256GB and 512GB, is rated IP68, and adds Camera Control, Wi-Fi 7, Bluetooth 6, and Apple's N1 wireless chip.",
+    highlights: ["A19 chip", "48MP Dual Fusion camera", "120Hz ProMotion display", "Up to 30h video playback"],
     category: "technology",
     alternatives: [
       { name: "Samsung Galaxy S26", slug: "samsung-galaxy-s26", reason: "Top Android flagship competitor" },
@@ -108,9 +108,9 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { name: "Sony Xperia 1 VII", slug: "sony-xperia-1-vii", reason: "Best for photography enthusiasts" },
     ],
     faqs: [
-      { question: "When was the iPhone 17 released?", answer: "The iPhone 17 was released in September 2025 as part of Apple's annual flagship refresh cycle." },
-      { question: "What chip does the iPhone 17 use?", answer: "The iPhone 17 uses Apple's A19 Pro chip, built on a 3nm process, delivering significant improvements in AI processing and energy efficiency." },
-      { question: "Does the iPhone 17 have USB-C?", answer: "Yes, following the iPhone 15's transition, the iPhone 17 uses USB-C with Thunderbolt support on the Pro models." },
+      { question: "What chip does the iPhone 17 use?", answer: "The iPhone 17 uses Apple's A19 chip, with a 6-core CPU and a 5-core GPU. The A19 Pro is in the iPhone 17 Pro, iPhone 17 Pro Max, and iPhone Air." },
+      { question: "How many rear cameras does the iPhone 17 have?", answer: "Two. The 48MP Dual Fusion system pairs a 48MP Fusion Main camera with a 48MP Fusion Ultra Wide camera. The front camera is an 18MP Center Stage camera." },
+      { question: "What is the iPhone 17 battery life?", answer: "Apple rates the iPhone 17 for up to 30 hours of video playback and up to 27 hours of streamed video. It reaches 50% charge in 20 minutes with a 40W adapter or higher." },
     ],
   },
   "samsung-galaxy-s26": {
@@ -8011,7 +8011,7 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
     category: "technology",
     alternatives: [
       { name: "Apple Maps", slug: "apple-maps", reason: "Better privacy (no Google data collection), improved quality since 2020" },
-      { name: "Waze", slug: "waze", reason: "Best real-time crowd-sourced traffic and hazard alerts (owned by Google)" },
+      { name: "Waze", slug: "waze", reason: "Best real-time crowd-sourced traffic and hazard alerts. Google-owned since 2013, so not a way off Google" },
       { name: "HERE Maps", slug: "here-maps", reason: "Offline maps, better in Europe, used by automakers" },
     ],
     faqs: [

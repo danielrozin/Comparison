@@ -7,6 +7,7 @@ import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs, faqSche
 import { StarRating } from "@/components/ui/StarRating";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { isEntityPageIndexable, resolveEntityPageStatuses } from "@/lib/seo/entity-page-indexable";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -138,6 +139,13 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
 
   if (!aggregation && total === 0) notFound();
 
+  // ROO-204: /alternatives/[slug] 404s unless the entity is published (#386).
+  // Only reference it from schema and FAQ copy when it is live. A failed DB
+  // lookup stays optimistic, matching resolveEntityPageStatuses.
+  const alternativesLive = isEntityPageIndexable(
+    (await resolveEntityPageStatuses([slug])).get(slug),
+  );
+
   const name = humanizeEntityName(slug);
 
   const title = aggregation
@@ -216,7 +224,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       // significantLink — links to entity profile and alternatives page for AI graph traversal.
       significantLink: [
         `${SITE_URL}/entity/${slug}`,
-        `${SITE_URL}/alternatives/${slug}`,
+        ...(alternativesLive ? [`${SITE_URL}/alternatives/${slug}`] : []),
       ],
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
@@ -272,7 +280,9 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       // connects this ReviewPage to the entity's broader knowledge graph.
       mentions: [
         { "@type": "WebPage", "@id": `${SITE_URL}/entity/${slug}#profilepage`, name: `${name} Profile`, url: `${SITE_URL}/entity/${slug}` },
-        { "@type": "WebPage", "@id": `${SITE_URL}/alternatives/${slug}#article`, name: `${name} Alternatives`, url: `${SITE_URL}/alternatives/${slug}` },
+        ...(alternativesLive
+          ? [{ "@type": "WebPage", "@id": `${SITE_URL}/alternatives/${slug}#article`, name: `${name} Alternatives`, url: `${SITE_URL}/alternatives/${slug}` }]
+          : []),
       ],
     },
   ];
@@ -377,7 +387,9 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
     },
     {
       question: `Where can I compare ${name} with alternatives?`,
-      answer: `You can compare ${name} head-to-head with alternatives on A Versus B at aversusb.net/alternatives/${slug}. The site also has a full entity profile at aversusb.net/entity/${slug} with comparison data and rankings.`,
+      answer: alternativesLive
+        ? `You can compare ${name} head-to-head with alternatives on A Versus B at aversusb.net/alternatives/${slug}. The site also has a full entity profile at aversusb.net/entity/${slug} with comparison data and rankings.`
+        : `You can compare ${name} head-to-head with alternatives on A Versus B's comparison pages at aversusb.net/entity/${slug}, which lists every ${name} comparison with data and rankings.`,
     },
   ];
   schemas.push(

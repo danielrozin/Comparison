@@ -14,14 +14,18 @@ import { BRAVE_VS_CHROME } from "./brave-vs-chrome";
 import { IPHONE_17_VS_IPHONE_AIR } from "./iphone-17-vs-iphone-air";
 import { CHROME_VS_SAFARI } from "./chrome-vs-safari";
 import { IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA } from "./iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
+import { ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA } from "./oneplus-15-vs-samsung-galaxy-s26-ultra-vs-samsung-galaxy-s25-ultra";
 import { ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000 } from "./anker-solix-solarbank-4-pro-vs-ecoflow-stream-5000";
 import { IPHONE_17_PRO_VS_IPHONE_18_PRO } from "./iphone-17-pro-vs-iphone-18-pro";
+import { IPHONE_17_VS_IPHONE_17E } from "./iphone-17-vs-iphone-17e";
+import { IPHONE_17_PRO_MAX_VS_IPHONE_18_PRO_MAX } from "./iphone-17-pro-max-vs-iphone-18-pro-max";
 import { KNICKS_VS_76ERS } from "./knicks-vs-76ers";
 import { SGA_VS_WEMBANYAMA } from "./shai-gilgeous-alexander-vs-victor-wembanyama";
 import { OKLAHOMA_CITY_THUNDER_VS_SPURS } from "./oklahoma-city-thunder-vs-spurs";
 import { KNICKS_VS_SPURS } from "./knicks-vs-spurs";
 import { FLAGG_VS_WEMBANYAMA } from "./flagg-vs-wembanyama";
 import { APPLE_WATCH_SERIES_12_VS_FITBIT_AIR } from "./apple-watch-series-12-vs-fitbit-air";
+import { APPLE_WATCH_SERIES_12_VS_WHOOP } from "./apple-watch-series-12-vs-whoop";
 import { DAMIAN_LILLARD_VS_JA_MORANT } from "./damian-lillard-vs-ja-morant";
 import { LEBRON_JAMES_VS_STEPHEN_CURRY } from "./lebron-james-vs-stephen-curry";
 import { JORDAN_VS_KOBE } from "./jordan-vs-kobe";
@@ -45,6 +49,7 @@ import { MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5 } from "./macbook-air-m5-vs-macbook-pr
 import { CASHIERS_CHECK_VS_MONEY_ORDER } from "./cashiers-check-vs-money-order";
 import { CASHIERS_CHECK_VS_CERTIFIED_CHECK } from "./cashiers-check-vs-certified-check";
 import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
+import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import type { EditorialComparison } from "./types";
 
@@ -78,14 +83,18 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [IPHONE_17_VS_IPHONE_AIR.slug]: IPHONE_17_VS_IPHONE_AIR,
   [CHROME_VS_SAFARI.slug]: CHROME_VS_SAFARI,
   [IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA.slug]: IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA,
+  [ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA.slug]: ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA,
   [ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000.slug]: ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000,
   [IPHONE_17_PRO_VS_IPHONE_18_PRO.slug]: IPHONE_17_PRO_VS_IPHONE_18_PRO,
+  [IPHONE_17_VS_IPHONE_17E.slug]: IPHONE_17_VS_IPHONE_17E,
+  [IPHONE_17_PRO_MAX_VS_IPHONE_18_PRO_MAX.slug]: IPHONE_17_PRO_MAX_VS_IPHONE_18_PRO_MAX,
   [KNICKS_VS_76ERS.slug]: KNICKS_VS_76ERS,
   [SGA_VS_WEMBANYAMA.slug]: SGA_VS_WEMBANYAMA,
   [OKLAHOMA_CITY_THUNDER_VS_SPURS.slug]: OKLAHOMA_CITY_THUNDER_VS_SPURS,
   [KNICKS_VS_SPURS.slug]: KNICKS_VS_SPURS,
   [FLAGG_VS_WEMBANYAMA.slug]: FLAGG_VS_WEMBANYAMA,
   [APPLE_WATCH_SERIES_12_VS_FITBIT_AIR.slug]: APPLE_WATCH_SERIES_12_VS_FITBIT_AIR,
+  [APPLE_WATCH_SERIES_12_VS_WHOOP.slug]: APPLE_WATCH_SERIES_12_VS_WHOOP,
   [DAMIAN_LILLARD_VS_JA_MORANT.slug]: DAMIAN_LILLARD_VS_JA_MORANT,
   [LEBRON_JAMES_VS_STEPHEN_CURRY.slug]: LEBRON_JAMES_VS_STEPHEN_CURRY,
   [JORDAN_VS_KOBE.slug]: JORDAN_VS_KOBE,
@@ -109,6 +118,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CASHIERS_CHECK_VS_CERTIFIED_CHECK.slug]: CASHIERS_CHECK_VS_CERTIFIED_CHECK,
   [RX_9070_XT_VS_RTX_5080.slug]: RX_9070_XT_VS_RTX_5080,
   [GALAXY_S26_VS_GALAXY_S26_ULTRA.slug]: GALAXY_S26_VS_GALAXY_S26_ULTRA,
+  [RX_9060_XT_VS_RTX_5060_TI.slug]: RX_9060_XT_VS_RTX_5060_TI,
   [MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5.slug]: MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5,
 };
 

@@ -7,6 +7,8 @@ import type { InlineCardPosition } from "@/lib/blog/inline-comparison-card";
 export interface InlineComparisonLink {
   slug: string;
   title: string;
+  /** ROO-180: no live page yet; the link opens the on-demand builder. */
+  generated?: boolean;
 }
 
 /**
@@ -25,7 +27,9 @@ export function BlogInlineComparisonCard({
   position: InlineCardPosition;
   links: readonly InlineComparisonLink[];
 }) {
-  if (links.length === 0) return null;
+  // Never render an empty card.
+  const usable = links.filter((link) => Boolean(link.slug));
+  if (usable.length === 0) return null;
 
   const sourcePage = `/blog/${articleSlug}`;
   const headingId = `compare-options-in-article-${position}`;
@@ -47,15 +51,19 @@ export function BlogInlineComparisonCard({
         Head-to-head pages for the choices this article covers.
       </p>
       <ul className="mt-3 flex flex-col gap-2 list-none m-0 p-0">
-        {links.map((link) => (
+        {usable.map((link) => (
           <li key={link.slug} className="min-w-0">
             <Link
               href={`/compare/${link.slug}?source_page=${encodeURIComponent(sourcePage)}`}
+              rel={link.generated ? "nofollow" : undefined}
+              data-generated={link.generated ? "true" : undefined}
               onClick={() =>
                 trackRelatedComparisonClick(sourcePage, link.slug, {
                   placement: "blog_inline_card",
                   position,
                   article_slug: articleSlug,
+                  comparison_slug: link.slug,
+                  generated: Boolean(link.generated),
                 })
               }
               className="flex items-center gap-3 min-h-11 w-full rounded-lg border border-primary-100 bg-white px-3 py-2.5 text-sm font-semibold text-primary-800 hover:border-primary-300 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
