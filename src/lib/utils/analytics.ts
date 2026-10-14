@@ -307,6 +307,8 @@ export type RelatedComparisonClickExtra = {
   comparison_slug?: string;
   /** ROO-180: true when the link opens the on-demand builder (no live page yet). */
   generated?: boolean;
+  /** ROO-224: set when the card links a non-compare page (an /entity fallback). */
+  target_href?: string;
 };
 
 export function trackRelatedComparisonClick(
@@ -325,6 +327,7 @@ export function trackRelatedComparisonClick(
   if (extra?.article_slug) props.article_slug = extra.article_slug;
   if (extra?.comparison_slug) props.comparison_slug = extra.comparison_slug;
   if (typeof extra?.generated === "boolean") props.generated = String(extra.generated);
+  if (extra?.target_href) props.target_href = extra.target_href;
 
   trackEvent("related_comparison_click", props);
   // ROO-30: was GA-only — PostHog never saw blog-hub/home CTA clicks

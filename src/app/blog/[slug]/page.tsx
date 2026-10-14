@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
-import { getComparisonTitlesBySlugs, getTrendingComparisons } from "@/lib/services/comparison-service";
+import {
+  getComparisonTitlesBySlugs,
+  getComparisonsForEntity,
+  getTrendingComparisons,
+} from "@/lib/services/comparison-service";
+import { blogCompareFallbackLinks } from "@/lib/blog/blog-compare-fallback";
+import { prisma } from "@/lib/db/prisma";
+import { humanizeEntityName } from "@/lib/utils/humanize";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
@@ -21,7 +28,7 @@ import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
 import { BlogArticleProse, type ArticleRenderPart } from "@/components/blog/BlogArticleProse";
 import type { InlineComparisonLink } from "@/components/blog/BlogInlineComparisonCard";
-import { generatedCompareTitle, topicBuildSlug, topicCompareCandidates } from "@/lib/blog/blog-topic-compare";
+import { topicCompareCandidates } from "@/lib/blog/blog-topic-compare";
 import {
   composeBlogArticleParts,
   decisionComparesForBlog,
@@ -394,6 +401,15 @@ export async function generateMetadata({
   };
 }
 
+/** ROO-224: entity slugs with a published /entity page (the page's own gate). */
+async function publishedEntitySlugs(slugs: string[]): Promise<Set<string>> {
+  const rows = await prisma.entity.findMany({
+    where: { slug: { in: slugs }, status: "published" },
+    select: { slug: true },
+  });
+  return new Set(rows.map((row) => row.slug));
+}
+
 // ---------- Page ----------
 
 export default async function BlogPostPage({
@@ -452,15 +468,20 @@ export default async function BlogPostPage({
   const liveTopicSlugs = topicCandidates.length
     ? (await filterLiveCompareSlugs(topicCandidates).catch(() => [] as string[])).slice(0, 1)
     : [];
-  // No live match but the post is clearly X vs Y: link the builder (nofollow)
-  // instead of unrelated popular compares.
-  const topicBuild =
+  // ROO-224: no live match. Never link the missing pair (78 blog CTAs were
+  // 404s). Link the closest live compares or the two entity pages instead.
+  const nearbyLinks =
     mappedDecisions.length === 0 && livePairSlugs.length === 0 && liveTopicSlugs.length === 0
-      ? topicBuildSlug(slug, article.title)
-      : null;
+      ? await blogCompareFallbackLinks(slug, article.title, {
+          comparisonsForEntity: getComparisonsForEntity,
+          filterLive: filterLiveCompareSlugs,
+          publishedEntities: publishedEntitySlugs,
+          entityLabel: humanizeEntityName,
+        }).catch(() => [])
+      : [];
   // ROO-180: last resort so the card never renders empty — popular live compares.
   const needsFallback =
-    !topicBuild &&
+    nearbyLinks.length === 0 &&
     mappedDecisions.length === 0 &&
     livePairSlugs.length === 0 &&
     liveTopicSlugs.length === 0 &&
@@ -494,9 +515,7 @@ export default async function BlogPostPage({
       decisionTitles[compareSlug] ||
       compareSlug.replace(/-/g, " "),
   }));
-  if (topicBuild && inlineCardLinks.length === 0) {
-    inlineCardLinks.push({ slug: topicBuild, title: generatedCompareTitle(topicBuild), generated: true });
-  }
+  if (inlineCardLinks.length === 0) inlineCardLinks.push(...nearbyLinks);
   const inlineCompare =
     slug === CASHIERS_CHECK_BLOG_SLUG
       ? {

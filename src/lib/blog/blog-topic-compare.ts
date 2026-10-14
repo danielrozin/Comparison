@@ -20,13 +20,24 @@ const STOP_TOKENS = new Set([
   "lounge", "lounges", "access", "price", "prices", "pricing", "cost", "costs",
   "pros", "cons", "difference", "differences", "key", "full", "ultimate", "honest",
   "it", "really", "more", "runs", "wins", "win", "winner", "premium", "ticket", "tickets",
-  "2", "3",
+  // ROO-224: words that end a side in buying-guide titles. Without them
+  // "steam-vs-gog-where-to-buy" became gog-where-vs-steam.
+  "where", "how", "why", "when", "buy", "buying", "choose", "pick", "world", "cup",
+  "total", "ownership", "head", "stats", "history", "rivalry", "prediction",
+  "season", "breakdown", "career", "admissions", "programs", "real", "evidence",
+  "does", "matter", "after", "vs.",
 ]);
 
 /** Generic trailing words: try the brand with and without them. */
 const BRAND_SUFFIXES = new Set(["airlines", "airline", "airways", "cinema", "cinemas", "inc", "app", "card", "cards"]);
 
 const MAX_SIDE_TOKENS = 3;
+
+/** Product tiers that share the brand on the left ("mastercard-gold vs platinum"). */
+const TIER_WORDS = new Set([
+  "gold", "platinum", "silver", "infinite", "signature", "black", "basic", "standard",
+  "plus", "ultra", "max", "mini", "lite",
+]);
 
 function sideOptions(tokens: string[]): string[] {
   const out: string[] = [];
@@ -117,13 +128,40 @@ export function topicCompareCandidates(blogSlug: string, title?: string | null):
  * post is not clearly about two things. Uses the most specific names.
  */
 export function topicBuildSlug(blogSlug: string, title?: string | null): string | null {
+  const sides = topicSides(blogSlug, title);
+  if (!sides) return null;
+  return canonicalRequestedComparisonSlug(`${sides[0]}-vs-${sides[1]}`);
+}
+
+/**
+ * ROO-224: the two full entity names a post compares, or null.
+ *
+ * Each side is the whole run of words up to a stop word. The old code took
+ * the first two words of the right side, which cut titles short
+ * ("free-vs-paid-password", "sp-500-vs-total-stock"). Two shapes are not two
+ * entities and return null or get repaired:
+ * - one modifier against a longer noun phrase ("free vs paid password
+ *   managers") is a single topic, so null;
+ * - a branded tier against a bare tier ("mastercard-gold vs platinum")
+ *   carries the brand over ("mastercard-platinum").
+ */
+export function topicSides(blogSlug: string, title?: string | null): [string, string] | null {
   const pair = topicPairFromText(blogSlug) ?? (title ? topicPairFromText(title) : null);
   if (!pair) return null;
-  const a = pair.left[pair.left.length - 1];
-  // Prefer the two-word right side ("dolby-cinema"), else the shortest.
-  const b = pair.right.find((value) => value.split("-").length === 2) ?? pair.right[0];
+  const longest = (values: string[]) =>
+    values.reduce((best, value) => (value.split("-").length > best.split("-").length ? value : best), values[0]);
+  const a = longest(pair.left);
+  let b = longest(pair.right);
   if (!a || !b || a === b) return null;
-  return canonicalRequestedComparisonSlug(`${a}-vs-${b}`);
+  const aWords = a.split("-");
+  const bWords = b.split("-");
+  if (aWords.length === 1 && bWords.length >= 3) return null;
+  if (bWords.length === 1 && aWords.length >= 3) return null;
+  if (aWords.length === 2 && bWords.length === 1 && TIER_WORDS.has(aWords[1]) && TIER_WORDS.has(b)) {
+    b = `${aWords[0]}-${b}`;
+  }
+  if (a === b) return null;
+  return [a, b];
 }
 
 /** "Dolby Cinema vs IMAX" style label for a builder link. */
