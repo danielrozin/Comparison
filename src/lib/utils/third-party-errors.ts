@@ -17,6 +17,7 @@ const THIRD_PARTY_SOURCES = [
   "moz-extension://",
   "safari-extension://",
   "safari-web-extension://",
+  "webkit-masked-url://", // Safari hides extension and injected script URLs
 ] as const;
 
 interface StackFrame {
