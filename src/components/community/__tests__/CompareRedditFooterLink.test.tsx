@@ -14,7 +14,7 @@ describe("compare footer Reddit link", () => {
     render(<CompareRedditFooterLink compareSlug="deel-vs-remote" />);
     const link = screen.getByRole("link", { name: "Debate this on r/ThisOrThatDebate" });
     expect(link).toHaveAttribute("href", COMPARE_FOOTER_REDDIT_THREAD_URL);
-    expect(COMPARE_FOOTER_REDDIT_THREAD_URL).toBe("https://www.reddit.com/r/ThisOrThatDebate/comments/1wzxcdi/");
+    expect(COMPARE_FOOTER_REDDIT_THREAD_URL).toBe("https://www.reddit.com/r/ThisOrThatDebate/comments/1x5l7i0/");
     expect(link.getAttribute("href")).not.toMatch(/utm_/);
     expect(link).toHaveAttribute("rel", "noopener");
     expect(screen.getByTestId("compare-reddit-footer").textContent).toContain("(run by the AversusB team)");
