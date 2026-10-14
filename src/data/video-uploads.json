@@ -5487,6 +5487,114 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-13T12:43:48.420Z"
+    },
+    {
+      "slug": "real-madrid-vs-barcelona",
+      "title": "Real Madrid vs Barcelona",
+      "entityA": "Real Madrid",
+      "entityB": "FC Barcelona",
+      "category": "sports",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "real-madrid-vs-barcelona.mp4",
+      "durationSeconds": 41,
+      "transcript": "Fifteen European Cups. Nobody else has even reached ten. That's the whole argument. One club collects trophies. The other built the greatest player football has ever seen. Real has three times Barcelona's European titles. Nobody is catching that. Thirty five leagues to twenty seven. Eight seasons of daylight in Spain. At 6.6 billion, Real is the most valuable club on earth. Real bought Ronaldo. Barcelona grew Messi from a kid. Different kind of flex. Real Madrid wins 3-0 on the numbers. Pick Barcelona if you care how football looks.",
+      "chapters": [
+        {
+          "name": "Real Madrid vs FC Barcelona",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 13
+        },
+        {
+          "name": "Round 1: UEFA Champions League Titles",
+          "startOffset": 13,
+          "endOffset": 19
+        },
+        {
+          "name": "Round 2: La Liga Titles",
+          "startOffset": 19,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 3: Club Value",
+          "startOffset": 25,
+          "endOffset": 30
+        },
+        {
+          "name": "Round 4: Best Player Produced",
+          "startOffset": 30,
+          "endOffset": 37
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 37,
+          "endOffset": 43
+        }
+      ],
+      "youtubeTitle": "Real Madrid vs Barcelona: The Trophy Count Is Not Close",
+      "youtubeDescription": "A head to head between Real Madrid and FC Barcelona on Champions League titles, La Liga titles, club valuation, and the greatest player each club gave the game. Real Madrid leads 15 European Cups to 5 and 35 leagues to 27, but Barcelona has Messi. Full breakdown and a clear verdict.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/real-madrid-vs-barcelona\n\nFull comparison: https://www.aversusb.net/compare/real-madrid-vs-barcelona",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-14T10:02:31.204Z"
+    },
+    {
+      "slug": "virat-kohli-vs-sachin-tendulkar",
+      "title": "Virat Kohli vs Sachin Tendulkar",
+      "entityA": "Virat Kohli",
+      "entityB": "Sachin Tendulkar",
+      "category": "sports",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "virat-kohli-vs-sachin-tendulkar.mp4",
+      "durationSeconds": 41,
+      "transcript": "One man scored a hundred international hundreds. Nobody else has reached ninety. Records versus the modern machine. One built the mountain, one is still climbing. Eighty-two is extraordinary. One hundred is a number built to never fall. Thirty-four thousand runs. Kohli needs eight thousand more just to draw level. Fifty-three in Tests is pure Test greatness. Forty-nine is merely excellent. Twenty-four years at the top. Kohli has been going since 2008 and counting. Sachin takes it four-nil on numbers. Pick Kohli if chasing matters more than records.",
+      "chapters": [
+        {
+          "name": "Virat Kohli vs Sachin Tendulkar",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 12
+        },
+        {
+          "name": "Round 1: International Centuries",
+          "startOffset": 12,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: International Runs",
+          "startOffset": 17,
+          "endOffset": 23
+        },
+        {
+          "name": "Round 3: Test Average",
+          "startOffset": 23,
+          "endOffset": 30
+        },
+        {
+          "name": "Round 4: Career Duration",
+          "startOffset": 30,
+          "endOffset": 37
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 37,
+          "endOffset": 43
+        }
+      ],
+      "youtubeTitle": "Virat Kohli vs Sachin Tendulkar: The Numbers Settle It",
+      "youtubeDescription": "A head-to-head look at Virat Kohli and Sachin Tendulkar across international centuries, total runs, Test average and career length. Tendulkar's 100 hundreds and 34,357 runs set the benchmark, while Kohli's 82 centuries keep the argument alive. Here is what the numbers actually say.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/virat-kohli-vs-sachin-tendulkar\n\nImage credits:\nImage A by Prime Minister's Office (GODL-India) — https://commons.wikimedia.org/wiki/File:Virat_Kohli_during_the_India_vs_Aus_4th_Test_match_at_Narendra_Modi_Stadium_on_09_March_2023.jpg\nImage B by British High Commission, New Delhi (CC BY-SA 2.0) — https://commons.wikimedia.org/wiki/File:The_cricket_legend_Sachin_Tendulkar_at_the_Oval_Maidan_in_Mumbai_During_the_Duke_and_Duchess_of_Cambridge_Visit(26271019082).jpg\n\nFull comparison: https://www.aversusb.net/compare/virat-kohli-vs-sachin-tendulkar",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-14T10:09:05.760Z"
     }
   ]
 }

@@ -1,0 +1,129 @@
+{
+  "title": "Real Madrid vs Barcelona",
+  "entityA": "Real Madrid",
+  "entityB": "FC Barcelona",
+  "category": "sports",
+  "shortAnswer": "Real Madrid has a record 15 UEFA Champions League titles and 35 La Liga titles. Barcelona has 5 Champions Leagues and 27 La Liga titles, plus produced the greatest player ever in Messi. El Clásico is the most watched club football match in the world.",
+  "stats": [
+    {
+      "label": "UEFA Champions League Titles",
+      "valueA": "15",
+      "valueB": "5",
+      "winner": "a"
+    },
+    {
+      "label": "La Liga Titles",
+      "valueA": "35",
+      "valueB": "27",
+      "winner": "a"
+    },
+    {
+      "label": "Club Value",
+      "valueA": "$6.6B",
+      "valueB": "$5.1B",
+      "winner": "a"
+    },
+    {
+      "label": "Best Player Produced",
+      "valueA": "Ronaldo (signed)",
+      "valueB": "Messi (homegrown)",
+      "winner": "tie"
+    }
+  ],
+  "verdict": "Real Madrid leads in Champions League titles. Barcelona led in the Messi era (2008-2015) with arguably the greatest club football ever played. Both are the world's greatest clubs.",
+  "slug": "real-madrid-vs-barcelona",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Fifteen European Cups. Nobody else has even reached ten. That's the whole argument.",
+    "tape": "One club collects trophies. The other built the greatest player football has ever seen.",
+    "rounds": [
+      "Real has three times Barcelona's European titles. Nobody is catching that.",
+      "Thirty five leagues to twenty seven. Eight seasons of daylight in Spain.",
+      "At 6.6 billion, Real is the most valuable club on earth.",
+      "Real bought Ronaldo. Barcelona grew Messi from a kid. Different kind of flex."
+    ],
+    "verdict": "Real Madrid wins 3-0 on the numbers. Pick Barcelona if you care how football looks."
+  },
+  "audio": {
+    "cold": "video-assets/real-madrid-vs-barcelona/audio/cold.mp3",
+    "tape": "video-assets/real-madrid-vs-barcelona/audio/tape.mp3",
+    "rounds": [
+      "video-assets/real-madrid-vs-barcelona/audio/round-1.mp3",
+      "video-assets/real-madrid-vs-barcelona/audio/round-2.mp3",
+      "video-assets/real-madrid-vs-barcelona/audio/round-3.mp3",
+      "video-assets/real-madrid-vs-barcelona/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/real-madrid-vs-barcelona/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 214,
+    "tape": 180,
+    "rounds": [
+      178,
+      175,
+      150,
+      207
+    ],
+    "verdict": 197,
+    "leadInFrames": 9
+  },
+  "transcript": "Fifteen European Cups. Nobody else has even reached ten. That's the whole argument. One club collects trophies. The other built the greatest player football has ever seen. Real has three times Barcelona's European titles. Nobody is catching that. Thirty five leagues to twenty seven. Eight seasons of daylight in Spain. At 6.6 billion, Real is the most valuable club on earth. Real bought Ronaldo. Barcelona grew Messi from a kid. Different kind of flex. Real Madrid wins 3-0 on the numbers. Pick Barcelona if you care how football looks.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Fifteen European Cups. Nobody else has even reached ten. That's the whole argument.",
+      "startOffset": 0,
+      "endOffset": 7.119388
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One club collects trophies. The other built the greatest player football has ever seen.",
+      "startOffset": 7.119388,
+      "endOffset": 13.11551
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Real has three times Barcelona's European titles. Nobody is catching that.",
+      "startOffset": 13.11551,
+      "endOffset": 19.033265
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Thirty five leagues to twenty seven. Eight seasons of daylight in Spain.",
+      "startOffset": 19.033265,
+      "endOffset": 24.872653
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "At 6.6 billion, Real is the most valuable club on earth.",
+      "startOffset": 24.872653,
+      "endOffset": 29.872653
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Real bought Ronaldo. Barcelona grew Messi from a kid. Different kind of flex.",
+      "startOffset": 29.872653,
+      "endOffset": 36.756939
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Real Madrid wins 3-0 on the numbers. Pick Barcelona if you care how football looks.",
+      "startOffset": 36.756939,
+      "endOffset": 43.327755
+    }
+  ],
+  "youtubeTitle": "Real Madrid vs Barcelona: The Trophy Count Is Not Close",
+  "youtubeDescription": "A head to head between Real Madrid and FC Barcelona on Champions League titles, La Liga titles, club valuation, and the greatest player each club gave the game. Real Madrid leads 15 European Cups to 5 and 35 leagues to 27, but Barcelona has Messi. Full breakdown and a clear verdict.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/real-madrid-vs-barcelona",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
