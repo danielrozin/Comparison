@@ -9,6 +9,8 @@ export interface InlineComparisonLink {
   title: string;
   /** ROO-180: no live page yet; the link opens the on-demand builder. */
   generated?: boolean;
+  /** ROO-224: a non-compare target (an /entity page) when no compare is live. */
+  href?: string;
 }
 
 /**
@@ -54,7 +56,7 @@ export function BlogInlineComparisonCard({
         {usable.map((link) => (
           <li key={link.slug} className="min-w-0">
             <Link
-              href={`/compare/${link.slug}?source_page=${encodeURIComponent(sourcePage)}`}
+              href={`${link.href ?? `/compare/${link.slug}`}?source_page=${encodeURIComponent(sourcePage)}`}
               rel={link.generated ? "nofollow" : undefined}
               data-generated={link.generated ? "true" : undefined}
               onClick={() =>
@@ -64,6 +66,7 @@ export function BlogInlineComparisonCard({
                   article_slug: articleSlug,
                   comparison_slug: link.slug,
                   generated: Boolean(link.generated),
+                  ...(link.href ? { target_href: link.href } : {}),
                 })
               }
               className="flex items-center gap-3 min-h-11 w-full rounded-lg border border-primary-100 bg-white px-3 py-2.5 text-sm font-semibold text-primary-800 hover:border-primary-300 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
