@@ -32,6 +32,19 @@ function isThirdPartySource(filename: string): boolean {
   return THIRD_PARTY_SOURCES.some((source) => filename.includes(source));
 }
 
+// In-page translation (Chrome, Edge) swaps the text nodes React rendered.
+// React then fails to insert or remove a node next to one that is gone, and
+// the stack holds only React frames. We drop it only when the browser language
+// is not English, so the same crash from an English browser still reaches us.
+const DOM_MUTATION_ERROR = /NotFoundError: Failed to execute '(insertBefore|removeChild)' on 'Node'/;
+
+function isTranslationDomError(list: ExceptionItem[], language: unknown): boolean {
+  if (typeof language !== "string" || !language) return false;
+  if (language.toLowerCase().startsWith("en")) return false;
+
+  return list.some((item) => DOM_MUTATION_ERROR.test(item?.value ?? ""));
+}
+
 /**
  * True when a PostHog `$exception` event originates entirely in third-party
  * code. First-party errors stay untouched: a single frame in our own code
@@ -45,6 +58,7 @@ export function isThirdPartyException(
 
   const list = properties?.["$exception_list"];
   if (!Array.isArray(list)) return false;
+  if (isTranslationDomError(list as ExceptionItem[], properties?.["$browser_language"])) return true;
 
   const filenames: string[] = [];
   let opaqueScriptError = false;
