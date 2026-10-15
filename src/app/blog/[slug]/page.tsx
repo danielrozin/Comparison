@@ -428,6 +428,8 @@ async function topicFallbackCardLinks(
   nearby: InlineComparisonLink[],
 ): Promise<InlineComparisonLink[]> {
   const buildSlug = topicBuildSlug(blogSlug, title);
+  // Tags are broad ("fitness", "software"); they only add weight to slug and
+  // title words, they never lead.
   const keywords = topicKeywords(blogSlug, title, ...tags);
   const [build, topicCompares] = await Promise.all([
     buildSlug ? decideBuildRouteLive(buildSlug).catch(() => null) : Promise.resolve(null),

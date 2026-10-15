@@ -49,6 +49,18 @@ describe("ROO-234 topic compares", () => {
     expect(links).toEqual([]);
   });
 
+  it("ignores hits that only match a minor keyword", async () => {
+    const links = await matchTopicCompares(["calorie", "fitness", "galaxy"], {
+      search: async () => [{ slug: "galaxy-s25-vs-galaxy-s25-fe", title: "Galaxy S25 vs Galaxy S25 FE" }],
+      filterLive: async (s) => s,
+    });
+    expect(links).toEqual([]);
+  });
+
+  it("treats premium and ticket as filler", () => {
+    expect(topicKeywords("imax-vs-dolby-cinema-2026-is-the-premium-ticket-worth-it")).not.toContain("premium");
+  });
+
   it("matches whole words, or glued brand words of 6+ letters", () => {
     expect(mentions({ slug: "airpods-vs-galaxy-buds", title: "" }, "air")).toBe(false);
     expect(mentions({ slug: "1password-vs-bitwarden", title: "" }, "password")).toBe(true);

@@ -44,7 +44,11 @@ const GENERIC = new Set([
   "alternative", "alternatives", "pros", "cons", "full", "key", "main", "side", "honest", "win",
   "wins", "winner", "matter", "should", "career", "path", "world", "today", "now", "tech",
   "menu", "recipe", "recipes", "calculator", "step", "steps", "easy", "simple", "quick",
+  "premium", "ticket", "tickets", "changed", "change", "changes", "safe", "legit", "deal", "deals",
 ]);
+
+/** ROO-234: a match must hit one of the post's first few topic words. */
+const PRIMARY_KEYWORDS = 2;
 for (const category of CATEGORIES) {
   for (const word of slugify(category.slug).split("-")) GENERIC.add(word);
   for (const word of slugify(category.name).split("-")) GENERIC.add(word);
@@ -121,9 +125,10 @@ export const TOPIC_PAGES: TopicPage[] = [
 /** Topic pages sharing the most keywords with the post (at least one). */
 export function matchTopicPages(keywords: string[], pages: TopicPage[] = TOPIC_PAGES, limit = 1): TopicLink[] {
   const set = new Set(keywords);
+  const primary = keywords.slice(0, PRIMARY_KEYWORDS);
   return pages
     .map((page) => ({ page, score: Array.from(page.keywords).filter((word) => set.has(word)).length }))
-    .filter((item) => item.score > 0)
+    .filter((item) => item.score > 0 && primary.some((word) => item.page.keywords.has(word)))
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
     .map(({ page }) => ({ slug: page.href.replace(/^\//, ""), title: page.title, href: page.href }));
@@ -150,6 +155,7 @@ export async function matchTopicCompares(
   deps: TopicRelevanceDeps,
   limit = 3,
 ): Promise<TopicLink[]> {
+  const primary = keywords.slice(0, PRIMARY_KEYWORDS);
   const queries = keywords.filter((word) => word.length >= 4).slice(0, MAX_QUERIES);
   if (queries.length === 0) return [];
   const results = await Promise.all(queries.map((q) => deps.search(q).catch(() => [])));
@@ -159,7 +165,7 @@ export async function matchTopicCompares(
     for (const row of list) {
       if (rows.has(row.slug)) continue;
       const score = keywords.filter((word) => mentions(row, word)).length;
-      if (score > 0) rows.set(row.slug, { ...row, score, order: order++ });
+      if (score > 0 && primary.some((word) => mentions(row, word))) rows.set(row.slug, { ...row, score, order: order++ });
     }
   }
   const ranked = Array.from(rows.values()).sort((a, b) => b.score - a.score || a.order - b.order);
