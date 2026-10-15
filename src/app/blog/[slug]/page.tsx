@@ -5,7 +5,7 @@ import { getBlogBySlug } from "@/lib/services/blog-generator";
 import {
   getComparisonTitlesBySlugs,
   getComparisonsForEntity,
-  getTrendingComparisons,
+  searchComparisons,
 } from "@/lib/services/comparison-service";
 import { blogCompareFallbackLinks } from "@/lib/blog/blog-compare-fallback";
 import { prisma } from "@/lib/db/prisma";
@@ -28,7 +28,9 @@ import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
 import { BlogArticleProse, type ArticleRenderPart } from "@/components/blog/BlogArticleProse";
 import type { InlineComparisonLink } from "@/components/blog/BlogInlineComparisonCard";
-import { topicCompareCandidates } from "@/lib/blog/blog-topic-compare";
+import { generatedCompareTitle, topicBuildSlug, topicCompareCandidates } from "@/lib/blog/blog-topic-compare";
+import { matchTopicCompares, matchTopicPages, topicKeywords } from "@/lib/blog/blog-topic-relevance";
+import { decideBuildRouteLive } from "@/lib/generation/build-route";
 import {
   composeBlogArticleParts,
   decisionComparesForBlog,
@@ -410,6 +412,45 @@ async function publishedEntitySlugs(slugs: string[]): Promise<Set<string>> {
   return new Set(rows.map((row) => row.slug));
 }
 
+const MAX_TOPIC_CARD_LINKS = 3;
+
+/**
+ * ROO-234: the card when the post's pair has no live page. In order: the
+ * on-demand builder for a valid missing pair (only when /build answers 200;
+ * nofollow), live compares sharing a side, the topic hub or best-of page,
+ * live compares matching the post's keywords, then entity pages. Empty
+ * means the card is hidden; it never falls back to unrelated compares.
+ */
+async function topicFallbackCardLinks(
+  blogSlug: string,
+  title: string,
+  tags: string[],
+  nearby: InlineComparisonLink[],
+): Promise<InlineComparisonLink[]> {
+  const buildSlug = topicBuildSlug(blogSlug, title);
+  const keywords = topicKeywords(blogSlug, title, ...tags);
+  const [build, topicCompares] = await Promise.all([
+    buildSlug ? decideBuildRouteLive(buildSlug).catch(() => null) : Promise.resolve(null),
+    matchTopicCompares(keywords, {
+      search: (query) => searchComparisons(query, 8),
+      filterLive: filterLiveCompareSlugs,
+    }).catch(() => []),
+  ]);
+  const out: InlineComparisonLink[] = [];
+  const add = (link: InlineComparisonLink) => {
+    const key = link.href ?? link.slug;
+    if (!out.some((item) => (item.href ?? item.slug) === key)) out.push(link);
+  };
+  if (build?.kind === "build") {
+    add({ slug: build.slug, title: generatedCompareTitle(build.slug), generated: true, href: `/build/${build.slug}` });
+  }
+  nearby.filter((link) => !link.href).forEach(add);
+  matchTopicPages(keywords).forEach(add);
+  topicCompares.forEach(add);
+  nearby.filter((link) => link.href).forEach(add);
+  return out.slice(0, MAX_TOPIC_CARD_LINKS);
+}
+
 // ---------- Page ----------
 
 export default async function BlogPostPage({
@@ -479,26 +520,14 @@ export default async function BlogPostPage({
           entityLabel: humanizeEntityName,
         }).catch(() => [])
       : [];
-  // ROO-180: last resort so the card never renders empty — popular live compares.
-  const needsFallback =
-    nearbyLinks.length === 0 &&
-    mappedDecisions.length === 0 &&
-    livePairSlugs.length === 0 &&
-    liveTopicSlugs.length === 0 &&
-    liveCompareSlugs.length === 0 &&
-    !/href="\/compare\//i.test(renderedContent);
-  const fallbackCardSlugs = needsFallback
-    ? await getTrendingComparisons(6)
-        .then((rows) => filterLiveCompareSlugs(rows.map((row) => row.slug)))
-        .catch(() => [] as string[])
-    : [];
   const inlineCardSlugs = selectInlineComparisonSlugs({
     bodyHtml: renderedContent,
     relatedSlugs: liveCompareSlugs,
     preferredSlugs: liveDecisionSlugs,
     preferMappedOnly: mappedDecisions.length > 0,
     pairSlugs: livePairSlugs,
-    fallbackSlugs: fallbackCardSlugs,
+    // ROO-234: no popular-compares fallback; an unrelated card got 0 clicks.
+    fallbackSlugs: [],
     topicSlugs: liveTopicSlugs,
   });
   const decisionTitles = Object.fromEntries(
@@ -515,7 +544,13 @@ export default async function BlogPostPage({
       decisionTitles[compareSlug] ||
       compareSlug.replace(/-/g, " "),
   }));
-  if (inlineCardLinks.length === 0) inlineCardLinks.push(...nearbyLinks);
+  if (inlineCardLinks.length === 0) {
+    inlineCardLinks.push(
+      ...(await topicFallbackCardLinks(slug, article.title, article.tags ?? [], nearbyLinks).catch(
+        () => nearbyLinks,
+      )),
+    );
+  }
   const inlineCompare =
     slug === CASHIERS_CHECK_BLOG_SLUG
       ? {
