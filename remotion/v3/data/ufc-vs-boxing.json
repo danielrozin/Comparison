@@ -1,0 +1,158 @@
+{
+  "title": "UFC vs Boxing",
+  "entityA": "UFC",
+  "entityB": "Boxing",
+  "category": "sports",
+  "shortAnswer": "Boxing is the traditional combat sport with centuries of history and major PPV events (Mayweather earned $300M+ in one night). The UFC has grown rapidly since 2001 and is now the dominant MMA promotion, generating $1B+ annually. Boxing leads in prize money; UFC in modern popularity.",
+  "stats": [
+    {
+      "label": "Fighter Pay (Top Earner)",
+      "valueA": "$20-50M per event",
+      "valueB": "$300M+ (Mayweather)",
+      "winner": "b"
+    },
+    {
+      "label": "Action Per Fight",
+      "valueA": "High (multiple finishes)",
+      "valueB": "More tactical",
+      "winner": "a"
+    },
+    {
+      "label": "PPV Revenue (Peak)",
+      "valueA": "$700M (McGregor-Khabib)",
+      "valueB": "$600M (Mayweather-Pacquiao)",
+      "winner": "a"
+    },
+    {
+      "label": "Olympic Sport",
+      "valueA": "No",
+      "valueB": "Yes",
+      "winner": "b"
+    },
+    {
+      "label": "Governing Bodies",
+      "valueA": "Single (UFC)",
+      "valueB": "Multiple (WBC, WBA, etc.)",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Boxing for history, tradition, and top-dollar paydays. UFC for excitement, modern growth, and variety of fighting styles. Both are globally popular.",
+  "slug": "ufc-vs-boxing",
+  "imageA": null,
+  "imageB": {
+    "url": "video-assets/ufc-vs-boxing/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Boxing_Tournament_in_Aid_of_King_George%27s_Fund_For_Sailors_at_the_Royal_Naval_Air_Station%2C_Henstridge%2C_Somerset%2C_July_1945_A29806.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 665,
+    "height": 594,
+    "credit": "Royal Navy official photographer",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Boxing_Tournament_in_Aid_of_King_George%27s_Fund_For_Sailors_at_the_Royal_Naval_Air_Station,_Henstridge,_Somerset,_July_1945_A29806.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2a/Boxing_Tournament_in_Aid_of_King_George%27s_Fund_For_Sailors_at_the_Royal_Naval_Air_Station%2C_Henstridge%2C_Somerset%2C_July_1945_A29806.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "One boxer made $300 million in a single night. No UFC event comes close.",
+    "tape": "Boxing pays the individual. The UFC built the machine. That's the whole fight.",
+    "rounds": [
+      "Mayweather's one night dwarfs what the UFC pays out across a whole card.",
+      "Boxing rewards patience. The UFC rewards finishes, and casual fans notice the difference.",
+      "McGregor-Khabib pulled $700 million. The UFC outsold boxing's biggest night ever.",
+      "Boxing is in the Olympics. The UFC has no amateur pipeline carrying that badge.",
+      "One UFC belt means one champion. Boxing has four alphabet bodies arguing."
+    ],
+    "verdict": "UFC wins on points. Pick boxing if you want lineage, craft, and life-changing money."
+  },
+  "audio": {
+    "cold": "video-assets/ufc-vs-boxing/audio/cold.mp3",
+    "tape": "video-assets/ufc-vs-boxing/audio/tape.mp3",
+    "rounds": [
+      "video-assets/ufc-vs-boxing/audio/round-1.mp3",
+      "video-assets/ufc-vs-boxing/audio/round-2.mp3",
+      "video-assets/ufc-vs-boxing/audio/round-3.mp3",
+      "video-assets/ufc-vs-boxing/audio/round-4.mp3",
+      "video-assets/ufc-vs-boxing/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/ufc-vs-boxing/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 211,
+    "tape": 221,
+    "rounds": [
+      156,
+      224,
+      240,
+      211,
+      202
+    ],
+    "verdict": 226,
+    "leadInFrames": 9
+  },
+  "transcript": "One boxer made $300 million in a single night. No UFC event comes close. Boxing pays the individual. The UFC built the machine. That's the whole fight. Mayweather's one night dwarfs what the UFC pays out across a whole card. Boxing rewards patience. The UFC rewards finishes, and casual fans notice the difference. McGregor-Khabib pulled $700 million. The UFC outsold boxing's biggest night ever. Boxing is in the Olympics. The UFC has no amateur pipeline carrying that badge. One UFC belt means one champion. Boxing has four alphabet bodies arguing. UFC wins on points. Pick boxing if you want lineage, craft, and life-changing money.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One boxer made $300 million in a single night. No UFC event comes close.",
+      "startOffset": 0,
+      "endOffset": 7.04102
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Boxing pays the individual. The UFC built the machine. That's the whole fight.",
+      "startOffset": 7.04102,
+      "endOffset": 14.421631999999999
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Mayweather's one night dwarfs what the UFC pays out across a whole card.",
+      "startOffset": 14.421631999999999,
+      "endOffset": 19.634081
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Boxing rewards patience. The UFC rewards finishes, and casual fans notice the difference.",
+      "startOffset": 19.634081,
+      "endOffset": 27.093061
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "McGregor-Khabib pulled $700 million. The UFC outsold boxing's biggest night ever.",
+      "startOffset": 27.093061,
+      "endOffset": 35.100612
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Boxing is in the Olympics. The UFC has no amateur pipeline carrying that badge.",
+      "startOffset": 35.100612,
+      "endOffset": 42.141632
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "One UFC belt means one champion. Boxing has four alphabet bodies arguing.",
+      "startOffset": 42.141632,
+      "endOffset": 48.869183
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "UFC wins on points. Pick boxing if you want lineage, craft, and life-changing money.",
+      "startOffset": 48.869183,
+      "endOffset": 56.40653
+    }
+  ],
+  "youtubeTitle": "UFC vs Boxing: Which Combat Sport Actually Wins?",
+  "youtubeDescription": "A head-to-head breakdown of UFC and boxing across fighter pay, pay-per-view revenue, action, Olympic status, and governing bodies. Boxing holds the record payday with Mayweather's $300M night, but the UFC's $700M McGregor-Khabib card outsold boxing's biggest event. Here's which one takes it on points.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/ufc-vs-boxing",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image B by Royal Navy official photographer (Public domain) — https://commons.wikimedia.org/wiki/File:Boxing_Tournament_in_Aid_of_King_George%27s_Fund_For_Sailors_at_the_Royal_Naval_Air_Station,_Henstridge,_Somerset,_July_1945_A29806.jpg"
+  ]
+}

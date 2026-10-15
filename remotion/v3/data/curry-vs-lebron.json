@@ -1,0 +1,170 @@
+{
+  "title": "Curry vs LeBron",
+  "entityA": "Stephen Curry",
+  "entityB": "LeBron James",
+  "category": "sports",
+  "shortAnswer": "Stephen Curry revolutionized basketball with his three-point shooting — holding the all-time record with 3,747+ threes. LeBron James is the all-time leading scorer and 4x champion. Curry has 4 championships and 2 MVP titles; LeBron has 4 and 4.",
+  "stats": [
+    {
+      "label": "NBA Championships",
+      "valueA": "4",
+      "valueB": "4",
+      "winner": "tie"
+    },
+    {
+      "label": "Career Three-Pointers",
+      "valueA": "3,747+",
+      "valueB": "~600",
+      "winner": "a"
+    },
+    {
+      "label": "Career Points",
+      "valueA": "~17,000",
+      "valueB": "40,474",
+      "winner": "b"
+    },
+    {
+      "label": "MVP Awards",
+      "valueA": "2",
+      "valueB": "4",
+      "winner": "b"
+    },
+    {
+      "label": "Points per Game",
+      "valueA": "24.6",
+      "valueB": "27.1",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Curry for three-point revolution and shooting mastery. LeBron for overall dominance and longevity. LeBron is the better all-around player; Curry changed the game more radically.",
+  "slug": "curry-vs-lebron",
+  "imageA": {
+    "url": "video-assets/curry-vs-lebron/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/5/52/Stephen_Curry%2C_Olympic_Games_2024_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 572,
+    "height": 763,
+    "credit": "Clément Bardot",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Stephen_Curry,_Olympic_Games_2024_(cropped).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/5/52/Stephen_Curry%2C_Olympic_Games_2024_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/curry-vs-lebron/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/LeBron_James_%2851959977144%29_%28cropped2%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 1197,
+    "height": 1387,
+    "credit": "Erik Drost",
+    "license": "CC BY 2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:LeBron_James_(51959977144)_(cropped2).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/LeBron_James_%2851959977144%29_%28cropped2%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "One of these guys has made six times more threes than the other.",
+    "tape": "LeBron piled up the bigger numbers. Curry changed what the numbers are worth.",
+    "rounds": [
+      "Four rings each. Nobody wins the argument here, so the rest matters.",
+      "3,747 threes to about 600. That's not a gap, that's a different sport.",
+      "40,474 points. Nobody who ever played scored more than LeBron James.",
+      "Four MVPs to two. Voters called LeBron the best alive twice as often.",
+      "27.1 a night against 24.6. LeBron scored more in less time on court."
+    ],
+    "verdict": "LeBron takes it 3-1 on the numbers. Pick Curry if you value changing the game over winning it."
+  },
+  "audio": {
+    "cold": "video-assets/curry-vs-lebron/audio/cold.mp3",
+    "tape": "video-assets/curry-vs-lebron/audio/tape.mp3",
+    "rounds": [
+      "video-assets/curry-vs-lebron/audio/round-1.mp3",
+      "video-assets/curry-vs-lebron/audio/round-2.mp3",
+      "video-assets/curry-vs-lebron/audio/round-3.mp3",
+      "video-assets/curry-vs-lebron/audio/round-4.mp3",
+      "video-assets/curry-vs-lebron/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/curry-vs-lebron/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 127,
+    "tape": 173,
+    "rounds": [
+      178,
+      252,
+      245,
+      192,
+      240
+    ],
+    "verdict": 276,
+    "leadInFrames": 9
+  },
+  "transcript": "One of these guys has made six times more threes than the other. LeBron piled up the bigger numbers. Curry changed what the numbers are worth. Four rings each. Nobody wins the argument here, so the rest matters. 3,747 threes to about 600. That's not a gap, that's a different sport. 40,474 points. Nobody who ever played scored more than LeBron James. Four MVPs to two. Voters called LeBron the best alive twice as often. 27.1 a night against 24.6. LeBron scored more in less time on court. LeBron takes it 3-1 on the numbers. Pick Curry if you value changing the game over winning it.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One of these guys has made six times more threes than the other.",
+      "startOffset": 0,
+      "endOffset": 4.245918
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "LeBron piled up the bigger numbers. Curry changed what the numbers are worth.",
+      "startOffset": 4.245918,
+      "endOffset": 10.006937999999998
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Four rings each. Nobody wins the argument here, so the rest matters.",
+      "startOffset": 10.006937999999998,
+      "endOffset": 15.924692999999998
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "3,747 threes to about 600. That's not a gap, that's a different sport.",
+      "startOffset": 15.924692999999998,
+      "endOffset": 24.324081
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "40,474 points. Nobody who ever played scored more than LeBron James.",
+      "startOffset": 24.324081,
+      "endOffset": 32.488367
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Four MVPs to two. Voters called LeBron the best alive twice as often.",
+      "startOffset": 32.488367,
+      "endOffset": 38.902449
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "27.1 a night against 24.6. LeBron scored more in less time on court.",
+      "startOffset": 38.902449,
+      "endOffset": 46.91
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "LeBron takes it 3-1 on the numbers. Pick Curry if you value changing the game over winning it.",
+      "startOffset": 46.91,
+      "endOffset": 56.119184
+    }
+  ],
+  "youtubeTitle": "Stephen Curry vs LeBron James: Who Actually Wins?",
+  "youtubeDescription": "Curry and LeBron both own four rings, but the rest of the stat sheet splits hard. We compare career points, three-pointers, MVP awards and scoring averages head to head. One man scored more than anyone ever. The other rewired how basketball is played.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/curry-vs-lebron",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Clément Bardot (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Stephen_Curry,_Olympic_Games_2024_(cropped).jpg",
+    "Image B by Erik Drost (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:LeBron_James_(51959977144)_(cropped2).jpg"
+  ]
+}

@@ -5595,6 +5595,124 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-14T10:09:05.760Z"
+    },
+    {
+      "slug": "curry-vs-lebron",
+      "title": "Curry vs LeBron",
+      "entityA": "Stephen Curry",
+      "entityB": "LeBron James",
+      "category": "sports",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "curry-vs-lebron.mp4",
+      "durationSeconds": 53,
+      "transcript": "One of these guys has made six times more threes than the other. LeBron piled up the bigger numbers. Curry changed what the numbers are worth. Four rings each. Nobody wins the argument here, so the rest matters. 3,747 threes to about 600. That's not a gap, that's a different sport. 40,474 points. Nobody who ever played scored more than LeBron James. Four MVPs to two. Voters called LeBron the best alive twice as often. 27.1 a night against 24.6. LeBron scored more in less time on court. LeBron takes it 3-1 on the numbers. Pick Curry if you value changing the game over winning it.",
+      "chapters": [
+        {
+          "name": "Stephen Curry vs LeBron James",
+          "startOffset": 0,
+          "endOffset": 4
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 4,
+          "endOffset": 10
+        },
+        {
+          "name": "Round 1: NBA Championships",
+          "startOffset": 10,
+          "endOffset": 16
+        },
+        {
+          "name": "Round 2: Career Three-Pointers",
+          "startOffset": 16,
+          "endOffset": 24
+        },
+        {
+          "name": "Round 3: Career Points",
+          "startOffset": 24,
+          "endOffset": 32
+        },
+        {
+          "name": "Round 4: MVP Awards",
+          "startOffset": 32,
+          "endOffset": 39
+        },
+        {
+          "name": "Round 5: Points per Game",
+          "startOffset": 39,
+          "endOffset": 47
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 47,
+          "endOffset": 56
+        }
+      ],
+      "youtubeTitle": "Stephen Curry vs LeBron James: Who Actually Wins?",
+      "youtubeDescription": "Curry and LeBron both own four rings, but the rest of the stat sheet splits hard. We compare career points, three-pointers, MVP awards and scoring averages head to head. One man scored more than anyone ever. The other rewired how basketball is played.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/curry-vs-lebron\n\nImage credits:\nImage A by Clément Bardot (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Stephen_Curry,_Olympic_Games_2024_(cropped).jpg\nImage B by Erik Drost (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:LeBron_James_(51959977144)_(cropped2).jpg\n\nFull comparison: https://www.aversusb.net/compare/curry-vs-lebron",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-15T09:44:46.997Z"
+    },
+    {
+      "slug": "ufc-vs-boxing",
+      "title": "UFC vs Boxing",
+      "entityA": "UFC",
+      "entityB": "Boxing",
+      "category": "sports",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "ufc-vs-boxing.mp4",
+      "durationSeconds": 54,
+      "transcript": "One boxer made $300 million in a single night. No UFC event comes close. Boxing pays the individual. The UFC built the machine. That's the whole fight. Mayweather's one night dwarfs what the UFC pays out across a whole card. Boxing rewards patience. The UFC rewards finishes, and casual fans notice the difference. McGregor-Khabib pulled $700 million. The UFC outsold boxing's biggest night ever. Boxing is in the Olympics. The UFC has no amateur pipeline carrying that badge. One UFC belt means one champion. Boxing has four alphabet bodies arguing. UFC wins on points. Pick boxing if you want lineage, craft, and life-changing money.",
+      "chapters": [
+        {
+          "name": "UFC vs Boxing",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 14
+        },
+        {
+          "name": "Round 1: Fighter Pay (Top Earner)",
+          "startOffset": 14,
+          "endOffset": 20
+        },
+        {
+          "name": "Round 2: Action Per Fight",
+          "startOffset": 20,
+          "endOffset": 27
+        },
+        {
+          "name": "Round 3: PPV Revenue (Peak)",
+          "startOffset": 27,
+          "endOffset": 35
+        },
+        {
+          "name": "Round 4: Olympic Sport",
+          "startOffset": 35,
+          "endOffset": 42
+        },
+        {
+          "name": "Round 5: Governing Bodies",
+          "startOffset": 42,
+          "endOffset": 49
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 49,
+          "endOffset": 56
+        }
+      ],
+      "youtubeTitle": "UFC vs Boxing: Which Combat Sport Actually Wins?",
+      "youtubeDescription": "A head-to-head breakdown of UFC and boxing across fighter pay, pay-per-view revenue, action, Olympic status, and governing bodies. Boxing holds the record payday with Mayweather's $300M night, but the UFC's $700M McGregor-Khabib card outsold boxing's biggest event. Here's which one takes it on points.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/ufc-vs-boxing\n\nImage credits:\nImage B by Royal Navy official photographer (Public domain) — https://commons.wikimedia.org/wiki/File:Boxing_Tournament_in_Aid_of_King_George%27s_Fund_For_Sailors_at_the_Royal_Naval_Air_Station,_Henstridge,_Somerset,_July_1945_A29806.jpg\n\nFull comparison: https://www.aversusb.net/compare/ufc-vs-boxing",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-15T09:49:56.790Z"
     }
   ]
 }
