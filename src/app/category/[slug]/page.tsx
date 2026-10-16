@@ -11,7 +11,7 @@ import {
   mergeEditorialCategoryComparisons,
 } from "@/lib/categories/hub-comparisons";
 import { getFeaturedForCategory } from "@/lib/data/featured-comparisons";
-import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { getCategoryFaqs } from "@/lib/data/category-faqs";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
@@ -78,7 +78,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     twitter: { card: "summary_large_image", images: [{ url: ogImage, alt: `${category.name} Comparisons on A Versus B` }] },
     other: {
       "citation_title": `${category.name} Comparisons — A Versus B`,
-      "citation_author": "Daniel Rozin",
+      "citation_author": SITE_NAME,
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": desc,
@@ -87,7 +87,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       "citation_online_date": "2024-01-01",
       "DC.title": `${category.name} Comparisons`,
       "DC.description": desc,
-      "DC.creator": "Daniel Rozin",
+      "DC.creator": SITE_NAME,
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `${category.name} Comparisons, Side-by-Side Analysis`,
@@ -232,7 +232,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     dateCreated: "2024-01-01",
     dateModified: categoryToday,
     lastReviewed: categoryToday,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: categoryToday,
     thumbnailUrl: categoryOgImage,
     image: {

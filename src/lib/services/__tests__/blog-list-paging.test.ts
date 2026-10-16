@@ -4,7 +4,7 @@
  * then fell off page 1 and never showed up on page 2.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { NBA_SEASON_PREVIEW_BLOG_SLUG } from "@/lib/data/nba-season-preview-blog";
+import { NBA_SEASON_PREVIEW_BLOG_SLUG, listRepoBlogOverrideSlugs } from "@/lib/data/nba-season-preview-blog";
 import { GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG } from "@/lib/data/google-maps-alternatives-blog";
 
 const mocks = vi.hoisted(() => ({
@@ -56,7 +56,8 @@ describe("merged blog list paging", () => {
     mocks.queryRaw.mockReset();
     mocks.queryRaw.mockResolvedValue([]);
     mocks.findMany.mockImplementation(async (args: { select?: { slug?: boolean; title?: boolean; content?: boolean } }) => {
-      if (args.select?.slug && !args.select.title) return [];
+      // Refreshed repo overrides replace an existing DB row for the same slug.
+      if (args.select?.slug && !args.select.title) return listRepoBlogOverrideSlugs().map((slug) => ({ slug }));
       if (args.select && !args.select.content) {
         return DB_POSTS.map((row) => {
           const { content, ...rest } = row;

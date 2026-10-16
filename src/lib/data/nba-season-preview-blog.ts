@@ -8,6 +8,10 @@
  */
 
 import type { BlogArticle } from "@/lib/services/blog-generator";
+import { BEST_CLOUD_PLATFORMS_ARTICLE, BEST_CLOUD_PLATFORMS_BLOG_SLUG } from "@/lib/data/best-cloud-platforms-blog";
+import { SHOPIFY_WOO_SQUARESPACE_ARTICLE, SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG } from "@/lib/data/shopify-woocommerce-squarespace-blog";
+import { BEST_ACCOUNTING_FREELANCERS_ARTICLE, BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG } from "@/lib/data/best-accounting-freelancers-blog";
+import { BEST_PRODUCTIVITY_APPS_ARTICLE, BEST_PRODUCTIVITY_APPS_BLOG_SLUG } from "@/lib/data/best-productivity-apps-blog";
 import { GOOGLE_MAPS_ALTERNATIVES_ARTICLE } from "@/lib/data/google-maps-alternatives-blog";
 
 export const NBA_SEASON_PREVIEW_BLOG_SLUG = "2026-27-nba-season-preview-10-debates";
@@ -135,7 +139,31 @@ export const NBA_SEASON_PREVIEW_ARTICLE: BlogArticle = {
 const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   NBA_SEASON_PREVIEW_ARTICLE,
   GOOGLE_MAPS_ALTERNATIVES_ARTICLE,
+  BEST_CLOUD_PLATFORMS_ARTICLE,
+  SHOPIFY_WOO_SQUARESPACE_ARTICLE,
+  BEST_ACCOUNTING_FREELANCERS_ARTICLE,
+  BEST_PRODUCTIVITY_APPS_ARTICLE,
 ];
+
+/**
+ * Repo posts that replace an older DB row for the same slug (ROO-235 refreshes).
+ * getBlogBySlug serves these before reading the database.
+ */
+const REPO_BLOG_DB_OVERRIDE_SLUGS: ReadonlySet<string> = new Set([
+  BEST_CLOUD_PLATFORMS_BLOG_SLUG,
+  SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG,
+  BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG,
+  BEST_PRODUCTIVITY_APPS_BLOG_SLUG,
+]);
+
+export function findRepoBlogOverride(slug: string): BlogArticle | null {
+  return REPO_BLOG_DB_OVERRIDE_SLUGS.has(slug) ? findRepoBlogArticle(slug) : null;
+}
+
+/** Override slugs already have a DB row, so list views never add them twice. */
+export function listRepoBlogOverrideSlugs(): string[] {
+  return [...REPO_BLOG_DB_OVERRIDE_SLUGS];
+}
 
 export function findRepoBlogArticle(slug: string): BlogArticle | null {
   return REPO_BLOG_ARTICLES.find((article) => article.slug === slug) ?? null;

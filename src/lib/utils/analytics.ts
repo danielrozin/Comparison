@@ -264,6 +264,23 @@ export function trackComparisonVote(entityA: string, entityB: string, choice: st
   posthog.capture("comparison_poll_voted", { entity_a: entityA, entity_b: entityB, choice });
 }
 
+/** ROO-242: the compare-page change-alert capture scrolled into view (once per view). */
+export function trackCompareChangeAlertViewed(compareSlug: string) {
+  trackEvent("compare_change_alert_viewed", { compare_slug: compareSlug, placement: "after_verdict" });
+}
+
+/** ROO-242: change-alert signup on a compare page. Same events as the newsletter, plus compare_slug. */
+export function trackCompareChangeAlertSignup(compareSlug: string) {
+  trackEvent("newsletter_signup", { page: compareSlug, placement: "compare_change_alert", compare_slug: compareSlug });
+  trackEvent("generate_lead", { lead_source: "newsletter", page: compareSlug, placement: "compare_change_alert" });
+  trackMetaEvent("Lead", { content_name: "newsletter", content_category: "compare_change_alert" });
+  posthog.capture("newsletter_signup_submitted", {
+    page: compareSlug,
+    placement: "compare_change_alert",
+    compare_slug: compareSlug,
+  });
+}
+
 export function trackNewsletterSignup(page: string, placement: string) {
   trackEvent("newsletter_signup", { page, placement });
   trackEvent("generate_lead", { lead_source: "newsletter", page, placement });
