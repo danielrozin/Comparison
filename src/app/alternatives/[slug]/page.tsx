@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getAlternativesForEntity, resolveCanonicalComparisonSlugs } from "@/lib/services/comparison-service";
-import { personAuthorNode, breadcrumbSchema, contentAuthorArray, entityWikipediaSameAs, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { breadcrumbSchema, contentAuthorArray, entityWikipediaSameAs, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
@@ -127,7 +127,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     other: {
       "citation_title": `Best Alternatives to ${name} in 2026`,
-      "citation_author": "Daniel Rozin",
+      "citation_author": SITE_NAME,
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": metaDesc,
@@ -136,7 +136,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_online_date": new Date().toISOString().slice(0, 10),
       "DC.title": `Best Alternatives to ${name} in 2026`,
       "DC.description": metaDesc,
-      "DC.creator": "Daniel Rozin",
+      "DC.creator": SITE_NAME,
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `Best ${name} Alternatives, ${name} Competitors`,
@@ -268,7 +268,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     keywords: `${name} alternatives, ${name} competitors, best ${name} alternatives ${new Date().getFullYear()}`,
     author: contentAuthorArray(),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     mainEntityOfPage: { "@type": "WebPage", "@id": altPageUrl },
     speakable: {
       "@type": "SpeakableSpecification",
