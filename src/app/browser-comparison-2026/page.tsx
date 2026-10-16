@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
+import { AI_CONTENT_LABEL, AI_DISCLOSURE } from "@/lib/editorial/blog-authorship";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogInlineCompareCtas } from "@/components/blog/BlogInlineCompareCtas";
 import {
@@ -9,50 +10,50 @@ import {
   BROWSER_COMPARISON_CTA_HEADING,
   BROWSER_COMPARISON_SOURCE_PAGE,
 } from "@/lib/data/browser-comparison-cta";
+import { LAST_UPDATED } from "./last-updated";
 
 const PAGE_URL = `${SITE_URL}/browser-comparison-2026`;
 const PAGE_TITLE = `Best Web Browsers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of 10 major web browsers in 2026 — engine, market share, privacy, extensions, performance, and standards compliance. All figures cited to primary sources.";
-const LAST_UPDATED = "2026-09-21";
 const QUICK_ANSWER =
-  "For everyday use pick Chrome or Edge (both Chromium). For privacy pick Brave, which blocks ads and trackers by default. For an auditable open-source engine pick Firefox or Tor Browser. On iPhone and Mac, Safari leads on battery and Intelligent Tracking Prevention. Verdict is by use-case, not a single winner.";
+  "For everyday use pick Chrome or Edge, both built on Chromium. For privacy pick Brave, which blocks ads and trackers by default. For an open-source engine outside Chromium pick Firefox, or Tor Browser for anonymity. On iPhone and Mac, Safari ships Intelligent Tracking Prevention on by default. Current stable versions in October 2026: Chrome 156, Edge 155, Firefox 158, Safari 27 and Brave 1.97.";
 
 const BROWSER_FAQS: { question: string; answer: string }[] = [
   {
     question: "Which web browser is best in 2026?",
     answer:
-      "There is no single best browser. This page’s Quick Answer is by use-case: Chrome or Edge for everyday Chromium use, Brave for default privacy blocking, Firefox or Tor Browser for an auditable open-source engine, and Safari on iPhone and Mac for battery and Intelligent Tracking Prevention.",
+      "There is no single best browser; it depends on what you need. Chrome or Edge suit everyday use on Chromium, Brave blocks ads and trackers by default, Firefox and Tor Browser use the open-source Gecko engine, and Safari is the built-in choice on iPhone and Mac with Intelligent Tracking Prevention.",
   },
   {
     question: "Which browser is most private?",
     answer:
-      "On this page Brave is the privacy pick: Shields block ads and trackers by default, with fingerprinting protection and optional Tor in a private window. Firefox ships Enhanced Tracking Protection on by default. Tor Browser is the strongest anonymity option. Chrome and Edge keep telemetry on by default and do not ship the same default blocker.",
+      "Brave blocks ads and trackers by default with Shields, adds fingerprinting protection, and offers private windows with Tor. Firefox turns on Enhanced Tracking Protection by default. Tor Browser routes traffic through the Tor network for anonymity. Chrome and Edge do not block ads by default.",
   },
   {
-    question: "Chrome vs Firefox — which should I use?",
+    question: "What is the latest version of Chrome, Firefox and Edge?",
     answer:
-      "Chrome if you want the largest extension catalog and Google-account sync. Firefox if you want a non-Blink engine (Gecko), MPL-2.0 licensing, and default Enhanced Tracking Protection. Both are free. Market-share figures on this page (StatCounter, April 2026) do not decide the privacy or engine question.",
+      "As of October 16, 2026, the stable releases are Chrome 156 (156.0.8078.36 on Windows), Firefox 158.0 and Microsoft Edge 155 (155.0.4283.60, released October 15, 2026). Brave's latest release is 1.97.57, built on Chromium 155. All four update automatically by default.",
+  },
+  {
+    question: "Chrome vs Firefox: which should I use?",
+    answer:
+      "Choose Chrome for Google-account sync and the Chrome Web Store. Choose Firefox for a non-Chromium engine (Gecko), MPL-2.0 open-source licensing and Enhanced Tracking Protection on by default. Both are free.",
   },
   {
     question: "Is Brave better than Chrome for everyday browsing?",
     answer:
-      "Brave is better when you want ad and tracker blocking without installing an extension — that is this page’s privacy verdict. Chrome is better when you want the default Google ecosystem and the largest desktop share. Both are Blink/V8. Everyday speed is similar; the gap is defaults, not the engine.",
+      "Brave is the better fit if you want ad and tracker blocking without installing an extension. Chrome is the better fit if you want Google's default services and sync. Both run on the Blink engine and V8, so the main difference is the default settings, not the engine.",
   },
   {
     question: "Which browser is best on iPhone?",
     answer:
-      "Safari. This page lists Safari as the iOS/macOS pick for battery efficiency and Intelligent Tracking Prevention. Other iOS browsers still use WebKit under Apple’s rules. Desktop Chrome or Edge do not change that iPhone constraint.",
-  },
-  {
-    question: "Are Chrome and Edge the same?",
-    answer:
-      "They share the Blink/V8 engine. Edge adds Windows integration, tracking-prevention modes, and built-in Copilot. Chrome remains the larger-share everyday default on this page’s StatCounter table. Treat them as related Chromium browsers, not identical products.",
+      "Safari is built into iPhone and turns on Intelligent Tracking Prevention by default. Chrome, Firefox, Edge and Brave are also available on iPhone with their own sync and privacy features.",
   },
   {
     question: "Which browsers are open source?",
     answer:
-      "Firefox (MPL-2.0), Brave (MPL-2.0), and Tor Browser (MPL-2.0 + GPL) are the fully auditable options listed here. Chrome, Edge, Safari, Opera, and Samsung Internet ship proprietary products on top of partly open engines (Chromium or WebKit).",
+      "Firefox (MPL-2.0), Brave (MPL-2.0) and Tor Browser (MPL-2.0 and GPL) are open source. Chrome, Edge, Safari, Opera and Samsung Internet are proprietary products built on partly open-source engines (Chromium or WebKit).",
   },
 ];
 const BROWSER_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Browser Comparison 2026")}&type=article`;
@@ -118,7 +119,6 @@ const articleSchema = {
   interactivityType: "expositive",
   datePublished: "2026-07-11",
   dateModified: LAST_UPDATED,
-  lastReviewed: LAST_UPDATED,
   contentReferenceTime: LAST_UPDATED,
   thumbnailUrl: BROWSER_OG_IMAGE,
   image: {
@@ -146,9 +146,8 @@ const articleSchema = {
   educationalUse: "comparison",
   alternativeHeadline: "Best Web Browsers in 2026 — Speed, Privacy & Feature Comparison",
   keywords: "browser comparison 2026, best web browser, Chrome vs Firefox, Edge vs Safari, Brave browser",
-  author: { "@type": "Person", name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
+  author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", "#quick-answer", ".faq-answer"] },
@@ -202,7 +201,7 @@ const productSchemas = [
     url: "https://www.google.com/chrome/",
     brand: { "@type": "Brand", name: "Google LLC" },
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD", url: "https://www.google.com/chrome/" },
-    description: "Chromium-based browser by Google. Largest desktop + mobile market share globally as of April 2026.",
+    description: "Chromium-based browser by Google.",
   },
   {
     "@context": "https://schema.org",
@@ -219,8 +218,7 @@ type Browser = {
   name: string;
   vendor: string;
   engine: string;
-  desktopShare: string;
-  mobileShare: string;
+  version: string;
   privacySummary: string;
   license: string;
   priceFree: boolean;
@@ -232,102 +230,93 @@ const BROWSERS: Browser[] = [
     name: "Google Chrome",
     vendor: "Google LLC",
     engine: "Blink / V8",
-    desktopShare: "65.3%",
-    mobileShare: "65.8%",
+    version: "156 (156.0.8078.36, Windows)",
     privacySummary: "Telemetry on by default; no built-in ad/tracker blocking; Privacy Sandbox replacing FLoC",
     license: "Proprietary (Chromium: BSD/Apache open-source)",
     priceFree: true,
     sources: [
+      { label: "Chrome version history (stable)", url: "https://versionhistory.googleapis.com/v1/chrome/platforms/win/channels/stable/versions" },
       { label: "Chrome releases blog", url: "https://chromereleases.googleblog.com/" },
       { label: "Google Chrome privacy whitepaper", url: "https://policies.google.com/privacy/google-chrome" },
-      { label: "StatCounter browser market share Apr 2026", url: "https://gs.statcounter.com/browser-market-share/" },
     ],
   },
   {
     name: "Mozilla Firefox",
     vendor: "Mozilla Foundation",
     engine: "Gecko / SpiderMonkey",
-    desktopShare: "6.7%",
-    mobileShare: "3.2%",
+    version: "158.0",
     privacySummary: "Enhanced Tracking Protection (ETP) on by default; optional Total Cookie Protection; no telemetry for private browsing",
     license: "MPL-2.0 (open-source)",
     priceFree: true,
     sources: [
+      { label: "Mozilla product details (current versions)", url: "https://product-details.mozilla.org/1.0/firefox_versions.json" },
       { label: "Firefox release notes", url: "https://www.mozilla.org/en-US/firefox/releases/" },
       { label: "Firefox privacy notice", url: "https://www.mozilla.org/en-US/privacy/firefox/" },
-      { label: "StatCounter browser market share Apr 2026", url: "https://gs.statcounter.com/browser-market-share/" },
     ],
   },
   {
     name: "Apple Safari",
     vendor: "Apple Inc.",
     engine: "WebKit / JavaScriptCore",
-    desktopShare: "9.0%",
-    mobileShare: "24.1%",
+    version: "27",
     privacySummary: "Intelligent Tracking Prevention (ITP) blocks cross-site tracking by default; no extension-based ad blocking built-in",
     license: "Proprietary (WebKit: LGPL/BSD open-source)",
     priceFree: true,
     sources: [
       { label: "Safari release notes", url: "https://developer.apple.com/tutorials/data/documentation/safari-release-notes.json" },
       { label: "Apple Safari privacy features", url: "https://www.apple.com/safari/features/#privacy" },
-      { label: "StatCounter browser market share Apr 2026", url: "https://gs.statcounter.com/browser-market-share/" },
     ],
   },
   {
     name: "Microsoft Edge",
     vendor: "Microsoft Corp.",
     engine: "Blink / V8",
-    desktopShare: "11.0%",
-    mobileShare: "1.2%",
+    version: "155 (155.0.4283.60)",
     privacySummary: "Tracking prevention (Basic/Balanced/Strict); telemetry on by default; built-in Bing AI Copilot",
     license: "Proprietary (Chromium core: BSD/Apache)",
     priceFree: true,
     sources: [
+      { label: "Microsoft Edge release API", url: "https://edgeupdates.microsoft.com/api/products" },
       { label: "Edge stable release notes", url: "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-stable-channel" },
       { label: "Microsoft Edge privacy policy", url: "https://www.microsoft.com/en-us/edge/privacy-policy" },
-      { label: "StatCounter browser market share Apr 2026", url: "https://gs.statcounter.com/browser-market-share/" },
     ],
   },
   {
     name: "Brave",
     vendor: "Brave Software Inc.",
     engine: "Blink / V8",
-    desktopShare: "1.2%",
-    mobileShare: "0.8%",
+    version: "1.97.57 (Chromium 155)",
     privacySummary: "Aggressive ad/tracker blocking by default (Shields); fingerprinting protection; Tor integration in Private Window",
     license: "MPL-2.0 (open-source)",
     priceFree: true,
     sources: [
       { label: "Brave GitHub releases", url: "https://github.com/brave/brave-browser/releases" },
       { label: "Brave privacy features", url: "https://brave.com/privacy-features/" },
-      { label: "StatCounter browser market share Apr 2026", url: "https://gs.statcounter.com/browser-market-share/" },
     ],
   },
   {
     name: "Opera",
     vendor: "Opera Software AS",
     engine: "Blink / V8",
-    desktopShare: "2.8%",
-    mobileShare: "1.9%",
+    version: "137 (137.0.6036.63)",
     privacySummary: "Built-in ad blocker (off by default on desktop); free VPN proxy included; tracker blocking available",
     license: "Proprietary",
     priceFree: true,
     sources: [
+      { label: "Opera desktop downloads", url: "https://get.geo.opera.com/pub/opera/desktop/" },
       { label: "Opera changelog", url: "https://help.opera.com/en/latest/news/" },
-      { label: "StatCounter browser market share Apr 2026", url: "https://gs.statcounter.com/browser-market-share/" },
     ],
   },
   {
     name: "Vivaldi",
     vendor: "Vivaldi Technologies",
     engine: "Blink / V8",
-    desktopShare: "0.3%",
-    mobileShare: "0.1%",
+    version: "8.2",
     privacySummary: "Built-in ad/tracker blocking; no telemetry sent; sync encrypted end-to-end",
     license: "Proprietary (Chromium core: BSD/Apache)",
     priceFree: true,
     sources: [
-      { label: "Vivaldi blog changelog", url: "https://vivaldi.com/blog/desktop/" },
+      { label: "Vivaldi blog", url: "https://vivaldi.com/blog/" },
       { label: "Vivaldi privacy policy", url: "https://vivaldi.com/privacy/browser/" },
     ],
   },
@@ -335,8 +324,7 @@ const BROWSERS: Browser[] = [
     name: "DuckDuckGo Browser",
     vendor: "DuckDuckGo Inc.",
     engine: "WebKit (iOS/macOS) / Blink (Android)",
-    desktopShare: "< 0.1%",
-    mobileShare: "0.2%",
+    version: "See vendor page",
     privacySummary: "Aggressive tracker blocking and email protection built-in; Fire button erases all session data; no search history retained",
     license: "Proprietary",
     priceFree: true,
@@ -349,26 +337,24 @@ const BROWSERS: Browser[] = [
     name: "Samsung Internet",
     vendor: "Samsung Electronics",
     engine: "Blink / V8",
-    desktopShare: "< 0.1%",
-    mobileShare: "2.5%",
+    version: "See vendor page",
     privacySummary: "Built-in tracker blocker (Smart Anti-Tracking); content blockers via extensions; Samsung Knox security integration on Galaxy devices",
     license: "Proprietary",
     priceFree: true,
     sources: [
       { label: "Samsung Internet GitHub", url: "https://github.com/SamsungInternet/support" },
-      { label: "StatCounter browser market share Apr 2026", url: "https://gs.statcounter.com/browser-market-share/" },
     ],
   },
   {
     name: "Tor Browser",
     vendor: "Tor Project (non-profit)",
     engine: "Gecko / SpiderMonkey",
-    desktopShare: "< 0.1%",
-    mobileShare: "< 0.1%",
+    version: "15.0.25",
     privacySummary: "Traffic routed through Tor network (3 relays); no telemetry; JavaScript restricted by default; most aggressive fingerprinting protection of any mainstream browser",
     license: "MPL-2.0 + GPL (open-source)",
     priceFree: true,
     sources: [
+      { label: "Tor Browser release metadata", url: "https://aus1.torproject.org/torbrowser/update_3/release/download-linux-x86_64.json" },
       { label: "Tor Browser download", url: "https://www.torproject.org/download/" },
       { label: "Tor project blog releases", url: "https://blog.torproject.org/category/releases/" },
     ],
@@ -439,12 +425,9 @@ export default function BrowserComparison2026Page() {
                 {QUICK_ANSWER}
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-cyan-200">
-                <span>
-                  By{" "}
-                  <Link href="/authors/daniel-rozin" className="text-white hover:underline font-medium">
-                    Daniel Rozin
-                  </Link>
-                </span>
+                <span className="font-semibold uppercase tracking-wide text-white">{AI_CONTENT_LABEL}</span>
+                <span aria-hidden="true">·</span>
+                <span>{AI_DISCLOSURE}</span>
                 <span aria-hidden="true">·</span>
                 <span>
                   Updated:{" "}
@@ -491,7 +474,7 @@ export default function BrowserComparison2026Page() {
           <li><strong className="text-text">Best for everyday use:</strong> Chrome (ecosystem) or Edge (Windows-integrated); both Chromium-based.</li>
           <li><strong className="text-text">Best for privacy:</strong> Brave — blocks ads/trackers by default, Tor integration available, open-source.<sup><a href="#cite-4" className="text-primary-600">[5]</a></sup></li>
           <li><strong className="text-text">Best open-source:</strong> Firefox (MPL-2.0) or Tor Browser — both use Gecko, fully auditable.</li>
-          <li><strong className="text-text">Mobile iOS/macOS:</strong> Safari leads on battery efficiency and ITP tracking protection.<sup><a href="#cite-2" className="text-primary-600">[3]</a></sup></li>
+          <li><strong className="text-text">iPhone and Mac:</strong> Safari is built in and turns on Intelligent Tracking Prevention by default.<sup><a href="#cite-2" className="text-primary-600">[3]</a></sup></li>
         </ul>
       </section>
 
@@ -506,15 +489,15 @@ export default function BrowserComparison2026Page() {
           <h2 id="browscomp-full-comparison-table" className="text-2xl font-display font-bold text-text">Full comparison table</h2>
         </div>
         <p className="text-sm text-text-secondary mb-4">
-          Market share figures: StatCounter GlobalStats, April 2026.<sup><a href="#cite-statcounter" className="text-primary-600">[*]</a></sup>{" "}
-          Desktop and mobile shares are tracked separately; figures may not sum to 100% due to rounding.
+          <strong>Updated Oct 2026:</strong> versions are the current stable releases checked on October 16, 2026, from each vendor&apos;s release channel.<sup><a href="#cite-versions" className="text-primary-600">[*]</a></sup>{" "}
+          Third-party market-share estimates were removed. Every browser listed is free.
         </p>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Browser comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
-            <caption className="sr-only">Browser comparison table — engine, market share, privacy defaults, and license</caption>
+            <caption className="sr-only">Browser comparison table: rendering engine, current stable version, privacy defaults and license, October 2026</caption>
             <thead>
               <tr className="bg-surface-alt">
-                {["Browser", "Engine", "Desktop Share", "Mobile Share", "Privacy defaults", "License"].map((h) => (
+                {["Browser", "Engine", "Stable version (Oct 2026)", "Privacy defaults", "License"].map((h) => (
                   <th scope="col" key={h} className="text-left p-3 font-semibold text-text border-b border-border whitespace-nowrap">{h}</th>
                 ))}
               </tr>
@@ -524,8 +507,7 @@ export default function BrowserComparison2026Page() {
                 <tr key={b.name} className="hover:bg-surface-alt/50 transition-colors">
                   <td className="p-3 font-medium text-text whitespace-nowrap">{b.name}</td>
                   <td className="p-3 text-text-secondary">{b.engine}</td>
-                  <td className="p-3 text-text-secondary">{b.desktopShare}<sup><a href={`#cite-${i}`} className="text-primary-600">[{i + 1}]</a></sup></td>
-                  <td className="p-3 text-text-secondary">{b.mobileShare}<sup><a href={`#cite-${i}`} className="text-primary-600">[{i + 1}]</a></sup></td>
+                  <td className="p-3 text-text-secondary">{b.version}<sup><a href={`#cite-${i}`} className="text-primary-600">[{i + 1}]</a></sup></td>
                   <td className="p-3 text-text-secondary">{b.privacySummary}</td>
                   <td className="p-3 text-text-secondary">{b.license}</td>
                 </tr>
@@ -590,14 +572,11 @@ export default function BrowserComparison2026Page() {
                   {si < b.sources.length - 1 ? "; " : ""}
                 </span>
               ))}
-              {" "}<em>Accessed May 2026.</em>
+              {" "}<em>Checked October 2026.</em>
             </li>
           ))}
-          <li id="cite-statcounter">
-            <sup>*</sup> StatCounter Global Stats. &ldquo;Browser Market Share Worldwide — April 2026.&rdquo; StatCounter, May 2026.{" "}
-            <a href="https://gs.statcounter.com/browser-market-share/" rel="nofollow noopener" target="_blank" className="text-primary-600 hover:underline">
-              gs.statcounter.com/browser-market-share/<span className="sr-only"> (opens in new tab)</span>
-            </a>. Accessed May 2026.
+          <li id="cite-versions">
+            <sup>*</sup> Stable versions read on October 16, 2026: Chrome from Google&apos;s version-history service (Windows stable), Firefox from Mozilla&apos;s product-details feed, Edge from Microsoft&apos;s Edge release API, Safari from Apple&apos;s Safari release notes, Brave from its GitHub releases, Opera from its official download directory, Vivaldi from the Vivaldi blog and Tor Browser from the Tor Project&apos;s release metadata. DuckDuckGo and Samsung Internet do not publish a single current version number. Browsers auto-update, so versions move quickly.
           </li>
         </ol>
       </section>
