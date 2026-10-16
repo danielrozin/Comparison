@@ -63,7 +63,6 @@ import { CompareRedditFooterLink } from "@/components/community/CompareRedditFoo
 import { ExpertAnalysis } from "@/components/comparison/ExpertAnalysis";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { CompareChangeAlert } from "@/components/comparison/CompareChangeAlert";
-import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
@@ -1118,8 +1117,8 @@ export default function ComparisonPage(props: Props) {
       {/* ROO-155: "Compare next" cards + search right after the verdict */}
       <CompareNextCards slug={slug} chips={nextStepChips} />
 
-      {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
-      <TrackComparisonCard comparisonSlug={comparison.slug} comparisonTitle={comparison.title} />
+      {/* ROO-242: the DAN-406 "Track this comparison" card is replaced by the
+          single CompareChangeAlert capture above (one email form per page). */}
 
       {/* User Poll — after verdict card */}
       {comparison.entities.length >= 2 && (
