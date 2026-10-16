@@ -10,7 +10,8 @@ const CHANGELOG_DESC = `See what's new on ${SITE_NAME}. Complete history of upda
 const CHANGELOG_URL = `${SITE_URL}/changelog`;
 
 export const metadata: Metadata = {
-  title: CHANGELOG_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: CHANGELOG_TITLE },
   description: CHANGELOG_DESC,
   alternates: {
     canonical: CHANGELOG_URL,
