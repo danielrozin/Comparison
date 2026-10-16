@@ -52,6 +52,11 @@ import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
 import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
+import { SHOPIFY_VS_WOOCOMMERCE } from "./shopify-vs-woocommerce";
+import { GOOGLE_WORKSPACE_VS_MICROSOFT_365 } from "./google-workspace-vs-microsoft-365";
+import { NEST_VS_RING } from "./nest-vs-ring";
+import { RTX_4090_VS_RTX_5080 } from "./rtx-4090-vs-rtx-5080";
+import { CARNIVAL_VS_ROYAL_CARIBBEAN } from "./carnival-vs-royal-caribbean";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -122,6 +127,11 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9060_XT_VS_RTX_5060_TI.slug]: RX_9060_XT_VS_RTX_5060_TI,
   [MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5.slug]: MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
+  [SHOPIFY_VS_WOOCOMMERCE.slug]: SHOPIFY_VS_WOOCOMMERCE,
+  [GOOGLE_WORKSPACE_VS_MICROSOFT_365.slug]: GOOGLE_WORKSPACE_VS_MICROSOFT_365,
+  [NEST_VS_RING.slug]: NEST_VS_RING,
+  [RTX_4090_VS_RTX_5080.slug]: RTX_4090_VS_RTX_5080,
+  [CARNIVAL_VS_ROYAL_CARIBBEAN.slug]: CARNIVAL_VS_ROYAL_CARIBBEAN,
 };
 
 /**
