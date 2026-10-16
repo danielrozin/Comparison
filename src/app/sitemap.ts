@@ -118,7 +118,7 @@ export default async function sitemap({
       // Curated comparison landing pages
       { url: `${SITE_URL}/llm-comparisons`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/llm-comparisons/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
-      { url: `${SITE_URL}/browser-comparison-2026`, lastModified: "2026-09-21", changeFrequency: "weekly", priority: 0.9 },
+      { url: `${SITE_URL}/browser-comparison-2026`, lastModified: "2026-10-16", changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/browser-comparison-2026/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/password-manager-comparison`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/password-manager-comparison/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
