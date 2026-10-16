@@ -229,9 +229,12 @@ function renderMarkdown(md: string): string {
     /\[([^\]]+)\]\(([^)]+)\)/g,
     (_match, text, href) => {
       const isExternal = /^https?:\/\//.test(href);
+      // /build pages are generated on demand, so blog links to them are nofollow (same as the inline cards).
       const attrs = isExternal
         ? ' target="_blank" rel="noopener noreferrer"'
-        : '';
+        : href.startsWith("/build/")
+          ? ' rel="nofollow"'
+          : '';
       return `<a href="${href}" class="text-primary-600 hover:text-primary-700 underline underline-offset-2"${attrs}>${text}</a>`;
     }
   );

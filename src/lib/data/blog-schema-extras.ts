@@ -7,6 +7,8 @@
  * Article + BreadcrumbList + FAQPage + ItemList (positions 1–8).
  */
 
+import { IMAX_DOLBY_FAQS } from "@/lib/data/imax-dolby-blog";
+
 export interface BlogFaq {
   question: string;
   answer: string;
@@ -30,6 +32,8 @@ export interface BlogSchemaExtras {
 }
 
 export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
+  // ROO-235: FAQs mirror the visible FAQ section of the repo article.
+  "imax-vs-dolby-cinema-2026-is-the-premium-ticket-worth-it": { faqs: IMAX_DOLBY_FAQS },
   "best-cloud-platforms-2026": {
     author: {
       name: "Daniel Rozin",
