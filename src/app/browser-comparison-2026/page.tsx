@@ -10,12 +10,12 @@ import {
   BROWSER_COMPARISON_CTA_HEADING,
   BROWSER_COMPARISON_SOURCE_PAGE,
 } from "@/lib/data/browser-comparison-cta";
+import { LAST_UPDATED } from "./last-updated";
 
 const PAGE_URL = `${SITE_URL}/browser-comparison-2026`;
 const PAGE_TITLE = `Best Web Browsers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of 10 major web browsers in 2026 — engine, market share, privacy, extensions, performance, and standards compliance. All figures cited to primary sources.";
-export const LAST_UPDATED = "2026-10-16";
 const QUICK_ANSWER =
   "For everyday use pick Chrome or Edge, both built on Chromium. For privacy pick Brave, which blocks ads and trackers by default. For an open-source engine outside Chromium pick Firefox, or Tor Browser for anonymity. On iPhone and Mac, Safari ships Intelligent Tracking Prevention on by default. Current stable versions in October 2026: Chrome 156, Edge 155, Firefox 158, Safari 27 and Brave 1.97.";
 
