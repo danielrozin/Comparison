@@ -10,7 +10,8 @@ const PAGE_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Cookie Pol
 const PAGE_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESC,
   alternates: {
     canonical: PAGE_URL,

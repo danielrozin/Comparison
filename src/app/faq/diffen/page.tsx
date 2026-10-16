@@ -12,7 +12,8 @@ const PAGE_URL = `${SITE_URL}/faq/diffen`;
 const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Is Diffen.com Still Worth Using?")}&type=faq`;
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: PAGE_URL },
   openGraph: {

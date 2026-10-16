@@ -12,7 +12,8 @@ const PAGE_URL = `${SITE_URL}/faq/comparison-sites`;
 const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Best Comparison Website in 2026")}&type=faq`;
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: PAGE_URL },
   openGraph: {
