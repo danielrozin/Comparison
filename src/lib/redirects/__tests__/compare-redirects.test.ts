@@ -335,3 +335,14 @@ describe("COMPARE_REDIRECTS", () => {
     });
   });
 });
+
+describe("duplicate-slug 301s (Oct 2026)", () => {
+  it.each([
+    ["galaxy-vs-iphone", "iphone-vs-samsung-galaxy"],
+    ["macbook-air-m4-vs-macbook-pro", "macbook-air-vs-macbook-pro"],
+    ["honda-crv-vs-toyota-rav4-hybrid", "toyota-rav4-vs-honda-cr-v"],
+  ])("%s redirects to %s", (from, to) => {
+    expect(getConsolidatedCompareSlug(from)).toBe(to);
+    expect(getConsolidatedCompareSlug(to)).toBeNull();
+  });
+});
