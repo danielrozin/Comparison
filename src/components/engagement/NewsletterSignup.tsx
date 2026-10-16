@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useExperiment } from "@/lib/experiments";
 import { identifySubscriber, trackNewsletterSignup } from "@/lib/utils/analytics";
 
 interface NewsletterSignupProps {
@@ -11,8 +10,8 @@ interface NewsletterSignupProps {
 }
 
 export function NewsletterSignup({ source, referrerSlug, variant = "card" }: NewsletterSignupProps) {
-  const { variant: followCopy } = useExperiment("follow-cta-copy");
-  const alertsFraming = followCopy === "alerts";
+  // ROO-242: follow-cta-copy ended; the control copy stays.
+  const alertsFraming = false;
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 

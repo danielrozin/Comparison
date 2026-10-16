@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     other: {
       "DC.title": guide.title,
       "DC.description": guide.description,
-      "DC.creator": "Daniel Rozin",
+      "DC.creator": SITE_NAME,
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.type": "Text",
