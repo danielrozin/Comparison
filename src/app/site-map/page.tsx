@@ -15,7 +15,8 @@ const SITEMAP_URL = `${SITE_URL}/site-map`;
 const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Site Map — A Versus B")}&type=sitemap`;
 
 export const metadata: Metadata = {
-  title: SITEMAP_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: SITEMAP_TITLE },
   description: SITEMAP_DESC,
   alternates: {
     canonical: SITEMAP_URL,

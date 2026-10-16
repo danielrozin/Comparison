@@ -7,13 +7,16 @@ import { JsonLd } from "@/components/schema/JsonLd";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 
 const PAGE_URL = `${SITE_URL}/llm-comparisons`;
-const PAGE_TITLE = `LLM Comparison 2026: GPT-4o vs Claude vs Gemini vs Llama | ${SITE_NAME}`;
+// ROO-241: no single model version in the title; the table covers 12 models
+// across the GPT, Claude, Gemini and Llama families (versions in the table).
+const PAGE_TITLE = `LLM Comparison 2026: GPT vs Claude vs Gemini vs Llama (12 Models) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of 12 leading large language models — parameters, context window, modality, license, and knowledge cutoff. Column structure mirrors Wikipedia's Comparison of large language models. All data cited to primary sources.";
 export const LAST_UPDATED = "2026-10-16";
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   robots: {
     index: true,

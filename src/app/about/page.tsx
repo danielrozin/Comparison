@@ -17,7 +17,8 @@ const ABOUT_DESC = `Two founders who could not find a decent way to compare a co
 const ABOUT_URL = `${SITE_URL}/about`;
 
 export const metadata: Metadata = {
-  title: ABOUT_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: ABOUT_TITLE },
   description: ABOUT_DESC,
   alternates: {
     canonical: ABOUT_URL,

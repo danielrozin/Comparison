@@ -207,7 +207,8 @@ const faqSchema = {
 };
 
 export const metadata: Metadata = {
-  title: "Search Comparisons | A Versus B",
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: "Search Comparisons | A Versus B" },
   description: PAGE_DESCRIPTION,
   alternates: {
     canonical: PAGE_URL,

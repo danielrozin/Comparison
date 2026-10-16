@@ -11,7 +11,8 @@ const VERDICTS_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("How We
 const VERDICTS_LAST_EDITED = "2026-07-10"; // last content edit: 7f152c0a (1eb76ac1 only added accessibilitySummary).
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESC,
   robots: {
     index: true,
