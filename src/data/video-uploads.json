@@ -5713,6 +5713,124 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-15T09:49:56.790Z"
+    },
+    {
+      "slug": "marvel-vs-dc",
+      "title": "Marvel vs DC",
+      "entityA": "Marvel",
+      "entityB": "DC",
+      "category": "entertainment",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "marvel-vs-dc.mp4",
+      "durationSeconds": 49,
+      "transcript": "Thirty billion dollars at the box office. DC hasn't cracked a quarter of it. One built the better movie machine. The other invented the whole idea of superheroes. Marvel out-earned DC by over four to one. That's not rivalry, that's a gap. Endgame made more than double Aquaman. DC's best night was Marvel's Tuesday. Superman landed in 1938, a year before Marvel had anybody. DC started the genre. The DC animated universe is the gold standard. Marvel's cartoons never got close. Marvel edges the comic shelf too, but DC is right behind it. Marvel takes it 3-2. Pick DC if you want the characters that outlive the movies.",
+      "chapters": [
+        {
+          "name": "Marvel vs DC",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Total Box Office",
+          "startOffset": 11,
+          "endOffset": 18
+        },
+        {
+          "name": "Round 2: Most Successful Film",
+          "startOffset": 18,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 3: Oldest Characters",
+          "startOffset": 25,
+          "endOffset": 33
+        },
+        {
+          "name": "Round 4: Animated Universe Quality",
+          "startOffset": 33,
+          "endOffset": 40
+        },
+        {
+          "name": "Round 5: Comic Book Sales",
+          "startOffset": 40,
+          "endOffset": 45
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 45,
+          "endOffset": 52
+        }
+      ],
+      "youtubeTitle": "Marvel vs DC: Who Actually Wins the Superhero War?",
+      "youtubeDescription": "We compare Marvel and DC across box office totals, biggest films, character history, animated universes, and comic sales. The MCU's $30B dwarfs the DCEU's $7B, but DC owns the older characters and the better animation. Full head-to-head breakdown and a final verdict.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/marvel-vs-dc\n\nFull comparison: https://www.aversusb.net/compare/marvel-vs-dc",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-16T09:36:27.275Z"
+    },
+    {
+      "slug": "star-wars-vs-star-trek",
+      "title": "Star Wars vs Star Trek",
+      "entityA": "Star Wars",
+      "entityB": "Star Trek",
+      "category": "entertainment",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "star-wars-vs-star-trek.mp4",
+      "durationSeconds": 46,
+      "transcript": "One franchise is worth seven times the other. It still loses this fight. Star Wars owns the box office. Star Trek owns the medium it was born in. Seventy billion against ten. Star Wars isn't a franchise, it's an economy. Five live action shows versus thirteen series. Trek never stopped making television. Ten point three billion in ticket sales. Trek's films are a rounding error. Trek got there eleven years earlier, and it did it on TV. Trek built episodes around real arguments. Star Wars built a myth instead. Trek takes it three to two. Pick Star Wars if you want spectacle over sermon.",
+      "chapters": [
+        {
+          "name": "Star Wars vs Star Trek",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 12
+        },
+        {
+          "name": "Round 1: Franchise Value",
+          "startOffset": 12,
+          "endOffset": 18
+        },
+        {
+          "name": "Round 2: TV Shows Produced",
+          "startOffset": 18,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 3: Box Office",
+          "startOffset": 25,
+          "endOffset": 31
+        },
+        {
+          "name": "Round 4: Started",
+          "startOffset": 31,
+          "endOffset": 36
+        },
+        {
+          "name": "Round 5: Social Commentary",
+          "startOffset": 36,
+          "endOffset": 42
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 42,
+          "endOffset": 49
+        }
+      ],
+      "youtubeTitle": "Star Wars vs Star Trek: The Numbers Pick a Winner",
+      "youtubeDescription": "Star Wars is a $70 billion franchise with $10.3 billion at the box office. Star Trek started in 1966 and has produced 13+ series built around real social commentary. We compare franchise value, TV output, box office, longevity and substance to settle which sci-fi giant actually wins.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/star-wars-vs-star-trek\n\nFull comparison: https://www.aversusb.net/compare/star-wars-vs-star-trek",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-16T09:39:54.582Z"
     }
   ]
 }

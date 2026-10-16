@@ -13,7 +13,7 @@ import { checkBlogDedup, recordDedupRejection } from "./dedup-gate";
 import { submitToIndexNow } from "@/lib/seo/indexnow";
 import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { embedText } from "./embeddings";
-import { findRepoBlogArticle, listRepoBlogArticles } from "@/lib/data/nba-season-preview-blog";
+import { findRepoBlogArticle, findRepoBlogOverride, listRepoBlogArticles } from "@/lib/data/nba-season-preview-blog";
 
 export interface BlogArticle {
   id?: string;
@@ -268,6 +268,9 @@ export function paginateMergedBlogArticles<T extends { publishedAt?: Date | stri
 export async function getBlogBySlug(
   slug: string
 ): Promise<BlogArticle | null> {
+  const repoOverride = findRepoBlogOverride(slug);
+  if (repoOverride) return repoOverride;
+
   const prisma = getPrismaClient();
   if (!prisma) {
     return findRepoBlogArticle(slug) ?? MOCK_BLOG_ARTICLES.find((a) => a.slug === slug) ?? null;

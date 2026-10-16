@@ -234,118 +234,104 @@ JBL's Tour One M2 addresses a specific gap in the market: four-device simultaneo
 
 *Prices verified against Amazon, Best Buy, and manufacturer pages on **2026-07-10**. Sources: RTINGS.com, TechRadar, Tom's Guide, What Hi-Fi? (2026 reviews). Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
-const LAPTOPS_FOR_STUDENTS_BODY = `Buying a laptop for college or high school in 2026 means navigating a market that's added AI co-processors, longer battery life, and noticeably better displays at the same price points — but also one where the "right" answer depends heavily on your major, your budget, and which ecosystem you're already inside.
+const LAPTOPS_FOR_STUDENTS_BODY = `*Analysis. Drafted with AI from web research. Updated October 16, 2026.*
 
-This guide picks the six best laptops for students across three price tiers: under $550 (budget), $550–$850 (mid-range), and $850–$1,200 (premium). Every pick is based on expert reviews from PCWorld, Tom's Guide, Laptop Mag, and Wirecutter (The New York Times), plus manufacturer spec sheets verified in July 2026. We do not recommend any laptop that doesn't have at least 8 GB RAM and 256 GB SSD at its starting configuration — those minimums are now the floor for modern coursework.
+The MacBook Air with M5 is the pick for students on Apple devices. It has 16GB of memory as standard, and Apple rates it at up to 18 hours of video streaming. On Windows, the Lenovo IdeaPad Slim 5 is the balanced mid-range choice, and the Acer Aspire Go 15 is the budget choice. Configurations and prices change often, so compare current prices on each vendor's store.
 
-**Quick picks:** [MacBook Air M4 ↓](#macbook-air-m4) · [Lenovo IdeaPad Slim 5 ↓](#lenovo-ideapad-slim5) · [Acer Aspire Go 15 ↓](#acer-aspire-go15) · [Dell Inspiron 15 ↓](#dell-inspiron15) · [ASUS Vivobook 15 ↓](#asus-vivobook15) · [HP Pavilion 15 ↓](#hp-pavilion15)
+**Updated Oct 2026.** The MacBook Air pick moves from M4 to M5, Apple's current model.
 
-## TL;DR — best student laptops 2026
+| # | Laptop | Best for | Key spec | Price |
+|---|--------|----------|----------|-------|
+| 1 | **Apple MacBook Air (M5)** | Apple users, design and media | 13- or 15-inch; 10-core CPU; 16GB memory standard; up to 18 hrs video streaming (Apple spec) | See vendor page |
+| 2 | **Lenovo IdeaPad Slim 5** | Balanced Windows mid-range | Thin and light; 14- and 16-inch sizes | See vendor page |
+| 3 | **Acer Aspire Go 15** | Tight budgets | 15.6-inch display | See vendor page |
+| 4 | **Dell 15 (formerly Inspiron 15)** | Mainstream Windows with wide retail availability | 15-inch; many configurations | See vendor page |
+| 5 | **ASUS Vivobook 15** | Display options at a low price | 15.6-inch; OLED options on some models | See vendor page |
+| 6 | **HP OmniBook 5 (formerly Pavilion)** | Everyday Windows use | Several sizes and configurations | See vendor page |
 
-| # | Laptop | Best for | Battery | RAM | Price |
-|---|--------|----------|---------|-----|-------|
-| 1 | **Apple MacBook Air 13-inch M4** | Mac ecosystem, design/media | ~18 hrs | 16 GB | ~$1,099 |
-| 2 | **Lenovo IdeaPad Slim 5 AMD** | Best Windows mid-range | 12–14 hrs | 16 GB | ~$699 |
-| 3 | **Acer Aspire Go 15 AI Ready** | Best budget buy | 9–11 hrs | 8 GB | ~$449 |
-| 4 | **Dell Inspiron 15** | Best build quality at mid-range | 10–12 hrs | 16 GB | ~$649 |
-| 5 | **ASUS Vivobook 15** | Best screen for the price | 9–11 hrs | 8–16 GB | ~$499 |
-| 6 | **HP Pavilion 15** | Best HP value + webcam | 10 hrs | 8–16 GB | ~$529 |
+*Table: six student laptops by best use and key spec, October 2026. Prices vary by configuration and retailer.*
 
-## How we picked them
+**Quick picks:** [MacBook Air (M5) ↓](#macbook-air-m5) · [Lenovo IdeaPad Slim 5 ↓](#lenovo-ideapad-slim5) · [Acer Aspire Go 15 ↓](#acer-aspire-go15) · [Dell 15 ↓](#dell-inspiron15) · [ASUS Vivobook 15 ↓](#asus-vivobook15) · [HP OmniBook 5 ↓](#hp-pavilion15)
 
-We scored each laptop on: **performance** (multi-core benchmarks relative to typical student workloads: browser tabs + video calls + document editing + light media), **battery life** (measured real-world average, not peak claims), **display quality** (brightness, color accuracy, resolution), **portability** (weight and dimensions), and **value** (total cost of ownership across 4 years relative to category).
+## The 6 best laptops for students
 
-## The 6 best laptops for students, ranked
+### 1. Apple MacBook Air (M5) {#macbook-air-m5}
 
-### 1. Apple MacBook Air 13-inch M4 {#macbook-air-m4}
+**Best for:** students already on iPhone or iPad, and design or media majors.
 
-**Best for:** Mac users, design students, STEM majors who want the best battery life available. **Price:** from ~$1,099 (8-core CPU / 10-core GPU / 16 GB RAM / 256 GB SSD). **Battery:** 18+ hours measured.
+Apple's current MacBook Air uses the M5 chip with a 10-core CPU and comes in 13-inch and 15-inch sizes. 16GB of memory is standard, and Apple rates battery life at up to 18 hours of video streaming and up to 15 hours of wireless web. Apple offers education pricing to college students and educators through the Apple Store.
 
-The M4 MacBook Air raised the floor — 16 GB of unified memory is now the base configuration (not an upgrade cost), the Neural Engine is meaningfully faster for AI-assisted coursework, and battery life remains the best of any laptop in this guide. The fanless design means no throttling under typical student workloads. macOS support for the M4 chip runs through at least 2030, making it a strong 4-year investment.
+**Pros:** 16GB memory standard; long rated battery life; fanless design. **Cons:** costs more than the Windows picks; USB-C/Thunderbolt only, so you may need an adapter for HDMI or SD cards.
 
-**Pros:** Best battery life in class; 16 GB RAM standard; silent fanless design; 4-year macOS support window. **Cons:** Most expensive pick; limited gaming; USB-C only (adapter needed for SD cards/HDMI); iCloud subscription costs add up.
+*Compare: [MacBook Air vs MacBook Pro](/compare/macbook-air-vs-macbook-pro)*
 
-**Price tier:** $1,099+. *Compare: [MacBook Air vs MacBook Pro](/compare/macbook-air-vs-macbook-pro) · [MacBook Air vs Surface Laptop](/compare/macbook-air-vs-surface-laptop)*
+### 2. Lenovo IdeaPad Slim 5 {#lenovo-ideapad-slim5}
 
-### 2. Lenovo IdeaPad Slim 5 (AMD Ryzen AI) {#lenovo-ideapad-slim5}
+**Best for:** Windows students who want a thin, light machine without paying premium prices.
 
-**Best for:** Windows students who want the best balance of performance, battery, and price. **Price:** from ~$649–$749 (Ryzen 7 / 16 GB / 512 GB). **Battery:** 12–14 hours measured.
+The IdeaPad Slim 5 is Lenovo's mainstream thin-and-light line, sold with AMD and Intel processors in several sizes. Check that the configuration you choose has 16GB of memory and a 512GB SSD.
 
-The IdeaPad Slim 5 with AMD's Ryzen AI series chip offers performance that genuinely competes with mid-2024 MacBook Air models on productivity workloads, at a lower price. The 14-inch OLED display option available at ~$749 is one of the best-looking screens available under $800. Build quality is above average for the price tier — slim bezels, all-aluminum lid, and a decent keyboard travel. The AMD iGPU is capable enough for light creative work and Stable Diffusion image generation.
+**Pros:** thin and light; wide range of configurations. **Cons:** integrated graphics only; memory and storage vary by model.
 
-**Pros:** AMD Ryzen AI performance; optional OLED display; 16 GB RAM standard; thin and light. **Cons:** No dedicated GPU; some models ship with 8 GB (check config); 12-month software bundles inflate advertised price.
+### 3. Acer Aspire Go 15 {#acer-aspire-go15}
 
-**Price tier:** $650–$800.
+**Best for:** students on a tight budget who want a full-size 15.6-inch screen.
 
-### 3. Acer Aspire Go 15 AI Ready {#acer-aspire-go15}
+The Aspire Go 15 is Acer's entry-level 15.6-inch laptop. At this price, choose a configuration with at least 8GB of memory and an SSD rather than eMMC storage.
 
-**Best for:** Students on a tight budget who still want a full 15-inch screen and a Windows AI co-processor. **Price:** from ~$399–$449. **Battery:** 9–11 hours.
+**Pros:** low price; large screen. **Cons:** plastic build; base models can be short on memory and storage.
 
-At under $450 the Aspire Go 15 offers a 15.6-inch 1080p display, Intel Core Ultra (Series 1) or AMD Ryzen 5 AI chipset depending on configuration, and 8 GB RAM — all the minimums for comfortable coursework. The build is plastic but sturdy enough for backpack daily use. This is the honest recommendation for students who need a working machine for four years and can't spend more. Don't pay for the 8 GB / 256 GB base — stretch to the 8 GB / 512 GB configuration if the price difference is under $50.
+### 4. Dell 15 (formerly Inspiron 15) {#dell-inspiron15}
 
-**Pros:** Best price in guide; 15-inch display; usable for 4 years of coursework; widely available. **Cons:** Plastic chassis; 8 GB RAM (tight for 8+ browser tabs + Zoom simultaneously); no backlit keyboard on all models.
+**Best for:** students who want a mainstream Windows laptop that is easy to find and service.
 
-**Price tier:** $400–$480.
+Dell retired the Inspiron name in 2025, and its everyday laptops are now sold simply as Dell, such as the Dell 15. It is sold in many processor, memory, and storage combinations, so it can be configured for anything from basic coursework to heavier engineering work.
 
-### 4. Dell Inspiron 15 {#dell-inspiron15}
-
-**Best for:** Students who want a reliable mid-range Windows laptop with Dell's build quality and support. **Price:** from ~$599–$699 (Intel Core i5-13th/14th gen or AMD Ryzen 7, 16 GB, 512 GB). **Battery:** 10–12 hours measured.
-
-Dell's Inspiron 15 consistently appears in "best student laptop" lists because it combines solid build quality, reliable thermals, a good typing experience, and widespread availability at major retailers with straightforward warranty support. The 15-inch anti-glare FHD display handles lecture halls and outdoor reading without struggling. Configuration flexibility is a strength: you can spec it from 8 GB budget up to 32 GB for engineering or data science workloads.
-
-**Pros:** Reliable Dell build quality; widely available; easy warranty process; configurable RAM up to 32 GB. **Cons:** Battery life trails the MacBook Air and Lenovo; design is boxy compared to competition; integrated graphics only.
-
-**Price tier:** $600–$750.
+**Pros:** many configurations; wide availability. **Cons:** integrated graphics on most models; boxy design.
 
 ### 5. ASUS Vivobook 15 {#asus-vivobook15}
 
-**Best for:** Students who prioritize display quality and want a fingerprint reader on a sub-$500 Windows machine. **Price:** from ~$479–$549 (AMD Ryzen 5 / 8–16 GB / 512 GB). **Battery:** 9–11 hours.
+**Best for:** students who care about the screen on a modest budget.
 
-The Vivobook 15 earns its place in this guide for one primary reason: ASUS consistently delivers better-calibrated displays than comparably priced Acer and HP competitors. The OLED Vivobook options (available at ~$549) deliver the most accurate color reproduction of any laptop in this guide under $600, making it the pick for digital arts, graphic design, and media production students who can't stretch to the MacBook Air.
+The Vivobook 15 is ASUS's mainstream 15.6-inch line, and some models offer an OLED display. Compare memory and storage carefully, because base models vary.
 
-**Pros:** Best display quality in tier; fingerprint reader; OLED option at $549; AMD Ryzen performance. **Cons:** Build feels cheaper than Dell/Lenovo at same price; battery life below average; fan noise under sustained load.
+**Pros:** OLED options on some models; low starting prices. **Cons:** build quality varies by model.
 
-**Price tier:** $480–$560.
+### 6. HP OmniBook 5 (formerly Pavilion) {#hp-pavilion15}
 
-### 6. HP Pavilion 15 {#hp-pavilion15}
+**Best for:** everyday Windows coursework.
 
-**Best for:** Students who want a full-featured 15-inch laptop with a decent webcam and HP's value proposition. **Price:** from ~$499–$599 (AMD Ryzen 5/7 or Intel Core i5, 8–16 GB, 512 GB). **Battery:** 10 hours.
+HP retired the Pavilion name, and the OmniBook 5 is its everyday replacement. Choose a configuration with 16GB of memory and a 512GB SSD if your budget allows.
 
-HP's Pavilion 15 has historically been the default recommendation for "nothing special, just reliable" — and in 2026 that remains roughly true. The 5MP webcam (on select models) is meaningfully better than the average 720p webcam shipped by competitors at this price, which matters for video calls and remote presentations. The 180-degree hinge allows flat lay-flat use for group work sessions.
+**Pros:** widely available; many configurations. **Cons:** base models can be short on memory.
 
-**Pros:** Best webcam in category; 180-degree hinge; widely available; reliable HP track record. **Cons:** Mediocre display calibration; 8 GB RAM on base model; design feels dated.
+## How to choose a student laptop {#buying-guide}
 
-**Price tier:** $500–$600.
+**Memory.** 16GB is a comfortable target for four years. 8GB handles basic coursework but leaves little headroom. For engineering, data science, or video editing, aim for 16GB or more.
 
-## Buying guide: choosing the right student laptop {#buying-guide}
+**Storage.** 512GB is a practical minimum for a four-year purchase. Avoid eMMC storage sold as an SSD.
 
-**RAM: 8 GB vs 16 GB.** In 2026, 8 GB is the floor — enough for basic coursework but tight once you have 10+ browser tabs, a Zoom call, and a document editing tool open simultaneously. If you can afford 16 GB, get it. For engineering, data science, video editing, or virtualization: 16 GB is the minimum, 32 GB preferred.
+**Battery claims.** Vendor battery ratings are measured under the vendor's own test conditions, so real-world battery life is usually lower.
 
-**Storage: SSD size matters less than speed.** All picks here use NVMe SSDs, which are fast enough for coursework. 256 GB fills up quickly once you factor in photos, project files, and OS overhead — 512 GB is the practical minimum for a 4-year purchase. Avoid eMMC storage advertised as "SSD" on budget Chromebooks or Windows S Mode machines.
+**Windows or macOS.** Most majors work on either. Some engineering programs require Windows-only software such as SolidWorks. Check your program's requirements before buying.
 
-**Battery life claims vs reality.** Manufacturers measure under ideal conditions (low brightness, minimal load). Real-world battery life is typically 60–70% of the claimed number on Windows machines. The MacBook Air M4 is the exception: its 18-hour claim holds up in practice at moderate brightness.
-
-**Windows vs macOS.** For most majors: either works. Exceptions — engineering programs using specialized software (SolidWorks, AutoCAD) require Windows. Video production programs often lean macOS. Computer science programs are platform-agnostic. Check your program's software requirements before buying.
-
-**Display size: 13–14 inch vs 15 inch.** 14-inch is the sweet spot for portable daily carry. 15-inch gives more screen real estate for spreadsheets, split-screen workflows, and presentations but weighs 0.5–1 kg more. If the laptop will mostly live in a fixed dorm desk setup, 15-inch is worth it.
-
-**What to avoid.** Laptops with eMMC storage, less than 8 GB RAM soldered, or Intel Celeron/Pentium processors at the same price as a Ryzen 5 or Core i5. "Student deals" that add antivirus software subscriptions you can't cancel — this often applies to HP and Dell direct-sale bundles.
+**Screen size.** A 13- to 14-inch laptop is easiest to carry every day. A 15- to 16-inch screen is better for spreadsheets and split-screen work.
 
 ## Frequently asked questions {#faq}
 
-**What is the best laptop for college students in 2026?** For Mac users: Apple MacBook Air M4 ($1,099). For Windows users on a mid-range budget: Lenovo IdeaPad Slim 5 AMD ($699). For students on a tight budget: Acer Aspire Go 15 (~$449). The "best" depends entirely on budget, ecosystem, and major.
+**What is the best laptop for college students in 2026?** For Mac users, the MacBook Air with M5 has 16GB of memory as standard, and Apple rates it at up to 18 hours of video streaming. For Windows users, the Lenovo IdeaPad Slim 5 is a balanced mid-range pick, and the Acer Aspire Go 15 is the budget pick. Current prices are on each vendor's store.
 
-**Is a MacBook or Windows laptop better for college?** Depends on your major. MacBook Air M4 wins on battery life, build quality, and 4-year software support. Windows laptops win on price, configuration flexibility, and compatibility with Windows-only professional software (SolidWorks, certain lab tools). Most students do well with either.
+**Is a MacBook or Windows laptop better for college?** It depends on your major. A MacBook Air suits students already on Apple devices and those in design or media. Windows laptops offer more price points and run Windows-only software such as SolidWorks. Check your program's software requirements before buying.
 
-**How much RAM do I need for college?** 16 GB in 2026 for a comfortable 4-year experience. 8 GB is workable for basic coursework (Word, browser, Zoom) but will feel constrained by year 2. If your budget limits you to 8 GB, choose a model where RAM is upgradeable (Dell Inspiron often allows this; most MacBooks do not).
+**How much RAM do I need for college?** 16GB is a comfortable target for four years of coursework, and every MacBook Air with M5 starts at 16GB. 8GB can handle basic coursework. For engineering, data science, or video editing, aim for 16GB or more.
 
-**What is a good laptop budget for a student in 2026?** $650–$850 is the sweet spot where you get 16 GB RAM, a 512 GB SSD, and 3–5 years of useful life from a Windows laptop. Under $500, you're making real compromises on RAM, build quality, or battery life. Over $1,100, you're in premium territory where returns diminish unless you need MacBook Air battery life or a specialized GPU.
+**How much storage should a student laptop have?** 512GB is a practical minimum for a four-year purchase. Avoid eMMC storage sold as an SSD on low-cost machines.
 
-**How long should a student laptop last?** Aim for 4 years minimum. Realistic lifespan for a mid-range Windows laptop with normal care is 5–7 years on hardware, though battery replacement at year 3–4 adds $80–$100. MacBook Air M4 has confirmed macOS software support to 2030+ based on Apple's historical 7-year support window.
+**Which MacBook Air is current in 2026?** Apple sells the MacBook Air with the M5 chip in 13-inch and 15-inch sizes, with a 10-core CPU and 16GB of memory as standard.
 
 ---
 
-*Specs and prices verified against manufacturer pages, Best Buy, and Amazon on **2026-07-10**. Sources: PCWorld, Tom's Guide, Laptop Mag, The Wirecutter/NYT (2026 reviews). Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
+*Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 const TRAVEL_CREDIT_CARDS_BODY = `The best travel credit cards in 2026 share two things: no foreign transaction fees, and a rewards currency that transfers to airlines or hotels. Everything beyond that — annual fee, welcome bonus, lounge access, travel credits — is a tradeoff you have to make against how often you fly and how you spend.
 
@@ -1227,42 +1213,42 @@ export const BEST_CONFIG: Record<string, BestEntry> = {
     slug: "laptops-for-students",
     title: "Best Laptops for Students 2026: 6 Expert Picks | aversusb.net",
     description:
-      "The 6 best laptops for college students in 2026 — MacBook Air M4, Lenovo IdeaPad, Acer, Dell ranked by battery, performance, and value. Updated July 2026.",
+      "The 6 best laptops for college students in 2026: MacBook Air with M5, Lenovo IdeaPad Slim 5, Acer Aspire Go 15, Dell 15, ASUS Vivobook 15, and HP OmniBook 5.",
     h1: "Best Laptops for Students 2026: 6 Expert Picks",
-    authorName: "Daniel Rozin",
-    authorUrl: "/authors/daniel-rozin",
+    authorName: "AversusB Editorial Team",
+    authorUrl: "/about",
     publishedAt: "2026-07-10",
-    updatedAt: "2026-07-10",
+    updatedAt: "2026-10-16",
     category: "technology",
     bodyMarkdown: LAPTOPS_FOR_STUDENTS_BODY,
     listItems: [
-      { position: 1, name: "Apple MacBook Air 13-inch M4", anchor: "macbook-air-m4" },
-      { position: 2, name: "Lenovo IdeaPad Slim 5 (AMD Ryzen AI)", anchor: "lenovo-ideapad-slim5" },
-      { position: 3, name: "Acer Aspire Go 15 AI Ready", anchor: "acer-aspire-go15" },
-      { position: 4, name: "Dell Inspiron 15", anchor: "dell-inspiron15" },
+      { position: 1, name: "Apple MacBook Air (M5)", anchor: "macbook-air-m5" },
+      { position: 2, name: "Lenovo IdeaPad Slim 5", anchor: "lenovo-ideapad-slim5" },
+      { position: 3, name: "Acer Aspire Go 15", anchor: "acer-aspire-go15" },
+      { position: 4, name: "Dell 15 (formerly Inspiron 15)", anchor: "dell-inspiron15" },
       { position: 5, name: "ASUS Vivobook 15", anchor: "asus-vivobook15" },
-      { position: 6, name: "HP Pavilion 15", anchor: "hp-pavilion15" },
+      { position: 6, name: "HP OmniBook 5 (formerly Pavilion)", anchor: "hp-pavilion15" },
     ],
     faqs: [
       {
         q: "What is the best laptop for college students in 2026?",
-        a: "For Mac users: Apple MacBook Air M4 ($1,099). For Windows users on a mid-range budget: Lenovo IdeaPad Slim 5 AMD ($699). For students on a tight budget: Acer Aspire Go 15 (~$449). The best choice depends on budget, ecosystem, and major.",
+        a: "For Mac users, the MacBook Air with M5 has 16GB of memory as standard, and Apple rates it at up to 18 hours of video streaming. For Windows users, the Lenovo IdeaPad Slim 5 is a balanced mid-range pick, and the Acer Aspire Go 15 is the budget pick. Current prices are on each vendor's store.",
       },
       {
         q: "Is a MacBook or Windows laptop better for college?",
-        a: "Depends on your major. MacBook Air M4 wins on battery life, build quality, and 4-year software support. Windows laptops win on price, configuration flexibility, and compatibility with Windows-only professional software (SolidWorks, certain lab tools). Most students do well with either.",
+        a: "It depends on your major. A MacBook Air suits students already on Apple devices and those in design or media. Windows laptops offer more price points and run Windows-only software such as SolidWorks. Check your program's software requirements before buying.",
       },
       {
         q: "How much RAM do I need for college?",
-        a: "16 GB in 2026 for a comfortable 4-year experience. 8 GB is workable for basic coursework but will feel constrained by year 2 with many browser tabs + Zoom open simultaneously. For engineering, data science, or video editing: 16 GB minimum, 32 GB preferred.",
+        a: "16GB is a comfortable target for four years of coursework, and every MacBook Air with M5 starts at 16GB. 8GB can handle basic coursework. For engineering, data science, or video editing, aim for 16GB or more.",
       },
       {
-        q: "What is a good laptop budget for a student in 2026?",
-        a: "$650–$850 is the sweet spot where you get 16 GB RAM, 512 GB SSD, and 3–5 years of useful life from a Windows laptop. Under $500, you're making real compromises. Over $1,100, you're in premium territory unless you specifically need MacBook Air battery life.",
+        q: "How much storage should a student laptop have?",
+        a: "512GB is a practical minimum for a four-year purchase. Avoid eMMC storage sold as an SSD on low-cost machines.",
       },
       {
-        q: "How long should a student laptop last?",
-        a: "Aim for 4 years minimum. Realistic lifespan for a mid-range Windows laptop with normal care is 5–7 years, though battery replacement at year 3–4 adds $80–$100. MacBook Air M4 has confirmed macOS software support to 2030+ based on Apple's historical 7-year support window.",
+        q: "Which MacBook Air is current in 2026?",
+        a: "Apple sells the MacBook Air with the M5 chip in 13-inch and 15-inch sizes, with a 10-core CPU and 16GB of memory as standard.",
       },
     ],
   },
