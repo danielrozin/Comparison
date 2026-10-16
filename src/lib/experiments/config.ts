@@ -36,7 +36,9 @@ export const experiments: ExperimentConfig[] = [
     variants: ["control", "alerts"],
     trafficPercent: 100,
     startDate: "2026-08-28",
-    endDate: "2026-10-28",
+    // ROO-242: stopped 2026-10-16 with a null result (1 signup in 30 days,
+    // exposure counted site-wide). Kept for the record; no longer active.
+    endDate: "2026-10-15",
     goalMetric: "newsletter_signup",
   },
   {

@@ -56,6 +56,26 @@ import { DOCTOR_VS_LAWYER } from "./doctor-vs-lawyer";
 import { PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL } from "./private-school-vs-public-school";
 import { MEXICO_VS_UNITED_STATES } from "./mexico-vs-united-states";
 import { SERENA_VS_VENUS_WILLIAMS } from "./serena-vs-venus-williams";
+import { ENLISTED_VS_MILITARY_OFFICER } from "./enlisted-vs-military-officer";
+import { EDGE_VS_SAFARI } from "./edge-vs-safari";
+import { AMAZON_AURORA_VS_MYSQL } from "./amazon-aurora-vs-mysql";
+import { PENN_VS_YALE } from "./penn-vs-yale";
+import { NORWAY_VS_SWEDEN } from "./norway-vs-sweden";
+import { DUOLINGO_VS_ROSETTA_STONE } from "./duolingo-vs-rosetta-stone";
+import { DELTA_SKYMILES_VS_UNITED_MILEAGEPLUS } from "./delta-skymiles-vs-united-mileageplus";
+import { PARIS_VS_ROME } from "./paris-vs-rome";
+import { AIRPODS_4_VS_AIRPODS_PRO } from "./airpods-4-vs-airpods-pro";
+import { ACTIVE_DUTY_VS_NATIONAL_GUARD } from "./active-duty-vs-national-guard";
+import { SHOPIFY_VS_WOOCOMMERCE } from "./shopify-vs-woocommerce";
+import { GOOGLE_WORKSPACE_VS_MICROSOFT_365 } from "./google-workspace-vs-microsoft-365";
+import { NEST_VS_RING } from "./nest-vs-ring";
+import { RTX_4090_VS_RTX_5080 } from "./rtx-4090-vs-rtx-5080";
+import { CARNIVAL_VS_ROYAL_CARIBBEAN } from "./carnival-vs-royal-caribbean";
+import { MASTERCARD_VS_VISA } from "./mastercard-vs-visa";
+import { COSTCO_VS_WALMART } from "./costco-vs-walmart";
+import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
+import { MYSQL_VS_POSTGRESQL } from "./mysql-vs-postgresql";
+import { GEICO_VS_STATE_FARM } from "./geico-vs-state-farm";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -130,6 +150,26 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL.slug]: PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL,
   [MEXICO_VS_UNITED_STATES.slug]: MEXICO_VS_UNITED_STATES,
   [SERENA_VS_VENUS_WILLIAMS.slug]: SERENA_VS_VENUS_WILLIAMS,
+  [ENLISTED_VS_MILITARY_OFFICER.slug]: ENLISTED_VS_MILITARY_OFFICER,
+  [EDGE_VS_SAFARI.slug]: EDGE_VS_SAFARI,
+  [AMAZON_AURORA_VS_MYSQL.slug]: AMAZON_AURORA_VS_MYSQL,
+  [PENN_VS_YALE.slug]: PENN_VS_YALE,
+  [NORWAY_VS_SWEDEN.slug]: NORWAY_VS_SWEDEN,
+  [DUOLINGO_VS_ROSETTA_STONE.slug]: DUOLINGO_VS_ROSETTA_STONE,
+  [DELTA_SKYMILES_VS_UNITED_MILEAGEPLUS.slug]: DELTA_SKYMILES_VS_UNITED_MILEAGEPLUS,
+  [PARIS_VS_ROME.slug]: PARIS_VS_ROME,
+  [AIRPODS_4_VS_AIRPODS_PRO.slug]: AIRPODS_4_VS_AIRPODS_PRO,
+  [ACTIVE_DUTY_VS_NATIONAL_GUARD.slug]: ACTIVE_DUTY_VS_NATIONAL_GUARD,
+  [SHOPIFY_VS_WOOCOMMERCE.slug]: SHOPIFY_VS_WOOCOMMERCE,
+  [GOOGLE_WORKSPACE_VS_MICROSOFT_365.slug]: GOOGLE_WORKSPACE_VS_MICROSOFT_365,
+  [NEST_VS_RING.slug]: NEST_VS_RING,
+  [RTX_4090_VS_RTX_5080.slug]: RTX_4090_VS_RTX_5080,
+  [CARNIVAL_VS_ROYAL_CARIBBEAN.slug]: CARNIVAL_VS_ROYAL_CARIBBEAN,
+  [MASTERCARD_VS_VISA.slug]: MASTERCARD_VS_VISA,
+  [COSTCO_VS_WALMART.slug]: COSTCO_VS_WALMART,
+  [MEDICAID_VS_MEDICARE.slug]: MEDICAID_VS_MEDICARE,
+  [MYSQL_VS_POSTGRESQL.slug]: MYSQL_VS_POSTGRESQL,
+  [GEICO_VS_STATE_FARM.slug]: GEICO_VS_STATE_FARM,
 };
 
 /**
