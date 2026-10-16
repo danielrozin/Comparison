@@ -10,6 +10,7 @@ import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@
 import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
 import { listEditorialCompareSitemapEntries } from "@/lib/data/editorial-compares";
+import { LAST_UPDATED as LLM_COMPARISONS_LAST_UPDATED } from "@/app/llm-comparisons/last-updated";
 import { LAST_UPDATED as PASSWORD_MANAGER_LAST_UPDATED } from "@/app/password-manager-comparison/last-updated";
 
 function comparisonOgImageUrl(title: string, entityA: string, entityB: string, category: string): string {
@@ -117,7 +118,7 @@ export default async function sitemap({
       { url: `${SITE_URL}/studies/b2b-saas-comparison-report-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
       { url: `${SITE_URL}/studies/investing-comparison-report-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
       // Curated comparison landing pages
-      { url: `${SITE_URL}/llm-comparisons`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
+      { url: `${SITE_URL}/llm-comparisons`, lastModified: LLM_COMPARISONS_LAST_UPDATED, changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/llm-comparisons/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/browser-comparison-2026`, lastModified: "2026-09-21", changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/browser-comparison-2026/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
