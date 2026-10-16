@@ -8,6 +8,7 @@
  */
 
 import type { BlogArticle } from "@/lib/services/blog-generator";
+import { IMAX_DOLBY_ARTICLE, IMAX_DOLBY_BLOG_SLUG } from "@/lib/data/imax-dolby-blog";
 import { TEMU_SHEIN_AMAZON_ARTICLE, TEMU_SHEIN_AMAZON_BLOG_SLUG } from "@/lib/data/temu-shein-amazon-blog";
 import { BEST_CLOUD_PLATFORMS_ARTICLE, BEST_CLOUD_PLATFORMS_BLOG_SLUG } from "@/lib/data/best-cloud-platforms-blog";
 import { SHOPIFY_WOO_SQUARESPACE_ARTICLE, SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG } from "@/lib/data/shopify-woocommerce-squarespace-blog";
@@ -140,6 +141,7 @@ export const NBA_SEASON_PREVIEW_ARTICLE: BlogArticle = {
 const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   NBA_SEASON_PREVIEW_ARTICLE,
   GOOGLE_MAPS_ALTERNATIVES_ARTICLE,
+  IMAX_DOLBY_ARTICLE,
   TEMU_SHEIN_AMAZON_ARTICLE,
   BEST_CLOUD_PLATFORMS_ARTICLE,
   SHOPIFY_WOO_SQUARESPACE_ARTICLE,
@@ -152,6 +154,7 @@ const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
  * getBlogBySlug serves these before reading the database.
  */
 const REPO_BLOG_DB_OVERRIDE_SLUGS: ReadonlySet<string> = new Set([
+  IMAX_DOLBY_BLOG_SLUG,
   TEMU_SHEIN_AMAZON_BLOG_SLUG,
   BEST_CLOUD_PLATFORMS_BLOG_SLUG,
   SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG,
