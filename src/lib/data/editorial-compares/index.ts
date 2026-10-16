@@ -52,6 +52,11 @@ import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
 import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
+import { M5_MAX_VS_M5_PRO } from "./m5-max-vs-m5-pro";
+import { GA4_VS_PLAUSIBLE_ANALYTICS } from "./ga4-vs-plausible-analytics";
+import { GOOGLE_ANALYTICS_VS_MICROSOFT_CLARITY } from "./google-analytics-vs-microsoft-clarity";
+import { ANDROID_VS_LINEAGEOS } from "./android-vs-lineageos";
+import { OPEN_SOURCE_VS_PROPRIETARY_SOFTWARE } from "./open-source-vs-proprietary-software";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -122,6 +127,11 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9060_XT_VS_RTX_5060_TI.slug]: RX_9060_XT_VS_RTX_5060_TI,
   [MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5.slug]: MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
+  [M5_MAX_VS_M5_PRO.slug]: M5_MAX_VS_M5_PRO,
+  [GA4_VS_PLAUSIBLE_ANALYTICS.slug]: GA4_VS_PLAUSIBLE_ANALYTICS,
+  [GOOGLE_ANALYTICS_VS_MICROSOFT_CLARITY.slug]: GOOGLE_ANALYTICS_VS_MICROSOFT_CLARITY,
+  [ANDROID_VS_LINEAGEOS.slug]: ANDROID_VS_LINEAGEOS,
+  [OPEN_SOURCE_VS_PROPRIETARY_SOFTWARE.slug]: OPEN_SOURCE_VS_PROPRIETARY_SOFTWARE,
 };
 
 /**
