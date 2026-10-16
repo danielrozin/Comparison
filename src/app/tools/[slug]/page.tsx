@@ -302,12 +302,7 @@ function toolPageSchema(slug: string, title: string, description: string, publis
           "@type": "SpeakableSpecification",
           cssSelector: ["h1", ".tool-description", "p:first-of-type"],
         },
-        author: {
-          "@type": "Person",
-          "@id": `${authorUrl}#author`,
-          name: "Daniel Rozin",
-          url: authorUrl,
-        },
+        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
         publisher: {
           "@type": "Organization",
           "@id": `${SITE_URL}#organization`,

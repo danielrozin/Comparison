@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { AI_CONTENT_LABEL, AI_DISCLOSURE } from "@/lib/editorial/blog-authorship";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
+import { LAST_UPDATED } from "./last-updated";
 
 const PAGE_URL = `${SITE_URL}/llm-comparisons`;
 // ROO-241: no single model version in the title; the table covers 12 models
@@ -11,7 +13,6 @@ const PAGE_URL = `${SITE_URL}/llm-comparisons`;
 const PAGE_TITLE = `LLM Comparison 2026: GPT vs Claude vs Gemini vs Llama (12 Models) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of 12 leading large language models — parameters, context window, modality, license, and knowledge cutoff. Column structure mirrors Wikipedia's Comparison of large language models. All data cited to primary sources.";
-const LAST_UPDATED = "2026-07-11";
 
 export const metadata: Metadata = {
   // ROO-241: title already carries the brand; skip the layout template.
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PAGE_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
     "citation_keywords": "LLM comparison, large language models, AI chatbots, ChatGPT vs Claude, GPT-4 benchmark 2026",
     "citation_fulltext_world_readable": "",
     "DC.title": PAGE_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
@@ -85,7 +86,6 @@ const articleSchema = {
   interactivityType: "expositive",
   datePublished: "2026-07-11",
   dateModified: LAST_UPDATED,
-  lastReviewed: LAST_UPDATED,
   contentReferenceTime: LAST_UPDATED,
   thumbnailUrl: LLM_OG_IMAGE,
   image: {
@@ -97,17 +97,8 @@ const articleSchema = {
     height: 630,
     caption: "LLM Comparison Guide 2026 — A Versus B",
   },
-  author: {
-    "@type": "Person",
-    "@id": `${SITE_URL}/authors/daniel-rozin#person`,
-    name: "Daniel Rozin",
-    url: `${SITE_URL}/authors/daniel-rozin`,
-    jobTitle: "Founder & Editor-in-Chief",
-    worksFor: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
-    sameAs: ["https://www.linkedin.com/in/daniel-rozin-56a066b0/"],
-  },
+  author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
   copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -123,18 +114,18 @@ const articleSchema = {
   teaches: teachesDefinedTerm("How to choose the best large language model for your use case", PAGE_URL),
   educationalUse: "comparison",
   alternativeHeadline: `Best Large Language Models in ${new Date().getFullYear()} — LLM Comparison Guide`,
-  keywords: `LLM comparison, large language models, GPT-4o, Claude, Gemini, AI models ${new Date().getFullYear()}`,
+  keywords: `LLM comparison, large language models, GPT-6, Claude Opus 5.5, Gemini 4, Grok 4.7, DeepSeek V4, AI models ${new Date().getFullYear()}`,
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", ".faq-answer"] },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", "#llm-answer", ".faq-answer"] },
   hasPart: { "@id": `${PAGE_URL}#faq` },
   about: { "@type": "Thing", name: "Large language models", sameAs: "https://en.wikipedia.org/wiki/Large_language_model" },
   mentions: [
-    { "@type": "SoftwareApplication", name: "GPT-4o", url: "https://openai.com" },
-    { "@type": "SoftwareApplication", name: "Claude 3.7 Sonnet", url: "https://anthropic.com" },
-    { "@type": "SoftwareApplication", name: "Gemini 2.5 Pro", url: "https://deepmind.google" },
-    { "@type": "SoftwareApplication", name: "Llama 3.3 70B", url: "https://ai.meta.com" },
-    { "@type": "SoftwareApplication", name: "DeepSeek-V3", url: "https://deepseek.com" },
+    { "@type": "SoftwareApplication", name: "GPT-6 Astra", url: "https://platform.openai.com/docs/models" },
+    { "@type": "SoftwareApplication", name: "Claude Opus 5.5", url: "https://docs.anthropic.com/en/docs/about-claude/models/overview" },
+    { "@type": "SoftwareApplication", name: "Gemini 4 Argon", url: "https://ai.google.dev/gemini-api/docs/models" },
+    { "@type": "SoftwareApplication", name: "Grok 4.7", url: "https://docs.x.ai/docs/models" },
+    { "@type": "SoftwareApplication", name: "DeepSeek-V4-Pro", url: "https://api-docs.deepseek.com/quick_start/pricing" },
   ],
   timeRequired: "PT6M",
   wordCount: 1200,
@@ -145,29 +136,10 @@ const articleSchema = {
   discussionUrl: "https://www.reddit.com/search/?q=LLM+comparison+OR+%22best+AI+model%22&type=link&sort=relevance",
 };
 
-const productSchemas = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "GPT-4o",
-    url: "https://openai.com/index/gpt-4o-system-card/",
-    brand: { "@type": "Brand", name: "OpenAI" },
-    description: "Multimodal frontier LLM from OpenAI. 128K token context window. Text + image + audio input. Knowledge cutoff: October 2023.",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "Llama 3.3 70B",
-    url: "https://ai.meta.com/blog/meta-llama-3-3/",
-    brand: { "@type": "Brand", name: "Meta AI" },
-    description: "Open-weight text LLM from Meta. 70.6B parameters. 128K token context. Llama 3 Community License.",
-  },
-];
-
 type LLM = {
   name: string;
   vendor: string;
-  params: string;
+  price: string;
   contextK: string;
   inputModality: string;
   outputModality: string;
@@ -178,166 +150,136 @@ type LLM = {
 
 const LLMS: LLM[] = [
   {
-    name: "GPT-4o",
+    name: "GPT-6 Astra",
     vendor: "OpenAI",
-    params: "Undisclosed",
-    contextK: "128K",
-    inputModality: "Text, Image, Audio",
-    outputModality: "Text, Audio",
+    price: "$10 / $50",
+    contextK: "1.05M",
+    inputModality: "Text, Image",
+    outputModality: "Text",
     license: "Proprietary",
-    knowledgeCutoff: "Oct 2023",
-    sources: [
-      { label: "GPT-4o system card", url: "https://openai.com/index/gpt-4o-system-card/" },
-      { label: "OpenAI models API reference", url: "https://platform.openai.com/docs/models" },
-    ],
+    knowledgeCutoff: "Apr 30, 2026",
+    sources: [{ label: "OpenAI models", url: "https://platform.openai.com/docs/models" }],
   },
   {
-    name: "GPT-4.1",
+    name: "GPT-6.1 Sol",
     vendor: "OpenAI",
-    params: "Undisclosed",
-    contextK: "1M",
+    price: "$2 / $10",
+    contextK: "1.05M",
     inputModality: "Text, Image",
     outputModality: "Text",
     license: "Proprietary",
-    knowledgeCutoff: "Undisclosed",
-    sources: [
-      { label: "OpenAI models API reference", url: "https://platform.openai.com/docs/models" },
-    ],
+    knowledgeCutoff: "Apr 30, 2026",
+    sources: [{ label: "OpenAI models", url: "https://platform.openai.com/docs/models" }],
   },
   {
-    name: "Claude 3.5 Sonnet",
+    name: "GPT-6 Luna",
+    vendor: "OpenAI",
+    price: "$0.10 / $0.50",
+    contextK: "1.05M",
+    inputModality: "Text, Image",
+    outputModality: "Text",
+    license: "Proprietary",
+    knowledgeCutoff: "May 18, 2026",
+    sources: [{ label: "OpenAI models", url: "https://platform.openai.com/docs/models" }],
+  },
+  {
+    name: "Claude Fable 5.1",
     vendor: "Anthropic",
-    params: "Undisclosed",
-    contextK: "200K",
+    price: "$10 / $50",
+    contextK: "1M",
     inputModality: "Text, Image",
     outputModality: "Text",
     license: "Proprietary",
-    knowledgeCutoff: "Apr 2024",
-    sources: [
-      { label: "Anthropic models list", url: "https://docs.anthropic.com/en/docs/about-claude/models" },
-    ],
+    knowledgeCutoff: "Jun 2026",
+    sources: [{ label: "Anthropic models overview", url: "https://docs.anthropic.com/en/docs/about-claude/models/overview" }],
   },
   {
-    name: "Claude 3.7 Sonnet",
+    name: "Claude Opus 5.5",
     vendor: "Anthropic",
-    params: "Undisclosed",
-    contextK: "200K",
+    price: "$4 / $20",
+    contextK: "1M",
     inputModality: "Text, Image",
     outputModality: "Text",
     license: "Proprietary",
-    knowledgeCutoff: "Undisclosed",
-    sources: [
-      { label: "Anthropic Claude 3.7 Sonnet announcement", url: "https://www.anthropic.com/news/claude-3-7-sonnet" },
-      { label: "Anthropic models list", url: "https://docs.anthropic.com/en/docs/about-claude/models" },
-    ],
+    knowledgeCutoff: "Jun 2026",
+    sources: [{ label: "Anthropic models overview", url: "https://docs.anthropic.com/en/docs/about-claude/models/overview" }],
   },
   {
-    name: "Gemini 2.0 Flash",
-    vendor: "Google DeepMind",
-    params: "Undisclosed",
+    name: "Claude Sonnet 5.5",
+    vendor: "Anthropic",
+    price: "$2 / $10",
     contextK: "1M",
-    inputModality: "Text, Image, Audio, Video",
-    outputModality: "Text, Image",
+    inputModality: "Text, Image",
+    outputModality: "Text",
     license: "Proprietary",
-    knowledgeCutoff: "Aug 2024",
-    sources: [
-      { label: "Google AI Gemini model page", url: "https://ai.google.dev/gemini-api/docs/models/gemini" },
-    ],
+    knowledgeCutoff: "Jun 2026",
+    sources: [{ label: "Anthropic models overview", url: "https://docs.anthropic.com/en/docs/about-claude/models/overview" }],
   },
   {
-    name: "Gemini 2.5 Pro",
-    vendor: "Google DeepMind",
-    params: "Undisclosed",
+    name: "Claude Haiku 5.5",
+    vendor: "Anthropic",
+    price: "From $0.10 / from $0.50",
     contextK: "1M",
-    inputModality: "Text, Image, Audio, Video",
+    inputModality: "Text, Image",
     outputModality: "Text",
     license: "Proprietary",
-    knowledgeCutoff: "Undisclosed",
-    sources: [
-      { label: "Google AI Gemini 2.5 Pro model page", url: "https://ai.google.dev/gemini-api/docs/models/gemini#gemini-2.5-pro" },
-    ],
+    knowledgeCutoff: "Jun 2026",
+    sources: [{ label: "Anthropic models overview", url: "https://docs.anthropic.com/en/docs/about-claude/models/overview" }],
   },
   {
-    name: "Llama 3.3 70B",
-    vendor: "Meta AI",
-    params: "70.6B",
-    contextK: "128K",
-    inputModality: "Text",
-    outputModality: "Text",
-    license: "Llama 3 Community License (open weights)",
-    knowledgeCutoff: "Dec 2023",
-    sources: [
-      { label: "Meta Llama 3.3 announcement", url: "https://ai.meta.com/blog/meta-llama-3-3/" },
-      { label: "Llama 3.3 70B HuggingFace model card", url: "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct" },
-      { label: "Llama 3 technical report (arXiv 2407.21783)", url: "https://arxiv.org/abs/2407.21783" },
-    ],
-  },
-  {
-    name: "Mistral Large 2",
-    vendor: "Mistral AI",
-    params: "Undisclosed",
-    contextK: "128K",
-    inputModality: "Text",
+    name: "Gemini 4 Argon",
+    vendor: "Google",
+    price: "$2 / $10 until Nov 30, 2026; $4 / $20 from Dec 1, 2026",
+    contextK: "1M",
+    inputModality: "Not listed",
     outputModality: "Text",
     license: "Proprietary",
-    knowledgeCutoff: "Undisclosed",
-    sources: [
-      { label: "Mistral AI models", url: "https://mistral.ai/technology/#models" },
-    ],
+    knowledgeCutoff: "Not listed",
+    sources: [{ label: "Gemini API models", url: "https://ai.google.dev/gemini-api/docs/models" }, { label: "Gemini API pricing", url: "https://ai.google.dev/gemini-api/docs/pricing" }],
   },
   {
-    name: "Grok-3",
+    name: "Gemini 3.8 Flash",
+    vendor: "Google",
+    price: "$0.75 / $3.75 until Dec 31, 2026; $1.50 / $7.50 from Jan 1, 2027",
+    contextK: "Not listed",
+    inputModality: "Not listed",
+    outputModality: "Text",
+    license: "Proprietary",
+    knowledgeCutoff: "Not listed",
+    sources: [{ label: "Gemini API models", url: "https://ai.google.dev/gemini-api/docs/models" }, { label: "Gemini API pricing", url: "https://ai.google.dev/gemini-api/docs/pricing" }],
+  },
+  {
+    name: "Grok 4.7",
     vendor: "xAI",
-    params: "Undisclosed",
-    contextK: "131K",
+    price: "$2 / $6 (prompts under 200K tokens); $4 / $12 at 200K+",
+    contextK: "500K",
     inputModality: "Text, Image",
     outputModality: "Text",
     license: "Proprietary",
-    knowledgeCutoff: "Undisclosed",
-    sources: [
-      { label: "xAI Grok-3 announcement", url: "https://x.ai/blog/grok-3" },
-    ],
+    knowledgeCutoff: "May 2026",
+    sources: [{ label: "xAI models and pricing", url: "https://docs.x.ai/docs/models" }],
   },
   {
-    name: "DeepSeek-V3",
+    name: "DeepSeek-V4-Pro",
     vendor: "DeepSeek",
-    params: "671B total / 37B active (MoE)",
-    contextK: "128K",
+    price: "$1.32 / $3.96 peak; half that off-peak",
+    contextK: "1M",
     inputModality: "Text",
     outputModality: "Text",
-    license: "MIT (open weights)",
-    knowledgeCutoff: "Undisclosed",
-    sources: [
-      { label: "DeepSeek-V3 technical report (arXiv 2412.19437)", url: "https://arxiv.org/abs/2412.19437" },
-      { label: "DeepSeek-V3 GitHub", url: "https://github.com/deepseek-ai/DeepSeek-V3" },
-    ],
+    license: "Not listed",
+    knowledgeCutoff: "Not listed",
+    sources: [{ label: "DeepSeek models and pricing", url: "https://api-docs.deepseek.com/quick_start/pricing" }],
   },
   {
-    name: "Qwen2.5-72B",
-    vendor: "Alibaba Cloud",
-    params: "72.7B",
-    contextK: "128K",
-    inputModality: "Text",
+    name: "Mistral Large 4",
+    vendor: "Mistral AI",
+    price: "See vendor pricing",
+    contextK: "Not listed",
+    inputModality: "Text, Image",
     outputModality: "Text",
-    license: "Qwen License (Apache 2.0 base with usage restrictions)",
-    knowledgeCutoff: "Undisclosed",
-    sources: [
-      { label: "Qwen2.5 technical report (arXiv 2412.15115)", url: "https://arxiv.org/abs/2412.15115" },
-      { label: "Qwen2.5-72B HuggingFace model card", url: "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct" },
-    ],
-  },
-  {
-    name: "Command R+",
-    vendor: "Cohere",
-    params: "Undisclosed",
-    contextK: "128K",
-    inputModality: "Text",
-    outputModality: "Text",
-    license: "Proprietary",
-    knowledgeCutoff: "Undisclosed",
-    sources: [
-      { label: "Cohere Command R+ model page", url: "https://cohere.com/command" },
-    ],
+    license: "Open weights",
+    knowledgeCutoff: "Not listed",
+    sources: [{ label: "Mistral models overview", url: "https://docs.mistral.ai/getting-started/models/models_overview/" }],
   },
 ];
 
@@ -345,27 +287,27 @@ const LLM_FAQS = [
   {
     question: "What is the best large language model in 2026?",
     answer:
-      "The best LLM depends on your use case. Claude claude-sonnet-5 and GPT-4.1 lead on instruction following, long-context coding, and complex reasoning. Gemini 2.5 Pro excels at multimodal tasks and document analysis. Llama 4 Scout and DeepSeek-V3 are the top open-weight alternatives for self-hosted deployments. This comparison table ranks each model by context window, input modality, and license type so you can match the right model to your workload.",
+      "There is no single best model; it depends on the job and the budget. OpenAI recommends GPT-6 Astra for complex reasoning and coding, and Anthropic recommends Claude Opus 5.5 for most workloads, with Claude Fable 5.1 for the most demanding reasoning. Google's flagship is Gemini 4 Argon and xAI's is Grok 4.7. For high-volume, cost-sensitive work, GPT-6 Luna and Claude Haiku 5.5 have the lowest list prices.",
   },
   {
-    question: "What does context window mean for LLMs?",
+    question: "Which LLM is cheapest to use through an API?",
     answer:
-      "The context window is the maximum number of tokens (roughly 0.75 words each) an LLM can process in a single request — both the input prompt and the generated output combined. Models with larger context windows (200K–1M tokens) can process entire books, long codebases, or lengthy conversation histories without losing earlier context. GPT-4.1 and Gemini 2.5 Pro offer the largest publicly documented context windows in this comparison at 1M tokens.",
+      "Among current flagship-family models, GPT-6 Luna lists at $0.10 per million input tokens and $0.50 per million output tokens, and Claude Haiku 5.5 starts at the same rates. DeepSeek-V4-Pro lists at $1.32 / $3.96 at peak hours and half that off-peak. Batch processing and prompt caching cut these prices further on most platforms.",
+  },
+  {
+    question: "Which LLM has the largest context window?",
+    answer:
+      "OpenAI lists a 1.05M-token context window for GPT-6 Astra, GPT-6.1 Sol and GPT-6 Luna. Anthropic's current Claude models, Gemini 4 Argon and DeepSeek-V4-Pro list 1M tokens, and Grok 4.7 lists 500K. A context window is the total number of tokens a model can take in one request, including the prompt and the reply.",
+  },
+  {
+    question: "Is Gemini 4 Argon getting more expensive?",
+    answer:
+      "Yes. Google lists Gemini 4 Argon at $2 per million input tokens and $10 per million output tokens through November 30, 2026, rising to $4 and $20 from December 1, 2026. Gemini 4 Argon is not available on the Gemini API free tier.",
   },
   {
     question: "What is the difference between proprietary and open-weight LLMs?",
     answer:
-      "Proprietary LLMs (GPT-4o, Claude, Gemini) are accessible only via API or product interface; their weights are not publicly released. Open-weight LLMs (Llama 4, Mistral, DeepSeek, Falcon) publish model weights for download, allowing self-hosting, fine-tuning, and offline deployment. Open-weight models are preferred for privacy-sensitive workloads, cost-sensitive high-volume use, and research contexts requiring full reproducibility.",
-  },
-  {
-    question: "How are LLM benchmarks like MMLU and HumanEval used to compare models?",
-    answer:
-      "MMLU (Massive Multitask Language Understanding) measures knowledge breadth across 57 academic subjects — a proxy for general knowledge quality. HumanEval measures code generation accuracy on 164 Python programming problems. GPQA tests graduate-level science reasoning. These benchmarks allow apples-to-apples comparison across labs, but real-world performance often diverges from benchmark scores, so this table pairs them with modality, context, and license data for a fuller picture.",
-  },
-  {
-    question: "How often is this LLM comparison table updated?",
-    answer:
-      "We update this table when major model releases or significant specification changes occur — typically monthly during active periods in the AI landscape. The page header and JSON-LD dateModified field show the date of the most recent data revision. Each row links to the primary vendor documentation source so you can verify specifications independently.",
+      "Proprietary models such as GPT-6, Claude and Gemini are only available through the vendor's apps and API, and their weights are not released. Open-weight models such as Mistral Large 4 publish their weights, so you can host, fine-tune and run them on your own hardware, subject to the model's license.",
   },
 ];
 
@@ -376,7 +318,7 @@ const llmFaqSchema = faqSchema(LLM_FAQS, `${PAGE_URL}#faq`, [
 export default function LLMComparisonsPage() {
   return (
     <>
-      <JsonLd data={[llmBreadcrumb, articleSchema, llmFaqSchema, ...productSchemas]} />
+      <JsonLd data={[llmBreadcrumb, articleSchema, llmFaqSchema]} />
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-violet-900 via-purple-900 to-indigo-900 text-white relative overflow-hidden">
@@ -422,16 +364,13 @@ export default function LLMComparisonsPage() {
               {/* ROO-50: under the title, before the long intro, so the cookie banner cannot cover it. */}
               <SoftPricingLine src="llm-comparisons" tone="onDark" className="mt-3" />
               <p id="page-intro" className="mt-2 text-purple-100 text-base sm:text-lg leading-relaxed max-w-3xl">
-                An independent, citation-backed comparison of 12 leading large language models — covering
-                parameter count, context window, modalities, license, and knowledge cutoff.
+                A comparison of 12 current large language models from OpenAI, Anthropic, Google, xAI, DeepSeek
+                and Mistral, covering API list price, context window, modalities, license and knowledge cutoff.
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-purple-200">
-                <span>
-                  By{" "}
-                  <Link href="/authors/daniel-rozin" className="text-white hover:underline font-medium">
-                    Daniel Rozin
-                  </Link>
-                </span>
+                <span className="font-semibold uppercase tracking-wide text-white">{AI_CONTENT_LABEL}</span>
+                <span aria-hidden="true">·</span>
+                <span>{AI_DISCLOSURE}</span>
                 <span aria-hidden="true">·</span>
                 <span>
                   Updated:{" "}
@@ -464,14 +403,21 @@ export default function LLMComparisonsPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 id="llm-takeaways-heading" className="font-display font-bold text-text">Key takeaways (as of May 2026)</h2>
+          <h2 id="llm-takeaways-heading" className="font-display font-bold text-text">Key takeaways (October 2026)</h2>
         </div>
+        <p id="llm-answer" className="text-sm text-text mb-3 leading-relaxed">
+          The current flagship API models are OpenAI&apos;s GPT-6 Astra, Anthropic&apos;s Claude Fable 5.1 and Claude Opus 5.5,
+          Google&apos;s Gemini 4 Argon and xAI&apos;s Grok 4.7. GPT-6 Astra and Claude Fable 5.1 both list at $10 per million input
+          tokens and $50 per million output tokens. Claude Opus 5.5 lists at $4 / $20, and Gemini 4 Argon at $2 / $10 until
+          November 30, 2026. Most of these models accept about 1M tokens of context.
+        </p>
         <ul className="space-y-1 text-text-secondary text-sm list-disc list-inside">
-          <li><strong className="text-text">Largest context windows:</strong> GPT-4.1 and Gemini 2.0 Flash / 2.5 Pro — all at 1M tokens.<sup><a href="#cite-0" className="text-primary-600">[1]</a></sup><sup><a href="#cite-4" className="text-primary-600">[5]</a></sup></li>
-          <li><strong className="text-text">Most open:</strong> DeepSeek-V3 (MIT, 671B MoE) and Llama 3.3 70B (community license, 70.6B) — both weights downloadable.<sup><a href="#cite-9" className="text-primary-600">[10]</a></sup><sup><a href="#cite-6" className="text-primary-600">[7]</a></sup></li>
-          <li><strong className="text-text">Multimodal leaders:</strong> GPT-4o (text/image/audio in+out) and Gemini 2.0 Flash (text/image/audio/video in, text/image out).<sup><a href="#cite-0" className="text-primary-600">[1]</a></sup><sup><a href="#cite-4" className="text-primary-600">[5]</a></sup></li>
-          <li><strong className="text-text">Parameters undisclosed:</strong> OpenAI (GPT-4 series) and Anthropic (Claude 3 series) have not published parameter counts. Cells read &ldquo;Undisclosed&rdquo; — not estimated figures.</li>
-        </ul>
+          <li><strong className="text-text">Largest context windows:</strong> GPT-6 Astra, Sol and Luna (1.05M tokens); the Claude 5.5 line, Claude Fable 5.1, Gemini 4 Argon and DeepSeek-V4-Pro (1M). Grok 4.7 lists 500K.</li>
+          <li><strong className="text-text">Lowest list prices:</strong> GPT-6 Luna ($0.10 / $0.50) and Claude Haiku 5.5 (from $0.10 / from $0.50) per million input / output tokens.</li>
+          <li><strong className="text-text">Price changes scheduled:</strong> Google lists Gemini 4 Argon rising to $4 / $20 on December 1, 2026, and Gemini 3.8 Flash rising to $1.50 / $7.50 on January 1, 2027.</li>
+          <li><strong className="text-text">Newest knowledge cutoffs:</strong> the Claude 5.5 line and Claude Fable 5.1 (June 2026), GPT-6 Luna (May 18, 2026) and Grok 4.7 (May 2026).</li>
+          <li><strong className="text-text">Open weights:</strong> Mistral Large 4 is open-weight. Parameter counts for the proprietary models are not published.</li>
+</ul>
       </section>
 
       {/* Main table */}
@@ -485,18 +431,18 @@ export default function LLMComparisonsPage() {
           <h2 id="llm-comparison-table-heading" className="text-2xl font-display font-bold text-text">Comparison table</h2>
         </div>
         <p className="text-sm text-text-secondary mb-4">
-          All data as of May 2026.<sup><a href="#cite-date-note" className="text-primary-600">[*]</a></sup>{" "}
-          &ldquo;Undisclosed&rdquo; means the vendor has not published the value — not that it is unknown to us.
+          Prices are standard API list prices in USD per million tokens, checked October 16, 2026; batch, cache and regional rates differ.<sup><a href="#cite-date-note" className="text-primary-600">[*]</a></sup>{" "}
+          &ldquo;Not listed&rdquo; means the value does not appear in the vendor&apos;s model or pricing documentation.
           Context window definitions vary; see{" "}
           <Link href="/llm-comparisons/methodology" className="text-primary-600 hover:underline">methodology</Link>{" "}
           for details.
         </p>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="LLM comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
-            <caption className="sr-only">LLM comparison table — model specs including parameters, context window, modalities, and license</caption>
+            <caption className="sr-only">LLM comparison table: API list price, context window, modalities, license and knowledge cutoff for current models, October 2026</caption>
             <thead>
               <tr className="bg-surface-alt">
-                {["Model", "Vendor", "Parameters", "Context window", "Input modalities", "Output modalities", "License", "Knowledge cutoff"].map((h) => (
+                {["Model", "Vendor", "API list price (input / output, USD per 1M tokens)", "Context window", "Input modalities", "Output modalities", "License", "Knowledge cutoff"].map((h) => (
                   <th scope="col" key={h} className="text-left p-3 font-semibold text-text border-b border-border whitespace-nowrap">{h}</th>
                 ))}
               </tr>
@@ -507,7 +453,7 @@ export default function LLMComparisonsPage() {
                   <td className="p-3 font-medium text-text whitespace-nowrap">{m.name}</td>
                   <td className="p-3 text-text-secondary">{m.vendor}</td>
                   <td className="p-3 text-text-secondary">
-                    {m.params}<sup><a href={`#cite-${i}`} className="text-primary-600">[{i + 1}]</a></sup>
+                    {m.price}<sup><a href={`#cite-${i}`} className="text-primary-600">[{i + 1}]</a></sup>
                   </td>
                   <td className="p-3 text-text-secondary">{m.contextK}</td>
                   <td className="p-3 text-text-secondary">{m.inputModality}</td>
@@ -584,14 +530,11 @@ export default function LLMComparisonsPage() {
                   {si < m.sources.length - 1 ? "; " : ""}
                 </span>
               ))}
-              {" "}<em>Accessed May 2026.</em>
+              {" "}<em>Checked October 16, 2026.</em>
             </li>
           ))}
           <li id="cite-date-note">
-            <sup>*</sup> Data reflects information available from primary vendor sources as of May 2026.
-            This is a fast-moving field; check the{" "}
-            <time dateTime={LAST_UPDATED}>{new Date(LAST_UPDATED).toLocaleDateString("en-US", { year: "numeric", month: "long" })}</time>{" "}
-            dateModified stamp above and consult vendor documentation for the latest specifications.
+            <sup>*</sup> <strong>Updated Oct 2026:</strong> the lineup moved from GPT-4o, Claude 3.x, Gemini 2.x and Llama 3.3 to each vendor&apos;s current models, and an API list-price column replaced parameter counts, which the proprietary vendors do not publish. Data was checked against vendor model and pricing documentation on October 16, 2026. Prices and versions change often; vendor documentation is authoritative.
           </li>
         </ol>
       </section>
