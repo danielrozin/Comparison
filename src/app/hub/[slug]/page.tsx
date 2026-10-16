@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     other: {
       "citation_title": hub.title,
-      "citation_author": "Daniel Rozin",
+      "citation_author": SITE_NAME,
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": hub.description,
@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_online_date": new Date().toISOString().slice(0, 10),
       "DC.title": hub.title,
       "DC.description": hub.description,
-      "DC.creator": "Daniel Rozin",
+      "DC.creator": SITE_NAME,
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `${hub.h1}, Comparison Hub`,

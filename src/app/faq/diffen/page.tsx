@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-import { personAuthorNode, contentAuthorArray } from "@/lib/seo/schema";
+import { contentAuthorArray } from "@/lib/seo/schema";
 
 const PAGE_TITLE = `Is Diffen.com Still Worth Using? | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
@@ -12,7 +12,8 @@ const PAGE_URL = `${SITE_URL}/faq/diffen`;
 const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Is Diffen.com Still Worth Using?")}&type=faq`;
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: { canonical: PAGE_URL },
   openGraph: {
@@ -32,14 +33,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PAGE_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": PAGE_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
@@ -112,7 +113,7 @@ function buildSchemas() {
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: PAGE_URL },
     author: contentAuthorArray(),
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     about: {
       "@type": "WebSite",
       name: "Diffen",

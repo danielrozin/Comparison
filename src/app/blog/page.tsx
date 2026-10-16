@@ -62,7 +62,8 @@ export async function generateMetadata({
   const canonicalUrl = page > 1 ? `${baseUrl}?page=${page}` : baseUrl;
 
   return {
-    title: `Blog — ${SITE_NAME}`,
+    // ROO-241: title already carries the brand; skip the layout template.
+    title: { absolute: `Blog — ${SITE_NAME}` },
     description: blogDescription,
     robots: {
       index: true,

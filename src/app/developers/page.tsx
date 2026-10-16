@@ -78,7 +78,8 @@ const DEV_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Developer A
 const DEV_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
-  title: DEV_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: DEV_TITLE },
   description: DEV_DESC,
   robots: {
     index: true,
@@ -106,14 +107,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": DEV_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": SITE_NAME,
     "citation_language": "en",
     "citation_abstract": DEV_DESC,
     "citation_publication_date": "2024-06-01",
     "citation_online_date": DEV_TODAY,
     "DC.title": DEV_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": SITE_NAME,
     "DC.language": "en",
     "DC.type": "Text",

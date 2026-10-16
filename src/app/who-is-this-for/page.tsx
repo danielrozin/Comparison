@@ -10,7 +10,8 @@ const WHO_DESC = `Find out if ${SITE_NAME} is the right comparison tool for you.
 const WHO_URL = `${SITE_URL}/who-is-this-for`;
 
 export const metadata: Metadata = {
-  title: WHO_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: WHO_TITLE },
   description: WHO_DESC,
   alternates: { canonical: WHO_URL },
   openGraph: {
@@ -28,14 +29,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": WHO_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": WHO_DESC,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": WHO_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",

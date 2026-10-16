@@ -17,7 +17,8 @@ const ABOUT_DESC = `Two founders who could not find a decent way to compare a co
 const ABOUT_URL = `${SITE_URL}/about`;
 
 export const metadata: Metadata = {
-  title: ABOUT_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: ABOUT_TITLE },
   description: ABOUT_DESC,
   alternates: {
     canonical: ABOUT_URL,
@@ -38,14 +39,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": ABOUT_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": ABOUT_DESC,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": ABOUT_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",

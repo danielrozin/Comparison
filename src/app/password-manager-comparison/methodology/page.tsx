@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
-import { personAuthorNode } from "@/lib/seo/schema";
 
 const PAGE_URL = `${SITE_URL}/password-manager-comparison/methodology`;
 const PAGE_TITLE = `How We Test Password Managers — Methodology | ${SITE_NAME}`;
@@ -11,7 +10,8 @@ const PAGE_DESCRIPTION =
   "Our scoring rubric, data sources, recency policy, conflict-of-interest disclosure, and correction process for the A Versus B password manager comparison guide.";
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   alternates: {
     canonical: PAGE_URL,
@@ -34,14 +34,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PAGE_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": PAGE_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
@@ -90,7 +90,7 @@ const schema = {
     url: `${SITE_URL}/authors/daniel-rozin`,
   },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+  reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
   isPartOf: { "@type": "WebPage", "@id": `${SITE_URL}/password-manager-comparison#article`, url: `${SITE_URL}/password-manager-comparison` },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",

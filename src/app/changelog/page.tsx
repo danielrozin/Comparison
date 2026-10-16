@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-import { personAuthorNode, contentAuthorArray } from "@/lib/seo/schema";
+import { contentAuthorArray } from "@/lib/seo/schema";
 
 const CHANGELOG_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Changelog — A Versus B Updates")}&type=home`;
 const CHANGELOG_TITLE = `Changelog — ${SITE_NAME} Updates, Features & New Comparisons`;
@@ -10,7 +10,8 @@ const CHANGELOG_DESC = `See what's new on ${SITE_NAME}. Complete history of upda
 const CHANGELOG_URL = `${SITE_URL}/changelog`;
 
 export const metadata: Metadata = {
-  title: CHANGELOG_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: CHANGELOG_TITLE },
   description: CHANGELOG_DESC,
   alternates: {
     canonical: CHANGELOG_URL,
@@ -33,14 +34,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": CHANGELOG_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": CHANGELOG_DESC,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": CHANGELOG_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
