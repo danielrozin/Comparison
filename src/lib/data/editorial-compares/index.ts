@@ -52,6 +52,11 @@ import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
 import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
+import { MASTERCARD_VS_VISA } from "./mastercard-vs-visa";
+import { COSTCO_VS_WALMART } from "./costco-vs-walmart";
+import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
+import { MYSQL_VS_POSTGRESQL } from "./mysql-vs-postgresql";
+import { GEICO_VS_STATE_FARM } from "./geico-vs-state-farm";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -122,6 +127,11 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9060_XT_VS_RTX_5060_TI.slug]: RX_9060_XT_VS_RTX_5060_TI,
   [MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5.slug]: MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
+  [MASTERCARD_VS_VISA.slug]: MASTERCARD_VS_VISA,
+  [COSTCO_VS_WALMART.slug]: COSTCO_VS_WALMART,
+  [MEDICAID_VS_MEDICARE.slug]: MEDICAID_VS_MEDICARE,
+  [MYSQL_VS_POSTGRESQL.slug]: MYSQL_VS_POSTGRESQL,
+  [GEICO_VS_STATE_FARM.slug]: GEICO_VS_STATE_FARM,
 };
 
 /**
