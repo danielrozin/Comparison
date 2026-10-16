@@ -7,6 +7,8 @@
  * Article + BreadcrumbList + FAQPage + ItemList (positions 1–8).
  */
 
+import { BEST_ACCOUNTING_FREELANCERS_FAQS } from "@/lib/data/best-accounting-freelancers-blog";
+
 export interface BlogFaq {
   question: string;
   answer: string;
@@ -30,6 +32,8 @@ export interface BlogSchemaExtras {
 }
 
 export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
+  // ROO-235: FAQs mirror the visible FAQ section of the repo article.
+  "best-accounting-software-freelancers-2026": { faqs: BEST_ACCOUNTING_FREELANCERS_FAQS },
   "best-cloud-platforms-2026": {
     author: {
       name: "Daniel Rozin",
