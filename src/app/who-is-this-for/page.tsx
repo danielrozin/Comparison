@@ -10,7 +10,8 @@ const WHO_DESC = `Find out if ${SITE_NAME} is the right comparison tool for you.
 const WHO_URL = `${SITE_URL}/who-is-this-for`;
 
 export const metadata: Metadata = {
-  title: WHO_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: WHO_TITLE },
   description: WHO_DESC,
   alternates: { canonical: WHO_URL },
   openGraph: {

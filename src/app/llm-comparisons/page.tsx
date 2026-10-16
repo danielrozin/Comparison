@@ -12,7 +12,8 @@ const PAGE_DESCRIPTION =
 const LAST_UPDATED = "2026-07-11";
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   robots: {
     index: true,
