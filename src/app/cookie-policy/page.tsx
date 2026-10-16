@@ -10,7 +10,8 @@ const PAGE_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Cookie Pol
 const PAGE_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESC,
   alternates: {
     canonical: PAGE_URL,
@@ -33,14 +34,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PAGE_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": SITE_NAME,
     "citation_language": "en",
     "citation_abstract": PAGE_DESC,
     "citation_publication_date": "2024-01-01",
     "citation_online_date": PAGE_TODAY,
     "DC.title": PAGE_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": SITE_NAME,
     "DC.language": "en",
     "DC.type": "Text",

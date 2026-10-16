@@ -44,6 +44,9 @@ const REJECTED_ARTICLE_TITLES = new Set([
   "Buying_a_Home",
   "Dyson_Airwrap",
   "Shark_FlexStyle",
+  // GPU model names with no English article (ROO-236).
+  "RX_9070_XT",
+  "RTX_5060_Ti",
 ]);
 
 /**
@@ -94,6 +97,9 @@ const TITLE_BY_SLUG: Record<string, string> = {
   "galaxy-buds-3-pro": "Samsung_Galaxy_Buds",
   "oura-ring-4": "Oura_Ring",
   "whoop-4": "Whoop_(company)",
+  // GPUs: single cards have no English article (ROO-236). Link the series.
+  "rx-9070-xt": "Radeon_RX_9000_series",
+  "rtx-5060-ti": "GeForce_RTX_50_series",
   // Countries and economies
   usa: "United_States",
   china: "China",
@@ -130,6 +136,12 @@ const TITLE_BY_NAME: Record<string, string> = {
   "galaxy buds 3 pro": "Samsung_Galaxy_Buds",
   "oura ring 4": "Oura_Ring",
   "whoop 4.0": "Whoop_(company)",
+  "rx 9070 xt": "Radeon_RX_9000_series",
+  "radeon rx 9070 xt": "Radeon_RX_9000_series",
+  "amd radeon rx 9070 xt": "Radeon_RX_9000_series",
+  "rtx 5060 ti": "GeForce_RTX_50_series",
+  "geforce rtx 5060 ti": "GeForce_RTX_50_series",
+  "nvidia geforce rtx 5060 ti": "GeForce_RTX_50_series",
 };
 
 function normalizeName(name: string): string {

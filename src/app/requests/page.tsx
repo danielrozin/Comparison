@@ -12,7 +12,8 @@ const REQ_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Request a C
 const REQ_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
-  title: REQ_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: REQ_TITLE },
   description: REQ_DESC,
   alternates: { canonical: REQ_URL, languages: { "en": REQ_URL, "x-default": REQ_URL } },
   openGraph: {
@@ -32,14 +33,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": REQ_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": SITE_NAME,
     "citation_language": "en",
     "citation_abstract": REQ_DESC,
     "citation_publication_date": "2024-01-01",
     "citation_online_date": REQ_TODAY,
     "DC.title": REQ_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": SITE_NAME,
     "DC.language": "en",
     "DC.type": "Text",

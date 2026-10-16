@@ -9,7 +9,7 @@ import {
   mergeEditorialCategoryComparisons,
   subcategoryPageSize,
 } from "@/lib/categories/hub-comparisons";
-import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { faqAnswerPlainText, faqAnswerSegments, getSubcategoryFaqs } from "@/lib/data/subcategory-faqs";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
@@ -213,7 +213,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     dateCreated: "2024-01-01",
     dateModified: subcatToday,
     lastReviewed: subcatToday,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: subcatToday,
     thumbnailUrl: subcatOgImage,
     image: {

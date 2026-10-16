@@ -62,7 +62,7 @@ import { AuthorByline } from "@/components/comparison/AuthorByline";
 import { CompareRedditFooterLink } from "@/components/community/CompareRedditFooterLink";
 import { ExpertAnalysis } from "@/components/comparison/ExpertAnalysis";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
-import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
+import { CompareChangeAlert } from "@/components/comparison/CompareChangeAlert";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
@@ -142,7 +142,6 @@ import {
   TrackRecentView,
   EmbedButton,
   ComparisonPoll,
-  NewsletterSignup,
   CommentSection,
   VersionHistory,
   StickyAffiliateCTA,
@@ -1109,11 +1108,17 @@ export default function ComparisonPage(props: Props) {
         />
       )}
 
+      {/* ROO-242: the one email capture, right after the verdict */}
+      <CompareChangeAlert
+        compareSlug={comparison.slug}
+        matchup={comparison.entities.map((e) => e.name).join(" vs ")}
+      />
+
       {/* ROO-155: "Compare next" cards + search right after the verdict */}
       <CompareNextCards slug={slug} chips={nextStepChips} />
 
-      {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
-      <TrackComparisonCard comparisonSlug={comparison.slug} comparisonTitle={comparison.title} />
+      {/* ROO-242: the DAN-406 "Track this comparison" card is replaced by the
+          single CompareChangeAlert capture above (one email form per page). */}
 
       {/* User Poll — after verdict card */}
       {comparison.entities.length >= 2 && (
@@ -1188,10 +1193,6 @@ export default function ComparisonPage(props: Props) {
           {/* Pros & Cons */}
           <ProsConsBlock entities={comparison.entities} />
 
-          {/* Inline Newsletter Signup */}
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
-          </div>
 
           {/* Pro upsell — the highest-intent moment on the site */}
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
@@ -1256,8 +1257,6 @@ export default function ComparisonPage(props: Props) {
         relatedComparisons={comparison.relatedComparisons}
       />
 
-      {/* Newsletter Signup */}
-      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
       {/* Comments */}
       <div id="comments" className="scroll-mt-28">
@@ -1467,13 +1466,15 @@ function MultiEntityLayout({
             </section>
           )}
 
+          {/* ROO-242: the one email capture, right after the verdict */}
+          <CompareChangeAlert
+            compareSlug={comparison.slug}
+            matchup={comparison.entities.map((e) => e.name).join(" vs ")}
+          />
+
           {/* ROO-155: same "Compare next" block after the multi-entity verdict */}
           <CompareNextCards slug={slug} chips={nextStepChips} />
 
-          {/* Newsletter */}
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
-          </div>
 
           {comparison.faqs.length > 0 && (
             <FAQBlock faqs={comparison.faqs} />
@@ -1520,7 +1521,6 @@ function MultiEntityLayout({
         relatedComparisons={comparison.relatedComparisons}
       />
 
-      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
       <div id="comments" className="scroll-mt-28">
         <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />

@@ -15,7 +15,8 @@ const SITEMAP_URL = `${SITE_URL}/site-map`;
 const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Site Map — A Versus B")}&type=sitemap`;
 
 export const metadata: Metadata = {
-  title: SITEMAP_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: SITEMAP_TITLE },
   description: SITEMAP_DESC,
   alternates: {
     canonical: SITEMAP_URL,
@@ -43,14 +44,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": SITEMAP_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": SITEMAP_ABSTRACT,
     "citation_publication_date": "2024-01-01",
     "citation_online_date": "2024-01-01",
     "DC.title": SITEMAP_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.subject": "Site Map, Content Directory, Comparison Index 2026",

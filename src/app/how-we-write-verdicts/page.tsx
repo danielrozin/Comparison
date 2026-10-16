@@ -11,7 +11,8 @@ const VERDICTS_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("How We
 const VERDICTS_LAST_EDITED = "2026-07-10"; // last content edit: 7f152c0a (1eb76ac1 only added accessibilitySummary).
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESC,
   robots: {
     index: true,
@@ -39,14 +40,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PAGE_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESC,
       "citation_publication_date": "2026-05-28",
       "citation_online_date": "2026-05-28",
     "DC.title": PAGE_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
