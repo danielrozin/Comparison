@@ -8,6 +8,11 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { email, source, referrerSlug } = body;
+    // ROO-242: the compare-page change alert tags the signup with its page.
+    const compareSlug =
+      typeof body.compareSlug === "string" && /^[a-z0-9-]+-vs-[a-z0-9-]+$/.test(body.compareSlug)
+        ? body.compareSlug
+        : null;
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
@@ -100,7 +105,15 @@ export async function POST(request: NextRequest) {
     // Server-side PostHog: identify + capture (use normalizedEmail as distinct ID before a real user ID is known)
     const ph = getPostHogClient();
     ph.identify({ distinctId: normalizedEmail, properties: { email: normalizedEmail } });
-    ph.capture({ distinctId: normalizedEmail, event: "newsletter_subscribed", properties: { source: source || "unknown", referrer_slug: referrerSlug || null } });
+    ph.capture({
+      distinctId: normalizedEmail,
+      event: "newsletter_subscribed",
+      properties: {
+        source: source || "unknown",
+        referrer_slug: referrerSlug || null,
+        ...(compareSlug ? { compare_slug: compareSlug } : {}),
+      },
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

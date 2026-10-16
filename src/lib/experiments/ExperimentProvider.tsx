@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -127,27 +128,14 @@ export function ExperimentProvider({
   );
   const [assignments, setAssignments] = useState(serverAssignments);
 
-  // Persist to cookie & fire GA4 events (client-only, once)
-  const firedRef = useRef(false);
+  // Persist to cookie (client-only). ROO-242: experiment_view is no longer
+  // fired here for every active experiment on every page. The element whose
+  // copy depends on the variant fires it via useExperimentExposure, once it
+  // is actually on screen.
   useEffect(() => {
     const resolved = resolveAssignments(serverAssignments);
     setAssignments(resolved);
     writeCookie(resolved);
-
-    if (firedRef.current) return;
-    firedRef.current = true;
-
-    const active = getActiveExperiments();
-    for (const exp of active) {
-      const assignment = resolved[exp.id];
-      if (assignment) {
-        trackEvent("experiment_view", {
-          experiment_id: exp.id,
-          experiment_name: exp.name,
-          variant: assignment.variant,
-        });
-      }
-    }
   }, [serverAssignments]);
 
   return (
@@ -158,6 +146,52 @@ export function ExperimentProvider({
 }
 
 // ── Hook ────────────────────────────────────────────────────────
+
+/**
+ * ROO-242: attach the returned ref to the element that renders the variant.
+ * experiment_view fires once per page view, when at least half of that
+ * element is visible, with the path and placement. Nothing fires for an
+ * inactive experiment or a visitor outside the traffic split.
+ */
+export function useExperimentExposure<T extends Element>(
+  experimentId: string,
+  placement: string,
+): (node: T | null) => void {
+  const assignments = useContext(ExperimentContext);
+  const assignment = assignments[experimentId];
+  const firedRef = useRef(false);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => () => observerRef.current?.disconnect(), []);
+
+  return useCallback(
+    (node: T | null) => {
+      observerRef.current?.disconnect();
+      observerRef.current = null;
+      if (!node || !assignment || firedRef.current) return;
+      const experiment = getActiveExperiments().find((exp) => exp.id === experimentId);
+      if (!experiment || typeof IntersectionObserver === "undefined") return;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (firedRef.current || !entries.some((entry) => entry.isIntersecting)) return;
+          firedRef.current = true;
+          observer.disconnect();
+          trackEvent("experiment_view", {
+            experiment_id: experiment.id,
+            experiment_name: experiment.name,
+            variant: assignment.variant,
+            placement,
+            $pathname: window.location.pathname,
+          });
+        },
+        { threshold: 0.5 },
+      );
+      observer.observe(node);
+      observerRef.current = observer;
+    },
+    [assignment, experimentId, placement],
+  );
+}
 
 export function useExperiment(experimentId: string): {
   variant: string;
