@@ -22,7 +22,7 @@ const CLOUD_PLATFORMS_BODY = `*Analysis. Drafted with AI from web research. Upda
 
 AWS, Microsoft Azure and Google Cloud are the three clouds to shortlist for most production workloads, and all three now offer free credits plus always-free usage limits. Oracle Cloud has the most generous permanent free tier, including Arm-based Ampere A1 compute. DigitalOcean, Linode (Akamai Cloud) and Vultr are simpler, flat-priced options for small teams. Vultr's cheapest cloud instance lists at $2.50 a month (IPv6 only).
 
-**Updated Oct 2026:** free-tier terms rechecked on each provider's own pages. AWS replaced its old 12-month free tier with up to $200 in credits over 6 months, and Azure now lists 65+ always-free services. Unverifiable price comparisons, region counts and scoring weights were removed.
+**Updated Oct 2026:** AWS replaced its old 12-month free tier with up to $200 in credits over 6 months, and Azure now lists 65+ always-free services.
 
 ## Cloud platforms compared (October 2026) {#tldr}
 
@@ -37,9 +37,9 @@ AWS, Microsoft Azure and Google Cloud are the three clouds to shortlist for most
 | 7 | **Linode (Akamai Cloud)** | Predictable pricing plus Akamai edge | Promotional credit varies | None listed | See Akamai Cloud pricing |
 | 8 | **Vultr** | Low entry price, on-demand GPUs | Promotional credit varies | None listed | $2.50/mo (1 vCPU, 0.5 GB, IPv6 only) |
 
-*Table: eight cloud platforms by new-customer credit, always-free usage and vendor-listed entry price, checked October 16, 2026 on each provider's free-tier or pricing page. Credits and limits change; the provider's page is authoritative.*
+*Table: eight cloud platforms by new-customer credit, always-free usage and vendor-listed entry price, October 2026. Credits and limits change over time.*
 
-For head-to-head detail, see [AWS vs Azure](/compare/aws-vs-azure), [AWS vs Google Cloud](/compare/aws-vs-google-cloud) and [Azure vs Google Cloud](/compare/azure-vs-google-cloud).
+For head-to-head detail, see [AWS vs Azure](/compare/aws-vs-azure), [AWS vs Google Cloud](/compare/aws-vs-google-cloud) and [AWS vs Azure vs Google Cloud](/compare/aws-vs-azure-vs-gcp).
 
 ## The 8 cloud platforms {#the-eight}
 
@@ -77,21 +77,21 @@ IBM Cloud targets regulated industries and hybrid estates, including Power Virtu
 
 ### 6. DigitalOcean {#digitalocean}
 
-DigitalOcean keeps a smaller, simpler catalog: Droplets (VMs), App Platform, Managed Databases and Spaces object storage. Prices are listed per month. Sign-up credits are promotional and change, so check the offer at signup.
+DigitalOcean keeps a smaller, simpler catalog: Droplets (VMs), App Platform, Managed Databases and Spaces object storage. Prices are listed per month. Sign-up credits are promotional and change over time.
 
-- **Pick DigitalOcean if** you are a small team on a mainstream stack. Compare [DigitalOcean vs Linode](/compare/digitalocean-vs-linode).
+- **Pick DigitalOcean if** you are a small team on a mainstream stack.
 
 ### 7. Linode (Akamai Cloud) {#linode}
 
 Linode is now Akamai Cloud and is billed hourly, capped at a monthly rate. Akamai states that managed Kubernetes (LKE) has no per-cluster fee. Promotional credits are applied first, and your card is charged once a credit is used up or expires.
 
-- **Pick Linode if** you want flat pricing next to Akamai's CDN and security products. Compare [Linode vs Vultr](/compare/linode-vs-vultr).
+- **Pick Linode if** you want flat pricing next to Akamai's CDN and security products.
 
 ### 8. Vultr {#vultr}
 
 Vultr's cheapest Cloud Compute plan lists at $2.50 a month for 1 vCPU, 0.5 GB of memory and 10 GB of storage, IPv6 only ($3.50 with IPv4). Vultr lists on-demand GPUs, including NVIDIA HGX H100 from $2.300 per GPU-hour and L40S from $1.671 per GPU-hour. The Kubernetes Engine control plane is free.
 
-- **Pick Vultr if** you want the lowest entry price or on-demand GPUs. Compare [DigitalOcean vs Vultr](/compare/digitalocean-vs-vultr).
+- **Pick Vultr if** you want the lowest entry price or on-demand GPUs.
 
 ## Which cloud should you choose? {#decision-guide}
 
@@ -106,7 +106,7 @@ Choose by workload, not by brand:
 
 ## Sources {#sources}
 
-Checked on October 16, 2026: AWS Free Tier (aws.amazon.com/free), Azure free services (azure.microsoft.com/pricing/free-services), Google Cloud free features (cloud.google.com/free/docs/free-cloud-features), Oracle Cloud Free Tier (oracle.com/cloud/free), IBM Cloud free tier (ibm.com/cloud/free), Akamai Cloud pricing (linode.com/pricing) and Vultr pricing (vultr.com/pricing). Prices are list prices in USD and can vary by region.`;
+AWS Free Tier (aws.amazon.com/free), Azure free services (azure.microsoft.com/pricing/free-services), Google Cloud free features (cloud.google.com/free/docs/free-cloud-features), Oracle Cloud Free Tier (oracle.com/cloud/free), IBM Cloud free tier (ibm.com/cloud/free), Akamai Cloud pricing (linode.com/pricing) and Vultr pricing (vultr.com/pricing). Prices are list prices in USD and can vary by region.`;
 
 const NOISE_CANCELING_HEADPHONES_BODY = `Noise-canceling headphones have become essential gear — whether you're blocking out open-plan office chatter, long-haul cabin drone, or a noisy commute. In 2026 the technology has matured to the point where every pick in this guide offers genuinely good ANC, but the right choice still depends on whether you prioritize maximum noise isolation, the most neutral sound tuning, all-day comfort, or the best price for what you get.
 
