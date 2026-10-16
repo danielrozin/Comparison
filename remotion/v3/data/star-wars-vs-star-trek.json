@@ -1,0 +1,145 @@
+{
+  "title": "Star Wars vs Star Trek",
+  "entityA": "Star Wars",
+  "entityB": "Star Trek",
+  "category": "entertainment",
+  "shortAnswer": "Star Wars ($70B+ franchise) is the #3 highest-grossing franchise ever, known for epic space opera storytelling and The Force. Star Trek (since 1966) is more cerebral, explores social issues through science fiction, and has a dedicated 'Trekkie' fan base. Star Wars leads in box office; Star Trek leads in TV longevity.",
+  "stats": [
+    {
+      "label": "Franchise Value",
+      "valueA": "$70B+",
+      "valueB": "$10B+",
+      "winner": "a"
+    },
+    {
+      "label": "TV Shows Produced",
+      "valueA": "~5 live action",
+      "valueB": "13+ series",
+      "winner": "b"
+    },
+    {
+      "label": "Box Office",
+      "valueA": "$10.3B (films)",
+      "valueB": "$2.3B (films)",
+      "winner": "a"
+    },
+    {
+      "label": "Started",
+      "valueA": "1977 (films)",
+      "valueB": "1966 (TV)",
+      "winner": "b"
+    },
+    {
+      "label": "Social Commentary",
+      "valueA": "Limited",
+      "valueB": "Core to the franchise",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Star Wars for epic cinematic spectacle and pop culture dominance. Star Trek for thought-provoking sci-fi and TV longevity. Both are pillars of science fiction.",
+  "slug": "star-wars-vs-star-trek",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "One franchise is worth seven times the other. It still loses this fight.",
+    "tape": "Star Wars owns the box office. Star Trek owns the medium it was born in.",
+    "rounds": [
+      "Seventy billion against ten. Star Wars isn't a franchise, it's an economy.",
+      "Five live action shows versus thirteen series. Trek never stopped making television.",
+      "Ten point three billion in ticket sales. Trek's films are a rounding error.",
+      "Trek got there eleven years earlier, and it did it on TV.",
+      "Trek built episodes around real arguments. Star Wars built a myth instead."
+    ],
+    "verdict": "Trek takes it three to two. Pick Star Wars if you want spectacle over sermon."
+  },
+  "audio": {
+    "cold": "video-assets/star-wars-vs-star-trek/audio/cold.mp3",
+    "tape": "video-assets/star-wars-vs-star-trek/audio/tape.mp3",
+    "rounds": [
+      "video-assets/star-wars-vs-star-trek/audio/round-1.mp3",
+      "video-assets/star-wars-vs-star-trek/audio/round-2.mp3",
+      "video-assets/star-wars-vs-star-trek/audio/round-3.mp3",
+      "video-assets/star-wars-vs-star-trek/audio/round-4.mp3",
+      "video-assets/star-wars-vs-star-trek/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/star-wars-vs-star-trek/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 168,
+    "tape": 180,
+    "rounds": [
+      190,
+      216,
+      178,
+      150,
+      183
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "One franchise is worth seven times the other. It still loses this fight. Star Wars owns the box office. Star Trek owns the medium it was born in. Seventy billion against ten. Star Wars isn't a franchise, it's an economy. Five live action shows versus thirteen series. Trek never stopped making television. Ten point three billion in ticket sales. Trek's films are a rounding error. Trek got there eleven years earlier, and it did it on TV. Trek built episodes around real arguments. Star Wars built a myth instead. Trek takes it three to two. Pick Star Wars if you want spectacle over sermon.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One franchise is worth seven times the other. It still loses this fight.",
+      "startOffset": 0,
+      "endOffset": 5.604285999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Star Wars owns the box office. Star Trek owns the medium it was born in.",
+      "startOffset": 5.604285999999999,
+      "endOffset": 11.600407999999998
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Seventy billion against ten. Star Wars isn't a franchise, it's an economy.",
+      "startOffset": 11.600407999999998,
+      "endOffset": 17.936121999999997
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Five live action shows versus thirteen series. Trek never stopped making television.",
+      "startOffset": 17.936121999999997,
+      "endOffset": 25.133877
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Ten point three billion in ticket sales. Trek's films are a rounding error.",
+      "startOffset": 25.133877,
+      "endOffset": 31.051631999999998
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Trek got there eleven years earlier, and it did it on TV.",
+      "startOffset": 31.051631999999998,
+      "endOffset": 36.051632
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Trek built episodes around real arguments. Star Wars built a myth instead.",
+      "startOffset": 36.051632,
+      "endOffset": 42.152243999999996
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Trek takes it three to two. Pick Star Wars if you want spectacle over sermon.",
+      "startOffset": 42.152243999999996,
+      "endOffset": 48.652243999999996
+    }
+  ],
+  "youtubeTitle": "Star Wars vs Star Trek: The Numbers Pick a Winner",
+  "youtubeDescription": "Star Wars is a $70 billion franchise with $10.3 billion at the box office. Star Trek started in 1966 and has produced 13+ series built around real social commentary. We compare franchise value, TV output, box office, longevity and substance to settle which sci-fi giant actually wins.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/star-wars-vs-star-trek",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
