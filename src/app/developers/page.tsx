@@ -78,7 +78,8 @@ const DEV_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Developer A
 const DEV_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
-  title: DEV_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: DEV_TITLE },
   description: DEV_DESC,
   robots: {
     index: true,

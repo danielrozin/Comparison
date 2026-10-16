@@ -14,7 +14,8 @@ const LAST_UPDATED = "2026-07-30";
 const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Probability vs Statistics")}&type=article`;
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PAGE_TITLE },
   description: PAGE_DESCRIPTION,
   robots: {
     index: true,

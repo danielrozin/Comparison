@@ -10,7 +10,8 @@ const AUP_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Acceptable 
 const AUP_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
-  title: AUP_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: AUP_TITLE },
   description: AUP_DESC,
   alternates: {
     canonical: AUP_URL,
