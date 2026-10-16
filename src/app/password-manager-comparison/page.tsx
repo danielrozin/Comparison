@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
+import { AI_CONTENT_LABEL, AI_DISCLOSURE } from "@/lib/editorial/blog-authorship";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
+import { LAST_UPDATED } from "./last-updated";
 
 const PAGE_URL = `${SITE_URL}/password-manager-comparison`;
 const PAGE_TITLE = `Best Password Managers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of the top 10 password managers in 2026 — encryption, zero-knowledge architecture, independent audits, pricing, and platform support. All data cited to primary sources.";
-const LAST_UPDATED = "2026-07-11";
 const PM_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Best Password Managers Compared 2026")}&type=trending`;
 
 export const metadata: Metadata = {
@@ -76,7 +77,6 @@ const articleSchema = {
   conditionsOfAccess: "Free",
   datePublished: "2026-07-11",
   dateModified: LAST_UPDATED,
-  lastReviewed: LAST_UPDATED,
   contentReferenceTime: LAST_UPDATED,
   thumbnailUrl: PM_OG_IMAGE,
   image: {
@@ -103,13 +103,12 @@ const articleSchema = {
   teaches: "How to choose the best password manager for security, usability, and price",
   educationalUse: "comparison",
   alternativeHeadline: "Best Password Managers in 2026 — Security, Price & Feature Comparison",
-  author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
+  author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   keywords: "password manager comparison, best password managers, 1Password vs Bitwarden, Dashlane, LastPass 2026",
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", "#pm-answer"] },
   about: { "@type": "Thing", name: "Password managers", sameAs: "https://en.wikipedia.org/wiki/Password_manager" },
   mentions: [
     { "@type": "SoftwareApplication", name: "1Password", url: "https://1password.com" },
@@ -137,7 +136,7 @@ const productSchemas = [
     name: "1Password",
     url: "https://1password.com",
     brand: { "@type": "Brand", name: "AgileBits" },
-    offers: { "@type": "Offer", price: "35.88", priceCurrency: "USD", priceValidUntil: "2026-12-31", url: "https://1password.com/sign-up/" },
+    offers: { "@type": "Offer", price: "47.88", priceCurrency: "USD", priceValidUntil: "2026-12-31", url: "https://1password.com/pricing/password-manager" },
     description: "Zero-knowledge password manager with AES-256 encryption, SOC 2 Type 2 certified, multiple independent audits.",
   },
   {
@@ -146,7 +145,7 @@ const productSchemas = [
     name: "Bitwarden",
     url: "https://bitwarden.com",
     brand: { "@type": "Brand", name: "Bitwarden Inc." },
-    offers: { "@type": "Offer", price: "10.00", priceCurrency: "USD", priceValidUntil: "2026-12-31", url: "https://bitwarden.com/pricing/" },
+    offers: { "@type": "Offer", price: "19.80", priceCurrency: "USD", priceValidUntil: "2026-12-31", url: "https://bitwarden.com/pricing/" },
     description: "Open-source zero-knowledge password manager with AES-256 encryption. Free tier available. Audited by Cure53.",
   },
 ];
@@ -175,13 +174,13 @@ const PASSWORD_MANAGERS: PM[] = [
     auditFirm: "Cure53, Bugcrowd",
     auditYear: 2024,
     openSource: false,
-    pricingPerYr: "$35.88",
-    freeTier: "No free tier",
+    pricingPerYr: "$47.88 (Individual; $3.99/mo billed annually)",
+    freeTier: "No free tier (14-day trial)",
     twoFA: "TOTP, Duo, hardware keys",
     sources: [
       { label: "1Password security model", url: "https://1password.com/security/" },
       { label: "1Password audit reports", url: "https://support.1password.com/security-assessments/" },
-      { label: "1Password pricing", url: "https://1password.com/sign-up/" },
+      { label: "1Password pricing", url: "https://1password.com/pricing/password-manager" },
     ],
   },
   {
@@ -192,8 +191,8 @@ const PASSWORD_MANAGERS: PM[] = [
     auditFirm: "Cure53",
     auditYear: 2023,
     openSource: true,
-    pricingPerYr: "$10.00",
-    freeTier: "Unlimited items, 1 device type",
+    pricingPerYr: "$19.80 (Premium)",
+    freeTier: "Free plan: unlimited passwords and devices",
     twoFA: "TOTP, YubiKey, Duo, FIDO2",
     sources: [
       { label: "Bitwarden security whitepaper", url: "https://bitwarden.com/help/bitwarden-security-white-paper/" },
@@ -209,7 +208,7 @@ const PASSWORD_MANAGERS: PM[] = [
     auditFirm: "Cure53",
     auditYear: 2023,
     openSource: false,
-    pricingPerYr: "$59.99",
+    pricingPerYr: "See vendor pricing page",
     freeTier: "1 device, unlimited items",
     twoFA: "TOTP, U2F, Duo",
     sources: [
@@ -225,8 +224,8 @@ const PASSWORD_MANAGERS: PM[] = [
     auditFirm: "Cure53 (2022, pre-breach)",
     auditYear: "2022",
     openSource: false,
-    pricingPerYr: "$36.00",
-    freeTier: "1 device type only",
+    pricingPerYr: "See vendor pricing page",
+    freeTier: "Free plan: desktop or mobile, not both",
     twoFA: "TOTP, YubiKey, Duo",
     sources: [
       { label: "LastPass security incident notice (2022)", url: "https://blog.lastpass.com/2022/12/notice-of-recent-security-incident/" },
@@ -241,7 +240,7 @@ const PASSWORD_MANAGERS: PM[] = [
     auditFirm: "SOC 2 Type 2 (annual)",
     auditYear: 2024,
     openSource: false,
-    pricingPerYr: "$34.99",
+    pricingPerYr: "See vendor pricing page",
     freeTier: "No free tier (30-day trial)",
     twoFA: "TOTP, YubiKey, DUO, RSA",
     sources: [
@@ -257,8 +256,8 @@ const PASSWORD_MANAGERS: PM[] = [
     auditFirm: "Cure53",
     auditYear: 2023,
     openSource: false,
-    pricingPerYr: "$35.88",
-    freeTier: "Unlimited items, 1 active session",
+    pricingPerYr: "See vendor pricing page",
+    freeTier: "Free plan: one device at a time",
     twoFA: "TOTP, hardware keys",
     sources: [
       { label: "NordPass security", url: "https://nordpass.com/security/" },
@@ -273,7 +272,7 @@ const PASSWORD_MANAGERS: PM[] = [
     auditFirm: "Secfault Security",
     auditYear: 2023,
     openSource: false,
-    pricingPerYr: "$23.88",
+    pricingPerYr: "See vendor pricing page",
     freeTier: "1 device, unlimited items",
     twoFA: "TOTP, SMS (fallback), Microsoft/Google Authenticator",
     sources: [
@@ -289,8 +288,8 @@ const PASSWORD_MANAGERS: PM[] = [
     auditFirm: "Cure53",
     auditYear: 2023,
     openSource: false,
-    pricingPerYr: "$19.99",
-    freeTier: "25 items, desktop only",
+    pricingPerYr: "$23.88 ($1.99/mo billed annually; $99.99 lifetime)",
+    freeTier: "25 items in 1 vault",
     twoFA: "TOTP, Authy",
     sources: [
       { label: "Enpass security", url: "https://www.enpass.io/security/" },
@@ -321,8 +320,8 @@ const PASSWORD_MANAGERS: PM[] = [
     auditFirm: "Cure53",
     auditYear: 2023,
     openSource: true,
-    pricingPerYr: "$23.88",
-    freeTier: "Unlimited logins, 2 vaults",
+    pricingPerYr: "$35.88 (Pass Plus, billed every 12 months)",
+    freeTier: "Unlimited logins and devices, 2 vaults, 10 aliases",
     twoFA: "TOTP, Proton 2FA",
     sources: [
       { label: "ProtonPass security details", url: "https://proton.me/pass/security" },
@@ -386,13 +385,9 @@ export default function PasswordManagerComparisonPage() {
                 zero-knowledge architecture, third-party audits, pricing, and platform support.
               </p>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-teal-300 mt-3">
-                <span>
-                  By{" "}
-                  <Link href="/authors/daniel-rozin" className="text-white hover:underline font-medium">
-                    Daniel Rozin
-                  </Link>
-                  , Founder &amp; Editor-in-Chief
-                </span>
+                <span className="font-semibold uppercase tracking-wide text-white">{AI_CONTENT_LABEL}</span>
+                <span aria-hidden="true">·</span>
+                <span>{AI_DISCLOSURE}</span>
                 <span aria-hidden="true">·</span>
                 <time dateTime={LAST_UPDATED}>
                   Updated {new Date(LAST_UPDATED).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
@@ -413,6 +408,22 @@ export default function PasswordManagerComparisonPage() {
       </section>
 
       <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+      {/* ROO-235: answer-first summary */}
+      <section aria-labelledby="pm-answer-heading" className="mb-6">
+        <h2 id="pm-answer-heading" className="sr-only">Short answer</h2>
+        <p id="pm-answer" className="text-base text-text leading-relaxed">
+          Bitwarden is the strongest free password manager: its free plan covers unlimited passwords on
+          unlimited devices, and Premium lists at $19.80 a year. 1Password has no free plan; Individual lists
+          at $3.99 a month billed annually ($47.88 a year), with a 14-day trial. Proton Pass Plus lists at
+          $35.88 a year and its free plan includes unlimited logins and devices. KeePass is free and
+          self-hosted. LastPass Free works on desktop or mobile, not both.
+        </p>
+        <p className="mt-2 text-xs text-text-secondary">
+          <strong>Updated Oct 2026:</strong> list prices rechecked on vendor pricing pages; free-plan limits for
+          Bitwarden, LastPass, NordPass, Enpass and Proton Pass corrected; prices that vendors show only by region or at checkout now link to the vendor page instead of an older figure.
+        </p>
+      </section>
 
       {/* Quick summary */}
       <section aria-labelledby="pm-quick-verdict" className="mb-10 p-5 bg-surface-alt rounded-2xl border border-border">
@@ -443,7 +454,7 @@ export default function PasswordManagerComparisonPage() {
           <h2 id="pm-comparison-table" className="text-2xl font-display font-bold text-text">Full comparison table</h2>
         </div>
         <p className="text-sm text-text-secondary mb-4">
-          Pricing figures are individual annual plans as of May 2026.<sup><a href="#cite-pricing-note" className="text-primary-600">[*]</a></sup>{" "}
+          Prices are list prices for individual plans billed annually, checked October 2026; first-year promotions are excluded.<sup><a href="#cite-pricing-note" className="text-primary-600">[*]</a></sup>{" "}
           All products use zero-knowledge architecture — the vendor cannot access your plaintext vault.
         </p>
         <div className="overflow-x-auto">
@@ -518,11 +529,11 @@ export default function PasswordManagerComparisonPage() {
                   {si < pm.sources.length - 1 ? "; " : ""}
                 </span>
               ))}
-              {" "}<em>Accessed May 2026.</em>
+              {" "}<em>Pricing checked October 2026.</em>
             </li>
           ))}
           <li id="cite-pricing-note">
-            <sup>*</sup> Prices are listed annual individual plan rates in USD as published on vendor pricing pages, accessed May 2026. Prices may vary by region and change without notice.
+            <sup>*</sup> Prices are list annual individual-plan rates in USD from vendor pricing pages, checked October 16, 2026, excluding first-year promotional discounts. Dashlane, LastPass, Keeper, NordPass and RoboForm show personal-plan prices only by region or at checkout, so no figure is given for them. Prices change without notice.
           </li>
         </ol>
       </section>
