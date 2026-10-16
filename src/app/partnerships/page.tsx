@@ -10,7 +10,8 @@ const PARTNER_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Partner
 const PARTNER_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
-  title: PARTNER_TITLE,
+  // ROO-241: title already carries the brand; skip the layout template.
+  title: { absolute: PARTNER_TITLE },
   description: PARTNER_DESC,
   alternates: {
     canonical: PARTNER_URL,
