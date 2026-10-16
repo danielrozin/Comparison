@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { HUMAN_REVIEWED_SLUGS } from "@/lib/editorial/human-reviewed";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
@@ -9,7 +10,7 @@ const AUTHOR_NAME = "Daniel Rozin";
 const AUTHOR_TITLE = "Founder & Editor-in-Chief";
 const PAGE_URL = `${SITE_URL}/authors/daniel-rozin`;
 const PAGE_TITLE = `${AUTHOR_NAME} — ${AUTHOR_TITLE}`;
-const PAGE_DESCRIPTION = `${AUTHOR_NAME} is the founder of ${SITE_NAME}, a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17 other product categories. He writes and edits all primary comparison hub pages.`;
+const PAGE_DESCRIPTION = `${AUTHOR_NAME} is the founder of ${SITE_NAME}, a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17 other product categories. He personally reviews the pages listed on this profile.`;
 const AUTHOR_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent(PAGE_TITLE)}&type=author`;
 const AUTHOR_LAST_EDITED = "2026-07-11"; // last content edit: 1eb76ac1 (e0d14aa0 only removed twitter metadata).
 
@@ -46,26 +47,23 @@ export const metadata: Metadata = {
   },
 };
 
-const ARTICLES = [
-  {
-    title: "Best Password Managers Compared (2026)",
-    url: "/password-manager-comparison",
+// ROO-241 follow-up: this profile credits Daniel only with pages he has
+// personally reviewed, which is exactly HUMAN_REVIEWED_SLUGS (empty today).
+// AI-drafted pages (hubs, compares, blog) are credited to the editorial
+// team, never listed here.
+const ARTICLES = HUMAN_REVIEWED_SLUGS.map((slug) => ({
+  title: humanizeCompareSlug(slug),
+  url: `/compare/${slug}`,
+  locale: "en_US",
+  date: AUTHOR_LAST_EDITED,
+}));
 
-    locale: "en_US",    date: "2026-06-12",
-  },
-  {
-    title: "Best Browsers Compared (2026)",
-    url: "/browser-comparison-2026",
-
-    locale: "en_US",    date: "2026-06-12",
-  },
-  {
-    title: "LLM Comparison: GPT-4o vs Claude vs Gemini (2026)",
-    url: "/llm-comparisons",
-
-    locale: "en_US",    date: "2026-06-12",
-  },
-];
+function humanizeCompareSlug(slug: string): string {
+  return slug
+    .split("-vs-")
+    .map((side) => side.split("-").map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w)).join(" "))
+    .join(" vs ");
+}
 
 const authorBreadcrumb = breadcrumbSchema(
   [
@@ -121,14 +119,14 @@ const personSchema = {
     "@type": "ProfilePage",
     "@id": PAGE_URL,
   },
-  publishedWork: ARTICLES.map((a) => ({
+  ...(ARTICLES.length === 0 ? {} : { publishedWork: ARTICLES.map((a) => ({
     "@type": "Article",
     name: a.title,
     url: `${SITE_URL}${a.url}`,
 
     locale: "en_US",    datePublished: a.date,
     author: { "@type": "Person", "@id": `${PAGE_URL}#person` },
-  })),
+  })) }),
 };
 
 const profilePageSchema = {
@@ -174,7 +172,7 @@ const profilePageSchema = {
   accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
   accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   educationalLevel: "General",
-  teaches: "Editorial methodology and expertise behind A Versus B comparison hub articles authored by Daniel Rozin",
+  teaches: "Who Daniel Rozin is and which A Versus B pages he has personally reviewed",
   educationalUse: "biography",
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type"] },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -203,7 +201,7 @@ const authorFaqSchema = {
       name: `Who is ${AUTHOR_NAME}?`,
       acceptedAnswer: {
         "@type": "Answer",
-        text: `${AUTHOR_NAME} is the founder and editor-in-chief of A Versus B (aversusb.net), a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17+ other product categories. He writes and edits all primary comparison hub pages.`,
+        text: `${AUTHOR_NAME} is the founder and editor-in-chief of A Versus B (aversusb.net), a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17+ other product categories. Pages he has personally reviewed are listed on his author profile.`,
       },
     },
     {
@@ -286,9 +284,8 @@ export default function DanielRozinPage() {
           </div>
           <p className="text-primary-100 text-sm sm:text-base mt-5 max-w-2xl leading-relaxed">
             Daniel Rozin founded {SITE_NAME} to bring transparent, data-driven comparisons to the web.
-            He personally researches, writes, and maintains the primary comparison hub pages — including
-            the LLM, browser, and password-manager comparison guides. All factual claims in his articles
-            are cited to primary sources (vendor documentation, academic papers, or independently audited datasets).
+            Most pages on {SITE_NAME} are drafted with AI from web research and labeled as Analysis.
+            Pages Daniel has personally reviewed are listed below.
           </p>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
@@ -327,7 +324,7 @@ export default function DanielRozinPage() {
           <h2 id="author-editorial-heading" className="text-xl font-display font-bold text-text">Editorial Standards</h2>
         </div>
         <p className="text-text-secondary leading-relaxed mb-3">
-          All comparison hub pages authored by Daniel follow the{" "}
+          Pages Daniel reviews follow the{" "}
           <Link href="/password-manager-comparison/methodology" className="text-primary-600 hover:underline">
             {SITE_NAME} Comparison Methodology
           </Link>
@@ -349,8 +346,11 @@ export default function DanielRozinPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h2 id="author-articles-heading" className="text-xl font-display font-bold text-text">Published Articles</h2>
+          <h2 id="author-articles-heading" className="text-xl font-display font-bold text-text">Pages Daniel Reviewed</h2>
         </div>
+        {ARTICLES.length === 0 && (
+          <p className="text-text-secondary">No pages are marked as personally reviewed by Daniel yet.</p>
+        )}
         <ul className="space-y-3">
           {ARTICLES.map((a) => (
             <li key={a.url} className="border border-border rounded-xl p-4 flex items-center justify-between hover:border-primary-300 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-150">

@@ -5,7 +5,6 @@ import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { BATTLES, HEADLINE_TOTAL, BATTLE_COUNT } from "./data";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
-import { personAuthorNode } from "@/lib/seo/schema";
 
 const PAGE_PATH = "/q1-2026-ai-battles";
 const PAGE_URL = `${SITE_URL}${PAGE_PATH}`;
@@ -50,7 +49,7 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": Q1_TITLE,
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": Q1_DESC,
@@ -59,7 +58,7 @@ export const metadata: Metadata = {
     "citation_keywords": "AI tool comparison, Q1 2026 AI battles, ChatGPT search volume, Claude vs GPT-4, AI market share, LLM comparison data",
     "citation_fulltext_world_readable": "",
     "DC.title": Q1_TITLE,
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
@@ -122,7 +121,7 @@ export default function Q1AiBattlesPage() {
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
     author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     potentialAction: { "@type": "ReadAction", target: PAGE_URL },
