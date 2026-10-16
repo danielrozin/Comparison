@@ -7,6 +7,7 @@
  * Article + BreadcrumbList + FAQPage + ItemList (positions 1–8).
  */
 
+import { TEMU_SHEIN_AMAZON_FAQS } from "@/lib/data/temu-shein-amazon-blog";
 import { BEST_CLOUD_PLATFORMS_FAQS } from "@/lib/data/best-cloud-platforms-blog";
 import { SHOPIFY_WOO_SQUARESPACE_FAQS } from "@/lib/data/shopify-woocommerce-squarespace-blog";
 import { BEST_ACCOUNTING_FREELANCERS_FAQS } from "@/lib/data/best-accounting-freelancers-blog";
@@ -35,8 +36,9 @@ export interface BlogSchemaExtras {
 }
 
 export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
-  // ROO-235: FAQs mirror the visible FAQ section of the repo article; no personal byline.
   // ROO-235: FAQs mirror the visible FAQ section of the repo article.
+  "temu-vs-shein-vs-amazon-where-to-shop-for-cheap-fashion-in-2026": { faqs: TEMU_SHEIN_AMAZON_FAQS },
+  // ROO-235: FAQs mirror the visible FAQ section of the repo article; no personal byline.
   "shopify-vs-woocommerce-vs-squarespace-2026": { faqs: SHOPIFY_WOO_SQUARESPACE_FAQS },
   "best-accounting-software-freelancers-2026": { faqs: BEST_ACCOUNTING_FREELANCERS_FAQS },
   "best-productivity-apps-2026": { faqs: BEST_PRODUCTIVITY_APPS_FAQS },
