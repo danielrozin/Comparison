@@ -7,6 +7,8 @@
  * Article + BreadcrumbList + FAQPage + ItemList (positions 1–8).
  */
 
+import { TEMU_SHEIN_AMAZON_FAQS } from "@/lib/data/temu-shein-amazon-blog";
+
 export interface BlogFaq {
   question: string;
   answer: string;
@@ -30,6 +32,8 @@ export interface BlogSchemaExtras {
 }
 
 export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
+  // ROO-235: FAQs mirror the visible FAQ section of the repo article.
+  "temu-vs-shein-vs-amazon-where-to-shop-for-cheap-fashion-in-2026": { faqs: TEMU_SHEIN_AMAZON_FAQS },
   "best-cloud-platforms-2026": {
     author: {
       name: "Daniel Rozin",
