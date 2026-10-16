@@ -53,6 +53,36 @@ import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import { OLED_VS_MINI_LED_GAMING_MONITOR } from "./oled-vs-mini-led-gaming-monitor";
+import { RYZEN_7_9700X_VS_RYZEN_7_9800X3D } from "./ryzen-7-9700x-vs-ryzen-7-9800x3d";
+import { M5_MAX_VS_M5_PRO } from "./m5-max-vs-m5-pro";
+import { GA4_VS_PLAUSIBLE_ANALYTICS } from "./ga4-vs-plausible-analytics";
+import { GOOGLE_ANALYTICS_VS_MICROSOFT_CLARITY } from "./google-analytics-vs-microsoft-clarity";
+import { ANDROID_VS_LINEAGEOS } from "./android-vs-lineageos";
+import { OPEN_SOURCE_VS_PROPRIETARY_SOFTWARE } from "./open-source-vs-proprietary-software";
+import { DOCTOR_VS_LAWYER } from "./doctor-vs-lawyer";
+import { PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL } from "./private-school-vs-public-school";
+import { MEXICO_VS_UNITED_STATES } from "./mexico-vs-united-states";
+import { SERENA_VS_VENUS_WILLIAMS } from "./serena-vs-venus-williams";
+import { ENLISTED_VS_MILITARY_OFFICER } from "./enlisted-vs-military-officer";
+import { EDGE_VS_SAFARI } from "./edge-vs-safari";
+import { AMAZON_AURORA_VS_MYSQL } from "./amazon-aurora-vs-mysql";
+import { PENN_VS_YALE } from "./penn-vs-yale";
+import { NORWAY_VS_SWEDEN } from "./norway-vs-sweden";
+import { DUOLINGO_VS_ROSETTA_STONE } from "./duolingo-vs-rosetta-stone";
+import { DELTA_SKYMILES_VS_UNITED_MILEAGEPLUS } from "./delta-skymiles-vs-united-mileageplus";
+import { PARIS_VS_ROME } from "./paris-vs-rome";
+import { AIRPODS_4_VS_AIRPODS_PRO } from "./airpods-4-vs-airpods-pro";
+import { ACTIVE_DUTY_VS_NATIONAL_GUARD } from "./active-duty-vs-national-guard";
+import { SHOPIFY_VS_WOOCOMMERCE } from "./shopify-vs-woocommerce";
+import { GOOGLE_WORKSPACE_VS_MICROSOFT_365 } from "./google-workspace-vs-microsoft-365";
+import { NEST_VS_RING } from "./nest-vs-ring";
+import { RTX_4090_VS_RTX_5080 } from "./rtx-4090-vs-rtx-5080";
+import { CARNIVAL_VS_ROYAL_CARIBBEAN } from "./carnival-vs-royal-caribbean";
+import { MASTERCARD_VS_VISA } from "./mastercard-vs-visa";
+import { COSTCO_VS_WALMART } from "./costco-vs-walmart";
+import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
+import { MYSQL_VS_POSTGRESQL } from "./mysql-vs-postgresql";
+import { GEICO_VS_STATE_FARM } from "./geico-vs-state-farm";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -124,6 +154,36 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5.slug]: MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
   [OLED_VS_MINI_LED_GAMING_MONITOR.slug]: OLED_VS_MINI_LED_GAMING_MONITOR,
+  [RYZEN_7_9700X_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_9700X_VS_RYZEN_7_9800X3D,
+  [M5_MAX_VS_M5_PRO.slug]: M5_MAX_VS_M5_PRO,
+  [GA4_VS_PLAUSIBLE_ANALYTICS.slug]: GA4_VS_PLAUSIBLE_ANALYTICS,
+  [GOOGLE_ANALYTICS_VS_MICROSOFT_CLARITY.slug]: GOOGLE_ANALYTICS_VS_MICROSOFT_CLARITY,
+  [ANDROID_VS_LINEAGEOS.slug]: ANDROID_VS_LINEAGEOS,
+  [OPEN_SOURCE_VS_PROPRIETARY_SOFTWARE.slug]: OPEN_SOURCE_VS_PROPRIETARY_SOFTWARE,
+  [DOCTOR_VS_LAWYER.slug]: DOCTOR_VS_LAWYER,
+  [PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL.slug]: PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL,
+  [MEXICO_VS_UNITED_STATES.slug]: MEXICO_VS_UNITED_STATES,
+  [SERENA_VS_VENUS_WILLIAMS.slug]: SERENA_VS_VENUS_WILLIAMS,
+  [ENLISTED_VS_MILITARY_OFFICER.slug]: ENLISTED_VS_MILITARY_OFFICER,
+  [EDGE_VS_SAFARI.slug]: EDGE_VS_SAFARI,
+  [AMAZON_AURORA_VS_MYSQL.slug]: AMAZON_AURORA_VS_MYSQL,
+  [PENN_VS_YALE.slug]: PENN_VS_YALE,
+  [NORWAY_VS_SWEDEN.slug]: NORWAY_VS_SWEDEN,
+  [DUOLINGO_VS_ROSETTA_STONE.slug]: DUOLINGO_VS_ROSETTA_STONE,
+  [DELTA_SKYMILES_VS_UNITED_MILEAGEPLUS.slug]: DELTA_SKYMILES_VS_UNITED_MILEAGEPLUS,
+  [PARIS_VS_ROME.slug]: PARIS_VS_ROME,
+  [AIRPODS_4_VS_AIRPODS_PRO.slug]: AIRPODS_4_VS_AIRPODS_PRO,
+  [ACTIVE_DUTY_VS_NATIONAL_GUARD.slug]: ACTIVE_DUTY_VS_NATIONAL_GUARD,
+  [SHOPIFY_VS_WOOCOMMERCE.slug]: SHOPIFY_VS_WOOCOMMERCE,
+  [GOOGLE_WORKSPACE_VS_MICROSOFT_365.slug]: GOOGLE_WORKSPACE_VS_MICROSOFT_365,
+  [NEST_VS_RING.slug]: NEST_VS_RING,
+  [RTX_4090_VS_RTX_5080.slug]: RTX_4090_VS_RTX_5080,
+  [CARNIVAL_VS_ROYAL_CARIBBEAN.slug]: CARNIVAL_VS_ROYAL_CARIBBEAN,
+  [MASTERCARD_VS_VISA.slug]: MASTERCARD_VS_VISA,
+  [COSTCO_VS_WALMART.slug]: COSTCO_VS_WALMART,
+  [MEDICAID_VS_MEDICARE.slug]: MEDICAID_VS_MEDICARE,
+  [MYSQL_VS_POSTGRESQL.slug]: MYSQL_VS_POSTGRESQL,
+  [GEICO_VS_STATE_FARM.slug]: GEICO_VS_STATE_FARM,
 };
 
 /**
