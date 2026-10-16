@@ -6,7 +6,7 @@ import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { BEST_CONFIG, type BestEntry } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
-import { personAuthorNode, teachesDefinedTerm } from "@/lib/seo/schema";
+import { teachesDefinedTerm } from "@/lib/seo/schema";
 import { resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 
 interface PageProps {
@@ -33,7 +33,14 @@ export async function generateStaticParams() {
   }
 }
 
+// Best pages are AI-drafted and never on HUMAN_REVIEWED_SLUGS: credit the
+// organization, not a person, in metadata, JSON-LD and the visible byline.
 async function getEntry(slug: string): Promise<BestEntry | null> {
+  const entry = await getEntryRaw(slug);
+  return entry ? { ...entry, authorName: SITE_NAME, authorUrl: undefined } : null;
+}
+
+async function getEntryRaw(slug: string): Promise<BestEntry | null> {
   // Static config takes precedence for existing pages
   if (BEST_CONFIG[slug]) return BEST_CONFIG[slug];
 
@@ -99,7 +106,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     other: {
       "citation_title": entry.title,
-      "citation_author": entry.authorName,
+      "citation_author": SITE_NAME,
       "citation_publication_date": entry.publishedAt?.slice(0, 10) ?? "",
       "citation_online_date": entry.updatedAt?.slice(0, 10) ?? "",
       "citation_journal_title": "A Versus B",
@@ -108,7 +115,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "abstract": entry.description,
       "DC.title": entry.title,
       "DC.description": entry.description,
-      "DC.creator": entry.authorName,
+      "DC.creator": SITE_NAME,
       "DC.publisher": "A Versus B",
       "DC.date": entry.publishedAt?.slice(0, 10) ?? "",
       "DC.language": "en",
@@ -294,13 +301,9 @@ function bestPageSchema(entry: BestEntry) {
           caption: entry.h1,
         },
         keywords: entry.h1.toLowerCase().replace(/[^a-z0-9 ]/g, "").split(" ").slice(0, 8).join(", "),
-        author: {
-          "@type": "Person",
-          name: entry.authorName,
-          ...(entry.authorUrl ? { url: `${SITE_URL}${entry.authorUrl}` } : {}),
-        },
+        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-        reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+        reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
         alternativeHeadline: `Top ${entry.h1} — Expert Picks ${new Date().getFullYear()}`,
         license: "https://creativecommons.org/licenses/by/4.0/",
         usageInfo: `${SITE_URL}/terms`,

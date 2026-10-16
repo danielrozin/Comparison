@@ -11,7 +11,7 @@ import { blogCompareFallbackLinks } from "@/lib/blog/blog-compare-fallback";
 import { prisma } from "@/lib/db/prisma";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
 import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug, stripUnreviewedBodyByline } from "@/lib/editorial/blog-authorship";
 import { filterLiveCompareSlugs, resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
@@ -737,7 +737,7 @@ export default async function BlogPostPage({
     ...blogReviewFields(
       slug,
       article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
-      [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+      [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     ),
     // contentReferenceTime — tells LLMs the "as of" date for data in this article,
     // enabling time-qualified citations instead of treating content as timeless.
