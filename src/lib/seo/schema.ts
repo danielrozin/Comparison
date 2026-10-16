@@ -18,7 +18,18 @@ import type { ComparisonPageData, FAQData, CitationStats } from "@/types";
  * Use this everywhere a content page needs E-E-A-T author attribution.
  * Schema.org allows author to be an array — pair with orgAuthorNode() for full coverage.
  */
+/**
+ * ROO-242 follow-up (AI-copy rule): pages that are not on
+ * HUMAN_REVIEWED_SLUGS are credited to the organization, never to Daniel.
+ * Every page-level caller of personAuthorNode() is such a page, so it now
+ * returns the organization. Daniel's Person node is danielPersonNode(),
+ * used only behind isHumanReviewedSlug().
+ */
 export function personAuthorNode() {
+  return organizationAuthorNode();
+}
+
+export function danielPersonNode() {
   return {
     "@type": "Person",
     "@id": `${SITE_URL}/authors/daniel-rozin#person`,
@@ -48,7 +59,6 @@ export function personAuthorNode() {
 /** Combined [Person, Organization] author array for maximum E-E-A-T coverage on content pages. */
 export function contentAuthorArray() {
   return [
-    personAuthorNode(),
     { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   ];
 }
@@ -62,7 +72,7 @@ function organizationAuthorNode() {
  * is on HUMAN_REVIEWED_SLUGS. Every other page is authored by A Versus B.
  */
 function comparisonArticleAuthor(slug: string) {
-  return isHumanReviewedSlug(slug) ? contentAuthorArray() : organizationAuthorNode();
+  return isHumanReviewedSlug(slug) ? [danielPersonNode(), organizationAuthorNode()] : organizationAuthorNode();
 }
 
 /** reviewedBy / lastReviewed only when Daniel has actually reviewed the slug. */
@@ -70,7 +80,7 @@ function comparisonReviewSignals(slug: string, updatedAt: string) {
   if (!isHumanReviewedSlug(slug)) return {};
   return {
     lastReviewed: updatedAt,
-    reviewedBy: [personAuthorNode(), organizationAuthorNode()],
+    reviewedBy: [danielPersonNode(), organizationAuthorNode()],
   };
 }
 
@@ -3261,7 +3271,7 @@ export function profilePageSchema(entity: {
     dateCreated: "2024-01-01T00:00:00+00:00",
     dateModified: today,
     lastReviewed: today,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: today,
     locationCreated: { "@type": "Country", name: "United States" },
     inLanguage: "en-US",

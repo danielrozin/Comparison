@@ -174,6 +174,10 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
 // through the runtime sortComparisonSlug (→ paramount-plus-vs-peacock 308) then
 // the alias redirect (→ paramount-vs-peacock 308). Pin directly at the edge.
 const ALIAS_CONSOLIDATIONS: Record<string, string> = {
+  // Duplicate slugs that 404 today; each points to the live page with the same intent.
+  "galaxy-vs-iphone": "iphone-vs-samsung-galaxy",
+  "macbook-air-m4-vs-macbook-pro": "macbook-air-vs-macbook-pro",
+  "honda-crv-vs-toyota-rav4-hybrid": "toyota-rav4-vs-honda-cr-v",
   "paramount-plus-vs-peacock": "paramount-vs-peacock",
   "peacock-vs-paramount-plus": "paramount-vs-peacock",
   // DAN-2078: "mercedes" and "mercedes-benz" resolve to the same brand.
