@@ -225,3 +225,35 @@ describe("Wikipedia resource links (ROO-101)", () => {
     expect(urls).toContain("https://en.wikipedia.org/wiki/Cristiano_Ronaldo");
   });
 });
+
+describe("GPU model names without an English article (ROO-236)", () => {
+  it("links RX 9070 XT to the Radeon RX 9000 series article, not /wiki/RX_9070_XT", () => {
+    const urls = wikipediaUrls("rx-9070-xt-vs-rtx-5080", [
+      entity("RX 9070 XT", "rx-9070-xt", 0),
+      entity("RTX 5080", "rtx-5080", 1),
+    ]);
+    expect(urls).not.toContain("https://en.wikipedia.org/wiki/RX_9070_XT");
+    expect(urls).toContain("https://en.wikipedia.org/wiki/Radeon_RX_9000_series");
+    expect(urls).toContain("https://en.wikipedia.org/wiki/RTX_5080");
+  });
+
+  it("links RTX 5060 Ti to the GeForce RTX 50 series article, not /wiki/RTX_5060_Ti", () => {
+    const urls = wikipediaUrls("rx-9060-xt-vs-rtx-5060-ti", [
+      entity("RX 9060 XT", "rx-9060-xt", 0),
+      entity("RTX 5060 Ti", "rtx-5060-ti", 1),
+    ]);
+    expect(urls).not.toContain("https://en.wikipedia.org/wiki/RTX_5060_Ti");
+    expect(urls).toContain("https://en.wikipedia.org/wiki/GeForce_RTX_50_series");
+  });
+
+  it("resolves by name when the slug is unknown, and never guesses the missing titles", () => {
+    expect(resolveEntityWikipediaUrl({ name: "RX 9070 XT", slug: "some-db-copy" })).toBe(
+      "https://en.wikipedia.org/wiki/Radeon_RX_9000_series",
+    );
+    expect(resolveEntityWikipediaUrl({ name: "RTX 5060 Ti" })).toBe(
+      "https://en.wikipedia.org/wiki/GeForce_RTX_50_series",
+    );
+    expect(guessedWikipediaTitle("RX 9070 XT")).toBeNull();
+    expect(guessedWikipediaTitle("RTX 5060 Ti")).toBeNull();
+  });
+});
