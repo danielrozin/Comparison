@@ -52,6 +52,11 @@ import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
 import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
+import { DUOLINGO_VS_ROSETTA_STONE } from "./duolingo-vs-rosetta-stone";
+import { DELTA_SKYMILES_VS_UNITED_MILEAGEPLUS } from "./delta-skymiles-vs-united-mileageplus";
+import { PARIS_VS_ROME } from "./paris-vs-rome";
+import { AIRPODS_4_VS_AIRPODS_PRO } from "./airpods-4-vs-airpods-pro";
+import { ACTIVE_DUTY_VS_NATIONAL_GUARD } from "./active-duty-vs-national-guard";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -122,6 +127,11 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9060_XT_VS_RTX_5060_TI.slug]: RX_9060_XT_VS_RTX_5060_TI,
   [MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5.slug]: MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
+  [DUOLINGO_VS_ROSETTA_STONE.slug]: DUOLINGO_VS_ROSETTA_STONE,
+  [DELTA_SKYMILES_VS_UNITED_MILEAGEPLUS.slug]: DELTA_SKYMILES_VS_UNITED_MILEAGEPLUS,
+  [PARIS_VS_ROME.slug]: PARIS_VS_ROME,
+  [AIRPODS_4_VS_AIRPODS_PRO.slug]: AIRPODS_4_VS_AIRPODS_PRO,
+  [ACTIVE_DUTY_VS_NATIONAL_GUARD.slug]: ACTIVE_DUTY_VS_NATIONAL_GUARD,
 };
 
 /**
