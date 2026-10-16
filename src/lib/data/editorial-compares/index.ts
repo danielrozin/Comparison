@@ -57,6 +57,11 @@ import { GOOGLE_WORKSPACE_VS_MICROSOFT_365 } from "./google-workspace-vs-microso
 import { NEST_VS_RING } from "./nest-vs-ring";
 import { RTX_4090_VS_RTX_5080 } from "./rtx-4090-vs-rtx-5080";
 import { CARNIVAL_VS_ROYAL_CARIBBEAN } from "./carnival-vs-royal-caribbean";
+import { MASTERCARD_VS_VISA } from "./mastercard-vs-visa";
+import { COSTCO_VS_WALMART } from "./costco-vs-walmart";
+import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
+import { MYSQL_VS_POSTGRESQL } from "./mysql-vs-postgresql";
+import { GEICO_VS_STATE_FARM } from "./geico-vs-state-farm";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -132,6 +137,11 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [NEST_VS_RING.slug]: NEST_VS_RING,
   [RTX_4090_VS_RTX_5080.slug]: RTX_4090_VS_RTX_5080,
   [CARNIVAL_VS_ROYAL_CARIBBEAN.slug]: CARNIVAL_VS_ROYAL_CARIBBEAN,
+  [MASTERCARD_VS_VISA.slug]: MASTERCARD_VS_VISA,
+  [COSTCO_VS_WALMART.slug]: COSTCO_VS_WALMART,
+  [MEDICAID_VS_MEDICARE.slug]: MEDICAID_VS_MEDICARE,
+  [MYSQL_VS_POSTGRESQL.slug]: MYSQL_VS_POSTGRESQL,
+  [GEICO_VS_STATE_FARM.slug]: GEICO_VS_STATE_FARM,
 };
 
 /**

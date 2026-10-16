@@ -11,7 +11,7 @@ import {
 import { buildTrendingCompareCta } from "@/lib/data/trending-compare-cta";
 import { Pagination } from "@/components/ui/Pagination";
 import { TrendingSortSelect } from "@/components/ui/TrendingSortSelect";
-import { personAuthorNode, breadcrumbSchema, teachesDefinedTerm, faqSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, teachesDefinedTerm, faqSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": "Trending Comparisons — A Versus B",
-    "citation_author": "Daniel Rozin",
+    "citation_author": SITE_NAME,
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": trendingDescription,
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": "Trending Comparisons — A Versus B",
-    "DC.creator": "Daniel Rozin",
+    "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.subject": "Trending Comparisons 2026, Popular Side-by-Side Comparisons",
@@ -209,7 +209,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     datePublished: "2024-01-01",
     dateModified: trendingToday,
     lastReviewed: trendingToday,
-    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
+    reviewedBy: [{ "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: trendingToday,
     thumbnailUrl: ogImage,
     image: {

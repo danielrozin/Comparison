@@ -214,7 +214,7 @@ export const CATEGORY_FAQS: Record<string, CategoryFaq[]> = {
     {
       question: "Who writes the historical content on A Versus B?",
       answer:
-        "Historical comparisons are researched and written by our editorial team led by Daniel Rozin, drawing from academic sources, peer-reviewed histories, and encyclopedic references. Every verdict includes attribution and sourcing.",
+        "Historical comparisons are researched and drafted by the A Versus B editorial team with AI from web research, drawing from academic sources, peer-reviewed histories, and encyclopedic references. Every verdict includes attribution and sourcing.",
     },
   ],
 
