@@ -5,6 +5,7 @@ import { breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schem
 import { AI_CONTENT_LABEL, AI_DISCLOSURE, EDITORIAL_TEAM_NAME, editorialTeamAuthorNode } from "@/lib/editorial/blog-authorship";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
+import { LAST_UPDATED } from "./last-updated";
 
 const PAGE_URL = `${SITE_URL}/llm-comparisons`;
 // ROO-241: no single model version in the title; the table covers 12 models
@@ -12,7 +13,6 @@ const PAGE_URL = `${SITE_URL}/llm-comparisons`;
 const PAGE_TITLE = `LLM Comparison 2026: GPT vs Claude vs Gemini vs Llama (12 Models) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of 12 leading large language models — parameters, context window, modality, license, and knowledge cutoff. Column structure mirrors Wikipedia's Comparison of large language models. All data cited to primary sources.";
-export const LAST_UPDATED = "2026-10-16";
 
 export const metadata: Metadata = {
   // ROO-241: title already carries the brand; skip the layout template.
