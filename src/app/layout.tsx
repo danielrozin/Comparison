@@ -39,6 +39,7 @@ import { MetaPixel } from "@/components/tracking/MetaPixel";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
 import { FirstTouchAttribution } from "@/components/tracking/FirstTouchAttribution";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 import "./globals.css";
 
 // Self-host Inter via next/font so the stylesheet inline-links the woff2 directly:
@@ -175,18 +176,6 @@ export default async function RootLayout({
         <meta name="coverage" content="Worldwide" />
         <meta name="distribution" content="Global" />
         <meta name="rating" content="General" />
-        {ADSENSE_PUB_ID && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${ADSENSE_PUB_ID}`}
-            crossOrigin="anonymous"
-          />
-        )}
-        {/* Google Preferred Sources — renders the "Add preferred source"
-            button wherever a [google-add-preferred-source-btn] div appears
-            (site-wide in the Footer). Readers who add us get our content
-            badged "preferred" in Top Stories, AI Mode and AI Overviews. */}
-        <script async src="https://news.google.com/swg/js/v1/publisher.js"></script>
         {/* Clarity — only loads if analytics consent granted or non-EU without prior choice */}
         <script
           dangerouslySetInnerHTML={{
@@ -232,6 +221,23 @@ export default async function RootLayout({
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
         <a href="#main-content" className="skip-nav">Skip to main content</a>
+        {/* ROO-142: AdSense (Auto ads) and Google Preferred Sources (publisher.js)
+            insert DOM nodes into React-owned markup. Loaded as raw async
+            <script>s in <head>, they could run before hydration finished on
+            slow devices and long /blog posts, so React found unexpected
+            elements and threw #418 (HTML). next/script "afterInteractive"
+            injects them only after hydration. publisher.js still renders the
+            "Add preferred source" button wherever a
+            [google-add-preferred-source-btn] div appears. */}
+        {ADSENSE_PUB_ID && (
+          <Script
+            id="adsbygoogle-js"
+            strategy="afterInteractive"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${ADSENSE_PUB_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
+        <Script id="swg-publisher-js" strategy="afterInteractive" src="https://news.google.com/swg/js/v1/publisher.js" />
         <GoogleTagManager />
         <MetaPixel />
         <ClarityTags />
