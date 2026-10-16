@@ -4,12 +4,12 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { AI_CONTENT_LABEL, AI_DISCLOSURE, EDITORIAL_TEAM_NAME, editorialTeamAuthorNode } from "@/lib/editorial/blog-authorship";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
+import { LAST_UPDATED } from "./last-updated";
 
 const PAGE_URL = `${SITE_URL}/password-manager-comparison`;
 const PAGE_TITLE = `Best Password Managers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of the top 10 password managers in 2026 — encryption, zero-knowledge architecture, independent audits, pricing, and platform support. All data cited to primary sources.";
-export const LAST_UPDATED = "2026-10-16";
 const PM_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Best Password Managers Compared 2026")}&type=trending`;
 
 export const metadata: Metadata = {

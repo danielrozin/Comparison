@@ -10,6 +10,7 @@ import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@
 import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
 import { listEditorialCompareSitemapEntries } from "@/lib/data/editorial-compares";
+import { LAST_UPDATED as PASSWORD_MANAGER_LAST_UPDATED } from "@/app/password-manager-comparison/last-updated";
 
 function comparisonOgImageUrl(title: string, entityA: string, entityB: string, category: string): string {
   return (
@@ -120,7 +121,7 @@ export default async function sitemap({
       { url: `${SITE_URL}/llm-comparisons/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/browser-comparison-2026`, lastModified: "2026-09-21", changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/browser-comparison-2026/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
-      { url: `${SITE_URL}/password-manager-comparison`, lastModified: "2026-10-16", changeFrequency: "weekly", priority: 0.9 },
+      { url: `${SITE_URL}/password-manager-comparison`, lastModified: PASSWORD_MANAGER_LAST_UPDATED, changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/password-manager-comparison/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/probability-vs-statistics`, lastModified: "2026-07-30", changeFrequency: "monthly", priority: 0.8 },
       { url: `${SITE_URL}/q1-2026-ai-battles`, lastModified: "2026-06-12", changeFrequency: "monthly", priority: 0.8 },
