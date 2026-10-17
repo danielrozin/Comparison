@@ -5831,6 +5831,60 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-16T09:39:54.582Z"
+    },
+    {
+      "slug": "coca-cola-vs-pepsi",
+      "title": "Coca-Cola vs Pepsi",
+      "entityA": "Coca-Cola",
+      "entityB": "Pepsi",
+      "category": "brands",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "coca-cola-vs-pepsi.mp4",
+      "durationSeconds": 38,
+      "transcript": "Pepsi makes twice the money and still loses the cola war. One brand owns the drink. The other owns the aisle it sits in. 43 to 25. Coke doesn't lead the category, it basically is the category. 91 billion versus 45. Turns out chips pay better than cola. Sixth most valuable brand on Earth. Pepsi's at 36, chasing a ghost. Both in 200-plus countries. Nobody on this planet has an excuse. Coke takes it two to one. Pick PepsiCo if you'd rather own the whole snack aisle.",
+      "chapters": [
+        {
+          "name": "Coca-Cola vs Pepsi",
+          "startOffset": 0,
+          "endOffset": 4
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 4,
+          "endOffset": 10
+        },
+        {
+          "name": "Round 1: Soda Market Share",
+          "startOffset": 10,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: Company Revenue",
+          "startOffset": 17,
+          "endOffset": 23
+        },
+        {
+          "name": "Round 3: Brand Value",
+          "startOffset": 23,
+          "endOffset": 29
+        },
+        {
+          "name": "Round 4: Countries",
+          "startOffset": 29,
+          "endOffset": 34
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 34,
+          "endOffset": 41
+        }
+      ],
+      "youtubeTitle": "Coca-Cola vs Pepsi: Who Actually Won the Cola War?",
+      "youtubeDescription": "Coca-Cola holds 43% of the carbonated soft drink market against Pepsi's 25%, and ranks sixth globally in brand value versus Pepsi's 36th. But PepsiCo pulls in $91 billion in revenue against Coke's $45 billion thanks to Frito-Lay and its wider food portfolio. We break down market share, revenue, brand value and global reach to settle it.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/coca-cola-vs-pepsi\n\nImage credits:\nImage A by DYVER (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Coca_Cola_Flasche_-_Original_Taste.jpg\n\nFull comparison: https://www.aversusb.net/compare/coca-cola-vs-pepsi",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-17T09:06:31.071Z"
     }
   ]
 }

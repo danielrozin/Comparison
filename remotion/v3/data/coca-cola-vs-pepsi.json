@@ -1,0 +1,142 @@
+{
+  "title": "Coca-Cola vs Pepsi",
+  "entityA": "Coca-Cola",
+  "entityB": "Pepsi",
+  "category": "brands",
+  "shortAnswer": "Coca-Cola leads global market share with a 43% share of the carbonated soft drink market vs Pepsi's 25%. Pepsi (PepsiCo) has a more diversified portfolio including Frito-Lay snacks, making PepsiCo's total revenue larger.",
+  "stats": [
+    {
+      "label": "Soda Market Share",
+      "valueA": "43%",
+      "valueB": "25%",
+      "winner": "a"
+    },
+    {
+      "label": "Company Revenue",
+      "valueA": "$45B",
+      "valueB": "$91B (PepsiCo)",
+      "winner": "b"
+    },
+    {
+      "label": "Brand Value",
+      "valueA": "#6 globally",
+      "valueB": "#36 globally",
+      "winner": "a"
+    },
+    {
+      "label": "Countries",
+      "valueA": "200+",
+      "valueB": "200+",
+      "winner": "tie"
+    }
+  ],
+  "verdict": "Coca-Cola wins the cola war. PepsiCo wins in total food & beverage diversification. Both are iconic American brands.",
+  "slug": "coca-cola-vs-pepsi",
+  "imageA": {
+    "url": "video-assets/coca-cola-vs-pepsi/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/2/27/Coca_Cola_Flasche_-_Original_Taste.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 3840,
+    "height": 5760,
+    "credit": "DYVER",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Coca_Cola_Flasche_-_Original_Taste.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/2/27/Coca_Cola_Flasche_-_Original_Taste.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": null,
+  "lines": {
+    "hook": "Pepsi makes twice the money and still loses the cola war.",
+    "tape": "One brand owns the drink. The other owns the aisle it sits in.",
+    "rounds": [
+      "43 to 25. Coke doesn't lead the category, it basically is the category.",
+      "91 billion versus 45. Turns out chips pay better than cola.",
+      "Sixth most valuable brand on Earth. Pepsi's at 36, chasing a ghost.",
+      "Both in 200-plus countries. Nobody on this planet has an excuse."
+    ],
+    "verdict": "Coke takes it two to one. Pick PepsiCo if you'd rather own the whole snack aisle."
+  },
+  "audio": {
+    "cold": "video-assets/coca-cola-vs-pepsi/audio/cold.mp3",
+    "tape": "video-assets/coca-cola-vs-pepsi/audio/tape.mp3",
+    "rounds": [
+      "video-assets/coca-cola-vs-pepsi/audio/round-1.mp3",
+      "video-assets/coca-cola-vs-pepsi/audio/round-2.mp3",
+      "video-assets/coca-cola-vs-pepsi/audio/round-3.mp3",
+      "video-assets/coca-cola-vs-pepsi/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/coca-cola-vs-pepsi/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 130,
+    "tape": 156,
+    "rounds": [
+      216,
+      178,
+      185,
+      166
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "Pepsi makes twice the money and still loses the cola war. One brand owns the drink. The other owns the aisle it sits in. 43 to 25. Coke doesn't lead the category, it basically is the category. 91 billion versus 45. Turns out chips pay better than cola. Sixth most valuable brand on Earth. Pepsi's at 36, chasing a ghost. Both in 200-plus countries. Nobody on this planet has an excuse. Coke takes it two to one. Pick PepsiCo if you'd rather own the whole snack aisle.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Pepsi makes twice the money and still loses the cola war.",
+      "startOffset": 0,
+      "endOffset": 4.324286
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One brand owns the drink. The other owns the aisle it sits in.",
+      "startOffset": 4.324286,
+      "endOffset": 9.536735
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "43 to 25. Coke doesn't lead the category, it basically is the category.",
+      "startOffset": 9.536735,
+      "endOffset": 16.73449
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "91 billion versus 45. Turns out chips pay better than cola.",
+      "startOffset": 16.73449,
+      "endOffset": 22.652245
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Sixth most valuable brand on Earth. Pepsi's at 36, chasing a ghost.",
+      "startOffset": 22.652245,
+      "endOffset": 28.831225
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Both in 200-plus countries. Nobody on this planet has an excuse.",
+      "startOffset": 28.831225,
+      "endOffset": 34.357143
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Coke takes it two to one. Pick PepsiCo if you'd rather own the whole snack aisle.",
+      "startOffset": 34.357143,
+      "endOffset": 40.857143
+    }
+  ],
+  "youtubeTitle": "Coca-Cola vs Pepsi: Who Actually Won the Cola War?",
+  "youtubeDescription": "Coca-Cola holds 43% of the carbonated soft drink market against Pepsi's 25%, and ranks sixth globally in brand value versus Pepsi's 36th. But PepsiCo pulls in $91 billion in revenue against Coke's $45 billion thanks to Frito-Lay and its wider food portfolio. We break down market share, revenue, brand value and global reach to settle it.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/coca-cola-vs-pepsi",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by DYVER (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Coca_Cola_Flasche_-_Original_Taste.jpg"
+  ]
+}
