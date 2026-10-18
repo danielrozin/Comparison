@@ -63,6 +63,7 @@ import { OPEN_SOURCE_VS_PROPRIETARY_SOFTWARE } from "./open-source-vs-proprietar
 import { DOCTOR_VS_LAWYER } from "./doctor-vs-lawyer";
 import { PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL } from "./private-school-vs-public-school";
 import { MEXICO_VS_UNITED_STATES } from "./mexico-vs-united-states";
+import { CANADA_VS_UNITED_STATES } from "./canada-vs-united-states";
 import { SERENA_VS_VENUS_WILLIAMS } from "./serena-vs-venus-williams";
 import { ENLISTED_VS_MILITARY_OFFICER } from "./enlisted-vs-military-officer";
 import { EDGE_VS_SAFARI } from "./edge-vs-safari";
@@ -165,6 +166,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [DOCTOR_VS_LAWYER.slug]: DOCTOR_VS_LAWYER,
   [PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL.slug]: PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL,
   [MEXICO_VS_UNITED_STATES.slug]: MEXICO_VS_UNITED_STATES,
+  [CANADA_VS_UNITED_STATES.slug]: CANADA_VS_UNITED_STATES,
   [SERENA_VS_VENUS_WILLIAMS.slug]: SERENA_VS_VENUS_WILLIAMS,
   [ENLISTED_VS_MILITARY_OFFICER.slug]: ENLISTED_VS_MILITARY_OFFICER,
   [EDGE_VS_SAFARI.slug]: EDGE_VS_SAFARI,
