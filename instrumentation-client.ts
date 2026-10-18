@@ -8,6 +8,7 @@ initBotId({
 });
 import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 import { isAutomatedClient } from "@/lib/analytics/automated-client";
+import { isProductionAnalyticsHost } from "@/lib/analytics/production-analytics-host";
 import { captureComparisonViewedFromLocation } from "@/lib/analytics/comparison-view-capture";
 import { capturePricingViewedFromLocation } from "@/lib/analytics/pricing-view-capture";
 import { isThirdPartyException } from "@/lib/utils/third-party-errors";
@@ -53,7 +54,8 @@ const token = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
 // 150/154 window never init. posthog.capture is a no-op until init, so
 // client events are not sent. Server events use posthog-node. The page
 // itself is unchanged.
-if (token && analyticsAllowed() && !isAutomatedClient()) {
+// ROO-230: skip init on preview/alias hosts so they never hit prod PostHog 505329.
+if (token && analyticsAllowed() && !isAutomatedClient() && isProductionAnalyticsHost()) {
   posthog.init(token, {
     api_host: "/ingest",
     ui_host: "https://us.posthog.com",

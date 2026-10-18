@@ -6,6 +6,7 @@ import { IPHONE_17_VS_17_PRO_VS_16_PRO } from "./iphone-17-vs-iphone-17-pro-vs-i
 import { CARHARTT_VS_DICKIES } from "./carhartt-vs-dickies";
 import { SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA } from "./samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra";
 import { IPHONE_16E_VS_IPHONE_17E } from "./iphone-16e-vs-iphone-17e";
+import { PIXEL_9A_VS_PIXEL_9 } from "./pixel-9a-vs-pixel-9";
 import { POLAROID_GO_GEN_2_VS_INSTAX_MINI } from "./polaroid-go-gen-2-vs-fujifilm-instax-mini";
 import { GALAXY_Z_FOLD_7_VS_S26_ULTRA } from "./galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra";
 import { GOOGLE_MAPS_VS_APPLE_MAPS } from "./google-maps-vs-apple-maps";
@@ -15,6 +16,7 @@ import { IPHONE_17_VS_IPHONE_AIR } from "./iphone-17-vs-iphone-air";
 import { CHROME_VS_SAFARI } from "./chrome-vs-safari";
 import { IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA } from "./iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
 import { ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA } from "./oneplus-15-vs-samsung-galaxy-s26-ultra-vs-samsung-galaxy-s25-ultra";
+import { ONEPLUS_13_VS_ONEPLUS_13R } from "./oneplus-13-vs-oneplus-13r";
 import { ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000 } from "./anker-solix-solarbank-4-pro-vs-ecoflow-stream-5000";
 import { IPHONE_17_PRO_VS_IPHONE_18_PRO } from "./iphone-17-pro-vs-iphone-18-pro";
 import { IPHONE_17_VS_IPHONE_17E } from "./iphone-17-vs-iphone-17e";
@@ -112,6 +114,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CARHARTT_VS_DICKIES.slug]: CARHARTT_VS_DICKIES,
   [SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA.slug]: SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA,
   [IPHONE_16E_VS_IPHONE_17E.slug]: IPHONE_16E_VS_IPHONE_17E,
+  [PIXEL_9A_VS_PIXEL_9.slug]: PIXEL_9A_VS_PIXEL_9,
   [POLAROID_GO_GEN_2_VS_INSTAX_MINI.slug]: POLAROID_GO_GEN_2_VS_INSTAX_MINI,
   [GALAXY_Z_FOLD_7_VS_S26_ULTRA.slug]: GALAXY_Z_FOLD_7_VS_S26_ULTRA,
   [GOOGLE_MAPS_VS_APPLE_MAPS.slug]: GOOGLE_MAPS_VS_APPLE_MAPS,
@@ -121,6 +124,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CHROME_VS_SAFARI.slug]: CHROME_VS_SAFARI,
   [IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA.slug]: IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA,
   [ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA.slug]: ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA,
+  [ONEPLUS_13_VS_ONEPLUS_13R.slug]: ONEPLUS_13_VS_ONEPLUS_13R,
   [ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000.slug]: ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000,
   [IPHONE_17_PRO_VS_IPHONE_18_PRO.slug]: IPHONE_17_PRO_VS_IPHONE_18_PRO,
   [IPHONE_17_VS_IPHONE_17E.slug]: IPHONE_17_VS_IPHONE_17E,
