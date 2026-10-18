@@ -79,6 +79,7 @@ const { prisma, entityUpserts, valueEntityIds, reset } = vi.hoisted(() => {
       create: async () => ({ id: "faq" }),
     },
     attribute: {
+      findMany: async () => [],
       upsert: async ({ where }: { where: { slug_entityTypeId: { slug: string } } }) => ({
         id: `attr-${where.slug_entityTypeId.slug}`,
       }),
