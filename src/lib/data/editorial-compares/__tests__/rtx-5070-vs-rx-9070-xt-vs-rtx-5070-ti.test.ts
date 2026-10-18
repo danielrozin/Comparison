@@ -63,7 +63,8 @@ describe("RTX 5070 vs RX 9070 XT vs RTX 5070 Ti", () => {
     expect(text).toContain("GDDR6");
     expect(text).toContain("GDDR7");
     expect(text).toContain("$549 launch price (MSRP), per NVIDIA Newsroom, January 2025");
-    expect(text).toContain("$599 launch price (MSRP), per AMD Newsroom, February 2025");
+    expect(text).toContain("$599 launch suggested price (SEP), per AMD, February 2025");
+    expect(text).not.toContain("$599 launch price (MSRP)");
     expect(text).toContain("$749 launch price (MSRP), per NVIDIA Newsroom, January 2025");
     expect(text).not.toMatch(/launched (it )?at \$\d/);
     const vendorLinks = (page().resources ?? []).filter((r) => r.label.startsWith("See vendor page for current price"));
