@@ -15,6 +15,7 @@ import { IPHONE_17_VS_IPHONE_AIR } from "./iphone-17-vs-iphone-air";
 import { CHROME_VS_SAFARI } from "./chrome-vs-safari";
 import { IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA } from "./iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
 import { ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA } from "./oneplus-15-vs-samsung-galaxy-s26-ultra-vs-samsung-galaxy-s25-ultra";
+import { ONEPLUS_13_VS_ONEPLUS_13R } from "./oneplus-13-vs-oneplus-13r";
 import { ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000 } from "./anker-solix-solarbank-4-pro-vs-ecoflow-stream-5000";
 import { IPHONE_17_PRO_VS_IPHONE_18_PRO } from "./iphone-17-pro-vs-iphone-18-pro";
 import { IPHONE_17_VS_IPHONE_17E } from "./iphone-17-vs-iphone-17e";
@@ -121,6 +122,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CHROME_VS_SAFARI.slug]: CHROME_VS_SAFARI,
   [IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA.slug]: IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA,
   [ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA.slug]: ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA,
+  [ONEPLUS_13_VS_ONEPLUS_13R.slug]: ONEPLUS_13_VS_ONEPLUS_13R,
   [ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000.slug]: ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000,
   [IPHONE_17_PRO_VS_IPHONE_18_PRO.slug]: IPHONE_17_PRO_VS_IPHONE_18_PRO,
   [IPHONE_17_VS_IPHONE_17E.slug]: IPHONE_17_VS_IPHONE_17E,
