@@ -68,8 +68,11 @@ describe("Pixel 9a vs Pixel 9", () => {
     expect(text).toContain("12GB");
     expect(text).toContain("IP68");
     expect(text).toContain("seven years");
-    expect(text).toContain("$499");
-    expect(text).toContain("$799");
+    expect(text).toContain("$499 launch price (MSRP), per Google Keyword blog, March 2025");
+    expect(text).toContain("$799 launch price (MSRP), per Google Keyword blog, August 2024");
+    expect(text).not.toMatch(/\bfrom \$\d|\$\d+ at launch/i);
+    const vendorLinks = (page().resources ?? []).filter((r) => r.label.startsWith("See vendor page for current price"));
+    expect(vendorLinks.map((r) => r.url)).toEqual(["https://store.google.com/us/product/pixel_9a?hl=en-US"]);
     expect(text).not.toMatch(BANNED);
     expect(text).not.toMatch(/\/entity\//);
     expect(page().citationStats?.sources.map((source) => source.url)).toEqual(

@@ -6,7 +6,9 @@ import type { EditorialComparison } from "./types";
  * Google Pixel tech specs (Pixel Help), Google Store Pixel 9a specs, and the
  * Google Keyword launch posts for Pixel 9 (13 August 2024) and Pixel 9a
  * (19 March 2025). Facts read 18 October 2026 from official sources only.
- * No benchmarks; launch prices from Google's own announcements. No winner.
+ * No benchmarks; every price is a dated launch MSRP from Google's own
+ * announcements, plus a Google Store link for the Pixel 9a's current price
+ * (Google Store's Pixel 9 product URL now redirects to the phones category). No winner.
  */
 
 const PUBLISHED = "2026-10-18T00:00:00Z";
@@ -16,9 +18,10 @@ const PIXEL_SPECS = "https://support.google.com/pixelphone/answer/7158570?hl=en"
 const STORE_9A = "https://store.google.com/us/product/pixel_9a_specs?hl=en-US";
 const BLOG_9 = "https://blog.google/products-and-platforms/devices/pixel/google-pixel-9-pro-xl/";
 const BLOG_9A = "https://blog.google/products-and-platforms/devices/pixel/google-pixel-9a/";
+const STORE_9A_BUY = "https://store.google.com/us/product/pixel_9a?hl=en-US";
 
 const SHORT_ANSWER =
-  "Choose the Pixel 9a if you want the same Google Tensor G4 chip, a larger typical 5,100 mAh battery and seven years of updates at a $499 launch price. Choose the Pixel 9 ($799 at launch) for 12GB of RAM instead of 8GB, a 50MP main camera with a 48MP autofocus ultrawide, a 10.5MP autofocus selfie camera, Gorilla Glass Victus 2 on both sides, faster charging (up to 27W wired, 15W on Pixel Stand) and Wi-Fi 7. Both have a 6.3-inch 60-120Hz display and IP68. Neither is better for everyone.";
+  "Choose the Pixel 9a if you want the same Google Tensor G4 chip, a larger typical 5,100 mAh battery and seven years of updates ($499 launch price (MSRP), per Google Keyword blog, March 2025). Choose the Pixel 9 ($799 launch price (MSRP), per Google Keyword blog, August 2024) for 12GB of RAM instead of 8GB, a 50MP main camera with a 48MP autofocus ultrawide, a 10.5MP autofocus selfie camera, Gorilla Glass Victus 2 on both sides, faster charging (up to 27W wired, 15W on Pixel Stand) and Wi-Fi 7. Both have a 6.3-inch 60-120Hz display and IP68. Neither is better for everyone.";
 
 const EXPERT_ANALYSIS = `${SHORT_ANSWER}
 
@@ -63,7 +66,7 @@ The Pixel 9 supports Wi-Fi 7; the Pixel 9a supports Wi-Fi 6E. Both have Bluetoot
 
 Price at launch
 
-Google announced the Pixel 9 from $799 on 13 August 2024 and the Pixel 9a from $499 on 19 March 2025, on sale from 10 April 2025 in the U.S., Canada and the U.K.
+Pixel 9: $799 launch price (MSRP), per Google Keyword blog, August 2024, announced 13 August 2024. Pixel 9a: $499 launch price (MSRP), per Google Keyword blog, March 2025, announced 19 March 2025 and on sale from 10 April 2025 in the U.S., Canada and the U.K.
 
 Choose the Pixel 9a if
 
@@ -107,7 +110,7 @@ const FAQS = [
   },
   {
     question: "How much did the Pixel 9a and Pixel 9 cost at launch?",
-    answer: "Google announced the Pixel 9 from $799 and the Pixel 9a from $499.",
+    answer: "Pixel 9: $799 launch price (MSRP), per Google Keyword blog, August 2024. Pixel 9a: $499 launch price (MSRP), per Google Keyword blog, March 2025.",
   },
 ];
 
@@ -116,7 +119,7 @@ const BUILT = buildEditorialComparison({
   title: "Pixel 9a vs Pixel 9: Battery, Cameras and Updates",
   shortAnswer: SHORT_ANSWER,
   verdict:
-    "Pixel 9a: Tensor G4, typical 5,100 mAh battery, 8GB RAM, $499 at launch.\n\nPixel 9: Tensor G4, 12GB RAM, 50MP main and 48MP autofocus ultrawide, 27W wired and 15W wireless charging, $799 at launch.",
+    "Pixel 9a: Tensor G4, typical 5,100 mAh battery, 8GB RAM; $499 launch price (MSRP), per Google Keyword blog, March 2025.\n\nPixel 9: Tensor G4, 12GB RAM, 50MP main and 48MP autofocus ultrawide, 27W wired and 15W wireless charging; $799 launch price (MSRP), per Google Keyword blog, August 2024.",
   category: "technology",
   publishedAt: PUBLISHED,
   updatedAt: PUBLISHED,
@@ -132,7 +135,7 @@ const BUILT = buildEditorialComparison({
       pros: [
         "Typical 5,100 mAh battery, rated 30+ hours",
         "Same Tensor G4 chip as the Pixel 9",
-        "$499 launch price",
+        "$499 launch price (MSRP), per Google Keyword blog, March 2025",
         "Update window runs to about eight months later than the Pixel 9's",
       ],
       cons: ["8GB of RAM", "Up to 7.5W wireless charging", "Gorilla Glass 3"],
@@ -152,7 +155,7 @@ const BUILT = buildEditorialComparison({
         "Up to 27W wired and 15W wireless charging",
         "Wi-Fi 7",
       ],
-      cons: ["Smaller typical 4,700 mAh battery", "$799 launch price", "Heavier at 198 g"],
+      cons: ["Smaller typical 4,700 mAh battery", "$799 launch price (MSRP), per Google Keyword blog, August 2024", "Heavier at 198 g"],
       bestFor: "Buyers who want more RAM, the better ultrawide and selfie cameras, and faster charging",
     },
   ],
@@ -161,7 +164,7 @@ const BUILT = buildEditorialComparison({
     { label: "RAM", entityAValue: "8GB", entityBValue: "12GB", winner: "tie" },
     { label: "Rear cameras", entityAValue: "48MP wide, 13MP ultrawide", entityBValue: "50MP wide, 48MP autofocus ultrawide", winner: "tie" },
     { label: "Charging", entityAValue: "23W wired, 7.5W wireless", entityBValue: "27W wired, 15W wireless", winner: "tie" },
-    { label: "Launch price", entityAValue: "$499", entityBValue: "$799", winner: "tie" },
+    { label: "Launch price (MSRP)", entityAValue: "$499 launch price (MSRP), per Google Keyword blog, March 2025", entityBValue: "$799 launch price (MSRP), per Google Keyword blog, August 2024", winner: "tie" },
   ],
   attributes: [
     textAttr("a0", "Display", "Display", "google-pixel-9a", "google-pixel-9", "6.3-inch pOLED, 1080 x 2424, 60-120Hz, 2,700 nits peak", "6.3-inch OLED, 1080 x 2424, 60-120Hz, 2,700 nits peak"),
@@ -177,7 +180,7 @@ const BUILT = buildEditorialComparison({
     textAttr("a10", "Selfie camera", "Camera", "google-pixel-9a", "google-pixel-9", "13MP", "10.5MP with autofocus"),
     textAttr("a11", "Wi-Fi", "Connectivity", "google-pixel-9a", "google-pixel-9", "Wi-Fi 6E", "Wi-Fi 7"),
     textAttr("a12", "Updates", "Software", "google-pixel-9a", "google-pixel-9", "7 years; launched with Android 15", "7 years; launched with Android 14"),
-    textAttr("a13", "Launch price (US)", "Price", "google-pixel-9a", "google-pixel-9", "From $499 (19 March 2025)", "From $799 (13 August 2024)"),
+    textAttr("a13", "Launch price (MSRP, US)", "Price", "google-pixel-9a", "google-pixel-9", "$499 launch price (MSRP), per Google Keyword blog, March 2025", "$799 launch price (MSRP), per Google Keyword blog, August 2024"),
   ],
   faqs: FAQS,
   relatedComparisons: [
@@ -199,10 +202,10 @@ const BUILT = buildEditorialComparison({
     winnerReason:
       "Pixel 9a for the bigger battery and lower launch price with the same Tensor G4. Pixel 9 for 12GB of RAM, the stronger ultrawide and selfie cameras, and faster charging.",
     keyFact:
-      "Both use Tensor G4 and get seven years of updates; the Pixel 9a launched at $499 with a 5,100 mAh battery, the Pixel 9 at $799 with 4,700 mAh.",
+      "Both use Tensor G4 and get seven years of updates. Pixel 9a: 5,100 mAh battery, $499 launch price (MSRP), per Google Keyword blog, March 2025. Pixel 9: 4,700 mAh, $799 launch price (MSRP), per Google Keyword blog, August 2024.",
   },
   citationStats: {
-    sourceCount: 4,
+    sourceCount: 5,
     dataPointCount: 30,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -213,6 +216,7 @@ const BUILT = buildEditorialComparison({
       { name: "Google Store: Pixel 9a tech specs", url: STORE_9A },
       { name: "Google: Pixel 9, Pixel 9 Pro and Pixel 9 Pro XL", url: BLOG_9 },
       { name: "Google: Pixel 9a", url: BLOG_9A },
+      { name: "Google Store: Pixel 9a", url: STORE_9A_BUY },
     ],
   },
   resources: [
@@ -234,14 +238,20 @@ const BUILT = buildEditorialComparison({
       type: "external",
       label: "Google: Pixel 9, Pixel 9 Pro and Pixel 9 Pro XL",
       url: BLOG_9,
-      description: "13 August 2024. Pixel 9, Pixel 9 Pro and Pixel 9 Pro XL from $799, $999 and $1,099.",
+      description: "13 August 2024. Pixel 9, Pixel 9 Pro and Pixel 9 Pro XL launched at $799, $999 and $1,099.",
     },
     {
       type: "external",
       label: "Google: Pixel 9a",
       url: BLOG_9A,
       description:
-        "19 March 2025. Pixel 9a from $499 with Tensor G4, on sale from 10 April in the U.S., Canada and the U.K.",
+        "19 March 2025. Pixel 9a launched at $499 with Tensor G4, on sale from 10 April in the U.S., Canada and the U.K.",
+    },
+    {
+      type: "external",
+      label: "See vendor page for current price: Pixel 9a (Google Store)",
+      url: STORE_9A_BUY,
+      description: "Google Store page for the Pixel 9a and its current US price.",
     },
   ],
   metaTitle: "Pixel 9a vs Pixel 9 | A Versus B",
