@@ -7,7 +7,9 @@ import type { EditorialComparison } from "./types";
  * (support.apple.com/126322), the March 2026 MacBook Neo newsroom post,
  * Apple's iPad (A16) tech specs, and the March 4, 2025 Apple newsroom post
  * that lists iPad (A16), Magic Keyboard Folio and Apple Pencil prices.
- * Prices are Apple's US launch or list prices only. No benchmarks.
+ * Prices are Apple's US launch prices (MSRP) only, each with its Apple Newsroom
+ * month (Folio: October 2022 newsroom; Apple Pencil (USB-C): October 2023
+ * newsroom), plus Apple Store links for current prices. No benchmarks.
  * No years-of-updates claims. No page-level winner.
  */
 
@@ -19,23 +21,29 @@ const NEO_NEWS = "https://www.apple.com/newsroom/2026/03/say-hello-to-macbook-ne
 const IPAD_SPECS = "https://www.apple.com/ipad-11/specs/";
 const IPAD_NEWS =
   "https://www.apple.com/newsroom/2025/03/apple-introduces-ipad-air-with-powerful-m3-chip-and-new-magic-keyboard/";
+const FOLIO_NEWS =
+  "https://www.apple.com/newsroom/2022/10/apple-unveils-completely-redesigned-ipad-in-four-vibrant-colors/";
+const PENCIL_NEWS =
+  "https://www.apple.com/newsroom/2023/10/apple-introduces-new-apple-pencil-bringing-more-value-and-choice-to-the-lineup/";
+const NEO_STORE = "https://www.apple.com/shop/buy-mac/macbook-neo";
+const IPAD_STORE = "https://www.apple.com/shop/buy-ipad/ipad";
 
 const SOURCE_DATE = "2026-10-18";
 const PUBLISHED = "2026-10-18T00:00:00Z";
 
 const SHORT_ANSWER =
-  "Choose the MacBook Neo for Word and Excel, long typing sessions and multi-window study: Apple builds in a Magic Keyboard and Multi-Touch trackpad, runs macOS on an A18 Pro chip, and rates it for up to 16 hours of video streaming, from $599 in the US. Choose the iPad (A16) for touch, Apple Pencil drawing and a 477 g tablet, from $349; Apple sells the Magic Keyboard Folio for $249 and the Apple Pencil (USB-C) for $79, so the iPad with both comes to $677. Neither is better for everyone; it depends on whether typing or Pencil drawing matters more.";
+  "Choose the MacBook Neo for Word and Excel, long typing sessions and multi-window study: Apple builds in a Magic Keyboard and Multi-Touch trackpad, runs macOS on an A18 Pro chip, and rates it for up to 16 hours of video streaming; US $599 launch price (MSRP), per Apple Newsroom, March 2026. Choose the iPad (A16) for touch, Apple Pencil drawing and a 477 g tablet; US $349 launch price (MSRP), per Apple Newsroom, March 2025. The Magic Keyboard Folio ($249 launch price (MSRP), per Apple Newsroom, October 2022) and the Apple Pencil (USB-C) ($79 launch price (MSRP), per Apple Newsroom, October 2023) bring the iPad to $677 at those launch prices. Neither is better for everyone; it depends on whether typing or Pencil drawing matters more.";
 
 const FAQS = [
   {
     question: "Is the MacBook Neo better than the iPad (A16) for Word and Excel?",
     answer:
-      "For typing-heavy documents, the MacBook Neo is the simpler choice. Apple builds in a Magic Keyboard with 78 (ANSI) or 79 (ISO) keys and a Multi-Touch trackpad, and it runs macOS. The iPad (A16) runs iPadOS and needs the Magic Keyboard Folio, which Apple sells for $249, for a keyboard and trackpad.",
+      "For typing-heavy documents, the MacBook Neo is the simpler choice. Apple builds in a Magic Keyboard with 78 (ANSI) or 79 (ISO) keys and a Multi-Touch trackpad, and it runs macOS. The iPad (A16) runs iPadOS and needs the Magic Keyboard Folio ($249 launch price (MSRP), per Apple Newsroom, October 2022) for a keyboard and trackpad.",
   },
   {
     question: "Is the iPad (A16) cheaper than the MacBook Neo once you add accessories?",
     answer:
-      "Not with both accessories. Apple's US prices are $349 for the iPad (A16) with 128GB, $249 for the Magic Keyboard Folio and $79 for the Apple Pencil (USB-C), which is $677 together. The MacBook Neo starts at $599 with 256GB and a built-in keyboard and trackpad, or $499 for education. The iPad alone, or with only one accessory, costs less than the MacBook Neo.",
+      "Not with both accessories, at US launch prices. The iPad (A16) with 128GB is $349 launch price (MSRP), per Apple Newsroom, March 2025. The Magic Keyboard Folio is $249 launch price (MSRP), per Apple Newsroom, October 2022, and the Apple Pencil (USB-C) is $79 launch price (MSRP), per Apple Newsroom, October 2023, which is $677 together. The MacBook Neo with 256GB and a built-in keyboard and trackpad is $599 launch price (MSRP), per Apple Newsroom, March 2026, or $499 for education. The iPad alone, or with only one accessory, costs less than the MacBook Neo at those launch prices.",
   },
   {
     question: "Which is better for digital coloring?",
@@ -59,13 +67,13 @@ const FAQS = [
   },
 ];
 
-const VERDICT = `Best for typing, documents and multi-window study: MacBook Neo. A18 Pro chip, macOS, a built-in Magic Keyboard and trackpad, a 13.0-inch display and up to 16 hours of video streaming, from $599 in the US.
+const VERDICT = `Best for typing, documents and multi-window study: MacBook Neo. A18 Pro chip, macOS, a built-in Magic Keyboard and trackpad, a 13.0-inch display and up to 16 hours of video streaming; US $599 launch price (MSRP), per Apple Newsroom, March 2026.
 
-Best for touch and Apple Pencil drawing: iPad (A16). A16 chip, an 11-inch display, 477 g and Apple Pencil (USB-C) support, from $349. With Apple's Magic Keyboard Folio and Apple Pencil (USB-C), the total is $677.
+Best for touch and Apple Pencil drawing: iPad (A16). A16 chip, an 11-inch display, 477 g and Apple Pencil (USB-C) support; US $349 launch price (MSRP), per Apple Newsroom, March 2025. With the Magic Keyboard Folio and Apple Pencil (USB-C), the total is $677 at launch prices (MSRP).
 
 Neither is better for everyone; it depends on whether typing or Pencil drawing matters more.`;
 
-const EXPERT_ANALYSIS = `Choose the MacBook Neo for Word and Excel, long typing sessions and multi-window study: Apple builds in a Magic Keyboard and Multi-Touch trackpad, runs macOS on an A18 Pro chip, and rates it for up to 16 hours of video streaming, from $599 in the US. Choose the iPad (A16) for touch, Apple Pencil drawing and a 477 g tablet, from $349; Apple sells the Magic Keyboard Folio for $249 and the Apple Pencil (USB-C) for $79, so the iPad with both comes to $677. Neither is better for everyone; it depends on whether typing or Pencil drawing matters more.
+const EXPERT_ANALYSIS = `Choose the MacBook Neo for Word and Excel, long typing sessions and multi-window study: Apple builds in a Magic Keyboard and Multi-Touch trackpad, runs macOS on an A18 Pro chip, and rates it for up to 16 hours of video streaming; US $599 launch price (MSRP), per Apple Newsroom, March 2026. Choose the iPad (A16) for touch, Apple Pencil drawing and a 477 g tablet; US $349 launch price (MSRP), per Apple Newsroom, March 2025. The Magic Keyboard Folio ($249 launch price (MSRP), per Apple Newsroom, October 2022) and the Apple Pencil (USB-C) ($79 launch price (MSRP), per Apple Newsroom, October 2023) bring the iPad to $677 at those launch prices. Neither is better for everyone; it depends on whether typing or Pencil drawing matters more.
 
 Typing, documents and study
 
@@ -79,7 +87,7 @@ The iPad (A16) works with the Apple Pencil (USB-C) and the Apple Pencil (1st gen
 
 Price with accessories
 
-Apple's US launch prices are $599 for the MacBook Neo, or $499 for education, and $349 for the iPad (A16) Wi-Fi model with 128GB, or $329 for education. Apple's March 2025 announcement lists the Magic Keyboard Folio at $249 and the Apple Pencil (USB-C) at $79. The iPad with both comes to $677, which is more than the MacBook Neo. The iPad with only the Pencil is $428, and with only the Folio is $598. Store prices and discounts change, so compare complete carts before buying.
+MacBook Neo: $599 launch price (MSRP), per Apple Newsroom, March 2026, or $499 for education. iPad (A16) Wi-Fi model with 128GB: $349 launch price (MSRP), per Apple Newsroom, March 2025, or $329 for education. Magic Keyboard Folio: $249 launch price (MSRP), per Apple Newsroom, October 2022. Apple Pencil (USB-C): $79 launch price (MSRP), per Apple Newsroom, October 2023. At those launch prices the iPad with both comes to $677, which is more than the MacBook Neo. The iPad with only the Pencil is $428, and with only the Folio is $598. Store prices and discounts change, so compare complete carts before buying.
 
 Chip, memory and storage
 
@@ -116,7 +124,7 @@ export const MACBOOK_NEO_VS_IPAD_A16: EditorialComparison = buildEditorialCompar
       id: NEO,
       slug: NEO,
       name: "MacBook Neo",
-      shortDesc: "13-inch macOS laptop with an A18 Pro chip and a built-in keyboard, from $599 in the US.",
+      shortDesc: "13-inch macOS laptop with an A18 Pro chip and a built-in keyboard; US $599 launch price (MSRP), per Apple Newsroom, March 2026.",
       imageUrl: null,
       entityType: "product",
       position: 0,
@@ -124,7 +132,7 @@ export const MACBOOK_NEO_VS_IPAD_A16: EditorialComparison = buildEditorialCompar
         "Built-in Magic Keyboard and Multi-Touch trackpad (Apple)",
         "macOS on an A18 Pro chip with 8GB unified memory (Apple)",
         "Up to 16 hours video streaming, 36.5 Wh battery (Apple)",
-        "256GB or 512GB storage; from $599, $499 for education (Apple)",
+        "256GB or 512GB storage",
       ],
       cons: [
         "No touchscreen and no Apple Pencil support",
@@ -136,18 +144,18 @@ export const MACBOOK_NEO_VS_IPAD_A16: EditorialComparison = buildEditorialCompar
       id: IPAD,
       slug: IPAD,
       name: "iPad (A16)",
-      shortDesc: "11-inch tablet with an A16 chip and Apple Pencil (USB-C) support, from $349 in the US.",
+      shortDesc: "11-inch tablet with an A16 chip and Apple Pencil (USB-C) support; US $349 launch price (MSRP), per Apple Newsroom, March 2025.",
       imageUrl: null,
       entityType: "product",
       position: 1,
       pros: [
         "Apple Pencil (USB-C) and Apple Pencil (1st generation) support (Apple)",
         "477 g and 7 mm thick, Wi-Fi model (Apple)",
-        "From $349 with 128GB, $329 for education (Apple)",
+        "128GB, 256GB or 512GB storage",
         "12MP back camera and Touch ID (Apple)",
       ],
       cons: [
-        "Keyboard is extra: Magic Keyboard Folio $249 (Apple)",
+        "Keyboard is extra: Magic Keyboard Folio sold separately",
         "Up to 10 hours web or video on Wi-Fi, 28.93 Wh battery (Apple)",
       ],
       bestFor: "Best for touch, Apple Pencil drawing and portability",
@@ -157,19 +165,19 @@ export const MACBOOK_NEO_VS_IPAD_A16: EditorialComparison = buildEditorialCompar
     {
       label: "Keyboard and trackpad",
       entityAValue: "Built in",
-      entityBValue: "Magic Keyboard Folio, $249 extra",
+      entityBValue: "Magic Keyboard Folio, sold separately",
       winner: "a",
     },
     {
       label: "Apple Pencil",
       entityAValue: "Not supported",
-      entityBValue: "Apple Pencil (USB-C), $79, or 1st generation with adapter",
+      entityBValue: "Apple Pencil (USB-C), or 1st generation with adapter",
       winner: "b",
     },
     {
-      label: "US starting price",
-      entityAValue: "$599 (256GB)",
-      entityBValue: "$349 (128GB); $677 with Folio and Pencil (USB-C)",
+      label: "US launch price (MSRP)",
+      entityAValue: "$599 launch price (MSRP), per Apple Newsroom, March 2026 (256GB)",
+      entityBValue: "$349 launch price (MSRP), per Apple Newsroom, March 2025 (128GB); $677 with Folio and Pencil (USB-C) at launch prices",
       winner: "tie",
     },
     {
@@ -247,12 +255,12 @@ export const MACBOOK_NEO_VS_IPAD_A16: EditorialComparison = buildEditorialCompar
     ),
     textAttr(
       "price",
-      "US price (Apple)",
+      "US launch price (MSRP)",
       SPEC,
       NEO,
       IPAD,
-      "From $599, or $499 for education",
-      "From $349, or $329 for education. Magic Keyboard Folio $249. Apple Pencil (USB-C) $79"
+      "$599 launch price (MSRP), per Apple Newsroom, March 2026; $499 for education",
+      "$349 launch price (MSRP), per Apple Newsroom, March 2025; $329 for education. Magic Keyboard Folio $249 launch price (MSRP), per Apple Newsroom, October 2022. Apple Pencil (USB-C) $79 launch price (MSRP), per Apple Newsroom, October 2023"
     ),
   ],
   faqs: FAQS,
@@ -275,10 +283,10 @@ export const MACBOOK_NEO_VS_IPAD_A16: EditorialComparison = buildEditorialCompar
     winnerReason:
       "MacBook Neo for typing, documents and study with the keyboard built in. iPad (A16) for touch and Apple Pencil drawing, with the keyboard and Pencil sold separately.",
     keyFact:
-      "Apple's US prices: MacBook Neo from $599. iPad (A16) from $349, plus $249 for the Magic Keyboard Folio and $79 for the Apple Pencil (USB-C), or $677 together.",
+      "US launch prices (MSRP): MacBook Neo $599 launch price (MSRP), per Apple Newsroom, March 2026. iPad (A16) $349 launch price (MSRP), per Apple Newsroom, March 2025. Magic Keyboard Folio $249 launch price (MSRP), per Apple Newsroom, October 2022. Apple Pencil (USB-C) $79 launch price (MSRP), per Apple Newsroom, October 2023. $677 for the iPad with both.",
   },
   citationStats: {
-    sourceCount: 4,
+    sourceCount: 8,
     dataPointCount: 22,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -289,6 +297,10 @@ export const MACBOOK_NEO_VS_IPAD_A16: EditorialComparison = buildEditorialCompar
       { name: "Apple Newsroom: MacBook Neo", url: NEO_NEWS },
       { name: "Apple iPad (A16) tech specs", url: IPAD_SPECS },
       { name: "Apple Newsroom: iPad Air with M3 and iPad with A16", url: IPAD_NEWS },
+      { name: "Apple Newsroom: redesigned iPad and Magic Keyboard Folio", url: FOLIO_NEWS },
+      { name: "Apple Newsroom: Apple Pencil (USB-C)", url: PENCIL_NEWS },
+      { name: "Apple Store: buy MacBook Neo", url: NEO_STORE },
+      { name: "Apple Store: buy iPad", url: IPAD_STORE },
     ],
   },
   resources: [
@@ -303,7 +315,7 @@ export const MACBOOK_NEO_VS_IPAD_A16: EditorialComparison = buildEditorialCompar
       type: "external",
       label: "Apple Newsroom: MacBook Neo",
       url: NEO_NEWS,
-      description: "MacBook Neo starts at $599 (US) and $499 (US) for education.",
+      description: "March 2026. MacBook Neo launched at $599 (US) and $499 (US) for education.",
     },
     {
       type: "external",
@@ -317,7 +329,31 @@ export const MACBOOK_NEO_VS_IPAD_A16: EditorialComparison = buildEditorialCompar
       label: "Apple Newsroom: iPad Air with M3 and iPad with A16",
       url: IPAD_NEWS,
       description:
-        "March 4, 2025. iPad with A16 Wi-Fi from $349 (US), $329 for education; 128GB, 256GB and 512GB. Magic Keyboard Folio $249. Apple Pencil (USB-C) and Apple Pencil (1st generation) compatible with the new iPad. Apple Pencil (USB-C) $79.",
+        "March 4, 2025. iPad with A16 Wi-Fi launched at $349 (US), $329 for education; 128GB, 256GB and 512GB. Apple Pencil (USB-C) and Apple Pencil (1st generation) compatible with the new iPad.",
+    },
+    {
+      type: "external",
+      label: "Apple Newsroom: redesigned iPad and Magic Keyboard Folio",
+      url: FOLIO_NEWS,
+      description: "October 18, 2022. Magic Keyboard Folio launched at $249 (US).",
+    },
+    {
+      type: "external",
+      label: "Apple Newsroom: Apple Pencil (USB-C)",
+      url: PENCIL_NEWS,
+      description: "October 2023. Apple Pencil (USB-C) launched at $79 (US), $69 for education.",
+    },
+    {
+      type: "external",
+      label: "See vendor page for current price: MacBook Neo (Apple Store)",
+      url: NEO_STORE,
+      description: "Apple Store page for MacBook Neo configurations and current US prices.",
+    },
+    {
+      type: "external",
+      label: "See vendor page for current price: iPad (A16) (Apple Store)",
+      url: IPAD_STORE,
+      description: "Apple Store page for iPad (A16) configurations, accessories and current US prices.",
     },
   ],
   metaTitle: "MacBook Neo vs iPad (A16) | A Versus B",
