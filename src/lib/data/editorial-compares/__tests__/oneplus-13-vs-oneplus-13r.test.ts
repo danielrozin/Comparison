@@ -68,15 +68,17 @@ describe("OnePlus 13 vs OnePlus 13R", () => {
     expect(text).toContain("IP65");
     expect(text).toContain("50W AIRVOOC");
     expect(text).toContain("6,000 mAh");
-    expect(text).toContain("Android 16, 17, 18 and 19");
+    expect(text).toContain("January 7, 2031");
+    expect(text).not.toMatch(/Android 1[6-9]|four Android upgrades/);
     expect(text).toContain("six years of security updates");
     expect(text).not.toMatch(BANNED);
     expect(text).not.toMatch(/\/entity\//);
     expect(page().citationStats?.sources.map((source) => source.url)).toEqual(
       page().resources?.map((resource) => resource.url),
     );
+    expect(page().citationStats?.sources.map((source) => source.url)).toContain("https://www.oneplus.com/uk/psti");
     for (const source of page().citationStats?.sources ?? []) {
-      expect(source.url).toMatch(/^https:\/\/(www|communityus)\.oneplus\.com\//);
+      expect(source.url).toMatch(/^https:\/\/www\.oneplus\.com\//);
     }
   });
 

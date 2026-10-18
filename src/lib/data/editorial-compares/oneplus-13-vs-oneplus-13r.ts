@@ -4,8 +4,10 @@ import type { EditorialComparison } from "./types";
 /**
  * ROO-209: OnePlus 13 vs OnePlus 13R.
  * OnePlus US spec pages for both phones, the OnePlus North America launch
- * press release (7 January 2025) and the OnePlus 13 series OS upgrade policy
- * (5 March 2025). Facts read 18 October 2026 from official sources only.
+ * press release (7 January 2025) and the OnePlus UK PSTI product security
+ * update period page (OnePlus 13 and 13R security updates to 2031/01/07).
+ * Facts read 18 October 2026 from official sources only. No Android upgrade
+ * count: no official OnePlus page lists one for the 13 series.
  * No benchmarks, no street prices (OnePlus's launch release gives none). No winner.
  */
 
@@ -15,10 +17,10 @@ const SOURCE_DATE = "2026-10-18";
 const OP13_SPECS = "https://www.oneplus.com/us/13/specs";
 const OP13R_SPECS = "https://www.oneplus.com/us/13r/specs";
 const PRESS = "https://www.oneplus.com/us/press/press-release/oneplus-launches-new-smartphone-flagship-series-in-north-america-oneplus-13-and-oneplus-13r";
-const OS_POLICY = "https://communityus.oneplus.com/thread/1809905145622822918";
+const ONEPLUS_PSTI = "https://www.oneplus.com/uk/psti";
 
 const SHORT_ANSWER =
-  "Choose the OnePlus 13 for the Snapdragon 8 Elite, a 3x optical telephoto with OIS, 50W AIRVOOC wireless charging, IP68 and IP69 ratings, and up to 16GB of RAM and 512GB of storage. Choose the OnePlus 13R if you want the same 6,000 mAh battery capacity, a flat 6.78-inch display, a Snapdragon 8 Gen 3 and a lighter 206 g body at the more affordable price point OnePlus designed it for. Both get four Android upgrades and six years of security updates. Neither is better for everyone.";
+  "Choose the OnePlus 13 for the Snapdragon 8 Elite, a 3x optical telephoto with OIS, 50W AIRVOOC wireless charging, IP68 and IP69 ratings, and up to 16GB of RAM and 512GB of storage. Choose the OnePlus 13R if you want the same 6,000 mAh battery capacity, a flat 6.78-inch display, a Snapdragon 8 Gen 3 and a lighter 206 g body at the more affordable price point OnePlus designed it for. OnePlus lists security updates for both until January 7, 2031. Neither is better for everyone.";
 
 const EXPERT_ANALYSIS = `${SHORT_ANSWER}
 
@@ -28,7 +30,7 @@ Key takeaways
 - Cameras: three 50MP rear cameras on the 13, including a 3x telephoto with OIS; the 13R has a 50MP main camera, a 50MP 2x telephoto and an 8MP ultra-wide.
 - Charging: 80W wired plus 50W AIRVOOC wireless on the 13; 55W wired only on the 13R.
 - Durability: IP68 and IP69 on the 13; IP65 on the 13R.
-- Software: OxygenOS 15 on Android 15 at launch, with Android 16 to 19 promised for both and six years of security updates.
+- Software: OxygenOS 15 based on Android 15 at launch, with security updates until January 7, 2031 for both, six years of security updates from the January 7, 2025 launch.
 
 Design and durability
 
@@ -53,7 +55,7 @@ Both are rated at a typical 6,000 mAh. The 13 uses two 3,000 mAh cells in series
 
 Software and update policy
 
-Both launched with OxygenOS 15 on Android 15. OnePlus states that the launch version does not count as an upgrade: the OnePlus 13 series is due Android 16, 17, 18 and 19, plus six years of security updates.
+Both launched with OxygenOS 15 based on Android 15. OnePlus lists security updates for the OnePlus 13 and the OnePlus 13R until January 7, 2031, which is six years of security updates from their January 7, 2025 launch. OnePlus's general policy promises a minimum of three years of security updates for smartphones, and both dates run well past that.
 
 Other differences
 
@@ -98,9 +100,9 @@ const FAQS = [
       "Yes. The OnePlus 13 has a 50MP 3x telephoto with OIS; the 13R has a 50MP 2x telephoto with EIS.",
   },
   {
-    question: "How many years of updates do the OnePlus 13 and 13R get?",
+    question: "How long do the OnePlus 13 and 13R get security updates?",
     answer:
-      "OnePlus promises four Android upgrades (Android 16 to 19) and six years of security updates for the OnePlus 13 series.",
+      "OnePlus lists security updates for both the OnePlus 13 and the OnePlus 13R until January 7, 2031, six years of security updates from their January 7, 2025 launch.",
   },
 ];
 
@@ -173,7 +175,7 @@ const BUILT = buildEditorialComparison({
     textAttr("a10", "Ultra-wide", "Camera", "oneplus-13", "oneplus-13r", "50MP, 120 degrees", "8MP, 112 degrees"),
     textAttr("a11", "Front camera", "Camera", "oneplus-13", "oneplus-13r", "32MP", "16MP"),
     textAttr("a12", "Fingerprint and USB", "Other", "oneplus-13", "oneplus-13r", "Ultrasonic; USB 3.2 Gen 1", "Optical in-display; USB 2.0"),
-    textAttr("a13", "Updates", "Software", "oneplus-13", "oneplus-13r", "Four Android upgrades, six years of security updates", "Four Android upgrades, six years of security updates"),
+    textAttr("a13", "Updates", "Software", "oneplus-13", "oneplus-13r", "Security updates until January 7, 2031", "Security updates until January 7, 2031"),
   ],
   faqs: FAQS,
   relatedComparisons: [
@@ -195,7 +197,7 @@ const BUILT = buildEditorialComparison({
     winnerReason:
       "OnePlus 13 for the 3x telephoto, wireless charging and IP69. OnePlus 13R for the same battery rating in a lighter body at a lower price point.",
     keyFact:
-      "Both are rated 6,000 mAh and get four Android upgrades and six years of security updates; only the OnePlus 13 lists wireless charging and IP69.",
+      "Both are rated 6,000 mAh and get security updates until January 7, 2031; only the OnePlus 13 lists wireless charging and IP69.",
   },
   citationStats: {
     sourceCount: 4,
@@ -208,7 +210,7 @@ const BUILT = buildEditorialComparison({
       { name: "OnePlus 13 specs", url: OP13_SPECS },
       { name: "OnePlus 13R specs", url: OP13R_SPECS },
       { name: "OnePlus press release: OnePlus 13 and OnePlus 13R in North America", url: PRESS },
-      { name: "OnePlus: OS upgrade policy of the 13 series", url: OS_POLICY },
+      { name: "OnePlus: Product security update period (PSTI)", url: ONEPLUS_PSTI },
     ],
   },
   resources: [
@@ -235,10 +237,10 @@ const BUILT = buildEditorialComparison({
     },
     {
       type: "external",
-      label: "OnePlus: OS upgrade policy of the 13 series",
-      url: OS_POLICY,
+      label: "OnePlus: Product security update period (PSTI)",
+      url: ONEPLUS_PSTI,
       description:
-        "5 March 2025. The launch OS does not count as an upgrade; the OnePlus 13 series gets Android 16, 17, 18 and 19 and six years of security updates.",
+        "OnePlus 13 and OnePlus 13R security updates until 2031-01-07. Smartphones get security updates for a minimum of three years.",
     },
   ],
   metaTitle: "OnePlus 13 vs OnePlus 13R | A Versus B",
