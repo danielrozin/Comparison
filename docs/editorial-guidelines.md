@@ -35,6 +35,12 @@
 
 ---
 
+## AI Content Review Policy
+
+AI-drafted pages publish after the automated gates and source check pass, labeled "Analysis" with "Drafted with AI from web research." Nothing is marked human-reviewed unless Daniel personally reviewed it and recorded a sign-off. Full policy: [docs/ai-content-review-policy.md](./ai-content-review-policy.md) (ROO-160).
+
+---
+
 ## Content Quality Standards
 
 ### Comparisons (Auto-Generated)

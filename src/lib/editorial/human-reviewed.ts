@@ -10,6 +10,36 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
  */
 export const HUMAN_REVIEWED_SLUGS: string[] = [];
 
+/** What a human sign-off must cover (Google AI-content guidance, 2026-10-01). */
+export const HUMAN_REVIEW_CHECKS = ["facts", "title", "meta", "schema", "alt"] as const;
+export type HumanReviewCheck = (typeof HUMAN_REVIEW_CHECKS)[number];
+
+export interface HumanReviewSignoff {
+  reviewer: "Daniel Rozin";
+  /** ISO date, YYYY-MM-DD. */
+  reviewedOn: string;
+  checked: HumanReviewCheck[];
+}
+
+/**
+ * ROO-160: a slug may be on HUMAN_REVIEWED_SLUGS only with a complete
+ * sign-off here, recorded by Daniel. See docs/ai-content-review-policy.md.
+ */
+export const HUMAN_REVIEW_SIGNOFFS: Record<string, HumanReviewSignoff> = {};
+
+/** Slugs listed as reviewed without a complete sign-off. Must be empty. */
+export function unsignedReviewedSlugs(
+  slugs: readonly string[] = HUMAN_REVIEWED_SLUGS,
+  signoffs: Record<string, HumanReviewSignoff> = HUMAN_REVIEW_SIGNOFFS,
+): string[] {
+  return slugs.filter((slug) => {
+    const signoff = signoffs[slug];
+    if (!signoff || signoff.reviewer !== "Daniel Rozin") return true;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(signoff.reviewedOn)) return true;
+    return !HUMAN_REVIEW_CHECKS.every((check) => signoff.checked.includes(check));
+  });
+}
+
 export function isHumanReviewedSlug(slug: string | null | undefined): boolean {
   if (!slug) return false;
   return HUMAN_REVIEWED_SLUGS.includes(slug);
