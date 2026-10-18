@@ -59,11 +59,17 @@ describe("MacBook Neo vs iPad (A16)", () => {
     const text = readerText(page());
     expect(text).toContain("A18 Pro");
     expect(text).toContain("A16");
-    expect(text).toContain("$599");
-    expect(text).toContain("$349");
-    expect(text).toContain("$249");
-    expect(text).toContain("$79");
+    expect(text).toContain("$599 launch price (MSRP), per Apple Newsroom, March 2026");
+    expect(text).toContain("$349 launch price (MSRP), per Apple Newsroom, March 2025");
+    expect(text).toContain("$249 launch price (MSRP), per Apple Newsroom, October 2022");
+    expect(text).toContain("$79 launch price (MSRP), per Apple Newsroom, October 2023");
     expect(text).toContain("$677");
+    expect(text).not.toMatch(/\bfrom \$\d/i);
+    const vendorLinks = (page().resources ?? []).filter((r) => r.label.startsWith("See vendor page for current price"));
+    expect(vendorLinks.map((r) => r.url)).toEqual([
+      "https://www.apple.com/shop/buy-mac/macbook-neo",
+      "https://www.apple.com/shop/buy-ipad/ipad",
+    ]);
     expect(text).toContain("up to 16 hours");
     expect(text).toContain("28.93");
     expect(text).toContain("477 g");
