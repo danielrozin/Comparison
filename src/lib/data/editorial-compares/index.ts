@@ -46,6 +46,7 @@ import { GALAXY_S25_VS_GALAXY_S25_FE } from "./galaxy-s25-vs-galaxy-s25-fe";
 import { GALAXY_S25_VS_GALAXY_S25_PLUS } from "./galaxy-s25-vs-galaxy-s25-plus";
 import { MAC_MINI_M6_VS_WINDOWS_PC } from "./mac-mini-m6-vs-windows-pc";
 import { MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5 } from "./macbook-air-m5-vs-macbook-pro-m5";
+import { MACBOOK_NEO_VS_IPAD_A16 } from "./macbook-neo-vs-ipad-a16";
 import { CASHIERS_CHECK_VS_MONEY_ORDER } from "./cashiers-check-vs-money-order";
 import { CASHIERS_CHECK_VS_CERTIFIED_CHECK } from "./cashiers-check-vs-certified-check";
 import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
@@ -154,6 +155,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [GALAXY_S25_VS_GALAXY_S25_ULTRA.slug]: GALAXY_S25_VS_GALAXY_S25_ULTRA,
   [RX_9060_XT_VS_RTX_5060_TI.slug]: RX_9060_XT_VS_RTX_5060_TI,
   [MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5.slug]: MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5,
+  [MACBOOK_NEO_VS_IPAD_A16.slug]: MACBOOK_NEO_VS_IPAD_A16,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
   [OLED_VS_MINI_LED_GAMING_MONITOR.slug]: OLED_VS_MINI_LED_GAMING_MONITOR,
   [RYZEN_7_9700X_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_9700X_VS_RYZEN_7_9800X3D,
