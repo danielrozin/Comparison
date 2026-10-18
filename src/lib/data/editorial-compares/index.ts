@@ -16,6 +16,7 @@ import { IPHONE_17_VS_IPHONE_AIR } from "./iphone-17-vs-iphone-air";
 import { CHROME_VS_SAFARI } from "./chrome-vs-safari";
 import { IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA } from "./iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
 import { ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA } from "./oneplus-15-vs-samsung-galaxy-s26-ultra-vs-samsung-galaxy-s25-ultra";
+import { ONEPLUS_13_VS_ONEPLUS_13R } from "./oneplus-13-vs-oneplus-13r";
 import { ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000 } from "./anker-solix-solarbank-4-pro-vs-ecoflow-stream-5000";
 import { IPHONE_17_PRO_VS_IPHONE_18_PRO } from "./iphone-17-pro-vs-iphone-18-pro";
 import { IPHONE_17_VS_IPHONE_17E } from "./iphone-17-vs-iphone-17e";
@@ -47,10 +48,13 @@ import { GALAXY_S25_VS_GALAXY_S25_FE } from "./galaxy-s25-vs-galaxy-s25-fe";
 import { GALAXY_S25_VS_GALAXY_S25_PLUS } from "./galaxy-s25-vs-galaxy-s25-plus";
 import { MAC_MINI_M6_VS_WINDOWS_PC } from "./mac-mini-m6-vs-windows-pc";
 import { MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5 } from "./macbook-air-m5-vs-macbook-pro-m5";
+import { MACBOOK_NEO_VS_IPAD_A16 } from "./macbook-neo-vs-ipad-a16";
 import { CASHIERS_CHECK_VS_MONEY_ORDER } from "./cashiers-check-vs-money-order";
 import { CASHIERS_CHECK_VS_CERTIFIED_CHECK } from "./cashiers-check-vs-certified-check";
 import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
+import { RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI } from "./rtx-5070-vs-rx-9070-xt-vs-rtx-5070-ti";
 import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
+import { RTX_4070_LAPTOP_VS_RTX_5060_LAPTOP } from "./rtx-4070-laptop-vs-rtx-5060-laptop";
 import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import { GALAXY_S25_VS_GALAXY_S25_ULTRA } from "./galaxy-s25-vs-galaxy-s25-ultra";
@@ -64,6 +68,7 @@ import { OPEN_SOURCE_VS_PROPRIETARY_SOFTWARE } from "./open-source-vs-proprietar
 import { DOCTOR_VS_LAWYER } from "./doctor-vs-lawyer";
 import { PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL } from "./private-school-vs-public-school";
 import { MEXICO_VS_UNITED_STATES } from "./mexico-vs-united-states";
+import { CANADA_VS_UNITED_STATES } from "./canada-vs-united-states";
 import { SERENA_VS_VENUS_WILLIAMS } from "./serena-vs-venus-williams";
 import { ENLISTED_VS_MILITARY_OFFICER } from "./enlisted-vs-military-officer";
 import { EDGE_VS_SAFARI } from "./edge-vs-safari";
@@ -119,6 +124,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CHROME_VS_SAFARI.slug]: CHROME_VS_SAFARI,
   [IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA.slug]: IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA,
   [ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA.slug]: ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA,
+  [ONEPLUS_13_VS_ONEPLUS_13R.slug]: ONEPLUS_13_VS_ONEPLUS_13R,
   [ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000.slug]: ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000,
   [IPHONE_17_PRO_VS_IPHONE_18_PRO.slug]: IPHONE_17_PRO_VS_IPHONE_18_PRO,
   [IPHONE_17_VS_IPHONE_17E.slug]: IPHONE_17_VS_IPHONE_17E,
@@ -152,10 +158,13 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CASHIERS_CHECK_VS_MONEY_ORDER.slug]: CASHIERS_CHECK_VS_MONEY_ORDER,
   [CASHIERS_CHECK_VS_CERTIFIED_CHECK.slug]: CASHIERS_CHECK_VS_CERTIFIED_CHECK,
   [RX_9070_XT_VS_RTX_5080.slug]: RX_9070_XT_VS_RTX_5080,
+  [RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI.slug]: RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI,
   [GALAXY_S26_VS_GALAXY_S26_ULTRA.slug]: GALAXY_S26_VS_GALAXY_S26_ULTRA,
   [GALAXY_S25_VS_GALAXY_S25_ULTRA.slug]: GALAXY_S25_VS_GALAXY_S25_ULTRA,
   [RX_9060_XT_VS_RTX_5060_TI.slug]: RX_9060_XT_VS_RTX_5060_TI,
+  [RTX_4070_LAPTOP_VS_RTX_5060_LAPTOP.slug]: RTX_4070_LAPTOP_VS_RTX_5060_LAPTOP,
   [MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5.slug]: MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5,
+  [MACBOOK_NEO_VS_IPAD_A16.slug]: MACBOOK_NEO_VS_IPAD_A16,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
   [OLED_VS_MINI_LED_GAMING_MONITOR.slug]: OLED_VS_MINI_LED_GAMING_MONITOR,
   [RYZEN_7_9700X_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_9700X_VS_RYZEN_7_9800X3D,
@@ -167,6 +176,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [DOCTOR_VS_LAWYER.slug]: DOCTOR_VS_LAWYER,
   [PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL.slug]: PRIVATE_SCHOOL_VS_PUBLIC_SCHOOL,
   [MEXICO_VS_UNITED_STATES.slug]: MEXICO_VS_UNITED_STATES,
+  [CANADA_VS_UNITED_STATES.slug]: CANADA_VS_UNITED_STATES,
   [SERENA_VS_VENUS_WILLIAMS.slug]: SERENA_VS_VENUS_WILLIAMS,
   [ENLISTED_VS_MILITARY_OFFICER.slug]: ENLISTED_VS_MILITARY_OFFICER,
   [EDGE_VS_SAFARI.slug]: EDGE_VS_SAFARI,
