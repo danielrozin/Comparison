@@ -62,9 +62,16 @@ describe("RTX 5070 vs RX 9070 XT vs RTX 5070 Ti", () => {
     expect(text).toContain("16 GB");
     expect(text).toContain("GDDR6");
     expect(text).toContain("GDDR7");
-    expect(text).toContain("$549");
-    expect(text).toContain("$599");
-    expect(text).toContain("$749");
+    expect(text).toContain("$549 launch price (MSRP), per NVIDIA Newsroom, January 2025");
+    expect(text).toContain("$599 launch suggested price (SEP), per AMD, February 2025");
+    expect(text).not.toContain("$599 launch price (MSRP)");
+    expect(text).toContain("$749 launch price (MSRP), per NVIDIA Newsroom, January 2025");
+    expect(text).not.toMatch(/launched (it )?at \$\d/);
+    const vendorLinks = (page().resources ?? []).filter((r) => r.label.startsWith("See vendor page for current price"));
+    expect(vendorLinks.map((r) => r.url)).toEqual([
+      "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/#shop-all",
+      "https://www.amd.com/en/where-to-buy/graphics/radeon.html",
+    ]);
     expect(text).toContain("750 W");
     expect(text).toContain("650 W");
     expect(text).toContain("304 W");

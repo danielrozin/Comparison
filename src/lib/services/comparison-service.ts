@@ -22,6 +22,7 @@ import {
   getMockLatest,
 } from "./mock-data";
 import { getLinkedComparisons, getRelatedBlogPosts } from "./internal-linking-engine";
+import { planAttributeWrites } from "@/lib/comparison/attribute-write-dedupe";
 import { findSelfContradictions, describeContradictions } from "./numeric-claim-guard";
 import {
   assessUserGenerationPromotion,
@@ -1250,12 +1251,24 @@ export async function saveComparison(
       });
     }
 
-    // Create Attributes and AttributeValues
-    for (const attr of data.attributes) {
-      // Find the entity type for this attribute (use first entity's type)
-      const firstEntityTypeSlug =
-        data.entities[0]?.entityType || "general";
-      const typeId = entityTypeMap.get(firstEntityTypeSlug)!;
+    // Create Attributes and AttributeValues.
+    // ROO-154: reuse the existing attribute for a metric (same canonical
+    // name, same entity type) instead of minting a new slug, so a re-run
+    // updates the stored value rather than adding a duplicate Key Facts row.
+    const firstEntityTypeSlug =
+      data.entities[0]?.entityType || "general";
+    const typeId = entityTypeMap.get(firstEntityTypeSlug)!;
+    const existingAttrs = await prisma.attribute.findMany({
+      where: { entityTypeId: typeId },
+      select: { slug: true, name: true, unit: true },
+      orderBy: { createdAt: "asc" },
+    });
+    const attributePlan = planAttributeWrites(
+      data.attributes,
+      existingAttrs,
+      data.entities.map((e) => e.name),
+    );
+    for (const attr of attributePlan.writes) {
 
       const dbAttr = await prisma.attribute.upsert({
         where: {
