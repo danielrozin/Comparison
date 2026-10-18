@@ -6,7 +6,9 @@ import type { EditorialComparison } from "./types";
  * Figures read on 18 October 2026 from NVIDIA's RTX 5070 family specs,
  * NVIDIA's January 2025 RTX 50 Series announcement (launch prices),
  * AMD's RX 9070 XT product specs, and AMD's February 28, 2025 RDNA 4
- * press release (launch price). No fps numbers, no percent-faster claims,
+ * press release (launch price, USD SEP). NVIDIA prices are dated launch MSRPs;
+ * AMD calls $599 the RX 9070 XT's SEP (suggested price), not an MSRP.
+ * NVIDIA's shop section and AMD's where-to-buy page are linked for current prices. No fps numbers, no percent-faster claims,
  * no benchmark aggregates, no street prices, no page-level winner.
  */
 
@@ -22,6 +24,9 @@ const AMD_XT =
 const AMD_PR =
   "https://www.amd.com/en/newsroom/press-releases/2025-2-28-amd-unveils-next-generation-amd-rdna-4-architectu.html";
 
+const NV_SHOP = "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/#shop-all";
+const AMD_BUY = "https://www.amd.com/en/where-to-buy/graphics/radeon.html";
+
 const AMD_FSR = "https://www.amd.com/en/products/graphics/technologies/fidelityfx/super-resolution.html";
 
 const SOURCE_DATE = "2026-10-18";
@@ -30,18 +35,18 @@ const PUBLISHED = "2026-10-18T00:00:00Z";
 const cell = (entityId: string, text: string, winner?: boolean) => ({ entityId, text, winner });
 
 const SHORT_ANSWER =
-  "Choose the Radeon RX 9070 XT for 16 GB of memory at the lowest launch price of the two 16 GB cards: AMD launched it at $599 with 16 GB of GDDR6, against $749 for the GeForce RTX 5070 Ti with 16 GB of GDDR7. Choose the RTX 5070 Ti if you want NVIDIA's DLSS 4 features and its two ninth-generation NVENC encoders for streaming, and the RTX 5070 at $549 only if 12 GB of GDDR7 is enough for your games. Neither is better for everyone; it depends on how much NVIDIA's features are worth over AMD's lower price.";
+  "Choose the Radeon RX 9070 XT for 16 GB of memory at the lowest launch price of the two 16 GB cards: $599 launch suggested price (SEP), per AMD, February 2025, with 16 GB of GDDR6, against $749 launch price (MSRP), per NVIDIA Newsroom, January 2025 for the GeForce RTX 5070 Ti with 16 GB of GDDR7. Choose the RTX 5070 Ti if you want NVIDIA's DLSS 4 features and its two ninth-generation NVENC encoders for streaming, and the RTX 5070 ($549 launch price (MSRP), per NVIDIA Newsroom, January 2025) only if 12 GB of GDDR7 is enough for your games. Neither is better for everyone; it depends on how much NVIDIA's features are worth over AMD's lower price.";
 
 const FAQS = [
   {
     question: "Should I buy the RTX 5070, RX 9070 XT or RTX 5070 Ti for 1440p?",
     answer:
-      "Start with memory and price. NVIDIA launched the RTX 5070 at $549 with 12 GB of GDDR7 and the RTX 5070 Ti at $749 with 16 GB of GDDR7. AMD launched the RX 9070 XT at $599 with 16 GB of GDDR6. The RX 9070 XT is the lower-priced 16 GB card. The RTX 5070 Ti adds DLSS 4 and two NVENC encoders for $150 more at launch prices. Street prices change, so compare current prices for the exact models.",
+      "Start with memory and price. RTX 5070: $549 launch price (MSRP), per NVIDIA Newsroom, January 2025, with 12 GB of GDDR7. RTX 5070 Ti: $749 launch price (MSRP), per NVIDIA Newsroom, January 2025, with 16 GB of GDDR7. RX 9070 XT: $599 launch suggested price (SEP), per AMD, February 2025, with 16 GB of GDDR6. The RX 9070 XT is the lower-priced 16 GB card. The RTX 5070 Ti adds DLSS 4 and two NVENC encoders for $150 more at launch prices. Street prices change, so compare current prices for the exact models.",
   },
   {
     question: "Is the RTX 5070 Ti worth it over the RX 9070 XT?",
     answer:
-      "It is if NVIDIA's feature set matters to you and the price gap in your market is small. NVIDIA lists DLSS 4 with Super Resolution, DLAA, Ray Reconstruction, Frame Generation and Multi Frame Generation, plus two ninth-generation NVENC encoders, on the RTX 5070 Ti. Both cards have 16 GB of memory on a 256-bit interface. At launch prices, the RTX 5070 Ti cost $749 and the RX 9070 XT $599.",
+      "It is if NVIDIA's feature set matters to you and the price gap in your market is small. NVIDIA lists DLSS 4 with Super Resolution, DLAA, Ray Reconstruction, Frame Generation and Multi Frame Generation, plus two ninth-generation NVENC encoders, on the RTX 5070 Ti. Both cards have 16 GB of memory on a 256-bit interface. RTX 5070 Ti: $749 launch price (MSRP), per NVIDIA Newsroom, January 2025. RX 9070 XT: $599 launch suggested price (SEP), per AMD, February 2025.",
   },
   {
     question: "How much VRAM do the RTX 5070, RX 9070 XT and RTX 5070 Ti have?",
@@ -61,19 +66,19 @@ const FAQS = [
   {
     question: "What were the launch prices of the RTX 5070, RTX 5070 Ti and RX 9070 XT?",
     answer:
-      "NVIDIA announced the RTX 5070 Ti at $749 and the RTX 5070 at $549 in January 2025. AMD's February 28, 2025 press release lists the RX 9070 XT at a $599 suggested price. Those are launch prices, not today's store prices.",
+      "RTX 5070: $549 launch price (MSRP), per NVIDIA Newsroom, January 2025. RTX 5070 Ti: $749 launch price (MSRP), per NVIDIA Newsroom, January 2025. RX 9070 XT: $599 launch suggested price (SEP), per AMD, February 2025. Those are launch prices, not today's store prices.",
   },
 ];
 
-const VERDICT = `Lower-priced 16 GB card: RX 9070 XT. AMD launched it at $599 with 16 GB of GDDR6, 64 compute units and 304 W typical board power.
+const VERDICT = `Lower-priced 16 GB card: RX 9070 XT. $599 launch suggested price (SEP), per AMD, February 2025, with 16 GB of GDDR6, 64 compute units and 304 W typical board power.
 
-NVIDIA features with 16 GB: RTX 5070 Ti. NVIDIA launched it at $749 with 16 GB of GDDR7, 8,960 CUDA cores, DLSS 4 and two ninth-generation NVENC encoders.
+NVIDIA features with 16 GB: RTX 5070 Ti. $749 launch price (MSRP), per NVIDIA Newsroom, January 2025, with 16 GB of GDDR7, 8,960 CUDA cores, DLSS 4 and two ninth-generation NVENC encoders.
 
-Lowest launch price: RTX 5070. $549 with 12 GB of GDDR7 and DLSS 4.
+Lowest launch price: RTX 5070. $549 launch price (MSRP), per NVIDIA Newsroom, January 2025, with 12 GB of GDDR7 and DLSS 4.
 
 Neither is better for everyone; it depends on how much NVIDIA's features are worth over AMD's lower price.`;
 
-const EXPERT_ANALYSIS = `Choose the Radeon RX 9070 XT for 16 GB of memory at the lowest launch price of the two 16 GB cards: AMD launched it at $599 with 16 GB of GDDR6, against $749 for the GeForce RTX 5070 Ti with 16 GB of GDDR7. Choose the RTX 5070 Ti if you want NVIDIA's DLSS 4 features and its two ninth-generation NVENC encoders for streaming, and the RTX 5070 at $549 only if 12 GB of GDDR7 is enough for your games. Neither is better for everyone; it depends on how much NVIDIA's features are worth over AMD's lower price.
+const EXPERT_ANALYSIS = `Choose the Radeon RX 9070 XT for 16 GB of memory at the lowest launch price of the two 16 GB cards: $599 launch suggested price (SEP), per AMD, February 2025, with 16 GB of GDDR6, against $749 launch price (MSRP), per NVIDIA Newsroom, January 2025 for the GeForce RTX 5070 Ti with 16 GB of GDDR7. Choose the RTX 5070 Ti if you want NVIDIA's DLSS 4 features and its two ninth-generation NVENC encoders for streaming, and the RTX 5070 ($549 launch price (MSRP), per NVIDIA Newsroom, January 2025) only if 12 GB of GDDR7 is enough for your games. Neither is better for everyone; it depends on how much NVIDIA's features are worth over AMD's lower price.
 
 Memory
 
@@ -97,7 +102,7 @@ AMD rates the RX 9070 XT at 304 W typical board power and recommends a 750 W min
 
 Price
 
-NVIDIA announced the RTX 5070 Ti at $749 and the RTX 5070 at $549. AMD launched the RX 9070 XT at a $599 suggested price. At those launch prices, the RTX 5070 Ti costs $150 more than the RX 9070 XT, and the RX 9070 XT costs $50 more than the RTX 5070. Street prices move, so compare the exact models you can buy today.
+RTX 5070 Ti: $749 launch price (MSRP), per NVIDIA Newsroom, January 2025. RTX 5070: $549 launch price (MSRP), per NVIDIA Newsroom, January 2025. RX 9070 XT: $599 launch suggested price (SEP), per AMD, February 2025. At those launch prices, the RTX 5070 Ti costs $150 more than the RX 9070 XT, and the RX 9070 XT costs $50 more than the RTX 5070. Street prices move, so compare the exact models you can buy today.
 
 Who should buy which
 
@@ -118,12 +123,12 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
       id: R5070,
       slug: R5070,
       name: "RTX 5070",
-      shortDesc: "12 GB GDDR7 card NVIDIA launched at $549, with DLSS 4.",
+      shortDesc: "12 GB GDDR7 card with DLSS 4; $549 launch price (MSRP), per NVIDIA Newsroom, January 2025.",
       imageUrl: null,
       entityType: "product",
       position: 0,
       pros: [
-        "Lowest launch price of the three: $549 (NVIDIA)",
+        "Lowest launch price of the three: $549 launch price (MSRP), per NVIDIA Newsroom, January 2025",
         "DLSS 4 with Multi Frame Generation (NVIDIA)",
         "250 W total graphics power, 650 W required system power (NVIDIA)",
       ],
@@ -137,13 +142,13 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
       id: XT,
       slug: XT,
       name: "RX 9070 XT",
-      shortDesc: "16 GB GDDR6 card AMD launched at a $599 suggested price, with 64 compute units.",
+      shortDesc: "16 GB GDDR6 card with 64 compute units; $599 launch suggested price (SEP), per AMD, February 2025.",
       imageUrl: null,
       entityType: "product",
       position: 1,
       pros: [
         "16 GB GDDR6, 256-bit, 64 MB Infinity Cache (AMD)",
-        "$599 suggested launch price, $150 under the RTX 5070 Ti (AMD, NVIDIA)",
+        "$599 launch suggested price (SEP), per AMD, February 2025, $150 under the RTX 5070 Ti at launch prices",
         "H.264, HEVC and AV1 encode (AMD)",
       ],
       cons: [
@@ -156,7 +161,7 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
       id: TI,
       slug: TI,
       name: "RTX 5070 Ti",
-      shortDesc: "16 GB GDDR7 card NVIDIA launched at $749, with DLSS 4 and two NVENC encoders.",
+      shortDesc: "16 GB GDDR7 card with DLSS 4 and two NVENC encoders; $749 launch price (MSRP), per NVIDIA Newsroom, January 2025.",
       imageUrl: null,
       entityType: "product",
       position: 2,
@@ -166,7 +171,7 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
         "Two ninth-generation NVENC encoders (NVIDIA)",
       ],
       cons: [
-        "Highest launch price of the three: $749 (NVIDIA)",
+        "Highest launch price of the three: $749 launch price (MSRP), per NVIDIA Newsroom, January 2025",
         "300 W total graphics power, 750 W required system power (NVIDIA)",
       ],
       bestFor: "Best if DLSS 4 and NVENC are worth the higher price",
@@ -181,10 +186,10 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
       winnerIndex: "tie",
     },
     {
-      label: "Launch price",
-      entityAValue: "$549",
-      entityBValue: "$599",
-      values: ["$549", "$599", "$749"],
+      label: "Launch price (NVIDIA MSRP / AMD SEP)",
+      entityAValue: "$549 launch price (MSRP), per NVIDIA Newsroom, January 2025",
+      entityBValue: "$599 launch suggested price (SEP), per AMD, February 2025",
+      values: ["$549 launch price (MSRP), per NVIDIA Newsroom, January 2025", "$599 launch suggested price (SEP), per AMD, February 2025", "$749 launch price (MSRP), per NVIDIA Newsroom, January 2025"],
       winnerIndex: "tie",
     },
     {
@@ -228,10 +233,10 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
       cell(XT, "304 W typical board power. 750 W minimum power supply. 2x 8-pin"),
       cell(TI, "300 W total graphics power. 750 W required system power"),
     ]),
-    textAttrN("price", "Launch price", SPEC, [
-      cell(R5070, "$549 (NVIDIA, January 2025)"),
-      cell(XT, "$599 suggested (AMD, February 28, 2025)"),
-      cell(TI, "$749 (NVIDIA, January 2025)"),
+    textAttrN("price", "Launch price (NVIDIA MSRP / AMD SEP)", SPEC, [
+      cell(R5070, "$549 launch price (MSRP), per NVIDIA Newsroom, January 2025"),
+      cell(XT, "$599 launch suggested price (SEP), per AMD, February 2025"),
+      cell(TI, "$749 launch price (MSRP), per NVIDIA Newsroom, January 2025"),
     ]),
   ],
   faqs: FAQS,
@@ -257,12 +262,12 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
     tldr: SHORT_ANSWER,
     winnerName: null,
     winnerReason:
-      "RX 9070 XT for 16 GB at a $599 launch price. RTX 5070 Ti for DLSS 4 and two NVENC encoders at $749. RTX 5070 at $549 when 12 GB is enough.",
+      "RX 9070 XT for 16 GB ($599 launch suggested price (SEP), per AMD, February 2025). RTX 5070 Ti for DLSS 4 and two NVENC encoders ($749 launch price (MSRP), per NVIDIA Newsroom, January 2025). RTX 5070 when 12 GB is enough ($549 launch price (MSRP), per NVIDIA Newsroom, January 2025).",
     keyFact:
-      "Launch prices: RTX 5070 $549 with 12 GB GDDR7, RX 9070 XT $599 with 16 GB GDDR6, RTX 5070 Ti $749 with 16 GB GDDR7.",
+      "RTX 5070 with 12 GB GDDR7: $549 launch price (MSRP), per NVIDIA Newsroom, January 2025. RX 9070 XT with 16 GB GDDR6: $599 launch suggested price (SEP), per AMD, February 2025. RTX 5070 Ti with 16 GB GDDR7: $749 launch price (MSRP), per NVIDIA Newsroom, January 2025.",
   },
   citationStats: {
-    sourceCount: 5,
+    sourceCount: 7,
     dataPointCount: 24,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -274,6 +279,8 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
       { name: "AMD Radeon RX 9070 XT", url: AMD_XT },
       { name: "AMD RDNA 4 press release", url: AMD_PR },
       { name: "AMD FSR technologies", url: AMD_FSR },
+      { name: "NVIDIA GeForce RTX 5070 family: shop", url: NV_SHOP },
+      { name: "AMD: where to buy Radeon graphics cards", url: AMD_BUY },
     ],
   },
   resources: [
@@ -301,7 +308,7 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
       type: "external",
       label: "AMD RDNA 4 press release",
       url: AMD_PR,
-      description: "February 28, 2025. RX 9070 XT suggested price $599.",
+      description: "February 28, 2025. RX 9070 XT launched at a $599 USD SEP (suggested price).",
     },
     {
       type: "external",
@@ -309,6 +316,18 @@ export const RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI: EditorialComparison = buildE
       url: AMD_FSR,
       description:
         "FSR Upscaling, formerly FidelityFX Super Resolution 4, is available on Radeon RX 7000 Series and RX 9000 Series graphics cards.",
+    },
+    {
+      type: "external",
+      label: "See vendor page for current price: RTX 5070 and RTX 5070 Ti (NVIDIA)",
+      url: NV_SHOP,
+      description: "NVIDIA shop section for GeForce RTX 5070 and RTX 5070 Ti cards and current US prices.",
+    },
+    {
+      type: "external",
+      label: "See vendor page for current price: RX 9070 XT (AMD)",
+      url: AMD_BUY,
+      description: "AMD where-to-buy listings for Radeon RX 9000 Series cards, including the RX 9070 XT.",
     },
   ],
   metaTitle: "RTX 5070 vs RX 9070 XT vs RTX 5070 Ti | A Versus B",
