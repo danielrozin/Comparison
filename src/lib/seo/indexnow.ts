@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/utils/constants";
+import { claimIndexNowUrls, resetIndexNowLedgerForTests, type ClaimDeps, type IndexNowSubmitKind } from "@/lib/seo/indexnow-ledger";
 
 /**
  * IndexNow integration — instantly notify participating search engines
@@ -15,7 +16,11 @@ import { SITE_URL } from "@/lib/utils/constants";
  *    path. It is synchronous, never throws, and never blocks the caller. URLs
  *    are queued, de-duplicated, checked (200, canonical, not noindex) and sent
  *    in one batch after the response (Next.js `after()`), with a timeout.
- *  - `submitToIndexNow(urls)`: the raw POST, used by the bulk/cron routes.
+ *  - `submitIndexNowGuarded(urls, kind, source)`: what the bulk/cron routes
+ *    call. Goes through the shared ledger (indexnow-ledger.ts): URLs any path
+ *    sent recently are skipped and a daily cap applies.
+ *  - `submitToIndexNow(urls)`: the raw POST. Do not call it directly from a
+ *    route or cron; use one of the two above.
  *
  * Docs: https://www.indexnow.org/documentation
  */
@@ -148,6 +153,46 @@ export async function submitToIndexNow(
   }
 }
 
+/**
+ * Submit through the shared ledger: drops URLs sent recently by any path
+ * (24h for publish, 7 days for sweeps) and anything over today's cap, then
+ * POSTs the rest and records them. Never throws.
+ */
+export async function submitIndexNowGuarded(
+  urls: string[],
+  kind: IndexNowSubmitKind,
+  source: string,
+  deps: { fetchImpl?: typeof fetch; timeoutMs?: number; enabled?: boolean; ledger?: ClaimDeps } = {}
+): Promise<{
+  submitted: number;
+  ok: boolean;
+  status?: number;
+  skipped?: string;
+  candidates: number;
+  deduped: number;
+  capped: number;
+}> {
+  const enabled = deps.enabled ?? isIndexNowEnabled();
+  const candidates = [...new Set(urls.map((u) => normalizeIndexNowUrl(u)).filter((u): u is string => !!u))];
+  if (!enabled) {
+    return { submitted: 0, ok: false, skipped: "disabled-or-non-prod", candidates: candidates.length, deduped: 0, capped: 0 };
+  }
+  const claim = await claimIndexNowUrls(candidates, kind, deps.ledger);
+  const deduped = claim.dropped.filter((d) => d.reason === "recently-submitted").length;
+  const capped = claim.dropped.length - deduped;
+  if (claim.allowed.length === 0) {
+    console.info(`${LOG_PREFIX} source=${source} candidates=${candidates.length} submitted=0 deduped=${deduped} capped=${capped}`);
+    return { submitted: 0, ok: false, skipped: capped > 0 ? "daily-cap" : "no-new-urls", candidates: candidates.length, deduped, capped };
+  }
+  const result = await submitToIndexNow(claim.allowed, { fetchImpl: deps.fetchImpl, timeoutMs: deps.timeoutMs, enabled: true });
+  await claim.settle(result.ok);
+  console.info(
+    `${LOG_PREFIX} source=${source} candidates=${candidates.length} submitted=${result.submitted} ` +
+      `status=${result.status ?? "none"} deduped=${deduped} capped=${capped}`
+  );
+  return { ...result, candidates: candidates.length, deduped, capped };
+}
+
 // ---------------------------------------------------------------------------
 // Pre-submit check: only canonical, indexable, HTTP 200 pages go out.
 // ---------------------------------------------------------------------------
@@ -258,6 +303,7 @@ export interface IndexNowFlushDeps {
   now?: () => number;
   verifyTimeoutMs?: number;
   submitTimeoutMs?: number;
+  ledger?: ClaimDeps;
 }
 
 export interface IndexNowFlushResult {
@@ -365,17 +411,30 @@ export async function flushIndexNowQueue(deps: IndexNowFlushDeps = {}): Promise<
     return { queued: batch.length, submitted: 0, ok: false, skipped: "no-indexable-urls", dropped };
   }
 
-  const result = await submitToIndexNow(checked.indexable, {
+  // Shared ledger: skip URLs a cron or another instance sent recently, and
+  // respect the daily cap.
+  const claim = await claimIndexNowUrls(checked.indexable, "publish", { now, ...deps.ledger });
+  dropped.push(...claim.dropped);
+  if (claim.allowed.length === 0) {
+    console.info(
+      `${LOG_PREFIX} nothing to submit source=${sources} queued=${batch.length} dropped=${formatDropped(dropped)}`
+    );
+    const capped = claim.dropped.some((d) => d.reason === "daily-cap");
+    return { queued: batch.length, submitted: 0, ok: false, skipped: capped ? "daily-cap" : "no-new-urls", dropped };
+  }
+
+  const result = await submitToIndexNow(claim.allowed, {
     fetchImpl: deps.fetchImpl,
     timeoutMs: deps.submitTimeoutMs,
     enabled: true,
   });
+  await claim.settle(result.ok);
   if (result.ok) {
-    for (const url of checked.indexable) recentlySubmitted.set(url, now());
+    for (const url of claim.allowed) recentlySubmitted.set(url, now());
   }
   const line =
     `${LOG_PREFIX} source=${sources} queued=${batch.length} submitted=${result.submitted} ` +
-    `status=${result.status ?? "none"} urls=${checked.indexable.join(" ")}` +
+    `status=${result.status ?? "none"} urls=${claim.allowed.join(" ")}` +
     (dropped.length ? ` dropped=${formatDropped(dropped)}` : "");
   if (result.ok) console.info(line);
   else console.warn(line);
@@ -410,6 +469,7 @@ export function resetIndexNowQueueForTests(): void {
   pending.clear();
   recentlySubmitted.clear();
   flushScheduled = false;
+  resetIndexNowLedgerForTests();
 }
 
 /** Test/diagnostic helper: URLs currently waiting for the next flush. */
