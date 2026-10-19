@@ -18,6 +18,7 @@ import { NAVIGATION_APPS_FAQS } from "@/lib/data/navigation-apps-blog";
 import { BEST_ACCOUNTING_FREELANCERS_FAQS } from "@/lib/data/best-accounting-freelancers-blog";
 import { STREAMING_SERVICES_FAQS } from "@/lib/data/streaming-services-blog";
 import { BEST_PRODUCTIVITY_APPS_FAQS } from "@/lib/data/best-productivity-apps-blog";
+import { MARVEL_MOVIES_RANKED_FAQS } from "@/lib/data/marvel-movies-ranked-blog";
 
 export interface BlogFaq {
   question: string;
@@ -54,6 +55,7 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   "best-accounting-software-freelancers-2026": { faqs: BEST_ACCOUNTING_FREELANCERS_FAQS },
   "best-streaming-service-2026-hulu-vs-amazon-prime-vs-netflix": { faqs: STREAMING_SERVICES_FAQS },
   "best-productivity-apps-2026": { faqs: BEST_PRODUCTIVITY_APPS_FAQS },
+  "best-marvel-movies-ranked-2026-mcu-definitive-list": { faqs: MARVEL_MOVIES_RANKED_FAQS },
   "best-cloud-platforms-2026": {
     faqs: BEST_CLOUD_PLATFORMS_FAQS,
     itemList: {

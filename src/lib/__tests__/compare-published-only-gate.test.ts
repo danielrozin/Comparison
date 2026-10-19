@@ -136,18 +136,22 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
     })
   })
 
-  it('301s a mapped ordering even when the DB row is missing, and 404s an unmapped reordering', async () => {
-    // notion-vs-clickup is an explicit edge consolidation, not an unknown slug:
+  it('301s a mapped ordering when its survivor is live, and 404s an unmapped reordering', async () => {
+    // notion-vs-clickup is an explicit consolidation, not an unknown slug:
     // DAN-1265's ordering map and DAN-2518's batch-archive map both fold it
-    // into clickup-vs-notion. getStaticProps applies getConsolidatedCompareSlug
-    // before the published-row gate (the same map next.config redirects()
-    // emits), so a missing DB row still 301s. That redirect is intentional —
-    // the edge map survives even if the archived source row is later deleted.
-    getComparisonBySlug.mockResolvedValue(null)
+    // into clickup-vs-notion. The source row itself may be missing — the 301
+    // depends only on the survivor being live and indexable (ROO-271).
+    getComparisonBySlug.mockImplementation(async (slug: string) =>
+      slug === 'clickup-vs-notion' ? comparison(slug, 'published') : null
+    )
 
     expect(await run('notion-vs-clickup')).toMatchObject({
       redirect: { destination: '/compare/clickup-vs-notion', statusCode: 301 },
     })
+
+    // ROO-271: survivor gone → no 301 into a 404.
+    getComparisonBySlug.mockResolvedValue(null)
+    expect(await run('notion-vs-clickup')).not.toHaveProperty('redirect')
 
     // stapler-vs-banana is not in the edge map, and banana-vs-stapler is not
     // live. Stay on the requested URL. A 301 to the sorted slug would 404.
@@ -187,7 +191,10 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
   })
 
   it('keeps reversed-slug 301s that land on a live page', async () => {
-    // Edge map. The target does not have to be in this lookup.
+    // Consolidation map: 301s because the survivor is live (ROO-271).
+    getComparisonBySlug.mockImplementation(async (slug: string) =>
+      slug === 'kobe-bryant-vs-lebron-james' ? comparison(slug, 'published') : null
+    )
     expect(await run('kobe-vs-lebron')).toMatchObject({
       redirect: { destination: '/compare/kobe-bryant-vs-lebron-james', statusCode: 301 },
     })
@@ -287,11 +294,23 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
 
   it('sends a missing canonical URL to the live reverse ordering', async () => {
     getComparisonBySlug.mockImplementation(async (slug: string) =>
-      slug === 'stapler-vs-banana' ? comparison(slug, 'provisional') : null
+      slug === 'stapler-vs-banana' ? comparison(slug, 'published') : null
     )
     expect(await run('banana-vs-stapler')).toMatchObject({
       redirect: { destination: '/compare/stapler-vs-banana', statusCode: 301 },
     })
+    expect(generateComparison).not.toHaveBeenCalled()
+  })
+
+  it('does not 301 a missing slug to a noindex provisional reverse (ROO-271)', async () => {
+    getComparisonBySlug.mockImplementation(async (slug: string) =>
+      slug === 'stapler-vs-banana' ? comparison(slug, 'provisional') : null
+    )
+    const result = await run('banana-vs-stapler')
+    expect(result).not.toHaveProperty('redirect')
+    expect(result).toMatchObject({ notFound: true })
+    // The provisional page itself still renders at its own URL.
+    expect(await run('stapler-vs-banana')).toHaveProperty('props')
     expect(generateComparison).not.toHaveBeenCalled()
   })
 
