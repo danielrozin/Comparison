@@ -11,6 +11,7 @@ import { IMAX_DOLBY_FAQS } from "@/lib/data/imax-dolby-blog";
 import { TEMU_SHEIN_AMAZON_FAQS } from "@/lib/data/temu-shein-amazon-blog";
 import { BEST_CLOUD_PLATFORMS_FAQS } from "@/lib/data/best-cloud-platforms-blog";
 import { SHOPIFY_WOO_SQUARESPACE_FAQS } from "@/lib/data/shopify-woocommerce-squarespace-blog";
+import { NAVIGATION_APPS_FAQS } from "@/lib/data/navigation-apps-blog";
 import { BEST_ACCOUNTING_FREELANCERS_FAQS } from "@/lib/data/best-accounting-freelancers-blog";
 import { BEST_PRODUCTIVITY_APPS_FAQS } from "@/lib/data/best-productivity-apps-blog";
 
@@ -42,6 +43,7 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   "temu-vs-shein-vs-amazon-where-to-shop-for-cheap-fashion-in-2026": { faqs: TEMU_SHEIN_AMAZON_FAQS },
   // ROO-235: FAQs mirror the visible FAQ section of the repo article; no personal byline.
   "shopify-vs-woocommerce-vs-squarespace-2026": { faqs: SHOPIFY_WOO_SQUARESPACE_FAQS },
+  "best-navigation-apps-2026-google-maps-waze-and-apple-maps-compared": { faqs: NAVIGATION_APPS_FAQS },
   "best-accounting-software-freelancers-2026": { faqs: BEST_ACCOUNTING_FREELANCERS_FAQS },
   "best-productivity-apps-2026": { faqs: BEST_PRODUCTIVITY_APPS_FAQS },
   "best-cloud-platforms-2026": {
