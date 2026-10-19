@@ -10,6 +10,8 @@ export type HubLineupBlock = {
   intro: string;
   updated: string;
   links: { slug: string; label: string; note: string }[];
+  /** Optional links to repo blog articles (static, always-live routes). */
+  articles?: { href: `/blog/${string}`; label: string; note: string }[];
   sources: { label: string; url: string }[];
 };
 
@@ -143,6 +145,18 @@ export const HUB_CONFIG: Record<string, HubEntry> = {
             slug: "iphone-17-pro-vs-pro-max",
             label: "iPhone 17 Pro vs iPhone 17 Pro Max",
             note: "Last year's two Pro sizes side by side.",
+          },
+          {
+            slug: "iphone-18-pro-vs-iphone-18-pro-max",
+            label: "iPhone 18 Pro vs iPhone 18 Pro Max",
+            note: "This year's two Pro sizes side by side.",
+          },
+        ],
+        articles: [
+          {
+            href: "/blog/iphone-duo-features",
+            label: "iPhone Duo features",
+            note: "Apple's first foldable iPhone, from Apple's specs.",
           },
         ],
         sources: [

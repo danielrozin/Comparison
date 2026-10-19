@@ -219,7 +219,7 @@ export default async function HubPage({ params }: PageProps) {
 
         {/* ROO-275: lineup blocks (links only; no FAQs, no schema) */}
         {lineupBlocks
-          .filter((block) => block.links.length > 0)
+          .filter((block) => block.links.length + (block.articles?.length ?? 0) > 0)
           .map((block) => (
             <section key={block.id} id={block.id} aria-labelledby={`${block.id}-heading`} className="mb-12">
               <h2 id={`${block.id}-heading`} className="text-xl font-display font-bold text-text mb-3">
@@ -238,6 +238,17 @@ export default async function HubPage({ params }: PageProps) {
                     >
                       <span className="block font-semibold text-text leading-snug">{link.label}</span>
                       <span className="block text-xs text-text-secondary mt-1">{link.note}</span>
+                    </Link>
+                  </li>
+                ))}
+                {(block.articles ?? []).map((article) => (
+                  <li key={article.href} className="flex">
+                    <Link
+                      href={article.href}
+                      className="block w-full p-4 rounded-xl border border-border hover:border-primary-300 hover:shadow-md transition-all bg-white"
+                    >
+                      <span className="block font-semibold text-text leading-snug">{article.label}</span>
+                      <span className="block text-xs text-text-secondary mt-1">{article.note}</span>
                     </Link>
                   </li>
                 ))}
