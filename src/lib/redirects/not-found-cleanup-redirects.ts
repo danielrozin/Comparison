@@ -10,6 +10,13 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
   "chinese-vs-american-economy": "us-economy-vs-china-economy",
   "us-vs-china-tech-companies": "china-vs-us-gdp-military-tech-comparison-2026",
   "us-tech-industry-vs-china-tech-industry": "china-vs-us-gdp-military-tech-comparison-2026",
+  // Bing 404 build list (2026-10-19): Apple TV vs Disney+ variants. The
+  // target is the editorial pack added in the same PR
+  // (editorial-compares/apple-tv-plus-vs-disney-plus.ts), so it is live once merged.
+  "apple-tv-vs-disney": "apple-tv-plus-vs-disney-plus",
+  "disney-vs-apple-tv": "apple-tv-plus-vs-disney-plus",
+  "apple-tv-vs-disney-plus": "apple-tv-plus-vs-disney-plus",
+  "disney-plus-vs-apple-tv": "apple-tv-plus-vs-disney-plus",
   "japan-vs-china-technology-comparison-2026": "japan-vs-china",
   "iphone-vs-samsung": "iphone-vs-samsung-galaxy",
   "macbook-air-vs-macbook-pro-difference-2026-specs":
