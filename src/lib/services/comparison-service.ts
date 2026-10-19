@@ -406,8 +406,49 @@ function finalizeComparisonPage(data: ComparisonPageData): ComparisonPageData {
   );
 }
 
+// ROO-263: lives in its own module so test doubles of this service still get
+// the real class.
+export { ComparisonLookupError, isComparisonLookupError } from "./comparison-lookup-error";
+import { ComparisonLookupError } from "./comparison-lookup-error";
+
+// Retry transient lookup failures (pool timeouts, dropped connections) with
+// a short jittered backoff before giving up. Total extra wait stays < ~1s so a
+// page request is not held for long.
+const LOOKUP_RETRY_DELAYS_MS = [120, 400];
+
+async function withLookupRetry<T>(fn: () => Promise<T>): Promise<T> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt <= LOOKUP_RETRY_DELAYS_MS.length; attempt++) {
+    try {
+      return await fn();
+    } catch (e) {
+      lastError = e;
+      const delay = LOOKUP_RETRY_DELAYS_MS[attempt];
+      if (delay === undefined) break;
+      await new Promise((resolve) => setTimeout(resolve, delay + Math.floor(Math.random() * 80)));
+    }
+  }
+  throw lastError;
+}
+
+// Last good DB-backed render of each comparison, kept far longer than the
+// 5-minute hot cache. Read only when the live lookup fails, so a DB blip during
+// a crawl burst serves the real page instead of a 5xx (or, before ROO-263, a 404).
+const LAST_GOOD_TTL_SECONDS = 60 * 60 * 24 * 14;
+const lastGoodKey = (slug: string) => `comparison:last-good:${slug}`;
+
+export interface ComparisonLookupOptions {
+  /**
+   * ROO-263: throw `ComparisonLookupError` when the database lookup fails
+   * (after retries and the last-good fallback) instead of degrading to the
+   * mock fixtures / null. Callers that turn "null" into a 404 must set this.
+   */
+  throwOnError?: boolean;
+}
+
 export async function getComparisonBySlug(
-  slug: string
+  slug: string,
+  options: ComparisonLookupOptions = {}
 ): Promise<ComparisonPageData | null> {
   const editorial = getEditorialComparison(slug);
   // Editorial pages used to share `comparison:${slug}` with the DB transform.
@@ -418,12 +459,19 @@ export async function getComparisonBySlug(
   if (cached) return cached;
 
   const prisma = getPrismaClient();
+  // When the DB is configured but failed, nothing below may be cached: before
+  // ROO-263 the mock fallback of a failed lookup was written to the 5-minute
+  // cache, so one pool timeout pinned a status-less fixture (→ 404) on a live
+  // slug for every later request.
+  let dbFailed = false;
   if (prisma) {
     try {
-      const row = await prisma.comparison.findUnique({
-        where: { slug },
-        include: COMPARISON_INCLUDE,
-      });
+      const row = await withLookupRetry(() =>
+        prisma.comparison.findUnique({
+          where: { slug },
+          include: COMPARISON_INCLUDE,
+        })
+      );
       if (row) {
         // In-repo editorial pack wins over a published legacy row. The DB
         // status is only the linkability signal (see getUnlinkableCompareSlugs).
@@ -440,18 +488,29 @@ export async function getComparisonBySlug(
           await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
           return result;
         }
-        // Use the linking engine for smarter related suggestions
+        // Use the linking engine for smarter related suggestions. These are
+        // decoration: a failure here must not discard the row we already have
+        // (ROO-263 — it used to fall through to the mock/null path → 404).
         const entitySlugs = (row as PrismaComparisonRow).entities.map(
           (ce) => ce.entity.slug
         );
+        let decorationFailed = false;
         const [linked, blogPosts] = await Promise.all([
           getLinkedComparisons({
             comparisonId: row.id,
             slug: row.slug,
             category: row.category,
             entitySlugs,
+          }).catch((e) => {
+            decorationFailed = true;
+            console.warn("getLinkedComparisons failed for", slug, e);
+            return [] as Awaited<ReturnType<typeof getLinkedComparisons>>;
           }),
-          getRelatedBlogPosts(row.slug, row.category, 5),
+          getRelatedBlogPosts(row.slug, row.category, 5).catch((e) => {
+            decorationFailed = true;
+            console.warn("getRelatedBlogPosts failed for", slug, e);
+            return [] as Awaited<ReturnType<typeof getRelatedBlogPosts>>;
+          }),
         ]);
         const related: RelatedComparison[] = linked.map((l) => ({
           slug: l.slug,
@@ -461,7 +520,11 @@ export async function getComparisonBySlug(
         const result = finalizeComparisonPage(
           transformToPageData(row as PrismaComparisonRow, related, blogPosts)
         );
-        await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+        // A degraded render (no related links) is served but not cached.
+        if (!decorationFailed) {
+          await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+          await setCache(lastGoodKey(slug), result, LAST_GOOD_TTL_SECONDS);
+        }
         return result;
       }
       if (editorial) {
@@ -470,13 +533,22 @@ export async function getComparisonBySlug(
         return result;
       }
     } catch (e) {
-      console.warn("Prisma query failed for getComparisonBySlug, falling back to mock:", e);
+      dbFailed = true;
+      console.warn("Prisma query failed for getComparisonBySlug:", slug, e);
+      if (options.throwOnError) {
+        // In-repo editorial packs are build-registry content and render
+        // without the DB; serve them rather than erroring.
+        if (editorial) return finalizeComparisonPage({ ...editorial });
+        const lastGood = await getFromCache<ComparisonPageData>(lastGoodKey(slug));
+        if (lastGood) return lastGood;
+        throw new ComparisonLookupError(slug, e);
+      }
     }
   }
 
   if (editorial) {
     const result = finalizeComparisonPage({ ...editorial });
-    await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+    if (!dbFailed) await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
     return result;
   }
 
@@ -488,7 +560,7 @@ export async function getComparisonBySlug(
       slug: mock.slug,
       category: mock.category,
       entitySlugs: mock.entities.map((e) => e.slug),
-    });
+    }).catch(() => [] as Awaited<ReturnType<typeof getLinkedComparisons>>);
     mock.relatedComparisons = linked.map((l) => ({
       slug: l.slug,
       title: l.title,
@@ -496,7 +568,7 @@ export async function getComparisonBySlug(
     }));
     mock.relatedBlogPosts = [];
     const result = finalizeComparisonPage(mock);
-    await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+    if (!dbFailed) await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
     return result;
   }
   return mock;
