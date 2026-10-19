@@ -3,7 +3,6 @@ import { withBotId } from "botid/next/config";
 import { withSentryConfig } from "@sentry/nextjs";
 import { BLOG_REDIRECTS } from "./src/lib/redirects/blog-redirects";
 import { VS_REDIRECTS } from "./src/lib/redirects/vs-redirects";
-import { COMPARE_REDIRECTS } from "./src/lib/redirects/compare-redirects";
 import { ENTITY_REDIRECTS } from "./src/lib/redirects/entity-redirects";
 import { CATEGORY_SOFT_404_REDIRECTS } from "./src/lib/redirects/category-soft-404-redirects";
 
@@ -26,7 +25,10 @@ const nextConfig: NextConfig = {
     return [
       ...BLOG_REDIRECTS,
       ...VS_REDIRECTS,
-      ...COMPARE_REDIRECTS,
+      // ROO-271: compare→compare consolidations are no longer edge rules.
+      // getStaticProps 301s an alias only when its survivor is live and
+      // indexable; an unconditional edge rule kept sending aliases to
+      // survivors that had since been archived (404) or demoted (noindex).
       ...CATEGORY_SOFT_404_REDIRECTS,
       ...ENTITY_REDIRECTS,
     ];
