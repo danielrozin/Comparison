@@ -81,7 +81,7 @@ Go to your bank or credit union with photo ID, the payee's exact name, and the e
 
 ### How much does a cashier's check cost?
 
-It depends on the bank. Chase charges $10 per check and Wells Fargo lists $10 on its Clear Access Banking fee summary. Some account types waive the fee.
+It depends on the bank. Chase charges $10 per check, per its Additional Banking Services and Fees schedule (June 2026), and Wells Fargo lists $10 on its Clear Access Banking fee summary (October 2026). Some account types waive the fee; check your bank's fee page for the current price.
 
 ### Can I stop payment on a cashier's check?
 
@@ -93,7 +93,7 @@ When you deposit a cashier's check in person with a teller, or at your bank's ow
 
 ### What is the difference between a cashier's check and a money order?
 
-A cashier's check comes from a bank, is drawn on the bank's funds, and has no fixed limit. A USPS money order is limited to $1,000 per domestic order and costs $2.65 to $3.75.
+A cashier's check comes from a bank, is drawn on the bank's funds, and has no fixed limit. A USPS money order is limited to $1,000 per domestic order and costs $2.65 to $3.75, per the USPS money orders page, October 2026.
 
 ## Compare further
 
@@ -123,7 +123,7 @@ export const CASHIERS_CHECK_FAQS = [
   {
     question: "How much does a cashier's check cost?",
     answer:
-      "It depends on the bank. Chase charges $10 per check and Wells Fargo lists $10 on its Clear Access Banking fee summary. Some account types waive the fee.",
+      "It depends on the bank. Chase charges $10 per check, per its Additional Banking Services and Fees schedule (June 2026), and Wells Fargo lists $10 on its Clear Access Banking fee summary (October 2026). Some account types waive the fee; check your bank's fee page for the current price.",
   },
   {
     question: "Can I stop payment on a cashier's check?",
@@ -138,7 +138,7 @@ export const CASHIERS_CHECK_FAQS = [
   {
     question: "What is the difference between a cashier's check and a money order?",
     answer:
-      "A cashier's check comes from a bank, is drawn on the bank's funds, and has no fixed limit. A USPS money order is limited to $1,000 per domestic order and costs $2.65 to $3.75.",
+      "A cashier's check comes from a bank, is drawn on the bank's funds, and has no fixed limit. A USPS money order is limited to $1,000 per domestic order and costs $2.65 to $3.75, per the USPS money orders page, October 2026.",
   },
 ];
 
