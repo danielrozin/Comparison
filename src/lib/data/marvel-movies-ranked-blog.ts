@@ -85,7 +85,7 @@ The film that proved the shared universe could work at scale. The Battle of New 
 More emotional than the first, slightly less fun. The Ego reveal and Yondu's arc land hard.
 
 ### 16. Thunderbolts* (2025)
-An unconventional team of antiheroes: Yelena Belova, Bucky Barnes, Red Guardian, Ghost, Taskmaster and John Walker. A darker, character-first team-up that gives Yelena the spotlight.
+An unconventional team of antiheroes: Yelena Belova, Bucky Barnes, Red Guardian, Ghost, Taskmaster and John Walker. A darker, character-first team-up that gives Yelena the spotlight. Marvel has since rebranded the film as The New Avengers.
 
 ### 17. Ant-Man (2015)
 Small-scale in the best way. Scott Lang is one of the most likeable leads, and the heist structure gives it its own identity.
