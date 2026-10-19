@@ -4,6 +4,12 @@ import {
   HTML_SUFFIX_COMPARE_STATUS,
 } from "@/lib/redirects/html-suffix-compare";
 import {
+  COMPARE_GONE_HEADERS,
+  COMPARE_GONE_HTML,
+  COMPARE_GONE_STATUS,
+  goneCompareSlug,
+} from "@/lib/redirects/compare-gone";
+import {
   isUnknownCategoryPath,
   isUnknownSubcategoryPath,
   UNKNOWN_CATEGORY_404_REWRITE,
@@ -91,6 +97,16 @@ export function middleware(request: NextRequest) {
     url.pathname = htmlSuffixDest;
     url.search = "";
     return NextResponse.redirect(url, HTML_SUFFIX_COMPARE_STATUS);
+  }
+
+  // ROO-270: junk /compare/ slugs we will never build answer 410 Gone with
+  // noindex. URL-only (never user-agent based). All other missing compare
+  // slugs stay real 404s from pages/compare/[slug] getStaticProps.
+  if (goneCompareSlug(pathname)) {
+    return new NextResponse(request.method === "HEAD" ? null : COMPARE_GONE_HTML, {
+      status: COMPARE_GONE_STATUS,
+      headers: COMPARE_GONE_HEADERS,
+    });
   }
 
   // Content-serving API endpoints that AI crawlers and indexers should be allowed to index.
