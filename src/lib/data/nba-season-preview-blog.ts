@@ -17,6 +17,7 @@ import { ANTIMALWARE_SERVICE_EXECUTABLE_ARTICLE } from "@/lib/data/antimalware-s
 import { BEST_CLOUD_PLATFORMS_ARTICLE, BEST_CLOUD_PLATFORMS_BLOG_SLUG } from "@/lib/data/best-cloud-platforms-blog";
 import { MACBOOK_PRO_WEIGHT_ARTICLE, MACBOOK_PRO_WEIGHT_BLOG_SLUG } from "@/lib/data/macbook-pro-weight-blog";
 import { SHOPIFY_WOO_SQUARESPACE_ARTICLE, SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG } from "@/lib/data/shopify-woocommerce-squarespace-blog";
+import { COMPARE_CAR_INSURANCE_QUOTES_ARTICLE } from "@/lib/data/compare-car-insurance-quotes-blog";
 import { NAVIGATION_APPS_ARTICLE, NAVIGATION_APPS_BLOG_SLUG } from "@/lib/data/navigation-apps-blog";
 import { BEST_ACCOUNTING_FREELANCERS_ARTICLE, BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG } from "@/lib/data/best-accounting-freelancers-blog";
 import { STREAMING_SERVICES_ARTICLE, STREAMING_SERVICES_BLOG_SLUG } from "@/lib/data/streaming-services-blog";
@@ -157,6 +158,7 @@ const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   TEMU_SHEIN_AMAZON_ARTICLE,
   IPHONE_BROWSER_ARTICLE,
   BEST_CLOUD_PLATFORMS_ARTICLE,
+  COMPARE_CAR_INSURANCE_QUOTES_ARTICLE,
   MACBOOK_PRO_WEIGHT_ARTICLE,
   SHOPIFY_WOO_SQUARESPACE_ARTICLE,
   NAVIGATION_APPS_ARTICLE,
