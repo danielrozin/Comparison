@@ -141,7 +141,7 @@ export const STREAMING_SERVICES_ARTICLE: BlogArticle = {
   slug: STREAMING_SERVICES_BLOG_SLUG,
   title: "Best Streaming Service 2026: Hulu vs Amazon Prime vs Netflix Ranked",
   excerpt:
-    "Netflix suits original-series fans from $8.99/month, Prime Video is included with Prime, and Hulu now comes mainly in Disney+ bundles or with live TV.",
+    "Netflix suits original-series fans from $8.99/month (per Netflix pricing page, October 2026), Prime Video is included with Prime, and Hulu now comes mainly in Disney+ bundles or with live TV.",
   content: CONTENT,
   category: "entertainment",
   tags: ["best streaming service 2026", "hulu vs amazon prime vs netflix", "netflix price 2026", "prime video ultra", "cord cutting 2026"],
