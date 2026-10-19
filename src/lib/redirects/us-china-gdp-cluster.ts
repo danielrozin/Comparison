@@ -50,6 +50,9 @@ export const US_CHINA_GDP_SOFT_404_ALIASES = [
   "china-vs-usa-gdp",
   "usa-vs-china-gdp",
   "us-vs-china-gdp-comparison",
+  // Explicit only (the pattern matcher still skips per-capita): the canonical
+  // page already answers US vs China GDP per capita from IMF NGDPDPC data.
+  "us-vs-china-gdp-per-capita-2026",
 ] as const;
 
 const PROTECTED = new Set<string>([
