@@ -8,6 +8,10 @@ import {
   isComparisonDbConfigured,
   isComparisonDbReachable,
 } from "@/lib/services/comparison-service";
+import {
+  ComparisonLookupError,
+  isComparisonLookupError,
+} from "@/lib/services/comparison-lookup-error";
 import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
 import {
   decideComparePage,
@@ -345,6 +349,24 @@ function isoDuration(seconds?: number | null): string | undefined {
   return `PT${m ? `${m}M` : ""}${s ? `${s}S` : m ? "" : "0S"}`;
 }
 
+/**
+ * ROO-263 — the only lookup getStaticProps may base a 404 on.
+ *
+ * Returns the row (or null when the database answered and has no such slug).
+ * Any lookup failure throws: `getComparisonBySlug` in strict mode retries with
+ * backoff and serves the last good copy first; whatever still escapes (or a
+ * mocked/legacy implementation that throws) is rethrown as a
+ * ComparisonLookupError. Never swallowed into `null`.
+ */
+async function lookupForPage(slug: string): Promise<Comparison | null> {
+  try {
+    return ((await getComparisonBySlug(slug, { throwOnError: true })) ?? null) as Comparison | null;
+  } catch (e) {
+    if (isComparisonLookupError(e)) throw e;
+    throw new ComparisonLookupError(slug, e);
+  }
+}
+
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const slug = String(params?.slug || "");
 
@@ -398,12 +420,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     return { redirect: { destination: `/compare/${consolidated}`, statusCode: 301 } };
   }
 
-  let comparison: Comparison | null = null;
-  try {
-    comparison = (await getComparisonBySlug(slug)) as Comparison | null;
-  } catch {
-    comparison = null;
-  }
+  // ROO-263: a lookup that FAILED (pool exhaustion, timeout, dropped
+  // connection) is not a lookup that found nothing. `lookupForPage` retries,
+  // falls back to the last good render, and otherwise throws — so Next serves
+  // the stale ISR page (revalidation) or a 5xx (first render), never a noindex
+  // 404 that ISR would then cache for NOT_FOUND_REVALIDATE_SECONDS.
+  const comparison = await lookupForPage(slug);
 
   // Unknown slugs, drafts, review, archived (DAN-1886), and empty/corrupt
   // rows are not rendered here. The empty/corrupt case matters independently:
@@ -437,15 +459,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       const states = new Map<string, SlugRowState>();
       states.set(slug, rowState(comparison));
       const others = relatedComparisonSlugs(slug).filter((candidate) => candidate !== slug);
-      const rows = await Promise.all(
-        others.map(async (candidate) => {
-          try {
-            return (await getComparisonBySlug(candidate)) as Comparison | null;
-          } catch {
-            return null;
-          }
-        }),
-      );
+      // ROO-263: a failed alias/reverse lookup used to read as "missing", so
+      // the 301 to the live page was skipped and the alias 404'd. Errors now
+      // propagate (5xx / stale ISR) instead of deciding the redirect.
+      const rows = await Promise.all(others.map((candidate) => lookupForPage(candidate)));
       others.forEach((candidate, index) => {
         states.set(candidate, rowState(rows[index] ?? null));
       });
@@ -476,12 +493,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     // (starbucks-vs-dunkin ⇄ dunkin-vs-starbucks).
     const sortedSlug = sortComparisonSlug(slug);
     if (sortedSlug !== slug && getConsolidatedCompareSlug(sortedSlug) === null) {
-      let canonical: Comparison | null = null;
-      try {
-        canonical = (await getComparisonBySlug(sortedSlug)) as Comparison | null;
-      } catch {
-        canonical = null;
-      }
+      const canonical = await lookupForPage(sortedSlug);
       if (isRenderableComparison(canonical)) {
         return {
           redirect: { destination: `/compare/${sortedSlug}`, statusCode: 301 },

@@ -36,11 +36,36 @@ function ensureDirectUrl(): void {
   process.env.DIRECT_URL = databaseUrl.replace("-pooler.", ".");
 }
 
+/**
+ * ROO-263: pool defaults for concurrent page renders.
+ *
+ * With Vercel fluid compute many requests share one function instance and so
+ * one Prisma pool. Prisma's defaults (num_cpus * 2 + 1 connections, 10s
+ * pool_timeout) ran dry under a ~85-request crawler burst: queued queries
+ * failed with pool timeouts, and /compare pages treated those as "not found".
+ * Explicit values in DATABASE_URL always win; we only fill gaps. The larger
+ * connection_limit is applied only through the Neon PgBouncer endpoint
+ * (`-pooler.` host), which multiplexes client connections.
+ */
+export function tunedDatabaseUrl(raw: string | undefined): string | undefined {
+  if (!raw) return raw;
+  try {
+    const url = new URL(raw);
+    if (!url.searchParams.has("pool_timeout")) url.searchParams.set("pool_timeout", "20");
+    if (!url.searchParams.has("connection_limit") && url.hostname.includes("-pooler.")) {
+      url.searchParams.set("connection_limit", "10");
+    }
+    return url.toString();
+  } catch {
+    return raw;
+  }
+}
+
 function createPrismaClient(): PrismaClient | null {
   if (!isValidDatabaseUrl()) return null;
   ensureDirectUrl();
   try {
-    return new PrismaClient();
+    return new PrismaClient({ datasourceUrl: tunedDatabaseUrl(process.env.DATABASE_URL) });
   } catch {
     console.warn("Failed to create PrismaClient");
     return null;
