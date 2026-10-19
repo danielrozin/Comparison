@@ -29,6 +29,18 @@ export function entityPageRobotsStatus(args: {
 }
 
 /**
+ * ROO-271 (D): whether `/entity/[slug]` must answer HTTP 404.
+ *
+ * Only after a successful lookup: no row, or a row that is not published.
+ * A failed lookup (DB down, build time) never 404s, so an outage can't
+ * de-index live entity pages; it renders optimistically as before.
+ */
+export function shouldEntityPage404(args: { lookupFailed: boolean; status: string | null | undefined }): boolean {
+  if (args.lookupFailed) return false;
+  return !isEntityPageIndexable(args.status ?? null);
+}
+
+/**
  * Resolve the robots status for each entity on a compare page.
  * Missing rows are draft (noindex). A failed or missing database matches the
  * entity page and stays optimistic (`published`).
