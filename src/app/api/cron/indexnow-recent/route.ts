@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { submitToIndexNow } from "@/lib/seo/indexnow";
+import { submitIndexNowGuarded } from "@/lib/seo/indexnow";
 import { recentSitemapUrls } from "@/lib/seo/indexnow-recent";
 import sitemap, { generateSitemaps } from "@/app/sitemap";
 
@@ -12,8 +12,10 @@ const DEFAULT_WINDOW_DAYS = 30;
  *
  * Daily cron that submits every sitemap URL modified in the last 30 days
  * (override with ?days=N, 1–90). Complements the publish-time
- * notifyIndexNow() hooks: it re-sends recent changes and covers pages that
- * change by deploy (hubs, repo blog overrides) rather than by a DB write.
+ * notifyIndexNow() hooks: it covers pages that change by deploy (hubs, repo
+ * blog overrides) rather than by a DB write. Goes through the shared
+ * IndexNow ledger, so URLs sent in the last 7 days are not re-sent and the
+ * daily cap applies.
  *
  * Previously this read comparisons/blog rows by updatedAt with no status
  * filter, which included archived and provisional (noindex) pages.
@@ -47,7 +49,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ message: "No recently-updated URLs found", submitted: 0 });
   }
 
-  const result = await submitToIndexNow(urls);
-  console.info(`[indexnow] cron:indexnow-recent days=${days} candidates=${urls.length} submitted=${result.submitted} status=${result.status ?? "none"}`);
-  return NextResponse.json({ cutoff: cutoff.toISOString(), candidates: urls.length, ...result });
+  // Shared ledger: skips URLs any path sent in the last 7 days and stays
+  // inside the daily sweep cap (newest changes first).
+  const result = await submitIndexNowGuarded(urls, "sweep", `cron:indexnow-recent:${days}d`);
+  return NextResponse.json({ cutoff: cutoff.toISOString(), ...result });
 }
