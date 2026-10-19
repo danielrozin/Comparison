@@ -10,6 +10,7 @@
 import { IMAX_DOLBY_FAQS } from "@/lib/data/imax-dolby-blog";
 import { TEMU_SHEIN_AMAZON_FAQS } from "@/lib/data/temu-shein-amazon-blog";
 import { BEST_CLOUD_PLATFORMS_FAQS } from "@/lib/data/best-cloud-platforms-blog";
+import { MACBOOK_PRO_WEIGHT_FAQS } from "@/lib/data/macbook-pro-weight-blog";
 import { SHOPIFY_WOO_SQUARESPACE_FAQS } from "@/lib/data/shopify-woocommerce-squarespace-blog";
 import { BEST_ACCOUNTING_FREELANCERS_FAQS } from "@/lib/data/best-accounting-freelancers-blog";
 import { BEST_PRODUCTIVITY_APPS_FAQS } from "@/lib/data/best-productivity-apps-blog";
@@ -41,6 +42,7 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   "imax-vs-dolby-cinema-2026-is-the-premium-ticket-worth-it": { faqs: IMAX_DOLBY_FAQS },
   "temu-vs-shein-vs-amazon-where-to-shop-for-cheap-fashion-in-2026": { faqs: TEMU_SHEIN_AMAZON_FAQS },
   // ROO-235: FAQs mirror the visible FAQ section of the repo article; no personal byline.
+  "macbook-pro-weight-2025-2026-complete-specs-comparison-guide": { faqs: MACBOOK_PRO_WEIGHT_FAQS },
   "shopify-vs-woocommerce-vs-squarespace-2026": { faqs: SHOPIFY_WOO_SQUARESPACE_FAQS },
   "best-accounting-software-freelancers-2026": { faqs: BEST_ACCOUNTING_FREELANCERS_FAQS },
   "best-productivity-apps-2026": { faqs: BEST_PRODUCTIVITY_APPS_FAQS },
