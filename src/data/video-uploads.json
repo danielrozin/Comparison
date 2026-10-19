@@ -5885,6 +5885,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-17T09:06:31.071Z"
+    },
+    {
+      "slug": "samsung-s25-vs-s25-ultra",
+      "title": "Samsung S25 vs S25 Ultra",
+      "entityA": "Samsung S25",
+      "entityB": "S25 Ultra",
+      "category": "Technology",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "samsung-s25-vs-s25-ultra.mp4",
+      "durationSeconds": 50,
+      "transcript": "Four categories compared. The Ultra takes four of them. So why buy the smaller one? Same brain, different body. One fits your hand, the other fits your workflow. Galaxy AI runs on both. The smart stuff isn't what you're paying extra for. The Ultra gives you room to grow. The S25 asks you to manage space. Standard cameras versus advanced ones. One takes good shots, the other takes the shot. Both game fine. The Ultra just doesn't flinch when things get heavy. The S Pen is the dividing line. Writing on glass, or just tapping it. Ultra wins four to nothing. Buy the S25 anyway if you want one-handed, pocket-sized Galaxy AI.",
+      "chapters": [
+        {
+          "name": "Samsung S25 vs S25 Ultra",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 14
+        },
+        {
+          "name": "Round 1: Galaxy AI Features",
+          "startOffset": 14,
+          "endOffset": 20
+        },
+        {
+          "name": "Round 2: Storage Options",
+          "startOffset": 20,
+          "endOffset": 26
+        },
+        {
+          "name": "Round 3: Photography Capabilities",
+          "startOffset": 26,
+          "endOffset": 33
+        },
+        {
+          "name": "Round 4: Gaming Performance",
+          "startOffset": 33,
+          "endOffset": 39
+        },
+        {
+          "name": "Round 5: Productivity Features",
+          "startOffset": 39,
+          "endOffset": 45
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 45,
+          "endOffset": 53
+        }
+      ],
+      "youtubeTitle": "Samsung S25 vs S25 Ultra: Is the Ultra Worth It?",
+      "youtubeDescription": "A straight head-to-head between the Galaxy S25 and S25 Ultra across Galaxy AI, storage, cameras, gaming and productivity. The Ultra takes four of five categories thanks to advanced photography, superior gaming and S Pen support. The S25 still makes sense if you want the same AI in a compact, everyday phone.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/samsung-s25-vs-s25-ultra\n\nImage credits:\nImage A by 可恩Ke En (CC BY 3.0) — https://commons.wikimedia.org/wiki/File:%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_(2160p_50fps_VP9-96kbit_AAC)-00.00.07.100.png\nImage B by 可恩Ke En (CC BY 3.0) — https://commons.wikimedia.org/wiki/File:%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_(2160p_50fps_VP9-96kbit_AAC)-00.00.07.100.png\n\nFull comparison: https://www.aversusb.net/compare/samsung-s25-vs-s25-ultra",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-19T10:40:45.426Z"
     }
   ]
 }

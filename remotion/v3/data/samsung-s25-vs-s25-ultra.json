@@ -1,0 +1,170 @@
+{
+  "title": "Samsung S25 vs S25 Ultra",
+  "entityA": "Samsung S25",
+  "entityB": "S25 Ultra",
+  "category": "Technology",
+  "shortAnswer": "Both phones feature Galaxy AI, but S25 Ultra offers superior cameras, larger display, and S Pen support, while S25 is more compact and pocket-friendly.",
+  "stats": [
+    {
+      "label": "Galaxy AI Features",
+      "valueA": "Available",
+      "valueB": "Available",
+      "winner": "tie"
+    },
+    {
+      "label": "Storage Options",
+      "valueA": "Limited options",
+      "valueB": "More storage options",
+      "winner": "b"
+    },
+    {
+      "label": "Photography Capabilities",
+      "valueA": "Standard",
+      "valueB": "Advanced",
+      "winner": "b"
+    },
+    {
+      "label": "Gaming Performance",
+      "valueA": "Good",
+      "valueB": "Superior",
+      "winner": "b"
+    },
+    {
+      "label": "Productivity Features",
+      "valueA": "Standard",
+      "valueB": "Enhanced with S Pen",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Choose S25 Ultra if you prioritize photography, productivity, and premium features with S Pen support. The regular S25 is better for users wanting Galaxy AI capabilities in a more compact, everyday-friendly package.",
+  "slug": "samsung-s25-vs-s25-ultra",
+  "imageA": {
+    "url": "video-assets/samsung-s25-vs-s25-ultra/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f9/%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_%282160p_50fps_VP9-96kbit_AAC%29-00.00.07.100.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 3840,
+    "height": 2160,
+    "credit": "可恩Ke En",
+    "license": "CC BY 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_(2160p_50fps_VP9-96kbit_AAC)-00.00.07.100.png",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f9/%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_%282160p_50fps_VP9-96kbit_AAC%29-00.00.07.100.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/samsung-s25-vs-s25-ultra/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f9/%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_%282160p_50fps_VP9-96kbit_AAC%29-00.00.07.100.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 3840,
+    "height": 2160,
+    "credit": "可恩Ke En",
+    "license": "CC BY 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_(2160p_50fps_VP9-96kbit_AAC)-00.00.07.100.png",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f9/%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_%282160p_50fps_VP9-96kbit_AAC%29-00.00.07.100.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "Four categories compared. The Ultra takes four of them. So why buy the smaller one?",
+    "tape": "Same brain, different body. One fits your hand, the other fits your workflow.",
+    "rounds": [
+      "Galaxy AI runs on both. The smart stuff isn't what you're paying extra for.",
+      "The Ultra gives you room to grow. The S25 asks you to manage space.",
+      "Standard cameras versus advanced ones. One takes good shots, the other takes the shot.",
+      "Both game fine. The Ultra just doesn't flinch when things get heavy.",
+      "The S Pen is the dividing line. Writing on glass, or just tapping it."
+    ],
+    "verdict": "Ultra wins four to nothing. Buy the S25 anyway if you want one-handed, pocket-sized Galaxy AI."
+  },
+  "audio": {
+    "cold": "video-assets/samsung-s25-vs-s25-ultra/audio/cold.mp3",
+    "tape": "video-assets/samsung-s25-vs-s25-ultra/audio/tape.mp3",
+    "rounds": [
+      "video-assets/samsung-s25-vs-s25-ultra/audio/round-1.mp3",
+      "video-assets/samsung-s25-vs-s25-ultra/audio/round-2.mp3",
+      "video-assets/samsung-s25-vs-s25-ultra/audio/round-3.mp3",
+      "video-assets/samsung-s25-vs-s25-ultra/audio/round-4.mp3",
+      "video-assets/samsung-s25-vs-s25-ultra/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/samsung-s25-vs-s25-ultra/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 221,
+    "tape": 190,
+    "rounds": [
+      188,
+      190,
+      204,
+      168,
+      175
+    ],
+    "verdict": 250,
+    "leadInFrames": 9
+  },
+  "transcript": "Four categories compared. The Ultra takes four of them. So why buy the smaller one? Same brain, different body. One fits your hand, the other fits your workflow. Galaxy AI runs on both. The smart stuff isn't what you're paying extra for. The Ultra gives you room to grow. The S25 asks you to manage space. Standard cameras versus advanced ones. One takes good shots, the other takes the shot. Both game fine. The Ultra just doesn't flinch when things get heavy. The S Pen is the dividing line. Writing on glass, or just tapping it. Ultra wins four to nothing. Buy the S25 anyway if you want one-handed, pocket-sized Galaxy AI.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Four categories compared. The Ultra takes four of them. So why buy the smaller one?",
+      "startOffset": 0,
+      "endOffset": 7.380611999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Same brain, different body. One fits your hand, the other fits your workflow.",
+      "startOffset": 7.380611999999999,
+      "endOffset": 13.716325999999999
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Galaxy AI runs on both. The smart stuff isn't what you're paying extra for.",
+      "startOffset": 13.716325999999999,
+      "endOffset": 19.973672999999998
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "The Ultra gives you room to grow. The S25 asks you to manage space.",
+      "startOffset": 19.973672999999998,
+      "endOffset": 26.309386999999997
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Standard cameras versus advanced ones. One takes good shots, the other takes the shot.",
+      "startOffset": 26.309386999999997,
+      "endOffset": 33.115305
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Both game fine. The Ultra just doesn't flinch when things get heavy.",
+      "startOffset": 33.115305,
+      "endOffset": 38.719591
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "The S Pen is the dividing line. Writing on glass, or just tapping it.",
+      "startOffset": 38.719591,
+      "endOffset": 44.558979
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Ultra wins four to nothing. Buy the S25 anyway if you want one-handed, pocket-sized Galaxy AI.",
+      "startOffset": 44.558979,
+      "endOffset": 52.879999
+    }
+  ],
+  "youtubeTitle": "Samsung S25 vs S25 Ultra: Is the Ultra Worth It?",
+  "youtubeDescription": "A straight head-to-head between the Galaxy S25 and S25 Ultra across Galaxy AI, storage, cameras, gaming and productivity. The Ultra takes four of five categories thanks to advanced photography, superior gaming and S Pen support. The S25 still makes sense if you want the same AI in a compact, everyday phone.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/samsung-s25-vs-s25-ultra",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by 可恩Ke En (CC BY 3.0) — https://commons.wikimedia.org/wiki/File:%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_(2160p_50fps_VP9-96kbit_AAC)-00.00.07.100.png",
+    "Image B by 可恩Ke En (CC BY 3.0) — https://commons.wikimedia.org/wiki/File:%E7%AC%AC%E4%B8%80%E6%89%8B%EF%BC%81Samsung_Galaxy_S25%E7%B3%BB%E5%88%97%E6%8B%BF%E5%88%B0%E4%BA%86%EF%BC%9A5%E4%B8%AA%E5%8D%87%E7%BA%A7%EF%BC%81S_Pen%E4%B8%8D%E6%94%AF%E6%8C%81%E8%93%9D%E7%89%99%E4%BA%86%EF%BC%9F_(2160p_50fps_VP9-96kbit_AAC)-00.00.07.100.png"
+  ]
+}
