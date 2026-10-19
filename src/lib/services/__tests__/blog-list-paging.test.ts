@@ -4,7 +4,11 @@
  * then fell off page 1 and never showed up on page 2.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { NBA_SEASON_PREVIEW_BLOG_SLUG, listRepoBlogOverrideSlugs } from "@/lib/data/nba-season-preview-blog";
+import {
+  NBA_SEASON_PREVIEW_BLOG_SLUG,
+  listRepoBlogArticles,
+  listRepoBlogOverrideSlugs,
+} from "@/lib/data/nba-season-preview-blog";
 import { GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG } from "@/lib/data/google-maps-alternatives-blog";
 
 const mocks = vi.hoisted(() => ({
@@ -49,6 +53,16 @@ function dbPost(index: number) {
 
 const DB_POSTS = Array.from({ length: 13 }, (_, index) => dbPost(index));
 
+/** Repo-only posts (not overrides of a DB row) merged with the DB rows, newest first. */
+function expectedOrder(): string[] {
+  const overrides = new Set(listRepoBlogOverrideSlugs());
+  const repoOnly = listRepoBlogArticles()
+    .filter((article) => !overrides.has(article.slug) && article.status === "published")
+    .map((article) => ({ slug: article.slug, at: new Date(article.publishedAt!).getTime() }));
+  const db = DB_POSTS.map((post) => ({ slug: post.slug, at: post.publishedAt.getTime() }));
+  return [...repoOnly, ...db].sort((a, b) => b.at - a.at).map((entry) => entry.slug);
+}
+
 describe("merged blog list paging", () => {
   beforeEach(() => {
     mocks.count.mockReset();
@@ -73,18 +87,15 @@ describe("merged blog list paging", () => {
     const page1 = await listBlogArticles({ limit: 12, offset: 0, status: "published" });
     const page2 = await listBlogArticles({ limit: 12, offset: 12, status: "published" });
 
-    expect(page1.total).toBe(15);
-    expect(page2.total).toBe(15);
-    expect(page1.articles.map((article) => article.slug)).toEqual([
-      GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG,
-      NBA_SEASON_PREVIEW_BLOG_SLUG,
-      ...DB_POSTS.slice(0, 10).map((post) => post.slug),
-    ]);
-    expect(page2.articles.map((article) => article.slug)).toEqual([
-      "db-post-10",
-      "db-post-11",
-      "db-post-12",
-    ]);
+    const order = expectedOrder();
+    expect(order).toContain(GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG);
+    expect(order).toContain(NBA_SEASON_PREVIEW_BLOG_SLUG);
+    expect(order.length).toBeGreaterThan(12);
+    expect(page1.total).toBe(order.length);
+    expect(page2.total).toBe(order.length);
+    expect(page1.articles.map((article) => article.slug)).toEqual(order.slice(0, 12));
+    expect(page2.articles.map((article) => article.slug)).toEqual(order.slice(12, 24));
+    expect(page2.articles.map((article) => article.slug)).toContain("db-post-12");
 
     const seen = [...page1.articles, ...page2.articles].map((article) => article.slug);
     expect(new Set(seen).size).toBe(seen.length);
@@ -122,10 +133,12 @@ describe("merged blog list paging", () => {
     expect(sql).not.toMatch(/E'\\s/);
     expect(sql).not.toMatch(/\\s/);
     const counted = sqlValues(mocks.queryRaw.mock.calls[0][0]);
-    expect(counted).toEqual(DB_POSTS.slice(0, 10).map((post) => post.slug));
+    const dbSlugs = new Set(DB_POSTS.map((post) => post.slug));
+    const firstPageDb = expectedOrder().slice(0, 12).filter((slug) => dbSlugs.has(slug));
+    expect(counted).toEqual(firstPageDb);
     expect(counted).not.toContain(NBA_SEASON_PREVIEW_BLOG_SLUG);
     expect(counted).not.toContain(GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG);
-    expect(counted).not.toContain("db-post-10");
+    expect(counted).not.toContain("db-post-12");
     const dbCard = page1.articles.find((article) => article.slug === "db-post-0");
     expect(dbCard?.content).toBe("");
     expect(dbCard?.contentWordCount).toBe(400);
