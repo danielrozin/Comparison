@@ -88,6 +88,7 @@ describe("explicit per-capita alias (ROO-270)", () => {
   it("301s us-vs-china-gdp-per-capita-2026 to the canonical in one hop", () => {
     expect(getConsolidatedCompareSlug("us-vs-china-gdp-per-capita-2026")).toBe(US_CHINA_GDP_CANONICAL);
     expect(getConsolidatedCompareSlug(US_CHINA_GDP_CANONICAL)).toBeNull();
-    expect(COMPARE_REDIRECTS["us-vs-china-gdp-per-capita-2026"] ?? "us-vs-china-gdp").toBe("us-vs-china-gdp");
+    expect(US_CHINA_GDP_CANONICAL).toBe("us-vs-china-gdp");
+    expect(US_CHINA_GDP_SOFT_404_ALIASES).toContain("us-vs-china-gdp-per-capita-2026");
   });
 });
