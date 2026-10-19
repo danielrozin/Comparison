@@ -14,6 +14,9 @@ import { GOOGLE_MAPS_VS_WAZE } from "./google-maps-vs-waze";
 import { BRAVE_VS_CHROME } from "./brave-vs-chrome";
 import { IPHONE_17_VS_IPHONE_AIR } from "./iphone-17-vs-iphone-air";
 import { CHROME_VS_SAFARI } from "./chrome-vs-safari";
+import { CHROME_VS_EDGE } from "./chrome-vs-edge";
+import { EPIC_GAMES_VS_STEAM } from "./epic-games-vs-steam";
+import { CRONOMETER_VS_MYFITNESSPAL } from "./cronometer-vs-myfitnesspal";
 import { IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA } from "./iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
 import { ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA } from "./oneplus-15-vs-samsung-galaxy-s26-ultra-vs-samsung-galaxy-s25-ultra";
 import { ONEPLUS_13_VS_ONEPLUS_13R } from "./oneplus-13-vs-oneplus-13r";
@@ -122,6 +125,9 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [BRAVE_VS_CHROME.slug]: BRAVE_VS_CHROME,
   [IPHONE_17_VS_IPHONE_AIR.slug]: IPHONE_17_VS_IPHONE_AIR,
   [CHROME_VS_SAFARI.slug]: CHROME_VS_SAFARI,
+  [CHROME_VS_EDGE.slug]: CHROME_VS_EDGE,
+  [EPIC_GAMES_VS_STEAM.slug]: EPIC_GAMES_VS_STEAM,
+  [CRONOMETER_VS_MYFITNESSPAL.slug]: CRONOMETER_VS_MYFITNESSPAL,
   [IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA.slug]: IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA,
   [ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA.slug]: ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA,
   [ONEPLUS_13_VS_ONEPLUS_13R.slug]: ONEPLUS_13_VS_ONEPLUS_13R,
