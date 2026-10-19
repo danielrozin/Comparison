@@ -28,6 +28,10 @@ import { KNICKS_VS_SPURS } from "./knicks-vs-spurs";
 import { FLAGG_VS_WEMBANYAMA } from "./flagg-vs-wembanyama";
 import { APPLE_WATCH_SERIES_12_VS_FITBIT_AIR } from "./apple-watch-series-12-vs-fitbit-air";
 import { APPLE_WATCH_SERIES_12_VS_WHOOP } from "./apple-watch-series-12-vs-whoop";
+import { MAZDA_CX_5_VS_TOYOTA_RAV4 } from "./mazda-cx-5-vs-toyota-rav4";
+import { GARMIN_VS_WHOOP } from "./garmin-vs-whoop";
+import { STANLEY_VS_YETI } from "./stanley-vs-yeti";
+import { COLEMAN_VS_YETI } from "./coleman-vs-yeti";
 import { DAMIAN_LILLARD_VS_JA_MORANT } from "./damian-lillard-vs-ja-morant";
 import { LEBRON_JAMES_VS_STEPHEN_CURRY } from "./lebron-james-vs-stephen-curry";
 import { JORDAN_VS_KOBE } from "./jordan-vs-kobe";
@@ -136,6 +140,10 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [FLAGG_VS_WEMBANYAMA.slug]: FLAGG_VS_WEMBANYAMA,
   [APPLE_WATCH_SERIES_12_VS_FITBIT_AIR.slug]: APPLE_WATCH_SERIES_12_VS_FITBIT_AIR,
   [APPLE_WATCH_SERIES_12_VS_WHOOP.slug]: APPLE_WATCH_SERIES_12_VS_WHOOP,
+  [MAZDA_CX_5_VS_TOYOTA_RAV4.slug]: MAZDA_CX_5_VS_TOYOTA_RAV4,
+  [GARMIN_VS_WHOOP.slug]: GARMIN_VS_WHOOP,
+  [STANLEY_VS_YETI.slug]: STANLEY_VS_YETI,
+  [COLEMAN_VS_YETI.slug]: COLEMAN_VS_YETI,
   [DAMIAN_LILLARD_VS_JA_MORANT.slug]: DAMIAN_LILLARD_VS_JA_MORANT,
   [LEBRON_JAMES_VS_STEPHEN_CURRY.slug]: LEBRON_JAMES_VS_STEPHEN_CURRY,
   [JORDAN_VS_KOBE.slug]: JORDAN_VS_KOBE,
