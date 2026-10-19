@@ -9,16 +9,21 @@
 
 import type { BlogArticle } from "@/lib/services/blog-generator";
 import { IMAX_DOLBY_ARTICLE, IMAX_DOLBY_BLOG_SLUG } from "@/lib/data/imax-dolby-blog";
+import { IPHONE_DUO_ARTICLE } from "@/lib/data/iphone-duo-blog";
 import { CASHIERS_CHECK_ARTICLE, CASHIERS_CHECK_BLOG_SLUG } from "@/lib/data/cashiers-check-blog";
 import { TEMU_SHEIN_AMAZON_ARTICLE, TEMU_SHEIN_AMAZON_BLOG_SLUG } from "@/lib/data/temu-shein-amazon-blog";
 import { IPHONE_BROWSER_ARTICLE, IPHONE_BROWSER_BLOG_SLUG } from "@/lib/data/iphone-browser-blog";
+import { ANTIMALWARE_SERVICE_EXECUTABLE_ARTICLE } from "@/lib/data/antimalware-service-executable-blog";
 import { BEST_CLOUD_PLATFORMS_ARTICLE, BEST_CLOUD_PLATFORMS_BLOG_SLUG } from "@/lib/data/best-cloud-platforms-blog";
 import { MACBOOK_PRO_WEIGHT_ARTICLE, MACBOOK_PRO_WEIGHT_BLOG_SLUG } from "@/lib/data/macbook-pro-weight-blog";
 import { SHOPIFY_WOO_SQUARESPACE_ARTICLE, SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG } from "@/lib/data/shopify-woocommerce-squarespace-blog";
 import { NAVIGATION_APPS_ARTICLE, NAVIGATION_APPS_BLOG_SLUG } from "@/lib/data/navigation-apps-blog";
 import { BEST_ACCOUNTING_FREELANCERS_ARTICLE, BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG } from "@/lib/data/best-accounting-freelancers-blog";
+import { STREAMING_SERVICES_ARTICLE, STREAMING_SERVICES_BLOG_SLUG } from "@/lib/data/streaming-services-blog";
 import { BEST_PRODUCTIVITY_APPS_ARTICLE, BEST_PRODUCTIVITY_APPS_BLOG_SLUG } from "@/lib/data/best-productivity-apps-blog";
+import { MARVEL_MOVIES_RANKED_ARTICLE, MARVEL_MOVIES_RANKED_BLOG_SLUG } from "@/lib/data/marvel-movies-ranked-blog";
 import { GOOGLE_MAPS_ALTERNATIVES_ARTICLE } from "@/lib/data/google-maps-alternatives-blog";
+import { CHEAPEST_CAR_INSURANCE_ARTICLE, CHEAPEST_CAR_INSURANCE_BLOG_SLUG } from "@/lib/data/cheapest-car-insurance-blog";
 
 export const NBA_SEASON_PREVIEW_BLOG_SLUG = "2026-27-nba-season-preview-10-debates";
 
@@ -144,9 +149,11 @@ export const NBA_SEASON_PREVIEW_ARTICLE: BlogArticle = {
 
 const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   NBA_SEASON_PREVIEW_ARTICLE,
+  IPHONE_DUO_ARTICLE,
   GOOGLE_MAPS_ALTERNATIVES_ARTICLE,
   IMAX_DOLBY_ARTICLE,
   CASHIERS_CHECK_ARTICLE,
+  ANTIMALWARE_SERVICE_EXECUTABLE_ARTICLE,
   TEMU_SHEIN_AMAZON_ARTICLE,
   IPHONE_BROWSER_ARTICLE,
   BEST_CLOUD_PLATFORMS_ARTICLE,
@@ -154,7 +161,10 @@ const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   SHOPIFY_WOO_SQUARESPACE_ARTICLE,
   NAVIGATION_APPS_ARTICLE,
   BEST_ACCOUNTING_FREELANCERS_ARTICLE,
+  STREAMING_SERVICES_ARTICLE,
   BEST_PRODUCTIVITY_APPS_ARTICLE,
+  CHEAPEST_CAR_INSURANCE_ARTICLE,
+  MARVEL_MOVIES_RANKED_ARTICLE,
 ];
 
 /**
@@ -171,7 +181,10 @@ const REPO_BLOG_DB_OVERRIDE_SLUGS: ReadonlySet<string> = new Set([
   SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG,
   NAVIGATION_APPS_BLOG_SLUG,
   BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG,
+  STREAMING_SERVICES_BLOG_SLUG,
   BEST_PRODUCTIVITY_APPS_BLOG_SLUG,
+  CHEAPEST_CAR_INSURANCE_BLOG_SLUG,
+  MARVEL_MOVIES_RANKED_BLOG_SLUG,
 ]);
 
 export function findRepoBlogOverride(slug: string): BlogArticle | null {
