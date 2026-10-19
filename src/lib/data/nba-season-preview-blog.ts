@@ -10,6 +10,7 @@
 import type { BlogArticle } from "@/lib/services/blog-generator";
 import { IMAX_DOLBY_ARTICLE, IMAX_DOLBY_BLOG_SLUG } from "@/lib/data/imax-dolby-blog";
 import { TEMU_SHEIN_AMAZON_ARTICLE, TEMU_SHEIN_AMAZON_BLOG_SLUG } from "@/lib/data/temu-shein-amazon-blog";
+import { IPHONE_BROWSER_ARTICLE, IPHONE_BROWSER_BLOG_SLUG } from "@/lib/data/iphone-browser-blog";
 import { BEST_CLOUD_PLATFORMS_ARTICLE, BEST_CLOUD_PLATFORMS_BLOG_SLUG } from "@/lib/data/best-cloud-platforms-blog";
 import { SHOPIFY_WOO_SQUARESPACE_ARTICLE, SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG } from "@/lib/data/shopify-woocommerce-squarespace-blog";
 import { BEST_ACCOUNTING_FREELANCERS_ARTICLE, BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG } from "@/lib/data/best-accounting-freelancers-blog";
@@ -143,6 +144,7 @@ const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   GOOGLE_MAPS_ALTERNATIVES_ARTICLE,
   IMAX_DOLBY_ARTICLE,
   TEMU_SHEIN_AMAZON_ARTICLE,
+  IPHONE_BROWSER_ARTICLE,
   BEST_CLOUD_PLATFORMS_ARTICLE,
   SHOPIFY_WOO_SQUARESPACE_ARTICLE,
   BEST_ACCOUNTING_FREELANCERS_ARTICLE,
@@ -156,6 +158,7 @@ const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
 const REPO_BLOG_DB_OVERRIDE_SLUGS: ReadonlySet<string> = new Set([
   IMAX_DOLBY_BLOG_SLUG,
   TEMU_SHEIN_AMAZON_BLOG_SLUG,
+  IPHONE_BROWSER_BLOG_SLUG,
   BEST_CLOUD_PLATFORMS_BLOG_SLUG,
   SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG,
   BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG,
