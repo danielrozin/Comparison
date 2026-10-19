@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { listBlogArticles } from "@/lib/services/blog-generator";
+import { findRepoBlogOverride } from "@/lib/data/nba-season-preview-blog";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { GUIDE_CONFIG } from "@/lib/data/guides";
@@ -13,6 +14,11 @@ import { listEditorialCompareSitemapEntries } from "@/lib/data/editorial-compare
 import { LAST_UPDATED as BROWSER_COMPARISON_LAST_UPDATED } from "@/app/browser-comparison-2026/last-updated";
 import { LAST_UPDATED as LLM_COMPARISONS_LAST_UPDATED } from "@/app/llm-comparisons/last-updated";
 import { LAST_UPDATED as PASSWORD_MANAGER_LAST_UPDATED } from "@/app/password-manager-comparison/last-updated";
+
+function repoOverrideUpdatedAt(slug: string): string | undefined {
+  const updatedAt = findRepoBlogOverride(slug)?.updatedAt;
+  return updatedAt ? new Date(updatedAt).toISOString() : undefined;
+}
 
 function comparisonOgImageUrl(title: string, entityA: string, entityB: string, category: string): string {
   return (
@@ -423,13 +429,16 @@ export default async function sitemap({
       const { articles } = await listBlogArticles({ limit: MAX_URLS_PER_SITEMAP, status: "published" });
       blogArticlePages = articles.map((article) => ({
         url: `${SITE_URL}/blog/${article.slug}`,
-        lastModified: article.updatedAt
+        // Repo overrides (ROO-235 refreshes) are what readers see; their
+        // updatedAt, not the stale DB row's, is the page's last change.
+        lastModified: repoOverrideUpdatedAt(article.slug)
+          ?? (article.updatedAt
           ? new Date(article.updatedAt).toISOString()
           : article.publishedAt
             ? new Date(article.publishedAt).toISOString()
             : article.createdAt
               ? new Date(article.createdAt).toISOString()
-              : maxBlogDate,
+              : maxBlogDate),
         changeFrequency: "weekly" as const,
         priority: 0.7,
         images: [`${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog`],

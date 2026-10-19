@@ -112,7 +112,7 @@ vi.mock("@/lib/services/internal-linking-engine", () => ({
   getLinkedComparisons: vi.fn(),
   getRelatedBlogPosts: vi.fn(),
 }));
-vi.mock("@/lib/seo/indexnow", () => ({ submitComparisonToIndexNow: vi.fn() }));
+vi.mock("@/lib/seo/indexnow", () => ({ submitComparisonToIndexNow: vi.fn(), notifyIndexNow: vi.fn() }));
 
 import { saveComparison } from "../comparison-service";
 
