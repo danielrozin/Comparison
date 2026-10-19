@@ -6,6 +6,11 @@
 export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
   "vrbo-vs-airbnb-for-hosts-which-is-more-profitable": "airbnb-vs-vrbo",
   "airbnb-for-hosts-which-is-more-profitable-vs-vrbo": "airbnb-vs-vrbo",
+  // Bing 404 build list (2026-10-19): mangled apostrophe slugs for McDonald's
+  // vs Wendy's. The target is the editorial pack added in the same PR
+  // (editorial-compares/mcdonalds-vs-wendys.ts), so it is live once merged.
+  "mcdonald-s-vs-wendy-s": "mcdonalds-vs-wendys",
+  "wendy-s-vs-mcdonald-s": "mcdonalds-vs-wendys",
   "chinese-economy-vs-us-economy": "us-economy-vs-china-economy",
   "chinese-vs-american-economy": "us-economy-vs-china-economy",
   "us-vs-china-tech-companies": "china-vs-us-gdp-military-tech-comparison-2026",
