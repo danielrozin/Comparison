@@ -16,6 +16,7 @@ vi.mock("@/lib/services/internal-linking-engine", () => ({
 }));
 vi.mock("@/lib/seo/indexnow", () => ({
   submitComparisonToIndexNow: vi.fn(() => Promise.resolve({ submitted: 0, ok: true })),
+  notifyIndexNow: vi.fn(),
 }));
 vi.mock("@/lib/db/prisma", () => ({
   getPrisma: () => ({

@@ -15,9 +15,9 @@ import { LAST_UPDATED } from "./last-updated";
 const PAGE_URL = `${SITE_URL}/browser-comparison-2026`;
 const PAGE_TITLE = `Best Web Browsers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
-  "Independent comparison of 10 major web browsers in 2026 — engine, market share, privacy, extensions, performance, and standards compliance. All figures cited to primary sources.";
+  "10 major web browsers compared for 2026: rendering engine, current stable version, privacy defaults and license, with each vendor's release channel linked.";
 const QUICK_ANSWER =
-  "For everyday use pick Chrome or Edge, both built on Chromium. For privacy pick Brave, which blocks ads and trackers by default. For an open-source engine outside Chromium pick Firefox, or Tor Browser for anonymity. On iPhone and Mac, Safari ships Intelligent Tracking Prevention on by default. Current stable versions in October 2026: Chrome 156, Edge 155, Firefox 158, Safari 27 and Brave 1.97.";
+  "For everyday use pick Chrome or Edge, both built on Chromium. For privacy pick Brave, which blocks ads and trackers by default. For an open-source engine outside Chromium pick Firefox, or Tor Browser for anonymity. On iPhone and Mac, Safari ships Intelligent Tracking Prevention on by default. Current stable versions on October 19, 2026: Chrome 156, Edge 155, Firefox 158, Safari 27 and Brave 1.97.";
 
 const BROWSER_FAQS: { question: string; answer: string }[] = [
   {
@@ -33,7 +33,7 @@ const BROWSER_FAQS: { question: string; answer: string }[] = [
   {
     question: "What is the latest version of Chrome, Firefox and Edge?",
     answer:
-      "As of October 16, 2026, the stable releases are Chrome 156 (156.0.8078.36 on Windows), Firefox 158.0 and Microsoft Edge 155 (155.0.4283.60, released October 15, 2026). Brave's latest release is 1.97.57, built on Chromium 155. All four update automatically by default.",
+      "As of October 19, 2026, the stable releases are Chrome 156 (156.0.8078.36 on Windows), Firefox 158.0 and Microsoft Edge 155 (155.0.4283.62, released October 16, 2026). Brave's latest desktop release is 1.97.57 (October 14, 2026), built on Chromium 155. All four update automatically by default.",
   },
   {
     question: "Chrome vs Firefox: which should I use?",
@@ -271,7 +271,7 @@ const BROWSERS: Browser[] = [
     name: "Microsoft Edge",
     vendor: "Microsoft Corp.",
     engine: "Blink / V8",
-    version: "155 (155.0.4283.60)",
+    version: "155 (155.0.4283.62)",
     privacySummary: "Tracking prevention (Basic/Balanced/Strict); telemetry on by default; built-in Bing AI Copilot",
     license: "Proprietary (Chromium core: BSD/Apache)",
     priceFree: true,
@@ -290,7 +290,7 @@ const BROWSERS: Browser[] = [
     license: "MPL-2.0 (open-source)",
     priceFree: true,
     sources: [
-      { label: "Brave GitHub releases", url: "https://github.com/brave/brave-browser/releases" },
+      { label: "Brave release notes", url: "https://brave.com/latest/" },
       { label: "Brave privacy features", url: "https://brave.com/privacy-features/" },
     ],
   },
@@ -476,6 +476,13 @@ export default function BrowserComparison2026Page() {
           <li><strong className="text-text">Best open-source:</strong> Firefox (MPL-2.0) or Tor Browser — both use Gecko, fully auditable.</li>
           <li><strong className="text-text">iPhone and Mac:</strong> Safari is built in and turns on Intelligent Tracking Prevention by default.<sup><a href="#cite-2" className="text-primary-600">[3]</a></sup></li>
         </ul>
+        <p className="mt-3 text-sm text-text-secondary">
+          Choosing between Chrome and Firefox?{" "}
+          <Link href="/compare/chrome-vs-firefox" className="text-primary-600 hover:underline font-medium">
+            Compare Chrome vs Firefox side by side
+          </Link>
+          .
+        </p>
       </section>
 
       {/* Main table */}
@@ -489,8 +496,8 @@ export default function BrowserComparison2026Page() {
           <h2 id="browscomp-full-comparison-table" className="text-2xl font-display font-bold text-text">Full comparison table</h2>
         </div>
         <p className="text-sm text-text-secondary mb-4">
-          <strong>Updated Oct 2026:</strong> versions are the current stable releases checked on October 16, 2026, from each vendor&apos;s release channel.<sup><a href="#cite-versions" className="text-primary-600">[*]</a></sup>{" "}
-          Third-party market-share estimates were removed. Every browser listed is free.
+          <strong>Updated Oct 19, 2026:</strong> current stable releases, including Microsoft Edge 155.0.4283.62.<sup><a href="#cite-versions" className="text-primary-600">[*]</a></sup>{" "}
+          Every browser listed is free.
         </p>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Browser comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
@@ -576,7 +583,7 @@ export default function BrowserComparison2026Page() {
             </li>
           ))}
           <li id="cite-versions">
-            <sup>*</sup> Stable versions read on October 16, 2026: Chrome from Google&apos;s version-history service (Windows stable), Firefox from Mozilla&apos;s product-details feed, Edge from Microsoft&apos;s Edge release API, Safari from Apple&apos;s Safari release notes, Brave from its GitHub releases, Opera from its official download directory, Vivaldi from the Vivaldi blog and Tor Browser from the Tor Project&apos;s release metadata. DuckDuckGo and Samsung Internet do not publish a single current version number. Browsers auto-update, so versions move quickly.
+            <sup>*</sup> Stable versions read on October 19, 2026: Chrome from Google&apos;s version-history service (Windows stable), Firefox from Mozilla&apos;s product-details feed, Edge from Microsoft&apos;s Edge stable-channel release notes, Safari from Apple&apos;s Safari release notes, Brave from its desktop release notes, Opera from its official download directory, Vivaldi from the Vivaldi blog and Tor Browser from the Tor Project&apos;s release metadata. DuckDuckGo and Samsung Internet do not publish a single current version number. Browsers auto-update, so versions move quickly.
           </li>
         </ol>
       </section>
