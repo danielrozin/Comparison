@@ -14,6 +14,7 @@ import { IPHONE_BROWSER_FAQS } from "@/lib/data/iphone-browser-blog";
 import { BEST_CLOUD_PLATFORMS_FAQS } from "@/lib/data/best-cloud-platforms-blog";
 import { MACBOOK_PRO_WEIGHT_FAQS } from "@/lib/data/macbook-pro-weight-blog";
 import { SHOPIFY_WOO_SQUARESPACE_FAQS } from "@/lib/data/shopify-woocommerce-squarespace-blog";
+import { COMPARE_CAR_INSURANCE_QUOTES_FAQS } from "@/lib/data/compare-car-insurance-quotes-blog";
 import { NAVIGATION_APPS_FAQS } from "@/lib/data/navigation-apps-blog";
 import { BEST_ACCOUNTING_FREELANCERS_FAQS } from "@/lib/data/best-accounting-freelancers-blog";
 import { BEST_PRODUCTIVITY_APPS_FAQS } from "@/lib/data/best-productivity-apps-blog";
@@ -48,6 +49,8 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   "best-browser-for-iphone-2026-safari-vs-chrome-vs-firefox": { faqs: IPHONE_BROWSER_FAQS },
   // ROO-235: FAQs mirror the visible FAQ section of the repo article; no personal byline.
   "macbook-pro-weight-2025-2026-complete-specs-comparison-guide": { faqs: MACBOOK_PRO_WEIGHT_FAQS },
+  // ROO-276: FAQs mirror the visible FAQ section of the repo article.
+  "how-to-compare-car-insurance-quotes": { faqs: COMPARE_CAR_INSURANCE_QUOTES_FAQS },
   "shopify-vs-woocommerce-vs-squarespace-2026": { faqs: SHOPIFY_WOO_SQUARESPACE_FAQS },
   "best-navigation-apps-2026-google-maps-waze-and-apple-maps-compared": { faqs: NAVIGATION_APPS_FAQS },
   "best-accounting-software-freelancers-2026": { faqs: BEST_ACCOUNTING_FREELANCERS_FAQS },
