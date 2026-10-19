@@ -46,6 +46,10 @@ import { MICROSOFT_WORD_VS_LIBREOFFICE } from "./microsoft-word-vs-libreoffice";
 import { COINBASE_VS_BINANCE } from "./coinbase-vs-binance";
 import { VENMO_VS_ZELLE } from "./venmo-vs-zelle";
 import { KINDLE_VS_KOBO } from "./kindle-vs-kobo";
+import { APPLE_TV_PLUS_VS_DISNEY_PLUS } from "./apple-tv-plus-vs-disney-plus";
+import { CNN_VS_FOX_NEWS } from "./cnn-vs-fox-news";
+import { APPLE_MUSIC_VS_YOUTUBE_MUSIC } from "./apple-music-vs-youtube-music";
+import { GOOGLE_FLIGHTS_VS_SKYSCANNER } from "./google-flights-vs-skyscanner";
 import { MACBOOK_AIR_VS_IPAD_AIR } from "./macbook-air-vs-ipad-air";
 import { GALAXY_Z_FLIP_8_VS_S26_ULTRA } from "./galaxy-z-flip-8-vs-galaxy-s26-ultra";
 import { GALAXY_S25_VS_GALAXY_S25_FE } from "./galaxy-s25-vs-galaxy-s25-fe";
@@ -161,6 +165,10 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [COINBASE_VS_BINANCE.slug]: COINBASE_VS_BINANCE,
   [VENMO_VS_ZELLE.slug]: VENMO_VS_ZELLE,
   [KINDLE_VS_KOBO.slug]: KINDLE_VS_KOBO,
+  [APPLE_TV_PLUS_VS_DISNEY_PLUS.slug]: APPLE_TV_PLUS_VS_DISNEY_PLUS,
+  [CNN_VS_FOX_NEWS.slug]: CNN_VS_FOX_NEWS,
+  [APPLE_MUSIC_VS_YOUTUBE_MUSIC.slug]: APPLE_MUSIC_VS_YOUTUBE_MUSIC,
+  [GOOGLE_FLIGHTS_VS_SKYSCANNER.slug]: GOOGLE_FLIGHTS_VS_SKYSCANNER,
   [MACBOOK_AIR_VS_IPAD_AIR.slug]: MACBOOK_AIR_VS_IPAD_AIR,
   [GALAXY_Z_FLIP_8_VS_S26_ULTRA.slug]: GALAXY_Z_FLIP_8_VS_S26_ULTRA,
   [GALAXY_S25_VS_GALAXY_S25_FE.slug]: GALAXY_S25_VS_GALAXY_S25_FE,
