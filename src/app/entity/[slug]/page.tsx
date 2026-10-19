@@ -10,7 +10,7 @@ import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/ent
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { prisma } from "@/lib/db/prisma";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-import { entityPageRobotsStatus, isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
+import { entityPageRobotsStatus, isEntityPageIndexable, shouldEntityPage404 } from "@/lib/seo/entity-page-indexable";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -65,6 +65,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // Shared with /compare/[slug]. A missing row is draft (noindex). A failed
   // lookup stays published, matching the previous optimistic default.
   const entityStatus = entityPageRobotsStatus({ lookupFailed, status: rawStatus });
+  // ROO-271 (D): unknown or unpublished slugs are a real 404, not a 200
+  // noindex placeholder (soft 404). Thrown outside the try so it is not
+  // swallowed; a failed lookup never 404s.
+  if (shouldEntityPage404({ lookupFailed, status: rawStatus })) notFound();
 
   const description =
     dbMetaDescription ||
@@ -169,17 +173,26 @@ export default async function EntityPage({ params }: PageProps) {
   // ROO-204: /alternatives/[slug] 404s unless the entity row is published
   // (#386). Track that here so this page only links the alternatives page when
   // it is live. `null` means the DB could not answer.
+  //
+  // ROO-271 (D): notFound() used to be called inside the try below, so the
+  // catch swallowed its NEXT_NOT_FOUND error and every unknown slug rendered
+  // a 200 noindex placeholder (soft 404). The lookup is now separate from the
+  // 404 decision; only a failed lookup renders optimistically.
   let alternativesStatusPublished: boolean | null = null;
+  let entityLookupFailed = false;
+  let entityRowStatus: string | null = null;
   try {
     const entityRow = await prisma.entity.findUnique({
       where: { slug },
       select: { status: true },
     });
+    entityRowStatus = entityRow?.status ?? null;
     alternativesStatusPublished = entityRow?.status === "published";
-    if (!entityRow || entityRow.status !== "published") notFound();
   } catch {
     // DB unavailable — allow render; worst case a draft renders once.
+    entityLookupFailed = true;
   }
+  if (shouldEntityPage404({ lookupFailed: entityLookupFailed, status: entityRowStatus })) notFound();
 
   // DAN-1289: every entity page gets a real intro <p> + a "vs" lede H2. Curated
   // copy (ENTITY_LEDE) wins; otherwise a templated fallback keeps the 200+

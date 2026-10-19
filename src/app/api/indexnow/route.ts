@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { submitToIndexNow, filterIndexableUrls, normalizeIndexNowUrl, INDEXNOW_KEY } from "@/lib/seo/indexnow";
+import { submitIndexNowGuarded, filterIndexableUrls, normalizeIndexNowUrl, INDEXNOW_KEY } from "@/lib/seo/indexnow";
 import sitemap, { generateSitemaps } from "@/app/sitemap";
 
 export const maxDuration = 60;
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     if (checked.dropped.length > 0) {
       console.info(`[indexnow] /api/indexnow dropped ${checked.dropped.length} URLs: ${checked.dropped.map((d) => `${d.url}(${d.reason})`).join(" ")}`);
     }
-    const result = await submitToIndexNow(checked.indexable);
+    const result = await submitIndexNowGuarded(checked.indexable, "publish", "api:indexnow:urls");
     return NextResponse.json({ keyLocation: `/${INDEXNOW_KEY}.txt`, ...result, dropped: checked.dropped });
   } else {
     return NextResponse.json(
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const result = await submitToIndexNow(urls);
+  const result = await submitIndexNowGuarded(urls, "sweep", "api:indexnow:all");
   return NextResponse.json({ keyLocation: `/${INDEXNOW_KEY}.txt`, ...result });
 }
 
@@ -95,7 +95,10 @@ export async function GET(request: NextRequest) {
     }
     try {
       const urls = await collectAllSitemapUrls();
-      const result = await submitToIndexNow(urls);
+      // Daily cron. The shared ledger skips URLs sent in the last 7 days and
+      // caps the sweep, so this rotates through the sitemap instead of
+      // re-sending every URL every day.
+      const result = await submitIndexNowGuarded(urls, "sweep", "cron:indexnow-all");
       return NextResponse.json({ keyLocation: `/${INDEXNOW_KEY}.txt`, ...result });
     } catch (e) {
       return NextResponse.json(

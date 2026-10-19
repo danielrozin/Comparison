@@ -8,16 +8,21 @@
  */
 
 import { IMAX_DOLBY_FAQS } from "@/lib/data/imax-dolby-blog";
+import { IPHONE_DUO_FAQS } from "@/lib/data/iphone-duo-blog";
 import { CASHIERS_CHECK_FAQS } from "@/lib/data/cashiers-check-blog";
 import { TEMU_SHEIN_AMAZON_FAQS } from "@/lib/data/temu-shein-amazon-blog";
 import { IPHONE_BROWSER_FAQS } from "@/lib/data/iphone-browser-blog";
+import { ANTIMALWARE_SERVICE_EXECUTABLE_FAQS } from "@/lib/data/antimalware-service-executable-blog";
 import { BEST_CLOUD_PLATFORMS_FAQS } from "@/lib/data/best-cloud-platforms-blog";
 import { MACBOOK_PRO_WEIGHT_FAQS } from "@/lib/data/macbook-pro-weight-blog";
 import { SHOPIFY_WOO_SQUARESPACE_FAQS } from "@/lib/data/shopify-woocommerce-squarespace-blog";
 import { COMPARE_CAR_INSURANCE_QUOTES_FAQS } from "@/lib/data/compare-car-insurance-quotes-blog";
 import { NAVIGATION_APPS_FAQS } from "@/lib/data/navigation-apps-blog";
 import { BEST_ACCOUNTING_FREELANCERS_FAQS } from "@/lib/data/best-accounting-freelancers-blog";
+import { STREAMING_SERVICES_FAQS } from "@/lib/data/streaming-services-blog";
 import { BEST_PRODUCTIVITY_APPS_FAQS } from "@/lib/data/best-productivity-apps-blog";
+import { CHEAPEST_CAR_INSURANCE_FAQS } from "@/lib/data/cheapest-car-insurance-blog";
+import { MARVEL_MOVIES_RANKED_FAQS } from "@/lib/data/marvel-movies-ranked-blog";
 
 export interface BlogFaq {
   question: string;
@@ -44,9 +49,13 @@ export interface BlogSchemaExtras {
 export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   // ROO-235: FAQs mirror the visible FAQ section of the repo article.
   "imax-vs-dolby-cinema-2026-is-the-premium-ticket-worth-it": { faqs: IMAX_DOLBY_FAQS },
+  // ROO-272: FAQs mirror the visible FAQ section of the repo article.
+  "iphone-duo-features": { faqs: IPHONE_DUO_FAQS },
   "how-to-get-a-cashiers-check": { faqs: CASHIERS_CHECK_FAQS },
   "temu-vs-shein-vs-amazon-where-to-shop-for-cheap-fashion-in-2026": { faqs: TEMU_SHEIN_AMAZON_FAQS },
   "best-browser-for-iphone-2026-safari-vs-chrome-vs-firefox": { faqs: IPHONE_BROWSER_FAQS },
+  // ROO-273: FAQs mirror the visible FAQ section of the repo article.
+  "what-is-antimalware-service-executable": { faqs: ANTIMALWARE_SERVICE_EXECUTABLE_FAQS },
   // ROO-235: FAQs mirror the visible FAQ section of the repo article; no personal byline.
   "macbook-pro-weight-2025-2026-complete-specs-comparison-guide": { faqs: MACBOOK_PRO_WEIGHT_FAQS },
   // ROO-276: FAQs mirror the visible FAQ section of the repo article.
@@ -54,7 +63,11 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   "shopify-vs-woocommerce-vs-squarespace-2026": { faqs: SHOPIFY_WOO_SQUARESPACE_FAQS },
   "best-navigation-apps-2026-google-maps-waze-and-apple-maps-compared": { faqs: NAVIGATION_APPS_FAQS },
   "best-accounting-software-freelancers-2026": { faqs: BEST_ACCOUNTING_FREELANCERS_FAQS },
+  "best-streaming-service-2026-hulu-vs-amazon-prime-vs-netflix": { faqs: STREAMING_SERVICES_FAQS },
   "best-productivity-apps-2026": { faqs: BEST_PRODUCTIVITY_APPS_FAQS },
+  // YMYL rewrite: FAQs mirror the visible FAQ section of the repo override.
+  "cheapest-car-insurance-companies-2026-ranked-and-compared": { faqs: CHEAPEST_CAR_INSURANCE_FAQS },
+  "best-marvel-movies-ranked-2026-mcu-definitive-list": { faqs: MARVEL_MOVIES_RANKED_FAQS },
   "best-cloud-platforms-2026": {
     faqs: BEST_CLOUD_PLATFORMS_FAQS,
     itemList: {
