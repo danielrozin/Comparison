@@ -1,4 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { notifyIndexNowNow } from "@/lib/seo/indexnow";
+
+/** Longest this route waits on the IndexNow flush before responding. */
+const INDEXNOW_REVALIDATE_WAIT_MS = 4000;
 
 /**
  * On-demand ISR revalidation for **Pages Router** routes (DAN-1201).
@@ -61,6 +65,20 @@ export default async function handler(
       );
       failed.push(path);
     }
+  }
+
+  // Compare pages are written before this revalidate call. Queue them for
+  // IndexNow and drain here: Pages Router API routes have no after(), so the
+  // short, time-boxed flush runs before the response. It never throws.
+  // Hard cap the wait: the page checks run in waves of 5s timeouts, so a long
+  // path list could otherwise hold the response well past the caller's
+  // timeout. Whatever is unfinished after the cap is left to the daily
+  // indexnow-recent cron.
+  if (revalidated.length > 0) {
+    await Promise.race([
+      notifyIndexNowNow(revalidated, "api:revalidate-pages").catch(() => null),
+      new Promise((resolve) => setTimeout(resolve, INDEXNOW_REVALIDATE_WAIT_MS)),
+    ]);
   }
 
   return res.status(200).json({

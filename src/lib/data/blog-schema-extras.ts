@@ -8,6 +8,7 @@
  */
 
 import { IMAX_DOLBY_FAQS } from "@/lib/data/imax-dolby-blog";
+import { CASHIERS_CHECK_FAQS } from "@/lib/data/cashiers-check-blog";
 import { TEMU_SHEIN_AMAZON_FAQS } from "@/lib/data/temu-shein-amazon-blog";
 import { IPHONE_BROWSER_FAQS } from "@/lib/data/iphone-browser-blog";
 import { BEST_CLOUD_PLATFORMS_FAQS } from "@/lib/data/best-cloud-platforms-blog";
@@ -40,6 +41,7 @@ export interface BlogSchemaExtras {
 export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   // ROO-235: FAQs mirror the visible FAQ section of the repo article.
   "imax-vs-dolby-cinema-2026-is-the-premium-ticket-worth-it": { faqs: IMAX_DOLBY_FAQS },
+  "how-to-get-a-cashiers-check": { faqs: CASHIERS_CHECK_FAQS },
   "temu-vs-shein-vs-amazon-where-to-shop-for-cheap-fashion-in-2026": { faqs: TEMU_SHEIN_AMAZON_FAQS },
   "best-browser-for-iphone-2026-safari-vs-chrome-vs-firefox": { faqs: IPHONE_BROWSER_FAQS },
   // ROO-235: FAQs mirror the visible FAQ section of the repo article; no personal byline.
