@@ -17,7 +17,14 @@ import {
   stripKeywordSuffixSlug,
 } from "@/lib/utils/slugify";
 
-export type SlugRowState = "live" | "hidden" | "missing";
+/**
+ * live    — published: renders and may be a redirect destination.
+ * noindex — provisional: renders at its own URL, but is never a redirect
+ *           destination (ROO-271: an alias must not 301 to a noindex page).
+ * hidden  — archived / draft / review: 404, blocks the builder.
+ * missing — no row.
+ */
+export type SlugRowState = "live" | "noindex" | "hidden" | "missing";
 
 export type ComparePageDecision =
   | { action: "render" }
@@ -135,7 +142,8 @@ export function decideComparePage(
   slug: string,
   stateOf: (candidate: string) => SlugRowState,
 ): ComparePageDecision {
-  if (stateOf(slug) === "live") return { action: "render" };
+  const own = stateOf(slug);
+  if (own === "live" || own === "noindex") return { action: "render" };
 
   const related = relatedComparisonSlugs(slug);
   for (const candidate of related) {
