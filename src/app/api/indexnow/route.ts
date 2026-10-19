@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { submitToIndexNow, INDEXNOW_KEY } from "@/lib/seo/indexnow";
+import { submitToIndexNow, filterIndexableUrls, normalizeIndexNowUrl, INDEXNOW_KEY } from "@/lib/seo/indexnow";
 import sitemap, { generateSitemaps } from "@/app/sitemap";
 
 export const maxDuration = 60;
@@ -54,7 +54,21 @@ export async function POST(request: NextRequest) {
       );
     }
   } else if (Array.isArray(body.urls)) {
-    urls = body.urls;
+    // Hand-picked URLs are checked first: only 200, canonical, indexable
+    // pages are sent. Sitemap URLs (mode 2) are indexable by construction.
+    const candidates = [
+      ...new Set(
+        body.urls
+          .map((u) => (typeof u === "string" ? normalizeIndexNowUrl(u) : null))
+          .filter((u): u is string => !!u)
+      ),
+    ].slice(0, 500);
+    const checked = await filterIndexableUrls(candidates);
+    if (checked.dropped.length > 0) {
+      console.info(`[indexnow] /api/indexnow dropped ${checked.dropped.length} URLs: ${checked.dropped.map((d) => `${d.url}(${d.reason})`).join(" ")}`);
+    }
+    const result = await submitToIndexNow(checked.indexable);
+    return NextResponse.json({ keyLocation: `/${INDEXNOW_KEY}.txt`, ...result, dropped: checked.dropped });
   } else {
     return NextResponse.json(
       { error: "Provide { urls: string[] } or { all: true }" },

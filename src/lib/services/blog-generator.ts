@@ -10,7 +10,7 @@ import { getPrisma } from "@/lib/db/prisma";
 import { searchTavily } from "./tavily-service";
 import { BLOG_CATEGORIES, validateBlogCategory } from "@/lib/utils/categories";
 import { checkBlogDedup, recordDedupRejection } from "./dedup-gate";
-import { submitToIndexNow } from "@/lib/seo/indexnow";
+import { notifyIndexNow } from "@/lib/seo/indexnow";
 import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { embedText } from "./embeddings";
 import { findRepoBlogArticle, findRepoBlogOverride, listRepoBlogArticles } from "@/lib/data/nba-season-preview-blog";
@@ -216,8 +216,11 @@ export async function saveBlogArticle(
         ...(titleEmbedding ? { titleEmbedding } : {}),
       },
     });
-    // Submit to IndexNow so Bing/Yandex/Naver index the new blog article within hours
-    void submitToIndexNow([`/blog/${result.slug}`]).catch(() => {});
+    // Queue IndexNow so Bing/Yandex/Naver recrawl the new or updated article.
+    // Only published rows; the batch is checked for 200/canonical/indexable.
+    if (result.status === "published") {
+      notifyIndexNow(`/blog/${result.slug}`, `saveBlogArticle:${options.source ?? "direct"}`);
+    }
     return { id: result.id };
   } catch (e) {
     console.error("Failed to save blog article:", e);
