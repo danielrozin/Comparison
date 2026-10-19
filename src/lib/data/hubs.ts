@@ -1,5 +1,18 @@
 export type HubFAQ = { q: string; a: string };
 
+/**
+ * ROO-275: an optional, dated block of compare links under its own H2 on a hub.
+ * Blocks add no FAQs and no schema. Links still pass the live-slug gate on render.
+ */
+export type HubLineupBlock = {
+  id: string;
+  heading: string;
+  intro: string;
+  updated: string;
+  links: { slug: string; label: string; note: string }[];
+  sources: { label: string; url: string }[];
+};
+
 export type HubEntry = {
   slug: string;
   title: string;
@@ -9,6 +22,7 @@ export type HubEntry = {
   comparisonSlugs: string[];
   faqs: HubFAQ[];
   categoryAnchor: string | null;
+  lineupBlocks?: HubLineupBlock[];
 };
 
 export const HUB_CONFIG: Record<string, HubEntry> = {
@@ -106,6 +120,42 @@ export const HUB_CONFIG: Record<string, HubEntry> = {
       "macbook-air-vs-dell-xps",
       "iphone-16-pro-vs-iphone-16-pro-max",
       "samsung-galaxy-s25-ultra-vs-galaxy-s25-plus",
+    ],
+    lineupBlocks: [
+      {
+        id: "iphone-2026-lineup",
+        heading: "iPhone 2026 lineup: 17 Pro Max, 18 Pro Max and iPhone Duo",
+        intro:
+          "Apple announced iPhone 18 Pro, iPhone 18 Pro Max and iPhone Duo, its first foldable iPhone, on September 9, 2026. iPhone 18 Pro and iPhone 18 Pro Max went on sale on September 18, 2026, and iPhone Duo goes on sale on October 23, 2026. These comparisons put the 2026 Pro models next to last year's iPhone 17 Pro and iPhone 17 Pro Max.",
+        updated: "2026-10-19",
+        links: [
+          {
+            slug: "iphone-17-pro-max-vs-iphone-18-pro-max",
+            label: "iPhone 17 Pro Max vs iPhone 18 Pro Max",
+            note: "The 6.9-inch Pro Max, one generation apart.",
+          },
+          {
+            slug: "iphone-17-pro-vs-iphone-18-pro",
+            label: "iPhone 17 Pro vs iPhone 18 Pro",
+            note: "The 6.3-inch Pro, one generation apart.",
+          },
+          {
+            slug: "iphone-17-pro-vs-pro-max",
+            label: "iPhone 17 Pro vs iPhone 17 Pro Max",
+            note: "Last year's two Pro sizes side by side.",
+          },
+        ],
+        sources: [
+          {
+            label: "Apple Newsroom: Apple debuts iPhone 18 Pro and iPhone 18 Pro Max (September 9, 2026)",
+            url: "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+          },
+          {
+            label: "Apple Newsroom: Apple unveils iPhone Duo (September 9, 2026)",
+            url: "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/",
+          },
+        ],
+      },
     ],
     faqs: [
       {

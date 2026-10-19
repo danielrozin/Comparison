@@ -104,6 +104,14 @@ export default async function HubPage({ params }: PageProps) {
 
   const schemas = hubSchemas(hub, spokes);
 
+  // ROO-275: optional dated lineup blocks; every link passes the same live gate.
+  const lineupBlocks = await Promise.all(
+    (hub.lineupBlocks ?? []).map(async (block) => {
+      const live = new Set(await filterLiveCompareSlugs(block.links.map((link) => link.slug)));
+      return { ...block, links: block.links.filter((link) => live.has(link.slug)) };
+    })
+  );
+
   return (
     <>
       {hub.categoryAnchor && (
@@ -208,6 +216,48 @@ export default async function HubPage({ params }: PageProps) {
             </ul>
           )}
         </section>
+
+        {/* ROO-275: lineup blocks (links only; no FAQs, no schema) */}
+        {lineupBlocks
+          .filter((block) => block.links.length > 0)
+          .map((block) => (
+            <section key={block.id} id={block.id} aria-labelledby={`${block.id}-heading`} className="mb-12">
+              <h2 id={`${block.id}-heading`} className="text-xl font-display font-bold text-text mb-3">
+                {block.heading}
+              </h2>
+              <p className="text-sm text-text-secondary mb-1 max-w-3xl">{block.intro}</p>
+              <p className="text-xs text-text-secondary mb-4">
+                Updated <time dateTime={block.updated}>{block.updated}</time>
+              </p>
+              <ul role="list" className="grid grid-cols-1 md:grid-cols-3 gap-3 list-none mb-4">
+                {block.links.map((link) => (
+                  <li key={link.slug} className="flex">
+                    <Link
+                      href={`/compare/${link.slug}`}
+                      className="block w-full p-4 rounded-xl border border-border hover:border-primary-300 hover:shadow-md transition-all bg-white"
+                    >
+                      <span className="block font-semibold text-text leading-snug">{link.label}</span>
+                      <span className="block text-xs text-text-secondary mt-1">{link.note}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              {block.sources.length > 0 && (
+                <div className="text-xs text-text-secondary">
+                  <span className="font-semibold">Sources</span>
+                  <ul className="list-disc pl-5 mt-1 space-y-0.5">
+                    {block.sources.map((source) => (
+                      <li key={source.url}>
+                        <a href={source.url} rel="noopener" target="_blank" className="hover:underline">
+                          {source.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
+          ))}
 
         {/* FAQ section */}
         <section aria-labelledby="faq-heading" className="mb-8">
