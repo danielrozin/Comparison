@@ -9,6 +9,7 @@
 
 import type { BlogArticle } from "@/lib/services/blog-generator";
 import { IMAX_DOLBY_ARTICLE, IMAX_DOLBY_BLOG_SLUG } from "@/lib/data/imax-dolby-blog";
+import { IPHONE_DUO_ARTICLE } from "@/lib/data/iphone-duo-blog";
 import { CASHIERS_CHECK_ARTICLE, CASHIERS_CHECK_BLOG_SLUG } from "@/lib/data/cashiers-check-blog";
 import { TEMU_SHEIN_AMAZON_ARTICLE, TEMU_SHEIN_AMAZON_BLOG_SLUG } from "@/lib/data/temu-shein-amazon-blog";
 import { IPHONE_BROWSER_ARTICLE, IPHONE_BROWSER_BLOG_SLUG } from "@/lib/data/iphone-browser-blog";
@@ -147,6 +148,7 @@ export const NBA_SEASON_PREVIEW_ARTICLE: BlogArticle = {
 
 const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   NBA_SEASON_PREVIEW_ARTICLE,
+  IPHONE_DUO_ARTICLE,
   GOOGLE_MAPS_ALTERNATIVES_ARTICLE,
   IMAX_DOLBY_ARTICLE,
   CASHIERS_CHECK_ARTICLE,
