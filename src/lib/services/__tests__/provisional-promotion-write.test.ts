@@ -10,9 +10,8 @@ vi.mock("@/lib/db/prisma", () => ({
 }));
 vi.mock("@/lib/services/redis", () => ({ getRedis: () => null }));
 vi.mock("@/lib/seo/indexnow", () => ({
-  submitComparisonToIndexNow: (...args: unknown[]) => {
+  notifyIndexNow: (...args: unknown[]) => {
     indexNow(...args);
-    return Promise.resolve();
   },
 }));
 vi.mock("@/lib/services/internal-linking-engine", () => ({
@@ -41,6 +40,18 @@ describe("applyProvisionalPromotion", () => {
       where: { slug: "canoe-vs-kayak", status: "provisional" },
       data: expect.objectContaining({ status: "published", contentScore: 70 }),
     });
+    expect(indexNow).toHaveBeenCalledWith("/compare/canoe-vs-kayak", "promote-provisional");
+  });
+
+  it("does not queue IndexNow when the recheck leaves the page provisional (noindex)", async () => {
+    updateMany.mockResolvedValue({ count: 1 });
+    await applyProvisionalPromotion({
+      slug: "canoe-vs-kayak",
+      status: "provisional",
+      contentScore: 40,
+      content: {},
+    });
+    expect(indexNow).not.toHaveBeenCalled();
   });
 
   it("does not revive a row that left provisional before the write", async () => {

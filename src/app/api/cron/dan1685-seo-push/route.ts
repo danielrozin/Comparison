@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { notifyIndexNow } from "@/lib/seo/indexnow";
 
 export const maxDuration = 60;
 
@@ -147,6 +148,7 @@ export async function GET(request: NextRequest) {
       data: { metaTitle: c.metaTitle, metaDescription: c.metaDescription },
     });
     results.push(`✓ comparison meta set: /compare/${c.slug}  T(${c.metaTitle.length})`);
+    notifyIndexNow(`/compare/${c.slug}`, "cron:dan1685-seo-push");
   }
 
   // 2) Blog meta rewrites
@@ -161,6 +163,7 @@ export async function GET(request: NextRequest) {
       data: { metaTitle: b.metaTitle, metaDescription: b.metaDescription },
     });
     results.push(`✓ blog meta set: /blog/${b.slug}  T(${b.metaTitle.length})`);
+    notifyIndexNow(`/blog/${b.slug}`, "cron:dan1685-seo-push");
   }
 
   // 3) Internal links into ww1-vs-ww2
