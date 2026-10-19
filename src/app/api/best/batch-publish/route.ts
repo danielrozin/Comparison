@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getPrisma } from "@/lib/db/prisma";
+import { notifyIndexNow } from "@/lib/seo/indexnow";
 
 const BestFAQSchema = z.object({
   q: z.string().min(1),
@@ -97,6 +98,12 @@ export async function POST(request: NextRequest) {
       results.push({ slug: page.slug, status: "error", error: err instanceof Error ? err.message : "Unknown error" });
     }
   }
+
+  // Every upserted page is written as published; queue them in one batch.
+  notifyIndexNow(
+    results.filter((r) => r.status !== "error").map((r) => `/best/${r.slug}`),
+    "api:best-batch-publish",
+  );
 
   const created = results.filter((r) => r.status === "created").length;
   const updated = results.filter((r) => r.status === "updated").length;

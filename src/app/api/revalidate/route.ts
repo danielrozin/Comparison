@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { notifyIndexNow } from "@/lib/seo/indexnow";
 
 /**
  * On-demand ISR revalidation endpoint.
@@ -48,6 +49,12 @@ export async function POST(request: NextRequest) {
         revalidated.push(path);
       }
     }
+
+    // Revalidation follows a content write. Queue the page URLs for IndexNow;
+    // sitemaps and APIs are filtered out, and each page is checked for
+    // 200 / canonical / not-noindex before submit.
+    // The home page is left to the daily sitemap push.
+    notifyIndexNow(revalidated.filter((p) => p !== "/"), "api:revalidate");
 
     return NextResponse.json({
       revalidated,

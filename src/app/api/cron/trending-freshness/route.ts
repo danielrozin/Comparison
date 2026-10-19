@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { notifyIndexNow } from "@/lib/seo/indexnow";
 
 export const maxDuration = 60;
 
@@ -108,6 +109,7 @@ Return ONLY the rewritten summary (2-3 sentences, no quotes, no prefix text). Ke
       });
 
       results.push({ slug: comp.slug, updated: true });
+      notifyIndexNow(`/compare/${comp.slug}`, "cron:trending-freshness");
     } catch (err) {
       results.push({ slug: comp.slug, updated: false, error: String(err) });
     }

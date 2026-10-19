@@ -42,7 +42,7 @@ import {
 import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 import { parsedEntityTokens, parsedSlugForQuery } from "@/lib/search/did-you-mean";
 import { REDIRECTED_COMPARE_SLUGS, isRedirectedCompareSlug } from "@/lib/redirects/compare-redirects";
-import { submitComparisonToIndexNow } from "@/lib/seo/indexnow";
+import { notifyIndexNow } from "@/lib/seo/indexnow";
 import { resolveComparisonDescription } from "@/lib/seo/metadata";
 import {
   appendEditorialRelatedLinks,
@@ -1359,7 +1359,7 @@ export async function saveComparison(
     // IndexNow only for pages we are willing to have crawled. Provisional
     // pages are noindex and must not be pushed to search engines.
     if (persistedStatus === "published") {
-      void submitComparisonToIndexNow(data.slug).catch(() => {});
+      notifyIndexNow(`/compare/${data.slug}`, `saveComparison:${origin}`);
     }
 
     if (promotionReasons.length > 0) {
@@ -1442,7 +1442,7 @@ export async function applyProvisionalPromotion(input: {
     await invalidateCache(`comparison:editorial-pack:${input.slug}`);
     await invalidateCache("trending:10");
     if (input.status === "published") {
-      void submitComparisonToIndexNow(input.slug).catch(() => {});
+      notifyIndexNow(`/compare/${input.slug}`, "promote-provisional");
     }
     return true;
   } catch (err) {
