@@ -3493,7 +3493,13 @@ export function howToSchemaFromBlog(opts: {
   const headingMatches = opts.content.match(/^##\s+(.+)$/gm) ?? [];
   const steps = headingMatches
     .map((h) => h.replace(/^##\s+/, "").trim())
-    .filter((s) => s.length > 0 && !/introduction|conclusion|summary|overview/i.test(s))
+    // ROO-276: reference sections are not steps.
+    .filter(
+      (s) =>
+        s.length > 0 &&
+        !/introduction|conclusion|summary|overview/i.test(s) &&
+        !/^(key takeaways|faqs?|frequently asked questions|sources|compare further)$/i.test(s),
+    )
     .slice(0, 10);
 
   if (steps.length < 2) return null;
