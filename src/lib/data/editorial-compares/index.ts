@@ -7,6 +7,7 @@ import { CARHARTT_VS_DICKIES } from "./carhartt-vs-dickies";
 import { SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA } from "./samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra";
 import { IPHONE_16E_VS_IPHONE_17E } from "./iphone-16e-vs-iphone-17e";
 import { PIXEL_9A_VS_PIXEL_9 } from "./pixel-9a-vs-pixel-9";
+import { IPHONE_18_PRO_VS_IPHONE_18_PRO_MAX } from "./iphone-18-pro-vs-iphone-18-pro-max";
 import { POLAROID_GO_GEN_2_VS_INSTAX_MINI } from "./polaroid-go-gen-2-vs-fujifilm-instax-mini";
 import { GALAXY_Z_FOLD_7_VS_S26_ULTRA } from "./galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra";
 import { GOOGLE_MAPS_VS_APPLE_MAPS } from "./google-maps-vs-apple-maps";
@@ -14,6 +15,9 @@ import { GOOGLE_MAPS_VS_WAZE } from "./google-maps-vs-waze";
 import { BRAVE_VS_CHROME } from "./brave-vs-chrome";
 import { IPHONE_17_VS_IPHONE_AIR } from "./iphone-17-vs-iphone-air";
 import { CHROME_VS_SAFARI } from "./chrome-vs-safari";
+import { CHROME_VS_EDGE } from "./chrome-vs-edge";
+import { EPIC_GAMES_VS_STEAM } from "./epic-games-vs-steam";
+import { CRONOMETER_VS_MYFITNESSPAL } from "./cronometer-vs-myfitnesspal";
 import { IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA } from "./iphone-17-pro-vs-samsung-galaxy-s25-ultra-vs-samsung-galaxy-s26-ultra";
 import { ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA } from "./oneplus-15-vs-samsung-galaxy-s26-ultra-vs-samsung-galaxy-s25-ultra";
 import { ONEPLUS_13_VS_ONEPLUS_13R } from "./oneplus-13-vs-oneplus-13r";
@@ -91,6 +95,9 @@ import { RTX_4090_VS_RTX_5080 } from "./rtx-4090-vs-rtx-5080";
 import { CARNIVAL_VS_ROYAL_CARIBBEAN } from "./carnival-vs-royal-caribbean";
 import { MASTERCARD_VS_VISA } from "./mastercard-vs-visa";
 import { COSTCO_VS_WALMART } from "./costco-vs-walmart";
+import { GATORADE_VS_POWERADE } from "./gatorade-vs-powerade";
+import { MCDONALDS_VS_WENDYS } from "./mcdonalds-vs-wendys";
+import { NIKE_VS_UNDER_ARMOUR } from "./nike-vs-under-armour";
 import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
 import { MYSQL_VS_POSTGRESQL } from "./mysql-vs-postgresql";
 import { GEICO_VS_STATE_FARM } from "./geico-vs-state-farm";
@@ -119,6 +126,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA.slug]: SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA,
   [IPHONE_16E_VS_IPHONE_17E.slug]: IPHONE_16E_VS_IPHONE_17E,
   [PIXEL_9A_VS_PIXEL_9.slug]: PIXEL_9A_VS_PIXEL_9,
+  [IPHONE_18_PRO_VS_IPHONE_18_PRO_MAX.slug]: IPHONE_18_PRO_VS_IPHONE_18_PRO_MAX,
   [POLAROID_GO_GEN_2_VS_INSTAX_MINI.slug]: POLAROID_GO_GEN_2_VS_INSTAX_MINI,
   [GALAXY_Z_FOLD_7_VS_S26_ULTRA.slug]: GALAXY_Z_FOLD_7_VS_S26_ULTRA,
   [GOOGLE_MAPS_VS_APPLE_MAPS.slug]: GOOGLE_MAPS_VS_APPLE_MAPS,
@@ -126,6 +134,9 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [BRAVE_VS_CHROME.slug]: BRAVE_VS_CHROME,
   [IPHONE_17_VS_IPHONE_AIR.slug]: IPHONE_17_VS_IPHONE_AIR,
   [CHROME_VS_SAFARI.slug]: CHROME_VS_SAFARI,
+  [CHROME_VS_EDGE.slug]: CHROME_VS_EDGE,
+  [EPIC_GAMES_VS_STEAM.slug]: EPIC_GAMES_VS_STEAM,
+  [CRONOMETER_VS_MYFITNESSPAL.slug]: CRONOMETER_VS_MYFITNESSPAL,
   [IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA.slug]: IPHONE_17_PRO_VS_S25_ULTRA_VS_S26_ULTRA,
   [ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA.slug]: ONEPLUS_15_VS_S26_ULTRA_VS_S25_ULTRA,
   [ONEPLUS_13_VS_ONEPLUS_13R.slug]: ONEPLUS_13_VS_ONEPLUS_13R,
@@ -203,6 +214,9 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CARNIVAL_VS_ROYAL_CARIBBEAN.slug]: CARNIVAL_VS_ROYAL_CARIBBEAN,
   [MASTERCARD_VS_VISA.slug]: MASTERCARD_VS_VISA,
   [COSTCO_VS_WALMART.slug]: COSTCO_VS_WALMART,
+  [GATORADE_VS_POWERADE.slug]: GATORADE_VS_POWERADE,
+  [MCDONALDS_VS_WENDYS.slug]: MCDONALDS_VS_WENDYS,
+  [NIKE_VS_UNDER_ARMOUR.slug]: NIKE_VS_UNDER_ARMOUR,
   [MEDICAID_VS_MEDICARE.slug]: MEDICAID_VS_MEDICARE,
   [MYSQL_VS_POSTGRESQL.slug]: MYSQL_VS_POSTGRESQL,
   [GEICO_VS_STATE_FARM.slug]: GEICO_VS_STATE_FARM,
