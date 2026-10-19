@@ -14,6 +14,7 @@ import { BEST_CLOUD_PLATFORMS_ARTICLE, BEST_CLOUD_PLATFORMS_BLOG_SLUG } from "@/
 import { SHOPIFY_WOO_SQUARESPACE_ARTICLE, SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG } from "@/lib/data/shopify-woocommerce-squarespace-blog";
 import { BEST_ACCOUNTING_FREELANCERS_ARTICLE, BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG } from "@/lib/data/best-accounting-freelancers-blog";
 import { BEST_PRODUCTIVITY_APPS_ARTICLE, BEST_PRODUCTIVITY_APPS_BLOG_SLUG } from "@/lib/data/best-productivity-apps-blog";
+import { MARVEL_MOVIES_RANKED_ARTICLE, MARVEL_MOVIES_RANKED_BLOG_SLUG } from "@/lib/data/marvel-movies-ranked-blog";
 import { GOOGLE_MAPS_ALTERNATIVES_ARTICLE } from "@/lib/data/google-maps-alternatives-blog";
 
 export const NBA_SEASON_PREVIEW_BLOG_SLUG = "2026-27-nba-season-preview-10-debates";
@@ -147,6 +148,7 @@ const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   SHOPIFY_WOO_SQUARESPACE_ARTICLE,
   BEST_ACCOUNTING_FREELANCERS_ARTICLE,
   BEST_PRODUCTIVITY_APPS_ARTICLE,
+  MARVEL_MOVIES_RANKED_ARTICLE,
 ];
 
 /**
@@ -160,6 +162,7 @@ const REPO_BLOG_DB_OVERRIDE_SLUGS: ReadonlySet<string> = new Set([
   SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG,
   BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG,
   BEST_PRODUCTIVITY_APPS_BLOG_SLUG,
+  MARVEL_MOVIES_RANKED_BLOG_SLUG,
 ]);
 
 export function findRepoBlogOverride(slug: string): BlogArticle | null {
