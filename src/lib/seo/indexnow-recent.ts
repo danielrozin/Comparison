@@ -11,13 +11,14 @@ export function recentSitemapUrls(
   entries: { url: string | URL; lastModified?: string | Date }[],
   cutoff: Date
 ): string[] {
-  const out = new Set<string>();
+  // Newest first, so the daily cap spends itself on the freshest changes.
+  const latest = new Map<string, number>();
   for (const e of entries) {
     if (!e.lastModified) continue;
     const t = new Date(e.lastModified).getTime();
     if (!Number.isFinite(t) || t < cutoff.getTime()) continue;
     const url = normalizeIndexNowUrl(typeof e.url === "string" ? e.url : String(e.url));
-    if (url) out.add(url);
+    if (url) latest.set(url, Math.max(t, latest.get(url) ?? 0));
   }
-  return [...out];
+  return [...latest.entries()].sort((a, b) => b[1] - a[1]).map(([url]) => url);
 }
