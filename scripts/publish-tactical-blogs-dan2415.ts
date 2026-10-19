@@ -756,8 +756,10 @@ For regulated industries (legal, healthcare, finance), both have enterprise cont
     metaTitle: "Las Vegas vs Orlando for Vacation: Which Is Worth It? (2026)",
     metaDescription:
       "Las Vegas: $180–$350/night, adult-focused. Orlando: $120–$250/night + $400–$600 per-person theme park costs. Honest cost breakdown for families vs couples in 2026.",
+    // ROO-263: for-entertainment-las-vegas-vs-orlando is 410 Gone (ROO-270,
+    // src/lib/redirects/compare-gone.ts). No live Vegas/Orlando compare page
+    // exists to replace it, so it is removed rather than swapped.
     relatedComparisonSlugs: [
-      "for-entertainment-las-vegas-vs-orlando",
       "miami-vs-las-vegas",
       "orlando-vs-miami",
     ],
