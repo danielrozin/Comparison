@@ -4,7 +4,7 @@
  * Serves Google's image extension namespace for:
  *  - Every canonical comparison page (the same set sitemap/1.xml emits)
  *  - All published blog articles (~370 pages)
- *  - Top 1,000 entity profile pages
+ *  - Entity profile pages that resolve (same set as sitemap shard 2)
  *
  * DAN-2045: this route used to take the top 3,000 comparison rows by `viewCount`
  * with no status filter, so it submitted 2,707 URLs that 404 (90% of its
@@ -28,6 +28,7 @@
 
 import { getPrisma } from "@/lib/db/prisma";
 import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
+import { sitemapEntityWhere } from "@/lib/seo/sitemap-entity-where";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SITE_URL } from "@/lib/utils/constants";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
@@ -135,7 +136,10 @@ export async function GET() {
     // Blog service unavailable — skip blog images
   }
 
-  // Entity profile images — top 1,000 entities by ID (most established entities).
+  // Entity profile images. ROO-271 (QA P2): this used to take the first 1,000
+  // entity rows with no filter, so ~790 unpublished/unknown slugs that 404
+  // since #457 were submitted. Now it uses sitemapEntityWhere(), the exact set
+  // sitemap shard 2 emits (published + at least one canonical comparison).
   // Entity OG images are generated via /api/og?title=...&type=entity and indexed by
   // Google Images to drive visual traffic on "X profile" and "about X" queries.
   // AI crawlers (Perplexity, ChatGPT) also follow entity images to build their
@@ -144,6 +148,7 @@ export async function GET() {
   if (prisma) {
     try {
       const entities = await prisma.entity.findMany({
+        where: sitemapEntityWhere(),
         select: { slug: true, name: true },
         orderBy: { id: "asc" },
         take: 1000,
