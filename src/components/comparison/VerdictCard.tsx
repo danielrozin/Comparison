@@ -1,7 +1,6 @@
 import Image from "next/image";
 import type { ComparisonEntityData, ComparisonAttribute } from "@/types";
 import { AiAssistedBadge } from "./AiAssistedBadge";
-import { VerdictFeedbackWidget } from "./VerdictFeedbackWidget";
 import { VerdictShareButton } from "./VerdictShareButton";
 import { VerdictShareStrip } from "./VerdictShareStrip";
 import { ScoreBarPanel } from "./ScoreBarPanel";
@@ -84,7 +83,7 @@ function computeScores(
   return { scoreA, scoreB };
 }
 
-export function VerdictCard({ verdict, shortAnswer, entities, attributes, comparisonSlug, winnerName }: VerdictCardProps) {
+export function VerdictCard({ verdict, shortAnswer, entities, attributes, winnerName }: VerdictCardProps) {
   const entityA = entities[0];
   const entityB = entities[1];
   if (!entityA || !entityB) return null;
@@ -127,10 +126,9 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
             </p>
           </div>
 
-          {/* Feedback widget */}
-          <div className="mb-6">
-            <VerdictFeedbackWidget comparisonSlug={comparisonSlug} />
-          </div>
+          {/* ROO-264: the verdict feedback widget moved lower on the page
+              (pages/compare/[slug].tsx) so "Compare next" sits right under
+              the verdict. */}
 
           {/* Score bar — animated on scroll-into-view */}
           {scores && (
