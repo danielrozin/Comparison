@@ -8,7 +8,7 @@ import { GUIDE_CONFIG } from "@/lib/data/guides";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
 import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
-import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
+import { sitemapEntityWhere } from "@/lib/seo/sitemap-entity-where";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
 import { listEditorialCompareSitemapEntries } from "@/lib/data/editorial-compares";
 import { LAST_UPDATED as BROWSER_COMPARISON_LAST_UPDATED } from "@/app/browser-comparison-2026/last-updated";
@@ -362,17 +362,7 @@ export default async function sitemap({
       // uses a junction table via ComparisonEntity; comparisonsA covers all
       // comparisons this entity participates in regardless of A/B position.
       const entities = await prisma.entity.findMany({
-        where: {
-          status: "published",
-          comparisonsA: {
-            some: {
-              comparison: {
-                status: "published",
-                slug: { notIn: REDIRECTED_COMPARE_SLUGS },
-              },
-            },
-          },
-        },
+        where: sitemapEntityWhere(),
         select: { slug: true, name: true, updatedAt: true },
         orderBy: { id: "asc" },
         take: MAX_URLS_PER_SITEMAP,
