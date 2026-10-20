@@ -91,3 +91,64 @@ export function CompareNextCards({
     </section>
   );
 }
+
+export const COMPARE_NEXT_ROW_PLACEMENT = "under-verdict-next";
+export const COMPARE_NEXT_ROW_LIMIT = 3;
+
+/**
+ * ROO-264 — compact "Compare next" row directly under the verdict.
+ *
+ * The verdict feedback widget rendered for most search-landed sessions but
+ * got no votes, and the related cards below it are past where most visitors
+ * stop scrolling. This row puts 2–3 onward links right under the verdict.
+ *
+ * Same data as the ROO-155 cards (`chips` from buildCompareNextChips, already
+ * filtered to live 200 compares on the server). Rendered server-side with a
+ * fixed one-line height per link, so it adds no layout shift. With fewer than
+ * two links it renders nothing (also decided on the server).
+ */
+export function CompareNextRow({
+  slug,
+  chips,
+}: {
+  slug: string;
+  chips: readonly CompareNextStepChip[];
+}) {
+  const links = chips.filter((chip) => chip.slug !== slug).slice(0, COMPARE_NEXT_ROW_LIMIT);
+  if (links.length < 2) return null;
+  const sourcePage = `/compare/${slug}`;
+
+  return (
+    <nav
+      aria-label="Compare next"
+      data-testid="compare-next-row"
+      data-placement={COMPARE_NEXT_ROW_PLACEMENT}
+      className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-1 pb-3"
+    >
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+        <span className="text-xs font-semibold uppercase tracking-wide text-text-secondary">
+          Compare next
+        </span>
+        <ul className="flex flex-col gap-2 sm:flex-row sm:flex-wrap list-none m-0 p-0 min-w-0">
+          {links.map((chip, index) => (
+            <li key={chip.slug} className="min-w-0">
+              <Link
+                href={`/compare/${chip.slug}?source_page=${encodeURIComponent(sourcePage)}`}
+                onClick={() =>
+                  trackRelatedComparisonClick(sourcePage, chip.slug, {
+                    placement: COMPARE_NEXT_ROW_PLACEMENT,
+                    position: String(index + 1),
+                  })
+                }
+                className="flex items-center gap-1.5 h-11 max-w-full rounded-full border border-primary-200 bg-white px-4 text-sm font-semibold text-primary-800 hover:border-primary-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+              >
+                <span className="truncate">{chip.label}</span>
+                <span aria-hidden="true" className="text-primary-500">&rarr;</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+}
