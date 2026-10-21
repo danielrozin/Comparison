@@ -1,0 +1,170 @@
+{
+  "title": "F-22 Raptor vs F-35 Lightning II",
+  "entityA": "F-22 Raptor",
+  "entityB": "F-35 Lightning II",
+  "category": "military",
+  "shortAnswer": "The F-22 Raptor is the world's premier air superiority fighter with unmatched speed, altitude, and dogfighting capability. The F-35 is a multi-role stealth fighter optimized for strike, ISR, and network warfare. The F-22 wins the air fight; the F-35 wins everything else.",
+  "stats": [
+    {
+      "label": "Top Speed",
+      "valueA": "Mach 2.25",
+      "valueB": "Mach 1.6",
+      "winner": "a"
+    },
+    {
+      "label": "Supercruise",
+      "valueA": "Yes (Mach 1.5)",
+      "valueB": "No",
+      "winner": "a"
+    },
+    {
+      "label": "Sensor Fusion",
+      "valueA": "Good",
+      "valueB": "Best in class",
+      "winner": "b"
+    },
+    {
+      "label": "Units Built",
+      "valueA": "187",
+      "valueB": "1,000+",
+      "winner": "b"
+    },
+    {
+      "label": "Unit Cost",
+      "valueA": "$150M+",
+      "valueB": "$80M",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Different jets for different missions. F-22 for air dominance, F-35 for multi-role flexibility. The F-35's sensor fusion and versatility make it the future, while the F-22 remains unbeatable in a dogfight.",
+  "slug": "f-22-vs-f-35",
+  "imageA": {
+    "url": "video-assets/f-22-vs-f-35/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1e/F-22_Raptor_edit1_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 1988,
+    "height": 1491,
+    "credit": "F-22_Raptor.JPG: Master Sgt. Andy Dunaway",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:F-22_Raptor_edit1_(cropped).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1e/F-22_Raptor_edit1_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/f-22-vs-f-35/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/6/61/F-35A_flight_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 1772,
+    "height": 1271,
+    "credit": "U.S. Air Force photo by Master Sgt. Donald R. Allen",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:F-35A_flight_(cropped).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/6/61/F-35A_flight_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "America built 187 Raptors and then stopped. It's built over a thousand F-35s.",
+    "tape": "One jet owns the sky. The other owns the war around it.",
+    "rounds": [
+      "Mach 2.25 versus Mach 1.6. The Raptor runs away from fights it doesn't want.",
+      "The F-22 cruises past the sound barrier without afterburner. The F-35 can't do it at all.",
+      "The F-35 doesn't just see more, it hands you the picture already solved.",
+      "187 Raptors means a jet that mostly can't be everywhere. A thousand F-35s can.",
+      "Eighty million buys one F-35. The same money nearly buys you half a Raptor."
+    ],
+    "verdict": "F-35 takes it three to two. Pick the Raptor only if the mission is pure air dominance."
+  },
+  "audio": {
+    "cold": "video-assets/f-22-vs-f-35/audio/cold.mp3",
+    "tape": "video-assets/f-22-vs-f-35/audio/tape.mp3",
+    "rounds": [
+      "video-assets/f-22-vs-f-35/audio/round-1.mp3",
+      "video-assets/f-22-vs-f-35/audio/round-2.mp3",
+      "video-assets/f-22-vs-f-35/audio/round-3.mp3",
+      "video-assets/f-22-vs-f-35/audio/round-4.mp3",
+      "video-assets/f-22-vs-f-35/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/f-22-vs-f-35/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 243,
+    "tape": 152,
+    "rounds": [
+      228,
+      228,
+      161,
+      245,
+      207
+    ],
+    "verdict": 211,
+    "leadInFrames": 9
+  },
+  "transcript": "America built 187 Raptors and then stopped. It's built over a thousand F-35s. One jet owns the sky. The other owns the war around it. Mach 2.25 versus Mach 1.6. The Raptor runs away from fights it doesn't want. The F-22 cruises past the sound barrier without afterburner. The F-35 can't do it at all. The F-35 doesn't just see more, it hands you the picture already solved. 187 Raptors means a jet that mostly can't be everywhere. A thousand F-35s can. Eighty million buys one F-35. The same money nearly buys you half a Raptor. F-35 takes it three to two. Pick the Raptor only if the mission is pure air dominance.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "America built 187 Raptors and then stopped. It's built over a thousand F-35s.",
+      "startOffset": 0,
+      "endOffset": 8.085918
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One jet owns the sky. The other owns the war around it.",
+      "startOffset": 8.085918,
+      "endOffset": 13.141632
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Mach 2.25 versus Mach 1.6. The Raptor runs away from fights it doesn't want.",
+      "startOffset": 13.141632,
+      "endOffset": 20.757346
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "The F-22 cruises past the sound barrier without afterburner. The F-35 can't do it at all.",
+      "startOffset": 20.757346,
+      "endOffset": 28.37306
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "The F-35 doesn't just see more, it hands you the picture already solved.",
+      "startOffset": 28.37306,
+      "endOffset": 33.742244
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "187 Raptors means a jet that mostly can't be everywhere. A thousand F-35s can.",
+      "startOffset": 33.742244,
+      "endOffset": 41.906530000000004
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Eighty million buys one F-35. The same money nearly buys you half a Raptor.",
+      "startOffset": 41.906530000000004,
+      "endOffset": 48.79081600000001
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "F-35 takes it three to two. Pick the Raptor only if the mission is pure air dominance.",
+      "startOffset": 48.79081600000001,
+      "endOffset": 55.83183600000001
+    }
+  ],
+  "youtubeTitle": "F-22 Raptor vs F-35 Lightning II: Which Jet Actually Wins?",
+  "youtubeDescription": "Head to head on speed, supercruise, sensor fusion, production numbers and unit cost, the F-22 Raptor and F-35 Lightning II split the scorecard three to two. The Raptor hits Mach 2.25 and supercruises at Mach 1.5, but only 187 were ever built at over 150 million each. The F-35 counters with best in class sensor fusion, more than a thousand airframes and an 80 million dollar price tag.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/f-22-vs-f-35",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by F-22_Raptor.JPG: Master Sgt. Andy Dunaway (Public domain) — https://commons.wikimedia.org/wiki/File:F-22_Raptor_edit1_(cropped).jpg",
+    "Image B by U.S. Air Force photo by Master Sgt. Donald R. Allen (Public domain) — https://commons.wikimedia.org/wiki/File:F-35A_flight_(cropped).jpg"
+  ]
+}

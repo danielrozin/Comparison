@@ -1,0 +1,129 @@
+{
+  "title": "India vs China",
+  "entityA": "India",
+  "entityB": "China",
+  "category": "countries",
+  "shortAnswer": "India has overtaken China as the world's most populous country with 1.44B people. China has a much larger economy ($17.7T vs $3.7T) but India has faster GDP growth and a younger population.",
+  "stats": [
+    {
+      "label": "Population",
+      "valueA": "1.44B",
+      "valueB": "1.4B",
+      "winner": "a"
+    },
+    {
+      "label": "GDP",
+      "valueA": "$3.7T",
+      "valueB": "$17.7T",
+      "winner": "b"
+    },
+    {
+      "label": "GDP Growth Rate",
+      "valueA": "6.5%",
+      "valueB": "4.5%",
+      "winner": "a"
+    },
+    {
+      "label": "Median Age",
+      "valueA": "28.4",
+      "valueB": "39.0",
+      "winner": "a"
+    }
+  ],
+  "verdict": "China is far ahead economically but India's demographics and growth rate give it strong long-term potential.",
+  "slug": "india-vs-china",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "India has more people than China. That hasn't been true in all of modern history.",
+    "tape": "China owns today's economy. India owns the clock.",
+    "rounds": [
+      "1.44 billion against 1.4 billion. The crown changed hands, and it isn't going back.",
+      "$17.7 trillion to $3.7 trillion. China's economy is nearly five times bigger.",
+      "6.5% against 4.5%. India adds growth faster every single year the gap holds.",
+      "Median age 28.4 versus 39. India's workers are entering their prime as China's retire."
+    ],
+    "verdict": "India takes it 3-1 on trajectory. Want power right now, China is still the answer."
+  },
+  "audio": {
+    "cold": "video-assets/india-vs-china/audio/cold.mp3",
+    "tape": "video-assets/india-vs-china/audio/tape.mp3",
+    "rounds": [
+      "video-assets/india-vs-china/audio/round-1.mp3",
+      "video-assets/india-vs-china/audio/round-2.mp3",
+      "video-assets/india-vs-china/audio/round-3.mp3",
+      "video-assets/india-vs-china/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/india-vs-china/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 188,
+    "tape": 150,
+    "rounds": [
+      240,
+      257,
+      245,
+      267
+    ],
+    "verdict": 209,
+    "leadInFrames": 9
+  },
+  "transcript": "India has more people than China. That hasn't been true in all of modern history. China owns today's economy. India owns the clock. 1.44 billion against 1.4 billion. The crown changed hands, and it isn't going back. $17.7 trillion to $3.7 trillion. China's economy is nearly five times bigger. 6.5% against 4.5%. India adds growth faster every single year the gap holds. Median age 28.4 versus 39. India's workers are entering their prime as China's retire. India takes it 3-1 on trajectory. Want power right now, China is still the answer.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "India has more people than China. That hasn't been true in all of modern history.",
+      "startOffset": 0,
+      "endOffset": 6.257346999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "China owns today's economy. India owns the clock.",
+      "startOffset": 6.257346999999999,
+      "endOffset": 11.257347
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "1.44 billion against 1.4 billion. The crown changed hands, and it isn't going back.",
+      "startOffset": 11.257347,
+      "endOffset": 19.264898
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "$17.7 trillion to $3.7 trillion. China's economy is nearly five times bigger.",
+      "startOffset": 19.264898,
+      "endOffset": 27.821019999999997
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "6.5% against 4.5%. India adds growth faster every single year the gap holds.",
+      "startOffset": 27.821019999999997,
+      "endOffset": 35.985305999999994
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Median age 28.4 versus 39. India's workers are entering their prime as China's retire.",
+      "startOffset": 35.985305999999994,
+      "endOffset": 44.88101999999999
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "India takes it 3-1 on trajectory. Want power right now, China is still the answer.",
+      "startOffset": 44.88101999999999,
+      "endOffset": 51.843672999999995
+    }
+  ],
+  "youtubeTitle": "India vs China: Who Actually Wins the Next 30 Years?",
+  "youtubeDescription": "India now has the world's largest population at 1.44 billion, faster GDP growth at 6.5%, and a median age over ten years younger than China's. China still holds a commanding economic lead with a $17.7 trillion GDP versus India's $3.7 trillion. We compare population, GDP, growth rate, and median age to see which country is really ahead.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/india-vs-china",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

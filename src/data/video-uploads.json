@@ -5944,6 +5944,119 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-19T10:40:45.426Z"
+    },
+    {
+      "slug": "india-vs-china",
+      "title": "India vs China",
+      "entityA": "India",
+      "entityB": "China",
+      "category": "countries",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "india-vs-china.mp4",
+      "durationSeconds": 49,
+      "transcript": "India has more people than China. That hasn't been true in all of modern history. China owns today's economy. India owns the clock. 1.44 billion against 1.4 billion. The crown changed hands, and it isn't going back. $17.7 trillion to $3.7 trillion. China's economy is nearly five times bigger. 6.5% against 4.5%. India adds growth faster every single year the gap holds. Median age 28.4 versus 39. India's workers are entering their prime as China's retire. India takes it 3-1 on trajectory. Want power right now, China is still the answer.",
+      "chapters": [
+        {
+          "name": "India vs China",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Population",
+          "startOffset": 11,
+          "endOffset": 19
+        },
+        {
+          "name": "Round 2: GDP",
+          "startOffset": 19,
+          "endOffset": 28
+        },
+        {
+          "name": "Round 3: GDP Growth Rate",
+          "startOffset": 28,
+          "endOffset": 36
+        },
+        {
+          "name": "Round 4: Median Age",
+          "startOffset": 36,
+          "endOffset": 45
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 45,
+          "endOffset": 52
+        }
+      ],
+      "youtubeTitle": "India vs China: Who Actually Wins the Next 30 Years?",
+      "youtubeDescription": "India now has the world's largest population at 1.44 billion, faster GDP growth at 6.5%, and a median age over ten years younger than China's. China still holds a commanding economic lead with a $17.7 trillion GDP versus India's $3.7 trillion. We compare population, GDP, growth rate, and median age to see which country is really ahead.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/india-vs-china\n\nFull comparison: https://www.aversusb.net/compare/india-vs-china",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-21T09:58:16.874Z"
+    },
+    {
+      "slug": "f-22-vs-f-35",
+      "title": "F-22 Raptor vs F-35 Lightning II",
+      "entityA": "F-22 Raptor",
+      "entityB": "F-35 Lightning II",
+      "category": "military",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "f-22-vs-f-35.mp4",
+      "durationSeconds": 53,
+      "transcript": "America built 187 Raptors and then stopped. It's built over a thousand F-35s. One jet owns the sky. The other owns the war around it. Mach 2.25 versus Mach 1.6. The Raptor runs away from fights it doesn't want. The F-22 cruises past the sound barrier without afterburner. The F-35 can't do it at all. The F-35 doesn't just see more, it hands you the picture already solved. 187 Raptors means a jet that mostly can't be everywhere. A thousand F-35s can. Eighty million buys one F-35. The same money nearly buys you half a Raptor. F-35 takes it three to two. Pick the Raptor only if the mission is pure air dominance.",
+      "chapters": [
+        {
+          "name": "F-22 Raptor vs F-35 Lightning II",
+          "startOffset": 0,
+          "endOffset": 8
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 8,
+          "endOffset": 13
+        },
+        {
+          "name": "Round 1: Top Speed",
+          "startOffset": 13,
+          "endOffset": 21
+        },
+        {
+          "name": "Round 2: Supercruise",
+          "startOffset": 21,
+          "endOffset": 28
+        },
+        {
+          "name": "Round 3: Sensor Fusion",
+          "startOffset": 28,
+          "endOffset": 34
+        },
+        {
+          "name": "Round 4: Units Built",
+          "startOffset": 34,
+          "endOffset": 42
+        },
+        {
+          "name": "Round 5: Unit Cost",
+          "startOffset": 42,
+          "endOffset": 49
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 49,
+          "endOffset": 56
+        }
+      ],
+      "youtubeTitle": "F-22 Raptor vs F-35 Lightning II: Which Jet Actually Wins?",
+      "youtubeDescription": "Head to head on speed, supercruise, sensor fusion, production numbers and unit cost, the F-22 Raptor and F-35 Lightning II split the scorecard three to two. The Raptor hits Mach 2.25 and supercruises at Mach 1.5, but only 187 were ever built at over 150 million each. The F-35 counters with best in class sensor fusion, more than a thousand airframes and an 80 million dollar price tag.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/f-22-vs-f-35\n\nImage credits:\nImage A by F-22_Raptor.JPG: Master Sgt. Andy Dunaway (Public domain) — https://commons.wikimedia.org/wiki/File:F-22_Raptor_edit1_(cropped).jpg\nImage B by U.S. Air Force photo by Master Sgt. Donald R. Allen (Public domain) — https://commons.wikimedia.org/wiki/File:F-35A_flight_(cropped).jpg\n\nFull comparison: https://www.aversusb.net/compare/f-22-vs-f-35",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-21T10:06:55.719Z"
     }
   ]
 }
