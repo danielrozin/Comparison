@@ -26,6 +26,9 @@ const NV_4070 = "https://www.nvidia.com/en-us/geforce/graphics-cards/40-series/r
 const NV_NEWS = "https://www.nvidia.com/en-us/geforce/news/geforce-rtx-4070-ti/";
 const NV_3070 = "https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3070-3070ti/";
 
+const NV_SHOP = "https://www.nvidia.com/en-us/geforce/graphics-cards/40-series/rtx-4070-family/#shop";
+const AMD_BUY = "https://www.amd.com/en/where-to-buy/graphics/radeon.html";
+
 const SOURCE_DATE = "2026-10-21";
 const PUBLISHED = "2026-10-21T00:00:00Z";
 
@@ -221,7 +224,7 @@ const BUILT = buildEditorialComparison({
       "AMD lists 20 GB of GDDR6 at up to 800 GB/s on the RX 7900 XT; NVIDIA lists 12 GB of GDDR6X on a 192-bit interface on the RTX 4070 Ti.",
   },
   citationStats: {
-    sourceCount: 5,
+    sourceCount: 7,
     dataPointCount: 22,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -233,6 +236,8 @@ const BUILT = buildEditorialComparison({
       { name: "NVIDIA GeForce RTX 4070 family specifications", url: NV_4070 },
       { name: "NVIDIA GeForce RTX 4070 Ti announcement (January 2023)", url: NV_NEWS },
       { name: "NVIDIA GeForce RTX 3070 family specifications", url: NV_3070 },
+      { name: "AMD: where to buy Radeon graphics cards", url: AMD_BUY },
+      { name: "NVIDIA GeForce RTX 4070 family: shop", url: NV_SHOP },
     ],
   },
   resources: [
@@ -241,6 +246,8 @@ const BUILT = buildEditorialComparison({
     { type: "external", label: "NVIDIA GeForce RTX 4070 family specifications", url: NV_4070, description: "RTX 4070 Ti: 12 GB GDDR6X, 192-bit, 285 W TGP, 700 W system, DLSS 3.5, 2x NVENC. RTX 4070 Ti SUPER: 16 GB, 256-bit." },
     { type: "external", label: "NVIDIA GeForce RTX 4070 Ti announcement (January 2023)", url: NV_NEWS, description: "Available January 5, 2023, starting at $799." },
     { type: "external", label: "NVIDIA GeForce RTX 3070 family specifications", url: NV_3070, description: "RTX 3070: 8 GB GDDR6, 256-bit." },
+    { type: "external", label: "See vendor page for current price: RX 7900 XT (AMD)", url: AMD_BUY, description: "AMD where-to-buy listings for Radeon graphics cards." },
+    { type: "external", label: "See vendor page for current price: RTX 4070 Ti (NVIDIA)", url: NV_SHOP, description: "NVIDIA shop section for the GeForce RTX 4070 family." },
   ],
   metaTitle: "RX 7900 XT vs RTX 4070 Ti | A Versus B",
 });
