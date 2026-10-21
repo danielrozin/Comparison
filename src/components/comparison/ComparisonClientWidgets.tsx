@@ -14,9 +14,8 @@ export const TrackRecentView = dynamic(
 
 export const EmbedButton = dynamic(
   () => import("@/components/comparison/EmbedButton").then((m) => ({ default: m.EmbedButton })),
-  // Reserve the 32px button square so the share/like row above the hero
-  // doesn't grow when this hydrates — was a top CLS contributor on mobile.
-  { ssr: false, loading: () => <div className="w-8 h-8" aria-hidden="true" /> }
+  // ROO-304: server-rendered. The 32px placeholder was smaller than the 44px
+  // touch target, so the share/like row above the hero grew on hydration (CLS 0.186).
 );
 
 export const ComparisonPoll = dynamic(
@@ -65,14 +64,13 @@ export const InterceptSurvey = dynamic(
 
 export const ShareBar = dynamic(
   () => import("@/components/engagement/ShareBar").then((m) => ({ default: m.ShareBar })),
-  // Reserve a 32px tall row matching the icon buttons — prevents the hero
-  // sliding down when the share row hydrates.
-  { ssr: false, loading: () => <div className="h-8" aria-hidden="true" /> }
+  // ROO-304: server-rendered so the row has its final (wrapped, 44px) height in
+  // the HTML; the 32px placeholder pushed the hero down ~52px on mobile.
 );
 
 export const LikeButton = dynamic(
   () => import("@/components/engagement/LikeButton").then((m) => ({ default: m.LikeButton })),
-  { ssr: false, loading: () => <div className="w-8 h-8" aria-hidden="true" /> }
+  // ROO-304: server-rendered (count 0 until the like fetch), same 44px size.
 );
 
 export const BackToResults = dynamic(
