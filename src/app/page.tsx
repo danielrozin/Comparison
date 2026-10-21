@@ -268,13 +268,13 @@ export default async function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-28">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 id="hero-heading" className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight mb-4 animate-slide-up">
+            <h1 id="hero-heading" className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight mb-4">
               Compare{" "}
               <span className="bg-gradient-to-r from-accent-400 to-primary-300 bg-clip-text text-transparent">
                 Anything
               </span>
             </h1>
-            <p className="hero-description text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
+            <p className="hero-description text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-8 leading-relaxed">
               Sports players, countries, products, technology, history — get clear,
               visual, data-driven comparisons in seconds.
             </p>

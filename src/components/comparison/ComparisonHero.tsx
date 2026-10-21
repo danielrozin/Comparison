@@ -303,12 +303,12 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
         )}
 
         {/* Title */}
-        <h1 id="comparison-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-white mb-2 sm:mb-3 leading-tight motion-safe:animate-slide-up">
+        <h1 id="comparison-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-white mb-2 sm:mb-3 leading-tight">
           {visibleCompareHeading(comparison.metadata?.metaTitle || comparison.title)}
         </h1>
 
         {/* Publisher, plus Daniel's byline only after he has reviewed this slug. */}
-        <div className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-2 flex-wrap motion-safe:animate-fade-in" style={{ animationDelay: "0.1s" }}>
+        <div className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-2 flex-wrap">
           <span className="flex items-center gap-1.5">
             {isHumanReviewedSlug(comparison.slug) ? (
               <>
@@ -336,7 +336,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* Short Answer preview badge — AEO/GEO snippet signal */}
         {(comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
-          <div className="flex justify-center mb-6 sm:mb-8 motion-safe:animate-slide-up" style={{ animationDelay: "0.15s" }}>
+          <div className="flex justify-center mb-6 sm:mb-8">
             <div className="inline-flex items-start gap-2.5 max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-4 py-3 text-left">
               <div className="flex-shrink-0 w-5 h-5 bg-yellow-400/20 rounded-full flex items-center justify-center mt-0.5">
                 <svg className="w-3 h-3 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
