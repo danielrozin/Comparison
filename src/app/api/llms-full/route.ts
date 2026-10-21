@@ -15,6 +15,9 @@
 
 import { NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
+import { sitemapEntityWhere } from "@/lib/seo/sitemap-entity-where";
+import { isCleanSlug, isDegenerateComparisonSlug } from "@/lib/utils/slugify";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 const CACHE_SECONDS = 21600; // 6 hours
@@ -64,7 +67,8 @@ export async function GET() {
     prisma.blogArticle.count(),
     prisma.entity.count(),
     prisma.comparison.findMany({
-      where: { category: { in: PRIORITY_CATEGORIES } },
+      // ROO-288: only canonical (published, non-redirected) compares, same as the sitemap.
+      where: canonicalComparisonWhere({ category: { in: PRIORITY_CATEGORIES } }),
       select: {
         slug: true,
         title: true,
@@ -77,6 +81,8 @@ export async function GET() {
       take: 1000,
     }),
     prisma.entity.findMany({
+      // ROO-288: only entity pages that resolve (sitemap shard 2 rule).
+      where: sitemapEntityWhere(),
       select: { slug: true, name: true, entityType: { select: { name: true } } },
       orderBy: { id: "asc" },
       take: 200,
@@ -91,7 +97,7 @@ export async function GET() {
 
   // Group comparisons by category, cap at 30 per category
   const byCategory: Record<string, typeof topComparisons> = {};
-  for (const c of topComparisons) {
+  for (const c of topComparisons.filter((c) => isCleanSlug(c.slug) && !isDegenerateComparisonSlug(c.slug))) {
     const cat = c.category ?? "general";
     if (!byCategory[cat]) byCategory[cat] = [];
     if (byCategory[cat].length < 30) byCategory[cat].push(c);
@@ -204,7 +210,7 @@ export async function GET() {
   lines.push(`- Best-of lists: ${SITE_URL}/api/v1/best/{slug}`);
   lines.push(`- AI Answer: ${SITE_URL}/api/answer/{slug}`);
   lines.push(`- Pure JSON-LD (Schema.org): ${SITE_URL}/api/v1/schema/{slug}`);
-  lines.push(`- Batch lookup (POST): ${SITE_URL}/api/v1/batch`);
+  lines.push("- Batch lookup: `POST /api/v1/batch`");
   lines.push(`- Changes feed: ${SITE_URL}/api/v1/changes?since={ISO8601}`);
   lines.push(`- JSON Feed: ${SITE_URL}/feed/json`);
   lines.push(`- MCP manifest: ${SITE_URL}/.well-known/mcp.json`);

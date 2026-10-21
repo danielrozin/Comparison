@@ -14,6 +14,9 @@
 
 import { NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
+import { sitemapEntityWhere } from "@/lib/seo/sitemap-entity-where";
+import { isCleanSlug, isDegenerateComparisonSlug } from "@/lib/utils/slugify";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
@@ -53,12 +56,15 @@ export async function GET() {
 
     const [comparisons, entities, blogs] = await Promise.all([
       prisma.comparison.findMany({
-        where: { category: { in: PRIORITY_CATEGORIES } },
+        // ROO-288: only canonical (published, non-redirected) compares, same as the sitemap.
+      where: canonicalComparisonWhere({ category: { in: PRIORITY_CATEGORIES } }),
         select: { slug: true, title: true, shortAnswer: true, category: true, viewCount: true },
         orderBy: { viewCount: "desc" },
         take: 120,
       }),
       prisma.entity.findMany({
+        // ROO-288: only entity pages that resolve (sitemap shard 2 rule).
+        where: sitemapEntityWhere(),
         select: { slug: true, name: true },
         orderBy: { id: "asc" },
         take: 20,
@@ -71,7 +77,7 @@ export async function GET() {
       }),
     ]);
 
-    for (const c of comparisons) {
+    for (const c of comparisons.filter((c) => isCleanSlug(c.slug) && !isDegenerateComparisonSlug(c.slug))) {
       const cat = c.category ?? "general";
       if (!byCategory[cat]) byCategory[cat] = [];
       if (byCategory[cat].length < 10) byCategory[cat].push(c);
@@ -100,7 +106,7 @@ export async function GET() {
     "",
     "- Comparisons: `/compare/{entity-a}-vs-{entity-b}` — each includes short answer, attributes, verdict, FAQs",
     "- Entity profiles: `/entity/{entity-slug}` — all comparisons involving an entity",
-    "- Alternatives: `/alternatives/{entity-slug}` — best alternatives to a product/service",
+    `- Alternatives: \`/alternatives/{entity-slug}\` — best alternatives to a product/service (example: ${SITE_URL}/alternatives/chatgpt)`,
     "- Reviews: `/reviews/{entity-slug}` — aggregated review scores (Reddit, G2, Capterra, Trustpilot) + SmartScore composite; FAQPage Q&A for '[product] reviews' AI queries",
     "- Hub pages: `/hub/{hub-slug}` — curated comparison collections around a topic (VPN, project management, AI chatbots, etc.)",
     "- Best-of lists: `/best/{list-slug}` — ranked guides (e.g. 'best project management tools')",
@@ -178,12 +184,12 @@ export async function GET() {
   lines.push(`- [Related comparisons JSON](${SITE_URL}/api/v1/related/{slug}) — related comparisons for a given slug`);
   lines.push(`- [Alternatives API](${SITE_URL}/api/v1/alternatives/{slug}) — all known alternatives to an entity with ItemList JSON-LD, comparison URLs, and X-Summary header; ideal for 'best alternatives to X' AI queries; example: ${SITE_URL}/api/v1/alternatives/chatgpt`);
   lines.push(`- [Best-of list JSON](${SITE_URL}/api/v1/best/{slug}) — structured best-of list with ItemList JSON-LD: ranked items (position, name, url), FAQs, author, dates; X-Summary header on response; list all at ${SITE_URL}/api/v1/best`);
-  lines.push(`- [Hub JSON](${SITE_URL}/api/v1/hub/{slug}) — topic hub structured data: title, description, intro, curated comparisonSlugs + comparisonUrls, FAQs, ItemList JSON-LD and FAQPage JSON-LD; use for 'best [topic] comparisons' queries; example: ${SITE_URL}/api/v1/hub/vpn`);
+  lines.push(`- [Hub JSON](${SITE_URL}/api/v1/hub/{slug}) — topic hub structured data: title, description, intro, curated comparisonSlugs + comparisonUrls, FAQs, ItemList JSON-LD and FAQPage JSON-LD; use for 'best [topic] comparisons' queries`);
   lines.push(`- [Compare Lookup (AI tool-calling)](${SITE_URL}/api/v1/compare?a={entityA}&b={entityB}) — fastest endpoint for AI tools: looks up comparison by entity names, returns shortAnswer + API URLs or suggestions; example: ${SITE_URL}/api/v1/compare?a=chatgpt&b=claude`);
   lines.push(`- [Unified Search](${SITE_URL}/api/v1/search?q={query}) — searches comparisons, entity profiles, and blog articles in parallel; grouped results with URL, slug, and excerpt; includes searchResultsSchema (SearchResultsPage JSON-LD with typed ItemList); supports ?types=comparisons,entities,blog and ?limit; X-Summary header always populated`);
 
   lines.push(`- [AI Answer (AEO)](${SITE_URL}/api/answer/{slug}) — pre-packaged answer: shortAnswer, verdict, keyDifferences, winner, and confidence; X-Summary header in HTTP response`);
-  lines.push(`- [Batch lookup](${SITE_URL}/api/v1/batch) — fetch up to 20 comparisons in a single POST; body: {"slugs":["chatgpt-vs-claude","gpt-4-vs-gemini"]}; optional fields filter; ideal for AI agents building comparison matrices without N sequential calls`);
+  lines.push(`- Batch lookup: \`POST /api/v1/batch\` — fetch up to 20 comparisons in a single POST; body: {"slugs":["chatgpt-vs-claude","gpt-4-vs-gemini"]}; optional fields filter; ideal for AI agents building comparison matrices without N sequential calls`);
   lines.push(`- [Pure JSON-LD schema](${SITE_URL}/api/v1/schema/{slug}) — spec-compliant Schema.org @graph document (Content-Type: application/ld+json); includes WebPage, Article, Dataset, FAQPage, Organization nodes; linked from every /compare/* page via <link rel="alternate" type="application/ld+json">`);
   lines.push(`- [JSON sitemap](${SITE_URL}/api/sitemap) — paginated JSON DataFeed sitemap; ?type=comparisons (default) | ?type=blog | ?type=hubs | ?type=best; also supports ?category, ?limit, ?offset, ?format=urlset; comparisons include shortAnswer+answerUrl; blog includes excerpt+jsonUrl; hubs include comparisonCount+apiUrl; best include apiUrl`);
   lines.push(`- [Reviews API](${SITE_URL}/api/reviews/{slug}) — aggregated reviews for an entity (source, rating, body, date); includes AggregateRating JSON-LD`);
@@ -203,7 +209,7 @@ export async function GET() {
   lines.push(`- [Google News sitemap](${SITE_URL}/sitemap/news.xml)`);
   lines.push(`- [OpenSearch descriptor](${SITE_URL}/opensearch.xml)`);
   lines.push(`- [WebMention endpoint](${SITE_URL}/api/webmention)`);
-  lines.push(`- [Pingback endpoint](${SITE_URL}/api/pingback)`);
+  lines.push("- Pingback endpoint: `POST /api/pingback`");
   lines.push(`- [Sitemap index](${SITE_URL}/sitemap.xml)`);
   lines.push(`- [Image sitemap](${SITE_URL}/sitemap/images.xml)`);
   lines.push(`- [Video sitemap](${SITE_URL}/sitemap/video.xml)`);
