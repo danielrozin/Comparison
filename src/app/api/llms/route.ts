@@ -12,6 +12,9 @@
 
 import { NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
+import { sitemapEntityWhere } from "@/lib/seo/sitemap-entity-where";
+import { isCleanSlug, isDegenerateComparisonSlug } from "@/lib/utils/slugify";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 const CACHE_SECONDS = 3600; // 1 hour
@@ -58,7 +61,8 @@ export async function GET(request: Request) {
     prisma.blogArticle.count(),
     prisma.entity.count(),
     prisma.comparison.findMany({
-      where: { category: { in: PRIORITY_CATEGORIES } },
+      // ROO-288: only canonical (published, non-redirected) compares, same as the sitemap.
+      where: canonicalComparisonWhere({ category: { in: PRIORITY_CATEGORIES } }),
       select: {
         slug: true,
         title: true,
@@ -78,12 +82,16 @@ export async function GET(request: Request) {
     }),
     // Top entities by comparison count for LLM entity recognition
     prisma.entity.findMany({
+      // ROO-288: only entity pages that resolve (sitemap shard 2 rule).
+      where: sitemapEntityWhere(),
       select: { slug: true, name: true, shortDesc: true },
       orderBy: { id: "asc" },
       take: 50,
     }),
     // Top alternatives pages (derived from entities)
     prisma.entity.findMany({
+      // ROO-288: only entity pages that resolve (sitemap shard 2 rule).
+      where: sitemapEntityWhere(),
       select: { slug: true, name: true },
       orderBy: { id: "asc" },
       take: 30,
@@ -92,7 +100,7 @@ export async function GET(request: Request) {
 
   // Group comparisons by category, cap at 12 per category
   const byCategory: Record<string, typeof topComparisons> = {};
-  for (const c of topComparisons) {
+  for (const c of topComparisons.filter((c) => isCleanSlug(c.slug) && !isDegenerateComparisonSlug(c.slug))) {
     const cat = c.category ?? "general";
     if (!byCategory[cat]) byCategory[cat] = [];
     if (byCategory[cat].length < 12) byCategory[cat].push(c);
