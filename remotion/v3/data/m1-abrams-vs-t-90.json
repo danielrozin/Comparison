@@ -1,0 +1,145 @@
+{
+  "title": "M1 Abrams vs T-90",
+  "entityA": "M1A2 Abrams SEPv3",
+  "entityB": "T-90M Proryv",
+  "category": "military",
+  "shortAnswer": "The M1A2 Abrams is the world's most battle-tested main battle tank with superior armor, fire control, and crew survivability. The T-90M Proryv is Russia's most advanced tank with an autoloader, active protection, and lower cost. Abrams dominates in crew survival; T-90 is lighter and cheaper.",
+  "stats": [
+    {
+      "label": "Weight",
+      "valueA": "67 tons",
+      "valueB": "48 tons",
+      "winner": "b"
+    },
+    {
+      "label": "Main Gun",
+      "valueA": "120mm M256 smoothbore",
+      "valueB": "125mm 2A46M-5",
+      "winner": "tie"
+    },
+    {
+      "label": "Armor",
+      "valueA": "Composite + DU",
+      "valueB": "Composite + ERA",
+      "winner": "a"
+    },
+    {
+      "label": "Crew",
+      "valueA": "4 (manual loader)",
+      "valueB": "3 (autoloader)",
+      "winner": "tie"
+    },
+    {
+      "label": "Unit Cost",
+      "valueA": "$10M+",
+      "valueB": "~$4.5M",
+      "winner": "b"
+    }
+  ],
+  "verdict": "The Abrams wins in protection, fire control, and crew survivability. The T-90 is more deployable (lighter), cheaper, and has an autoloader. Real combat in Ukraine has shown both have vulnerabilities to modern anti-tank missiles.",
+  "slug": "m1-abrams-vs-t-90",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "One tank costs ten million dollars. The other costs four and a half.",
+    "tape": "One is built to keep the crew alive. One is built in numbers.",
+    "rounds": [
+      "Nineteen tons heavier. That's bridges, transport planes and mud that say no.",
+      "Five millimeters bigger on the Russian gun. The shell matters more than the caliber.",
+      "Depleted uranium versus explosive reactive armor. One absorbs hits, one answers them.",
+      "Four men with a human loader, three with a machine. Crew size is a survivability choice.",
+      "Two T-90Ms for less than one Abrams, with change left over."
+    ],
+    "verdict": "On points the T-90M takes it, on cost and weight. Pick Abrams if crew survival outranks budget."
+  },
+  "audio": {
+    "cold": "video-assets/m1-abrams-vs-t-90/audio/cold.mp3",
+    "tape": "video-assets/m1-abrams-vs-t-90/audio/tape.mp3",
+    "rounds": [
+      "video-assets/m1-abrams-vs-t-90/audio/round-1.mp3",
+      "video-assets/m1-abrams-vs-t-90/audio/round-2.mp3",
+      "video-assets/m1-abrams-vs-t-90/audio/round-3.mp3",
+      "video-assets/m1-abrams-vs-t-90/audio/round-4.mp3",
+      "video-assets/m1-abrams-vs-t-90/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/m1-abrams-vs-t-90/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 180,
+    "tape": 150,
+    "rounds": [
+      224,
+      178,
+      231,
+      221,
+      154
+    ],
+    "verdict": 250,
+    "leadInFrames": 9
+  },
+  "transcript": "One tank costs ten million dollars. The other costs four and a half. One is built to keep the crew alive. One is built in numbers. Nineteen tons heavier. That's bridges, transport planes and mud that say no. Five millimeters bigger on the Russian gun. The shell matters more than the caliber. Depleted uranium versus explosive reactive armor. One absorbs hits, one answers them. Four men with a human loader, three with a machine. Crew size is a survivability choice. Two T-90Ms for less than one Abrams, with change left over. On points the T-90M takes it, on cost and weight. Pick Abrams if crew survival outranks budget.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One tank costs ten million dollars. The other costs four and a half.",
+      "startOffset": 0,
+      "endOffset": 5.996122
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One is built to keep the crew alive. One is built in numbers.",
+      "startOffset": 5.996122,
+      "endOffset": 10.996122
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Nineteen tons heavier. That's bridges, transport planes and mud that say no.",
+      "startOffset": 10.996122,
+      "endOffset": 18.455102
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Five millimeters bigger on the Russian gun. The shell matters more than the caliber.",
+      "startOffset": 18.455102,
+      "endOffset": 24.372857
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Depleted uranium versus explosive reactive armor. One absorbs hits, one answers them.",
+      "startOffset": 24.372857,
+      "endOffset": 32.066939
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Four men with a human loader, three with a machine. Crew size is a survivability choice.",
+      "startOffset": 32.066939,
+      "endOffset": 39.447551
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Two T-90Ms for less than one Abrams, with change left over.",
+      "startOffset": 39.447551,
+      "endOffset": 44.581633
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "On points the T-90M takes it, on cost and weight. Pick Abrams if crew survival outranks budget.",
+      "startOffset": 44.581633,
+      "endOffset": 52.902653
+    }
+  ],
+  "youtubeTitle": "M1A2 Abrams SEPv3 vs T-90M Proryv: Full Comparison",
+  "youtubeDescription": "A straight head-to-head between America's M1A2 Abrams SEPv3 and Russia's T-90M Proryv, comparing weight, main gun, armor, crew layout and unit cost. The Abrams brings depleted uranium armor and a four-man crew, the T-90M brings an autoloader, 48 tons and a price tag under half as much. We call a winner at the end.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/m1-abrams-vs-t-90",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

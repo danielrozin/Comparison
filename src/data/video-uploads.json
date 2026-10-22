@@ -6057,6 +6057,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-21T10:06:55.719Z"
+    },
+    {
+      "slug": "m1-abrams-vs-t-90",
+      "title": "M1 Abrams vs T-90",
+      "entityA": "M1A2 Abrams SEPv3",
+      "entityB": "T-90M Proryv",
+      "category": "military",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "m1-abrams-vs-t-90.mp4",
+      "durationSeconds": 50,
+      "transcript": "One tank costs ten million dollars. The other costs four and a half. One is built to keep the crew alive. One is built in numbers. Nineteen tons heavier. That's bridges, transport planes and mud that say no. Five millimeters bigger on the Russian gun. The shell matters more than the caliber. Depleted uranium versus explosive reactive armor. One absorbs hits, one answers them. Four men with a human loader, three with a machine. Crew size is a survivability choice. Two T-90Ms for less than one Abrams, with change left over. On points the T-90M takes it, on cost and weight. Pick Abrams if crew survival outranks budget.",
+      "chapters": [
+        {
+          "name": "M1A2 Abrams SEPv3 vs T-90M Proryv",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Weight",
+          "startOffset": 11,
+          "endOffset": 18
+        },
+        {
+          "name": "Round 2: Main Gun",
+          "startOffset": 18,
+          "endOffset": 24
+        },
+        {
+          "name": "Round 3: Armor",
+          "startOffset": 24,
+          "endOffset": 32
+        },
+        {
+          "name": "Round 4: Crew",
+          "startOffset": 32,
+          "endOffset": 39
+        },
+        {
+          "name": "Round 5: Unit Cost",
+          "startOffset": 39,
+          "endOffset": 45
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 45,
+          "endOffset": 53
+        }
+      ],
+      "youtubeTitle": "M1A2 Abrams SEPv3 vs T-90M Proryv: Full Comparison",
+      "youtubeDescription": "A straight head-to-head between America's M1A2 Abrams SEPv3 and Russia's T-90M Proryv, comparing weight, main gun, armor, crew layout and unit cost. The Abrams brings depleted uranium armor and a four-man crew, the T-90M brings an autoloader, 48 tons and a price tag under half as much. We call a winner at the end.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/m1-abrams-vs-t-90\n\nFull comparison: https://www.aversusb.net/compare/m1-abrams-vs-t-90",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-22T10:04:46.950Z"
     }
   ]
 }
