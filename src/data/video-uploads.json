@@ -6116,6 +6116,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-22T10:04:46.950Z"
+    },
+    {
+      "slug": "f-15-vs-f-16",
+      "title": "F-15 Eagle vs F-16 Fighting Falcon",
+      "entityA": "F-15 Eagle",
+      "entityB": "F-16 Fighting Falcon",
+      "category": "military",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "f-15-vs-f-16.mp4",
+      "durationSeconds": 49,
+      "transcript": "One of these jets has never lost an air battle. Not once. Undefeated heavyweight against the cheap, everywhere fighter. Dominance versus numbers. Mach 2.5 against Mach 2.0. The Eagle runs down anything it chooses to. Two engines versus one. Lose one over hostile ground and that matters. 104 and zero. The Falcon's 76 and 1 is excellent. It isn't perfect. Two Falcons for the price of one Eagle. That math built air forces. 23,000 pounds versus 17,000. The Eagle brings more of everything to the fight. F-15 takes it four to one. Take the F-16 if you need numbers, not perfection.",
+      "chapters": [
+        {
+          "name": "F-15 Eagle vs F-16 Fighting Falcon",
+          "startOffset": 0,
+          "endOffset": 5
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 5,
+          "endOffset": 12
+        },
+        {
+          "name": "Round 1: Top Speed",
+          "startOffset": 12,
+          "endOffset": 18
+        },
+        {
+          "name": "Round 2: Engines",
+          "startOffset": 18,
+          "endOffset": 24
+        },
+        {
+          "name": "Round 3: Air Combat Record",
+          "startOffset": 24,
+          "endOffset": 32
+        },
+        {
+          "name": "Round 4: Unit Cost",
+          "startOffset": 32,
+          "endOffset": 38
+        },
+        {
+          "name": "Round 5: Payload",
+          "startOffset": 38,
+          "endOffset": 45
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 45,
+          "endOffset": 52
+        }
+      ],
+      "youtubeTitle": "F-15 Eagle vs F-16 Fighting Falcon: Which Fighter Wins?",
+      "youtubeDescription": "Head to head on speed, engines, combat record, cost and payload: the F-15 Eagle versus the F-16 Fighting Falcon. The Eagle's 104-0 air combat record and twin-engine power meet the Falcon's lower cost and multirole flexibility. Five stats, one verdict.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/f-15-vs-f-16\n\nImage credits:\nImage A by Airman 1st Class Matthew Seefeldt (Public domain) — https://commons.wikimedia.org/wiki/File:F-15C_Eagle_from_the_44th_Fighter_Squadron_flies_during_a_routine_training_exercise_April_15,_2019.jpg\nImage B by Master Sgt. Andy Dunaway (Public domain) — https://commons.wikimedia.org/wiki/File:F-16_June_2008.jpg\n\nFull comparison: https://www.aversusb.net/compare/f-15-vs-f-16",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-23T09:53:47.409Z"
     }
   ]
 }

@@ -1,0 +1,170 @@
+{
+  "title": "F-15 Eagle vs F-16 Fighting Falcon",
+  "entityA": "F-15 Eagle",
+  "entityB": "F-16 Fighting Falcon",
+  "category": "military",
+  "shortAnswer": "The F-15 Eagle is a twin-engine air superiority fighter with an undefeated 104-0 combat record. The F-16 Fighting Falcon is a lighter, cheaper, single-engine multirole fighter and the most produced Western fighter jet. F-15 for air dominance, F-16 for versatility and value.",
+  "stats": [
+    {
+      "label": "Top Speed",
+      "valueA": "Mach 2.5",
+      "valueB": "Mach 2.0",
+      "winner": "a"
+    },
+    {
+      "label": "Engines",
+      "valueA": "2x F100/F110",
+      "valueB": "1x F100/F110",
+      "winner": "a"
+    },
+    {
+      "label": "Air Combat Record",
+      "valueA": "104-0",
+      "valueB": "76-1",
+      "winner": "a"
+    },
+    {
+      "label": "Unit Cost",
+      "valueA": "$30-40M",
+      "valueB": "$14-18M",
+      "winner": "b"
+    },
+    {
+      "label": "Payload",
+      "valueA": "23,000 lbs",
+      "valueB": "17,000 lbs",
+      "winner": "a"
+    }
+  ],
+  "verdict": "The F-15 is the superior air-to-air platform with more power, range, and payload. The F-16 is the better value — cheaper, more versatile, and adequate for most missions. Both remain frontline fighters for the US and Israel.",
+  "slug": "f-15-vs-f-16",
+  "imageA": {
+    "url": "video-assets/f-15-vs-f-16/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a6/F-15C_Eagle_from_the_44th_Fighter_Squadron_flies_during_a_routine_training_exercise_April_15%2C_2019.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2321,
+    "height": 1626,
+    "credit": "Airman 1st Class Matthew Seefeldt",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:F-15C_Eagle_from_the_44th_Fighter_Squadron_flies_during_a_routine_training_exercise_April_15,_2019.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a6/F-15C_Eagle_from_the_44th_Fighter_Squadron_flies_during_a_routine_training_exercise_April_15%2C_2019.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/f-15-vs-f-16/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c9/F-16_June_2008.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 3842,
+    "height": 2655,
+    "credit": "Master Sgt. Andy Dunaway",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:F-16_June_2008.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/F-16_June_2008.jpg/3840px-F-16_June_2008.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "lines": {
+    "hook": "One of these jets has never lost an air battle. Not once.",
+    "tape": "Undefeated heavyweight against the cheap, everywhere fighter. Dominance versus numbers.",
+    "rounds": [
+      "Mach 2.5 against Mach 2.0. The Eagle runs down anything it chooses to.",
+      "Two engines versus one. Lose one over hostile ground and that matters.",
+      "104 and zero. The Falcon's 76 and 1 is excellent. It isn't perfect.",
+      "Two Falcons for the price of one Eagle. That math built air forces.",
+      "23,000 pounds versus 17,000. The Eagle brings more of everything to the fight."
+    ],
+    "verdict": "F-15 takes it four to one. Take the F-16 if you need numbers, not perfection."
+  },
+  "audio": {
+    "cold": "video-assets/f-15-vs-f-16/audio/cold.mp3",
+    "tape": "video-assets/f-15-vs-f-16/audio/tape.mp3",
+    "rounds": [
+      "video-assets/f-15-vs-f-16/audio/round-1.mp3",
+      "video-assets/f-15-vs-f-16/audio/round-2.mp3",
+      "video-assets/f-15-vs-f-16/audio/round-3.mp3",
+      "video-assets/f-15-vs-f-16/audio/round-4.mp3",
+      "video-assets/f-15-vs-f-16/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/f-15-vs-f-16/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 137,
+    "tape": 221,
+    "rounds": [
+      188,
+      180,
+      236,
+      168,
+      221
+    ],
+    "verdict": 204,
+    "leadInFrames": 9
+  },
+  "transcript": "One of these jets has never lost an air battle. Not once. Undefeated heavyweight against the cheap, everywhere fighter. Dominance versus numbers. Mach 2.5 against Mach 2.0. The Eagle runs down anything it chooses to. Two engines versus one. Lose one over hostile ground and that matters. 104 and zero. The Falcon's 76 and 1 is excellent. It isn't perfect. Two Falcons for the price of one Eagle. That math built air forces. 23,000 pounds versus 17,000. The Eagle brings more of everything to the fight. F-15 takes it four to one. Take the F-16 if you need numbers, not perfection.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One of these jets has never lost an air battle. Not once.",
+      "startOffset": 0,
+      "endOffset": 4.559388
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Undefeated heavyweight against the cheap, everywhere fighter. Dominance versus numbers.",
+      "startOffset": 4.559388,
+      "endOffset": 11.94
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Mach 2.5 against Mach 2.0. The Eagle runs down anything it chooses to.",
+      "startOffset": 11.94,
+      "endOffset": 18.197347
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Two engines versus one. Lose one over hostile ground and that matters.",
+      "startOffset": 18.197347,
+      "endOffset": 24.193469
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "104 and zero. The Falcon's 76 and 1 is excellent. It isn't perfect.",
+      "startOffset": 24.193469,
+      "endOffset": 32.044285
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Two Falcons for the price of one Eagle. That math built air forces.",
+      "startOffset": 32.044285,
+      "endOffset": 37.648571000000004
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "23,000 pounds versus 17,000. The Eagle brings more of everything to the fight.",
+      "startOffset": 37.648571000000004,
+      "endOffset": 45.029183
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "F-15 takes it four to one. Take the F-16 if you need numbers, not perfection.",
+      "startOffset": 45.029183,
+      "endOffset": 51.835101
+    }
+  ],
+  "youtubeTitle": "F-15 Eagle vs F-16 Fighting Falcon: Which Fighter Wins?",
+  "youtubeDescription": "Head to head on speed, engines, combat record, cost and payload: the F-15 Eagle versus the F-16 Fighting Falcon. The Eagle's 104-0 air combat record and twin-engine power meet the Falcon's lower cost and multirole flexibility. Five stats, one verdict.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/f-15-vs-f-16",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Airman 1st Class Matthew Seefeldt (Public domain) — https://commons.wikimedia.org/wiki/File:F-15C_Eagle_from_the_44th_Fighter_Squadron_flies_during_a_routine_training_exercise_April_15,_2019.jpg",
+    "Image B by Master Sgt. Andy Dunaway (Public domain) — https://commons.wikimedia.org/wiki/File:F-16_June_2008.jpg"
+  ]
+}
