@@ -6175,6 +6175,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-23T09:53:47.409Z"
+    },
+    {
+      "slug": "apache-vs-ka-52",
+      "title": "Apache AH-64E vs Ka-52 Alligator",
+      "entityA": "AH-64E Apache Guardian",
+      "entityB": "Ka-52 Alligator",
+      "category": "military",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "apache-vs-ka-52.mp4",
+      "durationSeconds": 51,
+      "transcript": "One costs 35 million dollars. The other costs 16. Guess which one survives. Proven American firepower against Russian engineering that looked better on paper than over Ukraine. 300 against 293. Seven kilometers an hour. Nobody has ever won a war with that. Hellfire fires and forgets. Vikhr makes you sit there holding the beam. 2,400 built versus 250. One is a standard, the other is a boutique. Half the price. You could field two Alligators for one Apache and still save. Three decades of wars against one, and that one went badly. Apache takes it 3-2. Pick the Ka-52 only if budget beats battle record.",
+      "chapters": [
+        {
+          "name": "AH-64E Apache Guardian vs Ka-52 Alligator",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 14
+        },
+        {
+          "name": "Round 1: Max Speed",
+          "startOffset": 14,
+          "endOffset": 22
+        },
+        {
+          "name": "Round 2: Primary Weapon",
+          "startOffset": 22,
+          "endOffset": 28
+        },
+        {
+          "name": "Round 3: Units Built",
+          "startOffset": 28,
+          "endOffset": 35
+        },
+        {
+          "name": "Round 4: Unit Cost",
+          "startOffset": 35,
+          "endOffset": 42
+        },
+        {
+          "name": "Round 5: Combat Record",
+          "startOffset": 42,
+          "endOffset": 47
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 47,
+          "endOffset": 54
+        }
+      ],
+      "youtubeTitle": "AH-64E Apache Guardian vs Ka-52 Alligator: Which Attack Helicopter Wins?",
+      "youtubeDescription": "A head-to-head breakdown of the AH-64E Apache Guardian and Russia's Ka-52 Alligator across speed, primary missile, production numbers, unit cost and combat record. The Ka-52 is faster and far cheaper, but the Apache's fire-and-forget Hellfire and decades of combat use decide it. Full stat-by-stat comparison and a clear verdict.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/apache-vs-ka-52\n\nImage credits:\nImage B by Dmitriy Pichugin (GFDL 1.2) — https://commons.wikimedia.org/wiki/File:Russian_Air_Force_Kamov_Ka-50.jpg\n\nFull comparison: https://www.aversusb.net/compare/apache-vs-ka-52",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-24T09:25:46.978Z"
     }
   ]
 }
