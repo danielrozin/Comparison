@@ -6234,6 +6234,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-24T09:25:46.978Z"
+    },
+    {
+      "slug": "mercedes-vs-bmw",
+      "title": "Mercedes vs BMW",
+      "entityA": "Mercedes-Benz",
+      "entityB": "BMW",
+      "category": "automotive",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "mercedes-vs-bmw.mp4",
+      "durationSeconds": 52,
+      "transcript": "Same 255 horsepower. Same German badge prestige. A $2,400 gap and two philosophies. Mercedes builds the best seat in the car. BMW builds the best steering wheel. BMW undercuts the C-Class by $2,400 before you tick a single box. Identical base horsepower. So the engine never settles this argument. Mercedes cabins feel engineered. BMW's feel assembled very, very well. BMW wants the back road. Mercedes wants the highway to disappear. MBUX plus Drive Pilot pushes past what iDrive 9 attempts. Dead even, two apiece. Want to be driven, take Mercedes. Want to drive, BMW.",
+      "chapters": [
+        {
+          "name": "Mercedes-Benz vs BMW",
+          "startOffset": 0,
+          "endOffset": 9
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 9,
+          "endOffset": 16
+        },
+        {
+          "name": "Round 1: Starting Price (Sedan)",
+          "startOffset": 16,
+          "endOffset": 24
+        },
+        {
+          "name": "Round 2: Horsepower (Base)",
+          "startOffset": 24,
+          "endOffset": 29
+        },
+        {
+          "name": "Round 3: Interior Quality",
+          "startOffset": 29,
+          "endOffset": 36
+        },
+        {
+          "name": "Round 4: Driving Dynamics",
+          "startOffset": 36,
+          "endOffset": 41
+        },
+        {
+          "name": "Round 5: Technology",
+          "startOffset": 41,
+          "endOffset": 47
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 47,
+          "endOffset": 55
+        }
+      ],
+      "youtubeTitle": "Mercedes-Benz vs BMW: The Comparison Nobody Wins Cleanly",
+      "youtubeDescription": "Mercedes-Benz C-Class against BMW 3 Series on price, horsepower, interior quality, driving dynamics and tech. Both make 255 horsepower, but BMW starts $2,400 cheaper and handles sharper while Mercedes leads on cabin quality and MBUX with Drive Pilot. Here's which one actually fits you.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/mercedes-vs-bmw\n\nFull comparison: https://www.aversusb.net/compare/mercedes-vs-bmw",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-25T09:42:48.514Z"
     }
   ]
 }
