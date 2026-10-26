@@ -6293,6 +6293,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-25T09:42:48.514Z"
+    },
+    {
+      "slug": "korean-war-vs-vietnam-war",
+      "title": "Korean War vs Vietnam War",
+      "entityA": "Korean War",
+      "entityB": "Vietnam War",
+      "category": "Countries",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "korean-war-vs-vietnam-war.mp4",
+      "durationSeconds": 63,
+      "transcript": "One war ended in stalemate. The other ended in evacuation helicopters. Only one preserved a country. Same Cold War, same enemy on paper, two completely different endings for America. 58,220 against 36,574. That gap is a whole city of missing men. 3.5 million versus 2.5 million dead. Soldiers were the smallest part of both. Twenty years against three. One conflict outlasted an entire American generation's patience. 1955 to 1975 beside 1950 to 1953. Two decades apart, two different Americas. 569,000 troops still standing guard today. That tells you the fighting never formally stopped. On points Vietnam takes it five to nothing. Choose Korea if you judge wars by what survived.",
+      "chapters": [
+        {
+          "name": "Korean War vs Vietnam War",
+          "startOffset": 0,
+          "endOffset": 8
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 8,
+          "endOffset": 15
+        },
+        {
+          "name": "Round 1: US Military Deaths",
+          "startOffset": 15,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 2: Total Deaths",
+          "startOffset": 25,
+          "endOffset": 33
+        },
+        {
+          "name": "Round 3: War Duration",
+          "startOffset": 33,
+          "endOffset": 40
+        },
+        {
+          "name": "Round 4: Years of Conflict",
+          "startOffset": 40,
+          "endOffset": 51
+        },
+        {
+          "name": "Round 5: Current South Korea Active Troops",
+          "startOffset": 51,
+          "endOffset": 59
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 59,
+          "endOffset": 66
+        }
+      ],
+      "youtubeTitle": "Korean War vs Vietnam War: The Numbers Nobody Compares",
+      "youtubeDescription": "A head-to-head breakdown of the Korean War and the Vietnam War across US military deaths, total deaths, duration, years of conflict, and the troops still deployed today. One war ended in stalemate and preserved a democracy, the other ended in withdrawal and defeat. The casualty figures decide it.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/korean-war-vs-vietnam-war\n\nImage credits:\nImage A by Photo by Corporal Peter McDonald, USMC (Public domain) — https://commons.wikimedia.org/wiki/File:Chosin.jpg\nImage B by U.S. Air Force (Operation Holly 1970 (Folder 13 of 15), sheet 182) (Public domain) — https://commons.wikimedia.org/wiki/File:U.S._Army_UH-1H_Hueys_insert_ARVN_troops_at_Kh%C3%A2m_%C4%90%E1%BB%A9c,_Vietnam,_12_July_1970_(79431435).jpg\n\nFull comparison: https://www.aversusb.net/compare/korean-war-vs-vietnam-war",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-26T10:59:19.191Z"
     }
   ]
 }
