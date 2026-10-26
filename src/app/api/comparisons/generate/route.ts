@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cleanGenerationError } from "@/lib/utils/clean-generation-error";
 import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
 import { z } from "zod";
 import {
@@ -266,6 +267,7 @@ export async function POST(request: NextRequest) {
         slug: genSlug,
         reason: "unknown",
         duration_ms: Date.now() - startedAt,
+        error_message: cleanGenerationError(message),
       });
       return NextResponse.json(
         { status: "error", error: sanitizeErrorMessage(err, "Generation failed"), errorStage: "unknown", reason: "unknown" },
@@ -362,6 +364,7 @@ export async function POST(request: NextRequest) {
       slug: genSlug,
       reason: stage,
       duration_ms: Date.now() - startedAt,
+      error_message: cleanGenerationError(result.error),
     });
     return NextResponse.json(
       { status: "error", error: result.error || "Generation failed", errorStage: stage, reason: stage },
