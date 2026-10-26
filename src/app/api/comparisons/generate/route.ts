@@ -77,7 +77,7 @@ async function loadRow(slug: string): Promise<ComparisonPageData | null> {
  */
 async function captureServerEvent(
   event: string,
-  properties: { slug: string; reason: string; duration_ms: number },
+  properties: { slug: string; reason: string; duration_ms: number; error_message?: string },
 ) {
   try {
     getPostHogClient().capture({
