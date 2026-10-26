@@ -59,11 +59,13 @@ const PERFORMER_LABELS: Record<string, string> = {
   human: "Editor",
 };
 
+// UTC so the SSR text matches hydration in every visitor time zone (ROO-142 #418).
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: "UTC",
   });
 }
 
