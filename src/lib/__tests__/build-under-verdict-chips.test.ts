@@ -12,7 +12,9 @@ vi.mock("@/lib/services/comparison-service", () => ({
 
 import {
   buildUnderVerdictChips,
+  entityKeys,
   matchupKey,
+  sharesEntity,
   pickUnderVerdictCandidates,
 } from "@/lib/data/build-under-verdict-chips";
 
@@ -55,6 +57,24 @@ describe("pickUnderVerdictCandidates", () => {
     expect(out.map((c) => c.slug)).toEqual(["vietnam-war-vs-ww2", "korean-war-vs-ww1"]);
   });
 
+  it("matches short slug sides against long-form entity slugs and drops title-only matches", () => {
+    const ents = [
+      { slug: "kohl-s-corporation", name: "Kohl's Corporation" },
+      { slug: "target-corporation", name: "Target Corporation" },
+    ];
+    const out = pickUnderVerdictCandidates("kohls-vs-target", ents, [
+      [
+        { slug: "target-vs-walmart", title: "Target vs Walmart" },
+        { slug: "mac-vs-windows", title: "Mac vs Windows for Target shoppers" },
+        { slug: "kohls-vs-macys", title: "Kohl's vs Macy's" },
+      ],
+    ]);
+    expect(out.map((c) => c.slug)).toEqual(["target-vs-walmart", "kohls-vs-macys"]);
+    expect(sharesEntity("youtube-music-vs-soundcloud", entityKeys("nvidia-vs-amd", []))).toBe(false);
+    expect(sharesEntity("amd-ryzen-9-vs-intel-core-ultra-9", entityKeys("nvidia-vs-amd", []))).toBe(true);
+    expect(sharesEntity("visa-vs-mastercard", entityKeys("amex-vs-master-card", []))).toBe(true);
+  });
+
   it("matchupKey ignores order", () => {
     expect(matchupKey("a-vs-b")).toBe(matchupKey("b-vs-a"));
   });
@@ -72,16 +92,18 @@ describe("buildUnderVerdictChips", () => {
 
   it("uses per-entity compares, live-filtered, max 3", async () => {
     getComparisonsForEntity.mockImplementation(async (s: string) =>
-      s === "amex"
+      s === "amex" || s === "american-express"
         ? [
             { slug: "amex-vs-master-card", title: "self", category: null },
             { slug: "amex-vs-visa", title: "Amex vs Visa", category: null },
             { slug: "amex-gold-vs-platinum", title: "Amex Gold vs Platinum", category: null },
           ]
-        : [
+        : s === "master-card"
+        ? [
             { slug: "visa-vs-master-card", title: "Visa vs Mastercard", category: null },
             { slug: "master-card-vs-discover", title: "Mastercard vs Discover", category: null },
           ]
+        : []
     );
     filterLiveCompareSlugs.mockImplementation(async (s: string[]) =>
       s.filter((x) => x !== "master-card-vs-discover")
