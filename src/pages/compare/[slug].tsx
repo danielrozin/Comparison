@@ -44,6 +44,7 @@ import { CompareUnderVerdictNextStep } from "@/components/comparison/CompareUnde
 import { CompareNextCards, CompareNextRow } from "@/components/comparison/CompareNextCards";
 import { VerdictFeedbackWidget } from "@/components/comparison/VerdictFeedbackWidget";
 import { buildCompareNextChips, type CompareNextChip } from "@/lib/data/build-compare-next-chips";
+import { buildUnderVerdictChips } from "@/lib/data/build-under-verdict-chips";
 import { ProUpsellCard } from "@/components/monetization/ProUpsellCard";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
@@ -205,6 +206,8 @@ type Props = {
   sidebarComparisons: RelatedComparison[];
   /** ROO-29: live next-step chips (related + cluster, DAN-2581 filtered). */
   nextStepChips: CompareNextChip[];
+  /** ROO-264: entity-matched picks for the row under the verdict. */
+  underVerdictChips: CompareNextChip[];
   smartReviews: SmartReviewEntry[];
   videoMeta: ReturnType<typeof getVideoMetadata>;
   hasSelfHostedVideo: boolean;
@@ -601,6 +604,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     ...enrichedComparison.relatedComparisons.map((c) => ({ slug: c.slug, title: c.title })),
   ]);
 
+  // ROO-264: the row under the verdict only shows compares that share an
+  // entity with this page (no trending/default fillers, no reversed pair).
+  const underVerdictChips = await buildUnderVerdictChips(
+    slug,
+    enrichedComparison.entities.map((e) => ({ slug: e.slug, name: e.name })),
+    enrichedComparison.relatedComparisons.map((c) => ({ slug: c.slug, title: c.title }))
+  );
+
   const isMultiEntity = enrichedComparison.entities.length > 2;
   const entityA = enrichedComparison.entities[0]?.name || "";
   const entityB = enrichedComparison.entities[1]?.name || "";
@@ -749,6 +760,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       comparison: enrichedComparison,
       sidebarComparisons,
       nextStepChips,
+      underVerdictChips,
       smartReviews,
       videoMeta,
       hasSelfHostedVideo: !!selfHostedVideo,
@@ -955,7 +967,7 @@ export default function ComparisonPage(props: Props) {
     );
   }
 
-  const { comparison, slug, sidebarComparisons, nextStepChips, videoMeta, hasSelfHostedVideo, jsonLd, claimReviewJsonLd } = props;
+  const { comparison, slug, sidebarComparisons, nextStepChips, underVerdictChips, videoMeta, hasSelfHostedVideo, jsonLd, claimReviewJsonLd } = props;
 
   const winnerSide = (() => {
     const wn = comparison.quickAnswer?.winnerName;
@@ -1150,7 +1162,7 @@ export default function ComparisonPage(props: Props) {
       )}
 
       {/* ROO-264: compact "Compare next" row directly under the verdict */}
-      <CompareNextRow slug={slug} chips={nextStepChips} />
+      <CompareNextRow slug={slug} chips={underVerdictChips} />
 
       {/* ROO-242: the one email capture, right after the verdict */}
       <CompareChangeAlert
@@ -1354,6 +1366,7 @@ function MultiEntityLayout({
   slug,
   sidebarComparisons,
   nextStepChips,
+  underVerdictChips,
   smartReviews,
   jsonLd,
 }: {
@@ -1361,6 +1374,7 @@ function MultiEntityLayout({
   slug: string;
   sidebarComparisons: RelatedComparison[];
   nextStepChips: CompareNextChip[];
+  underVerdictChips: CompareNextChip[];
   smartReviews: SmartReviewEntry[];
   jsonLd: string;
 }) {
@@ -1518,7 +1532,7 @@ function MultiEntityLayout({
           )}
 
           {/* ROO-264: compact "Compare next" row directly under the verdict */}
-          <CompareNextRow slug={slug} chips={nextStepChips} />
+          <CompareNextRow slug={slug} chips={underVerdictChips} />
 
           {/* ROO-242: the one email capture, right after the verdict */}
           <CompareChangeAlert
