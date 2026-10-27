@@ -50,6 +50,8 @@ const ALREADY_CAPTURED_IN_POSTHOG = new Set([
   "comparison_generated",
   "compare_not_found",
   "generation_requested",
+  "generation_fallback_shown",
+  "generation_fallback_click",
   "search_parsed",
   "search_submitted",
   "search_results_shown",
@@ -641,6 +643,48 @@ export function trackCompareNotFound(
     from_search: extra?.from_search ?? false,
     query_raw: extra?.query_raw ?? "",
   });
+}
+
+export interface GenerationFallbackShownProps {
+  slug: string;
+  entity_a: string;
+  entity_b: string;
+  /** Short code such as "anthropic" or "timeout". Never the raw provider error. */
+  failure_reason: string;
+  suggested_slugs: string[];
+  suggestion_source: string;
+}
+
+/** The recovery UI replaced a failed on-demand build. */
+export function trackGenerationFallbackShown(props: GenerationFallbackShownProps) {
+  captureClient("generation_fallback_shown", { ...props }, { sendInstantly: true });
+}
+
+export interface GenerationFallbackClickProps {
+  slug: string;
+  entity_a: string;
+  entity_b: string;
+  failure_reason: string;
+  action: "suggestion" | "search";
+  suggested_slug?: string;
+  query?: string;
+}
+
+/** A suggested comparison or the search box on the generation fallback. */
+export function trackGenerationFallbackClick(props: GenerationFallbackClickProps) {
+  captureClient(
+    "generation_fallback_click",
+    {
+      slug: props.slug,
+      entity_a: props.entity_a,
+      entity_b: props.entity_b,
+      failure_reason: props.failure_reason,
+      action: props.action,
+      suggested_slug: props.suggested_slug ?? "",
+      query: props.query ?? "",
+    },
+    { sendInstantly: true },
+  );
 }
 
 /** Fired in the browser the moment we ask the server to build a page. */

@@ -6,14 +6,17 @@
  * Generation starts here, after load, and only in a real browser.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { isHeadlessAutomationClient } from "@/lib/analytics/automated-client";
 import { isKnownCrawlerUserAgent } from "@/lib/generation/crawler-ua";
+import { safeGenerationFailureReason } from "@/lib/generation/safe-failure-reason";
 import { lastSearchAttachment } from "@/lib/search/search-session";
 import {
   trackCompareNotFound,
+  trackGenerationFallbackClick,
+  trackGenerationFallbackShown,
   trackGenerationRequested,
 } from "@/lib/utils/analytics";
 
@@ -22,6 +25,9 @@ import {
 type Phase = "building" | "fallback" | "saved" | "capped" | "skipped";
 
 type Related = { slug: string; title: string };
+type SuggestionSource = "entity" | "category" | "popular" | "mixed" | "none";
+
+const SUGGESTION_SOURCES = new Set<SuggestionSource>(["entity", "category", "popular", "mixed", "none"]);
 
 const STEPS = [
   { id: "research", label: "Researching both sides" },
@@ -49,13 +55,16 @@ export function OnDemandComparison({
 }) {
   const [phase, setPhase] = useState<Phase>("building");
   const [elapsed, setElapsed] = useState(0);
+  const [failureReason, setFailureReason] = useState("");
   const [related, setRelated] = useState<Related[]>(() =>
     initialRelated.filter((item) => item.slug !== slug).slice(0, 4),
   );
+  const relatedRef = useRef(related);
+  relatedRef.current = related;
   const title =
-    phase === "skipped" || phase === "capped"
-      ? `${entityA} vs ${entityB}`
-      : `We're building your comparison of ${entityA} vs ${entityB}`;
+    phase === "building"
+      ? `We're building your comparison of ${entityA} vs ${entityB}`
+      : `${entityA} vs ${entityB}`;
 
   useEffect(() => {
     const attachment = lastSearchAttachment();
@@ -107,6 +116,8 @@ export function OnDemandComparison({
       const attachment = lastSearchAttachment();
       trackGenerationRequested(slug, "compare_page", 0, attachment);
       const deadline = started + 70000;
+      // The loop ends on the deadline when no response decided the outcome.
+      let failureReason = "timeout";
 
       while (!cancelled && Date.now() < deadline) {
         let response: Response;
@@ -120,12 +131,14 @@ export function OnDemandComparison({
             body: JSON.stringify({ slug }),
           });
         } catch {
+          failureReason = "network";
           break;
         }
         const data = await response.json().catch(() => ({}));
         if (cancelled) return;
 
         if (response.status === 429) {
+          setFailureReason(safeGenerationFailureReason(data?.reason, "rate_limit"));
           setPhase("capped");
           return;
         }
@@ -147,10 +160,15 @@ export function OnDemandComparison({
           return;
         }
 
+        failureReason = safeGenerationFailureReason(
+          data?.reason ?? data?.errorStage,
+          response.status >= 500 ? "server_error" : "refused",
+        );
         break;
       }
 
       if (!cancelled) {
+        setFailureReason(failureReason);
         setPhase("fallback");
       }
     }
@@ -161,6 +179,48 @@ export function OnDemandComparison({
       cancelled = true;
     };
   }, [slug]);
+
+  // After a failed build, swap in entity or category suggestions and record
+  // that the recovery UI was shown. Crawlers skip generation (`skipped`) and
+  // do not fire this event.
+  useEffect(() => {
+    if (phase !== "fallback" && phase !== "capped") return;
+    let cancelled = false;
+
+    async function loadSuggestions() {
+      let shown = relatedRef.current;
+      let source: SuggestionSource = shown.length > 0 ? "popular" : "none";
+      try {
+        const response = await fetch(
+          `/api/comparisons/fallback-suggestions?slug=${encodeURIComponent(slug)}`,
+        );
+        const data = await response.json().catch(() => ({}));
+        const suggestions = parseSuggestions(data?.suggestions);
+        const reported = SUGGESTION_SOURCES.has(data?.source) ? (data.source as SuggestionSource) : null;
+        if (response.ok && suggestions.length > 0) {
+          shown = suggestions;
+          source = reported ?? "popular";
+          if (!cancelled) setRelated(suggestions);
+        }
+      } catch {
+        // Keep the links already on the page. Search still works.
+      }
+      if (cancelled) return;
+      trackGenerationFallbackShown({
+        slug,
+        entity_a: entityA,
+        entity_b: entityB,
+        failure_reason: failureReason,
+        suggested_slugs: shown.map((item) => item.slug),
+        suggestion_source: source,
+      });
+    }
+
+    void loadSuggestions();
+    return () => {
+      cancelled = true;
+    };
+  }, [phase, slug, entityA, entityB, failureReason]);
 
   const active = stepIndex(elapsed);
 
@@ -228,13 +288,26 @@ export function OnDemandComparison({
       {phase === "building" && <RelatedList related={related} />}
 
       {(phase === "fallback" || phase === "capped" || phase === "skipped") && (
-        <Fallback entityA={entityA} entityB={entityB} slug={slug} related={related} phase={phase} />
+        <Fallback
+          entityA={entityA}
+          entityB={entityB}
+          slug={slug}
+          related={related}
+          phase={phase}
+          failureReason={failureReason}
+        />
       )}
     </div>
   );
 }
 
-function RelatedList({ related }: { related: Related[] }) {
+function RelatedList({
+  related,
+  onSelect,
+}: {
+  related: Related[];
+  onSelect?: (item: Related) => void;
+}) {
   if (related.length === 0) return null;
   return (
     <nav aria-label="Related comparisons" className="mt-8 text-left" data-testid="free-related-compares">
@@ -242,7 +315,11 @@ function RelatedList({ related }: { related: Related[] }) {
       <ul className="space-y-2">
         {related.map((item) => (
           <li key={item.slug}>
-            <Link href={`/compare/${item.slug}`} className="text-sm text-primary-700 hover:underline">
+            <Link
+              href={`/compare/${item.slug}`}
+              onClick={() => onSelect?.(item)}
+              className="inline-flex min-h-11 items-center text-sm font-semibold text-primary-700 underline underline-offset-2 hover:text-primary-800"
+            >
               {item.title}
             </Link>
           </li>
@@ -252,35 +329,98 @@ function RelatedList({ related }: { related: Related[] }) {
   );
 }
 
+function parseSuggestions(value: unknown): Related[] {
+  if (!Array.isArray(value)) return [];
+  const suggestions: Related[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const slug = "slug" in item && typeof item.slug === "string" ? item.slug.trim().toLowerCase() : "";
+    const title = "title" in item && typeof item.title === "string" ? item.title.trim() : "";
+    if (!/^[a-z0-9-]+$/.test(slug) || !slug.includes("-vs-")) continue;
+    suggestions.push({ slug, title: title || slug });
+    if (suggestions.length >= 4) break;
+  }
+  return suggestions;
+}
+
 function Fallback({
   entityA,
   entityB,
   slug,
   related,
   phase,
+  failureReason,
 }: {
   entityA: string;
   entityB: string;
   slug: string;
   related: Related[];
   phase: "fallback" | "capped" | "skipped";
+  failureReason: string;
 }) {
   const message =
     phase === "capped"
       ? `We've built as many new comparisons as we can today. ${entityA} vs ${entityB} isn't ready yet. Try again tomorrow, or read a related comparison below.`
       : phase === "skipped"
         ? `${entityA} vs ${entityB} isn't published yet. Search for a similar comparison, or read a related one below.`
-        : `We couldn't finish ${entityA} vs ${entityB} just now. You can search for a similar comparison, or ask us to look at this one.`;
+        : `We couldn't finish ${entityA} vs ${entityB} just now. These live comparisons are ready to read, or search for another pair.`;
+
+  function trackClick(action: "suggestion" | "search", extra?: { suggested_slug?: string; query?: string }) {
+    // Crawlers land on this same recovery UI without a failed build.
+    if (phase === "skipped") return;
+    trackGenerationFallbackClick({
+      slug,
+      entity_a: entityA,
+      entity_b: entityB,
+      failure_reason: failureReason,
+      action,
+      suggested_slug: extra?.suggested_slug,
+      query: extra?.query,
+    });
+  }
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="generation-fallback">
       <p className="text-text-secondary">{message}</p>
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-        <Link
-          href="/search"
-          className="inline-flex items-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700"
-        >
+      <form
+        action="/search"
+        method="get"
+        role="search"
+        className="text-left"
+        onSubmit={(event) => {
+          const query = String(new FormData(event.currentTarget).get("q") ?? "").trim();
+          trackClick("search", { query });
+        }}
+      >
+        <label htmlFor="generation-fallback-search" className="sr-only">
           Search comparisons
-        </Link>
+        </label>
+        <input type="hidden" name="surface" value="not_found_form" />
+        <div className="flex gap-2">
+          <input
+            id="generation-fallback-search"
+            type="search"
+            name="q"
+            required
+            autoComplete="off"
+            inputMode="search"
+            enterKeyHint="search"
+            placeholder='Try "Mailchimp vs ConvertKit"'
+            className="min-w-0 flex-1 rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          />
+          <button
+            type="submit"
+            className="inline-flex items-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700"
+          >
+            Search
+          </button>
+        </div>
+      </form>
+      <RelatedList
+        related={related}
+        onSelect={(item) => trackClick("suggestion", { suggested_slug: item.slug })}
+      />
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
         <Link
           href={`/contact?subject=${encodeURIComponent(`Comparison request: ${slug}`)}`}
           className="inline-flex items-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-text hover:bg-surface-alt"
@@ -288,7 +428,6 @@ function Fallback({
           Request this comparison
         </Link>
       </div>
-      <RelatedList related={related} />
     </div>
   );
 }
