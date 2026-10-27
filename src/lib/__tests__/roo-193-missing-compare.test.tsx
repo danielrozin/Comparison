@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import {
   blocksOnDemandBuild,
@@ -11,11 +11,25 @@ import { isNotFoundDocument } from "@/lib/analytics/comparison-view-capture";
 
 vi.mock("next/head", () => ({ default: ({ children }: { children: unknown }) => children }));
 vi.mock("next/link", () => ({
-  default: ({ href, children }: { href: string; children?: ReactNode }) => <a href={href}>{children}</a>,
+  default: ({
+    href,
+    children,
+    onClick,
+  }: {
+    href: string;
+    children?: ReactNode;
+    onClick?: () => void;
+  }) => (
+    <a href={href} onClick={onClick}>
+      {children}
+    </a>
+  ),
 }));
 vi.mock("@/lib/utils/analytics", () => ({
   trackCompareNotFound: vi.fn(),
   trackGenerationRequested: vi.fn(),
+  trackGenerationFallbackShown: vi.fn(),
+  trackGenerationFallbackClick: vi.fn(),
 }));
 const automation = vi.hoisted(() => ({ headless: false }));
 vi.mock("@/lib/analytics/automated-client", () => ({
@@ -23,6 +37,7 @@ vi.mock("@/lib/analytics/automated-client", () => ({
 }));
 
 import { OnDemandComparison } from "@/components/comparison/OnDemandComparison";
+import { trackGenerationFallbackClick, trackGenerationFallbackShown } from "@/lib/utils/analytics";
 
 describe("ROO-193 rebuildable archived rows", () => {
   it("auto-generated archived rows do not block the builder", () => {
@@ -75,6 +90,8 @@ describe("OnDemandComparison", () => {
   beforeEach(() => {
     ua = Object.getOwnPropertyDescriptor(window.navigator, "userAgent");
     automation.headless = false;
+    vi.mocked(trackGenerationFallbackShown).mockClear();
+    vi.mocked(trackGenerationFallbackClick).mockClear();
   });
   afterEach(() => {
     if (ua) Object.defineProperty(window.navigator, "userAgent", ua);
@@ -100,6 +117,8 @@ describe("OnDemandComparison", () => {
     expect(fetchMock).not.toHaveBeenCalled();
     expect(screen.getByRole("heading", { name: "Deel vs Remote" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "USA vs China" })).toBeInTheDocument();
+    expect(screen.getByRole("search")).toBeInTheDocument();
+    expect(trackGenerationFallbackShown).not.toHaveBeenCalled();
   });
 
   it("shows related compares when the daily cap refuses the build", async () => {
@@ -115,6 +134,128 @@ describe("OnDemandComparison", () => {
     render(<OnDemandComparison slug="deel-vs-remote" entityA="Deel" entityB="Remote" initialRelated={related} />);
     expect(await screen.findByText(/as many new comparisons as we can today/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "USA vs China" })).toBeInTheDocument();
+    expect(screen.getByRole("search")).toBeInTheDocument();
     expect(screen.queryByText(/Pro pricing/)).not.toBeInTheDocument();
+  });
+
+  it("replaces a failed build with related comparisons and a search box", async () => {
+    Object.defineProperty(window.navigator, "userAgent", { value: "Mozilla/5.0 (Macintosh) Chrome/130", configurable: true });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string) => {
+        const href = String(url);
+        if (href.includes("/generate")) {
+          return {
+            status: 500,
+            ok: false,
+            json: async () => ({ reason: "anthropic", errorStage: "anthropic", error: "invalid x-api-key" }),
+          };
+        }
+        if (href.includes("fallback-suggestions")) {
+          return {
+            status: 200,
+            ok: true,
+            json: async () => ({
+              source: "entity",
+              suggestions: [
+                { slug: "mailchimp-vs-constant-contact", title: "Mailchimp vs Constant Contact" },
+                { slug: "klaviyo-vs-omnisend", title: "Klaviyo vs Omnisend" },
+                { slug: "activecampaign-vs-mailchimp", title: "ActiveCampaign vs Mailchimp" },
+                { slug: "drip-vs-klaviyo", title: "Drip vs Klaviyo" },
+              ],
+            }),
+          };
+        }
+        return { status: 200, ok: true, json: async () => ({ comparisons: [] }) };
+      }),
+    );
+
+    render(
+      <OnDemandComparison
+        slug="mailchimp-vs-klaviyo"
+        entityA="Mailchimp"
+        entityB="Klaviyo"
+        initialRelated={related}
+      />,
+    );
+
+    expect(await screen.findByRole("link", { name: "Klaviyo vs Omnisend" })).toHaveAttribute(
+      "href",
+      "/compare/klaviyo-vs-omnisend",
+    );
+    expect(screen.getByRole("search")).toBeInTheDocument();
+    expect(screen.getByLabelText("Search comparisons")).toBeInTheDocument();
+    expect(screen.queryByText(/building your comparison/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/invalid x-api-key/)).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(trackGenerationFallbackShown).toHaveBeenCalledTimes(1);
+      expect(trackGenerationFallbackShown).toHaveBeenCalledWith(
+        expect.objectContaining({
+          slug: "mailchimp-vs-klaviyo",
+          entity_a: "Mailchimp",
+          entity_b: "Klaviyo",
+          failure_reason: "anthropic",
+          suggestion_source: "entity",
+          suggested_slugs: [
+            "mailchimp-vs-constant-contact",
+            "klaviyo-vs-omnisend",
+            "activecampaign-vs-mailchimp",
+            "drip-vs-klaviyo",
+          ],
+        }),
+      );
+    });
+
+    const suggestion = screen.getByRole("link", { name: "Klaviyo vs Omnisend" });
+    suggestion.addEventListener("click", (event) => event.preventDefault());
+    fireEvent.click(suggestion);
+    expect(trackGenerationFallbackClick).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "suggestion",
+        suggested_slug: "klaviyo-vs-omnisend",
+        failure_reason: "anthropic",
+        slug: "mailchimp-vs-klaviyo",
+      }),
+    );
+
+    fireEvent.change(screen.getByLabelText("Search comparisons"), { target: { value: "hubspot vs mailchimp" } });
+    const form = screen.getByRole("search");
+    form.addEventListener("submit", (event) => event.preventDefault());
+    fireEvent.submit(form);
+    expect(trackGenerationFallbackClick).toHaveBeenCalledWith(
+      expect.objectContaining({ action: "search", query: "hubspot vs mailchimp" }),
+    );
+  });
+
+  it("still leaves the page when generation succeeds", async () => {
+    Object.defineProperty(window.navigator, "userAgent", { value: "Mozilla/5.0 (Macintosh) Chrome/130", configurable: true });
+    const assign = vi.fn();
+    const originalLocation = window.location;
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: { ...originalLocation, assign },
+    });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string) => {
+        if (String(url).includes("/generate")) {
+          return {
+            status: 200,
+            ok: true,
+            json: async () => ({ status: "ready", canonicalSlug: "mailchimp-vs-klaviyo" }),
+          };
+        }
+        return { status: 200, ok: true, json: async () => ({ comparisons: [] }) };
+      }),
+    );
+
+    render(<OnDemandComparison slug="mailchimp-vs-klaviyo" entityA="Mailchimp" entityB="Klaviyo" />);
+
+    await waitFor(() => {
+      expect(assign).toHaveBeenCalledWith("/compare/mailchimp-vs-klaviyo");
+    });
+    expect(screen.queryByTestId("generation-fallback")).not.toBeInTheDocument();
+    expect(trackGenerationFallbackShown).not.toHaveBeenCalled();
+    Object.defineProperty(window, "location", { configurable: true, value: originalLocation });
   });
 });
