@@ -6352,6 +6352,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-26T10:59:19.191Z"
+    },
+    {
+      "slug": "mercedes-vs-lexus",
+      "title": "Mercedes vs Lexus",
+      "entityA": "Mercedes-Benz",
+      "entityB": "Lexus",
+      "category": "automotive",
+      "renderer": "v3",
+      "asOf": "October 2026",
+      "videoFile": "mercedes-vs-lexus.mp4",
+      "durationSeconds": 45,
+      "transcript": "One of these loses half its value in five years. Half. Mercedes sells you the moment. Lexus sells you the next ten years. Average versus best in class. One brand sets the bar nobody else reaches. Mercedes costs roughly double to keep alive every single year. Every year. Step inside a Mercedes and Lexus suddenly feels like it's trying hard. Both badges open doors. Only one makes the valet move the car forward. Buy the Mercedes at fifty grand, sell it for twenty five. Ouch. Lexus takes it three to two. Buy the Mercedes if the drama is the point.",
+      "chapters": [
+        {
+          "name": "Mercedes-Benz vs Lexus",
+          "startOffset": 0,
+          "endOffset": 5
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 5,
+          "endOffset": 10
+        },
+        {
+          "name": "Round 1: Reliability (J.D. Power)",
+          "startOffset": 10,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: Annual Maintenance Cost",
+          "startOffset": 17,
+          "endOffset": 23
+        },
+        {
+          "name": "Round 3: Interior Luxury",
+          "startOffset": 23,
+          "endOffset": 29
+        },
+        {
+          "name": "Round 4: Brand Prestige",
+          "startOffset": 29,
+          "endOffset": 34
+        },
+        {
+          "name": "Round 5: 5-Year Depreciation",
+          "startOffset": 34,
+          "endOffset": 41
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 41,
+          "endOffset": 48
+        }
+      ],
+      "youtubeTitle": "Mercedes-Benz vs Lexus: Which Luxury Brand Actually Wins?",
+      "youtubeDescription": "We compare Mercedes-Benz and Lexus on reliability, annual maintenance cost, interior luxury, brand prestige and five-year depreciation. Mercedes wins the cabin and the badge, but Lexus wins the ownership math. Here's which one you should actually buy.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/mercedes-vs-lexus\n\nFull comparison: https://www.aversusb.net/compare/mercedes-vs-lexus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-10-27T10:20:25.566Z"
     }
   ]
 }

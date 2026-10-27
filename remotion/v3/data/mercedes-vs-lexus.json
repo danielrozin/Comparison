@@ -1,0 +1,145 @@
+{
+  "title": "Mercedes vs Lexus",
+  "entityA": "Mercedes-Benz",
+  "entityB": "Lexus",
+  "category": "automotive",
+  "shortAnswer": "Mercedes-Benz offers superior luxury, prestige, and cutting-edge technology. Lexus counters with legendary reliability, lower maintenance costs, and Toyota-backed build quality. Mercedes is the aspiration; Lexus is the pragmatic luxury choice.",
+  "stats": [
+    {
+      "label": "Reliability (J.D. Power)",
+      "valueA": "Average",
+      "valueB": "Best in Class",
+      "winner": "b"
+    },
+    {
+      "label": "Annual Maintenance Cost",
+      "valueA": "$1,200-1,800",
+      "valueB": "$500-800",
+      "winner": "b"
+    },
+    {
+      "label": "Interior Luxury",
+      "valueA": "Superior",
+      "valueB": "Very Good",
+      "winner": "a"
+    },
+    {
+      "label": "Brand Prestige",
+      "valueA": "Higher",
+      "valueB": "High",
+      "winner": "a"
+    },
+    {
+      "label": "5-Year Depreciation",
+      "valueA": "~50%",
+      "valueB": "~35%",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Choose Mercedes for the ultimate luxury experience and latest technology. Choose Lexus for bulletproof reliability, lower ownership costs, and hassle-free luxury. Lexus is the smarter buy; Mercedes is the more exciting one.",
+  "slug": "mercedes-vs-lexus",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "One of these loses half its value in five years. Half.",
+    "tape": "Mercedes sells you the moment. Lexus sells you the next ten years.",
+    "rounds": [
+      "Average versus best in class. One brand sets the bar nobody else reaches.",
+      "Mercedes costs roughly double to keep alive every single year. Every year.",
+      "Step inside a Mercedes and Lexus suddenly feels like it's trying hard.",
+      "Both badges open doors. Only one makes the valet move the car forward.",
+      "Buy the Mercedes at fifty grand, sell it for twenty five. Ouch."
+    ],
+    "verdict": "Lexus takes it three to two. Buy the Mercedes if the drama is the point."
+  },
+  "audio": {
+    "cold": "video-assets/mercedes-vs-lexus/audio/cold.mp3",
+    "tape": "video-assets/mercedes-vs-lexus/audio/tape.mp3",
+    "rounds": [
+      "video-assets/mercedes-vs-lexus/audio/round-1.mp3",
+      "video-assets/mercedes-vs-lexus/audio/round-2.mp3",
+      "video-assets/mercedes-vs-lexus/audio/round-3.mp3",
+      "video-assets/mercedes-vs-lexus/audio/round-4.mp3",
+      "video-assets/mercedes-vs-lexus/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/mercedes-vs-lexus/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 147,
+    "tape": 159,
+    "rounds": [
+      199,
+      192,
+      161,
+      175,
+      202
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "One of these loses half its value in five years. Half. Mercedes sells you the moment. Lexus sells you the next ten years. Average versus best in class. One brand sets the bar nobody else reaches. Mercedes costs roughly double to keep alive every single year. Every year. Step inside a Mercedes and Lexus suddenly feels like it's trying hard. Both badges open doors. Only one makes the valet move the car forward. Buy the Mercedes at fifty grand, sell it for twenty five. Ouch. Lexus takes it three to two. Buy the Mercedes if the drama is the point.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One of these loses half its value in five years. Half.",
+      "startOffset": 0,
+      "endOffset": 4.89898
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Mercedes sells you the moment. Lexus sells you the next ten years.",
+      "startOffset": 4.89898,
+      "endOffset": 10.189796
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Average versus best in class. One brand sets the bar nobody else reaches.",
+      "startOffset": 10.189796,
+      "endOffset": 16.83898
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Mercedes costs roughly double to keep alive every single year. Every year.",
+      "startOffset": 16.83898,
+      "endOffset": 23.253062
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Step inside a Mercedes and Lexus suddenly feels like it's trying hard.",
+      "startOffset": 23.253062,
+      "endOffset": 28.622246
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Both badges open doors. Only one makes the valet move the car forward.",
+      "startOffset": 28.622246,
+      "endOffset": 34.461634000000004
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Buy the Mercedes at fifty grand, sell it for twenty five. Ouch.",
+      "startOffset": 34.461634000000004,
+      "endOffset": 41.189185
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Lexus takes it three to two. Buy the Mercedes if the drama is the point.",
+      "startOffset": 41.189185,
+      "endOffset": 47.689185
+    }
+  ],
+  "youtubeTitle": "Mercedes-Benz vs Lexus: Which Luxury Brand Actually Wins?",
+  "youtubeDescription": "We compare Mercedes-Benz and Lexus on reliability, annual maintenance cost, interior luxury, brand prestige and five-year depreciation. Mercedes wins the cabin and the badge, but Lexus wins the ownership math. Here's which one you should actually buy.\n\nFigures accurate as of October 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/mercedes-vs-lexus",
+  "asOf": "October 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
