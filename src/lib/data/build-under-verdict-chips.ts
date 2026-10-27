@@ -38,21 +38,51 @@ export function matchupKey(slug: string): string {
     .join("|");
 }
 
-/** True when the candidate compare shares an entity with the page. */
-export function sharesEntity(
-  candidate: Candidate,
+const CORPORATE_SUFFIX = /-(corporation|corp|inc|company|co|group|holdings|worldwide|benefits|international|plc|ltd|llc)$/;
+
+function slugify(v: string): string {
+  return v
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Entity keys for the page: its own slug sides ("amex", "master-card") plus
+ * entity slugs and names with corporate suffixes stripped ("kohl-s-corporation"
+ * -> "kohl-s", "Target Corporation" -> "target").
+ */
+export function entityKeys(
+  currentSlug: string,
   entities: ReadonlyArray<{ slug: string; name: string }>
-): boolean {
-  const slug = candidate.slug.toLowerCase();
-  const sides = slug.split("-vs-");
-  const title = candidate.title.toLowerCase();
-  return entities.some((e) => {
-    const es = (e.slug || "").toLowerCase();
-    const en = (e.name || "").toLowerCase().trim();
-    if (es && sides.some((s) => s === es || s.startsWith(`${es}-`) || s.endsWith(`-${es}`))) {
-      return true;
-    }
-    return en.length >= 3 && new RegExp(`(^|[^a-z0-9])${en.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^a-z0-9]|$)`).test(title);
+): string[] {
+  const keys = new Set<string>();
+  const add = (v: string) => {
+    let k = slugify(v);
+    for (let i = 0; i < 2; i++) k = k.replace(CORPORATE_SUFFIX, "");
+    if (k.length >= 2) keys.add(k);
+  };
+  for (const side of currentSlug.split("-vs-")) add(side);
+  for (const e of entities) {
+    if (e.slug) add(e.slug);
+    if (e.name) add(e.name);
+  }
+  return [...keys];
+}
+
+/** True when one side of the candidate compare is (or starts/ends with) a page entity. */
+export function sharesEntity(candidateSlug: string, keys: ReadonlyArray<string>): boolean {
+  const sides = candidateSlug.toLowerCase().split("-vs-");
+  return sides.some((side) => {
+    const flat = side.replace(/-/g, "");
+    return keys.some(
+      (k) =>
+        side === k ||
+        flat === k.replace(/-/g, "") ||
+        side.startsWith(`${k}-`) ||
+        side.endsWith(`-${k}`)
+    );
   });
 }
 
@@ -63,6 +93,7 @@ export function pickUnderVerdictCandidates(
   pools: ReadonlyArray<ReadonlyArray<Candidate>>
 ): Candidate[] {
   const selfKey = matchupKey(currentSlug);
+  const keys = entityKeys(currentSlug, entities);
   const seenSlugs = new Set<string>([currentSlug]);
   const seenKeys = new Set<string>([selfKey]);
   const seenLabels = new Set<string>();
@@ -76,7 +107,7 @@ export function pickUnderVerdictCandidates(
       seenSlugs.add(c.slug);
       const key = matchupKey(c.slug);
       if (seenKeys.has(key)) continue;
-      if (!sharesEntity(c, entities)) continue;
+      if (!sharesEntity(c.slug, keys)) continue;
       const label = labelFromTitle(c.title || c.slug.replace(/-/g, " "));
       const labelKey = label.toLowerCase();
       if (seenLabels.has(labelKey)) continue;
@@ -93,12 +124,16 @@ export async function buildUnderVerdictChips(
   entities: ReadonlyArray<{ slug: string; name: string }>,
   related: ReadonlyArray<Candidate>
 ): Promise<UnderVerdictChip[]> {
-  if (entities.length === 0) return [];
+  // Look up by the page's own slug sides first ("target", "amex"): entity
+  // slugs are often long-form ("target-corporation") and match few compares.
+  const lookups = [
+    ...new Set([...currentSlug.split("-vs-"), ...entities.map((e) => e.slug)].filter(Boolean)),
+  ].slice(0, 4);
   const entityPools = await Promise.all(
-    entities.slice(0, 3).map(async (e) => {
-      if (!e.slug) return [] as Candidate[];
+    lookups.map(async (key) => {
+      if (key.length < 2) return [] as Candidate[];
       try {
-        return (await getComparisonsForEntity(e.slug)).slice(0, PER_ENTITY_POOL);
+        return (await getComparisonsForEntity(key)).slice(0, PER_ENTITY_POOL);
       } catch {
         return [] as Candidate[];
       }

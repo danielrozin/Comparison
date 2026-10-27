@@ -75,6 +75,7 @@ import { RYZEN_7_9700X_VS_RYZEN_7_9800X3D } from "./ryzen-7-9700x-vs-ryzen-7-980
 import { DDR5_VS_DDR4 } from "./ddr5-vs-ddr4";
 import { RX_7900_XT_VS_RTX_4070_TI } from "./rx-7900-xt-vs-rtx-4070-ti";
 import { RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP } from "./rtx-5070-ti-laptop-vs-rtx-5080-laptop";
+import { RTX_5060_VS_RX_9060_XT } from "./rtx-5060-vs-rx-9060-xt";
 import { M5_MAX_VS_M5_PRO } from "./m5-max-vs-m5-pro";
 import { GA4_VS_PLAUSIBLE_ANALYTICS } from "./ga4-vs-plausible-analytics";
 import { GOOGLE_ANALYTICS_VS_MICROSOFT_CLARITY } from "./google-analytics-vs-microsoft-clarity";
@@ -201,6 +202,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [DDR5_VS_DDR4.slug]: DDR5_VS_DDR4,
   [RX_7900_XT_VS_RTX_4070_TI.slug]: RX_7900_XT_VS_RTX_4070_TI,
   [RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP.slug]: RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP,
+  [RTX_5060_VS_RX_9060_XT.slug]: RTX_5060_VS_RX_9060_XT,
   [M5_MAX_VS_M5_PRO.slug]: M5_MAX_VS_M5_PRO,
   [GA4_VS_PLAUSIBLE_ANALYTICS.slug]: GA4_VS_PLAUSIBLE_ANALYTICS,
   [GOOGLE_ANALYTICS_VS_MICROSOFT_CLARITY.slug]: GOOGLE_ANALYTICS_VS_MICROSOFT_CLARITY,
