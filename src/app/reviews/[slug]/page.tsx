@@ -301,9 +301,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
     );
   }
 
-  // Individual Review schema — unlocks Google's "Review Snippet" rich result.
-  // SoftwareApplication type (with Product as additionalType fallback) signals to Google
-  // that this is software-specific, enabling Software rich results alongside Review Snippets.
+  // Individual Review schema — unlocks Google's Review snippet on a
+  // SoftwareApplication. Not typed Product: we don't sell the reviewed item.
   // Only emit when reviews have a body and rating to avoid thin/empty items.
   const reviewableItems = reviews
     .filter((r) => r.body && r.body.length > 30 && r.rating)
@@ -311,10 +310,10 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
   if (reviewableItems.length > 0) {
     schemas.push({
       "@context": "https://schema.org",
-      // SoftwareApplication is the primary type; additionalType Product preserves
-      // Product Review Snippet eligibility for non-software entities in the catalog.
+      // SoftwareApplication only. additionalType Product opted this node into
+      // Google Shopping, which then demanded a photo and a real offer. We
+      // don't sell the reviewed product, and a $0 offer is not a price.
       "@type": "SoftwareApplication",
-      additionalType: "https://schema.org/Product",
       "@id": `${SITE_URL}/entity/${slug}#software`,
       name,
       url: `${SITE_URL}/reviews/${slug}`,

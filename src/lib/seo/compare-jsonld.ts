@@ -3,6 +3,7 @@ import { SITE_URL } from "@/lib/utils/constants";
 import { isEntityPageIndexable } from "@/lib/seo/entity-page-indexable";
 import {
   comparisonPageSchema,
+  demoteEditorialShoppingProducts,
   jsonLdGraph,
   webPageSchema,
   type ComparisonVoteData,
@@ -574,8 +575,14 @@ export function assembleCompareJsonLd(args: {
   document = alignFaqToVisibleFaqs(document, comparison);
   document = alignJsonLdToRenderedMetrics(document, comparison);
 
+  // Last, so a stored schemaMarkup graph cannot put Product back after the
+  // other cleanups. Generated graphs are already Thing; this is the backstop.
+  document = demoteEditorialShoppingProducts(
+    labelUnreviewedCompareJsonLd(document, slug),
+  );
+
   return {
-    document: labelUnreviewedCompareJsonLd(document, slug),
+    document,
     claimReview: null,
   };
 }

@@ -199,7 +199,9 @@ describe("compare template entity links", () => {
     expect(container.textContent).toContain("Beta Widget");
     expect(types).toContain("FAQPage");
     expect(types).toContain("BreadcrumbList");
-    expect(types).toContain("Product");
+    // Compared goods are Thing, not Product — Product invites GSC Shopping errors.
+    expect(types).not.toContain("Product");
+    expect(types).toContain("Thing");
     expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
   });
 
@@ -431,7 +433,8 @@ describe("editorial compare ClaimReview", () => {
     expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
     expect(types).toContain("FAQPage");
     expect(types).toContain("BreadcrumbList");
-    expect(types).toContain("Product");
+    expect(types).not.toContain("Product");
+    expect(types).toContain("Thing");
     expect(types.filter((type) => type === "FAQPage")).toHaveLength(1);
   });
 
