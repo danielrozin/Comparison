@@ -4,9 +4,9 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { HubShell } from "@/components/layout/HubShell";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { pricingPlanProducts } from "@/lib/seo/pricing-offers";
 import { PLANS, stripeConfigured } from "@/lib/monetization/plans";
 import {
-  offerAvailability,
   pricingBannerDetail,
   pricingFaq,
   pricingPayments,
@@ -46,21 +46,7 @@ function offersSchema() {
       ],
       `${PAGE_URL}#breadcrumbs`
     ),
-    mainEntity: PLANS.map((plan) => ({
-      "@type": "Product",
-      name: `${SITE_NAME} ${plan.name}`,
-      description: plan.tagline,
-      brand: { "@id": `${SITE_URL}/#organization` },
-      offers: plan.intervals.map((i) => ({
-        "@type": "Offer",
-        price: i.foundingPrice,
-        priceCurrency: "USD",
-        // founding price — honest validity window, revisited at launch
-        priceValidUntil: "2026-12-31",
-        availability: offerAvailability(i),
-        url: PAGE_URL,
-      })),
-    })),
+    mainEntity: pricingPlanProducts(),
   };
 }
 

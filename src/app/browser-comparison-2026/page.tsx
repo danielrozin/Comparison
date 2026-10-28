@@ -193,27 +193,6 @@ const browserFaqSchema = {
   })),
 };
 
-const productSchemas = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "Google Chrome",
-    url: "https://www.google.com/chrome/",
-    brand: { "@type": "Brand", name: "Google LLC" },
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD", url: "https://www.google.com/chrome/" },
-    description: "Chromium-based browser by Google.",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "Mozilla Firefox",
-    url: "https://www.mozilla.org/firefox/",
-    brand: { "@type": "Brand", name: "Mozilla Foundation" },
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD", url: "https://www.mozilla.org/firefox/" },
-    description: "Open-source Gecko-engine browser by Mozilla. MPL-2.0 licensed.",
-  },
-];
-
 type Browser = {
   name: string;
   vendor: string;
@@ -364,7 +343,7 @@ const BROWSERS: Browser[] = [
 export default function BrowserComparison2026Page() {
   return (
     <>
-      <JsonLd data={[articleSchema, browserFaqSchema, ...productSchemas]} />
+      <JsonLd data={[articleSchema, browserFaqSchema]} />
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-cyan-900 via-teal-900 to-primary-900 text-white relative overflow-hidden">

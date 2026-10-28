@@ -239,9 +239,10 @@ export function organizationSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FA
     // crawlers can navigate from the publisher entity to its content corpus.
     subjectOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog` },
     // hasOfferCatalog — Google Knowledge Panel and AI answer engines use this to
-    // understand what "products" or services the organization offers. Listing our
-    // free comparison platform here routes "what does A Versus B offer?" queries
-    // to the correct structured data node.
+    // understand what services the organization offers. These Offers wrap
+    // Service, not Product, and they are not merchant listings. They stay
+    // without a price: comparison pages are free, and the paid API is the
+    // Business subscription on /pricing (that page owns the priced Product).
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "A Versus B Comparison Platform",
@@ -783,6 +784,8 @@ export function webApplicationSchema() {
         description: "Subscribe to comparison updates and newsletter",
       },
     ],
+    // The public site is free. This Offer is on WebApplication, not Product,
+    // so Google Shopping does not treat it as a merchant listing.
     offers: {
       "@type": "Offer",
       price: "0",
@@ -1146,17 +1149,11 @@ export function comparisonPageSchema(
             return features.length > 0 ? { featureList: features.join(", ") } : {};
           })(),
         }),
-        // Product enrichment — brand + availability so AI product-search crawlers
-        // can extract structured product data from comparison pages.
-        ...(schType === "Product" && {
-          brand: { "@type": "Brand", name: e.name.split(" ")[0] },
+        // Compared goods are editorial subjects, not offers we sell.
+        // entitySchemaType("product") is Thing, so this node must not grow an
+        // Offer, a guessed brand, or a price. `category` is a plain label.
+        ...(e.entityType === "product" && {
           category: comparison.category ?? "Products",
-          offers: {
-            "@type": "Offer",
-            availability: "https://schema.org/InStock",
-            priceCurrency: "USD",
-            seller: { "@type": "Organization", name: SITE_NAME },
-          },
         }),
         // Country enrichment — additionalType + sameAs Wikipedia+DBpedia signals entity identity
         // to geo-aware AI crawlers (Google Geo, Perplexity, ChatGPT country queries).
@@ -1928,15 +1925,11 @@ function buildMultiEntityGraph(
       if (multiFeatures.length > 0) node.featureList = multiFeatures.join(", ");
     }
 
-    if (schemaType === "Product") {
-      node.brand = { "@type": "Brand", name: entity.name.split(" ")[0] };
+    // No Offer. A price-less InStock Offer with A Versus B as seller is what
+    // GSC Merchant listings flag as "Missing field price", and it claims we
+    // sell a product we only compare.
+    if (entity.entityType === "product") {
       node.category = comparison.category ?? "Products";
-      node.offers = {
-        "@type": "Offer",
-        availability: "https://schema.org/InStock",
-        priceCurrency: "USD",
-        seller: { "@type": "Organization", name: SITE_NAME },
-      };
     }
 
     if (schemaType === "Country") {
@@ -2949,16 +2942,6 @@ export function entityPageSchema(entity: {
         license: "https://creativecommons.org/licenses/by/4.0/",
       },
     }),
-    // Product-specific enrichment for AI product-search carousels
-    ...(schemaType === "Product" && {
-      brand: { "@type": "Brand", name: entity.name.split(" ")[0] },
-      offers: {
-        "@type": "Offer",
-        availability: "https://schema.org/InStock",
-        priceCurrency: "USD",
-        seller: { "@type": "Organization", name: SITE_NAME },
-      },
-    }),
     // SoftwareApplication enrichment on entity pages
     ...(schemaType === "SoftwareApplication" && {
       applicationCategory: "BusinessApplication",
@@ -3072,7 +3055,15 @@ export function entitySchemaType(entityType: string): string {
   const map: Record<string, string> = {
     person: "Person",
     country: "Country",
-    product: "Product",
+    // GSC Product snippets require offers, review, or aggregateRating.
+    // Merchant listings also require a photo and offers.price, and the page
+    // must be the seller. Compared phones, GPUs, and other goods are not
+    // products we sell — launch MSRP copy is editorial, not an Offer — so
+    // typing them Product makes every compare URL fail Shopping reports.
+    // Thing keeps the entity in the graph without that validator. Same
+    // reason `event` is Thing. The only Products we sell are the
+    // subscriptions in pricing-offers.ts.
+    product: "Thing",
     team: "SportsTeam",
     company: "Organization",
     technology: "SoftwareApplication",
@@ -3106,6 +3097,74 @@ export function entitySchemaType(entityType: string): string {
     gaming: "VideoGame",
   };
   return map[entityType] || "Thing";
+}
+
+const SHOPPING_PRODUCT_TYPE_NAMES = new Set(["Product", "https://schema.org/Product"]);
+
+function schemaTypeNames(type: unknown): string[] {
+  if (typeof type === "string") return [type];
+  if (!Array.isArray(type)) return [];
+  return type.filter((item): item is string => typeof item === "string");
+}
+
+function isShoppingProductTypeName(type: string): boolean {
+  return SHOPPING_PRODUCT_TYPE_NAMES.has(type);
+}
+
+/** Drop a Product additionalType. Other additional types stay. */
+function withoutShoppingProductType(type: unknown): unknown {
+  if (typeof type === "string") {
+    return isShoppingProductTypeName(type) ? undefined : type;
+  }
+  if (!Array.isArray(type)) return type;
+  const next = type.filter((item) => typeof item !== "string" || !isShoppingProductTypeName(item));
+  return next.length > 0 ? next : undefined;
+}
+
+/**
+ * Compare pages describe other people's goods. Google Shopping treats
+ * `@type: Product` as something the page sells. A node without offers,
+ * review, or aggregateRating fails Product snippets. An Offer without
+ * `price` fails Merchant listings, and a filled-in MSRP would claim we
+ * sell the item. Stored `schemaMarkup` can still contain those nodes, so
+ * the compare assembler runs every document through this walk.
+ *
+ * Subscription Products on /pricing never pass through here.
+ * `Vehicle` and `Car` are left alone: Google does not treat Car as a
+ * Product subtype unless the node is also typed Product.
+ */
+export function demoteEditorialShoppingProducts<T>(value: T): T {
+  return walkShoppingProducts(value) as T;
+}
+
+function walkShoppingProducts(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map((item) => walkShoppingProducts(item));
+  if (!value || typeof value !== "object") return value;
+
+  const next: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    next[key] = walkShoppingProducts(child);
+  }
+
+  const typeNames = schemaTypeNames(next["@type"]);
+  if (typeNames.some(isShoppingProductTypeName)) {
+    const replaced = typeNames.map((name) => (isShoppingProductTypeName(name) ? "Thing" : name));
+    // One type stays a string so existing `"@type" === "Article"` checks hold.
+    next["@type"] = replaced.length === 1 ? replaced[0] : replaced;
+    // These fields exist to satisfy a shopping parser. On Thing they either
+    // claim a sale or become an invalid review-snippet parent.
+    delete next.offers;
+    delete next.aggregateRating;
+    delete next.review;
+  }
+
+  if ("additionalType" in next) {
+    const additional = withoutShoppingProductType(next.additionalType);
+    if (additional === undefined) delete next.additionalType;
+    else next.additionalType = additional;
+  }
+
+  return next;
 }
 
 // entityAlternateNames — derive AI-disambiguation aliases from an entity name.
@@ -3212,16 +3271,8 @@ export function profilePageSchema(entity: {
         target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/${entity.slug}-vs-{other}`, actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] },
       },
     ],
-    // Type-specific enrichment for AI product-search and app-store carousels
-    ...(schemaType === "Product" && {
-      brand: { "@type": "Brand", name: entity.name.split(" ")[0] },
-      offers: {
-        "@type": "Offer",
-        availability: "https://schema.org/InStock",
-        priceCurrency: "USD",
-        seller: { "@type": "Organization", name: SITE_NAME },
-      },
-    }),
+    // Type-specific enrichment. Product is intentionally absent: see
+    // entitySchemaType("product"). SoftwareApplication keeps its own fields.
     ...(schemaType === "SoftwareApplication" && {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web, iOS, Android",

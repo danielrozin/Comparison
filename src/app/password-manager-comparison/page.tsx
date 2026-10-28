@@ -129,27 +129,6 @@ const articleSchema = {
   correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
 };
 
-const productSchemas = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "1Password",
-    url: "https://1password.com",
-    brand: { "@type": "Brand", name: "AgileBits" },
-    offers: { "@type": "Offer", price: "47.88", priceCurrency: "USD", url: "https://1password.com/pricing/password-manager" },
-    description: "Password manager that combines the master password with a 128-bit Secret Key; SOC 2 Type 2.",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "Bitwarden",
-    url: "https://bitwarden.com",
-    brand: { "@type": "Brand", name: "Bitwarden Inc." },
-    offers: { "@type": "Offer", price: "19.80", priceCurrency: "USD", url: "https://bitwarden.com/pricing/" },
-    description: "Open-source password manager (GPL v3.0 clients) with AES-CBC 256-bit encryption and a free plan.",
-  },
-];
-
 /* ── Data ───────────────────────────────────────────────────────────────── */
 // ROO-269 (Oct 19, 2026): every value below was read on the linked vendor page.
 // Where a vendor page could not be loaded or did not state a value, the cell
@@ -325,7 +304,7 @@ const PASSWORD_MANAGERS: PM[] = [
 export default function PasswordManagerComparisonPage() {
   return (
     <>
-      <JsonLd data={[articleSchema, ...productSchemas]} />
+      <JsonLd data={[articleSchema]} />
 
       {/* Gradient Hero */}
       <section aria-labelledby="pm-hero-heading" className="bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 text-white relative overflow-hidden">
