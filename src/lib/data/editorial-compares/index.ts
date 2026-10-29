@@ -110,6 +110,7 @@ import { NIKE_VS_UNDER_ARMOUR } from "./nike-vs-under-armour";
 import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
 import { MYSQL_VS_POSTGRESQL } from "./mysql-vs-postgresql";
 import { GEICO_VS_STATE_FARM } from "./geico-vs-state-farm";
+import { RYZEN_7_5800X3D_VS_AM5 } from "./ryzen-7-5800x3d-vs-am5";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -238,6 +239,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MEDICAID_VS_MEDICARE.slug]: MEDICAID_VS_MEDICARE,
   [MYSQL_VS_POSTGRESQL.slug]: MYSQL_VS_POSTGRESQL,
   [GEICO_VS_STATE_FARM.slug]: GEICO_VS_STATE_FARM,
+  [RYZEN_7_5800X3D_VS_AM5.slug]: RYZEN_7_5800X3D_VS_AM5,
 };
 
 /**
