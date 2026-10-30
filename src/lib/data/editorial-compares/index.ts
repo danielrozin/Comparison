@@ -111,6 +111,7 @@ import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
 import { MYSQL_VS_POSTGRESQL } from "./mysql-vs-postgresql";
 import { GEICO_VS_STATE_FARM } from "./geico-vs-state-farm";
 import { RYZEN_7_5800X3D_VS_AM5 } from "./ryzen-7-5800x3d-vs-am5";
+import { RX_9070_VS_RX_9070_XT } from "./rx-9070-vs-rx-9070-xt";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -240,6 +241,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MYSQL_VS_POSTGRESQL.slug]: MYSQL_VS_POSTGRESQL,
   [GEICO_VS_STATE_FARM.slug]: GEICO_VS_STATE_FARM,
   [RYZEN_7_5800X3D_VS_AM5.slug]: RYZEN_7_5800X3D_VS_AM5,
+  [RX_9070_VS_RX_9070_XT.slug]: RX_9070_VS_RX_9070_XT,
 };
 
 /**
