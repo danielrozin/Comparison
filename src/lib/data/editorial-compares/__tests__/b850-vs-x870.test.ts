@@ -18,8 +18,8 @@ const TECHSPOT =
   "https://www.techspot.com/guides/2901-amd-ryzen-x870-b850-b840-x670-b650-a620-motherboards/";
 
 // Reader copy must not narrate the research, and must not carry invented
-// performance, price, or board-model stats. "Community opinion" is allowed
-// only as a labelled block with no numbers from the thread.
+// performance, price, or board-model stats. The Reddit thread is unverified
+// (403), so a community-opinion block is not allowed on this page.
 const BANNED =
   /page lists|list shows|table lists|no published|page says|on that page|the page|this article|article says|checked against|Source note|(?:^|\n)Sources:|official page|fetch|this comparison|this page|returned 404|\bshown\b|\bquoted\b|according to|trustpilot|commenter|\bfps\b|benchmark|techpowerup|323052|5GbE|2\.5GbE|\bASUS\b|\bROG\b|Wi-Fi 7|Promontory|motherboardcentral|\d+(?:\.\d+)?\s?%|faster than|\$\d|human review|byline|reviewed by/i;
 
@@ -114,7 +114,7 @@ describe("B850 vs X870", () => {
       expect(text).toContain(fact);
     }
     expect(text).not.toMatch(BANNED);
-    expect(text).toMatch(/Community opinion[\s\S]*This is community opinion, not measured results\./);
+    expect(text).not.toMatch(/Community opinion|community opinion|reddit\.com|r\/PcBuild/i);
     expect(page().citationStats?.sources.map((source) => source.url)).toEqual([AMD_AM5, AMD_9800X3D, TECHSPOT]);
     expect(page().resources?.map((resource) => resource.url)).toEqual([AMD_AM5, AMD_9800X3D, TECHSPOT]);
     expect(page().citationStats?.sourceCount).toBe(3);

@@ -9,8 +9,8 @@ import type { EditorialComparison } from "./types";
  * B850 and X870 and is the source for the B650 / B650E paragraph only.
  * Dropped: TechPowerUp 323052 (pre-launch slide; B850 reversed), street
  * prices, fps and percentage claims, Wi-Fi generation, Promontory chip
- * names, named motherboard models, and every number from the r/PcBuild
- * thread. No winner.
+ * names, and named motherboard models. The r/PcBuild thread returned 403,
+ * so the page has no community-opinion block and does not cite it. No winner.
  */
 
 const A = "b850";
@@ -143,11 +143,7 @@ AMD says motherboards with 600-series and 800-series chipsets are compatible wit
 
 Related choices
 
-Ryzen 7 5800X3D or AM5 covers staying on an older board versus moving to AM5. DDR5 vs DDR4 covers the memory a Ryzen 7 9800X3D build uses. RX 9070 vs RX 9070 XT covers a graphics-card choice for 1440p gaming.
-
-Community opinion
-
-In an r/PcBuild thread about choosing a B850 or X870 board for a Ryzen 7 9800X3D, a common view was that B850 is enough for a gaming build unless you need more USB ports, more M.2 slots or other I/O. Several people said power delivery, heatsinks, M.2 count, USB count and LAN speed follow the exact board, not the chipset name. This is community opinion, not measured results.`;
+Ryzen 7 5800X3D or AM5 covers staying on an older board versus moving to AM5. DDR5 vs DDR4 covers the memory a Ryzen 7 9800X3D build uses. RX 9070 vs RX 9070 XT covers a graphics-card choice for 1440p gaming.`;
 
 const SPEC = "Specs";
 
