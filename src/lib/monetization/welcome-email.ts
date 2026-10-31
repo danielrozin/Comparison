@@ -10,7 +10,7 @@
  * this email until they actually ship.
  */
 
-import { getPlan } from "@/lib/monetization/plans";
+import { getInterval, getPlan } from "@/lib/monetization/plans";
 import { SITE_URL } from "@/lib/utils/constants";
 
 export const CUSTOM_COMPARE_PATH = "/custom-compare";
@@ -63,6 +63,14 @@ export function buildMemberWelcomeEmail(input: MemberWelcomeInput): MemberWelcom
       ? `${input.amountMajor.toFixed(2)} ${(input.currency || "usd").toUpperCase()}`
       : null;
 
+  // A trial checkout completes with amount_total 0. Saying "payment received,
+  // charged 0.00" to a trial member reads like a billing bug.
+  const trialDays = plan ? getInterval(plan, input.interval)?.trialDays : undefined;
+  const onTrial = Boolean(trialDays) && input.amountMajor === 0;
+  const opening = onTrial
+    ? `Your ${trialDays}-day free trial has started. Nothing is charged until it ends — cancel before then and you pay nothing.`
+    : "Payment received. This email is your receipt and the key to what you just unlocked.";
+
   const subject = `You're in — ${planName} on A Versus B`;
   const featureLines = features.map((feature) => `• ${feature}`);
   const featureHtml = features
@@ -72,10 +80,10 @@ export function buildMemberWelcomeEmail(input: MemberWelcomeInput): MemberWelcom
   const text = [
     `Welcome to A Versus B ${planName}.`,
     "",
-    "Payment received. This email is your receipt and the key to what you just unlocked.",
+    opening,
     "",
     `Plan: ${planName} (${cadence})`,
-    amount ? `Charged: ${amount}` : null,
+    amount && !onTrial ? `Charged: ${amount}` : null,
     "Stripe also emails its own card receipt.",
     "",
     "What this unlocks:",
@@ -98,10 +106,10 @@ export function buildMemberWelcomeEmail(input: MemberWelcomeInput): MemberWelcom
   const html = `
     <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;color:#0f172a;line-height:1.6">
       <p style="font-size:16px"><strong>Welcome to A Versus B ${escapeHtml(planName)}.</strong></p>
-      <p>Payment received. This email is your receipt and the key to what you just unlocked.</p>
+      <p>${escapeHtml(opening)}</p>
       <p style="margin:20px 0;padding:16px 18px;background:#f8fafc;border-radius:8px">
         <strong>Plan:</strong> ${escapeHtml(planName)} (${escapeHtml(cadence)})<br/>
-        ${amount ? `<strong>Charged:</strong> ${escapeHtml(amount)}<br/>` : ""}
+        ${amount && !onTrial ? `<strong>Charged:</strong> ${escapeHtml(amount)}<br/>` : ""}
         Stripe also emails its own card receipt.
       </p>
       <p><strong>What this unlocks</strong></p>

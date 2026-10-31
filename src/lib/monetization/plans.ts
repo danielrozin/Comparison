@@ -19,6 +19,11 @@ export interface PlanInterval {
   regularPrice: number;
   /** Env var holding the Stripe Price id for this interval */
   stripePriceEnv: string;
+  /**
+   * Free trial length, sent to Stripe as subscription_data[trial_period_days].
+   * Card is collected up front; the first charge lands the day after it ends.
+   */
+  trialDays?: number;
 }
 
 export interface Plan {
@@ -39,7 +44,7 @@ export const PLANS: Plan[] = [
     tagline: "For anyone who needs the comparison that doesn't exist yet.",
     intervals: [
       { interval: "year", foundingPrice: 49, regularPrice: 90, stripePriceEnv: "STRIPE_PRICE_PRO_YEARLY" },
-      { interval: "month", foundingPrice: 9, regularPrice: 12, stripePriceEnv: "STRIPE_PRICE_PRO_MONTHLY" },
+      { interval: "month", foundingPrice: 9, regularPrice: 12, stripePriceEnv: "STRIPE_PRICE_PRO_MONTHLY", trialDays: 7 },
     ],
     features: [
       "2 custom comparisons per month — request any matchup, built for you within 24 hours",
