@@ -142,6 +142,9 @@ export default async function PricingPage({
                 {alternate && (
                   <p className="mt-1 text-xs text-text-secondary">
                     or ${alternate.foundingPrice}/{alternate.interval}
+                    {alternate.trialDays && stripeConfigured(alternate)
+                      ? ` · ${alternate.trialDays}-day free trial`
+                      : ""}
                   </p>
                 )}
 
@@ -188,7 +191,11 @@ export default async function PricingPage({
                       interval={alternate.interval}
                       src={src}
                       paymentsLive={stripeConfigured(alternate)}
-                      label={`Or $${alternate.foundingPrice}/${alternate.interval} founding`}
+                      label={
+                        alternate.trialDays && stripeConfigured(alternate)
+                          ? `Try ${alternate.trialDays} days free — then $${alternate.foundingPrice}/${alternate.interval}`
+                          : `Or $${alternate.foundingPrice}/${alternate.interval} founding`
+                      }
                       className="w-full rounded-xl px-5 py-2.5 text-sm font-semibold border border-border bg-white text-text hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-60"
                     />
                   )}
