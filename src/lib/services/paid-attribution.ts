@@ -50,6 +50,17 @@ export function getPaidAmazonTag(): string {
   return PAID_AMAZON_TAG;
 }
 
+/**
+ * Amazon search URL tagged with the organic Associates ID.
+ * Same tag resolution compare-page links use (`NEXT_PUBLIC_AMAZON_AFFILIATE_TAG`,
+ * otherwise the live organic tag). Paid sessions rewrite it later via
+ * `withPaidAmazonTag` / `usePaidAffiliateHref`.
+ */
+export function amazonSearchAffiliateUrl(query: string): string {
+  const q = encodeURIComponent(query.trim());
+  return `https://www.amazon.com/s?k=${q}&tag=${ORGANIC_AMAZON_TAG}`;
+}
+
 function readSessionFlag(): boolean {
   try {
     return window.sessionStorage.getItem(PAID_SESSION_KEY) === PAID_SRC_VALUE;
