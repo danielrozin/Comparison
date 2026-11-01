@@ -48,9 +48,18 @@ export function pricingFaq(mode: PricingPayments): { q: string; a: string }[] {
       ? "The prices on this page are pre-launch prices. Reserve now and the price is locked for as long as you stay subscribed, even after public pricing goes up."
       : "These are founding prices. Subscribe now and the price stays locked for as long as you stay subscribed, even after public pricing goes up.";
 
+  const trial = PLANS.flatMap((plan) =>
+    plan.intervals
+      .filter((interval) => interval.trialDays && stripeConfigured(interval))
+      .map((interval) => ({ plan, interval })),
+  )[0];
+  const trialNote = trial
+    ? ` ${trial.plan.name} monthly starts with a ${trial.interval.trialDays}-day free trial: nothing is charged until it ends, and canceling before then costs nothing.`
+    : "";
+
   const charged =
     mode === "live"
-      ? "When you finish Stripe Checkout. Card details are entered on Stripe's page only — this site never sees or stores them. Closing that page before you pay charges nothing."
+      ? `When you finish Stripe Checkout. Card details are entered on Stripe's page only — this site never sees or stores them. Closing that page before you pay charges nothing.${trialNote}`
       : mode === "partial"
         ? "If the button opens Stripe, you are charged when you finish on Stripe's page. If it asks for an email instead, nothing is charged today — we email your checkout link when that plan opens."
         : "Not today. Reserving takes an email only. Checkout (via Stripe) opens this week — you'll get your link by email, and only then do you enter payment details, on Stripe's own page.";

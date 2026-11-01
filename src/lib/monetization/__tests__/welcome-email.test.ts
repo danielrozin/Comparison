@@ -33,4 +33,30 @@ describe("buildMemberWelcomeEmail", () => {
     expect(message.text).toContain("Production API access");
     expect(message.text).not.toContain("Charged:");
   });
+
+  it("tells a trial member nothing is charged yet instead of printing a 0.00 receipt", () => {
+    const message = buildMemberWelcomeEmail({
+      planId: "pro",
+      interval: "month",
+      amountMajor: 0,
+      currency: "usd",
+      siteUrl: "https://www.aversusb.net",
+    });
+    expect(message.text).toContain("7-day free trial has started");
+    expect(message.text).not.toContain("Payment received");
+    expect(message.text).not.toContain("Charged:");
+    expect(message.html).not.toContain("Charged:");
+  });
+
+  it("keeps the receipt wording for a paid monthly checkout", () => {
+    const message = buildMemberWelcomeEmail({
+      planId: "pro",
+      interval: "month",
+      amountMajor: 9,
+      currency: "usd",
+      siteUrl: "https://www.aversusb.net",
+    });
+    expect(message.text).toContain("Payment received");
+    expect(message.text).toContain("9.00 USD");
+  });
 });
