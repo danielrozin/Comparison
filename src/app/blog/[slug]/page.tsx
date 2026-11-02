@@ -27,6 +27,8 @@ import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
 import { BlogArticleProse, type ArticleRenderPart } from "@/components/blog/BlogArticleProse";
+import { BlogAffiliateExperiment } from "@/components/blog/BlogAffiliateExperiment";
+import { isAvbAffBlockBlogSlug } from "@/lib/growth/avb-aff-block-blog";
 import type { InlineComparisonLink } from "@/components/blog/BlogInlineComparisonCard";
 import { generatedCompareTitle, topicBuildSlug, topicCompareCandidates } from "@/lib/blog/blog-topic-compare";
 import { matchTopicCompares, matchTopicPages, topicKeywords } from "@/lib/blog/blog-topic-relevance";
@@ -1112,6 +1114,11 @@ export default async function BlogPostPage({
           <div className={`flex gap-8 items-start ${toc.length >= 2 ? "xl:grid xl:grid-cols-[1fr_220px]" : ""}`}>
             <article id="blog-article-body" className="min-w-0 flex-1">
               <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
+                {/* ROO-359: only the listed experiment slugs mount the flag.
+                    Other articles never evaluate avb-aff-block-blog. */}
+                {isAvbAffBlockBlogSlug(slug) ? (
+                  <BlogAffiliateExperiment path={`/blog/${slug}`} />
+                ) : null}
                 <BlogArticleProse
                   parts={articleParts}
                   articleSlug={slug}

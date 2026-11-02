@@ -4,6 +4,9 @@ import type { AffiliateLink } from "@/types";
 import { trackAffiliateClick, trackEvent } from "@/lib/utils/analytics";
 import { useExperiment } from "@/lib/experiments";
 import { usePaidAffiliateHref } from "@/lib/hooks/usePaidAffiliateHref";
+import { AffiliateDisclosure } from "./AffiliateDisclosure";
+
+export { AffiliateDisclosure };
 
 const PARTNER_ICONS: Record<string, React.ReactNode> = {
   amazon: (
@@ -147,24 +150,6 @@ export function AffiliateButton({
         />
       </svg>
     </a>
-  );
-}
-
-export function AffiliateDisclosure() {
-  return (
-    <p className="text-xs text-text-secondary/70 mt-2 leading-tight">
-      {/* Verbatim wording required by the Amazon Associates Operating Agreement
-          (§5). Do not paraphrase — a reworded disclosure is a compliance defect
-          even though it reads the same. See DAN-2603. */}
-      As an Amazon Associate I earn from qualifying purchases. Other links on
-      this page may also earn us a commission, at no extra cost to you.{" "}
-      <a
-        href="/disclaimer"
-        className="underline hover:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:rounded-sm"
-      >
-        Learn more about our affiliate disclosure
-      </a>
-    </p>
   );
 }
 

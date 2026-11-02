@@ -118,6 +118,13 @@ describe("paid attribution — ON (paid tag configured)", () => {
     ).toBe(`https://www.amazon.co.uk/dp/B0CHWRXH8B?th=1&tag=${PAID_TAG}#reviews`);
   });
 
+  it("builds an organic Amazon search URL with the configured tag", async () => {
+    const { amazonSearchAffiliateUrl } = await loadModule();
+    expect(amazonSearchAffiliateUrl("Keurig K-Cup pods")).toBe(
+      `https://www.amazon.com/s?k=Keurig%20K-Cup%20pods&tag=${ORGANIC_TAG}`,
+    );
+  });
+
   it("rewrites only the tag param, leaving the rest of the query encoded as-is", async () => {
     const { withPaidAmazonTag } = await loadModule(PAID_TAG);
     visit("?src=paid");

@@ -17,6 +17,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { Pagination } from "@/components/ui/Pagination";
 import { HomeCompareCTA, TrackedCompareLink } from "@/components/home/HomeCompareCTA";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
+import { BlogAffiliateExperiment } from "@/components/blog/BlogAffiliateExperiment";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
 import { HOME_COMPARE_CHIP_CANDIDATES } from "@/lib/data/home-compare-constants";
 import {
@@ -588,6 +589,10 @@ export default async function BlogPage({
           </svg>
         </div>
       </section>
+
+      {/* ROO-359: test arm only. Control renders nothing, so this slot is empty
+          until PostHog flag avb-aff-block-blog assigns "test". */}
+      <BlogAffiliateExperiment path="/blog" />
 
       {/* Category Filters — sticky below the header (h-16 = 64 px) so users can re-filter without scrolling back */}
       <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-border/60 shadow-sm">
