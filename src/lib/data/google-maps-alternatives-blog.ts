@@ -60,7 +60,7 @@ Apple Maps is Apple's own service, built into iPhone, iPad, and Mac, so it is a 
 - [Google Maps vs Apple Maps](/compare/google-maps-vs-apple-maps)
 - [Google Maps vs Waze](/compare/google-maps-vs-waze)
 - [Best navigation apps 2026: Google Maps, Waze, and Apple Maps compared](/blog/best-navigation-apps-2026-google-maps-waze-and-apple-maps-compared)
-- [All Google Maps alternatives](/alternatives/google-maps)
+- [Google Maps vs Waze, side by side](/compare/google-maps-vs-waze)
 
 ## Sources
 

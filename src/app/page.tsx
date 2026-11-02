@@ -22,7 +22,6 @@ import { RecentlyViewed } from "@/components/home/RecentlyViewed";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { AnimatedStats } from "@/components/home/AnimatedStats";
 import { ComparisonTicker } from "@/components/home/ComparisonTicker";
-import { LiveActivityToast } from "@/components/home/LiveActivityToast";
 import { CategoryIcon } from "@/lib/utils/category-icons";
 
 const HOME_TITLE = `${SITE_NAME} — Compare Anything`;
@@ -334,9 +333,6 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
-
-        {/* Live activity toast — shows popular trending comparisons with simulated viewer count */}
-        <LiveActivityToast items={trending.slice(0, 8).map((t) => ({ slug: t.slug, title: t.title }))} />
 
         {/* Scroll down indicator — absolutely positioned so it sits above the wave without adding height */}
         <div className="absolute bottom-[88px] left-0 right-0 flex justify-center animate-fade-in pointer-events-none" style={{ animationDelay: "0.7s" }} aria-hidden="true">

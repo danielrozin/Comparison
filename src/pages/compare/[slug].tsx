@@ -1077,8 +1077,10 @@ export default function ComparisonPage(props: Props) {
 
       {/* Share + Like Bar */}
       {/* flex-wrap: at 390px the share icons + embed + like exceeded the row and
-          pushed the document 51px wider than the viewport on every compare page. */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex flex-wrap items-center justify-between gap-y-2">
+          pushed the document 51px wider than the viewport on every compare page.
+          Hidden on phones: the icon rows pushed the H1 below the fold, and
+          FloatingShareButton already covers sharing there. */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 hidden sm:flex flex-wrap items-center justify-between gap-y-2">
         <ShareBar title={comparison.title} slug={comparison.slug} />
         <div className="flex items-center gap-2">
           <EmbedButton slug={comparison.slug} title={comparison.title} />

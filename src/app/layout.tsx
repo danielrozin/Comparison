@@ -51,7 +51,9 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
+// trim(): the Vercel value carries a trailing newline, which sent
+// client=ca-pub-…%0A and made every ad request return 400.
+const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID?.trim();
 
 export const metadata: Metadata = {
   title: {
@@ -137,7 +139,6 @@ export default async function RootLayout({
             preconnect opens TLS for frequently used origins; dns-prefetch for lower-priority ones.
             Faster LCP is a Core Web Vitals signal that directly affects ranking. */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://cdn.aversusb.net" crossOrigin="anonymous" />
         {/* Entity images in multi-entity layouts are served directly from Wikipedia/Clearbit —
             preconnect+dns-prefetch so the TLS handshake completes before the browser
             discovers the <img> src, reducing image load time. */}

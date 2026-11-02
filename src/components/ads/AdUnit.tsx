@@ -11,7 +11,8 @@ interface AdUnitProps {
   className?: string;
 }
 
-const PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
+// trim(): the Vercel value carries a trailing newline (ca-pub-…%0A → 400).
+const PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID?.trim();
 
 export function AdUnit({
   slot,
@@ -23,7 +24,7 @@ export function AdUnit({
   const pushed = useRef(false);
 
   useEffect(() => {
-    if (!PUBLISHER_ID || pushed.current) return;
+    if (!PUBLISHER_ID || !slot || pushed.current) return;
     try {
       ((window as unknown as Record<string, unknown[]>).adsbygoogle =
         (window as unknown as Record<string, unknown[]>).adsbygoogle || []).push({});
@@ -33,7 +34,8 @@ export function AdUnit({
     }
   }, []);
 
-  if (!PUBLISHER_ID) return null;
+  // No slot id configured: an <ins> without data-ad-slot is an invalid unit.
+  if (!PUBLISHER_ID || !slot) return null;
 
   return (
     <div className={`ad-container text-center overflow-hidden ${className}`}>
@@ -63,6 +65,8 @@ export function SidebarAd() {
 
 /** In-content ad for between sections */
 export function InContentAd() {
+  // Without a slot the 90px wrapper was an empty gap mid-page.
+  if (!PUBLISHER_ID || !process.env.NEXT_PUBLIC_ADSENSE_SLOT_INCONTENT) return null;
   return (
     <div className="my-8 max-w-5xl mx-auto px-4 min-h-[90px]">
       <AdUnit
@@ -75,7 +79,6 @@ export function InContentAd() {
 
 /** Sticky footer ad */
 export function StickyFooterAd() {
-  const PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
   if (!PUBLISHER_ID) return null;
 
   return (

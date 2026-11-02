@@ -40,6 +40,9 @@ describe("404 cleanup category redirects", () => {
         "/category/ecommerce",
         "/category/kitchen-appliances",
         "/category/food_and_drink",
+        "/category/social_media",
+        "/category/science",
+        "/category/general",
       ]),
     );
 

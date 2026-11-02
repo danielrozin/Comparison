@@ -9,6 +9,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { getPrisma } from "@/lib/db/prisma";
+import { isEntityPageIndexable, resolveEntityPageStatuses } from "@/lib/seo/entity-page-indexable";
 import { GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG } from "@/lib/data/google-maps-alternatives-blog";
 
 /** In-repo guides linked from an alternatives page (ROO-183). */
@@ -200,6 +201,12 @@ export default async function AlternativesPage({ params }: PageProps) {
       existingSlugs.add(curated.slug);
     }
   }
+
+  // /entity/X and /alternatives/X both 404 unless X has a published entity
+  // row. Many alternatives come from comparison titles with no such row, so
+  // "Learn more" and the related chips linked to 404s. Link the live ones only.
+  const altStatuses = await resolveEntityPageStatuses(alternatives.map((a) => a.slug));
+  const altPageLive = (altSlug: string) => isEntityPageIndexable(altStatuses.get(altSlug));
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },
@@ -536,12 +543,14 @@ export default async function AlternativesPage({ params }: PageProps) {
                 >
                   Compare
                 </Link>
-                <Link
-                  href={`/entity/${alt.slug}`}
-                  className="flex-1 text-center py-2 bg-surface-alt text-text text-sm font-semibold rounded-lg hover:bg-primary-50 transition-colors border border-border"
-                >
-                  Learn more
-                </Link>
+                {altPageLive(alt.slug) && (
+                  <Link
+                    href={`/entity/${alt.slug}`}
+                    className="flex-1 text-center py-2 bg-surface-alt text-text text-sm font-semibold rounded-lg hover:bg-primary-50 transition-colors border border-border"
+                  >
+                    Learn more
+                  </Link>
+                )}
               </div>
             </li>
           ))}
@@ -569,14 +578,14 @@ export default async function AlternativesPage({ params }: PageProps) {
       )}
 
       {/* Related Alternatives — cross-link to alternatives pages for each alternative entity */}
-      {alternatives.length > 0 && (
+      {alternatives.some((alt) => altPageLive(alt.slug)) && (
         <div className="mt-10">
           <h2 className="text-xl font-bold text-text mb-4">Related Alternatives</h2>
           <p className="text-sm text-text-secondary mb-4">
             Explore alternatives pages for entities compared with {name}.
           </p>
           <div className="flex flex-wrap gap-2">
-            {alternatives.slice(0, 12).map((alt) => (
+            {alternatives.filter((alt) => altPageLive(alt.slug)).slice(0, 12).map((alt) => (
               <Link
                 key={`related-alt-${alt.slug}`}
                 href={`/alternatives/${alt.slug}`}

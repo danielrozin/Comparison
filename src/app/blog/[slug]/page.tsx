@@ -169,6 +169,25 @@ function renderMarkdown(md: string): string {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
+    // A "# Title" line repeats the page H1 and used to print as literal text.
+    if (/^#\s/.test(line)) {
+      closeOpenLists();
+      continue;
+    }
+
+    // Horizontal rule. "---" printed as literal dashes between sections.
+    if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(line)) {
+      closeOpenLists();
+      processed.push('<hr class="my-8 border-border" />');
+      continue;
+    }
+
+    if (line.startsWith("#### ")) {
+      closeOpenLists();
+      processed.push(`<h4 class="text-lg font-semibold text-text mt-6 mb-2">${line.slice(5).trim()}</h4>`);
+      continue;
+    }
+
     // Headings — include id for TOC anchor navigation
     if (line.startsWith("### ")) {
       closeOpenLists();

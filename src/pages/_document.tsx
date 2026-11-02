@@ -11,7 +11,8 @@ import { SITE_URL } from "@/lib/utils/constants";
 //
 // The Inter font lives in _app (next/font is not allowed in _document); its
 // `--font-inter` CSS variable cascades from a display:contents wrapper there.
-const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
+// trim(): the Vercel value carries a trailing newline (ca-pub-…%0A → 400).
+const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID?.trim();
 
 type CustomDocumentProps = DocumentInitialProps & { omitSitewideJsonLd?: boolean };
 

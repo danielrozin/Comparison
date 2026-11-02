@@ -47,6 +47,37 @@ const REJECTED_ARTICLE_TITLES = new Set([
   // GPU model names with no English article (ROO-236).
   "RX_9070_XT",
   "RTX_5060_Ti",
+  // Guesses that 404'd in the 2026-11-02 site crawl: product models, plan
+  // names and generic phrases with no English article.
+  "MacBook_Air_15-inch",
+  "Traditional_Braces",
+  "Quartz_Countertops",
+  "Granite_Countertops",
+  "LED-Backlit_LCD_Display",
+  "CCFL-Backlit_LCD_Display",
+  "Apple_MacBook_Pro_14/16-inch_M5_Max",
+  "Apple_MacBook_Air_M5",
+  "PC_Gaming",
+  "Boeing_F-15_Eagle_/_F-15EX",
+  "Traditional_Degree",
+  "Online_Degree",
+  "Samsung_Galaxy_Buds_4_Pro",
+  "Sony_WF-1000XM6",
+  "Gym_Training",
+  "MS_Finance",
+  "PlayStation_6",
+  "Google_Cloud_Spanner",
+  "Magnesium_L-Threonate",
+  "Magnesium_Glycinate",
+  "EcoFlow_STREAM_5000",
+  "Anker_SOLIX_Solarbank_4_Pro",
+  "AMD_Radeon_RX_7900_XT",
+  "NVIDIA_GeForce_RTX_4070_Ti",
+  "Apple_M5_Max",
+  "Apple_M5_Pro",
+  "United_MileagePlus",
+  "AM5_upgrade",
+  "Ryzen_7_5800X3D",
 ]);
 
 /**

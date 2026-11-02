@@ -35,7 +35,7 @@ export function Footer() {
               <span className="text-xl font-bold text-white">{SITE_NAME}</span>
             </Link>
             <p className="text-sm text-white/60 leading-relaxed">
-              Unbiased, data-driven comparisons for better decisions. Trusted by millions of curious minds.
+              Unbiased, data-driven comparisons for better decisions. Every verdict cites its sources.
             </p>
             {/* Social links — only accounts that actually exist. An icon
                 pointing at an unclaimed handle is a dead end for readers and a
