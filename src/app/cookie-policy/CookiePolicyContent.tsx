@@ -81,7 +81,6 @@ export function CookiePolicyContent() {
         <p className="mb-4">Some cookies are set by services we integrate with:</p>
         <ul className="list-disc pl-6 space-y-1">
           <li>Google Analytics (usage analytics)</li>
-          <li>Google AdSense (where applicable)</li>
           <li>Content delivery networks</li>
         </ul>
       </section>

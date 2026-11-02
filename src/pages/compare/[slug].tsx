@@ -71,7 +71,6 @@ import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { CompareChangeAlert } from "@/components/comparison/CompareChangeAlert";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
-import { InContentAd } from "@/components/ads/AdUnit";
 import { SmartReviewLinks, type SmartReviewEntry } from "@/components/comparison/SmartReviewLinks";
 import { getEntityAggregation } from "@/lib/services/review-service";
 import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
@@ -1287,9 +1286,6 @@ export default function ComparisonPage(props: Props) {
         )}
       </div>
 
-      {/* Ad: between main content and partner reviews */}
-      <InContentAd />
-
       {/* Partner Reviews (SmartReview) */}
       {(() => {
         const partnerReviews = getPartnerReviews(comparison.slug);
@@ -1573,8 +1569,6 @@ function MultiEntityLayout({
           <RelatedComparisonsSidebar comparisons={sidebarComparisons} sourceSlug={slug} variant="desktop" />
         )}
       </div>
-
-      <InContentAd />
 
       <SmartReviewLinks reviews={smartReviews} />
 

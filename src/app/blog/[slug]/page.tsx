@@ -19,7 +19,6 @@ import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
-import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
@@ -1156,11 +1155,6 @@ export default async function BlogPostPage({
                 />
               </div>
 
-          {/* Ad: after article content */}
-          <div className="my-8">
-            <InContentAd />
-          </div>
-
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
             <div className="mt-8 flex flex-wrap gap-2">
@@ -1219,11 +1213,6 @@ export default async function BlogPostPage({
             slugs={article.relatedComparisonSlugs ?? []}
             titles={comparisonTitles}
           />
-
-          {/* Ad: before back button */}
-          <div className="my-8">
-            <InContentAd />
-          </div>
 
           {/* Back to Blog */}
           <div className="mt-10 text-center">

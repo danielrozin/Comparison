@@ -11,8 +11,6 @@ import { SITE_URL } from "@/lib/utils/constants";
 //
 // The Inter font lives in _app (next/font is not allowed in _document); its
 // `--font-inter` CSS variable cascades from a display:contents wrapper there.
-// trim(): the Vercel value carries a trailing newline (ca-pub-…%0A → 400).
-const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID?.trim();
 
 type CustomDocumentProps = DocumentInitialProps & { omitSitewideJsonLd?: boolean };
 
@@ -55,20 +53,11 @@ export default function Document({ omitSitewideJsonLd }: { omitSitewideJsonLd?: 
         <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         {/* Preconnect to critical origins — reduces TCP handshake latency for LCP resources.
             Google uses Core Web Vitals (LCP) as a ranking signal; preconnect shaves ~200ms
-            off the first-byte time for OG images and the AdSense script on slow connections. */}
-        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+            off the first-byte time for fonts on slow connections. */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.clarity.ms" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
-        {ADSENSE_PUB_ID && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${ADSENSE_PUB_ID}`}
-            crossOrigin="anonymous"
-          />
-        )}
         {/* Google Preferred Sources — renders the "Add preferred source"
             button wherever a [google-add-preferred-source-btn] div appears
             (site-wide in the Footer). Readers who add us get our content
