@@ -8,6 +8,7 @@ import { SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA } from "./samsung-galaxy-s24-ultr
 import { IPHONE_16E_VS_IPHONE_17E } from "./iphone-16e-vs-iphone-17e";
 import { PIXEL_9A_VS_PIXEL_9 } from "./pixel-9a-vs-pixel-9";
 import { IPHONE_18_PRO_VS_IPHONE_18_PRO_MAX } from "./iphone-18-pro-vs-iphone-18-pro-max";
+import { IPHONE_AIR_VS_IPHONE_18_PRO } from "./iphone-air-vs-iphone-18-pro";
 import { POLAROID_GO_GEN_2_VS_INSTAX_MINI } from "./polaroid-go-gen-2-vs-fujifilm-instax-mini";
 import { GALAXY_Z_FOLD_7_VS_S26_ULTRA } from "./galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra";
 import { GOOGLE_MAPS_VS_APPLE_MAPS } from "./google-maps-vs-apple-maps";
@@ -140,6 +141,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [IPHONE_16E_VS_IPHONE_17E.slug]: IPHONE_16E_VS_IPHONE_17E,
   [PIXEL_9A_VS_PIXEL_9.slug]: PIXEL_9A_VS_PIXEL_9,
   [IPHONE_18_PRO_VS_IPHONE_18_PRO_MAX.slug]: IPHONE_18_PRO_VS_IPHONE_18_PRO_MAX,
+  [IPHONE_AIR_VS_IPHONE_18_PRO.slug]: IPHONE_AIR_VS_IPHONE_18_PRO,
   [POLAROID_GO_GEN_2_VS_INSTAX_MINI.slug]: POLAROID_GO_GEN_2_VS_INSTAX_MINI,
   [GALAXY_Z_FOLD_7_VS_S26_ULTRA.slug]: GALAXY_Z_FOLD_7_VS_S26_ULTRA,
   [GOOGLE_MAPS_VS_APPLE_MAPS.slug]: GOOGLE_MAPS_VS_APPLE_MAPS,
