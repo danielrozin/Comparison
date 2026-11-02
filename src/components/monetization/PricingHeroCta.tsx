@@ -17,6 +17,7 @@ export function PricingHeroCta({
   price,
   src,
   paymentsLive,
+  trialDays = 0,
 }: {
   plan: string;
   planName: string;
@@ -24,6 +25,8 @@ export function PricingHeroCta({
   price: number;
   src: string;
   paymentsLive: boolean;
+  /** Live free-trial length for this interval; 0 when there is none. */
+  trialDays?: number;
 }) {
   return (
     <div
@@ -31,12 +34,16 @@ export function PricingHeroCta({
       className="w-full max-w-sm rounded-2xl bg-white p-4 text-left text-text shadow-lg shadow-black/20"
     >
       <p className="text-sm font-semibold">
-        {planName} · ${price}/{interval}
+        {trialDays > 0
+          ? `${planName} · ${trialDays} days free, then $${price}/${interval}`
+          : `${planName} · $${price}/${interval}`}
       </p>
       <p className="mt-0.5 text-xs text-text-secondary leading-snug">
-        {paymentsLive
-          ? "Opens Stripe Checkout. Comparisons stay free."
-          : "Reserve the founding price with an email. Nothing is charged today."}
+        {trialDays > 0
+          ? `Cancel before day ${trialDays} and pay nothing. Comparisons stay free.`
+          : paymentsLive
+            ? "Opens Stripe Checkout. Comparisons stay free."
+            : "Reserve the founding price with an email. Nothing is charged today."}
       </p>
       <div className="mt-3">
         <CheckoutButton
@@ -44,7 +51,7 @@ export function PricingHeroCta({
           interval={interval}
           src={src}
           paymentsLive={paymentsLive}
-          label={`Get ${planName} — $${price}/${interval}`}
+          label={trialDays > 0 ? `Start ${trialDays}-day free trial` : `Get ${planName} — $${price}/${interval}`}
           className="w-full rounded-xl bg-primary-600 px-5 py-3 text-sm font-bold text-white hover:bg-primary-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-60"
         />
       </div>

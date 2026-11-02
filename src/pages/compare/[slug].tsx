@@ -954,7 +954,7 @@ function MetaHead({ meta }: { meta: PageMeta }) {
 
 /** ROO-55 — the whole sentence is the link inside #compare-under-verdict. */
 const UNDER_VERDICT_PRO_LABEL =
-  "Want a follow-up on price, country, or the tool you actually use? Pro builds it within 24 hours — $49/year.";
+  "Need a comparison we haven't published? Pro builds it for you within 24 hours. Try it free for 7 days.";
 
 export default function ComparisonPage(props: Props) {
   // N-entity (3+): multi-entity layout (parity with the App Router version).

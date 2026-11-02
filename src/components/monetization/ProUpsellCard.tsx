@@ -20,14 +20,15 @@ export function ProUpsellCard({ slug }: { slug: string }) {
       </h2>
       <p className="text-sm text-text-secondary leading-relaxed mb-4 max-w-xl">
         Pro members request any matchup — we research it and publish the full side-by-side,
-        verdict included, within 24 hours. Founding price locked at $49/year.
+        verdict included, within 24 hours. Try Pro free for 7 days, then $9/month. Cancel
+        anytime before the trial ends and you pay nothing.
       </p>
       <TrackedPricingLink
         src={`compare-${slug}`}
         placement="pro-upsell"
         className="inline-flex items-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
       >
-        Get your comparison built →
+        Start your free trial →
       </TrackedPricingLink>
       <p className="mt-3 text-sm text-text-secondary">
         Already a member?{" "}

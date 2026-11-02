@@ -76,6 +76,24 @@ describe("PricingHeroCta (ROO-54)", () => {
     expect(screen.queryByText(/checkout opens this week/i)).not.toBeInTheDocument();
   });
 
+  it("leads with the free trial when the interval has a live one", () => {
+    render(
+      <PricingHeroCta
+        plan="pro"
+        planName="Pro"
+        interval="month"
+        price={9}
+        src="direct"
+        paymentsLive
+        trialDays={7}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Start 7-day free trial" })).toBeEnabled();
+    expect(screen.getByText("Pro · 7 days free, then $9/month")).toBeInTheDocument();
+    expect(screen.getByText(/Cancel before day 7 and pay nothing/)).toBeInTheDocument();
+  });
+
   it("keeps the button tappable and says nothing is charged when Stripe is not configured", () => {
     render(
       <PricingHeroCta

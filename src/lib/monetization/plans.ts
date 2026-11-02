@@ -90,3 +90,17 @@ export function getInterval(plan: Plan, interval: string): PlanInterval | undefi
 export function stripeConfigured(pi: PlanInterval): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY && process.env[pi.stripePriceEnv]);
 }
+
+/**
+ * The interval a plan leads with on /pricing: the one with a live free
+ * trial when there is one, since "start free" is the lowest-friction ask.
+ * Otherwise the first listed interval.
+ */
+export function leadInterval(plan: Plan): PlanInterval {
+  return plan.intervals.find((i) => i.trialDays && stripeConfigured(i)) ?? plan.intervals[0];
+}
+
+/** Live trial length for this interval, or 0 when there is no trial or Stripe is off. */
+export function liveTrialDays(pi: PlanInterval): number {
+  return pi.trialDays && stripeConfigured(pi) ? pi.trialDays : 0;
+}
