@@ -51,6 +51,7 @@ import { MICROSOFT_WORD_VS_LIBREOFFICE } from "./microsoft-word-vs-libreoffice";
 import { COINBASE_VS_BINANCE } from "./coinbase-vs-binance";
 import { VENMO_VS_ZELLE } from "./venmo-vs-zelle";
 import { KINDLE_VS_KOBO } from "./kindle-vs-kobo";
+import { KINDLE_VS_IPAD } from "./kindle-vs-ipad";
 import { APPLE_TV_PLUS_VS_DISNEY_PLUS } from "./apple-tv-plus-vs-disney-plus";
 import { CNN_VS_FOX_NEWS } from "./cnn-vs-fox-news";
 import { APPLE_MUSIC_VS_YOUTUBE_MUSIC } from "./apple-music-vs-youtube-music";
@@ -184,6 +185,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [COINBASE_VS_BINANCE.slug]: COINBASE_VS_BINANCE,
   [VENMO_VS_ZELLE.slug]: VENMO_VS_ZELLE,
   [KINDLE_VS_KOBO.slug]: KINDLE_VS_KOBO,
+  [KINDLE_VS_IPAD.slug]: KINDLE_VS_IPAD,
   [APPLE_TV_PLUS_VS_DISNEY_PLUS.slug]: APPLE_TV_PLUS_VS_DISNEY_PLUS,
   [CNN_VS_FOX_NEWS.slug]: CNN_VS_FOX_NEWS,
   [APPLE_MUSIC_VS_YOUTUBE_MUSIC.slug]: APPLE_MUSIC_VS_YOUTUBE_MUSIC,
@@ -261,6 +263,21 @@ const EDITORIAL_INBOUND_RELATED: Record<string, ComparisonPageData["relatedCompa
       slug: "carhartt-vs-dickies",
       title: "Carhartt vs Dickies",
       category: "brands",
+    },
+  ],
+  // Live DB page (entertainment). Not an in-repo editorial file.
+  "kindle-vs-physical-books": [
+    {
+      slug: "kindle-vs-ipad",
+      title: "Kindle vs iPad for Reading",
+      category: "products",
+    },
+  ],
+  "kindle-vs-kobo": [
+    {
+      slug: "kindle-vs-ipad",
+      title: "Kindle vs iPad for Reading",
+      category: "products",
     },
   ],
 };
