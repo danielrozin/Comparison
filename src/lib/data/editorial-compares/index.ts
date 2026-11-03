@@ -73,6 +73,7 @@ import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import { GALAXY_S25_VS_GALAXY_S25_ULTRA } from "./galaxy-s25-vs-galaxy-s25-ultra";
 import { OLED_VS_MINI_LED_GAMING_MONITOR } from "./oled-vs-mini-led-gaming-monitor";
+import { QD_OLED_VS_WOLED } from "./qd-oled-vs-woled";
 import { RYZEN_7_9700X_VS_RYZEN_7_9800X3D } from "./ryzen-7-9700x-vs-ryzen-7-9800x3d";
 import { DDR5_VS_DDR4 } from "./ddr5-vs-ddr4";
 import { RX_7900_XT_VS_RTX_4070_TI } from "./rx-7900-xt-vs-rtx-4070-ti";
@@ -207,6 +208,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MACBOOK_NEO_VS_IPAD_A16.slug]: MACBOOK_NEO_VS_IPAD_A16,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
   [OLED_VS_MINI_LED_GAMING_MONITOR.slug]: OLED_VS_MINI_LED_GAMING_MONITOR,
+  [QD_OLED_VS_WOLED.slug]: QD_OLED_VS_WOLED,
   [RYZEN_7_9700X_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_9700X_VS_RYZEN_7_9800X3D,
   [DDR5_VS_DDR4.slug]: DDR5_VS_DDR4,
   [RX_7900_XT_VS_RTX_4070_TI.slug]: RX_7900_XT_VS_RTX_4070_TI,
@@ -278,6 +280,28 @@ const EDITORIAL_INBOUND_RELATED: Record<string, ComparisonPageData["relatedCompa
       slug: "kindle-vs-ipad",
       title: "Kindle vs iPad for Reading",
       category: "products",
+    },
+  ],
+  "oled-vs-mini-led-gaming-monitor": [
+    {
+      slug: "qd-oled-vs-woled",
+      title: "QD-OLED vs WOLED: Which Gaming Monitor Panel",
+      category: "technology",
+    },
+  ],
+  // Live DB pages. Not in-repo editorial files.
+  "oled-vs-qled": [
+    {
+      slug: "qd-oled-vs-woled",
+      title: "QD-OLED vs WOLED: Which Gaming Monitor Panel",
+      category: "technology",
+    },
+  ],
+  "lg-oled-vs-sony-oled": [
+    {
+      slug: "qd-oled-vs-woled",
+      title: "QD-OLED vs WOLED: Which Gaming Monitor Panel",
+      category: "technology",
     },
   ],
 };
