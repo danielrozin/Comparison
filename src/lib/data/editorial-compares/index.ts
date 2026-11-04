@@ -79,6 +79,7 @@ import { INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX } from "./intel-core-ultra-9
 import { DDR5_VS_DDR4 } from "./ddr5-vs-ddr4";
 import { RX_7900_XT_VS_RTX_4070_TI } from "./rx-7900-xt-vs-rtx-4070-ti";
 import { RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP } from "./rtx-5070-ti-laptop-vs-rtx-5080-laptop";
+import { LENOVO_LEGION_5_VS_ASUS_ROG_STRIX_G16 } from "./lenovo-legion-5-vs-asus-rog-strix-g16";
 import { RTX_5060_VS_RX_9060_XT } from "./rtx-5060-vs-rx-9060-xt";
 import { PIXEL_10_PRO_XL_VS_ONEPLUS_15R } from "./pixel-10-pro-xl-vs-oneplus-15r";
 import { M5_MAX_VS_M5_PRO } from "./m5-max-vs-m5-pro";
@@ -215,6 +216,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [DDR5_VS_DDR4.slug]: DDR5_VS_DDR4,
   [RX_7900_XT_VS_RTX_4070_TI.slug]: RX_7900_XT_VS_RTX_4070_TI,
   [RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP.slug]: RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP,
+  [LENOVO_LEGION_5_VS_ASUS_ROG_STRIX_G16.slug]: LENOVO_LEGION_5_VS_ASUS_ROG_STRIX_G16,
   [RTX_5060_VS_RX_9060_XT.slug]: RTX_5060_VS_RX_9060_XT,
   [PIXEL_10_PRO_XL_VS_ONEPLUS_15R.slug]: PIXEL_10_PRO_XL_VS_ONEPLUS_15R,
   [M5_MAX_VS_M5_PRO.slug]: M5_MAX_VS_M5_PRO,
