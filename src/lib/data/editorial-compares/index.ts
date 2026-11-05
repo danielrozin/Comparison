@@ -123,6 +123,7 @@ import { RX_9070_VS_RX_9070_XT } from "./rx-9070-vs-rx-9070-xt";
 import { B850_VS_X870 } from "./b850-vs-x870";
 import { RTX_5060_VS_RTX_3060_12GB } from "./rtx-5060-vs-rtx-3060-12gb";
 import { WINDOWS_11_HOME_VS_WINDOWS_11_PRO } from "./windows-11-home-vs-windows-11-pro";
+import { NEXTCLOUD_VS_OPENCLOUD } from "./nextcloud-vs-opencloud";
 import { HYSA_VS_CD } from "./hysa-vs-cd";
 import { KDENLIVE_VS_SHOTCUT } from "./kdenlive-vs-shotcut";
 import { KDENLIVE_VS_DAVINCI_RESOLVE } from "./kdenlive-vs-davinci-resolve";
@@ -267,6 +268,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [B850_VS_X870.slug]: B850_VS_X870,
   [RTX_5060_VS_RTX_3060_12GB.slug]: RTX_5060_VS_RTX_3060_12GB,
   [WINDOWS_11_HOME_VS_WINDOWS_11_PRO.slug]: WINDOWS_11_HOME_VS_WINDOWS_11_PRO,
+  [NEXTCLOUD_VS_OPENCLOUD.slug]: NEXTCLOUD_VS_OPENCLOUD,
   [HYSA_VS_CD.slug]: HYSA_VS_CD,
   [KDENLIVE_VS_SHOTCUT.slug]: KDENLIVE_VS_SHOTCUT,
   [KDENLIVE_VS_DAVINCI_RESOLVE.slug]: KDENLIVE_VS_DAVINCI_RESOLVE,
