@@ -18,6 +18,7 @@ import {
   ANDROID_SCORECARD,
   CURSOR_SCORECARD,
   FIGMA_SCORECARD,
+  GERMANY_UNITED_STATES_SCORECARD,
   JAPAN_CHINA_SCORECARD,
   LYFT_UBER_SCORECARD,
   NVIDIA_SCORECARD,
@@ -600,6 +601,51 @@ const DISCORD_TEAMS_SOURCES: { name: string; url: string }[] = [
   { name: "Microsoft Learn, HIPAA and HITECH offering", url: MICROSOFT_HIPAA },
 ];
 
+const GERMANY_US_SHORT_ANSWER =
+  "The IMF estimates US nominal GDP at $32.64 trillion in 2026 and Germany’s at $5.47 trillion. The United States economy is larger in nominal terms ($32.64 trillion vs $5.47 trillion). The IMF estimates 2026 GDP per capita at $95,212 in the United States and $65,699 in Germany. Output per person is higher in the United States ($95,212 vs $65,699). The IMF estimates 2026 real GDP growth at 2.3% in the United States and 1.3% in Germany. The United States economy is growing faster (2.3% vs 1.3%). World Bank reports a 2025 population of 341,784,857 in the United States and 83,491,249 in Germany. The United States has the larger population (341,784,857 vs 83,491,249). Neither is named the winner.";
+
+const GERMANY_US_FAQS: FAQData[] = [
+  {
+    question: "Which is ahead, Germany or the United States?",
+    answer:
+      "Neither is named the winner. The IMF estimates US nominal GDP at $32.64 trillion in 2026 and Germany’s at $5.47 trillion. The United States economy is larger in nominal terms ($32.64 trillion vs $5.47 trillion). The IMF estimates 2026 GDP per capita at $95,212 in the United States and $65,699 in Germany. Output per person is higher in the United States ($95,212 vs $65,699). The IMF estimates 2026 real GDP growth at 2.3% in the United States and 1.3% in Germany. The United States economy is growing faster (2.3% vs 1.3%). World Bank reports a 2025 population of 341,784,857 in the United States and 83,491,249 in Germany. The United States has the larger population (341,784,857 vs 83,491,249).",
+  },
+  {
+    question: "What is Germany vs United States nominal GDP?",
+    answer:
+      "The IMF estimates US nominal GDP at $32.64 trillion in 2026 and Germany’s at $5.47 trillion. The United States economy is larger in nominal terms ($32.64 trillion vs $5.47 trillion).",
+  },
+  {
+    question: "What is GDP per capita for Germany vs the United States?",
+    answer:
+      "The IMF estimates 2026 GDP per capita at $95,212 in the United States and $65,699 in Germany. Output per person is higher in the United States ($95,212 vs $65,699).",
+  },
+  {
+    question: "Which economy is growing faster, Germany or the United States?",
+    answer:
+      "The IMF estimates 2026 real GDP growth at 2.3% in the United States and 1.3% in Germany. The United States economy is growing faster (2.3% vs 1.3%).",
+  },
+  {
+    question: "Which country has the larger population, Germany or the United States?",
+    answer:
+      "The United States. World Bank reports a 2025 population of 341,784,857 in the United States and 83,491,249 in Germany. The United States has the larger population (341,784,857 vs 83,491,249).",
+  },
+  {
+    question: "Is there one overall winner between Germany and the United States?",
+    answer:
+      "Neither is named the winner. The IMF estimates US nominal GDP at $32.64 trillion in 2026 and Germany’s at $5.47 trillion. The United States economy is larger in nominal terms ($32.64 trillion vs $5.47 trillion). The IMF estimates 2026 GDP per capita at $95,212 in the United States and $65,699 in Germany. Output per person is higher in the United States ($95,212 vs $65,699). The IMF estimates 2026 real GDP growth at 2.3% in the United States and 1.3% in Germany. The United States economy is growing faster (2.3% vs 1.3%). World Bank reports a 2025 population of 341,784,857 in the United States and 83,491,249 in Germany. The United States has the larger population (341,784,857 vs 83,491,249).",
+  },
+];
+
+const GERMANY_US_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: GERMANY_US_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: the United States on nominal size, output per person, the pace of growth, and population.",
+  keyFact:
+    "The IMF estimates US nominal GDP at $32.64 trillion in 2026 and Germany’s at $5.47 trillion. The IMF estimates 2026 real GDP growth at 2.3% in the United States and 1.3% in Germany. World Bank reports a 2025 population of 341,784,857 in the United States and 83,491,249 in Germany. Neither is named the winner.",
+};
+
 type AeoOverlay = {
   shortAnswer: string;
   faqs: FAQData[];
@@ -742,6 +788,12 @@ const OVERLAYS: Record<string, AeoOverlay> = {
       label: source.name,
       url: source.url,
     })),
+  },
+  "germany-vs-united-states": {
+    shortAnswer: GERMANY_US_SHORT_ANSWER,
+    faqs: GERMANY_US_FAQS,
+    quickAnswer: GERMANY_US_QUICK_ANSWER,
+    ...GERMANY_UNITED_STATES_SCORECARD,
   },
 };
 
