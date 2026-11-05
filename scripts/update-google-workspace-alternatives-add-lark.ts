@@ -8,8 +8,10 @@
  * and it does not repeat the brief's comparisons against Google.
  *
  * Idempotent: targeted string edits on the current DB content. If the Lark
- * section already exists the script exits without writing. Every anchor is
- * asserted so a drifted article fails loudly instead of being half-patched.
+ * section already exists, the script only rewrites the bare Lark marketing
+ * href to the reciprocal-deal UTM URL (ROO-375) and leaves every other field
+ * alone. Every anchor is asserted so a drifted article fails loudly instead
+ * of being half-patched.
  *
  * Dry run (no DB; prints the patched markdown for a saved copy of the article):
  *   DRY_RUN_FILE=/tmp/article.md npx tsx scripts/update-google-workspace-alternatives-add-lark.ts
@@ -31,10 +33,32 @@ import { PrismaClient } from "@prisma/client";
 const SLUG = "google-workspace-alternatives-2026";
 const LARK_HEADING = "## 11. Lark — the all-in-one workspace with a built-in database";
 
+// ROO-375: reciprocal link with Lark. The live article used the bare marketing
+// URL; the agreed href is the UTM URL below. Nothing else on the page changes.
+const OLD_LARK_HREF = "https://www.larksuite.com/";
+const LARK_HREF = "https://www.larksuite.com/?utm_source=external_mentions";
+
+/**
+ * Replace the bare Lark marketing href and leave every other URL alone.
+ * The match requires the trailing slash and a closing delimiter (or end),
+ * so a deeper larksuite.com path is not rewritten. The UTM href starts with
+ * the old URL (`...com/?utm...`), so a plain includes() check is not safe.
+ * The `?` fails the closing-delimiter lookahead, which makes a second run a no-op.
+ */
+function replaceLarkMarketingHref(content: string): { content: string; replacements: number } {
+  const re = /https:\/\/www\.larksuite\.com\/(?=["')\s]|$)/g;
+  let replacements = 0;
+  const next = content.replace(re, () => {
+    replacements += 1;
+    return LARK_HREF;
+  });
+  return { content: next, replacements };
+}
+
 // No logo: none of the other entries embed one. Pricing is attributed to Lark.
 const LARK_SECTION = `${LARK_HEADING}
 
-[Lark](https://www.larksuite.com/), from ByteDance, bundles team chat, video meetings, collaborative docs, calendar, email, a wiki, approvals, and a no-code database called Base. Base covers project trackers, lightweight CRMs, and ticket queues inside the suite instead of in a separate tool. AI features run across chat, meetings (automatic meeting minutes), and docs, and chat and documents include built-in translation for multilingual teams. According to Lark's own pricing, a free Starter tier covers up to 20 users with 100 GB of storage; Basic costs $6/user/month and Pro $12/user/month (billed annually), with Enterprise priced on request.<sup>[5]</sup> The tradeoff is familiarity — outside collaborators are less likely to already know Lark than Google or Microsoft. **Migration effort:** moderate; email and calendar move like any suite switch, while Base workflows are built fresh. **Best for:** distributed, multilingual teams that want messaging, docs, and project tracking in one place, and small teams that fit inside the free tier.
+[Lark](${LARK_HREF}), from ByteDance, bundles team chat, video meetings, collaborative docs, calendar, email, a wiki, approvals, and a no-code database called Base. Base covers project trackers, lightweight CRMs, and ticket queues inside the suite instead of in a separate tool. AI features run across chat, meetings (automatic meeting minutes), and docs, and chat and documents include built-in translation for multilingual teams. According to Lark's own pricing, a free Starter tier covers up to 20 users with 100 GB of storage; Basic costs $6/user/month and Pro $12/user/month (billed annually), with Enterprise priced on request.<sup>[5]</sup> The tradeoff is familiarity — outside collaborators are less likely to already know Lark than Google or Microsoft. **Migration effort:** moderate; email and calendar move like any suite switch, while Base workflows are built fresh. **Best for:** distributed, multilingual teams that want messaging, docs, and project tracking in one place, and small teams that fit inside the free tier.
 
 `;
 
@@ -116,6 +140,12 @@ function assertLarkCopy(content: string): void {
   if (!section.includes("$6/user/month") || !section.includes("$12/user/month")) {
     throw new Error("Lark prices were altered during replace; aborting without writing.");
   }
+  if (!section.includes(LARK_HREF)) {
+    throw new Error("Lark section must use the UTM href; aborting without writing.");
+  }
+  if (section.includes(`](${OLD_LARK_HREF})`)) {
+    throw new Error("Lark section still has the non-UTM href; aborting without writing.");
+  }
 }
 
 // "10 ..." -> "11 ..." at the start of title-like fields, only when present.
@@ -134,7 +164,12 @@ async function main() {
     const fs = await import("fs");
     const raw = fs.readFileSync(process.env.DRY_RUN_FILE, "utf8");
     if (raw.includes(LARK_HEADING)) {
-      console.error("Lark section already present — nothing to do.");
+      const { content, replacements } = replaceLarkMarketingHref(raw);
+      if (replacements === 0) {
+        console.error("Lark section already present and UTM href is current — nothing to do.");
+        return;
+      }
+      process.stdout.write(content);
       return;
     }
     const patched = applyEdits(raw, CONTENT_EDITS);
@@ -158,7 +193,27 @@ async function main() {
     if (!article) throw new Error(`Blog article ${SLUG} not found`);
 
     if (article.content.includes(LARK_HEADING)) {
-      console.log("Lark section already present — nothing to do.");
+      const { content, replacements } = replaceLarkMarketingHref(article.content);
+      if (replacements === 0) {
+        if (!article.content.includes(LARK_HREF)) {
+          throw new Error(
+            "Lark section is present but the marketing href was not found; aborting without writing."
+          );
+        }
+        console.log("Lark UTM href already present — nothing to do.");
+        return;
+      }
+      if (content.includes(`](${OLD_LARK_HREF})`)) {
+        throw new Error("Old Lark markdown href still present; aborting without writing.");
+      }
+      // Href only. Title, excerpt, meta, and the rest of the body stay as they are.
+      const updated = await prisma.blogArticle.update({
+        where: { slug: SLUG },
+        data: { content },
+      });
+      console.log(`Updated ${updated.slug} Lark href (${replacements} replacement(s))`);
+      console.log(`  old: ${OLD_LARK_HREF}`);
+      console.log(`  new: ${LARK_HREF}`);
       return;
     }
 

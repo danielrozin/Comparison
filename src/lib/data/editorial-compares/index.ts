@@ -73,10 +73,13 @@ import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import { GALAXY_S25_VS_GALAXY_S25_ULTRA } from "./galaxy-s25-vs-galaxy-s25-ultra";
 import { OLED_VS_MINI_LED_GAMING_MONITOR } from "./oled-vs-mini-led-gaming-monitor";
+import { QD_OLED_VS_WOLED } from "./qd-oled-vs-woled";
 import { RYZEN_7_9700X_VS_RYZEN_7_9800X3D } from "./ryzen-7-9700x-vs-ryzen-7-9800x3d";
+import { INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX } from "./intel-core-ultra-9-275hx-vs-amd-ryzen-9-9955hx";
 import { DDR5_VS_DDR4 } from "./ddr5-vs-ddr4";
 import { RX_7900_XT_VS_RTX_4070_TI } from "./rx-7900-xt-vs-rtx-4070-ti";
 import { RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP } from "./rtx-5070-ti-laptop-vs-rtx-5080-laptop";
+import { LENOVO_LEGION_5_VS_ASUS_ROG_STRIX_G16 } from "./lenovo-legion-5-vs-asus-rog-strix-g16";
 import { RTX_5060_VS_RX_9060_XT } from "./rtx-5060-vs-rx-9060-xt";
 import { PIXEL_10_PRO_XL_VS_ONEPLUS_15R } from "./pixel-10-pro-xl-vs-oneplus-15r";
 import { M5_MAX_VS_M5_PRO } from "./m5-max-vs-m5-pro";
@@ -113,6 +116,7 @@ import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
 import { MYSQL_VS_POSTGRESQL } from "./mysql-vs-postgresql";
 import { GEICO_VS_STATE_FARM } from "./geico-vs-state-farm";
 import { RYZEN_7_5800X3D_VS_AM5 } from "./ryzen-7-5800x3d-vs-am5";
+import { RYZEN_5_5500_VS_RYZEN_5_5600 } from "./ryzen-5-5500-vs-ryzen-5-5600";
 import { RX_9070_VS_RX_9070_XT } from "./rx-9070-vs-rx-9070-xt";
 import { B850_VS_X870 } from "./b850-vs-x870";
 import { RTX_5060_VS_RTX_3060_12GB } from "./rtx-5060-vs-rtx-3060-12gb";
@@ -207,10 +211,13 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MACBOOK_NEO_VS_IPAD_A16.slug]: MACBOOK_NEO_VS_IPAD_A16,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
   [OLED_VS_MINI_LED_GAMING_MONITOR.slug]: OLED_VS_MINI_LED_GAMING_MONITOR,
+  [QD_OLED_VS_WOLED.slug]: QD_OLED_VS_WOLED,
   [RYZEN_7_9700X_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_9700X_VS_RYZEN_7_9800X3D,
+  [INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX.slug]: INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX,
   [DDR5_VS_DDR4.slug]: DDR5_VS_DDR4,
   [RX_7900_XT_VS_RTX_4070_TI.slug]: RX_7900_XT_VS_RTX_4070_TI,
   [RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP.slug]: RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP,
+  [LENOVO_LEGION_5_VS_ASUS_ROG_STRIX_G16.slug]: LENOVO_LEGION_5_VS_ASUS_ROG_STRIX_G16,
   [RTX_5060_VS_RX_9060_XT.slug]: RTX_5060_VS_RX_9060_XT,
   [PIXEL_10_PRO_XL_VS_ONEPLUS_15R.slug]: PIXEL_10_PRO_XL_VS_ONEPLUS_15R,
   [M5_MAX_VS_M5_PRO.slug]: M5_MAX_VS_M5_PRO,
@@ -247,6 +254,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MYSQL_VS_POSTGRESQL.slug]: MYSQL_VS_POSTGRESQL,
   [GEICO_VS_STATE_FARM.slug]: GEICO_VS_STATE_FARM,
   [RYZEN_7_5800X3D_VS_AM5.slug]: RYZEN_7_5800X3D_VS_AM5,
+  [RYZEN_5_5500_VS_RYZEN_5_5600.slug]: RYZEN_5_5500_VS_RYZEN_5_5600,
   [RX_9070_VS_RX_9070_XT.slug]: RX_9070_VS_RX_9070_XT,
   [B850_VS_X870.slug]: B850_VS_X870,
   [RTX_5060_VS_RTX_3060_12GB.slug]: RTX_5060_VS_RTX_3060_12GB,
@@ -278,6 +286,28 @@ const EDITORIAL_INBOUND_RELATED: Record<string, ComparisonPageData["relatedCompa
       slug: "kindle-vs-ipad",
       title: "Kindle vs iPad for Reading",
       category: "products",
+    },
+  ],
+  "oled-vs-mini-led-gaming-monitor": [
+    {
+      slug: "qd-oled-vs-woled",
+      title: "QD-OLED vs WOLED: Which Gaming Monitor Panel",
+      category: "technology",
+    },
+  ],
+  // Live DB pages. Not in-repo editorial files.
+  "oled-vs-qled": [
+    {
+      slug: "qd-oled-vs-woled",
+      title: "QD-OLED vs WOLED: Which Gaming Monitor Panel",
+      category: "technology",
+    },
+  ],
+  "lg-oled-vs-sony-oled": [
+    {
+      slug: "qd-oled-vs-woled",
+      title: "QD-OLED vs WOLED: Which Gaming Monitor Panel",
+      category: "technology",
     },
   ],
 };
