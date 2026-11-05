@@ -21,6 +21,11 @@ import type { NamedAttribute, NamedCell, NamedFact } from "@/lib/data/nba-2026-s
  *
  * UNDP Human Development Report 2025, Table 2 (2023 values):
  * https://hdr.undp.org/sites/default/files/2025_HDR/HDR25_Statistical_Annex_HDI_Trends_Table.pdf
+ *
+ * Germany vs the United States is a later vintage. Those cells were read on
+ * 2026-11-05 from the IMF datamapper (October 2026 WEO: NGDPD, NGDPDPC, and
+ * NGDP_RPCH for USA and DEU) and from World Bank SP.POP.TOTL for 2025. They
+ * do not replace the April 2026 US, China, and Japan figures above.
  */
 
 export interface OfficialFact extends NamedFact {
@@ -44,6 +49,13 @@ const IMF_NGDPD = "https://www.imf.org/external/datamapper/api/v1/NGDPD/USA/CHN/
 const IMF_NGDPDPC = "https://www.imf.org/external/datamapper/api/v1/NGDPDPC/USA/CHN/JPN";
 const IMF_GROWTH = "https://www.imf.org/external/datamapper/api/v1/NGDP_RPCH/USA/CHN/JPN";
 const IMF_WEO = "https://www.imf.org/-/media/files/publications/weo/2026/april/english/text.pdf";
+const IMF_NGDPD_DE = "https://www.imf.org/external/datamapper/api/v1/NGDPD/USA/DEU";
+const IMF_NGDPDPC_DE = "https://www.imf.org/external/datamapper/api/v1/NGDPDPC/USA/DEU";
+const IMF_GROWTH_DE = "https://www.imf.org/external/datamapper/api/v1/NGDP_RPCH/USA/DEU";
+const IMF_WEO_OCTOBER =
+  "https://www.imf.org/en/publications/weo/issues/2026/10/13/world-economic-outlook-october-2026";
+const WORLD_BANK_POP =
+  "https://api.worldbank.org/v2/country/USA;DEU/indicator/SP.POP.TOTL?format=json";
 const SIPRI_PDF = "https://www.sipri.org/sites/default/files/2025-04/2504_fs_milex_2024.pdf";
 const SIPRI_RELEASE =
   "https://www.sipri.org/media/press-release/2025/unprecedented-rise-global-military-expenditure-european-and-middle-east-spending-surges";
@@ -77,6 +89,21 @@ export const JP_PER_CAPITA = `$35,703, ${IMF}`;
 export const US_GROWTH = `2.3%, ${IMF}`;
 export const CN_GROWTH = `4.4%, ${IMF}`;
 export const JP_GROWTH = `0.7%, ${IMF}`;
+const IMF_OCT = "IMF WEO October 2026";
+
+// October 2026 WEO, read from the datamapper on 2026-11-05. Billions of
+// current dollars for 2026: USA 32642.373, DEU 5471.299. Current dollars per
+// person: USA 95212.135, DEU 65699.222. Real growth, percent: USA 2.3, DEU 1.3.
+export const US_NOMINAL_OCT = `$32.64 trillion, ${IMF_OCT}`;
+export const DE_NOMINAL = `$5.47 trillion, ${IMF_OCT}`;
+export const US_PER_CAPITA_OCT = `$95,212, ${IMF_OCT}`;
+export const DE_PER_CAPITA = `$65,699, ${IMF_OCT}`;
+export const US_GROWTH_OCT = `2.3%, ${IMF_OCT}`;
+export const DE_GROWTH = `1.3%, ${IMF_OCT}`;
+// World Bank SP.POP.TOTL, year 2025, API lastupdated 2026-10-08.
+export const US_POPULATION_2025 = "341,784,857, World Bank 2025";
+export const DE_POPULATION_2025 = "83,491,249, World Bank 2025";
+
 export const US_MILITARY = "$997 billion, SIPRI 2024";
 export const CN_MILITARY = "$314 billion estimated, SIPRI 2024";
 export const JP_MILITARY = "$55.3 billion, SIPRI 2024";
@@ -106,6 +133,7 @@ const US_MATCH = {
   match: "united states",
   also: ["usa", "us economy", "us-economy", "united-states"],
 };
+const DE_MATCH = { match: "germany", also: ["deu", "deutschland"] };
 const CN_MATCH = { match: "china" };
 const JP_MATCH = { match: "japan" };
 
@@ -131,6 +159,7 @@ function fact(
 function pack(
   facts: OfficialFact[],
   sources: { name: string; url: string }[],
+  lastResearched: string = CHECKED,
 ): OfficialPack {
   return {
     facts,
@@ -147,7 +176,7 @@ function pack(
       reviewsAnalyzed: null,
       preferencePercent: null,
       preferenceEntity: null,
-      lastResearched: CHECKED,
+      lastResearched,
       sources,
     },
     resources: sources.map((source) => ({
@@ -276,6 +305,53 @@ export const JAPAN_CHINA_SCORECARD = pack(
     { name: "World Bank, life expectancy at birth (SP.DYN.LE00.IN)", url: WORLD_BANK_LE },
     { name: "UNDP Human Development Report 2025, Table 2", url: UNDP_HDI },
   ],
+);
+
+const GERMANY_US_CHECKED = "2026-11-05";
+
+export const GERMANY_UNITED_STATES_SCORECARD = pack(
+  [
+    fact(
+      "nominal gdp",
+      "Nominal GDP",
+      "nominal-gdp",
+      "Economy",
+      side(DE_MATCH, DE_NOMINAL),
+      side(US_MATCH, US_NOMINAL_OCT, true),
+    ),
+    fact(
+      "gdp per capita",
+      "GDP per capita",
+      "gdp-per-capita",
+      "Economy",
+      side(DE_MATCH, DE_PER_CAPITA),
+      side(US_MATCH, US_PER_CAPITA_OCT, true),
+    ),
+    fact(
+      "gdp growth",
+      "2026 real GDP growth",
+      "gdp-growth",
+      "Economy",
+      side(DE_MATCH, DE_GROWTH),
+      side(US_MATCH, US_GROWTH_OCT, true),
+    ),
+    fact(
+      "population",
+      "Population",
+      "population",
+      "Population",
+      side(DE_MATCH, DE_POPULATION_2025),
+      side(US_MATCH, US_POPULATION_2025, true),
+    ),
+  ],
+  [
+    { name: "IMF datamapper, nominal GDP (NGDPD), October 2026 WEO", url: IMF_NGDPD_DE },
+    { name: "IMF datamapper, GDP per capita (NGDPDPC), October 2026 WEO", url: IMF_NGDPDPC_DE },
+    { name: "IMF datamapper, real GDP growth (NGDP_RPCH), October 2026 WEO", url: IMF_GROWTH_DE },
+    { name: "IMF World Economic Outlook, October 2026", url: IMF_WEO_OCTOBER },
+    { name: "World Bank, population total (SP.POP.TOTL), 2025", url: WORLD_BANK_POP },
+  ],
+  GERMANY_US_CHECKED,
 );
 
 export const LYFT_UBER_SCORECARD = pack(
