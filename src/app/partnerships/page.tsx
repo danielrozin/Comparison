@@ -4,7 +4,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { PartnershipForm } from "./PartnershipForm";
 
 const PARTNER_TITLE = `Partner With ${SITE_NAME} — Sponsored Comparisons & Data Partnerships`;
-const PARTNER_DESC = `Partner with ${SITE_NAME} to reach millions of decision-makers. Sponsored comparisons, featured placements, and custom data solutions for brands.`;
+const PARTNER_DESC = `Partner with ${SITE_NAME} to reach people at the moment they compare products. Sponsored comparisons, featured placements, and custom data solutions for brands.`;
 const PARTNER_URL = `${SITE_URL}/partnerships`;
 const PARTNER_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Partner With A Versus B")}&type=home`;
 const PARTNER_TODAY = new Date().toISOString().split("T")[0];

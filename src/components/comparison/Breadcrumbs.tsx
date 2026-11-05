@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
+import { categoryPagePath } from "@/lib/seo/category-page-path";
 
 interface BreadcrumbsProps {
   title: string;
@@ -24,12 +25,16 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
         )
       : undefined;
 
+  // Raw stored categories ("general", "social_media") are not pages. Link the
+  // crumb only when it maps to a live category URL.
+  const categoryHref = category ? categoryPagePath(category) : null;
+
   // BreadcrumbList JSON-LD is emitted from comparisonPageSchema() in lib/seo/schema.ts
   // — do not duplicate it here. (DAN-410)
   return (
     <nav aria-label="Breadcrumb" className="border-b border-border/60 bg-surface/50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ol className="flex items-center gap-1.5 text-xs sm:text-sm overflow-x-auto scrollbar-none whitespace-nowrap py-2.5 [-webkit-overflow-scrolling:touch] [mask-image:linear-gradient(to_right,transparent_0,black_16px,black_calc(100%-32px),transparent_100%)]">
+        <ol className="flex items-center gap-1.5 [&>li]:shrink-0 text-xs sm:text-sm overflow-x-auto scrollbar-none whitespace-nowrap py-2.5 [-webkit-overflow-scrolling:touch] [mask-image:linear-gradient(to_right,transparent_0,black_16px,black_calc(100%-32px),transparent_100%)]">
           <li>
             <Link
               href="/"
@@ -43,12 +48,12 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
             </Link>
           </li>
 
-          {category && (
+          {category && categoryHref && (
             <>
               <li aria-hidden="true"><ChevronSep /></li>
               <li>
                 <Link
-                  href={`/category/${category}`}
+                  href={categoryHref}
                   className="inline-flex items-center min-h-11 -my-2 px-1 text-text-secondary hover:text-primary-600 transition-colors font-medium capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded"
                 >
                   {category}
@@ -57,7 +62,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
             </>
           )}
 
-          {subcat && (
+          {subcat && categoryHref && (
             <>
               <li aria-hidden="true"><ChevronSep /></li>
               <li>

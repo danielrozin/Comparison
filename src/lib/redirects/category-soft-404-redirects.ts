@@ -23,4 +23,8 @@ export const CATEGORY_SOFT_404_REDIRECTS: {
     destination: "/category/companies/food-beverage",
     statusCode: 301,
   },
+  // Stored keys with no category page, still linked from older entity pages.
+  { source: "/category/social_media", destination: "/category/software", statusCode: 301 },
+  { source: "/category/science", destination: "/category/education", statusCode: 301 },
+  { source: "/category/general", destination: "/category/products", statusCode: 301 },
 ];

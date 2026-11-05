@@ -52,9 +52,10 @@ body {
   -webkit-font-smoothing: subpixel-antialiased;
 }
 
-/* Prevent text overflow on mobile */
+/* Prevent text overflow on mobile. Only overflow-wrap: the old
+   `word-break: break-word` also shrank min-content to one character, so
+   flex items (breadcrumbs, price rows, badges) wrapped letter by letter. */
 * {
-  word-break: break-word;
   overflow-wrap: break-word;
 }
 

@@ -95,8 +95,10 @@ export function FeedbackWidget() {
         aria-expanded={isOpen}
         aria-controls="feedback-panel"
         // fab-slot-2 — see globals.css. Sits directly above back-to-top (slot 1)
-        // so the two never overlap at any breakpoint.
-        className={`fixed fab-slot-2 right-4 md:right-6 z-[55] w-14 h-14 rounded-full shadow-lg ${isOpen ? "hidden sm:flex" : "flex"} items-center justify-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700 ${
+        // so the two never overlap at any breakpoint. Hidden below sm: on a
+        // phone the 56px bubble sat on top of the hero search button and the
+        // pricing headline. Mobile visitors reach us through /contact.
+        className={`fixed fab-slot-2 right-4 md:right-6 z-[55] w-14 h-14 rounded-full shadow-lg hidden sm:flex items-center justify-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700 ${
           isOpen
             ? "bg-text/60 hover:bg-text/80 rotate-45"
             : "bg-gradient-to-br from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 hover:scale-105"

@@ -39,7 +39,8 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
   return (
     <>
       {/* Collapsible bar — shown on all screens except very wide where the sidebar fits */}
-      <div className="min-[1400px]:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4">
+      {/* Phones skip this dropdown: it sat above the H1, and the "Jump to" row under the hero already links the sections. */}
+      <div className="hidden sm:block min-[1400px]:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4">
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}

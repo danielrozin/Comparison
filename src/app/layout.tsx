@@ -51,8 +51,6 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
-
 export const metadata: Metadata = {
   title: {
     default: `${SITE_NAME} — Compare Anything`,
@@ -137,7 +135,6 @@ export default async function RootLayout({
             preconnect opens TLS for frequently used origins; dns-prefetch for lower-priority ones.
             Faster LCP is a Core Web Vitals signal that directly affects ranking. */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://cdn.aversusb.net" crossOrigin="anonymous" />
         {/* Entity images in multi-entity layouts are served directly from Wikipedia/Clearbit —
             preconnect+dns-prefetch so the TLS handshake completes before the browser
             discovers the <img> src, reducing image load time. */}
@@ -145,7 +142,6 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://logo.clearbit.com" />
         <link rel="dns-prefetch" href="https://www.clarity.ms" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
         {/* Identity + license link relations — used by AI crawlers for E-E-A-T and training eligibility */}
         <link rel="me" href={YOUTUBE_CHANNEL_URL} />
@@ -221,22 +217,14 @@ export default async function RootLayout({
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
         <a href="#main-content" className="skip-nav">Skip to main content</a>
-        {/* ROO-142: AdSense (Auto ads) and Google Preferred Sources (publisher.js)
-            insert DOM nodes into React-owned markup. Loaded as raw async
+        {/* ROO-142: Google Preferred Sources (publisher.js) inserts DOM nodes
+            into React-owned markup. Loaded as raw async
             <script>s in <head>, they could run before hydration finished on
             slow devices and long /blog posts, so React found unexpected
             elements and threw #418 (HTML). next/script "afterInteractive"
-            injects them only after hydration. publisher.js still renders the
+            injects it only after hydration. publisher.js still renders the
             "Add preferred source" button wherever a
             [google-add-preferred-source-btn] div appears. */}
-        {ADSENSE_PUB_ID && (
-          <Script
-            id="adsbygoogle-js"
-            strategy="afterInteractive"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${ADSENSE_PUB_ID}`}
-            crossOrigin="anonymous"
-          />
-        )}
         <Script id="swg-publisher-js" strategy="afterInteractive" src="https://news.google.com/swg/js/v1/publisher.js" />
         <GoogleTagManager />
         <MetaPixel />

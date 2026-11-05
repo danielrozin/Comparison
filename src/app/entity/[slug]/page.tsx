@@ -10,7 +10,8 @@ import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/ent
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { prisma } from "@/lib/db/prisma";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-import { entityPageRobotsStatus, isEntityPageIndexable, shouldEntityPage404 } from "@/lib/seo/entity-page-indexable";
+import { categoryPagePath } from "@/lib/seo/category-page-path";
+import { entityPageRobotsStatus, isEntityPageIndexable, resolveEntityPageStatuses, shouldEntityPage404 } from "@/lib/seo/entity-page-indexable";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -206,6 +207,13 @@ export default async function EntityPage({ params }: PageProps) {
   // published row → live; no DB answer → live when curated or comparison-backed.
   const alternativesLive =
     alternativesStatusPublished ?? (Boolean(entityContent) || relatedComparisons.length > 0);
+
+  // Curated alternatives are free text: many have no /entity page and the
+  // cards linked to 404s (Framer, Samsung S25 Ultra, Gemini…). Link only the
+  // ones whose page is live; the rest render as plain cards.
+  const altStatuses = entityContent
+    ? await resolveEntityPageStatuses(entityContent.alternatives.map((a) => a.slug))
+    : new Map<string, string>();
 
   // Determine category from the first comparison
   const primaryCategory = relatedComparisons[0]?.category || null;
@@ -455,10 +463,14 @@ export default async function EntityPage({ params }: PageProps) {
           {/* At-a-glance category chips */}
           {topCategories.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2" aria-label="Top comparison categories">
-              {topCategories.map((cat) => (
+              {topCategories.flatMap((cat) => {
+                // "general" / "science" are stored keys, not pages.
+                const href = categoryPagePath(cat.slug);
+                return href ? [{ ...cat, href }] : [];
+              }).map((cat) => (
                 <Link
                   key={cat.slug}
-                  href={`/category/${cat.slug}`}
+                  href={cat.href}
                   className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold backdrop-blur-sm ring-1 ring-white/20 transition-all duration-150 hover:ring-white/40"
                 >
                   <span className="capitalize">{cat.name}</span>
@@ -577,22 +589,35 @@ export default async function EntityPage({ params }: PageProps) {
                   <h2 id="entity-alternatives-heading" className="text-xl font-display font-bold text-text">Top Alternatives to {name}</h2>
                 </div>
                 <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
-                  {entityContent.alternatives.map((alt) => (
-                    <li key={alt.slug}>
-                    <Link
-                      href={`/entity/${alt.slug}`}
-                      className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full h-full"
-                    >
-                      <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                        <span className="text-white font-bold">{alt.name.charAt(0)}</span>
-                      </div>
-                      <div className="min-w-0">
-                        <p className="font-semibold text-text text-sm truncate">{alt.name}</p>
-                        <p className="text-xs text-text-secondary truncate">{alt.reason}</p>
-                      </div>
-                    </Link>
-                    </li>
-                  ))}
+                  {entityContent.alternatives.map((alt) => {
+                    const card = (
+                      <>
+                        <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+                          <span className="text-white font-bold">{alt.name.charAt(0)}</span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-text text-sm truncate">{alt.name}</p>
+                          <p className="text-xs text-text-secondary truncate">{alt.reason}</p>
+                        </div>
+                      </>
+                    );
+                    return (
+                      <li key={alt.slug}>
+                        {isEntityPageIndexable(altStatuses.get(alt.slug)) ? (
+                          <Link
+                            href={`/entity/${alt.slug}`}
+                            className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full h-full"
+                          >
+                            {card}
+                          </Link>
+                        ) : (
+                          <div className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl w-full h-full">
+                            {card}
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
                 {alternativesLive && (
                   <div className="mt-3 text-center">

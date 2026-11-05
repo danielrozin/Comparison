@@ -19,7 +19,6 @@ import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
-import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
@@ -168,6 +167,25 @@ function renderMarkdown(md: string): string {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
+
+    // A "# Title" line repeats the page H1 and used to print as literal text.
+    if (/^#\s/.test(line)) {
+      closeOpenLists();
+      continue;
+    }
+
+    // Horizontal rule. "---" printed as literal dashes between sections.
+    if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(line)) {
+      closeOpenLists();
+      processed.push('<hr class="my-8 border-border" />');
+      continue;
+    }
+
+    if (line.startsWith("#### ")) {
+      closeOpenLists();
+      processed.push(`<h4 class="text-lg font-semibold text-text mt-6 mb-2">${line.slice(5).trim()}</h4>`);
+      continue;
+    }
 
     // Headings — include id for TOC anchor navigation
     if (line.startsWith("### ")) {
@@ -1137,11 +1155,6 @@ export default async function BlogPostPage({
                 />
               </div>
 
-          {/* Ad: after article content */}
-          <div className="my-8">
-            <InContentAd />
-          </div>
-
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
             <div className="mt-8 flex flex-wrap gap-2">
@@ -1200,11 +1213,6 @@ export default async function BlogPostPage({
             slugs={article.relatedComparisonSlugs ?? []}
             titles={comparisonTitles}
           />
-
-          {/* Ad: before back button */}
-          <div className="my-8">
-            <InContentAd />
-          </div>
 
           {/* Back to Blog */}
           <div className="mt-10 text-center">
