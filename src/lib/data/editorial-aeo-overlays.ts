@@ -481,6 +481,125 @@ const LYFT_UBER_QUICK_ANSWER: QuickAnswerTLDR = {
     "Uber reports 2024 revenue of $43.978 billion. Lyft reports 2024 revenue of $5.786 billion. Neither is named the winner.",
 };
 
+/**
+ * Discord vs Microsoft Teams. Read 2026-11-05 from Discord’s site, Discord Help
+ * Center, Microsoft’s Teams business-options list, the Microsoft 365 Business
+ * Basic description, and Microsoft Learn. Voice-latency milliseconds and
+ * monthly-active-user totals are left out: none of those pages stated them.
+ * Nitro dollar amounts are left out: discord.com/nitro showed Nitro Basic at
+ * $2.99 per month, and Discord Help Center says the price can differ by location.
+ */
+const DISCORD_HELP_NITRO =
+  "https://support.discord.com/hc/en-us/articles/115000435108-What-are-Nitro-Nitro-Basic";
+const DISCORD_HELP_BOOST =
+  "https://support.discord.com/hc/en-us/articles/360028038352-Server-Boosting-FAQ";
+const DISCORD_HOME = "https://discord.com/";
+const DISCORD_NITRO = "https://discord.com/nitro";
+const TEAMS_PLAN_LIST =
+  "https://www.microsoft.com/en-us/microsoft-teams/compare-microsoft-teams-business-options";
+const M365_BUSINESS_BASIC =
+  "https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-business-basic";
+const TEAMS_COMPLIANCE =
+  "https://learn.microsoft.com/en-us/microsoftteams/security-compliance-overview";
+const MICROSOFT_HIPAA =
+  "https://learn.microsoft.com/en-us/compliance/regulatory/offering-hipaa-hitech";
+
+const DISCORD_TEAMS_SHORT_ANSWER =
+  "Discord’s site describes group chat for games, friends, and communities, with voice, video, and text, and describes its streaming as high quality and low latency. Discord Help Center does not state a voice-latency figure in milliseconds. Discord Help Center lists Nitro with uploads up to 1 GB, HD video streaming, and 2 Server Boosts, and lists Nitro Basic with uploads up to 50 MB. Discord Help Center lists Level 1 audio quality at 128 Kbps and Go Live at 720p 60 fps, Level 2 at 256 Kbps and Go Live at 1080p 60 fps, and Level 3 audio quality at 384 Kbps. Microsoft lists Microsoft 365 Business Basic at $7.00 per user per month, paid yearly, with chat, call, and meet in Microsoft Teams, meetings up to 30 hours, and up to 300 participants. Microsoft lists Teams Essentials at $4.00 per user per month, paid yearly. Microsoft lists Microsoft 365 Business Standard with Copilot at $23.50 per user per month, paid yearly. Microsoft Learn lists HIPAA among the standards Teams uses and lists Microsoft Teams as an in-scope commercial service for Microsoft’s HIPAA Business Associate Agreement. Microsoft Learn states that using Microsoft services does not on its own achieve HIPAA compliance. Neither is named the winner.";
+
+const DISCORD_TEAMS_FAQS: FAQData[] = [
+  {
+    question: "Which is better, Discord or Microsoft Teams?",
+    answer:
+      "Neither is named the winner. Discord’s site describes group chat for games, friends, and communities. Microsoft lists Teams for chat, calls, and meetings on Microsoft 365 Business Basic, Microsoft 365 Business Standard with Copilot, and Teams Essentials. Discord Help Center does not state a voice-latency figure in milliseconds.",
+  },
+  {
+    question: "How much do Discord and Microsoft Teams cost?",
+    answer:
+      "Discord Help Center names Nitro and Nitro Basic. Nitro lists uploads up to 1 GB, HD video streaming, and 2 Server Boosts. Nitro Basic lists uploads up to 50 MB. Help Center says the price can differ by location, so no Nitro dollar amount is stated. Microsoft lists Teams Essentials at $4.00 per user per month, paid yearly, with 10 GB of cloud storage per user. Microsoft lists Microsoft 365 Business Basic at $7.00 per user per month, paid yearly, with 1 TB of cloud storage per user. Microsoft lists Microsoft 365 Business Standard with Copilot at $23.50 per user per month, paid yearly.",
+  },
+  {
+    question: "What voice quality does Discord Help Center list?",
+    answer:
+      "Discord Help Center lists Level 1 audio quality at 128 Kbps and Go Live at 720p 60 fps after 2 Server Boosts. Level 2 is 256 Kbps, with Go Live at 1080p 60 fps, after 7 Server Boosts. Level 3 audio quality is 384 Kbps after 14 Server Boosts. Those figures are bitrate and resolution. Discord Help Center does not state a voice-latency figure in milliseconds. Neither is named the winner.",
+  },
+  {
+    question: "What does Microsoft Learn state about Teams and HIPAA?",
+    answer:
+      "Microsoft Learn lists ISO 27001, ISO 27018, SSAE18 SOC 1 and SOC 2, HIPAA, and EU Model Clauses among the standards Teams uses. Microsoft’s HIPAA offering lists Microsoft Teams as an in-scope commercial service for Microsoft’s HIPAA Business Associate Agreement. Microsoft Learn states that using Microsoft services does not on its own achieve HIPAA compliance. Neither is named the winner.",
+  },
+  {
+    question: "How long can a Microsoft Teams meeting last?",
+    answer:
+      "Microsoft lists a maximum meeting duration of 30 hours and a participant capacity of 300 for Microsoft 365 Business Basic, Microsoft 365 Business Standard with Copilot, and Teams Essentials. The Microsoft 365 Business Basic description also states meetings and video calls for up to 300 people. Neither is named the winner.",
+  },
+];
+
+const DISCORD_TEAMS_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: DISCORD_TEAMS_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: Discord Help Center on Nitro upload size and boosted audio bitrate; Microsoft on Teams plan prices, meeting length, and participant capacity; Microsoft Learn on the standards Teams uses. Neither product is named the overall winner.",
+  keyFact:
+    "Microsoft lists Microsoft 365 Business Basic at $7.00 per user per month, paid yearly, and Teams Essentials at $4.00 per user per month, paid yearly. Discord Help Center lists Nitro uploads up to 1 GB and does not state a voice-latency figure in milliseconds. Neither is named the winner.",
+};
+
+const DISCORD_TEAMS_FACTS: NamedFact[] = [
+  {
+    label: "Paid plans",
+    cells: [
+      {
+        match: "discord",
+        text: "Nitro: uploads up to 1 GB, HD video streaming, 2 Server Boosts. Nitro Basic: uploads up to 50 MB. Discord Help Center, updated September 29, 2026. No Nitro dollar amount: Help Center says the price can differ by location.",
+      },
+      {
+        match: "teams",
+        also: ["microsoft"],
+        text: "Teams Essentials $4.00 per user per month, paid yearly (10 GB cloud storage per user). Microsoft 365 Business Basic $7.00 per user per month, paid yearly (1 TB cloud storage per user). Microsoft 365 Business Standard with Copilot $23.50 per user per month, paid yearly. Opened 2026-11-05.",
+      },
+    ],
+  },
+  {
+    label: "Voice and meetings",
+    cells: [
+      {
+        match: "discord",
+        text: "Level 1 (2 Server Boosts): 128 Kbps audio, Go Live 720p 60 fps. Level 2 (7 Server Boosts): 256 Kbps audio, Go Live 1080p 60 fps. Level 3 (14 Server Boosts): 384 Kbps audio. Discord Help Center. No millisecond latency figure.",
+      },
+      {
+        match: "teams",
+        also: ["microsoft"],
+        text: "Maximum meeting duration 30 hours. Participant capacity 300. Microsoft 365 Business Basic also states meetings for up to 300 people. No millisecond voice-latency figure on the Teams plan list opened 2026-11-05.",
+      },
+    ],
+  },
+  {
+    label: "Compliance",
+    cells: [
+      {
+        match: "discord",
+        text: "HIPAA, ISO, and SOC certifications are not stated in the Discord Help Center Nitro FAQ or Server Boosting FAQ opened 2026-11-05.",
+      },
+      {
+        match: "teams",
+        also: ["microsoft"],
+        text: "Microsoft Learn lists ISO 27001, ISO 27018, SSAE18 SOC 1 and SOC 2, HIPAA, and EU Model Clauses. Microsoft Teams is an in-scope commercial service for the HIPAA Business Associate Agreement. Using Microsoft services does not on its own achieve HIPAA compliance.",
+      },
+    ],
+  },
+];
+
+const DISCORD_TEAMS_SOURCES: { name: string; url: string }[] = [
+  { name: "Discord", url: DISCORD_HOME },
+  { name: "Discord Nitro", url: DISCORD_NITRO },
+  { name: "Discord Help Center, Nitro and Nitro Basic", url: DISCORD_HELP_NITRO },
+  { name: "Discord Help Center, Server Boosting FAQ", url: DISCORD_HELP_BOOST },
+  { name: "Microsoft Teams business options", url: TEAMS_PLAN_LIST },
+  { name: "Microsoft 365 Business Basic", url: M365_BUSINESS_BASIC },
+  { name: "Microsoft Learn, Teams security and compliance", url: TEAMS_COMPLIANCE },
+  { name: "Microsoft Learn, HIPAA and HITECH offering", url: MICROSOFT_HIPAA },
+];
+
 type AeoOverlay = {
   shortAnswer: string;
   faqs: FAQData[];
@@ -564,6 +683,65 @@ const OVERLAYS: Record<string, AeoOverlay> = {
     faqs: LYFT_UBER_FAQS,
     quickAnswer: LYFT_UBER_QUICK_ANSWER,
     ...LYFT_UBER_SCORECARD,
+  },
+  "discord-vs-microsoft-teams": {
+    shortAnswer: DISCORD_TEAMS_SHORT_ANSWER,
+    faqs: DISCORD_TEAMS_FAQS,
+    quickAnswer: DISCORD_TEAMS_QUICK_ANSWER,
+    verdict: DISCORD_TEAMS_SHORT_ANSWER,
+    facts: DISCORD_TEAMS_FACTS,
+    rows: DISCORD_TEAMS_FACTS.map((fact) => ({
+      slug: fact.label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+      name: fact.label,
+      category: fact.label === "Paid plans" ? "Pricing" : fact.label === "Compliance" ? "Compliance" : "Voice",
+      cells: fact.cells,
+    })),
+    entityPatches: [
+      {
+        match: "discord",
+        shortDesc:
+          "Discord’s site describes group chat for games, friends, and communities, with voice, video, and text.",
+        pros: [
+          "Discord’s site describes voice, video, and text chat, and streaming it calls high quality and low latency, without a millisecond figure.",
+          "Discord Help Center lists Nitro uploads up to 1 GB and Nitro Basic uploads up to 50 MB.",
+          "Discord Help Center lists Level 1 audio at 128 Kbps and Go Live at 720p 60 fps.",
+        ],
+        cons: [
+          "Discord Help Center says the Nitro price can differ by location, so no single dollar price is stated.",
+        ],
+        bestFor:
+          "Group chat for games, friends, and communities, as Discord’s site describes it.",
+      },
+      {
+        match: "teams",
+        shortDesc:
+          "Microsoft lists Teams as the place to meet, chat, call, and collaborate on Microsoft 365 Business Basic and Teams Essentials.",
+        pros: [
+          "Microsoft lists chat, call, and meet in Teams on Microsoft 365 Business Basic at $7.00 per user per month, paid yearly.",
+          "Microsoft lists meetings up to 30 hours and up to 300 participants on Business Basic, Business Standard with Copilot, and Teams Essentials.",
+          "Microsoft Learn lists HIPAA among the standards Teams uses and lists Teams as an in-scope commercial service for the HIPAA Business Associate Agreement.",
+        ],
+        cons: [
+          "Microsoft Learn states that using Microsoft services does not on its own achieve HIPAA compliance.",
+        ],
+        bestFor:
+          "Meetings, chat, and calls on the Microsoft 365 and Teams Essentials plans Microsoft lists.",
+      },
+    ],
+    citationStats: {
+      sourceCount: DISCORD_TEAMS_SOURCES.length,
+      dataPointCount: DISCORD_TEAMS_FACTS.length * 2,
+      reviewsAnalyzed: null,
+      preferencePercent: null,
+      preferenceEntity: null,
+      lastResearched: "2026-11-05",
+      sources: DISCORD_TEAMS_SOURCES,
+    },
+    resources: DISCORD_TEAMS_SOURCES.map((source) => ({
+      type: "external" as const,
+      label: source.name,
+      url: source.url,
+    })),
   },
 };
 
