@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { CATEGORY_SOFT_404_REDIRECTS } from "../category-soft-404-redirects";
 import { COMPARE_REDIRECTS, getConsolidatedCompareSlug } from "../compare-redirects";
-import { NOT_FOUND_CLEANUP_CONSOLIDATIONS } from "../not-found-cleanup-redirects";
+import {
+  NEVER_PUBLISHED_ALIASES,
+  NOT_FOUND_CLEANUP_CONSOLIDATIONS,
+} from "../not-found-cleanup-redirects";
 import { isKnownCategorySlug, isKnownSubcategorySlug } from "@/lib/seo/category-page-path";
 
 describe("404 cleanup compare redirects", () => {
@@ -27,6 +30,63 @@ describe("404 cleanup compare redirects", () => {
       const hit = COMPARE_REDIRECTS.find((redirect) => redirect.source === `/compare/${from}`);
       expect(hit?.destination, from).toBe(`/compare/${to}`);
       expect(hit?.statusCode, from).toBe(301);
+    }
+  });
+});
+
+describe("ROO-382 demand slug aliases", () => {
+  const ALIASES = {
+    "us-vs-china": "usa-vs-china",
+    "germany-vs-usa": "germany-vs-united-states",
+  } as const;
+
+  // Live pages this batch must not retarget. united-states-vs-china already
+  // 301s to usa-vs-china through runtime alias resolution, not this map.
+  const UNTOUCHED = [
+    "usa-vs-china",
+    "united-states-vs-china",
+    "us-vs-china-gdp",
+    "germany-vs-united-states",
+    "us-economy-vs-china-economy",
+    "china-vs-us-gdp-military-tech-comparison-2026",
+    "us-nominal-gdp-vs-china-2026",
+    "usa-vs-china-vs-india-gdp-2026",
+  ];
+
+  it("301s the two demand slugs onto the verified live pages", () => {
+    expect(getConsolidatedCompareSlug("us-vs-china")).toBe("usa-vs-china");
+    expect(getConsolidatedCompareSlug("germany-vs-usa")).toBe(
+      "germany-vs-united-states",
+    );
+  });
+
+  it("does not redirect the survivors or other live US-China pages", () => {
+    for (const slug of UNTOUCHED) {
+      expect(NOT_FOUND_CLEANUP_CONSOLIDATIONS, slug).not.toHaveProperty(slug);
+      expect(getConsolidatedCompareSlug(slug), slug).toBeNull();
+    }
+  });
+
+  it("is one hop: destinations are not themselves redirect sources", () => {
+    const sources = new Set(COMPARE_REDIRECTS.map((redirect) => redirect.source));
+    for (const [from, to] of Object.entries(ALIASES)) {
+      expect(getConsolidatedCompareSlug(to), to).toBeNull();
+      expect(sources.has(`/compare/${to}`), to).toBe(false);
+      const hit = COMPARE_REDIRECTS.find(
+        (redirect) => redirect.source === `/compare/${from}`,
+      );
+      expect(hit).toEqual({
+        source: `/compare/${from}`,
+        destination: `/compare/${to}`,
+        statusCode: 301,
+      });
+      expect(sources.has(hit?.destination ?? ""), from).toBe(false);
+    }
+  });
+
+  it("counts both sources as never-published so corpus math does not shrink", () => {
+    for (const from of Object.keys(ALIASES)) {
+      expect(NEVER_PUBLISHED_ALIASES.has(from), from).toBe(true);
     }
   });
 });
