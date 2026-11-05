@@ -117,6 +117,7 @@ import { MYSQL_VS_POSTGRESQL } from "./mysql-vs-postgresql";
 import { GEICO_VS_STATE_FARM } from "./geico-vs-state-farm";
 import { RYZEN_7_5800X3D_VS_AM5 } from "./ryzen-7-5800x3d-vs-am5";
 import { RYZEN_5_5500_VS_RYZEN_5_5600 } from "./ryzen-5-5500-vs-ryzen-5-5600";
+import { RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D } from "./ryzen-7-7800x3d-vs-ryzen-7-9800x3d";
 import { RX_9070_VS_RX_9070_XT } from "./rx-9070-vs-rx-9070-xt";
 import { B850_VS_X870 } from "./b850-vs-x870";
 import { RTX_5060_VS_RTX_3060_12GB } from "./rtx-5060-vs-rtx-3060-12gb";
@@ -257,6 +258,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [GEICO_VS_STATE_FARM.slug]: GEICO_VS_STATE_FARM,
   [RYZEN_7_5800X3D_VS_AM5.slug]: RYZEN_7_5800X3D_VS_AM5,
   [RYZEN_5_5500_VS_RYZEN_5_5600.slug]: RYZEN_5_5500_VS_RYZEN_5_5600,
+  [RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D,
   [RX_9070_VS_RX_9070_XT.slug]: RX_9070_VS_RX_9070_XT,
   [B850_VS_X870.slug]: B850_VS_X870,
   [RTX_5060_VS_RTX_3060_12GB.slug]: RTX_5060_VS_RTX_3060_12GB,
