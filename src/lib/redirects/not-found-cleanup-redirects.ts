@@ -98,6 +98,14 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
   "apple-music-vs-youtube-music-vs-spotify":
     "spotify-vs-apple-music-vs-youtube-music",
   "claude-vs-chat-gpt-vs-gemini": "chatgpt-vs-claude-vs-gemini",
+  // ROO-382 (2026-11-05): demand slugs verified 404, destinations verified
+  // live 200. Runtime related-slug resolution misses us-vs-china because
+  // ENTITY_ALIASES has usa → united-states and no bare us entry. germany-vs-usa
+  // still 404s in prod despite that usa alias, so both are explicit here.
+  // A bare `us` entity alias stays out of this PR (it would retarget every
+  // us-* comparison). Survivors and us-vs-china-gdp stay out of this map.
+  "us-vs-china": "usa-vs-china",
+  "germany-vs-usa": "germany-vs-united-states",
 };
 
 /**
@@ -112,6 +120,7 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
  * row. PR #338 (kindle-vs-kobo and the Thunder aliases) uses this same set.
  */
 export const NEVER_PUBLISHED_ALIASES: ReadonlySet<string> = new Set([
+  // Includes ROO-382 sources (us-vs-china, germany-vs-usa) via the map keys.
   ...Object.keys(NOT_FOUND_CLEANUP_CONSOLIDATIONS),
   // 404 aliases for Java vs TypeScript. None was a catalog page.
   "typescript-vs-java",
