@@ -23,6 +23,7 @@ import { STREAMING_SERVICES_FAQS } from "@/lib/data/streaming-services-blog";
 import { BEST_PRODUCTIVITY_APPS_FAQS } from "@/lib/data/best-productivity-apps-blog";
 import { CHEAPEST_CAR_INSURANCE_FAQS } from "@/lib/data/cheapest-car-insurance-blog";
 import { MARVEL_MOVIES_RANKED_FAQS } from "@/lib/data/marvel-movies-ranked-blog";
+import { KDENLIVE_SHOTCUT_RESOLVE_FAQS } from "@/lib/data/kdenlive-shotcut-resolve-blog";
 
 export interface BlogFaq {
   question: string;
@@ -68,6 +69,8 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   // YMYL rewrite: FAQs mirror the visible FAQ section of the repo override.
   "cheapest-car-insurance-companies-2026-ranked-and-compared": { faqs: CHEAPEST_CAR_INSURANCE_FAQS },
   "best-marvel-movies-ranked-2026-mcu-definitive-list": { faqs: MARVEL_MOVIES_RANKED_FAQS },
+  // ROO-266: FAQs mirror the visible FAQ section of the repo article.
+  "kdenlive-vs-shotcut-vs-davinci-resolve": { faqs: KDENLIVE_SHOTCUT_RESOLVE_FAQS },
   "best-cloud-platforms-2026": {
     faqs: BEST_CLOUD_PLATFORMS_FAQS,
     itemList: {
