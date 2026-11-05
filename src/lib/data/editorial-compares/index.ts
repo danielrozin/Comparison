@@ -26,6 +26,7 @@ import { ANKER_SOLARBANK_4_PRO_VS_ECOFLOW_STREAM_5000 } from "./anker-solix-sola
 import { IPHONE_17_PRO_VS_IPHONE_18_PRO } from "./iphone-17-pro-vs-iphone-18-pro";
 import { IPHONE_17_VS_IPHONE_17E } from "./iphone-17-vs-iphone-17e";
 import { IPHONE_17_PRO_MAX_VS_IPHONE_18_PRO_MAX } from "./iphone-17-pro-max-vs-iphone-18-pro-max";
+import { IPHONE_16_PRO_MAX_VS_IPHONE_17_PRO_MAX } from "./iphone-16-pro-max-vs-iphone-17-pro-max";
 import { KNICKS_VS_76ERS } from "./knicks-vs-76ers";
 import { SGA_VS_WEMBANYAMA } from "./shai-gilgeous-alexander-vs-victor-wembanyama";
 import { OKLAHOMA_CITY_THUNDER_VS_SPURS } from "./oklahoma-city-thunder-vs-spurs";
@@ -166,6 +167,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [IPHONE_17_PRO_VS_IPHONE_18_PRO.slug]: IPHONE_17_PRO_VS_IPHONE_18_PRO,
   [IPHONE_17_VS_IPHONE_17E.slug]: IPHONE_17_VS_IPHONE_17E,
   [IPHONE_17_PRO_MAX_VS_IPHONE_18_PRO_MAX.slug]: IPHONE_17_PRO_MAX_VS_IPHONE_18_PRO_MAX,
+  [IPHONE_16_PRO_MAX_VS_IPHONE_17_PRO_MAX.slug]: IPHONE_16_PRO_MAX_VS_IPHONE_17_PRO_MAX,
   [KNICKS_VS_76ERS.slug]: KNICKS_VS_76ERS,
   [SGA_VS_WEMBANYAMA.slug]: SGA_VS_WEMBANYAMA,
   [OKLAHOMA_CITY_THUNDER_VS_SPURS.slug]: OKLAHOMA_CITY_THUNDER_VS_SPURS,
