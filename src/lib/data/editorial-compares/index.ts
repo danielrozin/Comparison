@@ -120,6 +120,7 @@ import { RYZEN_5_5500_VS_RYZEN_5_5600 } from "./ryzen-5-5500-vs-ryzen-5-5600";
 import { RX_9070_VS_RX_9070_XT } from "./rx-9070-vs-rx-9070-xt";
 import { B850_VS_X870 } from "./b850-vs-x870";
 import { RTX_5060_VS_RTX_3060_12GB } from "./rtx-5060-vs-rtx-3060-12gb";
+import { WINDOWS_11_HOME_VS_WINDOWS_11_PRO } from "./windows-11-home-vs-windows-11-pro";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -258,6 +259,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9070_VS_RX_9070_XT.slug]: RX_9070_VS_RX_9070_XT,
   [B850_VS_X870.slug]: B850_VS_X870,
   [RTX_5060_VS_RTX_3060_12GB.slug]: RTX_5060_VS_RTX_3060_12GB,
+  [WINDOWS_11_HOME_VS_WINDOWS_11_PRO.slug]: WINDOWS_11_HOME_VS_WINDOWS_11_PRO,
 };
 
 /**
