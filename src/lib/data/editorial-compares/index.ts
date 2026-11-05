@@ -71,6 +71,7 @@ import { RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI } from "./rtx-5070-vs-rx-9070-xt-
 import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { RTX_4070_LAPTOP_VS_RTX_5060_LAPTOP } from "./rtx-4070-laptop-vs-rtx-5060-laptop";
 import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
+import { RX_9060_XT_VS_RX_9070_XT } from "./rx-9060-xt-vs-rx-9070-xt";
 import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra";
 import { GALAXY_S25_VS_GALAXY_S25_ULTRA } from "./galaxy-s25-vs-galaxy-s25-ultra";
 import { OLED_VS_MINI_LED_GAMING_MONITOR } from "./oled-vs-mini-led-gaming-monitor";
@@ -219,6 +220,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5.slug]: MACBOOK_AIR_M5_VS_MACBOOK_PRO_M5,
   [MACBOOK_NEO_VS_IPAD_A16.slug]: MACBOOK_NEO_VS_IPAD_A16,
   [RX_9060_XT_VS_RX_9070.slug]: RX_9060_XT_VS_RX_9070,
+  [RX_9060_XT_VS_RX_9070_XT.slug]: RX_9060_XT_VS_RX_9070_XT,
   [OLED_VS_MINI_LED_GAMING_MONITOR.slug]: OLED_VS_MINI_LED_GAMING_MONITOR,
   [QD_OLED_VS_WOLED.slug]: QD_OLED_VS_WOLED,
   [RYZEN_7_9700X_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_9700X_VS_RYZEN_7_9800X3D,
