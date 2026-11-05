@@ -5,6 +5,11 @@ import { CookiePreferencesButton } from "./CookiePreferencesButton";
 import { CategoryIcon } from "@/lib/utils/category-icons";
 import { YOUTUBE_CHANNEL_URL } from "@/lib/seo/schema";
 
+// Product community: current r/ThisOrThatDebate weekly thread. Update weekly.
+export const COMMUNITY_URL =
+  process.env.NEXT_PUBLIC_COMMUNITY_URL ||
+  "https://www.reddit.com/r/ThisOrThatDebate/comments/1xnjazi/";
+
 const FOOTER_CATEGORIES = [
   { slug: "software", name: "Software" },
   { slug: "sports", name: "Sports" },
@@ -126,6 +131,7 @@ export function Footer() {
               <a href="/feed" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">RSS Feed</a>
               <Link href="/archive" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Archive</Link>
               <Link href="/site-map" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Sitemap</Link>
+              <a href={COMMUNITY_URL} target="_blank" rel="noopener noreferrer" title="Our product community on Reddit" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Community</a>
             </nav>
           </div>
 
