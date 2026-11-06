@@ -39,6 +39,13 @@ const NOCTUA =
 const BANNED =
   /page lists|list shows|table lists|no published|page says|on that page|the page|this article|article says|this page|checked against|Source note|(?:^|\n)Sources:|official page|\bfetch\b|human review|byline|reviewed by|reddit\.com|r\/buildapc|\bfps\b|£|6950|(?<!not )every AM4 cooler|all AM4 coolers/i;
 
+function requiredString(value: string | null | undefined, label: string): string {
+  if (typeof value !== "string") {
+    throw new Error(`${label} is missing`);
+  }
+  return value;
+}
+
 function readerText(value: unknown): string {
   const parts: string[] = [];
   const visit = (node: unknown) => {
@@ -96,12 +103,15 @@ describe("AM4 vs AM5", () => {
     expect(page().metadata.isHumanReviewed).toBe(false);
     expect(HUMAN_REVIEWED_SLUGS).toEqual([]);
     expect(page().quickAnswer?.winnerName).toBeNull();
-    expect(page().quickAnswer?.tldr).toBe(page().shortAnswer);
-    expect(page().shortAnswer.split(/(?<=[.?!])\s+/)).toHaveLength(2);
-    expect(page().shortAnswer).toMatch(/PCIe 5\.0 only on some/);
+    const shortAnswer = requiredString(page().shortAnswer, "shortAnswer");
+    const analysis = requiredString(page().expertAnalysis, "expertAnalysis");
+    expect(page().quickAnswer?.tldr).toBe(shortAnswer);
+    expect(shortAnswer.split(/(?<=[.?!])\s+/)).toHaveLength(2);
+    expect(shortAnswer).toMatch(/PCIe 5\.0 only on some/);
     expect(page().faqs).toHaveLength(6);
-    expect(page().expertAnalysis).not.toMatch(/\bFAQ\b|Frequently asked|Drafted with AI|human-reviewed/i);
-    expect(page().expertAnalysis.startsWith(page().shortAnswer)).toBe(true);
+    expect(analysis).not.toMatch(/\bFAQ\b|Frequently asked|Drafted with AI|human-reviewed/i);
+    expect(analysis.startsWith(shortAnswer)).toBe(true);
+    expect(getEditorialComparison("rtx-5070-vs-rx-9070-xt"), "ROO-388 registry import").not.toBeNull();
     expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(SLUG);
     expect(sortComparisonSlug(SLUG)).toBe(SLUG);
     expect(isDegenerateComparisonSlug(SLUG)).toBe(false);
@@ -174,6 +184,9 @@ describe("AM4 vs AM5", () => {
     ]) {
       expect(text, fact).toContain(fact);
     }
+    expect(text).toMatch(/X570 is marked for Ryzen 2000 processors without Radeon Graphics/);
+    expect(text).not.toMatch(/X570 is not marked for Athlon processors with Radeon Graphics, Ryzen 1000, Ryzen 2000,/);
+    expect(text).toMatch(/specifications header names 7th Gen A-Series, and that name is not a matrix column/);
     expect(text).not.toMatch(BANNED);
     expect(text).not.toMatch(/\d+(?:\.\d+)?\s?%/);
     expect(text).not.toMatch(/\$\d/);
