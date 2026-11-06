@@ -117,7 +117,7 @@ describe("ProUpsellCard pricing link", () => {
 
   it("keeps compare-{slug} and records the upsell placement", () => {
     const { container } = render(<ProUpsellCard slug="japan-vs-china" />);
-    const link = within(container).getByRole("link", { name: /Get your comparison built/i });
+    const link = within(container).getByRole("link", { name: /Start your free trial/i });
 
     expect(link).toHaveAttribute("href", "/pricing?src=compare-japan-vs-china");
     fireEvent.click(link);

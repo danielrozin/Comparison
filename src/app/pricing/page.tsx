@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/schema/JsonLd";
 import { HubShell } from "@/components/layout/HubShell";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { pricingPlanProducts } from "@/lib/seo/pricing-offers";
-import { PLANS, stripeConfigured } from "@/lib/monetization/plans";
+import { PLANS, leadInterval, liveTrialDays, stripeConfigured } from "@/lib/monetization/plans";
 import {
   pricingBannerDetail,
   pricingFaq,
@@ -79,7 +79,7 @@ export default async function PricingPage({
   const payments = pricingPayments();
   const faq = pricingFaq(payments);
   const primaryPlan = PLANS.find((plan) => plan.highlight) ?? PLANS[0];
-  const primaryInterval = primaryPlan.intervals[0];
+  const primaryInterval = leadInterval(primaryPlan);
 
   return (
     <>
@@ -98,6 +98,7 @@ export default async function PricingPage({
             price={primaryInterval.foundingPrice}
             src={src}
             paymentsLive={stripeConfigured(primaryInterval)}
+            trialDays={liveTrialDays(primaryInterval)}
           />
         }
       >
@@ -109,8 +110,9 @@ export default async function PricingPage({
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
           {PLANS.map((plan) => {
-            const primary = plan.intervals[0];
-            const alternate = plan.intervals[1];
+            const primary = leadInterval(plan);
+            const alternate = plan.intervals.find((i) => i !== primary);
+            const trialDays = liveTrialDays(primary);
             return (
               <section
                 key={plan.id}
@@ -139,9 +141,17 @@ export default async function PricingPage({
                     founding
                   </span>
                 </p>
+                {trialDays > 0 && (
+                  <p className="mt-1 text-sm font-semibold text-green-700">
+                    {trialDays}-day free trial · cancel anytime
+                  </p>
+                )}
                 {alternate && (
                   <p className="mt-1 text-xs text-text-secondary">
                     or ${alternate.foundingPrice}/{alternate.interval}
+                    {liveTrialDays(alternate) > 0
+                      ? ` · ${liveTrialDays(alternate)}-day free trial`
+                      : yearlySavingNote(primary, alternate)}
                   </p>
                 )}
 
@@ -175,20 +185,33 @@ export default async function PricingPage({
                     interval={primary.interval}
                     src={src}
                     paymentsLive={stripeConfigured(primary)}
-                    label={`Get ${plan.name} — $${primary.foundingPrice}/${primary.interval}`}
+                    label={
+                      trialDays > 0
+                        ? `Start ${trialDays}-day free trial`
+                        : `Get ${plan.name} — $${primary.foundingPrice}/${primary.interval}`
+                    }
                     className={`w-full rounded-xl px-5 py-3 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
                       plan.highlight
                         ? "bg-primary-600 text-white hover:bg-primary-700 focus-visible:ring-primary-500"
                         : "bg-slate-900 text-white hover:bg-slate-800 focus-visible:ring-slate-500"
                     } disabled:opacity-60`}
                   />
+                  {trialDays > 0 && (
+                    <p className="text-xs text-text-secondary text-center">
+                      Then ${primary.foundingPrice}/{primary.interval}. Cancel before day {trialDays} and pay nothing.
+                    </p>
+                  )}
                   {alternate && (
                     <CheckoutButton
                       plan={plan.id}
                       interval={alternate.interval}
                       src={src}
                       paymentsLive={stripeConfigured(alternate)}
-                      label={`Or $${alternate.foundingPrice}/${alternate.interval} founding`}
+                      label={
+                        liveTrialDays(alternate) > 0
+                          ? `Try ${liveTrialDays(alternate)} days free — then $${alternate.foundingPrice}/${alternate.interval}`
+                          : `Or $${alternate.foundingPrice}/${alternate.interval} founding`
+                      }
                       className="w-full rounded-xl px-5 py-2.5 text-sm font-semibold border border-border bg-white text-text hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-60"
                     />
                   )}
@@ -225,4 +248,11 @@ export default async function PricingPage({
       </HubShell>
     </>
   );
+}
+
+/** " · save 55%" when the alternate is a yearly price cheaper than 12 months of the lead. */
+function yearlySavingNote(lead: { interval: string; foundingPrice: number }, alt: { interval: string; foundingPrice: number }): string {
+  if (lead.interval !== "month" || alt.interval !== "year") return "";
+  const pct = Math.round((1 - alt.foundingPrice / (lead.foundingPrice * 12)) * 100);
+  return pct > 0 ? ` · save ${pct}%` : "";
 }

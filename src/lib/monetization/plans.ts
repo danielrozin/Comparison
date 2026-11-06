@@ -19,6 +19,11 @@ export interface PlanInterval {
   regularPrice: number;
   /** Env var holding the Stripe Price id for this interval */
   stripePriceEnv: string;
+  /**
+   * Free trial length, sent to Stripe as subscription_data[trial_period_days].
+   * Card is collected up front; the first charge lands the day after it ends.
+   */
+  trialDays?: number;
 }
 
 export interface Plan {
@@ -39,7 +44,7 @@ export const PLANS: Plan[] = [
     tagline: "For anyone who needs the comparison that doesn't exist yet.",
     intervals: [
       { interval: "year", foundingPrice: 49, regularPrice: 90, stripePriceEnv: "STRIPE_PRICE_PRO_YEARLY" },
-      { interval: "month", foundingPrice: 9, regularPrice: 12, stripePriceEnv: "STRIPE_PRICE_PRO_MONTHLY" },
+      { interval: "month", foundingPrice: 9, regularPrice: 12, stripePriceEnv: "STRIPE_PRICE_PRO_MONTHLY", trialDays: 7 },
     ],
     features: [
       "2 custom comparisons per month — request any matchup, built for you within 24 hours",
@@ -84,4 +89,18 @@ export function getInterval(plan: Plan, interval: string): PlanInterval | undefi
 /** True once Stripe is wired for this specific plan+interval. */
 export function stripeConfigured(pi: PlanInterval): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY && process.env[pi.stripePriceEnv]);
+}
+
+/**
+ * The interval a plan leads with on /pricing: the one with a live free
+ * trial when there is one, since "start free" is the lowest-friction ask.
+ * Otherwise the first listed interval.
+ */
+export function leadInterval(plan: Plan): PlanInterval {
+  return plan.intervals.find((i) => i.trialDays && stripeConfigured(i)) ?? plan.intervals[0];
+}
+
+/** Live trial length for this interval, or 0 when there is no trial or Stripe is off. */
+export function liveTrialDays(pi: PlanInterval): number {
+  return pi.trialDays && stripeConfigured(pi) ? pi.trialDays : 0;
 }
