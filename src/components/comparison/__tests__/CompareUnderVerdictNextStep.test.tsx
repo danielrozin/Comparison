@@ -51,7 +51,8 @@ function entity(
 
 beforeEach(() => {
   trackAffiliateClick.mockClear();
-  trackAffiliateCtaViewed.mockClear();
+  trackAffiliateCtaViewed.mockReset();
+  trackAffiliateCtaViewed.mockReturnValue(true);
   trackEvent.mockClear();
   capture.mockClear();
 });
@@ -210,6 +211,21 @@ describe("CompareUnderVerdictNextStep", () => {
       early_commerce: 1,
     });
     unmount();
+    window.IntersectionObserver = previous;
+  });
+
+  it("tries again when the first on-screen pass is not recorded", () => {
+    trackAffiliateCtaViewed.mockReturnValueOnce(false).mockReturnValueOnce(true);
+    const previous = window.IntersectionObserver;
+    window.IntersectionObserver = visibleObserver();
+    render(
+      <CompareUnderVerdictNextStep
+        slug="ps5-vs-xbox-series-x"
+        chips={[]}
+        entities={[entity("PlayStation 5", "amazon", "https://www.amazon.com/s?k=ps5")]}
+      />,
+    );
+    expect(trackAffiliateCtaViewed).toHaveBeenCalledTimes(2);
     window.IntersectionObserver = previous;
   });
 

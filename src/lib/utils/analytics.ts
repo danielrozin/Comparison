@@ -172,14 +172,29 @@ export function trackAffiliateClick(
 
 /**
  * A shop row was actually on screen. Not a click and not a conversion.
- * `trackEvent` already skips PostHog until analytics consent allows it, and
- * does not initialize PostHog. Call once per placement per page view.
+ *
+ * Does not use `trackEvent`. That helper pushes every name to `gtag` or
+ * `dataLayer` before `analyticsAllowed()` runs. Consent Mode still lets a
+ * denied Google tag send a cookieless ping, and a `dataLayer` push waits
+ * for GTM. The container that would drop this custom event is not in the
+ * repo, so this signal must not touch Google at all.
+ *
+ * PostHog is only initialized at page start when analytics is already
+ * allowed. This function does not initialize it. If the visitor accepts
+ * later on the same view, the call stays a no-op and the impression is not
+ * replayed. That undercounts; replaying it would need a new init.
+ *
+ * Returns true only when a capture was handed to an already-loaded PostHog.
  */
 export function trackAffiliateCtaViewed(
   placement: string,
   page: string,
   extra?: Record<string, string | number | undefined>,
-) {
+): boolean {
+  if (typeof window === "undefined") return false;
+  if (!analyticsAllowed()) return false;
+  if ((posthog as { __loaded?: boolean }).__loaded !== true) return false;
+
   const props: Record<string, string | number> = {
     placement,
     page,
@@ -190,7 +205,8 @@ export function trackAffiliateCtaViewed(
       if (value !== undefined) props[key] = value;
     }
   }
-  trackEvent("affiliate_cta_viewed", props);
+  posthog.capture("affiliate_cta_viewed", props);
+  return true;
 }
 
 /**

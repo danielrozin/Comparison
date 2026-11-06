@@ -67,11 +67,16 @@ export function CompareUnderVerdictNextStep({
           (entry) => entry.isIntersecting && entry.intersectionRatio >= 0.5,
         );
         if (!visible || seen) return;
-        seen = true;
-        trackAffiliateCtaViewed(PLACEMENT, slug, {
+        // A denied call returns false and is not stored. The row can be
+        // counted later only if it leaves and re-enters the viewport after
+        // PostHog is already loaded. Staying on screen through a later
+        // Accept is not replayed.
+        const recorded = trackAffiliateCtaViewed(PLACEMENT, slug, {
           link_count: commercial.length,
           early_commerce: shopOnAmazon ? 1 : 0,
         });
+        if (!recorded) return;
+        seen = true;
         observer.disconnect();
       },
       { threshold: [0.5] },
