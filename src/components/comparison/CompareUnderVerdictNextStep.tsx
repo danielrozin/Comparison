@@ -1,12 +1,15 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import posthog from "posthog-js";
 import type { AffiliateLink, ComparisonEntityData } from "@/types";
-import { trackAffiliateClick, trackEvent } from "@/lib/utils/analytics";
+import { trackAffiliateClick, trackAffiliateCtaViewed, trackEvent } from "@/lib/utils/analytics";
 import { usePaidAffiliateHref } from "@/lib/hooks/usePaidAffiliateHref";
 import { COMPARE_NEXT_SOFT_HREF } from "@/lib/data/compare-next-constants";
+import { isEarlyCommerceCompare } from "@/lib/affiliate/early-commerce-slugs";
 import type { CompareNextStepChip } from "@/components/comparison/CompareNextStepCTA";
+import { AffiliateDisclosure } from "./AffiliateDisclosure";
 
 /**
  * Compact affiliate / next-compare action that shares a card with
@@ -46,21 +49,61 @@ export function CompareUnderVerdictNextStep({
   chips: CompareNextStepChip[];
 }) {
   const commercial = entities.filter((entity) => commercialLink(entity));
+  const shopOnAmazon =
+    isEarlyCommerceCompare(slug) &&
+    commercial.length > 0 &&
+    commercial.every((entity) => commercialLink(entity)?.partner === "amazon");
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const node = rowRef.current;
+    if (!node || commercial.length === 0) return;
+    if (typeof IntersectionObserver === "undefined") return;
+
+    let seen = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.some(
+          (entry) => entry.isIntersecting && entry.intersectionRatio >= 0.5,
+        );
+        if (!visible || seen) return;
+        seen = true;
+        trackAffiliateCtaViewed(PLACEMENT, slug, {
+          link_count: commercial.length,
+          early_commerce: shopOnAmazon ? 1 : 0,
+        });
+        observer.disconnect();
+      },
+      { threshold: [0.5] },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [slug, commercial.length, shopOnAmazon]);
 
   return (
-    <div data-placement={PLACEMENT} className="mb-1.5">
+    <div data-placement={PLACEMENT} data-early-commerce={shopOnAmazon ? "true" : "false"} className="mb-1.5">
       {commercial.length > 0 ? (
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          <span className="text-[11px] font-semibold uppercase tracking-wide text-text-secondary">
-            Next step
-          </span>
-          {commercial.map((entity) => (
-            <CommercialNextStep
-              key={entity.id || entity.slug}
-              entity={entity}
-              slug={slug}
-            />
-          ))}
+        <div ref={rowRef}>
+          <div
+            className={
+              shopOnAmazon
+                ? "flex flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center"
+                : "flex flex-wrap items-center justify-center gap-2"
+            }
+          >
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-text-secondary sm:mr-0">
+              Next step
+            </span>
+            {commercial.map((entity) => (
+              <CommercialNextStep
+                key={entity.id || entity.slug}
+                entity={entity}
+                slug={slug}
+                fullWidth={shopOnAmazon}
+              />
+            ))}
+          </div>
+          {shopOnAmazon ? <AffiliateDisclosure /> : null}
         </div>
       ) : (
         <FallbackNextStep slug={slug} chips={chips} />
@@ -72,9 +115,11 @@ export function CompareUnderVerdictNextStep({
 function CommercialNextStep({
   entity,
   slug,
+  fullWidth = false,
 }: {
   entity: ComparisonEntityData;
   slug: string;
+  fullWidth?: boolean;
 }) {
   const link = commercialLink(entity);
   const href = usePaidAffiliateHref(link?.url ?? "");
@@ -90,7 +135,9 @@ function CommercialNextStep({
       rel="noopener noreferrer nofollow sponsored"
       aria-label={`${label} — ${entity.name}`}
       data-entity={entity.name}
-      className="inline-flex max-w-full items-center gap-1.5 min-h-11 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-primary-600 hover:bg-primary-700 shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+      className={`inline-flex max-w-full items-center justify-center gap-1.5 min-h-11 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-primary-600 hover:bg-primary-700 shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${
+        fullWidth ? "w-full sm:w-auto" : ""
+      }`}
       onClick={() => {
         trackAffiliateClick(entity.name, PLACEMENT, slug, {
           url: href,

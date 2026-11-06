@@ -171,6 +171,29 @@ export function trackAffiliateClick(
 }
 
 /**
+ * A shop row was actually on screen. Not a click and not a conversion.
+ * `trackEvent` already skips PostHog until analytics consent allows it, and
+ * does not initialize PostHog. Call once per placement per page view.
+ */
+export function trackAffiliateCtaViewed(
+  placement: string,
+  page: string,
+  extra?: Record<string, string | number | undefined>,
+) {
+  const props: Record<string, string | number> = {
+    placement,
+    page,
+    comparison_slug: page,
+  };
+  if (extra) {
+    for (const [key, value] of Object.entries(extra)) {
+      if (value !== undefined) props[key] = value;
+    }
+  }
+  trackEvent("affiliate_cta_viewed", props);
+}
+
+/**
  * Merge the anonymous browsing identity into the email identity the server
  * events use as distinctId. This is what stitches pageview → signup →
  * welcome email → pricing → checkout into ONE person in PostHog.
