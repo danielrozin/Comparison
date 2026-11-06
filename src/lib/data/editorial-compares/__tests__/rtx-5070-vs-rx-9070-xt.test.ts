@@ -15,6 +15,8 @@ import { getEditorialComparison, listEditorialCompareSitemapEntries } from "../i
 const SLUG = "rtx-5070-vs-rx-9070-xt";
 
 const NV_FAMILY = "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/";
+const NV_ARCH =
+  "https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf";
 const NV_SHOP = "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/#shop-all";
 const AMD_XT =
   "https://www.amd.com/en/products/graphics/desktops/radeon/9000-series/amd-radeon-rx-9070xt.html";
@@ -182,6 +184,7 @@ describe("RTX 5070 vs RX 9070 XT", () => {
     expect(text).toMatch(/[Mm]ore memory does not by itself make a card faster/);
     expect(page().citationStats?.sources.map((source) => source.url)).toEqual([
       NV_FAMILY,
+      NV_ARCH,
       AMD_XT,
       AMD_9070,
       AMD_PR,

@@ -8,7 +8,11 @@ import type { EditorialComparison } from "./types";
  * RTX 5070 and RTX 5070 Ti specs: NVIDIA GeForce RTX 5070 family page.
  * The summary table on that page labels DLSS as DLSS 5. The detailed
  * technology table labels DLSS 4 and lists its feature names. Both labels
- * are repeated here. No price is copied from the shop module.
+ * are repeated here. That split is a naming difference, not a hardware con.
+ * Bandwidth is also in the May 12, 2025 RTX Blackwell architecture
+ * whitepaper: Table 6 (pages 54–55) lists 672 GB/sec for the RTX 5070, and
+ * Table 5 (pages 51–52) lists 896 GB/sec for the RTX 5070 Ti. The whitepaper
+ * names the feature DLSS 4. No price is copied from the shop module.
  *
  * RX 9070 XT and RX 9070 specs: AMD product specifications opened the same day.
  * RDNA 4, the February 2025 boost figure of up to 3.0 GHz, and the name FSR 4
@@ -32,6 +36,8 @@ const A = "rtx-5070";
 const B = "rx-9070-xt";
 
 const NV_FAMILY = "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/";
+const NV_ARCH =
+  "https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf";
 const NV_SHOP = "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/#shop-all";
 const AMD_XT =
   "https://www.amd.com/en/products/graphics/desktops/radeon/9000-series/amd-radeon-rx-9070xt.html";
@@ -92,7 +98,7 @@ const EXPERT_ANALYSIS = `${SHORT_ANSWER}
 
 Use three checks when the prices are close: memory capacity, the feature stack, and the power supply. Neither card is right for everyone. The RTX 5070 Ti and the non-XT RX 9070 are different products, covered below. Store prices move, so compare the exact models on sale today.
 
-AMD lists 16 GB of GDDR6, a 256-bit interface, and 64 MB of Infinity Cache on the RX 9070 XT. NVIDIA lists 12 GB of GDDR7, a 192-bit interface, and 672 GB/sec of memory bandwidth on the RTX 5070. AMD lists memory bandwidth up to 640 GB/s. Choose the RX 9070 XT when you want the larger memory configuration. Choose the RTX 5070 when 12 GB of GDDR7 is enough for the games and apps you run. More memory does not by itself make a card faster.
+AMD lists 16 GB of GDDR6, a 256-bit interface, and 64 MB of Infinity Cache on the RX 9070 XT. NVIDIA lists 12 GB of GDDR7, a 192-bit interface, and 672 GB/sec of memory bandwidth on the RTX 5070. NVIDIA's May 12, 2025 RTX Blackwell GPU architecture whitepaper, Table 6, also lists 672 GB/sec for the RTX 5070, and Table 5 lists 896 GB/sec for the RTX 5070 Ti. AMD lists memory bandwidth up to 640 GB/s. Choose the RX 9070 XT when you want the larger memory configuration. Choose the RTX 5070 when 12 GB of GDDR7 is enough for the games and apps you run. More memory does not by itself make a card faster.
 
 NVIDIA's family specifications label DLSS as DLSS 5 in the summary table. The detailed technology table labels DLSS 4 and lists Super Resolution, DLAA, Ray Reconstruction, Frame Generation, and Multi Frame Generation. Reflex 2 is listed, with a low-latency mode, and Frame Warp is marked coming soon. The RTX 5070 has one ninth-generation NVENC encoder and AV1 encode. AMD's current RX 9070 XT specifications list FSR "Redstone", Fluid Motion Frames, and Radeon Anti-Lag, plus H.264, HEVC, and AV1 encode. AMD's February 28, 2025 release names FSR 4. No latency number and no encode-quality result belong in this matchup.
 
@@ -128,7 +134,6 @@ const BUILT = buildEditorialComparison({
       ],
       cons: [
         "12 GB of memory, against 16 GB on the RX 9070 XT (NVIDIA, AMD)",
-        "Summary table labels DLSS 5; detailed table labels DLSS 4 (NVIDIA)",
       ],
       bestFor: "Same-price buy when you want NVIDIA's listed features and a 250 W card",
     },
@@ -283,7 +288,7 @@ const BUILT = buildEditorialComparison({
       "NVIDIA lists 12 GB GDDR7 and 250 W on the RTX 5070. AMD lists 16 GB GDDR6 and 304 W on the RX 9070 XT. Neither card is right for everyone.",
   },
   citationStats: {
-    sourceCount: 7,
+    sourceCount: 8,
     dataPointCount: 46,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -291,6 +296,7 @@ const BUILT = buildEditorialComparison({
     lastResearched: SOURCE_DATE,
     sources: [
       { name: "NVIDIA GeForce RTX 5070 family specifications", url: NV_FAMILY },
+      { name: "NVIDIA RTX Blackwell GPU architecture whitepaper (May 12, 2025)", url: NV_ARCH },
       { name: "AMD Radeon RX 9070 XT specifications", url: AMD_XT },
       { name: "AMD Radeon RX 9070 specifications", url: AMD_9070 },
       { name: "AMD newsroom: RDNA 4 and Radeon RX 9000 Series (February 28, 2025)", url: AMD_PR },
@@ -306,6 +312,13 @@ const BUILT = buildEditorialComparison({
       url: NV_FAMILY,
       description:
         "RTX 5070: Blackwell, 6,144 CUDA cores, 12 GB GDDR7, 192-bit, 672 GB/sec, boost 2.51 GHz, base 2.33 GHz, 250 W, 650 W, one ninth-generation NVENC, AV1 encode. Summary table labels DLSS 5. Detailed table labels DLSS 4 features and Reflex 2. RTX 5070 Ti is a separate row: 8,960 CUDA cores, 16 GB GDDR7, 300 W, two NVENC encoders.",
+    },
+    {
+      type: "external",
+      label: "NVIDIA RTX Blackwell GPU architecture whitepaper (May 12, 2025)",
+      url: NV_ARCH,
+      description:
+        "Table 6, pages 54–55: RTX 5070, 672 GB/sec, 12 GB GDDR7, 192-bit, 6,144 CUDA cores, 250 W, one 9th-gen NVENC. Table 5, pages 51–52: RTX 5070 Ti, 896 GB/sec, 16 GB GDDR7, 8,960 CUDA cores, 300 W, two 9th-gen NVENC encoders. The whitepaper names the feature DLSS 4.",
     },
     {
       type: "external",
