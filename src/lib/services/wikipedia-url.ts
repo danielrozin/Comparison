@@ -47,6 +47,8 @@ const REJECTED_ARTICLE_TITLES = new Set([
   // GPU model names with no English article (ROO-236).
   "RX_9070_XT",
   "RTX_5060_Ti",
+  "RTX_5070",
+  "GeForce_RTX_5070",
   // Guesses that 404'd in the 2026-11-02 site crawl: product models, plan
   // names and generic phrases with no English article.
   "MacBook_Air_15-inch",
@@ -131,6 +133,7 @@ const TITLE_BY_SLUG: Record<string, string> = {
   // GPUs: single cards have no English article (ROO-236). Link the series.
   "rx-9070-xt": "Radeon_RX_9000_series",
   "rtx-5060-ti": "GeForce_RTX_50_series",
+  "rtx-5070": "GeForce_RTX_50_series",
   // Countries and economies
   usa: "United_States",
   china: "China",
@@ -173,6 +176,9 @@ const TITLE_BY_NAME: Record<string, string> = {
   "rtx 5060 ti": "GeForce_RTX_50_series",
   "geforce rtx 5060 ti": "GeForce_RTX_50_series",
   "nvidia geforce rtx 5060 ti": "GeForce_RTX_50_series",
+  "rtx 5070": "GeForce_RTX_50_series",
+  "geforce rtx 5070": "GeForce_RTX_50_series",
+  "nvidia geforce rtx 5070": "GeForce_RTX_50_series",
 };
 
 function normalizeName(name: string): string {

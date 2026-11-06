@@ -237,6 +237,21 @@ describe("GPU model names without an English article (ROO-236)", () => {
     expect(urls).toContain("https://en.wikipedia.org/wiki/RTX_5080");
   });
 
+  it("links RTX 5070 to the GeForce RTX 50 series article, not /wiki/RTX_5070", () => {
+    const urls = wikipediaUrls("rtx-5070-vs-rx-9070-xt", [
+      entity("RTX 5070", "rtx-5070", 0),
+      entity("RX 9070 XT", "rx-9070-xt", 1),
+    ]);
+    expect(urls).not.toContain("https://en.wikipedia.org/wiki/RTX_5070");
+    expect(urls).not.toContain("https://en.wikipedia.org/wiki/GeForce_RTX_5070");
+    expect(urls).toContain("https://en.wikipedia.org/wiki/GeForce_RTX_50_series");
+    expect(urls).toContain("https://en.wikipedia.org/wiki/Radeon_RX_9000_series");
+    expect(resolveEntityWikipediaUrl({ name: "GeForce RTX 5070", slug: "rtx-5070" })).toBe(
+      "https://en.wikipedia.org/wiki/GeForce_RTX_50_series",
+    );
+    expect(guessedWikipediaTitle("RTX 5070")).toBeNull();
+  });
+
   it("links RTX 5060 Ti to the GeForce RTX 50 series article, not /wiki/RTX_5060_Ti", () => {
     const urls = wikipediaUrls("rx-9060-xt-vs-rtx-5060-ti", [
       entity("RX 9060 XT", "rx-9060-xt", 0),
