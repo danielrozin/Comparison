@@ -124,6 +124,7 @@ import { RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D } from "./ryzen-7-7800x3d-vs-ryzen-7
 import { RX_9070_VS_RX_9070_XT } from "./rx-9070-vs-rx-9070-xt";
 import { B850_VS_X870 } from "./b850-vs-x870";
 import { B650_VS_B850 } from "./b650-vs-b850";
+import { AM4_VS_AM5 } from "./am4-vs-am5";
 import { RTX_5060_VS_RTX_3060_12GB } from "./rtx-5060-vs-rtx-3060-12gb";
 import { WINDOWS_11_HOME_VS_WINDOWS_11_PRO } from "./windows-11-home-vs-windows-11-pro";
 import { NEXTCLOUD_VS_OPENCLOUD } from "./nextcloud-vs-opencloud";
@@ -272,6 +273,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9070_VS_RX_9070_XT.slug]: RX_9070_VS_RX_9070_XT,
   [B850_VS_X870.slug]: B850_VS_X870,
   [B650_VS_B850.slug]: B650_VS_B850,
+  [AM4_VS_AM5.slug]: AM4_VS_AM5,
   [RTX_5060_VS_RTX_3060_12GB.slug]: RTX_5060_VS_RTX_3060_12GB,
   [WINDOWS_11_HOME_VS_WINDOWS_11_PRO.slug]: WINDOWS_11_HOME_VS_WINDOWS_11_PRO,
   [NEXTCLOUD_VS_OPENCLOUD.slug]: NEXTCLOUD_VS_OPENCLOUD,
@@ -306,6 +308,13 @@ const EDITORIAL_INBOUND_RELATED: Record<string, ComparisonPageData["relatedCompa
       slug: "kindle-vs-ipad",
       title: "Kindle vs iPad for Reading",
       category: "products",
+    },
+  ],
+  "ryzen-7-5800x3d-vs-am5": [
+    {
+      slug: "am4-vs-am5",
+      title: "AM4 vs AM5: Which Desktop PC Socket?",
+      category: "technology",
     },
   ],
   "oled-vs-mini-led-gaming-monitor": [
