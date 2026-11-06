@@ -29,6 +29,56 @@ const TECHSPOT = "https://www.techspot.com/review/2991-amd-radeon-9070-xt-vs-nvi
 
 // Reader copy credits NVIDIA, AMD, and TechSpot. It must not narrate the
 // research, name a winner, copy a price, or turn memory size into a speed claim.
+const PRIMARY_FACTS = [
+  "6,144",
+  "8,960",
+  "4,096",
+  "3,584",
+  "12 GB",
+  "16 GB",
+  "GDDR7",
+  "GDDR6",
+  "192-bit",
+  "256-bit",
+  "672 GB/sec",
+  "896 GB/sec",
+  "640 GB/s",
+  "64 MB",
+  "2.51 GHz",
+  "2.33 GHz",
+  "2.45 GHz",
+  "2400 MHz",
+  "2970 MHz",
+  "3.0 GHz",
+  "2070 MHz",
+  "2520 MHz",
+  "250 W",
+  "300 W",
+  "304 W",
+  "220 W",
+  "650 W",
+  "750 W",
+  "Blackwell",
+  "RDNA 4",
+  "DLSS 5",
+  "DLSS 4",
+  "FSR \"Redstone\"",
+  "FSR 4",
+  "Reflex 2",
+  "NVENC",
+  "AV1",
+  "17%",
+  "21%",
+  "12%",
+  "57 games",
+  "May 25, 2025",
+  "February 28, 2025",
+  "TechSpot",
+  "Hunt: Showdown 1896",
+  "576.40",
+  "25.5.1",
+];
+
 const BANNED =
   /page lists|list shows|table lists|no published|page says|on that page|the page|this article|article says|checked|Source note|(?:^|\n)Sources:|official page|fetch|this comparison|this page|\bshown\b|\bquoted\b|human review|byline|reviewed by|\bwinner\b|Drafted with AI|reddit|r\/PcBuild|€|\$|MSRP|placeholder|TODO|ensures faster|more VRAM ensures/i;
 
@@ -88,7 +138,7 @@ describe("RTX 5070 vs RX 9070 XT", () => {
     expect(page().shortAnswer).toMatch(/Neither card is right for everyone/);
     expect(findSelfContradictions(page())).toEqual([]);
     expect(page().citationStats?.sourceCount).toBe(page().citationStats?.sources.length);
-    expect(page().citationStats?.dataPointCount).toBe(46);
+    expect(page().citationStats?.dataPointCount).toBe(PRIMARY_FACTS.length);
     expect(page().citationStats?.sources.map((source) => source.url)).toEqual(
       page().resources?.map((resource) => resource.url),
     );
@@ -128,56 +178,14 @@ describe("RTX 5070 vs RX 9070 XT", () => {
 
   it("uses vendor specs and one dated TechSpot test without a price or a speed crown", () => {
     const text = readerText(page());
-    for (const fact of [
-      "6,144",
-      "8,960",
-      "4,096",
-      "3,584",
-      "12 GB",
-      "16 GB",
-      "GDDR7",
-      "GDDR6",
-      "192-bit",
-      "256-bit",
-      "672 GB/sec",
-      "640 GB/s",
-      "64 MB",
-      "2.51 GHz",
-      "2.33 GHz",
-      "2.45 GHz",
-      "2400 MHz",
-      "2970 MHz",
-      "3.0 GHz",
-      "2070 MHz",
-      "2520 MHz",
-      "250 W",
-      "300 W",
-      "304 W",
-      "220 W",
-      "650 W",
-      "750 W",
-      "Blackwell",
-      "RDNA 4",
-      "DLSS 5",
-      "DLSS 4",
-      "FSR \"Redstone\"",
-      "FSR 4",
-      "Reflex 2",
-      "NVENC",
-      "AV1",
-      "17%",
-      "21%",
-      "12%",
-      "57 games",
-      "May 25, 2025",
-      "February 28, 2025",
-      "TechSpot",
-      "Hunt: Showdown 1896",
-      "576.40",
-      "25.5.1",
-    ]) {
+    expect(PRIMARY_FACTS).toHaveLength(47);
+    for (const fact of PRIMARY_FACTS) {
       expect(text, fact).toContain(fact);
     }
+    expect(text).not.toMatch(/summary table/i);
+    expect(text).toMatch(/architecture whitepaper/);
+    expect(text).toMatch(/Marketing copy: DLSS 5/);
+    expect(text).toMatch(/Specifications table: DLSS 4/);
     expect(text).not.toMatch(BANNED);
     expect(text).not.toMatch(/page says|article says/i);
     expect(text).not.toMatch(/Community opinion|community opinion/i);
