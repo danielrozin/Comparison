@@ -69,6 +69,7 @@ import { CASHIERS_CHECK_VS_CERTIFIED_CHECK } from "./cashiers-check-vs-certified
 import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
 import { RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI } from "./rtx-5070-vs-rx-9070-xt-vs-rtx-5070-ti";
 import { RTX_5070_VS_RX_9070_XT } from "./rtx-5070-vs-rx-9070-xt";
+import { RTX_5070_TI_VS_RX_9070_XT } from "./rtx-5070-ti-vs-rx-9070-xt";
 import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { RTX_4070_LAPTOP_VS_RTX_5060_LAPTOP } from "./rtx-4070-laptop-vs-rtx-5060-laptop";
 import { RX_9060_XT_VS_RX_9070 } from "./rx-9060-xt-vs-rx-9070";
@@ -216,6 +217,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9070_XT_VS_RTX_5080.slug]: RX_9070_XT_VS_RTX_5080,
   [RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI.slug]: RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI,
   [RTX_5070_VS_RX_9070_XT.slug]: RTX_5070_VS_RX_9070_XT,
+  [RTX_5070_TI_VS_RX_9070_XT.slug]: RTX_5070_TI_VS_RX_9070_XT,
   [GALAXY_S26_VS_GALAXY_S26_ULTRA.slug]: GALAXY_S26_VS_GALAXY_S26_ULTRA,
   [GALAXY_S25_VS_GALAXY_S25_ULTRA.slug]: GALAXY_S25_VS_GALAXY_S25_ULTRA,
   [RX_9060_XT_VS_RTX_5060_TI.slug]: RX_9060_XT_VS_RTX_5060_TI,
