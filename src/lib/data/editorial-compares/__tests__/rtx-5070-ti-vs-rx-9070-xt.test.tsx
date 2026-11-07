@@ -20,6 +20,8 @@ const SLUG = "rtx-5070-ti-vs-rx-9070-xt";
 const REVERSE = "rx-9070-xt-vs-rtx-5070-ti";
 
 const NV_FAMILY = "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/";
+const NV_SUMMARY =
+  "https://images.nvidia.com/aem-dam/en-zz/Solutions/raw-html/dynamic-specs-table-50-series/v1.1.3.js";
 const NV_ARCH =
   "https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf";
 const NV_SHOP = "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/#shop-all";
@@ -29,7 +31,7 @@ const AMD_PR =
   "https://www.amd.com/en/newsroom/press-releases/2025-2-28-amd-unveils-next-generation-amd-rdna-4-architectu.html";
 const AMD_BUY = "https://www.amd.com/en/where-to-buy/graphics/radeon.html";
 
-// Figures read from NVIDIA and AMD on 7 November 2026. Not a benchmark sample.
+// Presence checks for sourced tokens. Not a measurement sample.
 const PRIMARY_FACTS = [
   "8960",
   "6144",
@@ -68,7 +70,7 @@ const PRIMARY_FACTS = [
   "Reflex 2",
   "NVENC",
   "AV1",
-  "May 12, 2025",
+  "PDF created 12 May 2025",
   "February 28, 2025",
   "1406 AI TOPS",
   "703/1406",
@@ -174,16 +176,29 @@ describe("RTX 5070 Ti vs RX 9070 XT", () => {
     }
     expect(page().entities.map((entity) => entity.imageUrl)).toEqual([null, null]);
     expect((page().shortAnswer ?? "").split(/(?<=[.!?])\s+/)).toHaveLength(2);
-    expect(page().shortAnswer).toMatch(/neither card is the right one for every buyer/i);
+    expect(page().shortAnswer).toMatch(/editorial judgment/);
     expect(findSelfContradictions(page())).toEqual([]);
+    expect(page().citationStats?.sourceCount).toBe(5);
     expect(page().citationStats?.sourceCount).toBe(page().citationStats?.sources.length);
     expect(page().citationStats?.reviewsAnalyzed).toBeNull();
     expect(page().citationStats?.preferencePercent).toBeNull();
-    expect(page().citationStats?.dataPointCount).toBe(PRIMARY_FACTS.length);
-    expect(PRIMARY_FACTS).toHaveLength(52);
-    expect(page().citationStats?.sources.map((source) => source.url)).toEqual(
-      page().resources?.map((resource) => resource.url),
-    );
+    expect(page().citationStats?.dataPointCount).toBe(0);
+    expect(page().citationStats?.sources.map((source) => source.url)).toEqual([
+      NV_FAMILY,
+      NV_SUMMARY,
+      NV_ARCH,
+      AMD_XT,
+      AMD_PR,
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual([
+      NV_FAMILY,
+      NV_SUMMARY,
+      NV_ARCH,
+      AMD_XT,
+      AMD_PR,
+      NV_SHOP,
+      AMD_BUY,
+    ]);
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
       "rtx-5070-vs-rx-9070-xt",
       "rtx-5070-vs-rx-9070-xt-vs-rtx-5070-ti",
@@ -224,22 +239,48 @@ describe("RTX 5070 Ti vs RX 9070 XT", () => {
     for (const fact of PRIMARY_FACTS) {
       expect(text, fact).toContain(fact);
     }
-    expect(text).toMatch(/Marketing copy: DLSS 5/);
-    expect(text).toMatch(/Specifications table: DLSS 4/);
+    expect(text).toMatch(/summary script v1\.1\.3\.js also labels DLSS 5/);
+    expect(text).toMatch(/static detailed specifications table labels DLSS 4/);
     expect(text).toMatch(/FSR "Redstone"/);
     expect(text).toMatch(/FSR 4/);
     expect(text).toMatch(/not a frame-rate result/);
     expect(text).toMatch(/not measured wall power|None of these is measured wall power|Neither rating is measured wall power/);
     expect(text).not.toMatch(BANNED);
     expect(text).not.toMatch(/page says|article says/i);
-    expect(page().citationStats?.sources.map((source) => source.url)).toEqual([
-      NV_FAMILY,
-      NV_ARCH,
-      AMD_XT,
-      AMD_PR,
-      NV_SHOP,
-      AMD_BUY,
-    ]);
+  });
+
+  it("keeps bandwidth, judgment, ray-accelerator count, and PDF date wording qualified", () => {
+    const data = page();
+    const text = readerText(data);
+    expect(text).toMatch(/static detailed specifications table omits memory bandwidth/);
+    expect(text).toMatch(/v1\.1\.3\.js/);
+    expect(text).toMatch(/896 GB\/sec/);
+    expect(text).toMatch(/672 GB\/sec/);
+    expect(text).not.toMatch(/does not list memory bandwidth|No memory-bandwidth row/i);
+    expect(text).toMatch(/PDF created 12 May 2025/);
+    expect(text).not.toMatch(/May 12, 2025/);
+    expect(text).toMatch(/hardware count, not a peak rate/);
+    expect(text).not.toMatch(/peak rates, including 64/);
+    expect(text).toMatch(/does not show that an application requires both/);
+    expect(text).not.toMatch(/\bonly when\b|\bonly for\b|Pay the difference only|pay more only|premium only/i);
+    expect(text).toMatch(/No measurement sample is claimed/);
+    expect(text).toMatch(/not a count of separate studies/);
+    expect(text).not.toMatch(/\b52 measurements\b|\b52 data points\b|six independent/i);
+    for (const surface of [
+      data.shortAnswer,
+      data.verdict,
+      data.faqs[0].answer,
+      data.faqs[5].answer,
+      data.quickAnswer?.winnerReason,
+      data.entities[0].bestFor,
+      data.entities[1].bestFor,
+      data.metadata.metaDescription,
+    ]) {
+      expect(surface).toMatch(/editorial judgment|not a tested ranking|does not show that an application requires/i);
+    }
+    expect(data.metadata.metaDescription).toMatch(/Editorial judgment, not a tested ranking/);
+    expect(data.metadata.isHumanReviewed).toBe(false);
+    expect(HUMAN_REVIEWED_SLUGS).toEqual([]);
   });
 
   it("renders the Analysis disclosure, FAQ answers, and a captioned source-noted table", () => {
