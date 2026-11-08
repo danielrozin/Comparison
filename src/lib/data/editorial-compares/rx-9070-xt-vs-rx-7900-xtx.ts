@@ -7,15 +7,15 @@ import type { EditorialComparison } from "./types";
  *
  * Current product specifications, not the February 2025 launch table, supply
  * the side-by-side figures. The launch post is cited only for its own dated
- * clock, availability, and the old FSR 4 exclusivity sentence.
+ * clock, availability, and the Adrenalin FSR 4 Upgrade exclusivity sentence.
  *
  * Not this pair: RX 9070 (non-XT) and RX 7900 XT (non-XTX). Their current
  * AMD specifications are cited so the names stay distinct.
  *
  * FSR: the technologies listing (opened 8 November 2026) and the GPUOpen
  * SDK 2.3 post (originally posted 24 June 2026) do not draw the same line
- * for RX 6000. Both list RX 7000-series upscaling, with game, API, and
- * driver limits. Redstone frame generation, ray regeneration, and radiance
+ * for RX 6000. Both list RX 7000-series upscaling, with game and API limits.
+ * Redstone frame generation, ray regeneration, and radiance
  * caching stay on the RX 9000 row in both documents. The devcommunity
  * mirror of the June 24 post was opened and does not add a support matrix.
  *
@@ -80,7 +80,7 @@ const SPEC_ROWS: { id: string; name: string; a: string; b: string }[] = [
 ];
 
 const TABLE = [
-  "AMD specification figures for the Radeon RX 9070 XT and the Radeon RX 7900 XTX, opened 8 November 2026. Counts and ratings are not a matched game test. Effective memory bandwidth is AMD's separate label and is not the GDDR memory-bandwidth figure. Not listed means the current AMD specification for that card does not print the figure.",
+  "AMD specification figures for the Radeon RX 9070 XT and the Radeon RX 7900 XTX, opened 8 November 2026. Counts and ratings are not a matched game test. Effective memory bandwidth is AMD's separate label and is not the GDDR memory-bandwidth figure. Not listed is the label when AMD's current specification for that card has no such figure.",
   "| Specification | Radeon RX 9070 XT | Radeon RX 7900 XTX |",
   "| --- | --- | --- |",
   ...SPEC_ROWS.map((row) => `| ${row.name} | ${row.a} | ${row.b} |`),
@@ -98,7 +98,7 @@ const FAQS = [
   {
     question: "Does FSR 4 work on the RX 7900 XTX?",
     answer:
-      "For upscaling, AMD's current documents list the RX 7000 series, with limits. AMD's FSR technologies listing, opened 8 November 2026, says FSR 4 has been renamed FSR Upscaling, and that FSR Upscaling with ML technologies is available on Radeon RX 6000, RX 7000 Series, and RX 9000 Series graphics cards. The same listing's FSR Upscaling 4.1 section includes Radeon RX 6000 Series desktop graphics and higher. AMD's GPUOpen post of June 24, 2026 lists FSR Upscaling 4.1.1 for Radeon RX 9000 and RX 7000 series discrete GPUs and requires Shader Model 6.6. That post does not list the RX 6000 series on the 4.1.1 line. Support still depends on the game, the graphics API, and the driver path. It is upscaling support, not frame generation, ray regeneration, or radiance caching.",
+      "For upscaling, AMD's current documents list the RX 7000 series, with limits. AMD's FSR technologies listing, opened 8 November 2026, says FSR 4 has been renamed FSR Upscaling, and that FSR Upscaling with ML technologies is available on Radeon RX 6000, RX 7000 Series, and RX 9000 Series graphics cards. The same listing's FSR Upscaling 4.1 section includes Radeon RX 6000 Series desktop graphics and higher. AMD's GPUOpen post of June 24, 2026 lists FSR Upscaling 4.1.1 for Radeon RX 9000 and RX 7000 series discrete GPUs and requires Shader Model 6.6. That post does not list the RX 6000 series on the 4.1.1 line. Support still depends on the game and the graphics API. It is upscaling support, not frame generation, ray regeneration, or radiance caching.",
   },
   {
     question: "Which card does AMD rate for more board power?",
@@ -156,13 +156,13 @@ AMD's GPUOpen post, originally posted June 24, 2026, is the developer requiremen
 
 The two AMD documents agree that an RX 7000 series discrete card such as the RX 7900 XTX is in the upscaling list, and that Frame Generation 4.0.1, Ray Regeneration 1.2.0, and Radiance Caching 0.9.0 are in the RX 9000 list. They do not use the same sentence for RX 6000 series ML upscaling. The November 8, 2026 listing includes RX 6000 Series desktop graphics in the 4.1 section. The June 24, 2026 requirements do not. This matchup does not treat RX 6000 support as settled.
 
-AMD's February 28, 2025 newsroom post said FSR 4 upscaling was available exclusively on Radeon RX 9000 Series graphics cards, in over 30 games at launch. That is a launch-day statement. It is not the support list in the later documents.
+AMD's February 28, 2025 newsroom post said the FSR 4 Upgrade feature in AMD Software: Adrenalin Edition was available exclusively on Radeon RX 9000 Series graphics cards, and that this feature covered over 30 games at launch. That exclusivity is for the Adrenalin Upgrade feature. It is not a rule for every form of FSR upscaling, and it is not the support list in the later documents.
 
 The RX 9070 XT product feature list includes AMD FSR "Redstone". The RX 7900 XTX product feature list includes AMD FSR and does not use the Redstone name. A feature-list label is not the hardware table.
 
 ## Board-power and PSU figures are ratings
 
-AMD lists 304 W typical board power for the RX 9070 XT and 355 W for the RX 7900 XTX. AMD lists a 750 W minimum PSU recommendation for the RX 9070 XT. For the RX 7900 XTX, AMD recommends a minimum 800 W power supply with 12 V output greater than 65 A, based on a PC configured with a Ryzen 9 5900X plus typical other parts, and says your system can differ (GD-223). The RX 9070 XT specification does not print that system example. Neither figure is measured wall power, and neither figure is an efficiency result. Both specifications list a 2x 8-pin extra power connector. The RX 7900 XTX specification lists a 287 mm length and 2.5 slots. The RX 9070 XT specification does not list a length or a slot count.
+AMD lists 304 W typical board power for the RX 9070 XT and 355 W for the RX 7900 XTX. AMD lists a 750 W minimum PSU recommendation for the RX 9070 XT. For the RX 7900 XTX, AMD recommends a minimum 800 W power supply with 12 V output greater than 65 A, based on a PC configured with a Ryzen 9 5900X plus typical other parts, and says your system can differ (GD-223). The RX 9070 XT specification has no Ryzen 9 5900X system example beside its 750 W recommendation. Neither figure is measured wall power, and neither figure is an efficiency result. Both specifications list a 2x 8-pin extra power connector. The RX 7900 XTX specification lists a 287 mm length and 2.5 slots. The RX 9070 XT specification does not list a length or a slot count.
 
 ## This pair is the RX 9070 XT and the RX 7900 XTX
 
@@ -318,7 +318,7 @@ const BUILT = buildEditorialComparison({
       label: "AMD Newsroom: RDNA 4 launch, 28 February 2025",
       url: AMD_LAUNCH,
       description:
-        "Dated launch statement only: RX 9070 XT game clock 2.4 GHz and boost clock up to 3.0 GHz, with GD-151. Board-partner cards expected beginning March 6, 2025. FSR 4 upscaling described then as exclusive to RX 9000 Series cards. Not the current boost figure and not a current support list.",
+        "Dated launch statement only: RX 9070 XT game clock 2.4 GHz and boost clock up to 3.0 GHz, with GD-151. Board-partner cards expected beginning March 6, 2025. The FSR 4 Upgrade feature in AMD Software: Adrenalin Edition was described then as available exclusively on RX 9000 Series cards. That is the Upgrade feature, not every form of upscaling, and not the current boost figure or the current support list.",
     },
   ],
   metaTitle: "RX 9070 XT vs RX 7900 XTX: Which GPU?",

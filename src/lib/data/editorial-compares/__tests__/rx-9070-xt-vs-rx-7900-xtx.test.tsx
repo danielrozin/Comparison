@@ -163,6 +163,11 @@ describe("RX 9070 XT vs RX 7900 XTX", () => {
     }
     expect(text).not.toMatch(BANNED);
     expect(text).toMatch(/previously exclusive/);
+    expect(text).toMatch(/Adrenalin Edition was available exclusively on Radeon RX 9000 Series graphics cards/);
+    expect(text).toMatch(/not a rule for every form of FSR upscaling/);
+    expect(text).not.toMatch(/FSR 4 upscaling was available exclusively/);
+    expect(text).not.toMatch(/driver path/);
+    expect(text).not.toMatch(/does not print|doesn't print/);
     expect(text).toMatch(/not the support list in the later documents/);
     expect(text).toMatch(/does not treat RX 6000 support as settled/);
     expect(text).toMatch(/Upscaling support is not frame generation/);
@@ -183,9 +188,13 @@ describe("RX 9070 XT vs RX 7900 XTX", () => {
         updatedAt={current.metadata.updatedAt}
       />,
     );
-    expect(screen.getByRole("heading", { name: "Analysis: AMD Radeon RX 9070 XT vs AMD Radeon RX 7900 XTX" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "The current specifications list 16 GB and 24 GB" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "FSR upscaling is a different list from the Redstone suite" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Analysis: AMD Radeon RX 9070 XT vs AMD Radeon RX 7900 XTX" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: "The current specifications list 16 GB and 24 GB" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 3, name: "FSR upscaling is a different list from the Redstone suite" })).toBeInTheDocument();
+    const headings = screen.getAllByRole("heading");
+    expect(headings[0]?.tagName).toBe("H2");
+    expect(headings.slice(1).every((heading) => heading.tagName === "H3")).toBe(true);
+    expect(screen.getByRole("list")).toBeInTheDocument();
     const table = screen.getByRole("table");
     expect(table.querySelector("caption")?.textContent).toMatch(/opened 8 November 2026/);
     expect(table.querySelectorAll("th[scope='col']").length).toBeGreaterThanOrEqual(3);

@@ -19,7 +19,10 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
 
   const humanReviewed = isHumanReviewedSlug(slug);
   const paragraphs = analysis.split(/\n\n+/).filter(Boolean);
-  const shown = visibleLeadCount(paragraphs);
+  // Rich blocks stay off unless this analysis has a "## " heading. Legacy
+  // dash paragraphs have no such heading, so they remain one paragraph.
+  const structured = /^##\s+\S/m.test(analysis);
+  const shown = structured ? visibleLeadCount(paragraphs) : Math.min(3, paragraphs.length);
 
   return (
     <ScrollReveal delay={60}>
@@ -78,7 +81,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
             while preventing an overwhelming wall of text on first load. */}
         <div className="px-5 sm:px-7 py-5 sm:py-6 space-y-4">
           {paragraphs.slice(0, shown).map((para, i) => (
-            <AnalysisBlock key={i} text={para} />
+            <AnalysisBlock key={i} text={para} structured={structured} />
           ))}
           {paragraphs.length > shown && (
             <details className="group">
@@ -98,7 +101,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
               </summary>
               <div className="space-y-4 mt-4">
                 {paragraphs.slice(shown).map((para, i) => (
-                  <AnalysisBlock key={i + shown} text={para} />
+                  <AnalysisBlock key={i + shown} text={para} structured={structured} />
                 ))}
               </div>
             </details>
@@ -121,14 +124,18 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
 }
 
 /**
- * Plain paragraphs stay paragraphs. A single "## " line becomes an answer
- * heading, a "-" block becomes a list, and a captioned pipe table becomes
- * a real table. Older analyses have none of these markers.
+ * Legacy analyses are paragraphs, including blocks whose lines start with "- ".
+ * A "## " heading opts that one analysis into h3 subsections, dash lists, and
+ * captioned tables. The section title above stays the only h2.
  */
-function AnalysisBlock({ text }: { text: string }) {
+function AnalysisBlock({ text, structured }: { text: string; structured: boolean }) {
+  if (!structured) {
+    return <p className="text-base leading-relaxed text-text">{text}</p>;
+  }
+
   const heading = parseHeading(text);
   if (heading) {
-    return <h2 className="text-lg font-display font-bold text-text pt-2">{heading}</h2>;
+    return <h3 className="text-lg font-display font-bold text-text pt-2">{heading}</h3>;
   }
 
   const items = parseList(text);
