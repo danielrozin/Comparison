@@ -19,6 +19,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
 
   const humanReviewed = isHumanReviewedSlug(slug);
   const paragraphs = analysis.split(/\n\n+/).filter(Boolean);
+  const shown = visibleLeadCount(paragraphs);
 
   return (
     <ScrollReveal delay={60}>
@@ -71,23 +72,22 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
           </div>
         </div>
 
-        {/* Analysis body — first 3 paragraphs always visible; rest in a <details> fold.
-            Using native <details> keeps the full text in SSR HTML (crawlable by AI/SEO)
+        {/* Analysis body — the lead stays visible; the rest is in a <details> fold.
+            A specification table stays in the lead with the heading before it.
+            Native <details> keeps the full text in SSR HTML (crawlable by AI/SEO)
             while preventing an overwhelming wall of text on first load. */}
         <div className="px-5 sm:px-7 py-5 sm:py-6 space-y-4">
-          {paragraphs.slice(0, 3).map((para, i) => (
-            <p key={i} className="text-base text-text leading-relaxed">
-              {para}
-            </p>
+          {paragraphs.slice(0, shown).map((para, i) => (
+            <AnalysisBlock key={i} text={para} />
           ))}
-          {paragraphs.length > 3 && (
+          {paragraphs.length > shown && (
             <details className="group">
               <summary className="list-none cursor-pointer select-none">
                 <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 group-open:hidden transition-colors">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
-                  Read {paragraphs.length - 3} more paragraph{paragraphs.length - 3 !== 1 ? "s" : ""}
+                  Read {paragraphs.length - shown} more paragraph{paragraphs.length - shown !== 1 ? "s" : ""}
                 </span>
                 <span className="hidden group-open:inline-flex items-center gap-1.5 text-sm font-semibold text-text-secondary hover:text-text transition-colors">
                   <svg className="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -97,10 +97,8 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
                 </span>
               </summary>
               <div className="space-y-4 mt-4">
-                {paragraphs.slice(3).map((para, i) => (
-                  <p key={i + 3} className="text-base text-text leading-relaxed">
-                    {para}
-                  </p>
+                {paragraphs.slice(shown).map((para, i) => (
+                  <AnalysisBlock key={i + shown} text={para} />
                 ))}
               </div>
             </details>
@@ -120,4 +118,105 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, 
     </section>
     </ScrollReveal>
   );
+}
+
+/**
+ * Plain paragraphs stay paragraphs. A single "## " line becomes an answer
+ * heading, a "-" block becomes a list, and a captioned pipe table becomes
+ * a real table. Older analyses have none of these markers.
+ */
+function AnalysisBlock({ text }: { text: string }) {
+  const heading = parseHeading(text);
+  if (heading) {
+    return <h2 className="text-lg font-display font-bold text-text pt-2">{heading}</h2>;
+  }
+
+  const items = parseList(text);
+  if (items) {
+    return (
+      <ul className="list-disc space-y-2 pl-5 text-base leading-relaxed text-text">
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    );
+  }
+
+  const table = parseTable(text);
+  if (table) {
+    return (
+      <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={table.caption || "Comparison table"}>
+        <table className="w-full border-collapse text-sm">
+          {table.caption ? (
+            <caption className="pb-3 text-left text-sm text-text-secondary">{table.caption}</caption>
+          ) : null}
+          <thead>
+            <tr>
+              {table.headers.map((header) => (
+                <th key={header} scope="col" className="border-b border-border px-3 py-2 text-left font-semibold">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {table.rows.map((row) => (
+              <tr key={row[0]} className="border-b border-border">
+                {row.map((cell, index) =>
+                  index === 0 ? (
+                    <th key={`${row[0]}-label`} scope="row" className="px-3 py-2 text-left font-medium">
+                      {cell}
+                    </th>
+                  ) : (
+                    <td key={`${row[0]}-${index}`} className="px-3 py-2 text-left">
+                      {cell}
+                    </td>
+                  ),
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  return <p className="text-base leading-relaxed text-text">{text}</p>;
+}
+
+/** First three blocks stay open. A later specification table stays open with them, including the heading directly before that table. */
+function visibleLeadCount(blocks: string[]): number {
+  const tableIndex = blocks.findIndex((block) => parseTable(block) !== null);
+  if (tableIndex < 0) return Math.min(3, blocks.length);
+  return Math.max(3, tableIndex + 1);
+}
+
+function parseHeading(text: string): string | null {
+  if (text.includes("\n")) return null;
+  const match = /^##\s+(\S.*)$/.exec(text.trim());
+  return match ? match[1].trim() : null;
+}
+
+function parseList(text: string): string[] | null {
+  const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
+  if (lines.length === 0 || !lines.every((line) => line.startsWith("- "))) return null;
+  return lines.map((line) => line.slice(2).trim());
+}
+
+function parseTable(text: string): { caption: string; headers: string[]; rows: string[][] } | null {
+  const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
+  const start = lines.findIndex((line) => line.startsWith("|"));
+  if (start < 0) return null;
+  const tableLines = lines.slice(start);
+  if (!tableLines.every((line) => line.startsWith("|") && line.endsWith("|"))) return null;
+
+  const cells = (line: string) => line.slice(1, -1).split("|").map((cell) => cell.trim());
+  const isSeparator = (line: string) => cells(line).every((cell) => /^:?-{3,}:?$/.test(cell));
+  if (!tableLines.some(isSeparator)) return null;
+
+  const headers = cells(tableLines[0]);
+  const rows = tableLines.slice(1).filter((line) => !isSeparator(line)).map(cells);
+  if (headers.length < 2 || rows.length === 0) return null;
+  if (rows.some((row) => row.length !== headers.length)) return null;
+  return { caption: lines.slice(0, start).join(" "), headers, rows };
 }

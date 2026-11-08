@@ -122,6 +122,7 @@ import { RYZEN_7_5800X3D_VS_AM5 } from "./ryzen-7-5800x3d-vs-am5";
 import { RYZEN_5_5500_VS_RYZEN_5_5600 } from "./ryzen-5-5500-vs-ryzen-5-5600";
 import { RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D } from "./ryzen-7-7800x3d-vs-ryzen-7-9800x3d";
 import { RX_9070_VS_RX_9070_XT } from "./rx-9070-vs-rx-9070-xt";
+import { RX_9070_XT_VS_RX_7900_XTX } from "./rx-9070-xt-vs-rx-7900-xtx";
 import { B850_VS_X870 } from "./b850-vs-x870";
 import { B650_VS_B850 } from "./b650-vs-b850";
 import { AM4_VS_AM5 } from "./am4-vs-am5";
@@ -271,6 +272,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RYZEN_5_5500_VS_RYZEN_5_5600.slug]: RYZEN_5_5500_VS_RYZEN_5_5600,
   [RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D,
   [RX_9070_VS_RX_9070_XT.slug]: RX_9070_VS_RX_9070_XT,
+  [RX_9070_XT_VS_RX_7900_XTX.slug]: RX_9070_XT_VS_RX_7900_XTX,
   [B850_VS_X870.slug]: B850_VS_X870,
   [B650_VS_B850.slug]: B650_VS_B850,
   [AM4_VS_AM5.slug]: AM4_VS_AM5,
