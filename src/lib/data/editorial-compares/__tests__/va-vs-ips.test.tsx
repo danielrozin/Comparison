@@ -1,9 +1,11 @@
 import { readFileSync } from "node:fs";
 import { beforeAll, describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { ExpertAnalysis } from "@/components/comparison/ExpertAnalysis";
 import { ComparisonTable } from "@/components/comparison/ComparisonTable";
-import { comparisonPageSchema } from "@/lib/seo/schema";
+import { FAQBlock } from "@/components/comparison/FAQ";
+import { assembleCompareJsonLd } from "@/lib/seo/compare-jsonld";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
 import { findSelfContradictions } from "@/lib/services/numeric-claim-guard";
 import { decideComparePage, relatedComparisonSlugs } from "@/lib/compare-slug-resolution";
@@ -21,6 +23,30 @@ import {
 } from "../index";
 
 const SLUG = "va-vs-ips";
+const CLAIM = "VA vs IPS: Gaming Contrast and Smear";
+
+function graphNodes(document: Record<string, unknown>): Record<string, unknown>[] {
+  const nodes: Record<string, unknown>[] = [];
+  const visit = (node: unknown) => {
+    if (Array.isArray(node)) {
+      for (const item of node) visit(item);
+      return;
+    }
+    if (!node || typeof node !== "object") return;
+    const record = node as Record<string, unknown>;
+    nodes.push(record);
+    if (Array.isArray(record["@graph"])) visit(record["@graph"]);
+  };
+  visit(document);
+  return nodes;
+}
+
+function typeNames(node: Record<string, unknown>): string[] {
+  const value = node["@type"];
+  if (typeof value === "string") return [value];
+  if (Array.isArray(value)) return value.filter((item): item is string => typeof item === "string");
+  return [];
+}
 
 const BANNED =
   /this page|page lists|list shows|table lists|page says|article says|on that page|the page|checked|Source note|(?:^|\n)Sources:|official page|fetch|this comparison|\babove\b|\bshown\b|human review|byline|Drafted with AI|\bwinner\b|reddit|highest of any|best monitor|\$\d/i;
@@ -95,10 +121,14 @@ describe("VA vs IPS (ROO-395)", () => {
       decideComparePage(SLUG, (candidate) => (candidate === SLUG ? "live" : "missing")),
     ).toEqual({ action: "render" });
 
-    const title = buildPageTitle(page().metadata.metaTitle);
+    const renderedTitle = buildPageTitle(page().metadata.metaTitle);
     const description = clampDescription(page().metadata.metaDescription);
-    expect(title.length).toBeLessThanOrEqual(60);
-    expect(title).toMatch(/A Versus B$/);
+    expect(page().title).toBe(CLAIM);
+    expect(renderedTitle).toBe(`${CLAIM} | A Versus B`);
+    expect(renderedTitle.length).toBeLessThanOrEqual(60);
+    expect(renderedTitle.match(/A Versus B/g)).toEqual(["A Versus B"]);
+    expect(buildPageTitle(page().title)).toBe(renderedTitle);
+    expect(buildPageTitle(`${CLAIM} | A Versus B | A Versus B`)).toBe(renderedTitle);
     expect(description.length).toBeGreaterThanOrEqual(70);
     expect(description.length).toBeLessThanOrEqual(160);
     expect(page().metadata.updatedAt).toBe("2026-11-08T00:00:00Z");
@@ -136,26 +166,37 @@ describe("VA vs IPS (ROO-395)", () => {
     expect(verdict).toMatch(/^Editorial judgment, not a measured purchase optimum/);
     expect(analysis).not.toMatch(/Drafted with AI|human-reviewed|FAQ/i);
 
-    const schemas = comparisonPageSchema(page()) as Array<{
-      "@type"?: string;
-      "@graph"?: Array<{ "@type"?: string; mainEntity?: { name: string; acceptedAnswer?: { text: string } }[] }>;
-      mainEntity?: { name: string; acceptedAnswer?: { text: string } }[];
-    }>;
-    const faqNodes = schemas.flatMap((node) => {
-      const graph = node["@graph"] ?? [];
-      return [node, ...graph].filter((item) => item["@type"] === "FAQPage");
+    const assembled = assembleCompareJsonLd({
+      comparison: page(),
+      voteData: null,
+      videoNode: null,
+      fallbackDescription: shortAnswer,
     });
+    expect(assembled.claimReview).toBeNull();
+    const nodes = graphNodes(assembled.document);
+    const articles = nodes.filter((node) => typeNames(node).includes("Article"));
+    expect(articles.map((node) => node.headline)).toEqual([CLAIM]);
+    const faqNodes = nodes.filter((node) => typeNames(node).includes("FAQPage"));
     expect(faqNodes).toHaveLength(1);
-    const main = faqNodes[0].mainEntity ?? [];
+    const main = (faqNodes[0].mainEntity ?? []) as { name: string; acceptedAnswer?: { text: string } }[];
     expect(main.map((item) => item.name)).toEqual(page().faqs.map((faq) => faq.question));
     expect(main.map((item) => item.acceptedAnswer?.text)).toEqual(page().faqs.map((faq) => faq.answer));
-    const types = schemas.flatMap((node) => {
-      const graph = (node as { "@graph"?: Array<{ "@type"?: string }> })["@graph"];
-      return graph ? graph.map((child) => child["@type"]) : [node["@type"]];
-    });
-    expect(types.filter((type) => type === "ClaimReview")).toHaveLength(0);
-    const authored = JSON.stringify(schemas);
-    expect(authored).not.toMatch(/Daniel Rozin|reviewedBy|lastReviewed|isHumanReviewed/);
+    expect(nodes.some((node) => typeNames(node).includes("ClaimReview"))).toBe(false);
+    expect(JSON.stringify(assembled.document)).not.toMatch(/Daniel Rozin|reviewedBy|lastReviewed|"isHumanReviewed"/);
+
+    render(<FAQBlock faqs={page().faqs} />);
+    for (const faq of page().faqs) {
+      expect(screen.getByText(faq.question).textContent).toBe(faq.question);
+      expect(screen.getByText(faq.answer).textContent).toBe(faq.answer);
+    }
+  });
+
+  it("uses one claim for the hero H1 and keeps the brand off that heading", () => {
+    render(<ComparisonHero comparison={page()} />);
+    const heading = screen.getByRole("heading", { level: 1 });
+    expect(heading.textContent).toBe(CLAIM);
+    expect(heading.textContent).not.toContain("A Versus B");
+    expect(screen.queryByText("Daniel Rozin")).toBeNull();
   });
 
   it("renders the Analysis heading and a captioned tested-sample table", () => {

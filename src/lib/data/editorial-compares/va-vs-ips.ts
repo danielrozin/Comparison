@@ -87,7 +87,7 @@ const SAMPLE = "TechSpot tested sample, 9 December 2024";
 
 const BUILT = buildEditorialComparison({
   slug: "va-vs-ips",
-  title: "VA vs IPS for Gaming: Contrast, Dark Transitions, and Viewing Angles",
+  title: "VA vs IPS: Gaming Contrast and Smear",
   shortAnswer: SHORT_ANSWER,
   verdict: VERDICT,
   category: "technology",
