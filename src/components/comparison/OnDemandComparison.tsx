@@ -12,6 +12,7 @@ import Link from "next/link";
 import { isHeadlessAutomationClient } from "@/lib/analytics/automated-client";
 import { isKnownCrawlerUserAgent } from "@/lib/generation/crawler-ua";
 import { safeGenerationFailureReason } from "@/lib/generation/safe-failure-reason";
+import { TrackedPricingLink, pricingHref } from "@/components/monetization/SoftPricingLine";
 import { lastSearchAttachment } from "@/lib/search/search-session";
 import {
   trackCompareNotFound,
@@ -267,6 +268,17 @@ export function OnDemandComparison({
               style={{ width: `${Math.min(95, 15 + elapsed / 400)}%` }}
             />
           </div>
+          <p className="mt-6 text-sm text-text-secondary">
+            Need matchups like this for work?{" "}
+            <TrackedPricingLink
+              src={`missing-${slug}`}
+              placement="missing-building"
+              href={pricingHref(`missing-${slug}`, "missing-building")}
+              className="font-semibold text-primary-600 hover:text-primary-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded"
+            >
+              Pro builds any comparison within 24 hours. Try it free for 7 days.
+            </TrackedPricingLink>
+          </p>
         </>
       )}
 
@@ -420,14 +432,35 @@ function Fallback({
         related={related}
         onSelect={(item) => trackClick("suggestion", { suggested_slug: item.slug })}
       />
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-        <Link
-          href={`/contact?subject=${encodeURIComponent(`Comparison request: ${slug}`)}`}
-          className="inline-flex items-center rounded-xl border border-border px-5 py-2.5 text-sm font-semibold text-text hover:bg-surface-alt"
-        >
-          Request this comparison
-        </Link>
-      </div>
+      <aside
+        aria-label="A Versus B Pro"
+        className="rounded-2xl border border-primary-200 bg-primary-50 p-5 text-left"
+        data-testid="missing-compare-trial"
+      >
+        <p className="font-display font-bold text-text">
+          Need {entityA} vs {entityB} for a decision?
+        </p>
+        <p className="mt-1 text-sm text-text-secondary leading-relaxed">
+          Pro members get any comparison researched, sourced and published within 24 hours. Try Pro free
+          for 7 days, then $9/month. Cancel before day 7 and you pay nothing.
+        </p>
+        <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
+          <TrackedPricingLink
+            src={`missing-${slug}`}
+            placement="missing-fallback"
+            href={pricingHref(`missing-${slug}`, "missing-fallback")}
+            className="inline-flex min-h-11 items-center justify-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          >
+            Start your free trial →
+          </TrackedPricingLink>
+          <Link
+            href={`/contact?subject=${encodeURIComponent(`Comparison request: ${slug}`)}`}
+            className="inline-flex min-h-11 items-center justify-center text-sm font-semibold text-primary-700 underline-offset-2 hover:underline"
+          >
+            Or request it for free
+          </Link>
+        </div>
+      </aside>
     </div>
   );
 }

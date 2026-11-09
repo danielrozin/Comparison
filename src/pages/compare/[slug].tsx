@@ -955,6 +955,10 @@ function MetaHead({ meta }: { meta: PageMeta }) {
 const UNDER_VERDICT_PRO_LABEL =
   "Need a comparison we haven't published? Pro builds it for you within 24 hours. Try it free for 7 days.";
 
+/** Under the verdict itself, once the reader has the answer. */
+const VERDICT_TRIAL_LABEL =
+  "Comparing tools or vendors for work? Pro researches any matchup for you within 24 hours. Try it free for 7 days →";
+
 export default function ComparisonPage(props: Props) {
   // N-entity (3+): multi-entity layout (parity with the App Router version).
   if (props.comparison.entities.length > 2) {
@@ -1160,6 +1164,19 @@ export default function ComparisonPage(props: Props) {
           comparisonSlug={comparison.slug}
           winnerName={comparison.quickAnswer?.winnerName}
         />
+      )}
+
+      {/* Trial offer right after the reader has the answer. */}
+      {(comparison.verdict || comparison.shortAnswer) && (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-1">
+          <SoftPricingLine
+            src={`compare-${slug}`}
+            placement="verdict-trial"
+            lead=""
+            label={VERDICT_TRIAL_LABEL}
+            className="text-center leading-snug break-words"
+          />
+        </div>
       )}
 
       {/* ROO-264: compact "Compare next" row directly under the verdict */}
@@ -1526,6 +1543,13 @@ function MultiEntityLayout({
                 <h2 className="text-2xl font-display font-bold text-text">Verdict</h2>
               </div>
               <p className="text-base text-text leading-relaxed whitespace-pre-line">{comparison.verdict}</p>
+              <SoftPricingLine
+                src={`compare-${slug}`}
+                placement="verdict-trial"
+                lead=""
+                label={VERDICT_TRIAL_LABEL}
+                className="mt-4 leading-snug break-words"
+              />
             </section>
           )}
 

@@ -40,7 +40,8 @@ describe("ROO-44 lander wiring", () => {
 
   it("tags both compare layouts with compare-{slug} above the hero", () => {
     const page = source("src/pages/compare/[slug].tsx");
-    const needle = "src={`compare-${slug}`}";
+    // The above-hero line; the verdict-trial line further down shares the src.
+    const needle = "src={`compare-${slug}`}\n            placement=\"under-verdict-pro\"";
     const first = page.indexOf(needle);
     const second = page.indexOf(needle, first + needle.length);
     const twoEntityCrumbs = page.indexOf("<Breadcrumbs");
