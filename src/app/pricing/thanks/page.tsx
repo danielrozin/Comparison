@@ -8,7 +8,7 @@ const PAGE_TITLE = `You're in — ${SITE_NAME}`;
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
-  description: "Payment confirmed. Here's what happens next.",
+  description: "Checkout complete. Here's what happens next.",
   // post-checkout page — never index
   robots: { index: false, follow: false },
   alternates: { canonical: `${SITE_URL}/pricing/thanks` },
@@ -34,14 +34,14 @@ export default async function PricingThanksPage({
       <HubShell
         eyebrow="Confirmed"
         title="You're in. Welcome aboard."
-        lede="Payment received — your founding price is locked. Your account details and first custom-comparison instructions arrive by email within the hour."
+        lede="Checkout complete — your founding price is locked. Your account details and first custom-comparison instructions arrive by email within the hour."
         breadcrumbLabel="Thanks"
       >
       <div className="max-w-xl space-y-6">
         <ol className="space-y-4 text-sm text-text-secondary">
           <li className="flex gap-3">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-700 text-xs font-bold">✓</span>
-            <span><strong className="text-text">Payment confirmed.</strong> Stripe has emailed you a receipt.</span>
+            <span><strong className="text-text">Checkout complete.</strong> Stripe emails a receipt for every charge. On a free trial, the first charge comes when the trial ends.</span>
           </li>
           <li className="flex gap-3">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-600 text-xs font-bold">2</span>

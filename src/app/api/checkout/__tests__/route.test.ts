@@ -156,4 +156,22 @@ describe("POST /api/checkout (ROO-40)", () => {
       }),
     );
   });
+
+  it("adds the plan's free trial to the Checkout Session only where one is configured", async () => {
+    const previousMonthly = process.env.STRIPE_PRICE_PRO_MONTHLY;
+    process.env.STRIPE_PRICE_PRO_MONTHLY = "price_pro_month";
+    try {
+      await postCheckout({ plan: "pro", interval: "month", src: "pricing" });
+      const monthly = new URLSearchParams((fetchMock.mock.calls[0][1] as { body: string }).body);
+      expect(monthly.get("subscription_data[trial_period_days]")).toBe("7");
+
+      await postCheckout({ plan: "pro", interval: "year", src: "pricing" });
+      const yearly = new URLSearchParams((fetchMock.mock.calls[1][1] as { body: string }).body);
+      expect(yearly.get("subscription_data[trial_period_days]")).toBeNull();
+    } finally {
+      if (previousMonthly === undefined) delete process.env.STRIPE_PRICE_PRO_MONTHLY;
+      else process.env.STRIPE_PRICE_PRO_MONTHLY = previousMonthly;
+    }
+  });
 });
+

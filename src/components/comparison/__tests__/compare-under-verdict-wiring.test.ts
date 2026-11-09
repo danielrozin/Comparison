@@ -12,7 +12,7 @@ function source(rel: string): string {
 }
 
 const PRO_COPY =
-  "Want a follow-up on price, country, or the tool you actually use? Pro builds it within 24 hours — $49/year.";
+  "Need a comparison we haven't published? Pro builds it for you within 24 hours. Try it free for 7 days.";
 
 describe("compare under-verdict wiring", () => {
   it("uses one under-verdict-pro SoftPricingLine on both compare layouts", () => {

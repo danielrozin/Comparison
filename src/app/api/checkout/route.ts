@@ -82,6 +82,9 @@ export async function POST(request: NextRequest) {
         "subscription_data[metadata][app]": "aversusb",
         allow_promotion_codes: "true",
       });
+      if (interval.trialDays) {
+        params.set("subscription_data[trial_period_days]", String(interval.trialDays));
+      }
       // Both fields ride back on checkout.session.completed. The webhook
       // prefers metadata, then client_reference_id, and does not replace
       // either with the Stripe email.
