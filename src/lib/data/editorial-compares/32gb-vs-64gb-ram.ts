@@ -76,7 +76,7 @@ const FAQS = [
   {
     question: "Why do the four-module rows list a lower DDR5 maximum on these two CPUs?",
     answer:
-      "AMD's specification lists a lower Max Memory Speed for the four-module rows than for the two-module rows on the Ryzen 7 7800X3D and the Ryzen 9 9950X. Both processors still list 2 memory channels, so four modules are not a four-channel configuration. The specifications do not give an electrical reason for the lower row. DDR5-5200, DDR5-5600, and DDR5-3600 are the names AMD prints. Micron's Rev. C 08/2023 addendum for a 16GB single-rank UDIMM writes DDR5-5600 beside 5600 MT/s and a 0.357 ns memory clock. AMD's DDR5- names are data-rate names in that unit, not megahertz clocks.",
+      "AMD's specification lists a lower Max Memory Speed for the four-module rows than for the two-module rows on the Ryzen 7 7800X3D and the Ryzen 9 9950X. Both processors still list 2 memory channels, so four modules are not a four-channel configuration. The specifications do not give an electrical reason for the lower row. DDR5-5200, DDR5-5600, and DDR5-3600 are the names AMD prints. AMD does not label those rows in MT/s. Micron's Rev. C 08/2023 addendum for part MTC8C1084S1UC56BG1, one 16GB single-rank UDIMM, puts DDR5-5600 on that part's options line. Table 2 puts 0.357 ns and 5600 MT/s in the Memory Clock/Data Rate cell for that same part. The 5600 MT/s figure is Micron's.",
   },
   {
     question: "Does 64GB of system memory set graphics memory or local AI capacity?",
@@ -86,7 +86,7 @@ const FAQS = [
   {
     question: "How should I compare 32GB and 64GB prices?",
     answer:
-      "Write down the current price of one kit for the capacity your commit-charge measurement points to. If you are choosing how to reach 64GB, also write down the current price of one 2x32GB kit and one 4x16GB kit, then read the Max Memory Speed row for your exact processor, module count, and rank label. Prices change. This page does not list a price.",
+      "After you compare committed bytes with the commit limit on Windows 10, judge the capacity yourself. The commit limit is physical memory plus all page files. That comparison does not choose 32GB or 64GB. If you are choosing how to reach 64GB, write down the current price of one 2x32GB kit and one 4x16GB kit, then read the Max Memory Speed row for your exact processor, module count, and rank label. Prices change. No price is included.",
   },
 ];
 
@@ -105,7 +105,7 @@ const EXPERT_ANALYSIS = [
   TAKEAWAYS[4],
   TAKEAWAYS[5],
   "Microsoft labels its Windows 10 page-file guidance for Windows 10. A page file is an optional hidden system file on a hard disk. Page files can move infrequently accessed modified pages out of physical memory, and they extend how much committed memory the system can support. You can read the committed charge and the commit limit on the Performance tab in Task Manager. The percent counter Microsoft names, Committed Bytes In Use, is committed bytes divided by the commit limit. When a lot of physical memory is installed, that guidance says a page file might not be required to back the commit charge during peak use, while a page file or a dedicated dump file might still be required for a crash dump. That guidance does not define how many gigabytes count as a lot, so that sentence is not a 64GB rule. This measurement is Microsoft's Windows 10 method. It is not a Windows 11 procedure.",
-  "AMD prints the maximums as DDR5-5200, DDR5-5600, and DDR5-3600. Those Max Memory Speed rows have no MHz label. Micron's addendum, Rev. C 08/2023, part MTC8C1084S1UC56BG1, is one 16GB single-rank DDR5 UDIMM. Its timing table puts 0.357 ns and 5600 MT/s in the Memory Clock/Data Rate column beside the DDR5-5600 designation. The 2200 MHz number on the Ryzen specifications is the graphics frequency, a different field. AMD's 1R and 2R tokens stay as printed. The Micron addendum calls that one module single-rank. It does not define AMD's tokens, and it does not say every 16GB or 32GB module is single-rank.",
+  "AMD prints DDR5-5200, DDR5-5600, and DDR5-3600. Those Max Memory Speed rows have no MHz label and no MT/s label. Micron's addendum, Rev. C 08/2023, part MTC8C1084S1UC56BG1, is one 16GB single-rank DDR5 UDIMM. DDR5-5600 is on that part's options line. Table 2 puts 0.357 ns and 5600 MT/s in the Memory Clock/Data Rate cell for that part. The 5600 MT/s figure is Micron's, not AMD's. The 2200 MHz number on the Ryzen specifications is the graphics frequency, a different field. AMD's 1R and 2R tokens stay as printed. The Micron addendum calls that one module single-rank. It does not define AMD's tokens, and it does not say every 16GB or 32GB module is single-rank.",
   "ECC support on both processors is listed as yes, and it requires motherboard support. That line does not change between 32GB and 64GB. DDR5 vs DDR4 for Gaming: Is DDR5 Worth It? is the generation comparison. AM4 vs AM5: Which Desktop PC Socket? is the socket comparison. Ryzen 7 7800X3D vs Ryzen 7 9800X3D for Desktop Gaming compares those two processors. The speed rows above are only the Ryzen 7 7800X3D and the Ryzen 9 9950X.",
 ].join("\n\n");
 
@@ -122,7 +122,7 @@ const BUILT = buildEditorialComparison({
       id: A,
       slug: A,
       name: "32GB RAM",
-      shortDesc: "32GB of system memory. Whether it is enough is the commit charge of your work, not a rule for every program.",
+      shortDesc: "32GB of system memory. On Windows 10, compare committed bytes with the commit limit (physical memory plus all page files). Whether this total is enough is your judgment after that comparison.",
       imageUrl: null,
       entityType: "product",
       position: 0,
@@ -349,13 +349,13 @@ const BUILT = buildEditorialComparison({
       label: "Micron 16GB DDR5 UDIMM addendum",
       url: MICRON_UDIMM,
       description:
-        "Rev. C 08/2023, part MTC8C1084S1UC56BG1, one 16GB single-rank module. DDR5-5600 is paired with 5600 MT/s and a 0.357 ns memory clock.",
+        "Rev. C 08/2023, part MTC8C1084S1UC56BG1, one 16GB single-rank module. DDR5-5600 is on the options line. Table 2 lists 0.357 ns and 5600 MT/s for that part. The MT/s figure is Micron's.",
     },
   ],
   metaTitle: "Which RAM Capacity, 32GB or 64GB?",
 });
 
 BUILT.metadata.metaDescription =
-  "32GB or 64GB of system memory depends on your measured commit charge. On the Ryzen 7 7800X3D and Ryzen 9 9950X, two-module and four-module DDR5 maximums differ.";
+  "Compare committed bytes with the Windows 10 commit limit (physical memory plus all page files). 32GB or 64GB is your judgment after that comparison.";
 
 export const RAM_32GB_VS_64GB: EditorialComparison = BUILT;

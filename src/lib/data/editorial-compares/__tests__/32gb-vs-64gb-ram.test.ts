@@ -1,5 +1,8 @@
 import { readFileSync } from "node:fs";
+import { createElement } from "react";
 import { describe, expect, it } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { comparisonPageSchema } from "@/lib/seo/schema";
 import { assembleCompareJsonLd } from "@/lib/seo/compare-jsonld";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -17,13 +20,29 @@ const FAQ_ANSWERS = [
   "It depends on the committed memory of the work you run. In Microsoft's Windows 10 page-file guidance, the commit limit is physical memory plus all page files, and reaching the limit can keep the system and processes from getting committed memory. Measure committed bytes against that limit on the Performance tab in Task Manager, or with the Memory counters Committed Bytes and Commit Limit. With the same page files, 64GB of physical memory sets a higher commit limit than 32GB, and a larger page file can also raise the limit. That guidance does not name a gigabyte total for any one kind of work.",
   "Yes. Both labels can total 64GB, and the module count is a separate choice from that total. On the Ryzen 7 7800X3D, AMD lists DDR5-5200 for 2x1R and 2x2R, and DDR5-3600 for 4x1R and 4x2R. On the Ryzen 9 9950X, AMD lists DDR5-5600 for 2x1R and 2x2R, and DDR5-3600 for 4x1R and 4x2R. Both processors list 2 memory channels. Match the module count and the rank label on the module to the row. These pages do not define the 1R and 2R tokens, and the rows are not a speed the PC is assured of holding. They are not the rows for every Ryzen or Intel processor.",
   "Not as a Corsair-validated kit. Corsair says its kits are validated for their rated performance only with the modules included in that specific kit, and it recommends that you do not combine multiple Corsair kits, even when they are rated at the same speed. Combining them risks stability problems, EXPO or XMP being prevented from enabling, or the system being unable to boot. Two separate kits are not the same validation as one kit that already contains four modules. Corsair states no probability that combining kits will work. For another brand, use that manufacturer's kit statement.",
-  "AMD's specification lists a lower Max Memory Speed for the four-module rows than for the two-module rows on the Ryzen 7 7800X3D and the Ryzen 9 9950X. Both processors still list 2 memory channels, so four modules are not a four-channel configuration. The specifications do not give an electrical reason for the lower row. DDR5-5200, DDR5-5600, and DDR5-3600 are the names AMD prints. Micron's Rev. C 08/2023 addendum for a 16GB single-rank UDIMM writes DDR5-5600 beside 5600 MT/s and a 0.357 ns memory clock. AMD's DDR5- names are data-rate names in that unit, not megahertz clocks.",
+  "AMD's specification lists a lower Max Memory Speed for the four-module rows than for the two-module rows on the Ryzen 7 7800X3D and the Ryzen 9 9950X. Both processors still list 2 memory channels, so four modules are not a four-channel configuration. The specifications do not give an electrical reason for the lower row. DDR5-5200, DDR5-5600, and DDR5-3600 are the names AMD prints. AMD does not label those rows in MT/s. Micron's Rev. C 08/2023 addendum for part MTC8C1084S1UC56BG1, one 16GB single-rank UDIMM, puts DDR5-5600 on that part's options line. Table 2 puts 0.357 ns and 5600 MT/s in the Memory Clock/Data Rate cell for that same part. The 5600 MT/s figure is Micron's.",
   "No. On the Ryzen 7 7800X3D and the Ryzen 9 9950X, system memory is its own block: DDR5, 2 channels, UDIMM, and a maximum of 128 GB or 256 GB. Graphics Capabilities on those same pages list 2 graphics cores and a 2200 MHz graphics frequency, not a graphics-memory size. A graphics card's memory is a different specification. These pages do not say that a local model will run because the system has 32GB or 64GB.",
-  "Write down the current price of one kit for the capacity your commit-charge measurement points to. If you are choosing how to reach 64GB, also write down the current price of one 2x32GB kit and one 4x16GB kit, then read the Max Memory Speed row for your exact processor, module count, and rank label. Prices change. This page does not list a price.",
+  "After you compare committed bytes with the commit limit on Windows 10, judge the capacity yourself. The commit limit is physical memory plus all page files. That comparison does not choose 32GB or 64GB. If you are choosing how to reach 64GB, write down the current price of one 2x32GB kit and one 4x16GB kit, then read the Max Memory Speed row for your exact processor, module count, and rank label. Prices change. No price is included.",
 ];
 
 const BANNED =
   /enough for most|most gaming|pays off|more stable|safer|often works|full speed|5200 MHz|5600 MHz|3600 MHz|memory controller|signal integrity|enter BIOS|reddit|returned 404|human-reviewed|reviewed by|Daniel Rozin|independent studies|\$\d|\bfps\b|quad-channel|\bguarantee\b/i;
+
+function findTyped(value: unknown, type: string): Array<Record<string, unknown>> {
+  const found: Array<Record<string, unknown>> = [];
+  const visit = (node: unknown) => {
+    if (Array.isArray(node)) {
+      for (const item of node) visit(item);
+      return;
+    }
+    if (!node || typeof node !== "object") return;
+    const record = node as Record<string, unknown>;
+    if (record["@type"] === type) found.push(record);
+    for (const item of Object.values(record)) visit(item);
+  };
+  visit(value);
+  return found;
+}
 
 function readerText(value: unknown): string {
   const parts: string[] = [];
@@ -81,9 +100,42 @@ describe("32GB vs 64GB RAM (ROO-401)", () => {
     const answer = page().shortAnswer;
     expect(answer).toBeTruthy();
     expect(answer!.split(/(?<=[.!?])\s+/)).toHaveLength(2);
-    const hero = readFileSync("src/pages/compare/[slug].tsx", "utf8");
-    expect(hero).toContain('id="compare-hero-heading"');
-    expect(hero).toMatch(/<h1 id="compare-hero-heading"[\s\S]*\{comparison\.title\}[\s\S]*<\/h1>/);
+    expect(page().entities).toHaveLength(2);
+    const slugSource = readFileSync("src/pages/compare/[slug].tsx", "utf8");
+    const multiStart = slugSource.indexOf("function MultiEntityLayout");
+    expect(multiStart).toBeGreaterThan(0);
+    const twoEntitySource = slugSource.slice(0, multiStart);
+    expect(twoEntitySource).toContain("<ComparisonHero");
+    expect(twoEntitySource).not.toContain('id="compare-hero-heading"');
+    expect(slugSource.slice(multiStart)).toContain('id="compare-hero-heading"');
+    const heroSource = readFileSync("src/components/comparison/ComparisonHero.tsx", "utf8");
+    expect(heroSource).toContain('id="comparison-hero-heading"');
+    expect(heroSource).toContain(
+      "visibleCompareHeading(comparison.metadata?.metaTitle || comparison.title)",
+    );
+    render(createElement(ComparisonHero, { comparison: page() }));
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(QUESTION);
+    const metaDescription = page().metadata.metaDescription;
+    expect(metaDescription).toBe(
+      "Compare committed bytes with the Windows 10 commit limit (physical memory plus all page files). 32GB or 64GB is your judgment after that comparison.",
+    );
+    expect(page().entities[0].shortDesc).toContain("your judgment after that comparison");
+    expect(page().entities[0].shortDesc).not.toMatch(/points to|decides/);
+    expect(metaDescription).not.toMatch(/points to|decides/);
+    const priceFaq = page().faqs.find((faq) => faq.question.startsWith("How should I compare"));
+    expect(priceFaq?.answer).not.toMatch(/points to|decides/);
+    const slugHead = readFileSync("src/pages/compare/[slug].tsx", "utf8");
+    expect(slugHead).toContain('property="og:description" content={meta.description}');
+    const assembledForMeta = assembleCompareJsonLd({
+      comparison: page(),
+      voteData: null,
+      videoNode: null,
+      fallbackDescription: page().metadata.metaDescription,
+    });
+    const webPage = findTyped(assembledForMeta.document, "WebPage").find((node) =>
+      String(node["@id"] ?? "").endsWith("#webpage"),
+    );
+    expect(webPage?.description).toBe(metaDescription);
     const schemas = faqNodes(page());
     const articles = schemas.filter((node) => node["@type"] === "Article");
     expect(articles).toHaveLength(1);
