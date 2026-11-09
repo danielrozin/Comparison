@@ -1,8 +1,55 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { headerSafe } from "@/lib/utils/header-safe";
 import { prisma } from "@/lib/db/prisma";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+
+// Fields advertised as `rating` on the entity profile. Kept off the entity
+// findUnique: including the relation makes Prisma read public.review_aggregations,
+// a table that was never migrated in production (P2021). That turned every
+// existing slug into an empty HTTP 500.
+type EntityRating = {
+  averageRating: number;
+  totalReviews: number;
+  smartScore: number;
+  positivePct: number | null;
+  negativePct: number | null;
+};
+
+let warnedMissingReviewAggregations = false;
+
+function isMissingReviewAggregationsTable(error: unknown): boolean {
+  if (!(error instanceof Prisma.PrismaClientKnownRequestError) || error.code !== "P2021") {
+    return false;
+  }
+  const table = typeof error.meta?.table === "string" ? error.meta.table : "";
+  return table.includes("review_aggregations") || error.message.includes("review_aggregations");
+}
+
+async function loadEntityRating(entityId: string): Promise<EntityRating | null> {
+  try {
+    return await prisma.reviewAggregation.findUnique({
+      where: { entityId },
+      select: {
+        averageRating: true,
+        totalReviews: true,
+        smartScore: true,
+        positivePct: true,
+        negativePct: true,
+      },
+    });
+  } catch (error) {
+    if (!isMissingReviewAggregationsTable(error)) throw error;
+    if (!warnedMissingReviewAggregations) {
+      warnedMissingReviewAggregations = true;
+      console.warn(
+        "public.review_aggregations is missing; entity profile ratings are omitted until that table exists."
+      );
+    }
+    return null;
+  }
+}
 
 const HEADERS = {
   "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
@@ -46,7 +93,6 @@ export async function GET(
       metaDescription: true,
       entityType: { select: { name: true } },
       faqs: { select: { question: true, answer: true }, orderBy: { sortOrder: "asc" }, take: 10 },
-      reviewAggregation: { select: { averageRating: true, totalReviews: true, smartScore: true, positivePct: true, negativePct: true } },
       metadata: true,
       updatedAt: true,
     },
@@ -65,6 +111,7 @@ export async function GET(
     return new Response(null, { status: 304, headers: { ETag: etag } });
   }
 
+  const rating = await loadEntityRating(entity.id);
   const comparisons = await getComparisonsForEntity(slug);
 
   const url = `${SITE_URL}/entity/${slug}`;
@@ -173,7 +220,7 @@ export async function GET(
     description: entity.description,
     imageUrl: entity.imageUrl,
     thumbnailUrl: entity.thumbnailUrl,
-    rating: entity.reviewAggregation ?? null,
+    rating,
     faqs: entity.faqs,
     comparisonCount: comparisons.length,
     comparisons: comparisons.map((c) => ({
