@@ -43,4 +43,16 @@ describe("compare under-verdict wiring", () => {
     expect(pricing).toContain("placement === \"soft-line\"");
     expect(pricing).not.toContain("under-verdict-pro");
   });
+
+  it("puts one trial line after the verdict in both layouts", () => {
+    const page = source("src/pages/compare/[slug].tsx");
+    expect(page.split("label={VERDICT_TRIAL_LABEL}").length - 1).toBe(2);
+    expect(page.split('placement="verdict-trial"').length - 1).toBe(2);
+    const twoEntity = page.indexOf("label={VERDICT_TRIAL_LABEL}");
+    expect(twoEntity).toBeGreaterThan(page.indexOf("<VerdictCard"));
+    expect(page.indexOf("<CompareNextRow")).toBeGreaterThan(twoEntity);
+    const multi = page.indexOf("label={VERDICT_TRIAL_LABEL}", twoEntity + 1);
+    expect(multi).toBeGreaterThan(page.indexOf('id="verdict" aria-label="Verdict"'));
+    expect(page).toContain("Try it free for 7 days");
+  });
 });

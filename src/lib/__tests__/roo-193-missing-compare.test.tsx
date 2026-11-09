@@ -30,6 +30,7 @@ vi.mock("@/lib/utils/analytics", () => ({
   trackGenerationRequested: vi.fn(),
   trackGenerationFallbackShown: vi.fn(),
   trackGenerationFallbackClick: vi.fn(),
+  trackPricingCtaClick: vi.fn(),
 }));
 const automation = vi.hoisted(() => ({ headless: false }));
 vi.mock("@/lib/analytics/automated-client", () => ({
@@ -98,13 +99,17 @@ describe("OnDemandComparison", () => {
     vi.unstubAllGlobals();
   });
 
-  it("shows free related compares while building and never Pro pricing", async () => {
+  it("shows free related compares and one quiet trial link while building", async () => {
     Object.defineProperty(window.navigator, "userAgent", { value: "Mozilla/5.0 (Macintosh) Chrome/130", configurable: true });
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => {})));
     render(<OnDemandComparison slug="deel-vs-remote" entityA="Deel" entityB="Remote" initialRelated={related} />);
     expect(screen.getByText(/building your comparison/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "USA vs China" })).toHaveAttribute("href", "/compare/usa-vs-china");
-    expect(screen.queryByText(/Pro pricing/)).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Try it free for 7 days/ })).toHaveAttribute(
+      "href",
+      "/pricing?src=missing-deel-vs-remote&placement=missing-building",
+    );
+    expect(screen.queryByTestId("missing-compare-trial")).not.toBeInTheDocument();
   });
 
   it("skips generation for crawlers but still renders the page", async () => {
@@ -135,7 +140,15 @@ describe("OnDemandComparison", () => {
     expect(await screen.findByText(/as many new comparisons as we can today/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "USA vs China" })).toBeInTheDocument();
     expect(screen.getByRole("search")).toBeInTheDocument();
-    expect(screen.queryByText(/Pro pricing/)).not.toBeInTheDocument();
+    // Founder decision 2026-11-09: a refused build offers the Pro trial, with a free request beside it.
+    expect(screen.getByRole("link", { name: /Start your free trial/ })).toHaveAttribute(
+      "href",
+      "/pricing?src=missing-deel-vs-remote&placement=missing-fallback",
+    );
+    expect(screen.getByRole("link", { name: "Or request it for free" })).toHaveAttribute(
+      "href",
+      `/contact?subject=${encodeURIComponent("Comparison request: deel-vs-remote")}`,
+    );
   });
 
   it("replaces a failed build with related comparisons and a search box", async () => {
