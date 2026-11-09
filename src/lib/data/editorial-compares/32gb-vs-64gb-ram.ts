@@ -46,7 +46,7 @@ const PUBLISHED = "2026-11-09T00:00:00Z";
 const SPEC = "Memory";
 
 const SHORT_ANSWER =
-  "Whether 32GB or 64GB of system memory is enough depends on the work you run: Microsoft's Windows 10 page-file article says to compare committed bytes with the commit limit, because reaching that limit can keep the system from getting committed memory. How many modules you install is a separate choice, because the Ryzen 7 7800X3D and the Ryzen 9 9950X list different DDR5 maximum speeds for two modules than for four.";
+  "Whether 32GB or 64GB of system memory is enough depends on the work you run: Microsoft's Windows 10 page-file guidance tells you to compare committed bytes with the commit limit, because reaching that limit can keep the system from getting committed memory. How many modules you install is a separate choice, because the Ryzen 7 7800X3D and the Ryzen 9 9950X list different DDR5 maximum speeds for two modules than for four.";
 
 const TAKEAWAYS = [
   "32GB and 64GB are totals of system memory. AMD lists a 128 GB maximum on the Ryzen 7 7800X3D and a 256 GB maximum on the Ryzen 9 9950X, so both totals sit inside those two ceilings. A listed ceiling is not a recommendation to install that much memory.",
@@ -54,14 +54,14 @@ const TAKEAWAYS = [
   "A kit labeled 2x32GB and a kit labeled 4x16GB can both total 64GB. On the Ryzen 7 7800X3D, AMD lists DDR5-5200 for the 2x1R and 2x2R rows and DDR5-3600 for the 4x1R and 4x2R rows. On the Ryzen 9 9950X, AMD lists DDR5-5600 for the 2x1R and 2x2R rows and DDR5-3600 for the 4x1R and 4x2R rows. Those rows belong to those two processors and still depend on the rank label. They are not the rows for every Ryzen or Intel processor.",
   "Both processors list 2 memory channels, including on the four-module rows. Four modules on these processors are not a four-channel layout. AMD lists AMD EXPO Memory Overclocking Technology on a separate line from Max Memory Speed. A kit profile, a motherboard support list, a BIOS setting, and a speed that holds on a running PC are different checks from that listed maximum. These CPU pages do not include a motherboard list or a measured running speed.",
   "Corsair says its kits are validated for their rated performance only with the modules in that specific kit, and it tells you not to combine Corsair kits even when the kits are rated at the same speed. Combining those kits risks stability problems, EXPO or XMP not enabling, or the system being unable to boot. That is Corsair's statement about Corsair kits. It states no probability that combining kits will work, and it is not a rule for another brand.",
-  "System memory is not graphics memory. Both CPU specifications list 2 graphics cores and a 2200 MHz graphics frequency, and they do not list a graphics-memory size. Neither 32GB nor 64GB of system memory says a local model will run. Compare the current price of one kit for the total you measured, and compare one 2x32GB kit with one 4x16GB kit if those are the populations you are choosing. This page lists no price.",
+  "System memory is not graphics memory. Both CPU specifications list 2 graphics cores and a 2200 MHz graphics frequency, and they do not list a graphics-memory size. Neither 32GB nor 64GB of system memory says a local model will run. Compare the current price of one kit for the total you measured, and compare one 2x32GB kit with one 4x16GB kit if those are the populations you are choosing. No price is included.",
 ];
 
 const FAQS = [
   {
     question: "Is 64GB of RAM worth it over 32GB?",
     answer:
-      "It depends on the committed memory of the work you run. Microsoft's Windows 10 page-file article says the commit limit is physical memory plus all page files, and that reaching the limit can keep the system and processes from getting committed memory. Measure committed bytes against that limit on the Performance tab in Task Manager, or with the Memory counters Committed Bytes and Commit Limit. With the same page files, 64GB of physical memory sets a higher commit limit than 32GB, and a larger page file can also raise the limit. The article does not name a gigabyte total for any one kind of work.",
+      "It depends on the committed memory of the work you run. In Microsoft's Windows 10 page-file guidance, the commit limit is physical memory plus all page files, and reaching the limit can keep the system and processes from getting committed memory. Measure committed bytes against that limit on the Performance tab in Task Manager, or with the Memory counters Committed Bytes and Commit Limit. With the same page files, 64GB of physical memory sets a higher commit limit than 32GB, and a larger page file can also raise the limit. That guidance does not name a gigabyte total for any one kind of work.",
   },
   {
     question: "Is 2x32GB a different decision from 4x16GB?",
@@ -90,11 +90,11 @@ const FAQS = [
   },
 ];
 
-const VERDICT = `Use 32GB when the committed bytes of your work stay within the commit limit you get from 32GB of physical memory plus your page files. Use 64GB when that charge reaches the limit on 32GB and you still need headroom after you account for the page files. Microsoft's Windows 10 article says page files also extend the commit limit. Adding physical memory is not the only way to raise it.
+const VERDICT = `Use 32GB when the committed bytes of your work stay within the commit limit you get from 32GB of physical memory plus your page files. Use 64GB when that charge reaches the limit on 32GB and you still need headroom after you account for your page files. In Microsoft's Windows 10 page-file guidance, page files also extend the commit limit. Adding physical memory is not the only way to raise it.
 
 Then choose two modules or four modules as a separate step. On the Ryzen 7 7800X3D and the Ryzen 9 9950X, the Max Memory Speed row changes with the module count and the 1R or 2R label. Both processors list 2 memory channels. Those two processors are not every CPU.
 
-Compare the current price of one kit before you buy. This page lists no price.`;
+Compare the current price of one kit before you buy. No price is included.`;
 
 const EXPERT_ANALYSIS = [
   SHORT_ANSWER,
@@ -104,8 +104,8 @@ const EXPERT_ANALYSIS = [
   TAKEAWAYS[3],
   TAKEAWAYS[4],
   TAKEAWAYS[5],
-  "Microsoft labels the page-file article for Windows 10. A page file is an optional hidden system file on a hard disk. Page files can move infrequently accessed modified pages out of physical memory, and they extend how much committed memory the system can support. You can read the committed charge and the commit limit on the Performance tab in Task Manager. The percent counter Microsoft names, Committed Bytes In Use, is committed bytes divided by the commit limit. When a lot of physical memory is installed, the article says a page file might not be required to back the commit charge during peak use, while a page file or a dedicated dump file might still be required for a crash dump. The article does not define how many gigabytes count as a lot, so that sentence is not a 64GB rule. This measurement is the Windows 10 article's method. It is not a Windows 11 procedure.",
-  "AMD prints the maximums as DDR5-5200, DDR5-5600, and DDR5-3600. It does not print MHz on those Max Memory Speed rows. Micron's addendum, Rev. C 08/2023, part MTC8C1084S1UC56BG1, is one 16GB single-rank DDR5 UDIMM. Its timing table puts 0.357 ns and 5600 MT/s in the Memory Clock/Data Rate column beside the DDR5-5600 designation. The 2200 MHz number on the Ryzen pages is the graphics frequency, a different field. AMD's 1R and 2R tokens stay as printed. The Micron addendum calls that one module single-rank. It does not define AMD's tokens, and it does not say every 16GB or 32GB module is single-rank.",
+  "Microsoft labels its Windows 10 page-file guidance for Windows 10. A page file is an optional hidden system file on a hard disk. Page files can move infrequently accessed modified pages out of physical memory, and they extend how much committed memory the system can support. You can read the committed charge and the commit limit on the Performance tab in Task Manager. The percent counter Microsoft names, Committed Bytes In Use, is committed bytes divided by the commit limit. When a lot of physical memory is installed, that guidance says a page file might not be required to back the commit charge during peak use, while a page file or a dedicated dump file might still be required for a crash dump. That guidance does not define how many gigabytes count as a lot, so that sentence is not a 64GB rule. This measurement is Microsoft's Windows 10 method. It is not a Windows 11 procedure.",
+  "AMD prints the maximums as DDR5-5200, DDR5-5600, and DDR5-3600. Those Max Memory Speed rows have no MHz label. Micron's addendum, Rev. C 08/2023, part MTC8C1084S1UC56BG1, is one 16GB single-rank DDR5 UDIMM. Its timing table puts 0.357 ns and 5600 MT/s in the Memory Clock/Data Rate column beside the DDR5-5600 designation. The 2200 MHz number on the Ryzen specifications is the graphics frequency, a different field. AMD's 1R and 2R tokens stay as printed. The Micron addendum calls that one module single-rank. It does not define AMD's tokens, and it does not say every 16GB or 32GB module is single-rank.",
   "ECC support on both processors is listed as yes, and it requires motherboard support. That line does not change between 32GB and 64GB. DDR5 vs DDR4 for Gaming: Is DDR5 Worth It? is the generation comparison. AM4 vs AM5: Which Desktop PC Socket? is the socket comparison. Ryzen 7 7800X3D vs Ryzen 7 9800X3D for Desktop Gaming compares those two processors. The speed rows above are only the Ryzen 7 7800X3D and the Ryzen 9 9950X.",
 ].join("\n\n");
 
