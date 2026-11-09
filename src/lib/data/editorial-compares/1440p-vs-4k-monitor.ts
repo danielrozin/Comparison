@@ -140,7 +140,7 @@ const BUILT = buildEditorialComparison({
     {
       label: "Windows 150% (144 DPI)",
       entityAValue: "100% is 96 DPI. 150% is not a required setting for this grid",
-      entityBValue: "3840 by 2160 becomes 2560 by 1440 device-independent pixels at 150%",
+      entityBValue: "3840 by 2160 becomes 2560 by 1440 device-independent pixels only while 150% scaling is in effect",
       winner: "tie",
     },
     {
