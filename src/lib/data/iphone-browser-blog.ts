@@ -6,8 +6,9 @@
  * for iPhone and iPad, Mozilla's Firefox for iOS page, Microsoft's Edge
  * download page, Brave's App Store listing, and DuckDuckGo's browser page.
  * Removed because no official page opened today supports them: battery-life
- * hour counts, speed rankings, a claim that every iPhone browser is free,
- * and Edge sync or tracking behavior (the Microsoft page only lists iOS).
+ * hour counts, speed rankings, and a claim that every iPhone browser is free.
+ * Microsoft's Edge download page states iOS sync of passwords, favorites, and
+ * history. It does not state Edge tracking behavior.
  */
 
 import type { BlogArticle } from "@/lib/services/blog-generator";
@@ -63,13 +64,13 @@ const FAQ_MD = IPHONE_BROWSER_FAQS.map(
   (faq) => `### ${faq.question}\n\n${faq.answer}`,
 ).join("\n\n");
 
-const CONTENT = `**Updated November 10, 2026.** Safari is the browser to pick when the other devices are Apple devices, because Apple says it syncs passwords, bookmarks, history, and tabs across iPhone, iPad, Mac, and Apple Watch. Chrome is the browser to pick when those same items should follow a Google Account onto Windows or Android. Firefox is the browser Mozilla describes as private by default, with built-in tracking protection and sync for tabs, bookmarks, and passwords. Brave's listing and DuckDuckGo's browser page are the two that say ads are blocked without an extra extension. Apple's App Review Guideline 2.5.6 still requires a web browser to use WebKit unless the developer has an entitlement. Nothing here is a speed ranking or a battery test.
+const CONTENT = `**Updated November 10, 2026.** Safari is the browser to pick when the other devices are Apple devices, because Apple says it syncs passwords, bookmarks, history, and tabs across iPhone, iPad, Mac, and Apple Watch. Chrome is the browser to pick when those same items should follow a Google Account onto every device where you are signed in to Chrome. Firefox is the browser Mozilla describes as private by default, with built-in tracking protection and sync for tabs, bookmarks, and passwords. Brave's listing and DuckDuckGo's browser page are the two that say ads are blocked without an extra extension. Apple's App Review Guideline 2.5.6 still requires a web browser to use WebKit unless the developer has an entitlement. Nothing here is a speed ranking or a battery test.
 
 | | Safari | Chrome | Firefox |
 | --- | --- | --- | --- |
-| Sync | iCloud: passwords, bookmarks, history, and tabs across Apple devices | Google Account: bookmarks, reading list, passwords, payment info, and settings; history and tabs only if History and Tabs is on | Tabs, bookmarks, and passwords across devices |
+| Sync | iCloud: passwords, bookmarks, history, and tabs across Apple devices | Google Account: bookmarks, reading list, passwords, payment info, and settings; history and tabs only if History and Tabs is on. Optional passphrase: Google cannot read the stored Chrome data. Wallet payment methods and addresses are not covered | Tabs, bookmarks, and passwords across devices |
 | Passwords | iCloud Keychain, including passkeys and credit card numbers | Saved in the Google Account; import can land in Google Password Manager | Synced with bookmarks and tabs |
-| Tracking | Intelligent Tracking Prevention; third-party cookies blocked by default on Apple's chart | Optional passphrase stores Chrome data so Google cannot read it; Wallet payment methods and addresses are not covered | Built-in tracking protection, on without extra setup |
+| Tracking | Intelligent Tracking Prevention; third-party cookies blocked by default on Apple's chart | Google's iPhone help page does not describe tracker blocking | Built-in tracking protection, on without extra setup |
 | Best fit | iPhone plus Mac, iPad, or Apple Watch | iPhone plus other devices where you use Chrome | A Firefox install on more than one device |
 
 *Table: Safari, Chrome, and Firefox on iPhone by sync, passwords, tracking, and fit. Apple, Google, and Mozilla pages opened November 10, 2026.*
@@ -86,7 +87,7 @@ Yes, unless the app has an entitlement. Guideline 2.5.6 says apps that browse th
 
 ## What does Safari sync and block on iPhone?
 
-Safari syncs passwords, bookmarks, history, and tabs across Mac, iPad, iPhone, and Apple Watch, and nearby Apple devices can pass the current Safari task with Handoff. iCloud Keychain stores user names, passkeys, passwords, and credit card numbers and fills them in on trusted devices. Intelligent Tracking Prevention uses on-device intelligence to help prevent cross-site tracking, and Apple's comparison marks "blocks third-party cookies from tracking you by default" as yes for Safari. Private Browsing locks windows you are not using. Profiles keep history, extensions, Tab Groups, favorites, and cookies separate, including a Personal profile and a Work profile. Safari extensions for iPhone come from a dedicated Safari category on the App Store.
+Safari syncs passwords, bookmarks, history, and tabs across Mac, iPad, iPhone, and Apple Watch, and nearby Apple devices can pass the current Safari task with Handoff. iCloud Keychain stores user names, passkeys, passwords, and credit card numbers and fills them in on trusted devices. Intelligent Tracking Prevention uses on-device intelligence to help prevent cross-site tracking, and Apple's comparison marks "blocks third-party cookies from tracking you by default" as yes for Safari. Private Browsing locks windows you are not using. Profiles let you separate history, extensions, Tab Groups, favorites, and cookies for topics you create. Apple's examples of those topics are Personal and Work. Safari extensions for iPhone come from a dedicated Safari category on the App Store.
 
 ## What does Chrome on iPhone sync?
 
@@ -104,7 +105,7 @@ DuckDuckGo's browser page says the browser blocks third-party trackers, blocks m
 
 ## Does Microsoft Edge run on iPhone?
 
-Microsoft's Edge download page lists iOS next to Windows, macOS, Android, and Linux, so there is an iPhone download. That page does not describe Edge sync, passwords, or tracking, so those points are not stated here.
+Microsoft's Edge download page lists an iOS download next to Windows, macOS, Android, and Linux. For iOS, Microsoft's Edge download page says: "Sync your passwords, favorites, and history, across your iOS devices." That download page does not state Edge tracking behavior.
 
 ## Which browser should you pick?
 
@@ -148,15 +149,15 @@ Each sync, blocking, and engine fact above comes from one of these official page
 export const IPHONE_BROWSER_ARTICLE: BlogArticle = {
   id: "blog-best-browser-for-iphone-2026",
   slug: IPHONE_BROWSER_BLOG_SLUG,
-  title: "Best Browser for iPhone in 2026?",
+  title: "Best Browser for iPhone in 2026",
   excerpt:
-    "Safari fits other Apple devices, Chrome fits a Google Account, and Firefox, Brave, and DuckDuckGo lead when tracking or ads are the priority.",
+    "Safari fits other Apple devices. Chrome fits a Google Account. Firefox, Brave, and DuckDuckGo describe tracking protection or ad blocking.",
   content: CONTENT,
   category: "technology",
   tags: ["best browser for iphone 2026", "safari vs chrome iphone", "firefox iphone", "iphone browser comparison 2026"],
-  metaTitle: "Best Browser for iPhone in 2026?",
+  metaTitle: "Best Browser for iPhone in 2026",
   metaDescription:
-    "Safari, Chrome, Firefox, Brave, DuckDuckGo, and Edge on iPhone: what each one syncs or blocks, and when iPhone browsers must use WebKit.",
+    "Safari, Chrome, Firefox, Brave, and DuckDuckGo on iPhone: sync, tracking, and WebKit. Edge syncs passwords, favorites, and history.",
   relatedComparisonSlugs: ["chrome-vs-safari", "firefox-vs-safari", "chrome-vs-firefox"],
   status: "published",
   publishedAt: PUBLISHED_AT,
