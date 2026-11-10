@@ -3,7 +3,8 @@
  * Facts opened 2026-11-10 from 12 CFR 229.10 and 229.13, the Federal Reserve
  * Regulation CC compliance guide, the OCC's HelpWithMyBank.gov, FinCEN, the
  * USPS, and the Chase and Wells Fargo fee schedules.
- * The 2018 FTC fake-check alert URL returned 404 on 2026-11-10, so the
+ * The 2018 FTC fake-check alert URL could not be fetched on 2026-11-10
+ * (the request was blocked, so the URL is not confirmed gone), so the
  * sentences that depended on it are not in the body.
  * Removed because the sources disagreed or never stated them: next-day
  * availability at an ATM; the CFPB summary figures of $225 and $5,525 (eCFR
@@ -115,7 +116,7 @@ Chase says a certified check is your personal check, verified by the bank as hav
 
 A USPS money order is the product to read about if you do not have a bank account. USPS limits a domestic money order to $1,000, charges $2.65 for $0.01 to $500 and $3.75 for $500.01 to $1,000 ([See vendor page for current price](${USPS_URL})), says money orders never expire, and says you cannot stop payment. A lost or stolen money order can be replaced. USPS lists a $23 processing fee for that replacement. For a side-by-side of the two products, see [cashier's check vs money order](/compare/cashiers-check-vs-money-order).
 
-## How do fake cashier's checks show up?
+## What if you think a cashier's check is fake?
 
 The OCC says to contact the issuing bank if you believe a check is fraudulent. Use a phone number you look up yourself.
 
