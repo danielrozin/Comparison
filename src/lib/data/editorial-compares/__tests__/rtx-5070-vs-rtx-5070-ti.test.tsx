@@ -16,6 +16,7 @@ const QUESTION = "RTX 5070 vs RTX 5070 Ti";
 const NV_FAMILY = "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/";
 const NV_NEWS =
   "https://nvidianews.nvidia.com/news/nvidia-blackwell-geforce-rtx-50-series-opens-new-world-of-ai-computer-graphics";
+const NV_OUT = "https://www.nvidia.com/en-us/geforce/news/rtx-5070-out-now/";
 const TOMS = "https://www.tomshardware.com/reviews/gpu-hierarchy,4388.html";
 
 const BANNED =
@@ -119,10 +120,10 @@ describe("RTX 5070 vs RTX 5070 Ti (ROO-408)", () => {
       for (const value of attr.values) expect(value.winner).not.toBe(true);
     }
     expect(page().citationStats?.dataPointCount).toBe(0);
-    expect(page().citationStats?.sourceCount).toBe(3);
+    expect(page().citationStats?.sourceCount).toBe(4);
     expect(page().citationStats?.sourceCount).toBe(page().citationStats?.sources.length);
-    expect(page().citationStats?.sources.map((source) => source.url)).toEqual([NV_FAMILY, NV_NEWS, TOMS]);
-    expect(page().resources?.map((resource) => resource.url)).toEqual([NV_FAMILY, NV_NEWS, TOMS]);
+    expect(page().citationStats?.sources.map((source) => source.url)).toEqual([NV_FAMILY, NV_NEWS, NV_OUT, TOMS]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual([NV_FAMILY, NV_NEWS, NV_OUT, TOMS]);
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
       "rtx-5070-vs-rx-9070-xt-vs-rtx-5070-ti",
       "rtx-5070-vs-rx-9070-xt",
@@ -156,7 +157,10 @@ describe("RTX 5070 vs RTX 5070 Ti (ROO-408)", () => {
     expect(main.map((item) => item.acceptedAnswer?.text)).toEqual(page().faqs.map((faq) => faq.answer));
     expect(flat.filter((node) => typeOf(node).includes("ClaimReview"))).toHaveLength(0);
     const dataset = flat.find((node) => typeOf(node).includes("Dataset"));
-    expect(dataset?.description).toContain("3 sources and 0 data points");
+    expect(dataset).toBeDefined();
+    expect(page().citationStats?.sourceCount).toBe(4);
+    expect(page().citationStats?.dataPointCount).toBe(0);
+    expect(page().citationStats?.sourceCount).toBe(page().citationStats?.sources.length);
     expect(JSON.stringify(schemas)).not.toMatch(/Daniel Rozin/);
   });
 
@@ -252,21 +256,27 @@ describe("RTX 5070 vs RTX 5070 Ti (ROO-408)", () => {
       "28.5 percent",
       "0.3643",
       "36.4 percent",
-      "6.41",
-      "5.70",
       "$749",
       "$549",
       "6 January 2025",
+      "5 March 2025",
+      "Founders Edition",
+      "native resolution",
+      "eight RT titles",
       "24 June 2026",
       "10 November 2026",
       "Ryzen 9 9950X",
       "Ryzen 7 9800X3D",
       "geometric mean",
       "11 raster games",
+      "without enabling DLSS, FSR, or XeSS",
     ]) {
       expect(text, fact).toContain(fact);
     }
     expect(text).not.toMatch(BANNED);
+    expect(text).not.toMatch(/6\.41|5\.70|dollars per frame|shop block/i);
+    expect(text).not.toMatch(/available starting February 2025/);
+    expect(text).toMatch(/would be available starting in February/);
     expect(text).toMatch(/Neither card is right for everyone/);
     expect(text).toMatch(/Choose the RTX 5070 Ti if/);
     expect(text).toMatch(/Choose the RTX 5070 if/);

@@ -5,16 +5,15 @@ import type { EditorialComparison } from "./types";
  * ROO-408 — RTX 5070 vs RTX 5070 Ti.
  * Sources opened 10 November 2026 (Asia/Jerusalem):
  * NVIDIA GeForce RTX 5070 family specifications;
- * NVIDIA Newsroom, 6 January 2025 (availability prices, not a store check);
+ * NVIDIA Newsroom, 6 January 2025 (announcement prices, not a ship date);
+ * NVIDIA GeForce news, 5 March 2025 (RTX 5070 is out now);
  * Tom's Hardware GPU benchmarks hierarchy, article:modified_time 2026-06-24.
  *
- * The family shop block prints "Starting at $XXX.XX", so $749.99 and $549.99
- * are not copied from NVIDIA. The January 2025 announcement prints $749 and
- * $549 and does not use the word MSRP. Tom's MSRP column is left unused so
- * those .99 figures are not treated as NVIDIA's current list.
- * No general "20–30% faster" line, no better-value verdict, no street survey,
- * no Micro Center pair, no 12 GB lifespan claim. dataPointCount stays 0:
- * the percents and dollars-per-frame figures are arithmetic on cited inputs,
+ * $749.99 and $549.99 are not copied. The January 2025 announcement prints
+ * $749 and $549 and does not use the word MSRP. Tom's MSRP column is unused.
+ * "Available starting in February" is only the announcement's wording.
+ * The 5 March 2025 post is the RTX 5070 availability date. No dollars-per-frame
+ * figure. dataPointCount stays 0: the percents are arithmetic on cited inputs,
  * not a measurement dataset. PR 523 owns the shared "0 data points" wording.
  * winnerName stays null. isHumanReviewed stays false.
  */
@@ -25,6 +24,7 @@ const B = "rtx-5070-ti";
 const NV_FAMILY = "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/";
 const NV_NEWS =
   "https://nvidianews.nvidia.com/news/nvidia-blackwell-geforce-rtx-50-series-opens-new-world-of-ai-computer-graphics";
+const NV_OUT = "https://www.nvidia.com/en-us/geforce/news/rtx-5070-out-now/";
 const TOMS = "https://www.tomshardware.com/reviews/gpu-hierarchy,4388.html";
 
 const SOURCE_DATE = "2026-11-10";
@@ -42,7 +42,7 @@ Neither card is right for everyone. The raster gap in Tom's Hardware's 24 June 2
 
 const EXPERT_ANALYSIS = `${SHORT_ANSWER}
 
-Key takeaways. NVIDIA lists 8,960 CUDA cores, 16 GB of GDDR7 on a 256-bit interface, a 2.45 GHz boost clock, a 2.3 GHz base clock, 1,406 AI TOPS, 300 W total graphics power, and 750 W required system power for the RTX 5070 Ti. NVIDIA lists 6,144 CUDA cores, 12 GB of GDDR7 on a 192-bit interface, a 2.51 GHz boost clock, a 2.33 GHz base clock, 988 AI TOPS, 250 W total graphics power, and 650 W required system power for the RTX 5070. The specifications table labels DLSS 4 on both cards, and the family marketing copy names DLSS 5 for 3D-Guided Neural Rendering on GeForce RTX 50 Series GPUs. Tom's Hardware's rasterization table, a geometric mean of 11 games, shows 116.8 fps for the RTX 5070 Ti and 96.4 fps for the RTX 5070 in the column headed 1440p Ultra, and 68.6 fps and 54.3 fps in the column headed 4K Ultra. Tom's Hardware's ray-tracing rankings show 66.2 fps for the RTX 5070 Ti and 51.5 fps for the RTX 5070 in the column headed 1440p Ultra. NVIDIA's 6 January 2025 announcement prices the RTX 5070 Ti at $749 and the RTX 5070 at $549, available starting in February 2025, which is not a 10 November 2026 store price.
+Key takeaways. NVIDIA lists 8,960 CUDA cores, 16 GB of GDDR7 on a 256-bit interface, a 2.45 GHz boost clock, a 2.3 GHz base clock, 1,406 AI TOPS, 300 W total graphics power, and 750 W required system power for the RTX 5070 Ti. NVIDIA lists 6,144 CUDA cores, 12 GB of GDDR7 on a 192-bit interface, a 2.51 GHz boost clock, a 2.33 GHz base clock, 988 AI TOPS, 250 W total graphics power, and 650 W required system power for the RTX 5070. The specifications table labels DLSS 4 on both cards, and the family marketing copy names DLSS 5 for 3D-Guided Neural Rendering on GeForce RTX 50 Series GPUs. Tom's Hardware's rasterization table, a geometric mean of 11 games, shows 116.8 fps for the RTX 5070 Ti and 96.4 fps for the RTX 5070 in the column headed 1440p Ultra, and 68.6 fps and 54.3 fps in the column headed 4K Ultra. Tom's Hardware's ray-tracing rankings show 66.2 fps for the RTX 5070 Ti and 51.5 fps for the RTX 5070 in the column headed 1440p Ultra. NVIDIA's 6 January 2025 announcement says the RTX 5070 Ti and the RTX 5070 would be available starting in February at $749 and $549. NVIDIA's GeForce news post dated 5 March 2025 says the GeForce RTX 5070 is out now, with the Founders Edition later in March.
 
 Choose the RTX 5070 Ti for the 16 GB configuration and the 300 W power figure. Choose the RTX 5070 for the 12 GB configuration and the 250 W power figure. Three checks, in order. 1. Memory capacity and bus: 16 GB GDDR7 on 256-bit, against 12 GB GDDR7 on 192-bit. 2. Required system power: 750 W against 650 W, with the Ryzen 9 9950X footnote. 3. One dated Tom's Hardware hierarchy, modified 24 June 2026, rather than a general speed claim. In that raster table, 116.8 minus 96.4 is 20.4, and 20.4 / 96.4 = 0.2116 to four decimals, which is 21.2 percent to one decimal. At 4K, 68.6 minus 54.3 is 14.3, and 14.3 / 54.3 = 0.2634 to four decimals, which is 26.3 percent to one decimal. In the ray-tracing table, 66.2 minus 51.5 is 14.7, and 14.7 / 51.5 = 0.2854 to four decimals, which is 28.5 percent to one decimal. Those three percents describe those three columns.
 
@@ -50,11 +50,11 @@ NVIDIA's family specifications, opened 10 November 2026, put both cards on Black
 
 The specifications table labels NVIDIA DLSS as DLSS 4 for both cards and lists Super Resolution, DLAA, Ray Reconstruction, Frame Generation, and Multi Frame Generation on both. The family marketing copy says DLSS 5 introduces 3D-Guided Neural Rendering on GeForce RTX 50 Series GPUs. Both labels are repeated here. Reflex 2 and a low-latency mode are listed for both, and Frame Warp is marked coming soon for both. The 6 January 2025 announcement headline also names DLSS 4.
 
-Tom's Hardware's GPU benchmarks hierarchy was modified 24 June 2026 and opened 10 November 2026. The test-setup section names an AMD Ryzen 7 9800X3D, a Thermalright Phantom Spirit 120 SE cooler, 32 GB (2x16 GB) of DDR5-6000 CL30, an Asus TUF Gaming X670E-Plus Wifi motherboard, and an MSI MPG Ai1600TS 1600W power supply. Tom's says the rasterization FPS score is the geometric mean, with equal weighting, of all 11 raster games, and that cards are tested at a mix of high and ultra settings depending on the game. The column heading 1440p Ultra is the heading in the rankings table. It is not a claim that every game used one shared Ultra preset. In that rasterization table the RTX 5070 Ti row is 155.4 fps at 1080p Ultra, 116.8 fps at 1440p Ultra, and 68.6 fps at 4K Ultra. The RTX 5070 row is 132.6 fps, 96.4 fps, and 54.3 fps in those same columns.
+Tom's Hardware's GPU benchmarks hierarchy was modified 24 June 2026 and opened 10 November 2026. Tom's says the results are collected at native resolution, without enabling DLSS, FSR, or XeSS upscaling or frame generation. The June 2026 update says the data covers 48 GPUs across 19 separate tests, including eight RT titles. The test-setup section names an AMD Ryzen 7 9800X3D, a Thermalright Phantom Spirit 120 SE cooler, 32 GB (2x16 GB) of DDR5-6000 CL30, an Asus TUF Gaming X670E-Plus Wifi motherboard, and an MSI MPG Ai1600TS 1600W power supply. Tom's says the rasterization FPS score is the geometric mean, with equal weighting, of all 11 raster games, and that cards are tested at a mix of high and ultra settings depending on the game. The column heading 1440p Ultra is the heading in the rankings table. It is not a claim that every game used one shared Ultra preset. In that rasterization table the RTX 5070 Ti row is 155.4 fps at 1080p Ultra, 116.8 fps at 1440p Ultra, and 68.6 fps at 4K Ultra. The RTX 5070 row is 132.6 fps, 96.4 fps, and 54.3 fps in those same columns.
 
-The ray-tracing rankings use the same column headings. Tom's ray-tracing section does not repeat the geometric-mean sentence, so those cells are the figures in the table, not a second described average. The RTX 5070 Ti row is 90.4 fps at 1080p Ultra, 66.2 fps at 1440p Ultra, and 36.7 fps at 4K Ultra. The RTX 5070 row is 74.1 fps, 51.5 fps, and 22.7 fps. The 28.5 percent figure is 14.7 / 51.5 in the 1440p Ultra ray-tracing column. It is not a general ray-tracing claim outside that column.
+The ray-tracing rankings use the same column headings. Tom's June 2026 update counts eight RT titles. The ray-tracing section does not call that score a geometric mean, so these cells are the figures in that table. The RTX 5070 Ti row is 90.4 fps at 1080p Ultra, 66.2 fps at 1440p Ultra, and 36.7 fps at 4K Ultra. The RTX 5070 row is 74.1 fps, 51.5 fps, and 22.7 fps. The 28.5 percent figure is 14.7 / 51.5 in the 1440p Ultra ray-tracing column. It is not a general ray-tracing claim outside that column.
 
-Price math uses only the 6 January 2025 announcement. The RTX 5070 Ti is $749 and the RTX 5070 is $549, available starting in February 2025. 749 minus 549 is 200, and 200 / 549 = 0.3643 to four decimals, which is 36.4 percent to one decimal. Dividing those announcement prices by the raster 1440p Ultra averages gives 749 / 116.8 = 6.41 dollars per frame to the cent, and 549 / 96.4 = 5.70 dollars per frame to the cent. That division uses those two inputs only. Replace 749 and 549 with the prices in front of you before using it. The family shop block does not show a numeric dollar amount, so no 10 November 2026 store price is copied. No other retail pair is used.
+The 6 January 2025 announcement says the RTX 5070 Ti and the RTX 5070 would be available starting in February at $749 and $549. 749 minus 549 is 200, and 200 / 549 = 0.3643 to four decimals, which is 36.4 percent to one decimal. That ratio compares the two announcement prices. NVIDIA's GeForce news post dated 5 March 2025 says the GeForce RTX 5070 is out now. Stock-clocked and factory-overclocked models are available, and the Founders Edition will be available later in March. No other retail pair is used.
 
 Memory is the capacity NVIDIA lists: 16 GB of GDDR7 on a 256-bit interface, against 12 GB of GDDR7 on a 192-bit interface. More memory does not by itself make a card produce a higher frame rate. No source opened for this draft measures how long either capacity stays comfortable, so no lifespan is stated.
 
@@ -88,7 +88,7 @@ const FAQS = [
   {
     question: "What prices did NVIDIA announce on January 6, 2025?",
     answer:
-      "NVIDIA's 6 January 2025 announcement says the RTX 5070 Ti, with 1,406 AI TOPS, and the RTX 5070, with 988 AI TOPS, would be available starting in February at $749 and $549. 749 minus 549 is 200, and 200 / 549 = 0.3643 to four decimals, which is 36.4 percent to one decimal. Dividing those prices by Tom's raster 1440p Ultra averages gives 749 / 116.8 = 6.41 and 549 / 96.4 = 5.70 dollars per frame, to the cent. Those are announcement prices. Replace them with the prices in front of you. No 10 November 2026 store price is copied.",
+      "NVIDIA's 6 January 2025 announcement says the RTX 5070 Ti, with 1,406 AI TOPS, and the RTX 5070, with 988 AI TOPS, would be available starting in February at $749 and $549. 749 minus 549 is 200, and 200 / 549 = 0.3643 to four decimals, which is 36.4 percent to one decimal. NVIDIA's GeForce news post dated 5 March 2025 says the GeForce RTX 5070 is out now, and that the Founders Edition will be available later in March.",
   },
   {
     question: "How does the RX 9070 XT compare in those Tom's Hardware tables?",
@@ -164,8 +164,8 @@ const BUILT = buildEditorialComparison({
     },
     {
       label: "6 January 2025 announcement price",
-      entityAValue: "$549, available starting February 2025",
-      entityBValue: "$749, available starting February 2025",
+      entityAValue: "$549 in the 6 January 2025 announcement. Out now 5 March 2025; Founders Edition later in March",
+      entityBValue: "$749 in the 6 January 2025 announcement",
       winner: "tie",
     },
   ],
@@ -271,8 +271,8 @@ const BUILT = buildEditorialComparison({
       SPEC,
       A,
       B,
-      "$549, available starting February 2025 (NVIDIA Newsroom). Not a 10 November 2026 store price",
-      "$749, available starting February 2025 (NVIDIA Newsroom). Not a 10 November 2026 store price",
+      "$549 in the 6 January 2025 announcement. 5 March 2025 GeForce news: out now; Founders Edition later in March",
+      "$749 in the 6 January 2025 announcement",
     ),
   ],
   faqs: FAQS,
@@ -297,7 +297,7 @@ const BUILT = buildEditorialComparison({
       "NVIDIA lists 16 GB GDDR7 and 300 W on the RTX 5070 Ti, and 12 GB GDDR7 and 250 W on the RTX 5070. Tom's Hardware's 24 June 2026 raster column headed 1440p Ultra shows 116.8 fps for the RTX 5070 Ti and 96.4 fps for the RTX 5070.",
   },
   citationStats: {
-    sourceCount: 3,
+    sourceCount: 4,
     dataPointCount: 0,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -306,6 +306,7 @@ const BUILT = buildEditorialComparison({
     sources: [
       { name: "NVIDIA GeForce RTX 5070 family specifications", url: NV_FAMILY },
       { name: "NVIDIA Newsroom: GeForce RTX 50 Series (6 January 2025)", url: NV_NEWS },
+      { name: "NVIDIA GeForce news: GeForce RTX 5070 out now (5 March 2025)", url: NV_OUT },
       { name: "Tom's Hardware GPU benchmarks hierarchy (modified 24 June 2026)", url: TOMS },
     ],
   },
@@ -315,21 +316,28 @@ const BUILT = buildEditorialComparison({
       label: "NVIDIA GeForce RTX 5070 family specifications",
       url: NV_FAMILY,
       description:
-        "Opened 10 November 2026. RTX 5070 Ti: 8,960 CUDA cores, 16 GB GDDR7, 256-bit, boost 2.45 GHz, base 2.3 GHz, 1,406 AI TOPS, 133 TFLOPS, 300 W, 750 W, two ninth-generation NVENC encoders. RTX 5070: 6,144 CUDA cores, 12 GB GDDR7, 192-bit, boost 2.51 GHz, base 2.33 GHz, 988 AI TOPS, 94 TFLOPS, 250 W, 650 W, one ninth-generation NVENC encoder. Specifications table: DLSS 4. Marketing copy: DLSS 5. Shop block has no numeric dollar amount.",
+        "Opened 10 November 2026. RTX 5070 Ti: 8,960 CUDA cores, 16 GB GDDR7, 256-bit, boost 2.45 GHz, base 2.3 GHz, 1,406 AI TOPS, 133 TFLOPS, 300 W, 750 W, two ninth-generation NVENC encoders. RTX 5070: 6,144 CUDA cores, 12 GB GDDR7, 192-bit, boost 2.51 GHz, base 2.33 GHz, 988 AI TOPS, 94 TFLOPS, 250 W, 650 W, one ninth-generation NVENC encoder. Specifications table: DLSS 4. Marketing copy: DLSS 5.",
     },
     {
       type: "external",
       label: "NVIDIA Newsroom: GeForce RTX 50 Series (6 January 2025)",
       url: NV_NEWS,
       description:
-        "Opened 10 November 2026. RTX 5070 Ti with 1,406 AI TOPS and RTX 5070 with 988 AI TOPS available starting in February at $749 and $549. The announcement does not use the word MSRP. Not a 10 November 2026 store price.",
+        "Opened 10 November 2026. The announcement says the RTX 5070 Ti, with 1,406 AI TOPS, and the RTX 5070, with 988 AI TOPS, would be available starting in February at $749 and $549. It does not use the word MSRP.",
+    },
+    {
+      type: "external",
+      label: "NVIDIA GeForce news: GeForce RTX 5070 out now (5 March 2025)",
+      url: NV_OUT,
+      description:
+        "Andrew Burnes, 5 March 2025, opened 10 November 2026. The GeForce RTX 5070 is out now. Stock-clocked and factory-overclocked models are available. The Founders Edition will be available later in March.",
     },
     {
       type: "external",
       label: "Tom's Hardware GPU benchmarks hierarchy (modified 24 June 2026)",
       url: TOMS,
       description:
-        "Opened 10 November 2026. article:modified_time 2026-06-24. Raster geometric mean of 11 games: RTX 5070 Ti 155.4 / 116.8 / 68.6 fps and RTX 5070 132.6 / 96.4 / 54.3 fps at 1080p, 1440p, and 4K. Ray-tracing table: 90.4 / 66.2 / 36.7 and 74.1 / 51.5 / 22.7. RX 9070 XT raster 156.6 / 116.5 / 65.8 and ray tracing 77.8 / 55.5 / 30.1. Test PC uses a Ryzen 7 9800X3D. Column name Ultra, with a mix of high and ultra settings by game.",
+        "Opened 10 November 2026. Modified 24 June 2026. Results collected at native resolution, without DLSS, FSR, or XeSS upscaling or frame generation. June 2026 update: 48 GPUs across 19 separate tests, including eight RT titles. Raster geometric mean of 11 games at a mix of high and ultra settings: RTX 5070 Ti 155.4 / 116.8 / 68.6 fps and RTX 5070 132.6 / 96.4 / 54.3 fps. Ray-tracing table: 90.4 / 66.2 / 36.7 and 74.1 / 51.5 / 22.7. RX 9070 XT raster 156.6 / 116.5 / 65.8 and ray tracing 77.8 / 55.5 / 30.1. Test PC uses a Ryzen 7 9800X3D.",
     },
   ],
   metaTitle: "RTX 5070 vs RTX 5070 Ti",
