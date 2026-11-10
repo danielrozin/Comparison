@@ -106,6 +106,14 @@ export const NOT_FOUND_CLEANUP_CONSOLIDATIONS: Record<string, string> = {
   // us-* comparison). Survivors and us-vs-china-gdp stay out of this map.
   "us-vs-china": "usa-vs-china",
   "germany-vs-usa": "germany-vs-united-states",
+  // ROO-407 (2026-11-10): /compare/ultrawide-vs-4k and the alphabetical reverse
+  // of /compare/ultrawide-vs-4k-monitor returned 404. The brief URL is not the
+  // A-Z sort, because "4k-monitor" sorts before "ultrawide". The target is the
+  // editorial pack in this PR, so it is live once merged. None of these
+  // sources was a catalog page.
+  "ultrawide-vs-4k": "ultrawide-vs-4k-monitor",
+  "4k-vs-ultrawide": "ultrawide-vs-4k-monitor",
+  "4k-monitor-vs-ultrawide": "ultrawide-vs-4k-monitor",
 };
 
 /**
