@@ -87,7 +87,7 @@ Apple says the battery figures come from tests in January 2026 on preproduction 
 
 ## Which size should you carry?
 
-Choose the 13-inch model when the listed 2.7 pounds matters more than the larger display. Choose the 15-inch model when the 15.3-inch display is worth the listed extra 0.6 pounds. That is a choice between Apple's listed weight and Apple's listed screen size, not a prediction about heat, fans, or a future model. Current prices and configurations are on [Apple's MacBook Air tech specs](${SPECS_URL}).
+Choose the 13-inch model when the listed 2.7 pounds matters more than the larger display. Choose the 15-inch model when the 15.3-inch display is worth the listed extra 0.6 pounds. That is a choice between Apple's listed weight and Apple's listed screen size, not a prediction about heat, fans, or a future model. Chip, memory, and storage options are on [Apple's MacBook Air tech specs](${SPECS_URL}).
 
 | If you want... | Apple's listed match |
 | --- | --- |
