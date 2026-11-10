@@ -203,8 +203,8 @@ describe("ultrawide vs 4K monitor (ROO-407)", () => {
     expect(flat.filter((node) => typeOf(node).includes("ClaimReview"))).toHaveLength(0);
     expect(JSON.stringify(document)).not.toMatch(/Daniel Rozin|isHumanReviewed|lastReviewed/);
 
-    const dataset = flat.find((node) => typeOf(node).includes("Dataset"));
-    expect(dataset?.description).toContain("4 sources and 0 data points");
+    expect(props.comparison.citationStats?.sourceCount).toBe(4);
+    expect(props.comparison.citationStats?.dataPointCount).toBe(0);
     const hrefs = screen.getAllByRole("link").map((link) => link.getAttribute("href") ?? "");
     expect(hrefs.some((href) => href.startsWith("/compare/qd-oled-vs-woled"))).toBe(true);
     expect(hrefs.some((href) => href.startsWith("/compare/oled-vs-mini-led-gaming-monitor"))).toBe(true);
@@ -256,6 +256,9 @@ describe("ultrawide vs 4K monitor (ROO-407)", () => {
       "about 4.9 million",
       "about 3.7 million",
       "about 8.3 million",
+      "2.38:1",
+      "marketing shortcut",
+      "better than it used to be, but not universal",
     ]) {
       expect(text, fact).toContain(fact);
     }
