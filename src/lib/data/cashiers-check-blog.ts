@@ -2,7 +2,9 @@
  * ROO-406: repo override for /blog/how-to-get-a-cashiers-check.
  * Facts opened 2026-11-10 from 12 CFR 229.10 and 229.13, the Federal Reserve
  * Regulation CC compliance guide, the OCC's HelpWithMyBank.gov, FinCEN, the
- * FTC, USPS, and the Chase and Wells Fargo fee schedules.
+ * USPS, and the Chase and Wells Fargo fee schedules.
+ * The 2018 FTC fake-check alert URL returned 404 on 2026-11-10, so the
+ * sentences that depended on it are not in the body.
  * Removed because the sources disagreed or never stated them: next-day
  * availability at an ATM; the CFPB summary figures of $225 and $5,525 (eCFR
  * shows $275 for other checks and $6,725 for the large-deposit exception);
@@ -68,7 +70,7 @@ const CONTENT = `**Updated November 10, 2026.** To get a cashier's check, take t
 | Who stands behind it | The issuing bank | Your account | USPS |
 | Amount | Chase: any amount | Whatever is in the account | $1,000 per domestic money order |
 | Where to get it | Chase: purchased at a branch | Your checkbook | A Post Office |
-| Stop payment | OCC: generally not available | Chase: $30 per banker request on a check or ACH, or $25 online or by automated phone | USPS: cannot be stopped; replacement fee $23 |
+| Stop payment | OCC: generally not available | Chase: $30 per banker request on a check or ACH; $25 online or by automated phone covers a check | USPS: cannot be stopped; replacement fee $23 |
 
 *Table: cashier's check, personal check, and USPS money order by who pays, amount, where to get one, and stop payment. Chase figures are from the fee schedule effective June 14, 2026. USPS figures are from the USPS money orders page, opened November 10, 2026.*
 
@@ -99,9 +101,7 @@ Chase charges $10 per check, per Chase Additional Banking Services and Fees, eff
 
 12 CFR 229.10 says the bank must make a cashier's, certified, or teller's check available on the next business day when three things are true: the account is held by a payee of the check, you deposit it in person to an employee of that bank, and you use a special deposit slip or envelope if the bank requires one to identify the type of check. If the same check is not deposited in person to an employee, 12 CFR 229.10(c)(2) says the funds must be available by the second business day. The Federal Reserve's Regulation CC guide describes cashier's checks as a next-day item in general, and it says the guide is an overview rather than the full rule.
 
-12 CFR 229.13 lists exceptions that can extend the hold. A new account, the first 30 calendar days, gets the next-day rule only for the first $6,725 of these deposits on one banking day, and the amount over $6,725 must be available by the ninth business day. The next-day and second-day schedules also do not apply to the part of a day's check deposits over $6,725, to a check that was returned and redeposited, to repeated overdrafts, to a check the bank has reasonable cause to believe it cannot collect, or during listed emergency conditions. A bank that uses one of those exceptions generally has to give notice.
-
-The FTC says you should not rely on money from a cashier's, business, or personal check, or a money order, until the bank confirms the check has cleared. It says it can take weeks for a bank to discover a forged check, and that you are responsible for funds you withdraw against a check that later fails.
+12 CFR 229.13 lists exceptions that can extend the hold. A new account, the first 30 calendar days, gets the next-day rule only for the first $6,725 of these deposits on one banking day, and the amount over $6,725 must be available by the ninth business day. The next-day and second-day schedules also do not apply to the part of a day's check deposits over $6,725, to a check that was returned and redeposited, to repeated overdrafts, to a check the bank has reasonable cause to believe it cannot collect, or during listed emergency conditions. When the bank uses an exception in 12 CFR 229.13(b) through (e), covering large deposits, a redeposited check, repeated overdrafts, or reasonable cause to doubt collection, 12 CFR 229.13(g) requires a written notice to the depositor.
 
 ## What if a cashier's check is lost or stolen?
 
@@ -111,13 +111,13 @@ Wells Fargo's Clear Access Banking footnote is narrower. A stop payment and reis
 
 ## How does a cashier's check differ from a certified check or a money order?
 
-Chase says a certified check is your personal check, verified by the bank as having enough funds, and that the money stays in your account until the recipient cashes it. The cashier's check is different because the bank has already withdrawn the money and issued the check on the bank's account. Chase also says a cashier's check cannot be canceled the way a personal check can. Chase's stop-payment fees, $30 when a banker places the request on a check or ACH and $25 online or by automated phone, are fees for stopping a check or ACH. They are not a cashier's-check stop payment. The OCC rule above still governs the cashier's check.
+Chase says a certified check is your personal check, verified by the bank as having enough funds, and that the money stays in your account until the recipient cashes it. The cashier's check is different because the bank has already withdrawn the money and issued the check on the bank's account. Chase also says a cashier's check cannot be canceled the way a personal check can. Chase lists $30 when a banker places a stop payment on a check or ACH, and $25 when the stop payment is placed online or by automated phone on a check. Those fees are not a way to stop a cashier's check. The OCC rule above still governs the cashier's check.
 
 A USPS money order is the product to read about if you do not have a bank account. USPS limits a domestic money order to $1,000, charges $2.65 for $0.01 to $500 and $3.75 for $500.01 to $1,000 ([See vendor page for current price](${USPS_URL})), says money orders never expire, and says you cannot stop payment. A lost or stolen money order can be replaced. USPS lists a $23 processing fee for that replacement. For a side-by-side of the two products, see [cashier's check vs money order](/compare/cashiers-check-vs-money-order).
 
 ## How do fake cashier's checks show up?
 
-The FTC describes a fake-check scam as a person you do not know asking you to deposit a check, often for more than you are owed, and to send some of the money back. It says the bank can make funds available before it discovers the check is forged, and that you can owe the bank the money you already sent. Do not treat an available balance as proof that the check is good. To ask whether a cashier's check is real, call the issuing bank at a number you look up yourself.
+The OCC says to contact the issuing bank if you believe a check is fraudulent. Use a phone number you look up yourself.
 
 ## FAQ
 
@@ -147,7 +147,6 @@ Each fee, limit, wait, and availability rule above is taken from one of these of
 - [Wells Fargo: Clear Access Banking fee summary](${WELLS_FEES_URL})
 - [USPS: money orders](${USPS_URL})
 - [FinCEN: Currency Transaction Report notice](https://www.fincen.gov/sites/default/files/shared/CTRPamphletBW.pdf)
-- [FTC: Anatomy of a fake check scam](https://consumer.ftc.gov/consumer-alerts/2018/09/anatomy-fake-check-scam)
 `;
 
 export const CASHIERS_CHECK_ARTICLE: BlogArticle = {
@@ -155,13 +154,13 @@ export const CASHIERS_CHECK_ARTICLE: BlogArticle = {
   slug: CASHIERS_CHECK_BLOG_SLUG,
   title: "How Do I Get a Cashier's Check?",
   excerpt:
-    "A cashier's check is the bank's check. Chase lists $10 at a branch, and federal rules set the next or second business day for a deposit.",
+    "A cashier's check is the bank's check. Chase lists $10 at a branch. Availability is the next or second business day, and hold exceptions can apply.",
   content: CONTENT,
   category: "finance",
   tags: ["cashier's check", "bank check", "certified check", "money order", "banking", "personal finance"],
   metaTitle: "How Do I Get a Cashier's Check?",
   metaDescription:
-    "How to get a cashier's check: what to bring, Chase and Wells Fargo fees, when a deposit is available, and what to do if the check is lost.",
+    "How to get a cashier's check: Chase and Wells Fargo fees, next-day or second-day availability, and the hold exceptions that can apply.",
   relatedComparisonSlugs: [
     "cashiers-check-vs-money-order",
     "cashiers-check-vs-certified-check",
