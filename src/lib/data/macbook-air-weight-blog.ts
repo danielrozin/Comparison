@@ -69,11 +69,11 @@ For the step up in weight to a Pro, see [MacBook Air vs MacBook Pro](/compare/ma
 
 ## How much does the 13-inch MacBook Air weigh?
 
-2.7 pounds (1.23 kg), which is the weight Apple lists for the 13-inch MacBook Air. The case is 0.44 inch (1.13 cm) high, 11.97 inches (30.41 cm) wide, and 8.46 inches (21.5 cm) deep. Apple's display row calls it a 13.6-inch Liquid Retina display and notes that the corners are rounded, so the rectangular diagonal is 13.6 inches and the viewable area is less.
+2.7 pounds (1.23 kg), which is the weight Apple lists for the 13-inch MacBook Air. The case is 0.44 inch (1.13 cm) high, 11.97 inches (30.41 cm) wide, and 8.46 inches (21.5 cm) deep. Apple's display row calls it a 13.6-inch Liquid Retina display. Apple's footnote says the corners at the top are rounded, so the rectangular diagonal is 13.6 inches and the viewable area is less.
 
 ## How much does the 15-inch MacBook Air weigh?
 
-3.3 pounds (1.51 kg), which is the weight Apple lists for the 15-inch MacBook Air. The case is 0.45 inch (1.15 cm) high, 13.40 inches (34.04 cm) wide, and 9.35 inches (23.76 cm) deep. Apple calls the display a 15.3-inch Liquid Retina display, again with rounded corners and a smaller viewable area than the rectangular measure.
+3.3 pounds (1.51 kg), which is the weight Apple lists for the 15-inch MacBook Air. The case is 0.45 inch (1.15 cm) high, 13.40 inches (34.04 cm) wide, and 9.35 inches (23.76 cm) deep. Apple calls the display a 15.3-inch Liquid Retina display. The same footnote says the corners at the top are rounded, so the rectangular diagonal is 15.3 inches and the viewable area is less.
 
 ## How much heavier is the 15-inch model?
 
