@@ -131,6 +131,7 @@ import { NEXTCLOUD_VS_OPENCLOUD } from "./nextcloud-vs-opencloud";
 import { HYSA_VS_CD } from "./hysa-vs-cd";
 import { KDENLIVE_VS_SHOTCUT } from "./kdenlive-vs-shotcut";
 import { KDENLIVE_VS_DAVINCI_RESOLVE } from "./kdenlive-vs-davinci-resolve";
+import { RX_9070_VS_RTX_5070 } from "./rx-9070-vs-rtx-5070";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -280,6 +281,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [HYSA_VS_CD.slug]: HYSA_VS_CD,
   [KDENLIVE_VS_SHOTCUT.slug]: KDENLIVE_VS_SHOTCUT,
   [KDENLIVE_VS_DAVINCI_RESOLVE.slug]: KDENLIVE_VS_DAVINCI_RESOLVE,
+  [RX_9070_VS_RTX_5070.slug]: RX_9070_VS_RTX_5070,
 };
 
 /**
