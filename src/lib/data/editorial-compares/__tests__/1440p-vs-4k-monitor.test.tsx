@@ -187,7 +187,9 @@ describe("1440p vs 4K at 27 inches (ROO-400)", () => {
     expect(JSON.stringify(document)).not.toMatch(/Daniel Rozin|isHumanReviewed|lastReviewed/);
 
     const dataset = flat.find((node) => typeOf(node).includes("Dataset"));
-    expect(dataset?.description).toContain("3 sources and 0 data points");
+    // ROO-396 shared helper: a zero data-point count is omitted from the Dataset description.
+    expect(dataset?.description).toContain("based on 3 sources, covering");
+    expect(dataset?.description).not.toContain("0 data points");
     const hrefs = screen.getAllByRole("link").map((link) => link.getAttribute("href") ?? "");
     expect(hrefs.some((href) => href.startsWith("/compare/qd-oled-vs-woled"))).toBe(true);
     expect(hrefs.some((href) => href.startsWith("/compare/oled-vs-mini-led-gaming-monitor"))).toBe(true);

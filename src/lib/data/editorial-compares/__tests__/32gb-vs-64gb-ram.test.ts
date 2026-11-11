@@ -234,7 +234,9 @@ describe("32GB vs 64GB RAM (ROO-401)", () => {
       expect(isRedirectedCompareSlug(related.slug)).toBe(false);
     }
     const dataset = faqNodes(page()).find((node) => node["@type"] === "Dataset");
-    expect(dataset?.description).toContain("5 sources and 0 data points");
+    // ROO-396 shared helper: a zero data-point count is omitted from the Dataset description.
+    expect(dataset?.description).toContain("based on 5 sources, covering");
+    expect(dataset?.description).not.toContain("0 data points");
   });
 
   it("shows up on the technology hub and keeps the shared Analysis disclosure", () => {
