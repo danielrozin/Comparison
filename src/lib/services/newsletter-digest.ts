@@ -10,8 +10,15 @@ import { getTrendingComparisons } from "./comparison-service";
 // var, which has shipped with a trailing space and broke absolute URLs.
 import { SITE_URL } from "@/lib/utils/constants";
 import { resendFromAddress } from "@/lib/services/resend-from";
+import {
+  createResendSendPacer,
+  isResendRateLimitError,
+  withResendRateLimitRetry,
+} from "@/lib/services/resend-rate-limit";
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
+function getResendApiKey(): string {
+  return process.env.RESEND_API_KEY?.trim() || "";
+}
 
 interface DigestComparison {
   title: string;
@@ -153,6 +160,32 @@ export function buildDigestHtml(comparisons: DigestComparison[]): string {
 </html>`;
 }
 
+async function postResendDigestEmail(
+  apiKey: string,
+  to: string,
+  html: string
+): Promise<{ ok: boolean; rateLimited: boolean; status: number }> {
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: resendFromAddress(),
+      to,
+      subject: "Your Weekly Comparison Digest - A Versus B",
+      html,
+    }),
+  });
+  const data = await res.json().catch(() => ({}));
+  return {
+    ok: res.ok,
+    rateLimited: isResendRateLimitError(res.status, data),
+    status: res.status,
+  };
+}
+
 export async function sendDigestEmail(
   to: string,
   html: string
@@ -160,23 +193,14 @@ export async function sendDigestEmail(
   // Replace {{email}} placeholder with actual recipient
   const personalizedHtml = html.replace(/\{\{email\}\}/g, encodeURIComponent(to));
 
-  if (RESEND_API_KEY) {
+  const apiKey = getResendApiKey();
+  if (apiKey) {
     try {
-      const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${RESEND_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: resendFromAddress(),
-          to,
-          subject: "Your Weekly Comparison Digest - A Versus B",
-          html: personalizedHtml,
-        }),
-      });
-      const data = await res.json();
-      return { success: res.ok, method: "resend" };
+      const result = await withResendRateLimitRetry(
+        () => postResendDigestEmail(apiKey, to, personalizedHtml),
+        (response) => !response.ok && response.rateLimited
+      );
+      return { success: result.ok, method: "resend" };
     } catch (err) {
       console.error("Resend send failed:", err);
       return { success: false, method: "resend_error" };
@@ -207,7 +231,13 @@ export async function sendWeeklyDigest(): Promise<{
   let failedCount = 0;
   let method = "none";
 
+  // Stay under Resend's 10 req/s limit (ROO-415). The trailing waitForSlot
+  // reserves a gap so the cron-report notification can also send on Resend
+  // instead of falling through to the Web3Forms 403 fallback.
+  const pacer = createResendSendPacer();
+
   for (const sub of subscribers) {
+    await pacer.waitForSlot();
     const result = await sendDigestEmail(sub.email, html);
     method = result.method;
     if (result.success) {
@@ -215,6 +245,10 @@ export async function sendWeeklyDigest(): Promise<{
     } else {
       failedCount++;
     }
+  }
+
+  if (subscribers.length > 0) {
+    await pacer.waitForSlot();
   }
 
   return { subscriberCount: subscribers.length, sentCount, failedCount, method };

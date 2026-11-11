@@ -27,6 +27,10 @@ import { Resend } from "resend";
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildMemberWelcomeEmail } from "@/lib/monetization/welcome-email";
 import { resendFromAddress, resendNotificationFromAddress } from "@/lib/services/resend-from";
+import {
+  isResendRateLimitError,
+  withResendRateLimitRetry,
+} from "@/lib/services/resend-rate-limit";
 
 /** Both founders receive admin alerts when ADMIN_NOTIFICATION_EMAIL is unset. */
 export const DEFAULT_ADMIN_NOTIFICATION_EMAILS = [
@@ -68,7 +72,10 @@ const NOTIFICATION_EMAILS = parseAdminNotificationEmails(
 // Outreach reply-to stays a single address (Resend replyTo / mail clients).
 const NOTIFICATION_REPLY_TO = NOTIFICATION_EMAILS[0];
 const WEB3FORMS_URL = "https://api.web3forms.com/submit";
-const WEB3FORMS_KEY = process.env.WEB3FORMS_ACCESS_KEY || "";
+
+function getWeb3FormsKey(): string {
+  return process.env.WEB3FORMS_ACCESS_KEY?.trim() || "";
+}
 
 // Resend client (lazy-init)
 let _resend: Resend | null = null;
@@ -221,39 +228,73 @@ export async function sendNotificationEmail(opts: {
   // 1) Primary: Resend — reliably delivers to the admin mailbox. Sent from the
   //    VERIFIED notification domain (NOTIFICATION_FROM); using an unverified
   //    from-domain returns a 403 and drops the alert silently (DAN-323).
+  //    Retry 429s before falling back: the weekly-digest cron can still be
+  //    near Resend's 10 req/s ceiling when it sends this report (ROO-415).
   const resend = getResend();
   if (resend) {
-    try {
-      const { data, error } = await resend.emails.send({
-        from: resendNotificationFromAddress(),
-        to: NOTIFICATION_EMAILS,
-        subject,
-        text,
-      });
-      if (!error) {
-        console.log(
-          `[EMAIL][resend][ok] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | id=${data?.id ?? "?"}`
-        );
-        return { success: true, method: "resend" };
-      }
-      console.error(
-        `[EMAIL][resend][fail] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | ${error.message}`
+    type ResendAttempt = {
+      ok: boolean;
+      rateLimited: boolean;
+      id?: string;
+      errorMessage?: string;
+      thrown?: boolean;
+    };
+
+    const result = await withResendRateLimitRetry(
+      async (): Promise<ResendAttempt> => {
+        try {
+          const { data, error } = await resend.emails.send({
+            from: resendNotificationFromAddress(),
+            to: NOTIFICATION_EMAILS,
+            subject,
+            text,
+          });
+          if (!error) {
+            return { ok: true, rateLimited: false, id: data?.id ?? undefined };
+          }
+          return {
+            ok: false,
+            rateLimited: isResendRateLimitError(error.message),
+            errorMessage: error.message,
+          };
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : String(err);
+          return {
+            ok: false,
+            rateLimited: isResendRateLimitError(msg),
+            errorMessage: msg,
+            thrown: true,
+          };
+        }
+      },
+      (attempt) => !attempt.ok && attempt.rateLimited
+    );
+
+    if (result.ok) {
+      console.log(
+        `[EMAIL][resend][ok] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | id=${result.id ?? "?"}`
       );
-    } catch (err) {
-      console.error(`[EMAIL][resend][throw] ${context} |`, err);
+      return { success: true, method: "resend" };
+    }
+    if (result.thrown) {
+      console.error(`[EMAIL][resend][throw] ${context} |`, result.errorMessage);
+    } else {
+      console.error(
+        `[EMAIL][resend][fail] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | ${result.errorMessage}`
+      );
     }
   }
 
   // 2) Fallback: Web3Forms — its API ignores `to` and always delivers to the
   //    access-key owner's mailbox only, so it cannot fan-out to every admin
   //    recipient. Best-effort fallback for admin alerts, not a multi-inbox path.
-  if (WEB3FORMS_KEY) {
+  if (getWeb3FormsKey()) {
     try {
       const res = await fetch(WEB3FORMS_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
+          access_key: getWeb3FormsKey(),
           subject,
           from_name: "A Versus B Notifications",
           message: text,
@@ -337,13 +378,13 @@ export async function sendPartnerKeyEmail(opts: {
   }
 
   // Fallback to Web3Forms
-  if (WEB3FORMS_KEY) {
+  if (getWeb3FormsKey()) {
     try {
       const res = await fetch(WEB3FORMS_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
+          access_key: getWeb3FormsKey(),
           to: opts.partnerEmail,
           subject: "[A Versus B] Your Embed Partner Key",
           from_name: "A Versus B",
