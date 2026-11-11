@@ -115,6 +115,7 @@ import { CARNIVAL_VS_ROYAL_CARIBBEAN } from "./carnival-vs-royal-caribbean";
 import { MASTERCARD_VS_VISA } from "./mastercard-vs-visa";
 import { COSTCO_VS_WALMART } from "./costco-vs-walmart";
 import { GATORADE_VS_POWERADE } from "./gatorade-vs-powerade";
+import { MONITOR_1440P_VS_4K } from "./1440p-vs-4k-monitor";
 import { MCDONALDS_VS_WENDYS } from "./mcdonalds-vs-wendys";
 import { NIKE_VS_UNDER_ARMOUR } from "./nike-vs-under-armour";
 import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
@@ -267,6 +268,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MASTERCARD_VS_VISA.slug]: MASTERCARD_VS_VISA,
   [COSTCO_VS_WALMART.slug]: COSTCO_VS_WALMART,
   [GATORADE_VS_POWERADE.slug]: GATORADE_VS_POWERADE,
+  [MONITOR_1440P_VS_4K.slug]: MONITOR_1440P_VS_4K,
   [MCDONALDS_VS_WENDYS.slug]: MCDONALDS_VS_WENDYS,
   [NIKE_VS_UNDER_ARMOUR.slug]: NIKE_VS_UNDER_ARMOUR,
   [MEDICAID_VS_MEDICARE.slug]: MEDICAID_VS_MEDICARE,
