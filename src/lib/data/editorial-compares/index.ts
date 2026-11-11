@@ -138,6 +138,7 @@ import { HYSA_VS_CD } from "./hysa-vs-cd";
 import { KDENLIVE_VS_SHOTCUT } from "./kdenlive-vs-shotcut";
 import { KDENLIVE_VS_DAVINCI_RESOLVE } from "./kdenlive-vs-davinci-resolve";
 import { ULTRAWIDE_VS_4K_MONITOR } from "./ultrawide-vs-4k-monitor";
+import { RYZEN_7_5700X3D_VS_RYZEN_7_5800X3D } from "./ryzen-7-5700x3d-vs-ryzen-7-5800x3d";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -294,6 +295,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [KDENLIVE_VS_SHOTCUT.slug]: KDENLIVE_VS_SHOTCUT,
   [KDENLIVE_VS_DAVINCI_RESOLVE.slug]: KDENLIVE_VS_DAVINCI_RESOLVE,
   [ULTRAWIDE_VS_4K_MONITOR.slug]: ULTRAWIDE_VS_4K_MONITOR,
+  [RYZEN_7_5700X3D_VS_RYZEN_7_5800X3D.slug]: RYZEN_7_5700X3D_VS_RYZEN_7_5800X3D,
 };
 
 /**
