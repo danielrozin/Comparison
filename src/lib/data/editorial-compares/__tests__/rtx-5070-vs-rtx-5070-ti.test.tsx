@@ -200,8 +200,13 @@ describe("RTX 5070 vs RTX 5070 Ti (ROO-408)", () => {
     const hrefs = screen.getAllByRole("link").map((link) => link.getAttribute("href") ?? "");
     expect(hrefs.some((href) => href.startsWith("/compare/rtx-5070-vs-rx-9070-xt-vs-rtx-5070-ti"))).toBe(true);
     expect(hrefs.some((href) => href.startsWith("/compare/rtx-5070-vs-rx-9070-xt"))).toBe(true);
-    expect(hrefs.some((href) => href.includes("rtx-5070-ti-vs-rx-9070-xt"))).toBe(false);
-    expect(hrefs.some((href) => href.includes("1440p-vs-4k-monitor"))).toBe(false);
+    // #521 (rtx-5070-ti-vs-rx-9070-xt) and #524 (1440p-vs-4k-monitor) are live now, so a
+    // site-generated link to them is fine. This page's own relatedComparisons still leave them out.
+    for (const slug of ["rtx-5070-ti-vs-rx-9070-xt", "1440p-vs-4k-monitor"]) {
+      if (hrefs.some((href) => href.includes(slug))) {
+        expect(getEditorialComparison(slug)?.metadata.status).toBe("published");
+      }
+    }
   }, 30000);
 
   it("cites NVIDIA specs and one Tom's suite without a street price or a value crown", () => {
