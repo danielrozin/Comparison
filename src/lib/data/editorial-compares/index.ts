@@ -78,6 +78,7 @@ import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra
 import { GALAXY_S25_VS_GALAXY_S25_ULTRA } from "./galaxy-s25-vs-galaxy-s25-ultra";
 import { OLED_VS_MINI_LED_GAMING_MONITOR } from "./oled-vs-mini-led-gaming-monitor";
 import { QD_OLED_VS_WOLED } from "./qd-oled-vs-woled";
+import { VA_VS_IPS } from "./va-vs-ips";
 import { RYZEN_7_9700X_VS_RYZEN_7_9800X3D } from "./ryzen-7-9700x-vs-ryzen-7-9800x3d";
 import { INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX } from "./intel-core-ultra-9-275hx-vs-amd-ryzen-9-9955hx";
 import { DDR5_VS_DDR4 } from "./ddr5-vs-ddr4";
@@ -229,6 +230,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9060_XT_VS_RX_9070_XT.slug]: RX_9060_XT_VS_RX_9070_XT,
   [OLED_VS_MINI_LED_GAMING_MONITOR.slug]: OLED_VS_MINI_LED_GAMING_MONITOR,
   [QD_OLED_VS_WOLED.slug]: QD_OLED_VS_WOLED,
+  [VA_VS_IPS.slug]: VA_VS_IPS,
   [RYZEN_7_9700X_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_9700X_VS_RYZEN_7_9800X3D,
   [INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX.slug]: INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX,
   [DDR5_VS_DDR4.slug]: DDR5_VS_DDR4,
