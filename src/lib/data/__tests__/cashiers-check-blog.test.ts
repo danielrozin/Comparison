@@ -11,14 +11,16 @@ describe("cashiers-check-blog override (ROO-269)", () => {
   it("is served from the repo ahead of the DB row", () => {
     expect(findRepoBlogArticle(CASHIERS_CHECK_BLOG_SLUG)).toBe(CASHIERS_CHECK_ARTICLE);
     expect(findRepoBlogOverride(CASHIERS_CHECK_BLOG_SLUG)).toBe(CASHIERS_CHECK_ARTICLE);
+    expect(CASHIERS_CHECK_ARTICLE.metaDescription.length).toBeGreaterThanOrEqual(70);
     expect(CASHIERS_CHECK_ARTICLE.metaDescription.length).toBeLessThanOrEqual(160);
+    expect(`${CASHIERS_CHECK_ARTICLE.metaTitle} | A Versus B`.length).toBeLessThanOrEqual(60);
     expect(CASHIERS_CHECK_ARTICLE.publishedAt).toBe("2026-07-10T08:48:57.020Z");
-    expect(CASHIERS_CHECK_ARTICLE.updatedAt).toBe("2026-10-19T00:00:00Z");
+    expect(CASHIERS_CHECK_ARTICLE.updatedAt).toBe("2026-11-10T00:00:00Z");
   });
 
   it("leads with the answer, keeps the label to the template, and avoids source-talk", () => {
     const text = CASHIERS_CHECK_ARTICLE.content;
-    expect(text.startsWith("**Updated Oct 2026.**")).toBe(true);
+    expect(text.startsWith("**Updated November 10, 2026.**")).toBe(true);
     expect(text).not.toMatch(BANNED);
     expect(text).not.toMatch(/^# /m);
   });
@@ -26,7 +28,10 @@ describe("cashiers-check-blog override (ROO-269)", () => {
   it("states fees only with issuer, date and a current-price link", () => {
     const text = CASHIERS_CHECK_ARTICLE.content;
     expect(text).toContain("$10 per check, per Chase Additional Banking Services and Fees");
-    expect(text).not.toMatch(/\$8\b|\$15\b|Walmart|Citibank|PNC|TD Bank/);
+    expect(text).toContain("not financial, legal, or tax advice");
+    expect(text).toContain("12 CFR 229.10");
+    expect(text).toContain("$6,725");
+    expect(text).not.toMatch(/\$8\b|\$15\b|\$225\b|\$5,525\b|Walmart|Citibank|PNC|TD Bank|credit union/);
     expect(text.match(/See vendor page for current price/g)!.length).toBeGreaterThanOrEqual(3);
   });
 
