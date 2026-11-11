@@ -136,6 +136,7 @@ import { NEXTCLOUD_VS_OPENCLOUD } from "./nextcloud-vs-opencloud";
 import { HYSA_VS_CD } from "./hysa-vs-cd";
 import { KDENLIVE_VS_SHOTCUT } from "./kdenlive-vs-shotcut";
 import { KDENLIVE_VS_DAVINCI_RESOLVE } from "./kdenlive-vs-davinci-resolve";
+import { ULTRAWIDE_VS_4K_MONITOR } from "./ultrawide-vs-4k-monitor";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -290,6 +291,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [HYSA_VS_CD.slug]: HYSA_VS_CD,
   [KDENLIVE_VS_SHOTCUT.slug]: KDENLIVE_VS_SHOTCUT,
   [KDENLIVE_VS_DAVINCI_RESOLVE.slug]: KDENLIVE_VS_DAVINCI_RESOLVE,
+  [ULTRAWIDE_VS_4K_MONITOR.slug]: ULTRAWIDE_VS_4K_MONITOR,
 };
 
 /**
