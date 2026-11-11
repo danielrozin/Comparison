@@ -880,6 +880,24 @@ export interface ComparisonVoteData {
   total: number;
 }
 
+/**
+ * Dataset JSON-LD description. A positive dataPointCount is included.
+ * Zero is omitted: a token tally is not a sourced data point, and "0 data
+ * points" would describe the dataset as empty.
+ */
+export function datasetCitationDescription(
+  citation: { sourceCount: number; dataPointCount: number; reviewsAnalyzed?: number | null },
+  covered: string,
+  includeReviews: boolean,
+): string {
+  const points = citation.dataPointCount > 0 ? ` and ${citation.dataPointCount} data points` : "";
+  const reviews =
+    includeReviews && citation.reviewsAnalyzed
+      ? `, analyzing ${citation.reviewsAnalyzed} reviews`
+      : "";
+  return `Structured side-by-side comparison dataset based on ${citation.sourceCount} sources${points}${reviews}, covering ${covered} attribute by attribute.`;
+}
+
 // ============================================================
 // Comparison page schema (Article + FAQPage + BreadcrumbList + ItemList)
 // ============================================================
@@ -1640,7 +1658,11 @@ export function comparisonPageSchema(
       "@id": `${url}#dataset`,
       name: `${comparison.title} - Comparison Data`,
       description: citation
-        ? `Structured side-by-side comparison dataset based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points${citation.reviewsAnalyzed ? `, analyzing ${citation.reviewsAnalyzed} reviews` : ""}, covering ${comparison.entities.map((e) => e.name).join(" vs ")} attribute by attribute.`
+        ? datasetCitationDescription(
+            citation,
+            comparison.entities.map((e) => e.name).join(" vs "),
+            true,
+          )
         : `Structured side-by-side comparison dataset for ${comparison.entities.map((e) => e.name).join(" vs ")} — attributes, verdict and FAQs collected by A Versus B.`,
       url,
       inLanguage: "en-US",
@@ -2415,7 +2437,11 @@ function buildMultiEntityGraph(
       "@id": `${url}#dataset`,
       name: `${comparison.title} - Comparison Data`,
       description: citation
-        ? `Structured side-by-side comparison dataset based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points, covering ${comparison.entities.map((e) => e.name).join(", ")} attribute by attribute.`
+        ? datasetCitationDescription(
+            citation,
+            comparison.entities.map((e) => e.name).join(", "),
+            false,
+          )
         : `Structured side-by-side comparison dataset for ${comparison.entities.map((e) => e.name).join(", ")} — attributes, verdict and FAQs collected by A Versus B.`,
       url,
       inLanguage: "en-US",
