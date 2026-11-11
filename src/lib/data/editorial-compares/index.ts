@@ -69,6 +69,7 @@ import { CASHIERS_CHECK_VS_CERTIFIED_CHECK } from "./cashiers-check-vs-certified
 import { RX_9070_XT_VS_RTX_5080 } from "./rx-9070-xt-vs-rtx-5080";
 import { RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI } from "./rtx-5070-vs-rx-9070-xt-vs-rtx-5070-ti";
 import { RTX_5070_VS_RX_9070_XT } from "./rtx-5070-vs-rx-9070-xt";
+import { RTX_5070_TI_VS_RX_9070_XT } from "./rtx-5070-ti-vs-rx-9070-xt";
 import { RTX_5070_VS_RTX_5070_TI } from "./rtx-5070-vs-rtx-5070-ti";
 import { RX_9060_XT_VS_RTX_5060_TI } from "./rx-9060-xt-vs-rtx-5060-ti";
 import { RTX_4070_LAPTOP_VS_RTX_5060_LAPTOP } from "./rtx-4070-laptop-vs-rtx-5060-laptop";
@@ -78,9 +79,11 @@ import { GALAXY_S26_VS_GALAXY_S26_ULTRA } from "./galaxy-s26-vs-galaxy-s26-ultra
 import { GALAXY_S25_VS_GALAXY_S25_ULTRA } from "./galaxy-s25-vs-galaxy-s25-ultra";
 import { OLED_VS_MINI_LED_GAMING_MONITOR } from "./oled-vs-mini-led-gaming-monitor";
 import { QD_OLED_VS_WOLED } from "./qd-oled-vs-woled";
+import { VA_VS_IPS } from "./va-vs-ips";
 import { RYZEN_7_9700X_VS_RYZEN_7_9800X3D } from "./ryzen-7-9700x-vs-ryzen-7-9800x3d";
 import { INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX } from "./intel-core-ultra-9-275hx-vs-amd-ryzen-9-9955hx";
 import { DDR5_VS_DDR4 } from "./ddr5-vs-ddr4";
+import { RAM_32GB_VS_64GB } from "./32gb-vs-64gb-ram";
 import { RX_7900_XT_VS_RTX_4070_TI } from "./rx-7900-xt-vs-rtx-4070-ti";
 import { RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP } from "./rtx-5070-ti-laptop-vs-rtx-5080-laptop";
 import { LENOVO_LEGION_5_VS_ASUS_ROG_STRIX_G16 } from "./lenovo-legion-5-vs-asus-rog-strix-g16";
@@ -114,6 +117,7 @@ import { CARNIVAL_VS_ROYAL_CARIBBEAN } from "./carnival-vs-royal-caribbean";
 import { MASTERCARD_VS_VISA } from "./mastercard-vs-visa";
 import { COSTCO_VS_WALMART } from "./costco-vs-walmart";
 import { GATORADE_VS_POWERADE } from "./gatorade-vs-powerade";
+import { MONITOR_1440P_VS_4K } from "./1440p-vs-4k-monitor";
 import { MCDONALDS_VS_WENDYS } from "./mcdonalds-vs-wendys";
 import { NIKE_VS_UNDER_ARMOUR } from "./nike-vs-under-armour";
 import { MEDICAID_VS_MEDICARE } from "./medicaid-vs-medicare";
@@ -123,6 +127,7 @@ import { RYZEN_7_5800X3D_VS_AM5 } from "./ryzen-7-5800x3d-vs-am5";
 import { RYZEN_5_5500_VS_RYZEN_5_5600 } from "./ryzen-5-5500-vs-ryzen-5-5600";
 import { RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D } from "./ryzen-7-7800x3d-vs-ryzen-7-9800x3d";
 import { RX_9070_VS_RX_9070_XT } from "./rx-9070-vs-rx-9070-xt";
+import { RX_9070_XT_VS_RX_7900_XTX } from "./rx-9070-xt-vs-rx-7900-xtx";
 import { B850_VS_X870 } from "./b850-vs-x870";
 import { B650_VS_B850 } from "./b650-vs-b850";
 import { AM4_VS_AM5 } from "./am4-vs-am5";
@@ -132,6 +137,7 @@ import { NEXTCLOUD_VS_OPENCLOUD } from "./nextcloud-vs-opencloud";
 import { HYSA_VS_CD } from "./hysa-vs-cd";
 import { KDENLIVE_VS_SHOTCUT } from "./kdenlive-vs-shotcut";
 import { KDENLIVE_VS_DAVINCI_RESOLVE } from "./kdenlive-vs-davinci-resolve";
+import { ULTRAWIDE_VS_4K_MONITOR } from "./ultrawide-vs-4k-monitor";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -217,6 +223,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9070_XT_VS_RTX_5080.slug]: RX_9070_XT_VS_RTX_5080,
   [RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI.slug]: RTX_5070_VS_RX_9070_XT_VS_RTX_5070_TI,
   [RTX_5070_VS_RX_9070_XT.slug]: RTX_5070_VS_RX_9070_XT,
+  [RTX_5070_TI_VS_RX_9070_XT.slug]: RTX_5070_TI_VS_RX_9070_XT,
   [RTX_5070_VS_RTX_5070_TI.slug]: RTX_5070_VS_RTX_5070_TI,
   [GALAXY_S26_VS_GALAXY_S26_ULTRA.slug]: GALAXY_S26_VS_GALAXY_S26_ULTRA,
   [GALAXY_S25_VS_GALAXY_S25_ULTRA.slug]: GALAXY_S25_VS_GALAXY_S25_ULTRA,
@@ -228,9 +235,11 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9060_XT_VS_RX_9070_XT.slug]: RX_9060_XT_VS_RX_9070_XT,
   [OLED_VS_MINI_LED_GAMING_MONITOR.slug]: OLED_VS_MINI_LED_GAMING_MONITOR,
   [QD_OLED_VS_WOLED.slug]: QD_OLED_VS_WOLED,
+  [VA_VS_IPS.slug]: VA_VS_IPS,
   [RYZEN_7_9700X_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_9700X_VS_RYZEN_7_9800X3D,
   [INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX.slug]: INTEL_CORE_ULTRA_9_275HX_VS_RYZEN_9_9955HX,
   [DDR5_VS_DDR4.slug]: DDR5_VS_DDR4,
+  [RAM_32GB_VS_64GB.slug]: RAM_32GB_VS_64GB,
   [RX_7900_XT_VS_RTX_4070_TI.slug]: RX_7900_XT_VS_RTX_4070_TI,
   [RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP.slug]: RTX_5070_TI_LAPTOP_VS_RTX_5080_LAPTOP,
   [LENOVO_LEGION_5_VS_ASUS_ROG_STRIX_G16.slug]: LENOVO_LEGION_5_VS_ASUS_ROG_STRIX_G16,
@@ -264,6 +273,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MASTERCARD_VS_VISA.slug]: MASTERCARD_VS_VISA,
   [COSTCO_VS_WALMART.slug]: COSTCO_VS_WALMART,
   [GATORADE_VS_POWERADE.slug]: GATORADE_VS_POWERADE,
+  [MONITOR_1440P_VS_4K.slug]: MONITOR_1440P_VS_4K,
   [MCDONALDS_VS_WENDYS.slug]: MCDONALDS_VS_WENDYS,
   [NIKE_VS_UNDER_ARMOUR.slug]: NIKE_VS_UNDER_ARMOUR,
   [MEDICAID_VS_MEDICARE.slug]: MEDICAID_VS_MEDICARE,
@@ -273,6 +283,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RYZEN_5_5500_VS_RYZEN_5_5600.slug]: RYZEN_5_5500_VS_RYZEN_5_5600,
   [RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D.slug]: RYZEN_7_7800X3D_VS_RYZEN_7_9800X3D,
   [RX_9070_VS_RX_9070_XT.slug]: RX_9070_VS_RX_9070_XT,
+  [RX_9070_XT_VS_RX_7900_XTX.slug]: RX_9070_XT_VS_RX_7900_XTX,
   [B850_VS_X870.slug]: B850_VS_X870,
   [B650_VS_B850.slug]: B650_VS_B850,
   [AM4_VS_AM5.slug]: AM4_VS_AM5,
@@ -282,6 +293,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [HYSA_VS_CD.slug]: HYSA_VS_CD,
   [KDENLIVE_VS_SHOTCUT.slug]: KDENLIVE_VS_SHOTCUT,
   [KDENLIVE_VS_DAVINCI_RESOLVE.slug]: KDENLIVE_VS_DAVINCI_RESOLVE,
+  [ULTRAWIDE_VS_4K_MONITOR.slug]: ULTRAWIDE_VS_4K_MONITOR,
 };
 
 /**
