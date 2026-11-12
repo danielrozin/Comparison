@@ -140,6 +140,7 @@ import { KDENLIVE_VS_DAVINCI_RESOLVE } from "./kdenlive-vs-davinci-resolve";
 import { ULTRAWIDE_VS_4K_MONITOR } from "./ultrawide-vs-4k-monitor";
 import { RYZEN_7_5700X3D_VS_RYZEN_7_5800X3D } from "./ryzen-7-5700x3d-vs-ryzen-7-5800x3d";
 import { RX_9070_VS_RTX_5070 } from "./rx-9070-vs-rtx-5070";
+import { MONITOR_27_VS_32_INCH_4K_OLED } from "./27-vs-32-inch-4k-oled";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -298,6 +299,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [ULTRAWIDE_VS_4K_MONITOR.slug]: ULTRAWIDE_VS_4K_MONITOR,
   [RYZEN_7_5700X3D_VS_RYZEN_7_5800X3D.slug]: RYZEN_7_5700X3D_VS_RYZEN_7_5800X3D,
   [RX_9070_VS_RTX_5070.slug]: RX_9070_VS_RTX_5070,
+  [MONITOR_27_VS_32_INCH_4K_OLED.slug]: MONITOR_27_VS_32_INCH_4K_OLED,
 };
 
 /**
