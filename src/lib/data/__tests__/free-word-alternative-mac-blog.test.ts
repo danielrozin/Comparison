@@ -55,6 +55,14 @@ describe("free Word alternative for Mac blog (ROO-430)", () => {
     expect(text.trimEnd().endsWith("Drafted with AI from web research.")).toBe(true);
     expect(text).not.toMatch(BANNED);
     expect(text).not.toMatch(/^# /m);
+    expect(sentences[0]).toContain(".doc and .docx in Pages on a Mac, or DOCX in Pages on iPhone, iPad, and iCloud.com");
+    expect(text).toContain("You want .doc and .docx in Pages on a Mac, or DOCX in Pages on iPhone or iPad");
+    expect(text).not.toContain(".doc and .docx inside Apple's apps on a Mac, iPhone, or iPad");
+    expect(text).not.toContain(".doc and .docx in Apple's apps");
+    const pagesFaq = FREE_WORD_ALTERNATIVE_MAC_FAQS.find((faq) => faq.question === "Can Pages open and save Word documents?");
+    expect(pagesFaq?.answer).toContain("a .doc or .docx extension");
+    expect(pagesFaq?.answer).toContain("Pages opens DOCX on iPhone, iPad, Mac, and iCloud.com");
+    expect(pagesFaq?.answer).not.toMatch(/\.doc or \.docx[^.]{0,80}iPhone/);
   });
 
   it("links only the live compare and blog targets from the brief", () => {
