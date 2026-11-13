@@ -27,6 +27,7 @@ import { MARVEL_MOVIES_RANKED_ARTICLE, MARVEL_MOVIES_RANKED_BLOG_SLUG } from "@/
 import { GOOGLE_MAPS_ALTERNATIVES_ARTICLE } from "@/lib/data/google-maps-alternatives-blog";
 import { CHEAPEST_CAR_INSURANCE_ARTICLE, CHEAPEST_CAR_INSURANCE_BLOG_SLUG } from "@/lib/data/cheapest-car-insurance-blog";
 import { KDENLIVE_SHOTCUT_RESOLVE_ARTICLE } from "@/lib/data/kdenlive-shotcut-resolve-blog";
+import { FREE_WORD_ALTERNATIVE_MAC_ARTICLE } from "@/lib/data/free-word-alternative-mac-blog";
 
 export const NBA_SEASON_PREVIEW_BLOG_SLUG = "2026-27-nba-season-preview-10-debates";
 
@@ -171,6 +172,7 @@ const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   CHEAPEST_CAR_INSURANCE_ARTICLE,
   MARVEL_MOVIES_RANKED_ARTICLE,
   KDENLIVE_SHOTCUT_RESOLVE_ARTICLE,
+  FREE_WORD_ALTERNATIVE_MAC_ARTICLE,
 ];
 
 /**

@@ -25,6 +25,7 @@ import { BEST_PRODUCTIVITY_APPS_FAQS } from "@/lib/data/best-productivity-apps-b
 import { CHEAPEST_CAR_INSURANCE_FAQS } from "@/lib/data/cheapest-car-insurance-blog";
 import { MARVEL_MOVIES_RANKED_FAQS } from "@/lib/data/marvel-movies-ranked-blog";
 import { KDENLIVE_SHOTCUT_RESOLVE_FAQS } from "@/lib/data/kdenlive-shotcut-resolve-blog";
+import { FREE_WORD_ALTERNATIVE_MAC_FAQS } from "@/lib/data/free-word-alternative-mac-blog";
 
 export interface BlogFaq {
   question: string;
@@ -92,6 +93,8 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
       ],
     },
   },
+  // ROO-430: FAQs mirror the visible FAQ section. No personal byline.
+  "best-free-microsoft-word-alternative-for-mac": { faqs: FREE_WORD_ALTERNATIVE_MAC_FAQS },
 };
 
 export function getBlogSchemaExtras(slug: string): BlogSchemaExtras | null {
