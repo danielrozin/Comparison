@@ -35,7 +35,7 @@ const BLOG_DOCS_NOTION = "/blog/google-docs-vs-notion-2026-best-productivity-too
 
 /** First two sentences. Also the excerpt, so the hero and the body match. */
 export const FREE_WORD_ALTERNATIVE_MAC_OPENING =
-  "Choose Apple Pages if you want to open and edit .doc and .docx files in Pages on a Mac and open Word DOCX files in Pages on iPhone, iPad, and iCloud.com, with no price stated on the Apple support articles opened November 13, 2026. Choose ONLYOFFICE Desktop Editors if you want the free macOS download ONLYOFFICE says is built around native DOCX, XLSX, and PPTX support, choose Word for the web if you want Microsoft's free browser Word with a Microsoft account and 5 GB of OneDrive, and choose LibreOffice Writer if you want the free desktop word processor that loads and saves docx and may need hand reformatting on a complex Word file.";
+  "Choose Apple Pages if you want .doc and .docx in Pages on a Mac, or DOCX in Pages on iPhone, iPad, and iCloud.com, with no price stated on the Apple support articles opened November 13, 2026. Choose ONLYOFFICE Desktop Editors if you want the free macOS download ONLYOFFICE says is built around native DOCX, XLSX, and PPTX support, choose Word for the web if you want Microsoft's free browser Word with a Microsoft account and 5 GB of OneDrive, and choose LibreOffice Writer if you want the free desktop word processor that loads and saves docx and may need hand reformatting on a complex Word file.";
 
 export const FREE_WORD_ALTERNATIVE_MAC_FAQS = [
   {
@@ -89,7 +89,7 @@ const CONTENT = `${FREE_WORD_ALTERNATIVE_MAC_OPENING}
 
 | App | Choose it if | Word files | Where it runs | Cost note from the publisher |
 | --- | --- | --- | --- | --- |
-| Pages | You want .doc and .docx inside Apple's apps on a Mac, iPhone, or iPad | Mac guide: open and edit .doc and .docx, then save as a Word document. Convert article: open DOCX on iPhone, iPad, Mac, and iCloud.com, and export Word as DOCX | Pages on iPhone, iPad, and Mac, plus Pages for iCloud in a browser | No price on Apple support articles opened November 13, 2026 |
+| Pages | You want .doc and .docx in Pages on a Mac, or DOCX in Pages on iPhone or iPad | Mac guide: open and edit .doc and .docx, then save as a Word document. Convert article: open DOCX on iPhone, iPad, Mac, and iCloud.com, and export Word as DOCX | Pages on iPhone, iPad, and Mac, plus Pages for iCloud in a browser | No price on Apple support articles opened November 13, 2026 |
 | ONLYOFFICE Desktop Editors | You want a desktop download and ONLYOFFICE's own DOCX description | ONLYOFFICE says it is built around native DOCX, XLSX, and PPTX support | macOS 10.13 or higher, Intel and Apple chips, plus Windows and Linux. Android and iOS downloads are listed as Proprietary | Free for personal and professional use. Desktop license AGPLv3 |
 | Word for the web | You want Microsoft's Word in a browser | Microsoft's web Word. Files are saved in and shared from OneDrive | A browser after you sign in with a Microsoft account | Free with your Microsoft account. Web versions only. 5 GB OneDrive. Security updates, but no new features |
 | LibreOffice Writer | You want a free desktop word processor and can fix a complex layout | Loads and saves docx. Complex documents may need manual reformatting | LibreOffice 26.8.3 for macOS Apple Silicon and macOS Intel, plus Windows and Linux | Free and open source, at no cost, on libreoffice.org |
@@ -98,7 +98,7 @@ const CONTENT = `${FREE_WORD_ALTERNATIVE_MAC_OPENING}
 
 ## Which option fits a Word file on a Mac?
 
-It depends on the file and the device. Choose Pages for .doc and .docx in Apple's apps, ONLYOFFICE when you want the free desktop app it describes as native DOCX, Word for the web when you want Microsoft's free browser Word, and LibreOffice Writer when you want a free desktop app and can reformat a complex Word file.
+It depends on the file and the device. Choose Pages for .doc and .docx on a Mac, or DOCX on iPhone or iPad, ONLYOFFICE when you want the free desktop app it describes as native DOCX, Word for the web when you want Microsoft's free browser Word, and LibreOffice Writer when you want a free desktop app and can reformat a complex Word file.
 
 No one of these covers every Mac, every .doc file, and every layout. The table rows are conditions, not a ranking.
 
