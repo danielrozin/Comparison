@@ -16,6 +16,7 @@ import { IPHONE_BROWSER_ARTICLE, IPHONE_BROWSER_BLOG_SLUG } from "@/lib/data/iph
 import { ANTIMALWARE_SERVICE_EXECUTABLE_ARTICLE } from "@/lib/data/antimalware-service-executable-blog";
 import { BEST_CLOUD_PLATFORMS_ARTICLE, BEST_CLOUD_PLATFORMS_BLOG_SLUG } from "@/lib/data/best-cloud-platforms-blog";
 import { MACBOOK_PRO_WEIGHT_ARTICLE, MACBOOK_PRO_WEIGHT_BLOG_SLUG } from "@/lib/data/macbook-pro-weight-blog";
+import { MACBOOK_AIR_WEIGHT_ARTICLE, MACBOOK_AIR_WEIGHT_BLOG_SLUG } from "@/lib/data/macbook-air-weight-blog";
 import { SHOPIFY_WOO_SQUARESPACE_ARTICLE, SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG } from "@/lib/data/shopify-woocommerce-squarespace-blog";
 import { COMPARE_CAR_INSURANCE_QUOTES_ARTICLE } from "@/lib/data/compare-car-insurance-quotes-blog";
 import { NAVIGATION_APPS_ARTICLE, NAVIGATION_APPS_BLOG_SLUG } from "@/lib/data/navigation-apps-blog";
@@ -26,6 +27,7 @@ import { MARVEL_MOVIES_RANKED_ARTICLE, MARVEL_MOVIES_RANKED_BLOG_SLUG } from "@/
 import { GOOGLE_MAPS_ALTERNATIVES_ARTICLE } from "@/lib/data/google-maps-alternatives-blog";
 import { CHEAPEST_CAR_INSURANCE_ARTICLE, CHEAPEST_CAR_INSURANCE_BLOG_SLUG } from "@/lib/data/cheapest-car-insurance-blog";
 import { KDENLIVE_SHOTCUT_RESOLVE_ARTICLE } from "@/lib/data/kdenlive-shotcut-resolve-blog";
+import { FREE_WORD_ALTERNATIVE_MAC_ARTICLE } from "@/lib/data/free-word-alternative-mac-blog";
 
 export const NBA_SEASON_PREVIEW_BLOG_SLUG = "2026-27-nba-season-preview-10-debates";
 
@@ -161,6 +163,7 @@ const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   BEST_CLOUD_PLATFORMS_ARTICLE,
   COMPARE_CAR_INSURANCE_QUOTES_ARTICLE,
   MACBOOK_PRO_WEIGHT_ARTICLE,
+  MACBOOK_AIR_WEIGHT_ARTICLE,
   SHOPIFY_WOO_SQUARESPACE_ARTICLE,
   NAVIGATION_APPS_ARTICLE,
   BEST_ACCOUNTING_FREELANCERS_ARTICLE,
@@ -169,6 +172,7 @@ const REPO_BLOG_ARTICLES: readonly BlogArticle[] = [
   CHEAPEST_CAR_INSURANCE_ARTICLE,
   MARVEL_MOVIES_RANKED_ARTICLE,
   KDENLIVE_SHOTCUT_RESOLVE_ARTICLE,
+  FREE_WORD_ALTERNATIVE_MAC_ARTICLE,
 ];
 
 /**
@@ -182,6 +186,7 @@ const REPO_BLOG_DB_OVERRIDE_SLUGS: ReadonlySet<string> = new Set([
   IPHONE_BROWSER_BLOG_SLUG,
   BEST_CLOUD_PLATFORMS_BLOG_SLUG,
   MACBOOK_PRO_WEIGHT_BLOG_SLUG,
+  MACBOOK_AIR_WEIGHT_BLOG_SLUG,
   SHOPIFY_WOO_SQUARESPACE_BLOG_SLUG,
   NAVIGATION_APPS_BLOG_SLUG,
   BEST_ACCOUNTING_FREELANCERS_BLOG_SLUG,

@@ -15,6 +15,7 @@ import { IPHONE_BROWSER_FAQS } from "@/lib/data/iphone-browser-blog";
 import { ANTIMALWARE_SERVICE_EXECUTABLE_FAQS } from "@/lib/data/antimalware-service-executable-blog";
 import { BEST_CLOUD_PLATFORMS_FAQS } from "@/lib/data/best-cloud-platforms-blog";
 import { MACBOOK_PRO_WEIGHT_FAQS } from "@/lib/data/macbook-pro-weight-blog";
+import { MACBOOK_AIR_WEIGHT_FAQS } from "@/lib/data/macbook-air-weight-blog";
 import { SHOPIFY_WOO_SQUARESPACE_FAQS } from "@/lib/data/shopify-woocommerce-squarespace-blog";
 import { COMPARE_CAR_INSURANCE_QUOTES_FAQS } from "@/lib/data/compare-car-insurance-quotes-blog";
 import { NAVIGATION_APPS_FAQS } from "@/lib/data/navigation-apps-blog";
@@ -24,6 +25,7 @@ import { BEST_PRODUCTIVITY_APPS_FAQS } from "@/lib/data/best-productivity-apps-b
 import { CHEAPEST_CAR_INSURANCE_FAQS } from "@/lib/data/cheapest-car-insurance-blog";
 import { MARVEL_MOVIES_RANKED_FAQS } from "@/lib/data/marvel-movies-ranked-blog";
 import { KDENLIVE_SHOTCUT_RESOLVE_FAQS } from "@/lib/data/kdenlive-shotcut-resolve-blog";
+import { FREE_WORD_ALTERNATIVE_MAC_FAQS } from "@/lib/data/free-word-alternative-mac-blog";
 
 export interface BlogFaq {
   question: string;
@@ -59,6 +61,8 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   "what-is-antimalware-service-executable": { faqs: ANTIMALWARE_SERVICE_EXECUTABLE_FAQS },
   // ROO-235: FAQs mirror the visible FAQ section of the repo article; no personal byline.
   "macbook-pro-weight-2025-2026-complete-specs-comparison-guide": { faqs: MACBOOK_PRO_WEIGHT_FAQS },
+  // ROO-406: FAQs mirror the visible FAQ section of the repo override.
+  "macbook-air-weight-comparison-2025-2026-which-model-is-right-for-you": { faqs: MACBOOK_AIR_WEIGHT_FAQS },
   // ROO-276: FAQs mirror the visible FAQ section of the repo article.
   "how-to-compare-car-insurance-quotes": { faqs: COMPARE_CAR_INSURANCE_QUOTES_FAQS },
   "shopify-vs-woocommerce-vs-squarespace-2026": { faqs: SHOPIFY_WOO_SQUARESPACE_FAQS },
@@ -89,6 +93,8 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
       ],
     },
   },
+  // ROO-430: FAQs mirror the visible FAQ section. No personal byline.
+  "best-free-microsoft-word-alternative-for-mac": { faqs: FREE_WORD_ALTERNATIVE_MAC_FAQS },
 };
 
 export function getBlogSchemaExtras(slug: string): BlogSchemaExtras | null {
