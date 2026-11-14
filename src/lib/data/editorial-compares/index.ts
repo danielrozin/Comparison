@@ -142,6 +142,7 @@ import { RYZEN_7_5700X3D_VS_RYZEN_7_5800X3D } from "./ryzen-7-5700x3d-vs-ryzen-7
 import { RX_9070_VS_RTX_5070 } from "./rx-9070-vs-rtx-5070";
 import { DURONAUT_VS_KRYONAUT } from "./duronaut-vs-kryonaut";
 import { MONITOR_27_VS_32_INCH_4K_OLED } from "./27-vs-32-inch-4k-oled";
+import { MSI_MAG_B850_TOMAHAWK_MAX_WIFI_VS_ASUS_TUF_B850_PLUS_WIFI } from "./msi-mag-b850-tomahawk-max-wifi-vs-asus-tuf-gaming-b850-plus-wifi";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -302,6 +303,8 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RX_9070_VS_RTX_5070.slug]: RX_9070_VS_RTX_5070,
   [DURONAUT_VS_KRYONAUT.slug]: DURONAUT_VS_KRYONAUT,
   [MONITOR_27_VS_32_INCH_4K_OLED.slug]: MONITOR_27_VS_32_INCH_4K_OLED,
+  [MSI_MAG_B850_TOMAHAWK_MAX_WIFI_VS_ASUS_TUF_B850_PLUS_WIFI.slug]:
+    MSI_MAG_B850_TOMAHAWK_MAX_WIFI_VS_ASUS_TUF_B850_PLUS_WIFI,
 };
 
 /**
