@@ -144,6 +144,7 @@ import { DURONAUT_VS_KRYONAUT } from "./duronaut-vs-kryonaut";
 import { MONITOR_27_VS_32_INCH_4K_OLED } from "./27-vs-32-inch-4k-oled";
 import { MSI_MAG_B850_TOMAHAWK_MAX_WIFI_VS_ASUS_TUF_B850_PLUS_WIFI } from "./msi-mag-b850-tomahawk-max-wifi-vs-asus-tuf-gaming-b850-plus-wifi";
 import { PSU_850W_VS_1000W } from "./850w-vs-1000w-psu";
+import { CORE_ULTRA_5_250K_PLUS_VS_CORE_ULTRA_7_270K_PLUS } from "./core-ultra-5-250k-plus-vs-core-ultra-7-270k-plus";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -307,6 +308,8 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MSI_MAG_B850_TOMAHAWK_MAX_WIFI_VS_ASUS_TUF_B850_PLUS_WIFI.slug]:
     MSI_MAG_B850_TOMAHAWK_MAX_WIFI_VS_ASUS_TUF_B850_PLUS_WIFI,
   [PSU_850W_VS_1000W.slug]: PSU_850W_VS_1000W,
+  [CORE_ULTRA_5_250K_PLUS_VS_CORE_ULTRA_7_270K_PLUS.slug]:
+    CORE_ULTRA_5_250K_PLUS_VS_CORE_ULTRA_7_270K_PLUS,
 };
 
 /**
