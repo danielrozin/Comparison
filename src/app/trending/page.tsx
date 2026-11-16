@@ -16,6 +16,8 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { CategoryIcon } from "@/lib/utils/category-icons";
+import { LatestEditorialCompares } from "@/components/home/LatestEditorialCompares";
+import { liveLatestEditorialCompares } from "@/lib/data/editorial-compares/live-latest";
 
 export const revalidate = 300; // ISR: revalidate trending page every 5 minutes
 
@@ -142,7 +144,10 @@ export default async function TrendingPage({ searchParams }: PageProps) {
   const activeSort: SortValue = (SORT_OPTIONS.find((o) => o.value === sp.sort)?.value) ?? "views";
 
   // Fetch enough items for pagination (up to 100)
-  const allTrending = await getTrendingComparisons(100);
+  const [allTrending, latestEditorial] = await Promise.all([
+    getTrendingComparisons(100),
+    liveLatestEditorialCompares(8),
+  ]);
 
   // Collect unique categories from data
   const categoryCounts: Record<string, number> = {};
@@ -173,7 +178,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
 
   // ROO-47: hero CTA uses the ranked list (category filter when one is
   // active), not the current page slice, so page 2 still opens on a live
-  // /compare. Cards below keep ?source_page=trending for ROO-48.
+  // /compare. Cards below keep data-source-page=trending for ROO-48 (ROO-453: no query param in the href).
   const trendingCompare = buildTrendingCompareCta(
     filtered.length > 0 ? filtered : allTrending,
   );
@@ -545,6 +550,13 @@ export default async function TrendingPage({ searchParams }: PageProps) {
             ...(activeSort !== "views" ? { sort: activeSort } : {}),
           }}
         />
+
+        {/* ROO-453: newest editorial compares, plain links for crawlers. Page 1 only. */}
+        {safePage === 1 && (
+          <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+            <LatestEditorialCompares items={latestEditorial} headingId="trending-latest-editorial-heading" />
+          </div>
+        )}
 
         {/* FAQ section — renders structured Q&A so FAQPage JSON-LD speakable selectors resolve
             and satisfies Google FAQ rich-result eligibility + AEO answer extraction. Page 1 only. */}

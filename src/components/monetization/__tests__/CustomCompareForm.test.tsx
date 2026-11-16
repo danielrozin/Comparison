@@ -65,7 +65,7 @@ describe("CustomCompareForm failures", () => {
     expect(alert.textContent).not.toMatch(/24 hours/i);
     expect(within(alert).getByRole("link", { name: "iPhone 17 vs Samsung Galaxy S26" })).toHaveAttribute(
       "href",
-      "/compare/iphone-17-vs-samsung-s26?source_page=%2Fcustom-compare",
+      "/compare/iphone-17-vs-samsung-s26",
     );
     expect(within(alert).getByRole("link", { name: "See Pro pricing" })).toBeTruthy();
     expect(trackCustomCompareGated).toHaveBeenCalledWith("upgrade_required");
@@ -94,7 +94,7 @@ describe("CustomCompareForm failures", () => {
     expect(alert.textContent).not.toMatch(/24 hours/i);
     expect(within(alert).getByRole("link", { name: "USA vs China" })).toHaveAttribute(
       "href",
-      "/compare/usa-vs-china?source_page=%2Fcustom-compare",
+      "/compare/usa-vs-china",
     );
     expect(trackCustomCompareError).toHaveBeenCalledWith("unavailable");
     expect(trackCustomCompareGated).not.toHaveBeenCalled();

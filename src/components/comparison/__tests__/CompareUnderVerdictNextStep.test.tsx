@@ -124,8 +124,9 @@ describe("CompareUnderVerdictNextStep", () => {
     const link = within(container).getByRole("link", { name: /US vs China GDP/ });
     expect(link).toHaveAttribute(
       "href",
-      "/compare/us-vs-china-gdp?source_page=compare-japan-vs-china",
+      "/compare/us-vs-china-gdp",
     );
+    expect(link).toHaveAttribute("data-source-page", "compare-japan-vs-china");
     fireEvent.click(link);
 
     expect(trackAffiliateClick).not.toHaveBeenCalled();
@@ -151,7 +152,7 @@ describe("CompareUnderVerdictNextStep", () => {
       <CompareUnderVerdictNextStep slug="empty-vs-empty" chips={[]} entities={[]} />,
     );
     const link = within(container).getByRole("link", { name: /Browse trending/ });
-    expect(link.getAttribute("href")).toContain("/trending?source_page=compare-empty-vs-empty");
+    expect(link.getAttribute("href")).toContain("/trending");
     expect(container.querySelector("[data-early-commerce]")).toHaveAttribute("data-early-commerce", "false");
     expect(container).not.toHaveTextContent("As an Amazon Associate");
   });

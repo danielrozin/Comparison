@@ -23,6 +23,8 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { AnimatedStats } from "@/components/home/AnimatedStats";
 import { ComparisonTicker } from "@/components/home/ComparisonTicker";
 import { CategoryIcon } from "@/lib/utils/category-icons";
+import { LatestEditorialCompares } from "@/components/home/LatestEditorialCompares";
+import { liveLatestEditorialCompares } from "@/lib/data/editorial-compares/live-latest";
 
 const HOME_TITLE = `${SITE_NAME} — Compare Anything`;
 const HOME_DESC = "The internet's most comprehensive comparison platform. Side-by-side comparisons across sports, technology, products, countries, software, and more — data-driven, free, and instant.";
@@ -58,11 +60,12 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [trending, latest, totalCount, blogResult] = await Promise.all([
+  const [trending, latest, totalCount, blogResult, latestEditorial] = await Promise.all([
     getTrendingComparisons(10),
     getLatestComparisons(8),
     getTotalComparisonsCount(),
     listBlogArticles({ limit: 3, status: "published", includeReadTime: true }),
+    liveLatestEditorialCompares(8),
   ]);
   const blogArticles = blogResult.articles;
 
@@ -411,6 +414,9 @@ export default async function HomePage() {
         </div>
       </section>
       </ScrollReveal>
+
+      {/* ROO-453: newest editorial compares, plain links for crawlers */}
+      <LatestEditorialCompares items={latestEditorial} />
 
       {/* Latest Comparisons */}
       <ScrollReveal delay={100}>

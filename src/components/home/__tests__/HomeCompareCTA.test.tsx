@@ -39,7 +39,7 @@ describe("HomeCompareCTA blog hub path (ROO-46)", () => {
     const primary = view.getByRole("link", { name: /Compare now/i });
     expect(primary).toHaveAttribute(
       "href",
-      "/compare/amazon-vs-best-buy?source_page=blog-hub",
+      "/compare/amazon-vs-best-buy",
     );
     fireEvent.click(primary);
     expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
@@ -50,7 +50,7 @@ describe("HomeCompareCTA blog hub path (ROO-46)", () => {
     const chip = view.getByRole("link", { name: /Messi vs Ronaldo/i });
     expect(chip).toHaveAttribute(
       "href",
-      "/compare/messi-vs-ronaldo?source_page=blog-hub",
+      "/compare/messi-vs-ronaldo",
     );
     fireEvent.click(chip);
     expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
@@ -70,7 +70,7 @@ describe("HomeCompareCTA blog hub path (ROO-46)", () => {
     );
     const trending = within(container).getAllByRole("link", { name: /^Trending$/i });
     expect(trending.length).toBeGreaterThan(0);
-    expect(trending[0]).toHaveAttribute("href", "/trending?source_page=home");
+    expect(trending[0]).toHaveAttribute("href", "/trending");
   });
 });
 
@@ -88,8 +88,10 @@ describe("TrackedCompareLink", () => {
     const link = getByRole("link", { name: /MacBook Air vs MacBook Pro/i });
     expect(link).toHaveAttribute(
       "href",
-      "/compare/macbook-air-vs-macbook-pro?source_page=blog-hub",
+      "/compare/macbook-air-vs-macbook-pro",
     );
+    // ROO-453: clean href; attribution rides on data-source-page.
+    expect(link).toHaveAttribute("data-source-page", "blog-hub");
     fireEvent.click(link);
     expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
       "blog-hub",

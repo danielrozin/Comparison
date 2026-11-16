@@ -33,10 +33,11 @@ describe("CompareNextRow (ROO-264)", () => {
     const links = screen.getAllByRole("link");
     expect(links).toHaveLength(3);
     expect(links.map((l) => l.getAttribute("href"))).toEqual([
-      "/compare/a-vs-b?source_page=%2Fcompare%2Fself-vs-page",
-      "/compare/c-vs-d?source_page=%2Fcompare%2Fself-vs-page",
-      "/compare/e-vs-f?source_page=%2Fcompare%2Fself-vs-page",
+      "/compare/a-vs-b",
+      "/compare/c-vs-d",
+      "/compare/e-vs-f",
     ]);
+    expect(links.every((l) => l.getAttribute("data-source-page") === "/compare/self-vs-page")).toBe(true);
     fireEvent.click(links[2]!);
     expect(trackRelatedComparisonClick).toHaveBeenCalledWith("/compare/self-vs-page", "e-vs-f", {
       placement: "under-verdict-next",

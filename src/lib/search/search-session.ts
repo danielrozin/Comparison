@@ -1,3 +1,4 @@
+import { landingSourcePage } from "@/lib/analytics/internal-source";
 /**
  * One id per typed query, shared by the home box, the header overlay,
  * /search, and the missing-compare page.
@@ -99,7 +100,7 @@ export function canonicalSlugExists(args: {
 
 export function currentSourcePage(): string {
   if (typeof window === "undefined") return "";
-  return new URLSearchParams(window.location.search).get("source_page") ?? "";
+  return landingSourcePage() ?? "";
 }
 
 export function lastSearchAttachment(): {

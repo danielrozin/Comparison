@@ -57,8 +57,6 @@ describe("robots.txt Next.js assets", () => {
       "/developers/dashboard",
       "/survey",
       "/*?*sort=",
-      "/*?page=",
-      "/*&page=",
       "/*?*ref=",
       "/*?*utm_",
       "/*?*fbclid=",

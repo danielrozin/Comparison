@@ -1,5 +1,6 @@
 "use client";
 
+import { SOURCE_PAGE_ATTR } from "@/lib/analytics/internal-source";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
@@ -25,7 +26,7 @@ export type CompareNextStepCTAProps = {
 /**
  * Mid-page next-step compare chips for high-bounce /compare landers.
  * ROO-29: drive a second comparison_viewed via related_comparison_click
- * + ?source_page=compare-next (same pattern as HomeCompareCTA / ROO-30).
+ * + data-source-page=compare-next (same pattern as HomeCompareCTA / ROO-30).
  */
 export function CompareNextStepCTA({
   chips,
@@ -54,10 +55,9 @@ export function CompareNextStepCTA({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // ROO-453: clean href; the source rides on data-source-page.
   function withSourcePage(href: string) {
-    if (!source) return href;
-    const join = href.includes("?") ? "&" : "?";
-    return `${href}${join}source_page=${encodeURIComponent(source)}`;
+    return source ? { href, [SOURCE_PAGE_ATTR]: source } : { href };
   }
 
   function track(target: string) {
@@ -107,7 +107,7 @@ export function CompareNextStepCTA({
             </div>
             <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0">
               <Link
-                href={withSourcePage(primaryHref)}
+                {...withSourcePage(primaryHref)}
                 onClick={() => track(primary ? primary.slug : softHref)}
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
               >
@@ -128,7 +128,7 @@ export function CompareNextStepCTA({
                 </svg>
               </Link>
               <Link
-                href={withSourcePage(softHref)}
+                {...withSourcePage(softHref)}
                 onClick={() => track(softHref)}
                 className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-primary-700 bg-white ring-1 ring-primary-200 hover:bg-primary-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
               >
@@ -145,7 +145,7 @@ export function CompareNextStepCTA({
               {chips.map((chip) => (
                 <li key={chip.slug}>
                   <Link
-                    href={withSourcePage(`/compare/${chip.slug}`)}
+                    {...withSourcePage(`/compare/${chip.slug}`)}
                     onClick={() => track(chip.slug)}
                     className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1.5 bg-white hover:bg-primary-50 border border-primary-200 hover:border-primary-300 rounded-full text-xs font-medium text-text hover:text-primary-800 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                   >
@@ -182,7 +182,7 @@ export function CompareNextStepCTA({
             </p>
           </div>
           <Link
-            href={withSourcePage(primaryHref)}
+            {...withSourcePage(primaryHref)}
             onClick={() => track(primary ? primary.slug : softHref)}
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           >

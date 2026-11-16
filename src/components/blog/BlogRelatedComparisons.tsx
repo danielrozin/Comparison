@@ -1,5 +1,6 @@
 "use client";
 
+import { SOURCE_PAGE_ATTR } from "@/lib/analytics/internal-source";
 import Link from "next/link";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
 import { BLOG_COMPARE_SOFT_HREF } from "@/lib/data/blog-compare-constants";
@@ -44,7 +45,8 @@ export function BlogRelatedComparisons({
           </p>
           <div className="flex flex-wrap gap-2">
             <Link
-              href={`${BLOG_COMPARE_SOFT_HREF}?source_page=${encodeURIComponent(blogSlug)}`}
+              href={BLOG_COMPARE_SOFT_HREF}
+              {...{ [SOURCE_PAGE_ATTR]: blogSlug }}
               onClick={() => trackRelatedComparisonClick(blogSlug, BLOG_COMPARE_SOFT_HREF, { placement: "blog_related_soft" })}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >

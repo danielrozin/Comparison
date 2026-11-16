@@ -11,6 +11,7 @@ import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@
 import { sitemapEntityWhere } from "@/lib/seo/sitemap-entity-where";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
 import { listEditorialCompareSitemapEntries } from "@/lib/data/editorial-compares";
+import { latestEditorialUpdatedAt } from "@/lib/data/editorial-compares/listing";
 import { LAST_UPDATED as BROWSER_COMPARISON_LAST_UPDATED } from "@/app/browser-comparison-2026/last-updated";
 import { LAST_UPDATED as LLM_COMPARISONS_LAST_UPDATED } from "@/app/llm-comparisons/last-updated";
 import { LAST_UPDATED as PASSWORD_MANAGER_LAST_UPDATED } from "@/app/password-manager-comparison/last-updated";
@@ -103,9 +104,17 @@ export default async function sitemap({
       // fall back to fixed dates
     }
 
+    // ROO-453: the homepage, /trending and the /compare hub list the newest
+    // in-repo editorial compares, so their content date is the later of the
+    // newest DB compare and the newest editorial compare.
+    const editorialDate = latestEditorialUpdatedAt();
+    const listingDate =
+      editorialDate && Date.parse(editorialDate) > Date.parse(maxComparisonDate) ? editorialDate : maxComparisonDate;
+
     const staticPages: MetadataRoute.Sitemap = [
-      { url: SITE_URL, lastModified: maxComparisonDate, changeFrequency: "daily", priority: 1.0 },
-      { url: `${SITE_URL}/trending`, lastModified: maxComparisonDate, changeFrequency: "daily", priority: 0.9 },
+      { url: SITE_URL, lastModified: listingDate, changeFrequency: "daily", priority: 1.0 },
+      { url: `${SITE_URL}/compare`, lastModified: editorialDate ?? COMPARISONS_DATE, changeFrequency: "daily", priority: 0.9 },
+      { url: `${SITE_URL}/trending`, lastModified: listingDate, changeFrequency: "daily", priority: 0.9 },
       { url: `${SITE_URL}/about`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/contact`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.4 },
       { url: `${SITE_URL}/partnerships`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
@@ -269,8 +278,14 @@ export default async function sitemap({
       };
     };
 
+    // ROO-453: an in-repo editorial pack is the whole page even when a DB row
+    // shares its slug (mergeEditorialEnrichment), so its lastmod is the
+    // pack's own content date, not the row's updatedAt.
+    const editorialRows = listEditorialCompareSitemapEntries();
+    const editorialLastModified = new Map(editorialRows.map((row) => [row.slug, row.lastModified]));
+
     const editorialFallback = () =>
-      listEditorialCompareSitemapEntries()
+      editorialRows
         .filter((row) => isCleanSlug(row.slug) && !isDegenerateComparisonSlug(row.slug))
         .map((row) =>
           toEntry(row.slug, row.title, row.category, row.lastModified, row.entityA, row.entityB)
@@ -314,7 +329,7 @@ export default async function sitemap({
             row.slug,
             row.title,
             row.category ?? "",
-            row.updatedAt,
+            editorialLastModified.get(row.slug) || row.updatedAt,
             entityA,
             entityB
           );

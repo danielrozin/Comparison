@@ -1,5 +1,6 @@
 "use client";
 
+import { SOURCE_PAGE_ATTR } from "@/lib/analytics/internal-source";
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
@@ -59,7 +60,7 @@ export interface HomeCompareCTAProps {
   popularCards?: boolean;
 }
 
-/** `/compare/:slug?source_page=` link that records related_comparison_click. */
+/** Clean `/compare/:slug` link (data-source-page) that records related_comparison_click. */
 export function TrackedCompareLink({
   slug,
   source,
@@ -76,10 +77,10 @@ export function TrackedCompareLink({
   placement?: string;
   position?: string;
 }) {
-  const href = `/compare/${slug}?source_page=${encodeURIComponent(source)}`;
+  const href = `/compare/${slug}`;
   const extra = placement ? { placement, ...(position ? { position } : {}) } : undefined;
   return (
-    <Link href={href} onClick={() =>
+    <Link href={href} {...{ [SOURCE_PAGE_ATTR]: source }} onClick={() =>
         extra ? trackRelatedComparisonClick(source, slug, extra) : trackRelatedComparisonClick(source, slug)
       } className={className}>
       {children}
@@ -135,10 +136,9 @@ export function HomeCompareCTA({
     return () => window.removeEventListener("scroll", onScroll);
   }, [mobileLead]);
 
+  // ROO-453: clean href; the source rides on data-source-page.
   function withSourcePage(href: string) {
-    if (!source) return href;
-    const join = href.includes("?") ? "&" : "?";
-    return `${href}${join}source_page=${encodeURIComponent(source)}`;
+    return source ? { href, [SOURCE_PAGE_ATTR]: source } : { href };
   }
 
   function track(target: string) {
@@ -163,7 +163,7 @@ export function HomeCompareCTA({
 
   const primaryButton = (hasPrimary || !useFocusSearch) ? (
     <Link
-      href={withSourcePage(primaryHref)}
+      {...withSourcePage(primaryHref)}
       onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
       className={primaryClass}
     >
@@ -206,7 +206,7 @@ export function HomeCompareCTA({
                 {popularDestinations.map((item, index) => (
                   <li key={item.slug}>
                     <Link
-                      href={withSourcePage(`/compare/${item.slug}`)}
+                      {...withSourcePage(`/compare/${item.slug}`)}
                       onClick={() => track(item.slug)}
                       aria-label={`Compare ${item.label}`}
                       className={
@@ -236,7 +236,7 @@ export function HomeCompareCTA({
             <>
               {hasPrimary || !useFocusSearch ? (
                 <Link
-                  href={withSourcePage(primaryHref)}
+                  {...withSourcePage(primaryHref)}
                   onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
                   className="flex w-full min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                 >
@@ -263,7 +263,7 @@ export function HomeCompareCTA({
                   {chips.map((chip) => (
                     <li key={chip.slug} className="flex-shrink-0">
                       <Link
-                        href={withSourcePage(`/compare/${chip.slug}`)}
+                        {...withSourcePage(`/compare/${chip.slug}`)}
                         onClick={() => track(chip.slug)}
                         className="inline-flex items-center gap-1.5 min-h-11 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 rounded-full text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                       >
@@ -315,7 +315,7 @@ export function HomeCompareCTA({
               {primaryButton}
               {showTrending && (
                 <Link
-                  href={withSourcePage(HOME_COMPARE_TRENDING_HREF)}
+                  {...withSourcePage(HOME_COMPARE_TRENDING_HREF)}
                   onClick={() => track(HOME_COMPARE_TRENDING_HREF)}
                   className={
                     solid
@@ -339,7 +339,7 @@ export function HomeCompareCTA({
               {chips.map((chip) => (
                 <li key={chip.slug} className={solid ? "flex-shrink-0" : undefined}>
                   <Link
-                    href={withSourcePage(`/compare/${chip.slug}`)}
+                    {...withSourcePage(`/compare/${chip.slug}`)}
                     onClick={() => track(chip.slug)}
                     className={
                       solid
@@ -377,7 +377,7 @@ export function HomeCompareCTA({
           </div>
           {hasPrimary || !useFocusSearch ? (
             <Link
-              href={withSourcePage(primaryHref)}
+              {...withSourcePage(primaryHref)}
               onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
             >

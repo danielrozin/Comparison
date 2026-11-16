@@ -40,7 +40,7 @@ describe("TrendingCard compare path", () => {
     const link = view.getByRole("link", { name: /ChatGPT vs Gemini/i });
     expect(link).toHaveAttribute(
       "href",
-      "/compare/chatgpt-vs-gemini?source_page=trending",
+      "/compare/chatgpt-vs-gemini",
     );
     expect(link.className).not.toContain("max-h-0");
     expect(view.getByText("View Comparison").parentElement?.className).not.toContain("max-h-0");
@@ -59,7 +59,7 @@ describe("TrendingCard compare path", () => {
 
     expect(link).toHaveAttribute(
       "href",
-      "/compare/chatgpt-vs-gemini?source_page=trending",
+      "/compare/chatgpt-vs-gemini",
     );
     expect(view.getByText("View Comparison").parentElement?.className).toContain("max-h-0");
 

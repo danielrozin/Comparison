@@ -47,11 +47,10 @@ export default function robots(): MetadataRoute.Robots {
           "/developers/dashboard",
           "/survey",
           "/*?*sort=",
-          // Pagination only. `/*?*page=` also matched `?source_page=` and
-          // `?target_page=` on internal links, so it is anchored to the
-          // start of a query parameter here.
-          "/*?page=",
-          "/*&page=",
+          // ROO-453: no `?page=` / `&page=` rule. Hub pagination
+          // (/blog?page=2, /category/*?page=2) is how Googlebot and bingbot
+          // reach older compares and posts; each paginated page carries a
+          // self-referencing canonical, so it is not a duplicate of page 1.
           "/*?*ref=",
           "/*?*utm_",
           "/*?*fbclid=",

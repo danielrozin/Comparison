@@ -10,6 +10,7 @@ import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { isProductionAnalyticsHost } from "@/lib/analytics/production-analytics-host";
 import { captureComparisonViewedFromLocation } from "@/lib/analytics/comparison-view-capture";
+import { installInternalSourceTracking } from "@/lib/analytics/internal-source";
 import { capturePricingViewedFromLocation } from "@/lib/analytics/pricing-view-capture";
 import { isThirdPartyException } from "@/lib/utils/third-party-errors";
 
@@ -77,6 +78,9 @@ if (token && analyticsAllowed() && !isAutomatedClient() && isProductionAnalytics
   if (Object.keys(assignments).length > 0) {
     posthog.register(assignments);
   }
+
+  // ROO-453: internal links carry data-source-page instead of ?source_page=.
+  installInternalSourceTracking();
 
   // ROO-48: same turn as $pageview. Do not wait for the hydrated compare chunk.
   captureComparisonViewedFromLocation();

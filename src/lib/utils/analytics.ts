@@ -1,5 +1,6 @@
 /* GA4 + Google Ads + Meta Pixel + Clarity + PostHog Event Tracking */
 
+import { landingSourcePage } from "@/lib/analytics/internal-source";
 import {
   tagComparisonView as clarityTagComparison,
   tagSearchQuery as clarityTagSearch,
@@ -764,11 +765,9 @@ export function trackComparisonView(slug: string, category: string) {
   trackEvent("comparison_view", { comparison_slug: slug, category });
   trackMetaEvent("ViewContent", { content_name: slug, content_category: category });
   clarityTagComparison(slug, category);
-  // ROO-30: pick up ?source_page= from home/blog CTAs when present
-  const sourcePage =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("source_page") || undefined
-      : undefined;
+  // ROO-30 / ROO-453: ?source_page= when present, else the clean-href
+  // internal click recorded by installInternalSourceTracking.
+  const sourcePage = landingSourcePage();
   // Shared with the bootstrap capture (ROO-48). A second call for the same
   // slug in this document is a no-op, so hydration does not double-count.
   captureComparisonViewed(slug, category, sourcePage);

@@ -22,7 +22,7 @@ describe("CompareNextCards (ROO-155)", () => {
     render(<CompareNextCards slug="self-vs-page" chips={chips} />);
     const links = screen.getAllByRole("link");
     expect(links).toHaveLength(3);
-    expect(links[0]!.getAttribute("href")).toBe("/compare/a-vs-b?source_page=%2Fcompare%2Fself-vs-page");
+    expect(links[0]!.getAttribute("href")).toBe("/compare/a-vs-b");
     fireEvent.click(links[1]!);
     expect(trackRelatedComparisonClick).toHaveBeenCalledWith("/compare/self-vs-page", "c-vs-d", {
       placement: "compare_next",

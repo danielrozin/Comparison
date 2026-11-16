@@ -38,7 +38,7 @@ describe("CustomCompareEscapes", () => {
       const anchor = view.getByRole("link", { name: link.label });
       expect(anchor).toHaveAttribute(
         "href",
-        `/compare/${link.slug}?source_page=%2Fcustom-compare`,
+        `/compare/${link.slug}`,
       );
       fireEvent.click(anchor);
       expect(trackRelatedComparisonClick).toHaveBeenCalledWith("/custom-compare", link.slug);
