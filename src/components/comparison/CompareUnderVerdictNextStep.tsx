@@ -1,5 +1,6 @@
 "use client";
 
+import { SOURCE_PAGE_ATTR } from "@/lib/analytics/internal-source";
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import posthog from "posthog-js";
@@ -171,9 +172,7 @@ function FallbackNextStep({
   const target = primary ? primary.slug : COMPARE_NEXT_SOFT_HREF;
   const href = primary ? `/compare/${primary.slug}` : COMPARE_NEXT_SOFT_HREF;
   const src = pageSrc(slug);
-  const withSource = href.includes("?")
-    ? `${href}&source_page=${encodeURIComponent(src)}`
-    : `${href}?source_page=${encodeURIComponent(src)}`;
+
   const label = primary ? `Compare ${primary.label}` : "Browse trending";
 
   function track() {
@@ -196,7 +195,8 @@ function FallbackNextStep({
         Next step
       </span>
       <Link
-        href={withSource}
+        href={href}
+        {...{ [SOURCE_PAGE_ATTR]: src }}
         onClick={track}
         className="inline-flex items-center gap-1.5 min-h-11 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-primary-600 hover:bg-primary-700 shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
       >

@@ -53,7 +53,7 @@ describe("BlogInlineCompareCtas", () => {
       const anchor = view.getByRole("link", { name: link.label });
       expect(anchor).toHaveAttribute(
         "href",
-        `/compare/${link.slug}?source_page=${encodeURIComponent(CASHIERS_CHECK_SOURCE_PAGE)}`,
+        `/compare/${link.slug}`,
       );
       fireEvent.click(anchor);
       expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
@@ -158,7 +158,7 @@ describe("ROO-127 organic lander compare targets", () => {
         const anchor = view.getByRole("link", { name: link.label });
         expect(anchor).toHaveAttribute(
           "href",
-          `/compare/${link.slug}?source_page=${encodeURIComponent(lander.sourcePage)}`,
+          `/compare/${link.slug}`,
         );
         fireEvent.click(anchor);
         expect(trackRelatedComparisonClick).toHaveBeenCalledWith(

@@ -44,7 +44,7 @@ describe("HomeCompareCTA mobile lead (ROO-51)", () => {
     const primary = lead.getByRole("link", { name: /Compare now/i });
     expect(primary).toHaveAttribute(
       "href",
-      "/compare/amazon-vs-best-buy?source_page=blog-hub",
+      "/compare/amazon-vs-best-buy",
     );
     expect(primary.className).not.toContain("fixed");
     expect(primary.closest("[data-testid='mobile-compare-lead']")?.className).toContain("md:hidden");
@@ -59,7 +59,7 @@ describe("HomeCompareCTA mobile lead (ROO-51)", () => {
     const chip = lead.getByRole("link", { name: /Messi vs Ronaldo/i });
     expect(chip).toHaveAttribute(
       "href",
-      "/compare/messi-vs-ronaldo?source_page=blog-hub",
+      "/compare/messi-vs-ronaldo",
     );
     fireEvent.click(chip);
     expect(trackRelatedComparisonClick).toHaveBeenCalledWith(

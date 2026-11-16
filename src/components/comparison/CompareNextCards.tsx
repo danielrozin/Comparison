@@ -1,5 +1,6 @@
 "use client";
 
+import { SOURCE_PAGE_ATTR } from "@/lib/analytics/internal-source";
 import Link from "next/link";
 import { trackCompareNextSearch, trackRelatedComparisonClick } from "@/lib/utils/analytics";
 import type { CompareNextStepChip } from "@/components/comparison/CompareNextStepCTA";
@@ -41,7 +42,8 @@ export function CompareNextCards({
             {cards.map((chip, index) => (
               <li key={chip.slug} className="min-w-0">
                 <Link
-                  href={`/compare/${chip.slug}?source_page=${encodeURIComponent(sourcePage)}`}
+                  href={`/compare/${chip.slug}`}
+                  {...{ [SOURCE_PAGE_ATTR]: sourcePage }}
                   onClick={() =>
                     trackRelatedComparisonClick(sourcePage, chip.slug, {
                       placement: COMPARE_NEXT_PLACEMENT,
@@ -133,7 +135,8 @@ export function CompareNextRow({
           {links.map((chip, index) => (
             <li key={chip.slug} className="min-w-0">
               <Link
-                href={`/compare/${chip.slug}?source_page=${encodeURIComponent(sourcePage)}`}
+                href={`/compare/${chip.slug}`}
+                  {...{ [SOURCE_PAGE_ATTR]: sourcePage }}
                 onClick={() =>
                   trackRelatedComparisonClick(sourcePage, chip.slug, {
                     placement: COMPARE_NEXT_ROW_PLACEMENT,

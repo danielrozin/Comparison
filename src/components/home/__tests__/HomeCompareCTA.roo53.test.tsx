@@ -59,7 +59,7 @@ describe("HomeCompareCTA popular cards (ROO-53)", () => {
     const primary = cards.getByRole("link", { name: "Compare Amazon vs Best Buy" });
     expect(primary).toHaveAttribute(
       "href",
-      "/compare/amazon-vs-best-buy?source_page=blog-hub",
+      "/compare/amazon-vs-best-buy",
     );
     fireEvent.click(primary);
     expect(trackRelatedComparisonClick).toHaveBeenCalledWith(
@@ -70,7 +70,7 @@ describe("HomeCompareCTA popular cards (ROO-53)", () => {
     const second = cards.getByRole("link", { name: "Compare Messi vs Ronaldo" });
     expect(second).toHaveAttribute(
       "href",
-      "/compare/messi-vs-ronaldo?source_page=blog-hub",
+      "/compare/messi-vs-ronaldo",
     );
     expect(cards.queryByRole("link", { name: /iPhone vs Samsung/i })).toBeNull();
     expect(cards.queryByRole("link", { name: /^Trending$/i })).toBeNull();
@@ -94,7 +94,7 @@ describe("HomeCompareCTA popular cards (ROO-53)", () => {
     expect(view.queryByTestId("popular-compares")).toBeNull();
     expect(lead.getByRole("link", { name: /Start a comparison/i })).toHaveAttribute(
       "href",
-      "/search?source_page=trending",
+      "/search",
     );
     view.unmount();
   });

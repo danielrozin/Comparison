@@ -3,7 +3,7 @@
  *
  * Reader copy lives in `NBA_SEASON_PREVIEW_ARTICLE`. Compare links are
  * `<!-- compare-cta:slug|Label -->` markers. The blog route turns each marker
- * into a TrackedCompareLink (`?source_page=`). Do not put crawl notes,
+ * into a TrackedCompareLink (`data-source-page`). Do not put crawl notes,
  * redirect history, or source-process wording in the article fields.
  */
 

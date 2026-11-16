@@ -10,7 +10,7 @@ export interface BlogInlineCompareLink {
 /**
  * ROO-119 / ROO-127 — compact compare links under a blog intro.
  * Reuses TrackedCompareLink so the click fires `related_comparison_click`
- * (`source_page`, `target_page`) and the href carries `?source_page=`.
+ * (`source_page`, `target_page`) and the link carries `data-source-page` (ROO-453: clean href).
  */
 export function BlogInlineCompareCtas({
   sourcePage,

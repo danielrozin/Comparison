@@ -1,5 +1,6 @@
 "use client";
 
+import { SOURCE_PAGE_ATTR } from "@/lib/analytics/internal-source";
 import Link from "next/link";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
 import type { InlineCardPosition } from "@/lib/blog/inline-comparison-card";
@@ -56,7 +57,8 @@ export function BlogInlineComparisonCard({
         {usable.map((link) => (
           <li key={link.slug} className="min-w-0">
             <Link
-              href={`${link.href ?? `/compare/${link.slug}`}?source_page=${encodeURIComponent(sourcePage)}`}
+              href={link.href ?? `/compare/${link.slug}`}
+              {...{ [SOURCE_PAGE_ATTR]: sourcePage }}
               rel={link.generated ? "nofollow" : undefined}
               data-generated={link.generated ? "true" : undefined}
               onClick={() =>

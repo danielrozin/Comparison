@@ -1,3 +1,4 @@
+import { landingSourcePage } from "./internal-source";
 /**
  * ROO-48 — PostHog `comparison_viewed` (the compare-page north star).
  *
@@ -120,7 +121,7 @@ export function captureComparisonViewedFromLocation(
   const categorySource =
     doc === undefined ? (typeof document !== "undefined" ? document : null) : doc;
   if (isNotFoundDocument(categorySource)) return false;
-  const sourcePage = new URLSearchParams(location.search).get("source_page")?.trim() || undefined;
+  const sourcePage = landingSourcePage(location);
   return captureComparisonViewed(slug, readCompareCategory(categorySource), sourcePage, {
     sendInstantly: true,
   });

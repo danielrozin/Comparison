@@ -1,5 +1,6 @@
 "use client";
 
+import { SOURCE_PAGE_ATTR } from "@/lib/analytics/internal-source";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
@@ -26,9 +27,9 @@ export function BlogCompareCTA({
 }: BlogCompareCTAProps) {
   const [showSticky, setShowSticky] = useState(false);
   const hasPrimary = Boolean(primarySlug);
-  const href = hasPrimary
-    ? `/compare/${primarySlug}`
-    : `${softHref}${softHref.includes("?") ? "&" : "?"}source_page=${encodeURIComponent(blogSlug)}`;
+  // ROO-453: clean href; the soft link's source rides on data-source-page.
+  const href = hasPrimary ? `/compare/${primarySlug}` : softHref;
+  const sourceAttr = hasPrimary ? {} : { [SOURCE_PAGE_ATTR]: blogSlug };
   const label = hasPrimary
     ? primaryTitle || primarySlug!.replace(/-/g, " ")
     : "Explore side-by-side comparisons";
@@ -80,6 +81,7 @@ export function BlogCompareCTA({
           </div>
           <Link
             href={href}
+            {...sourceAttr}
             onClick={handleClick}
             className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 shadow-sm hover:shadow-md transition-all duration-150 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
@@ -106,6 +108,7 @@ export function BlogCompareCTA({
           </div>
           <Link
             href={href}
+            {...sourceAttr}
             onClick={handleClick}
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           >

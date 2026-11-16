@@ -29,10 +29,16 @@ describe("robots.txt page parameter rule", () => {
     expect(disallow).not.toContain("/*?*page=");
   });
 
-  it("still blocks pagination parameters", () => {
-    for (const url of ["/blog?page=2", "/category/tech?sort=new&page=3"]) {
-      expect(disallow.some((rule) => matches(rule, url))).toBe(true);
+  it("lets search crawlers reach hub pagination (ROO-453)", () => {
+    for (const url of ["/blog?page=2", "/category/technology/gaming-tech?page=3", "/blog?category=tech&page=2"]) {
+      expect(disallow.filter((rule) => matches(rule, url))).toEqual([]);
     }
+    expect(disallow).not.toContain("/*?page=");
+    expect(disallow).not.toContain("/*&page=");
+  });
+
+  it("still blocks sort variants of paginated listings", () => {
+    expect(disallow.some((rule) => matches(rule, "/category/tech?sort=new&page=3"))).toBe(true);
   });
 
   it("does not block ?source_page= or ?target_page= links", () => {

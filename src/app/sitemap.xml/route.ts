@@ -14,21 +14,23 @@ export const revalidate = 3600;
  */
 export async function GET() {
   const shards = await generateSitemaps();
-  const lastmod = new Date().toISOString();
+  // ROO-453: no <lastmod> on index entries. It used to be the request time,
+  // which told crawlers every shard changed on every fetch. Each <url> inside
+  // the shards carries its real content date instead.
 
   const entries = shards
     .map(
       (s) =>
-        `  <sitemap>\n    <loc>${SITE_URL}/sitemap/${s.id}.xml</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`
+        `  <sitemap>\n    <loc>${SITE_URL}/sitemap/${s.id}.xml</loc>\n  </sitemap>`
     )
     .join("\n");
 
   // Dedicated video sitemap (DAN-1367). Lives at a named route (not a numeric
   // shard) because Next.js `MetadataRoute.Sitemap` cannot emit `video:video`
   // extension tags, so `generateSitemaps` intentionally does not list it.
-  const videoEntry = `  <sitemap>\n    <loc>${SITE_URL}/sitemap/video.xml</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`;
+  const videoEntry = `  <sitemap>\n    <loc>${SITE_URL}/sitemap/video.xml</loc>\n  </sitemap>`;
   // Image sitemap for Google Images + AI visual indexing (3,000+ comparison OG images).
-  const imagesEntry = `  <sitemap>\n    <loc>${SITE_URL}/sitemap/images.xml</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`;
+  const imagesEntry = `  <sitemap>\n    <loc>${SITE_URL}/sitemap/images.xml</loc>\n  </sitemap>`;
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n${videoEntry}\n${imagesEntry}\n</sitemapindex>\n`;
 

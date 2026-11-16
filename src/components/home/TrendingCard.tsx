@@ -1,5 +1,6 @@
 "use client";
 
+import { SOURCE_PAGE_ATTR } from "@/lib/analytics/internal-source";
 import Link from "next/link";
 import type { TrendingComparison } from "@/types";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
@@ -42,7 +43,8 @@ export function TrendingCard({
 
   return (
     <Link
-      href={`/compare/${comparison.slug}?source_page=${encodeURIComponent(trackSource || "trending")}`}
+      href={`/compare/${comparison.slug}`}
+      {...{ [SOURCE_PAGE_ATTR]: trackSource || "trending" }}
       aria-label={`${comparison.title} — rank ${rank}`}
       onClick={
         trackSource

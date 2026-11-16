@@ -48,7 +48,7 @@ describe("browser comparison compare CTAs", () => {
       const anchor = view.getByRole("link", { name: link.label });
       expect(anchor).toHaveAttribute(
         "href",
-        `/compare/${link.slug}?source_page=${encodeURIComponent(BROWSER_COMPARISON_SOURCE_PAGE)}`,
+        `/compare/${link.slug}`,
       );
       fireEvent.click(anchor);
       expect(trackRelatedComparisonClick).toHaveBeenCalledWith(

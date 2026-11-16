@@ -1,5 +1,6 @@
 "use client";
 
+import { landingSourcePage } from "@/lib/analytics/internal-source";
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -228,7 +229,7 @@ export function SearchContent({ generationEnabled }: { generationEnabled: boolea
     setSearchQuery(query);
     setFetchedFor(null);
     if (!query) {
-      trackSearchPageOpened(sourcePage);
+      trackSearchPageOpened(sourcePage || landingSourcePage() || "");
       setResults([]);
       setLoading(false);
       return;

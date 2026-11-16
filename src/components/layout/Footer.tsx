@@ -119,6 +119,7 @@ export function Footer() {
             {/* Quick links */}
             <nav aria-label="Quick links" className="flex flex-wrap gap-x-5 gap-y-0.5 -my-2">
               <Link href="/trending" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Trending</Link>
+              <Link href="/compare" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">All Comparisons</Link>
               <Link href="/studies" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Data Studies</Link>
               <Link href="/reviews" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Reviews</Link>
               <Link href="/blog" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Blog</Link>

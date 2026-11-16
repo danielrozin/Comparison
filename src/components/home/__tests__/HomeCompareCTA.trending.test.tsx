@@ -2,7 +2,7 @@
  * ROO-47 — /trending compare CTA.
  *
  * The button must open a live /compare page, fire related_comparison_click,
- * and carry ?source_page=trending so ROO-48's bootstrap capture can attach
+ * and carry data-source-page=trending (ROO-453) so ROO-48's bootstrap capture can attach
  * that source onto comparison_viewed. It must not link back to /trending.
  */
 import { render, fireEvent, within } from "@testing-library/react";
@@ -23,6 +23,7 @@ vi.mock("posthog-js", () => ({
 }));
 
 import { HomeCompareCTA } from "../HomeCompareCTA";
+import { installInternalSourceTracking, resetInternalSourceTrackingForTests } from "@/lib/analytics/internal-source";
 import { TRENDING_COMPARE_SOURCE } from "@/lib/data/home-compare-constants";
 import {
   captureComparisonViewedFromLocation,
@@ -61,13 +62,13 @@ describe("HomeCompareCTA on /trending", () => {
     const primary = aside.getByRole("link", { name: /Compare now/i });
     expect(primary).toHaveAttribute(
       "href",
-      `/compare/${PRIMARY}?source_page=trending`,
+      `/compare/${PRIMARY}`,
     );
 
     const chip = aside.getByRole("link", { name: /Japan vs China/i });
     expect(chip).toHaveAttribute(
       "href",
-      `/compare/${CHIP}?source_page=trending`,
+      `/compare/${CHIP}`,
     );
 
     expect(aside.queryByRole("link", { name: "Trending" })).toBeNull();
@@ -93,8 +94,13 @@ describe("HomeCompareCTA on /trending", () => {
   it("feeds ROO-48 comparison_viewed from the primary href without a second capture implementation", () => {
     const view = renderTrendingCta();
     const aside = within(view.getByRole("complementary", { name: "Start a comparison" }));
-    const href = aside.getByRole("link", { name: /Compare now/i }).getAttribute("href");
-    expect(href).toBe(`/compare/${PRIMARY}?source_page=trending`);
+    const primary = aside.getByRole("link", { name: /Compare now/i });
+    const href = primary.getAttribute("href");
+    expect(href).toBe(`/compare/${PRIMARY}`);
+    // ROO-453: the clean href's source is recorded on click, not in the URL.
+    resetInternalSourceTrackingForTests();
+    installInternalSourceTracking(document);
+    fireEvent.click(primary);
 
     window.history.pushState({}, "", href!);
     const payload = document.createElement("script");
@@ -129,7 +135,7 @@ describe("HomeCompareCTA on /trending", () => {
     const aside = within(view.getByRole("complementary", { name: "Start a comparison" }));
     expect(aside.getByRole("link", { name: /Start a comparison/i })).toHaveAttribute(
       "href",
-      "/search?source_page=trending",
+      "/search",
     );
     view.unmount();
   });
@@ -141,7 +147,7 @@ describe("HomeCompareCTA on /trending", () => {
     const aside = within(view.getByRole("complementary", { name: "Start a comparison" }));
     expect(aside.getByRole("link", { name: "Trending" })).toHaveAttribute(
       "href",
-      "/trending?source_page=home",
+      "/trending",
     );
     view.unmount();
   });

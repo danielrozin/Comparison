@@ -43,7 +43,7 @@ describe("BlogInlineComparisonCard", () => {
       const anchor = view.getByRole("link", { name: link.title });
       expect(anchor).toHaveAttribute(
         "href",
-        `/compare/${link.slug}?source_page=${encodeURIComponent(`/blog/${ARTICLE}`)}`,
+        `/compare/${link.slug}`,
       );
       fireEvent.click(anchor);
       expect(trackRelatedComparisonClick).toHaveBeenCalledWith(`/blog/${ARTICLE}`, link.slug, {

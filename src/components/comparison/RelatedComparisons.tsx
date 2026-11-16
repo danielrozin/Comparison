@@ -1,5 +1,6 @@
 "use client";
 
+import { SOURCE_PAGE_ATTR } from "@/lib/analytics/internal-source";
 import Link from "next/link";
 import type { RelatedComparison } from "@/types";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
@@ -46,10 +47,9 @@ export function RelatedComparisons({
   comparisons: RelatedComparison[];
   sourceSlug?: string;
 }) {
+  // ROO-453: clean href; the source rides on data-source-page.
   function withSourcePage(href: string) {
-    const src = sourceSlug || "compare-related";
-    const join = href.includes("?") ? "&" : "?";
-    return `${href}${join}source_page=${encodeURIComponent(src)}`;
+    return { href, [SOURCE_PAGE_ATTR]: sourceSlug || "compare-related" };
   }
 
   return (
@@ -84,7 +84,7 @@ export function RelatedComparisons({
           return (
             <li key={comp.slug} className="flex flex-shrink-0 snap-start w-[220px] sm:w-auto sm:flex-shrink">
             <Link
-              href={withSourcePage(`/compare/${comp.slug}`)}
+              {...withSourcePage(`/compare/${comp.slug}`)}
               onClick={() => trackRelatedComparisonClick(sourceSlug || "", comp.slug)}
               style={{ animationDelay: `${Math.min(cardIdx, 5) * 40}ms` }}
               className="group relative flex flex-col gap-3 p-4 pt-5 bg-white border border-border rounded-2xl hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.02] transition-all duration-200 overflow-hidden animate-fade-in w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
@@ -138,7 +138,7 @@ export function RelatedComparisons({
       {/* Browse all CTA */}
       <div className="flex justify-center">
         <Link
-          href={withSourcePage("/trending")}
+          {...withSourcePage("/trending")}
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-primary-600 bg-primary-50 border border-primary-200 hover:bg-primary-100 hover:border-primary-300 hover:text-primary-700 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
