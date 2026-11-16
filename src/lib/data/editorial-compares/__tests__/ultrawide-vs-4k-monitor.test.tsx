@@ -209,7 +209,11 @@ describe("ultrawide vs 4K monitor (ROO-407)", () => {
     expect(hrefs.some((href) => href.startsWith("/compare/qd-oled-vs-woled"))).toBe(true);
     expect(hrefs.some((href) => href.startsWith("/compare/oled-vs-mini-led-gaming-monitor"))).toBe(true);
     expect(hrefs.some((href) => href.startsWith("/compare/rtx-5070-vs-rx-9070-xt-vs-rtx-5070-ti"))).toBe(true);
-    expect(hrefs.some((href) => href.includes("/compare/1440p-vs-4k-monitor"))).toBe(false);
+    // ROO-446 is the second compare whose slug side starts with "4k-". The under-verdict
+    // row stays hidden until two entity matches exist, so it now links both 4K compares.
+    // This module's own related list and body still omit them.
+    expect(hrefs.some((href) => href.includes("/compare/1440p-vs-4k-monitor"))).toBe(true);
+    expect(hrefs.some((href) => href.includes("/compare/4k-ips-vs-1440p-oled"))).toBe(true);
     expect(hrefs.some((href) => href.includes("/compare/va-vs-ips"))).toBe(false);
   }, 30000);
 

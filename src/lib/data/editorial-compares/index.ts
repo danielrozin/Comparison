@@ -147,6 +147,7 @@ import { PSU_850W_VS_1000W } from "./850w-vs-1000w-psu";
 import { CORE_ULTRA_5_250K_PLUS_VS_CORE_ULTRA_7_270K_PLUS } from "./core-ultra-5-250k-plus-vs-core-ultra-7-270k-plus";
 import { RTX_5070_VS_RTX_5060_TI } from "./rtx-5070-vs-rtx-5060-ti";
 import { RYZEN_7_9800X3D_VS_CORE_ULTRA_7_270K_PLUS } from "./ryzen-7-9800x3d-vs-core-ultra-7-270k-plus";
+import { MONITOR_4K_IPS_VS_1440P_OLED } from "./4k-ips-vs-1440p-oled";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -315,6 +316,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [RTX_5070_VS_RTX_5060_TI.slug]: RTX_5070_VS_RTX_5060_TI,
   [RYZEN_7_9800X3D_VS_CORE_ULTRA_7_270K_PLUS.slug]:
     RYZEN_7_9800X3D_VS_CORE_ULTRA_7_270K_PLUS,
+  [MONITOR_4K_IPS_VS_1440P_OLED.slug]: MONITOR_4K_IPS_VS_1440P_OLED,
 };
 
 /**
