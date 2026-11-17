@@ -8,7 +8,7 @@ import type { AffiliateLink, ComparisonEntityData } from "@/types";
 import { trackAffiliateClick, trackAffiliateCtaViewed, trackEvent } from "@/lib/utils/analytics";
 import { usePaidAffiliateHref } from "@/lib/hooks/usePaidAffiliateHref";
 import { COMPARE_NEXT_SOFT_HREF } from "@/lib/data/compare-next-constants";
-import { isEarlyCommerceCompare } from "@/lib/affiliate/early-commerce-slugs";
+import { affiliateCtaLabel } from "@/lib/affiliate/affiliate-cta-label";
 import type { CompareNextStepChip } from "@/components/comparison/CompareNextStepCTA";
 import { AffiliateDisclosure } from "./AffiliateDisclosure";
 
@@ -31,8 +31,14 @@ function commercialLink(entity: ComparisonEntityData | undefined): AffiliateLink
   return link;
 }
 
-function ctaText(link: AffiliateLink): string {
+/**
+ * ROO-411: Amazon buttons name the product ("Check RTX 5070 price on Amazon").
+ * Shop links only reach this row on buyable-product compares; the page strips
+ * them everywhere else (classifyAffiliateCompare).
+ */
+function ctaText(link: AffiliateLink, entityName: string): string {
   if (link.partner === "brand") return "Official Site";
+  if (link.partner === "amazon") return affiliateCtaLabel(entityName, "amazon");
   return "Check Price";
 }
 
@@ -50,10 +56,13 @@ export function CompareUnderVerdictNextStep({
   chips: CompareNextStepChip[];
 }) {
   const commercial = entities.filter((entity) => commercialLink(entity));
+  // ROO-411: early commerce (one product-named button per entity, full width
+  // on phones, Associate disclosure) now covers every compare whose shop links
+  // are all Amazon. Those links survive only on buyable-product compares.
   const shopOnAmazon =
-    isEarlyCommerceCompare(slug) &&
     commercial.length > 0 &&
     commercial.every((entity) => commercialLink(entity)?.partner === "amazon");
+  const anyAmazon = commercial.some((entity) => commercialLink(entity)?.partner === "amazon");
   const rowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -106,10 +115,11 @@ export function CompareUnderVerdictNextStep({
                 entity={entity}
                 slug={slug}
                 fullWidth={shopOnAmazon}
+                earlyCommerce={shopOnAmazon}
               />
             ))}
           </div>
-          {shopOnAmazon ? <AffiliateDisclosure /> : null}
+          {anyAmazon ? <AffiliateDisclosure /> : null}
         </div>
       ) : (
         <FallbackNextStep slug={slug} chips={chips} />
@@ -122,16 +132,19 @@ function CommercialNextStep({
   entity,
   slug,
   fullWidth = false,
+  earlyCommerce = false,
 }: {
   entity: ComparisonEntityData;
   slug: string;
   fullWidth?: boolean;
+  earlyCommerce?: boolean;
 }) {
   const link = commercialLink(entity);
   const href = usePaidAffiliateHref(link?.url ?? "");
   if (!link) return null;
 
-  const label = ctaText(link);
+  const label = ctaText(link, entity.name);
+  const named = link.partner === "amazon";
   const src = pageSrc(slug);
 
   return (
@@ -139,7 +152,7 @@ function CommercialNextStep({
       href={href}
       target="_blank"
       rel="noopener noreferrer nofollow sponsored"
-      aria-label={`${label} — ${entity.name}`}
+      aria-label={named ? label : `${label} — ${entity.name}`}
       data-entity={entity.name}
       className={`inline-flex max-w-full items-center justify-center gap-1.5 min-h-11 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-primary-600 hover:bg-primary-700 shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${
         fullWidth ? "w-full sm:w-auto" : ""
@@ -152,11 +165,18 @@ function CommercialNextStep({
           src,
           source_page: src,
           cta_type: "affiliate",
+          early_commerce: earlyCommerce ? 1 : 0,
         });
       }}
     >
-      <span className="truncate max-w-[9rem] font-medium text-white/80">{entity.name}</span>
-      <span className="whitespace-nowrap">{label}</span>
+      {named ? (
+        <span className="truncate">{label}</span>
+      ) : (
+        <>
+          <span className="truncate max-w-[9rem] font-medium text-white/80">{entity.name}</span>
+          <span className="whitespace-nowrap">{label}</span>
+        </>
+      )}
     </a>
   );
 }

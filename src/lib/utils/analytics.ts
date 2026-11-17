@@ -147,6 +147,12 @@ export function trackMetaCustomEvent(eventName: string, params?: Record<string, 
  *  `position` is the UI placement (e.g. hero_cta, where_to_buy, sticky_cta, left/right).
  *  `page` is the comparison slug (or pathname fallback). Extra props (url, partner, …)
  *  are forwarded to both GA and PostHog. */
+function pageEarlyCommerce(): number {
+  if (typeof document === "undefined") return 0;
+  const row = document.querySelector('[data-placement="under-verdict"][data-early-commerce]');
+  return row?.getAttribute("data-early-commerce") === "true" ? 1 : 0;
+}
+
 export function trackAffiliateClick(
   product: string,
   position: string,
@@ -164,6 +170,12 @@ export function trackAffiliateClick(
     for (const [key, value] of Object.entries(extra)) {
       if (value !== undefined) props[key] = value;
     }
+  }
+  // ROO-411: every affiliate_link_clicked carries early_commerce (0/1, same
+  // type as affiliate_cta_viewed). Placements that don't pass it read the
+  // compare page's under-verdict row, which states the treatment.
+  if (props.early_commerce === undefined) {
+    props.early_commerce = pageEarlyCommerce();
   }
   trackEvent("affiliate_click", props);
   clarityTagAction("affiliate_click");

@@ -62,4 +62,30 @@ describe("trackAffiliateClick", () => {
       }),
     );
   });
+
+  // ROO-411: hero / sticky clicks don't pass early_commerce; they inherit the
+  // page treatment from the under-verdict row. Explicit values win.
+  it("adds early_commerce from the page's under-verdict row", async () => {
+    const { trackAffiliateClick } = await import("../analytics");
+    document.body.innerHTML = "";
+    trackAffiliateClick("RTX 5070", "hero_cta", "rtx-5070-vs-rtx-5060-ti");
+    expect(capture).toHaveBeenLastCalledWith(
+      "affiliate_link_clicked",
+      expect.objectContaining({ early_commerce: 0, comparison_slug: "rtx-5070-vs-rtx-5060-ti" }),
+    );
+
+    document.body.innerHTML = '<div data-placement="under-verdict" data-early-commerce="true"></div>';
+    trackAffiliateClick("RTX 5070", "sticky_mobile", "rtx-5070-vs-rtx-5060-ti");
+    expect(capture).toHaveBeenLastCalledWith(
+      "affiliate_link_clicked",
+      expect.objectContaining({ early_commerce: 1, placement: "sticky_mobile" }),
+    );
+
+    trackAffiliateClick("RTX 5070", "under-verdict", "rtx-5070-vs-rtx-5060-ti", { early_commerce: 0 });
+    expect(capture).toHaveBeenLastCalledWith(
+      "affiliate_link_clicked",
+      expect.objectContaining({ early_commerce: 0 }),
+    );
+    document.body.innerHTML = "";
+  });
 });

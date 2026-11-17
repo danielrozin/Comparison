@@ -85,4 +85,12 @@ describe("AffiliateButton PostHog wire (ROO-11)", () => {
       }),
     );
   });
+
+  it("names the product on Amazon buttons (ROO-411)", async () => {
+    const { AffiliateButton } = await import("../AffiliateButton");
+    const { container } = render(
+      <AffiliateButton link={LINK} productName="RTX 5070" placement="hero_cta" />,
+    );
+    expect(within(container).getByRole("link")).toHaveTextContent("Check RTX 5070 price on Amazon");
+  });
 });

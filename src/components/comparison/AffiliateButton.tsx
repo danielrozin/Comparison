@@ -5,6 +5,7 @@ import { trackAffiliateClick, trackEvent } from "@/lib/utils/analytics";
 import { useExperiment } from "@/lib/experiments";
 import { usePaidAffiliateHref } from "@/lib/hooks/usePaidAffiliateHref";
 import { AffiliateDisclosure } from "./AffiliateDisclosure";
+import { affiliateCtaLabel } from "@/lib/affiliate/affiliate-cta-label";
 
 export { AffiliateDisclosure };
 
@@ -98,11 +99,14 @@ export function AffiliateButton({
   // links are informational; everything else is a priced affiliate offer.
   // "Buy Now" is intentionally never used — hard-sell wording reads as
   // unprofessional on an editorial comparison page.
+  // ROO-411: Amazon buttons name the product when the caller knows it.
   const ctaText = isBrand
     ? link.label
     : isGeneric
       ? "Learn More"
-      : "Check Price";
+      : link.partner === "amazon" && productName
+        ? affiliateCtaLabel(productName, "amazon")
+        : "Check Price";
 
   return (
     <a
