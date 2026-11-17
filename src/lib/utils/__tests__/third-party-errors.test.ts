@@ -49,6 +49,31 @@ describe("isThirdPartyException", () => {
     expect(isThirdPartyException(event, properties)).toBe(true);
   });
 
+  it("drops Safari errors whose frames are all masked", () => {
+    const { event, properties } = exceptionEvent([
+      {
+        value: "Cannot access 'oe' before initialization",
+        stacktrace: { frames: [{ filename: "webkit-masked-url://hidden/" }] },
+      },
+    ]);
+    expect(isThirdPartyException(event, properties)).toBe(true);
+  });
+
+  it("keeps a Safari error that also has a first-party frame", () => {
+    const { event, properties } = exceptionEvent([
+      {
+        value: "boom",
+        stacktrace: {
+          frames: [
+            { filename: "webkit-masked-url://hidden/" },
+            { filename: "https://aversusb.com/_next/static/chunk.js" },
+          ],
+        },
+      },
+    ]);
+    expect(isThirdPartyException(event, properties)).toBe(false);
+  });
+
   it("drops opaque cross-origin 'Script error.' with no frames", () => {
     const { event, properties } = exceptionEvent([{ value: "Script error." }]);
     expect(isThirdPartyException(event, properties)).toBe(true);
