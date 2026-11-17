@@ -89,4 +89,43 @@ describe("isThirdPartyException", () => {
     const { event, properties } = exceptionEvent([{ value: "real bug" }]);
     expect(isThirdPartyException(event, properties)).toBe(false);
   });
+
+  describe("translated-page React DOM errors", () => {
+    const reactFrame = {
+      filename: "https://www.aversusb.net/_next/static/chunks/4bd1b696.js",
+    };
+    const domError = (value: string, language?: string) => ({
+      $exception_list: [
+        { type: "DOMException", value, stacktrace: { frames: [reactFrame] } },
+      ],
+      ...(language ? { $browser_language: language } : {}),
+    });
+    const insertBefore =
+      "NotFoundError: Failed to execute 'insertBefore' on 'Node': The node before which the new node is to be inserted is not a child of this node.";
+    const removeChild =
+      "NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.";
+
+    it("drops insertBefore and removeChild errors from a non-English browser", () => {
+      expect(isThirdPartyException("$exception", domError(insertBefore, "zh-CN"))).toBe(true);
+      expect(isThirdPartyException("$exception", domError(removeChild, "de"))).toBe(true);
+    });
+
+    it("keeps the same errors from an English browser", () => {
+      expect(isThirdPartyException("$exception", domError(insertBefore, "en-US"))).toBe(false);
+      expect(isThirdPartyException("$exception", domError(removeChild, "en"))).toBe(false);
+    });
+
+    it("keeps the same errors when the browser language is unknown", () => {
+      expect(isThirdPartyException("$exception", domError(insertBefore))).toBe(false);
+    });
+
+    it("keeps other first-party errors from a non-English browser", () => {
+      expect(
+        isThirdPartyException(
+          "$exception",
+          domError("TypeError: Cannot read properties of undefined", "zh-CN"),
+        ),
+      ).toBe(false);
+    });
+  });
 });
