@@ -55,6 +55,7 @@ import { PartnerReviews } from "@/components/comparison/PartnerReviews";
 import { generateResources } from "@/lib/services/resources";
 import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
+import { applyAffiliateCompareRule, classifyAffiliateCompare } from "@/lib/affiliate/buyable-compare";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import {
   parseComparisonSlug,
@@ -565,7 +566,16 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     enrichEntitiesWithAffiliateLinks(comparison.entities, comparison.category),
   ]);
 
-  const mergedEntities = entitiesWithAffiliates.map((e, i) => ({
+  // ROO-411: shop CTAs only on compares of buyable physical products. On
+  // software / service / store / media compares every shop link is dropped,
+  // so no affiliate block renders and the under-verdict row falls back to a
+  // related compare.
+  const affiliateClass = classifyAffiliateCompare({
+    slug,
+    category: comparison.category,
+    entities: comparison.entities,
+  });
+  const mergedEntities = applyAffiliateCompareRule(entitiesWithAffiliates, affiliateClass).map((e, i) => ({
     ...e,
     imageUrl: entitiesWithImages[i]?.imageUrl || e.imageUrl,
   }));

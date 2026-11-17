@@ -87,8 +87,10 @@ describe("CompareUnderVerdictNextStep", () => {
       />,
     );
 
-    const links = within(container).getAllByRole("link", { name: /Check Price/ });
+    const links = within(container).getAllByRole("link", { name: /price on Amazon/ });
     expect(links).toHaveLength(2);
+    expect(links[0]).toHaveAccessibleName("Check iPhone 17 price on Amazon");
+    expect(links[1]).toHaveTextContent("Check Galaxy S26 price on Amazon");
     expect(links[0]).toHaveAttribute("href", "https://www.amazon.com/s?k=iphone");
     expect(links[0].className).toContain("w-full sm:w-auto");
     expect(container.querySelector("[data-early-commerce]")).toHaveAttribute("data-early-commerce", "true");
@@ -104,6 +106,7 @@ describe("CompareUnderVerdictNextStep", () => {
         source_page: "compare-iphone-17-vs-samsung-s26",
         partner: "amazon",
         cta_type: "affiliate",
+        early_commerce: 1,
       }),
     );
     expect(trackEvent).not.toHaveBeenCalled();
@@ -178,18 +181,43 @@ describe("CompareUnderVerdictNextStep", () => {
     expect(container).not.toHaveTextContent("As an Amazon Associate");
   });
 
-  it("keeps another Amazon compare on the compact row", () => {
+  // ROO-411: Amazon links only survive on buyable-product compares, so any
+  // all-Amazon row gets the early-commerce layout, not just an allowlist.
+  it("gives any all-Amazon compare the named early-commerce row", () => {
     const { container } = render(
       <CompareUnderVerdictNextStep
         slug="sony-vs-bose"
         chips={[]}
-        entities={[entity("Sony", "amazon", "https://www.amazon.com/s?k=sony")]}
+        entities={[entity("Sony WH-1000XM6 (2025)", "amazon", "https://www.amazon.com/s?k=sony")]}
       />,
     );
-    const link = within(container).getByRole("link", { name: /Check Price/ });
-    expect(link.className).not.toContain("w-full sm:w-auto");
+    const link = within(container).getByRole("link", { name: "Check Sony WH-1000XM6 price on Amazon" });
+    expect(link.className).toContain("w-full sm:w-auto");
+    expect(container.querySelector("[data-early-commerce]")).toHaveAttribute("data-early-commerce", "true");
+    expect(container).toHaveTextContent("As an Amazon Associate I earn from qualifying purchases.");
+  });
+
+  it("keeps the disclosure on a mixed Amazon + brand row", () => {
+    const { container } = render(
+      <CompareUnderVerdictNextStep
+        slug="kindle-vs-kobo"
+        chips={[]}
+        entities={[
+          entity("Kindle Paperwhite", "amazon", "https://www.amazon.com/s?k=kindle"),
+          entity("Kobo", "brand", "https://www.kobo.com"),
+        ]}
+      />,
+    );
+    expect(within(container).getByRole("link", { name: "Check Kindle Paperwhite price on Amazon" })).toBeTruthy();
     expect(container.querySelector("[data-early-commerce]")).toHaveAttribute("data-early-commerce", "false");
-    expect(container).not.toHaveTextContent("As an Amazon Associate");
+    expect(container).toHaveTextContent("As an Amazon Associate I earn from qualifying purchases.");
+    fireEvent.click(within(container).getByRole("link", { name: /Official Site — Kobo/ }));
+    expect(trackAffiliateClick).toHaveBeenCalledWith(
+      "Kobo",
+      "under-verdict",
+      "kindle-vs-kobo",
+      expect.objectContaining({ partner: "brand", early_commerce: 0 }),
+    );
   });
 
   it("records one under-verdict exposure when half the shop row is on screen", () => {
