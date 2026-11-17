@@ -5,9 +5,9 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const PAGE_URL = `${SITE_URL}/alternatives/google-workspace`;
-const PAGE_TITLE = "Best Google Workspace Alternatives in 2026: 6 Productivity Suites Compared";
+const PAGE_TITLE = "Best Google Workspace Alternatives in 2026: 7 Productivity Suites Compared";
 const PAGE_DESCRIPTION =
-  "Microsoft 365, Zoho Workplace, Proton Business Suite, Apple iCloud+, FastMail + Nextcloud, and ONLYOFFICE DocSpace compared. Find the best Google Workspace alternative for privacy, cost, or Microsoft compatibility in 2026.";
+  "Microsoft 365, Lark, Zoho Workplace, Proton Business Suite, Apple iCloud+, FastMail + Nextcloud, and ONLYOFFICE DocSpace compared. Find the best Google Workspace alternative for privacy, cost, or Microsoft compatibility in 2026.";
 const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent(
   "Best Google Workspace Alternatives in 2026",
 )}&a=${encodeURIComponent("Google Workspace")}&b=${encodeURIComponent("Alternatives")}&type=comparison`;
@@ -56,6 +56,7 @@ export const metadata: Metadata = {
     "citation_abstract": PAGE_DESCRIPTION,
     "citation_publication_date": "2026-07-11",
     "citation_online_date": "2026-07-11",
+    "last-modified": "2026-11-17",
     "DC.title": PAGE_TITLE,
     "DC.creator": SITE_NAME,
     "DC.publisher": "A Versus B",
@@ -72,7 +73,7 @@ const itemListSchema = {
   "@type": "ItemList",
   name: "Best Google Workspace Alternatives in 2026",
   itemListOrder: "https://schema.org/ItemListOrderAscending",
-  numberOfItems: 6,
+  numberOfItems: 7,
   itemListElement: [
     {
       "@type": "ListItem",
@@ -91,6 +92,18 @@ const itemListSchema = {
       position: 2,
       item: {
         "@type": "SoftwareApplication",
+        name: "Lark",
+        applicationCategory: "Productivity Suite / All-in-one workspace",
+        operatingSystem: "Web, Windows, macOS, iOS, Android",
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        url: "https://www.larksuite.com/?utm_source=external_mentions",
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      item: {
+        "@type": "SoftwareApplication",
         name: "Zoho Workplace",
         applicationCategory: "Productivity Suite / Email + Docs",
         operatingSystem: "Web, iOS, Android",
@@ -100,7 +113,7 @@ const itemListSchema = {
     },
     {
       "@type": "ListItem",
-      position: 3,
+      position: 4,
       item: {
         "@type": "SoftwareApplication",
         name: "Proton Business Suite",
@@ -112,7 +125,7 @@ const itemListSchema = {
     },
     {
       "@type": "ListItem",
-      position: 4,
+      position: 5,
       item: {
         "@type": "SoftwareApplication",
         name: "Apple iCloud+ with iWork",
@@ -124,7 +137,7 @@ const itemListSchema = {
     },
     {
       "@type": "ListItem",
-      position: 5,
+      position: 6,
       item: {
         "@type": "SoftwareApplication",
         name: "FastMail + Nextcloud",
@@ -136,7 +149,7 @@ const itemListSchema = {
     },
     {
       "@type": "ListItem",
-      position: 6,
+      position: 7,
       item: {
         "@type": "SoftwareApplication",
         name: "ONLYOFFICE DocSpace",
@@ -164,7 +177,7 @@ const faqPageSchema = {
       name: "What is the best Google Workspace alternative?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Microsoft 365 is the best overall Google Workspace alternative — it offers comparable email, docs, spreadsheets, presentations, and video conferencing with tighter enterprise governance and a broader desktop app ecosystem. For privacy-first teams, Proton Business Suite is the strongest E2E-encrypted alternative. For budget-conscious teams, Zoho Workplace at $3/user/mo delivers most of what Workspace offers at a fraction of the price.",
+        text: "Microsoft 365 is the best overall Google Workspace alternative — it offers comparable email, docs, spreadsheets, presentations, and video conferencing with tighter enterprise governance and a broader desktop app ecosystem. For teams that want one connected app instead of separate Google tabs, Lark puts chat, meetings, docs, email, calendar, approvals, wiki, and a no-code database (Lark Base) in one workspace, with a free Starter plan for up to 20 users. For privacy-first teams, Proton Business Suite is the strongest E2E-encrypted alternative. For budget-conscious teams, Zoho Workplace at $3/user/mo delivers most of what Workspace offers at a fraction of the price.",
       },
     },
     {
@@ -173,6 +186,14 @@ const faqPageSchema = {
       acceptedAnswer: {
         "@type": "Answer",
         text: "It depends on your team's workflow. Microsoft 365 is better for organizations that rely on advanced Word/Excel/PowerPoint features, Teams-centric collaboration, and Windows-native tools. Google Workspace leads on browser-native real-time collaboration, ease of use, and Gmail-first workflows. The 2026 price difference is minor — both are $6/user/mo at entry-level business tiers.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is Lark a good Google Workspace alternative?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Lark is built as one connected workspace: messaging, video meetings, cloud docs, email, calendar, wiki, approvals, and a no-code database (Lark Base) all live in the same app, instead of separate Google products you switch between. It is strongest for teams frustrated by app-switching, mobile-first or distributed teams, and organizations that want a lightweight no-code tool for project trackers, CRM-style pipelines, or operational workflows. The free Starter plan supports up to 20 users with 100 GB of storage. Group video meetings, AI features, and automation limits vary by plan.",
       },
     },
     {
@@ -196,7 +217,7 @@ const faqPageSchema = {
       name: "Can I get a free Google Workspace alternative?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. ONLYOFFICE DocSpace Community Edition is free for self-hosted deployments with full document editing, collaboration, and room management. Nextcloud Community Edition is free for self-hosted email and file storage when combined with Collabora or ONLYOFFICE connectors. For personal or very small teams, Zoho Mail free (up to 5 users, 5 GB/user) is the best hosted option.",
+        text: "Yes. ONLYOFFICE DocSpace Community Edition is free for self-hosted deployments with full document editing, collaboration, and room management. Nextcloud Community Edition is free for self-hosted email and file storage when combined with Collabora or ONLYOFFICE connectors. For a hosted free option, Lark Starter supports up to 20 users with 100 GB of storage across messaging, docs, meetings, calendar, approvals, and Lark Base, with no credit card required. For personal or very small teams, Zoho Mail free (up to 5 users, 5 GB/user) is the best hosted option.",
       },
     },
   ],
@@ -236,7 +257,7 @@ const collectionPageSchema = {
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   datePublished: "2026-07-11",
-  dateModified: "2026-07-11",
+  dateModified: "2026-11-17",
   contentReferenceTime: "2026-07-11",
   thumbnailUrl: OG_IMAGE,
   image: { "@type": "ImageObject", "@id": `${PAGE_URL}#primaryImage`, url: OG_IMAGE, contentUrl: OG_IMAGE, width: 1200, height: 630, caption: "Best Google Workspace Alternatives in 2026 — A Versus B" },
@@ -279,6 +300,14 @@ const TABLE_ROWS: AlternativeRow[] = [
   },
   {
     rank: 2,
+    name: "Lark",
+    bestFor: "Teams that want one connected all-in-one app instead of tab-jumping",
+    freeTier: "Starter free (20 users, 100 GB)",
+    paidEntry: "Basic $6/u/mo (billed annually)",
+    advantage: "Chat, meetings, docs, email, calendar, approvals, and a no-code database (Lark Base) in one workspace",
+  },
+  {
+    rank: 3,
     name: "Zoho Workplace",
     bestFor: "Budget-conscious teams wanting a full suite",
     freeTier: "Zoho Mail free (5 users)",
@@ -286,7 +315,7 @@ const TABLE_ROWS: AlternativeRow[] = [
     advantage: "Broadest feature set per dollar; deep Zoho CRM/Desk integration",
   },
   {
-    rank: 3,
+    rank: 4,
     name: "Proton Business Suite",
     bestFor: "Privacy-first and EU data sovereignty",
     freeTier: "No (Proton free personal)",
@@ -294,7 +323,7 @@ const TABLE_ROWS: AlternativeRow[] = [
     advantage: "E2E encryption by default; Swiss jurisdiction; zero Google data access",
   },
   {
-    rank: 4,
+    rank: 5,
     name: "Apple iCloud+ with iWork",
     bestFor: "Apple-only teams (Mac + iPhone)",
     freeTier: "5 GB iCloud free",
@@ -302,7 +331,7 @@ const TABLE_ROWS: AlternativeRow[] = [
     advantage: "Zero incremental cost for Apple shops; tight Mac/iPhone integration",
   },
   {
-    rank: 5,
+    rank: 6,
     name: "FastMail + Nextcloud",
     bestFor: "Privacy-conscious self-hosting teams",
     freeTier: "Nextcloud self-hosted free",
@@ -310,7 +339,7 @@ const TABLE_ROWS: AlternativeRow[] = [
     advantage: "Own your data entirely; GDPR-native; EU-hosted email + self-hosted files/docs",
   },
   {
-    rank: 6,
+    rank: 7,
     name: "ONLYOFFICE DocSpace",
     bestFor: "Open-source teams and EU public sector",
     freeTier: "Yes (Community Edition)",
@@ -370,10 +399,10 @@ export default function GoogleWorkspaceAlternativesPage() {
 
         <header className="mb-8">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-text leading-tight">
-            Best Google Workspace Alternatives in 2026: 6 Productivity Suites Compared
+            Best Google Workspace Alternatives in 2026: 7 Productivity Suites Compared
           </h1>
           <p className="mt-3 text-sm text-text-secondary italic">
-            Updated July 2026 · Pricing verified against provider pages.
+            Updated November 2026 · Pricing verified against provider pages.
           </p>
         </header>
 
@@ -397,14 +426,14 @@ export default function GoogleWorkspaceAlternativesPage() {
             you&rsquo;re an EU organization with GDPR or NIS2 data residency requirements,
             you need end-to-end encryption that Google&rsquo;s architecture can&rsquo;t
             provide by default, or you simply want to reduce vendor dependency on Google —
-            this page covers the six strongest Workspace alternatives for each scenario.
+            this page covers the seven strongest Workspace alternatives for each scenario.
           </p>
         </section>
 
         {/* Comparison table */}
         <section aria-labelledby="gws-the-6-best-gws" className="mt-10">
           <h2 id="gws-the-6-best-gws" className="text-2xl font-bold text-text mb-4">
-            The 6 best Google Workspace alternatives at a glance
+            The 7 best Google Workspace alternatives at a glance
           </h2>
 
           {/* Desktop / tablet */}
@@ -521,10 +550,70 @@ export default function GoogleWorkspaceAlternativesPage() {
           </p>
         </section>
 
-        {/* 2. Zoho Workplace */}
+        {/* 2. Lark */}
+        <section aria-labelledby="gws-lark-best" className="mt-12">
+          <h2 id="gws-lark-best" className="text-2xl font-bold text-text mb-3">
+            2. Lark — best alternative for teams that want one connected super app
+          </h2>
+          <p className="text-text leading-relaxed mb-4">
+            <strong>Why it beats Google Workspace:</strong> Google Workspace bundles Gmail,
+            Drive, Docs, Meet, and Chat, but everyday work still happens across separate
+            tabs — you jump from inbox to a Docs window to a Meet call to a Chat thread, and
+            context constantly breaks.{" "}
+            <a
+              href="https://www.larksuite.com/?utm_source=external_mentions"
+              target="_blank"
+              rel="noopener"
+              className="text-primary-600 font-semibold hover:underline"
+            >
+              Lark
+            </a>{" "}
+            is built as one connected workspace from the ground up: team messaging, video
+            meetings, cloud-native docs, sheets, slides, calendar, email, wiki, approvals, and
+            a no-code database called Lark Base all live in the same app, on desktop, mobile,
+            and web. A discussion in a group chat can turn into a doc, which can turn into a
+            tracked task in Lark Base, which can route through an approval flow — without
+            ever switching tools. Lark&rsquo;s Starter plan is free for up to 20 users with
+            100 GB of storage and 11+ built-in tools, which is more generous than Google
+            Workspace&rsquo;s free consumer tier, and its mobile-first design fits distributed
+            and frontline teams better than Google&rsquo;s browser-leaning experience.
+          </p>
+          <h3 className="font-semibold text-text mt-4 mb-2">When to choose Lark over Google Workspace:</h3>
+          <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
+            <li>You&rsquo;re tired of switching between Gmail, Docs, Meet, Chat, and Calendar tabs all day</li>
+            <li>You want chat, meetings, docs, and approvals in one connected app rather than a bundle of separate Google products</li>
+            <li>You need a lightweight no-code database (Lark Base) to build project trackers, CRM-style pipelines, or operational workflows without buying a separate tool</li>
+            <li>Your team is mobile-first or spread across multiple regions and sites</li>
+            <li>You want a generous free tier (up to 20 users, 100 GB) to pilot the whole stack</li>
+          </ul>
+          <h3 className="font-semibold text-text mt-4 mb-2">When to stick with Google Workspace:</h3>
+          <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
+            <li>Your org is deeply tied to YouTube Studio, Google Analytics, Search Console, or other Google-only integrations</li>
+            <li>You rely on Gmail&rsquo;s advanced search and threading as your primary email workflow</li>
+            <li>You need Google Workspace&rsquo;s specific enterprise compliance stack and data regions (Lark AI features and some advanced capabilities vary by plan)</li>
+          </ul>
+          <p className="text-text leading-relaxed mb-3">
+            <strong>Pricing:</strong> Starter free (up to 20 users, 100 GB, 11+ tools) · Basic
+            $6/u/mo (billed annually, up to 500 users) · Pro $12/u/mo (billed annually, up to
+            500 users, group meetings up to 500 participants) · Enterprise via sales
+          </p>
+          <p className="text-text">
+            Official site:{" "}
+            <a
+              href="https://www.larksuite.com/?utm_source=external_mentions"
+              target="_blank"
+              rel="noopener"
+              className="text-primary-600 font-semibold hover:underline"
+            >
+              larksuite.com
+            </a>
+          </p>
+        </section>
+
+        {/* 3. Zoho Workplace */}
         <section aria-labelledby="gws-2-zoho-workplace-best" className="mt-12">
           <h2 id="gws-2-zoho-workplace-best" className="text-2xl font-bold text-text mb-3">
-            2. Zoho Workplace — best value alternative for full-suite coverage on a budget
+            3. Zoho Workplace — best value alternative for full-suite coverage on a budget
           </h2>
           <p className="text-text leading-relaxed mb-4">
             <strong>Why it beats Google Workspace:</strong> Zoho Workplace bundles business
@@ -566,10 +655,10 @@ export default function GoogleWorkspaceAlternativesPage() {
           </p>
         </section>
 
-        {/* 3. Proton Business Suite */}
+        {/* 4. Proton Business Suite */}
         <section aria-labelledby="gws-3-proton-best" className="mt-12">
           <h2 id="gws-3-proton-best" className="text-2xl font-bold text-text mb-3">
-            3. Proton Business Suite — best privacy-first and EU sovereignty alternative
+            4. Proton Business Suite — best privacy-first and EU sovereignty alternative
           </h2>
           <p className="text-text leading-relaxed mb-4">
             <strong>Why it beats Google Workspace:</strong> Proton is the only full productivity
@@ -605,10 +694,10 @@ export default function GoogleWorkspaceAlternativesPage() {
           </p>
         </section>
 
-        {/* 4. Apple iCloud+ */}
+        {/* 5. Apple iCloud+ */}
         <section aria-labelledby="gws-4-apple-icloud-best" className="mt-12">
           <h2 id="gws-4-apple-icloud-best" className="text-2xl font-bold text-text mb-3">
-            4. Apple iCloud+ with iWork — best alternative for Apple-only teams
+            5. Apple iCloud+ with iWork — best alternative for Apple-only teams
           </h2>
           <p className="text-text leading-relaxed mb-4">
             <strong>Why it beats Google Workspace:</strong> For teams that are 100% on Mac,
@@ -645,10 +734,10 @@ export default function GoogleWorkspaceAlternativesPage() {
           </p>
         </section>
 
-        {/* 5. FastMail + Nextcloud */}
+        {/* 6. FastMail + Nextcloud */}
         <section aria-labelledby="gws-5-fastmail-nextcloud-best" className="mt-12">
           <h2 id="gws-5-fastmail-nextcloud-best" className="text-2xl font-bold text-text mb-3">
-            5. FastMail + Nextcloud — best self-hosted alternative for data ownership
+            6. FastMail + Nextcloud — best self-hosted alternative for data ownership
           </h2>
           <p className="text-text leading-relaxed mb-4">
             <strong>Why it beats Google Workspace:</strong> This combination gives you business
@@ -686,10 +775,10 @@ export default function GoogleWorkspaceAlternativesPage() {
           </p>
         </section>
 
-        {/* 6. ONLYOFFICE DocSpace */}
+        {/* 7. ONLYOFFICE DocSpace */}
         <section aria-labelledby="gws-6-onlyoffice-best" className="mt-12">
           <h2 id="gws-6-onlyoffice-best" className="text-2xl font-bold text-text mb-3">
-            6. ONLYOFFICE DocSpace — best open-source alternative for document collaboration
+            7. ONLYOFFICE DocSpace — best open-source alternative for document collaboration
           </h2>
           <p className="text-text leading-relaxed mb-4">
             <strong>Why it stands apart:</strong> ONLYOFFICE is the open-source document
@@ -745,6 +834,10 @@ export default function GoogleWorkspaceAlternativesPage() {
             </li>
             <li>
               Zoho CRM / Zoho Desk customer<span aria-hidden="true"> →</span> <strong>Zoho Workplace</strong> (one vendor, shared data model)
+            </li>
+            <li>
+              Teams frustrated by tab-jumping between Gmail, Docs, Meet, Chat, and Calendar<span aria-hidden="true"> →</span>{" "}
+              <strong>Lark</strong> (one connected super app: chat, meetings, docs, email, approvals, and no-code Base in one workspace)
             </li>
           </ul>
           <p className="text-text font-semibold mb-2">By use case:</p>
@@ -803,6 +896,9 @@ export default function GoogleWorkspaceAlternativesPage() {
                 Microsoft 365 is the best overall Google Workspace alternative — it offers
                 comparable email, docs, spreadsheets, presentations, and video conferencing
                 with tighter enterprise governance and a broader desktop app ecosystem. For
+                teams that want one connected app instead of separate Google tabs, Lark puts
+                chat, meetings, docs, email, calendar, approvals, wiki, and a no-code database
+                (Lark Base) in one workspace, with a free Starter plan for up to 20 users. For
                 privacy-first teams, Proton Business Suite is the strongest E2E-encrypted
                 alternative. For budget-conscious teams, Zoho Workplace at $3/user/mo delivers
                 most of what Workspace offers at a fraction of the price.
@@ -822,6 +918,13 @@ export default function GoogleWorkspaceAlternativesPage() {
                   Google Workspace vs Microsoft 365
                 </CompareLink>{" "}
                 for a full feature-by-feature breakdown.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-bold text-text mb-2">Is Lark a good Google Workspace alternative?</h3>
+              <p className="text-text leading-relaxed">
+                Yes. Lark is built as one connected workspace: messaging, video meetings, cloud docs, email, calendar, wiki, approvals, and a no-code database (Lark Base) all live in the same app, instead of separate Google products you switch between. It is strongest for teams frustrated by app-switching, mobile-first or distributed teams, and organizations that want a lightweight no-code tool for project trackers, CRM-style pipelines, or operational workflows. The free Starter plan supports up to 20 users with 100 GB of storage. Group video meetings, AI features, and automation limits vary by plan.
               </p>
             </div>
 
@@ -853,7 +956,10 @@ export default function GoogleWorkspaceAlternativesPage() {
                 Yes. ONLYOFFICE DocSpace Community Edition is free for self-hosted deployments
                 with full document editing, collaboration, and room management. Nextcloud
                 Community Edition is free for self-hosted email and file storage when combined
-                with Collabora or ONLYOFFICE connectors. For personal or very small teams,
+                with Collabora or ONLYOFFICE connectors. For a hosted free option, Lark Starter
+                supports up to 20 users with 100 GB of storage across messaging, docs, meetings,
+                calendar, approvals, and Lark Base, with no credit card required. For personal or
+                very small teams,
                 Zoho Mail free (up to 5 users, 5 GB/user) is the best hosted option.
               </p>
             </div>
