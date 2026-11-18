@@ -325,6 +325,13 @@ export function trackCompareChangeAlertViewed(compareSlug: string) {
 }
 
 /** ROO-242: change-alert signup on a compare page. Same events as the newsletter, plus compare_slug. */
+export function trackMissingCompareNotifySignup(compareSlug: string) {
+  trackEvent("newsletter_signup", { page: compareSlug, placement: "missing_compare_notify", compare_slug: compareSlug });
+  trackEvent("generate_lead", { lead_source: "newsletter", page: compareSlug, placement: "missing_compare_notify" });
+  trackMetaEvent("Lead", { content_name: "newsletter", content_category: "missing_compare_notify" });
+  posthog.capture("missing_compare_notify_signup", { compare_slug: compareSlug });
+}
+
 export function trackCompareChangeAlertSignup(compareSlug: string) {
   trackEvent("newsletter_signup", { page: compareSlug, placement: "compare_change_alert", compare_slug: compareSlug });
   trackEvent("generate_lead", { lead_source: "newsletter", page: compareSlug, placement: "compare_change_alert" });

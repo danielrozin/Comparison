@@ -14,6 +14,7 @@ import { isKnownCrawlerUserAgent } from "@/lib/generation/crawler-ua";
 import { safeGenerationFailureReason } from "@/lib/generation/safe-failure-reason";
 import { TrackedPricingLink, pricingHref } from "@/components/monetization/SoftPricingLine";
 import { lastSearchAttachment } from "@/lib/search/search-session";
+import { MissingCompareNotify } from "@/components/comparison/MissingCompareNotify";
 import {
   trackCompareNotFound,
   trackGenerationFallbackClick,
@@ -432,6 +433,7 @@ function Fallback({
         related={related}
         onSelect={(item) => trackClick("suggestion", { suggested_slug: item.slug })}
       />
+      <MissingCompareNotify slug={slug} matchup={`${entityA} vs ${entityB}`} />
       <aside
         aria-label="A Versus B Pro"
         className="rounded-2xl border border-primary-200 bg-primary-50 p-5 text-left"

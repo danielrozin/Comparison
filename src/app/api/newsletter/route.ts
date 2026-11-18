@@ -3,6 +3,10 @@ import { getPrisma } from "@/lib/db/prisma";
 import { logAdminEvent } from "@/lib/services/admin-logger";
 import { sendNotificationEmail, sendOutreachEmail } from "@/lib/services/email";
 import { getPostHogClient } from "@/lib/posthog-server";
+import {
+  MISSING_COMPARE_NOTIFY_SOURCE,
+  missingCompareWelcomeEmail,
+} from "@/lib/notify/ready-compare-notify";
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,6 +21,12 @@ export async function POST(request: NextRequest) {
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
     }
+    // A missing-compare page asks to be emailed when that compare goes live.
+    // The slug is the promise, so it must be a real compare slug.
+    const isMissingCompareNotify = source === MISSING_COMPARE_NOTIFY_SOURCE;
+    if (isMissingCompareNotify && !compareSlug) {
+      return NextResponse.json({ error: "A valid compare slug is required" }, { status: 400 });
+    }
 
     const normalizedEmail = email.toLowerCase().trim();
 
@@ -29,7 +39,11 @@ export async function POST(request: NextRequest) {
         isNewSubscriber = !existing || existing.status !== "active";
         await prisma.newsletterSubscriber.upsert({
           where: { email: normalizedEmail },
-          update: { status: "active", updatedAt: new Date() },
+          // A notify request always records the latest missing compare, so the
+          // ready-compare job knows which page to email this person about.
+          update: isMissingCompareNotify
+            ? { status: "active", source, referrerSlug: compareSlug, updatedAt: new Date() }
+            : { status: "active", updatedAt: new Date() },
           create: {
             email: normalizedEmail,
             source: source || "unknown",
@@ -53,7 +67,19 @@ export async function POST(request: NextRequest) {
     // Previously signup sent nothing to the subscriber at all; the first
     // touch is where founding-member conversion is highest, so the welcome
     // carries the pitch. Only on genuinely new/reactivated subscriptions.
-    if (isNewSubscriber) {
+    if (isMissingCompareNotify && compareSlug) {
+      try {
+        const welcome = missingCompareWelcomeEmail(normalizedEmail, compareSlug);
+        await sendOutreachEmail({
+          to: normalizedEmail,
+          subject: welcome.subject,
+          html: welcome.html,
+          tags: [{ name: "type", value: "missing_compare_notify_welcome" }],
+        });
+      } catch (welcomeErr) {
+        console.error("Missing-compare welcome email failed (non-fatal):", welcomeErr);
+      }
+    } else if (isNewSubscriber) {
       const followed = typeof referrerSlug === "string" && referrerSlug.includes("-vs-")
         ? referrerSlug.replace(/-vs-/g, " vs ").replace(/-/g, " ")
         : null;
