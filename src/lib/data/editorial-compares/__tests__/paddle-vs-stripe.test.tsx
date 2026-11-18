@@ -28,11 +28,10 @@ const SOURCES = [
 ];
 
 /**
- * Reader copy stays on vendor wording. "Fees checked on" is required by ROO-464,
- * so the bare word "checked" is not in this ban.
+ * Reader copy stays on vendor wording. The shared reader-copy test bans "checked".
  */
 const CORPUS =
-  /date of death|page lists|list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|Source note|(?:^|\n)Sources:|official page|\bfetch\b|returned 404|this comparison|this page|\bwinner\b|better pick|better value|better buy|human review|byline|reviewed by/i;
+  /date of death|page lists|list shows|info box lists|table lists|on that table|no published|not described as|page says|on that page|the page|about page|article says|is described there|does not print|doesn't print|checked|Source note|(?:^|\n)Sources:|official page|\bfetch\b|returned 404|this comparison|this page|\bwinner\b|better pick|better value|better buy|human review|byline|reviewed by/i;
 
 const mocks = vi.hoisted(() => ({
   findUnique: vi.fn(),
@@ -335,7 +334,9 @@ describe("Paddle vs Stripe (ROO-464)", () => {
       "no monthly fee",
       "live 1-1 coaching",
       "not tax advice",
-      "Fees checked on 18 November 2026",
+      "Fees are from each vendor's pricing page, read on 18 November 2026; check the current rates before you choose.",
+      "LINK.COM* [Your statement descriptor]",
+      "Online courses and training",
       "€0.50",
       "€0.29",
       "€0.35",

@@ -44,7 +44,7 @@ Key takeaways.
 - Choose Paddle if you want Paddle as merchant of record at 5% + 50¢ per Checkout transaction and no monthly fee.
 - Choose Stripe Managed Payments if your digital product passes Stripe's eligibility review and the 3.5% add-on is the fee you will pay on top of Stripe processing.
 - Choose plain Stripe if you will register and file sales tax, VAT, and GST yourself. Stripe's pricing lists 2.9% + 30¢ per successful transaction for domestic cards.
-- Fees checked on 18 November 2026 from each vendor's pricing page; check the current rates before you choose. ${PADDLE_PRICING} ${STRIPE_PRICING} ${STRIPE_MP}
+- Fees are from each vendor's pricing page, read on 18 November 2026; check the current rates before you choose. ${PADDLE_PRICING} ${STRIPE_PRICING} ${STRIPE_MP}
 - Stripe's Managed Payments documentation says indirect tax coverage is more than 80 countries. Stripe's Tax site says 75 countries. Those two counts do not match.
 - This is general information about published product terms. It is not tax advice.
 
@@ -70,7 +70,7 @@ Stripe's pricing prints 2.9% + 30¢ for domestic cards. It also lists add-on cha
 
 Stripe's Managed Payments FAQ says Managed Payments adds 3.5% per successful transaction to your standard Stripe processing fees. It says that fee includes global indirect tax (sales, VAT, GST), fraud prevention, dispute responses, and transaction-level support through Link. Optional products such as Billing, and local payment methods, are separate. It says there are no setup fees or monthly minimums. The documents opened on 18 November 2026 do not say that this 3.5% is calculated on a tax-inclusive total. The illustration below uses the charge itself.
 
-Fees checked on 18 November 2026 from each vendor's pricing page; check the current rates before you choose.
+Fees are from each vendor's pricing page, read on 18 November 2026; check the current rates before you choose.
 
 ## How tax is handled
 
@@ -92,7 +92,7 @@ Stripe's eligibility document says access depends on an eligibility review of bu
 
 The supported business-location codes include US and CA, a list of European codes that includes IT, GB, and CH, and AU, HK, JP, and SG. Printing a code on that list is not the same as an approved account. Stripe still runs the eligibility review.
 
-The product must be a digital product with an eligible tax code. The supported categories named there include software, video games, digital media, online courses, and electronically supplied business and web services such as website hosting. You sell it directly, not through a platform or marketplace. It must be fully automated. The document says a service with human intervention, such as live 1-1 coaching, does not qualify. It also says Managed Payments does not support physical goods, professional services such as consulting, marketing, design, development, or tech support, or live in-person events. Connect platforms, Express accounts, and accounts controlled by a platform are not supported.
+The product must be a digital product with an eligible tax code. The supported categories named there include software, video games, digital media, Online courses and training, and electronically supplied business and web services such as website hosting. You sell it directly, not through a platform or marketplace. It must be fully automated. The document says a service with human intervention, such as live 1-1 coaching, does not qualify. It also says Managed Payments does not support physical goods, professional services such as consulting, marketing, design, development, or tech support, or live in-person events. Connect platforms, Express accounts, and accounts controlled by a platform are not supported.
 
 Customers can purchase from more than 195 countries and territories, except a restricted list. That list names Ascension Island, China, Cuba, Iran, Kosovo, North Korea, Russia, Syria, and Tristan da Cunha.
 
@@ -102,7 +102,7 @@ Choose plain Stripe if you want your business named as the merchant. Choose a me
 
 Stripe's how-it-works document says Stripe handles disputes, and that a received dispute incurs a dispute received fee. When Stripe submits evidence, Stripe covers the evidence submission fee. If you counter a dispute yourself, an evidence submission fee applies. Stripe can issue refunds within 60 days of the original transaction in certain cases. If Stripe needs product input and you do not respond within 48 hours, Stripe might issue a refund without your approval. You can still issue refunds and update subscriptions in the Dashboard or with the API. The dollar amount of the Managed Payments dispute received fee is not given on that document, so no dollar dispute fee is copied here.
 
-When the payment completes, Stripe withholds indirect taxes where they apply. Report columns can split withheld tax from the fee. Checkout for these transactions uses Link. Custom domains are not supported on Managed Payments checkouts. The statement descriptor form given there is LINK.COM followed by your statement descriptor.
+When the payment completes, Stripe withholds indirect taxes where they apply. Report columns can split withheld tax from the fee. Checkout for these transactions uses Link. Custom domains are not supported on Managed Payments checkouts. The customer's statement displays LINK.COM* [Your statement descriptor].
 
 Paddle's pay-as-you-go list includes fraud protection, chargebacks, and buyer support inside the published price. Its FAQ says there is no additional cost for payment-related buyer support. No separate Paddle dispute dollar fee is given on that pricing.
 
@@ -158,7 +158,7 @@ const FAQS = [
 
 const VERDICT = `Choose Paddle if you want Paddle as merchant of record at 5% + 50¢ per Checkout transaction and no monthly fee. Choose Stripe Managed Payments if an eligibility review accepts your fully automated digital product and you want the 3.5% add-on. Choose plain Stripe if you will handle sales tax, VAT, and GST yourself, starting from the 2.9% + 30¢ domestic-card list rate.
 
-Fees checked on 18 November 2026 from each vendor's pricing page; check the current rates before you choose. Stripe's documentation says more than 80 countries for indirect tax, and Stripe's Tax site says 75. This is not tax advice.`;
+Fees are from each vendor's pricing page, read on 18 November 2026; check the current rates before you choose. Stripe's documentation says more than 80 countries for indirect tax, and Stripe's Tax site says 75. This is not tax advice.`;
 
 const BUILT = buildEditorialComparison({
   slug: "paddle-vs-stripe",
