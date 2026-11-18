@@ -8,7 +8,7 @@ import { YOUTUBE_CHANNEL_URL } from "@/lib/seo/schema";
 // Product community: current r/ThisOrThatDebate weekly thread. Update weekly.
 export const COMMUNITY_URL =
   process.env.NEXT_PUBLIC_COMMUNITY_URL ||
-  "https://www.reddit.com/r/ThisOrThatDebate/comments/1xnjazi/";
+  "https://www.reddit.com/r/ThisOrThatDebate/comments/1xzaee3/";
 
 const FOOTER_CATEGORIES = [
   { slug: "software", name: "Software" },
