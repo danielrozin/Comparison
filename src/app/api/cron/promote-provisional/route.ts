@@ -3,6 +3,7 @@ import {
   executePromotionRecheck,
   isPromotionRecheckEnabled,
 } from "@/lib/generation/promotion-recheck";
+import { notifyReadyCompareSubscribers } from "@/lib/notify/ready-compare-notify";
 
 export const maxDuration = 120;
 export const runtime = "nodejs";
@@ -31,9 +32,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       status: "disabled",
       reason: "PROMOTION_RECHECK_ENABLED is not true",
+      notify: await runReadyCompareNotify(),
     });
   }
 
   const report = await executePromotionRecheck();
-  return NextResponse.json({ status: "ok", ...report });
+  // After promotions, email visitors who asked to hear when their compare went live.
+  return NextResponse.json({ status: "ok", ...report, notify: await runReadyCompareNotify() });
+}
+
+async function runReadyCompareNotify() {
+  try {
+    return await notifyReadyCompareSubscribers();
+  } catch (error) {
+    console.error("Ready-compare notify failed (non-fatal):", error);
+    return { error: "notify_failed" };
+  }
 }
