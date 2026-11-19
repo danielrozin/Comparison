@@ -68,6 +68,7 @@ import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
 import { CompareRedditFooterLink } from "@/components/community/CompareRedditFooterLink";
 import { ExpertAnalysis } from "@/components/comparison/ExpertAnalysis";
+import { ImplementationNote } from "@/components/comparison/ImplementationNote";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { CompareChangeAlert } from "@/components/comparison/CompareChangeAlert";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
@@ -1298,6 +1299,8 @@ export default function ComparisonPage(props: Props) {
             />
           )}
 
+          <ImplementationNote slug={comparison.slug} />
+
           {/* Resources & Learn More */}
           <div id="resources" className="scroll-mt-28">
             <ResourcesSection
@@ -1590,6 +1593,8 @@ function MultiEntityLayout({
               updatedAt={comparison.metadata.updatedAt}
             />
           )}
+
+          <ImplementationNote slug={comparison.slug} />
 
           <div id="resources" className="scroll-mt-28">
             <ResourcesSection
