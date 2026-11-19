@@ -150,6 +150,7 @@ import { RYZEN_7_9800X3D_VS_CORE_ULTRA_7_270K_PLUS } from "./ryzen-7-9800x3d-vs-
 import { MONITOR_4K_IPS_VS_1440P_OLED } from "./4k-ips-vs-1440p-oled";
 import { BRICK_VS_OPAL } from "./brick-vs-opal";
 import { PADDLE_VS_STRIPE } from "./paddle-vs-stripe";
+import { ULTRASONIC_VS_EVAPORATIVE_VS_STEAM_HUMIDIFIER } from "./ultrasonic-vs-evaporative-vs-steam-humidifier";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -321,6 +322,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [MONITOR_4K_IPS_VS_1440P_OLED.slug]: MONITOR_4K_IPS_VS_1440P_OLED,
   [BRICK_VS_OPAL.slug]: BRICK_VS_OPAL,
   [PADDLE_VS_STRIPE.slug]: PADDLE_VS_STRIPE,
+  [ULTRASONIC_VS_EVAPORATIVE_VS_STEAM_HUMIDIFIER.slug]: ULTRASONIC_VS_EVAPORATIVE_VS_STEAM_HUMIDIFIER,
 };
 
 /**
