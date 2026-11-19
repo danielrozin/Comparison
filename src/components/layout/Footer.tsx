@@ -152,6 +152,19 @@ export function Footer() {
               &copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> {SITE_NAME}. All rights reserved. Data is for informational purposes only.
             </p>
           </div>
+
+          {/* Builder credit, on every page (App Router + Pages Router share this footer) */}
+          <p className="mt-4 text-center text-xs text-white/60" data-testid="footer-built-by">
+            Built with <span role="img" aria-label="love">❤️</span> by{" "}
+            <a
+              href="https://goldenroz.com"
+              target="_blank"
+              rel="noopener"
+              className="font-semibold text-white/80 underline-offset-2 hover:text-white hover:underline rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            >
+              goldenroz.com
+            </a>
+          </p>
         </div>
       </div>
     </footer>
