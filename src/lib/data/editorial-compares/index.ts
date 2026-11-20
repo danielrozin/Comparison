@@ -151,6 +151,7 @@ import { MONITOR_4K_IPS_VS_1440P_OLED } from "./4k-ips-vs-1440p-oled";
 import { BRICK_VS_OPAL } from "./brick-vs-opal";
 import { PADDLE_VS_STRIPE } from "./paddle-vs-stripe";
 import { ULTRASONIC_VS_EVAPORATIVE_VS_STEAM_HUMIDIFIER } from "./ultrasonic-vs-evaporative-vs-steam-humidifier";
+import { RX_9070_GRE_VS_RX_9060_XT } from "./rx-9070-gre-vs-rx-9060-xt";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -323,6 +324,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [BRICK_VS_OPAL.slug]: BRICK_VS_OPAL,
   [PADDLE_VS_STRIPE.slug]: PADDLE_VS_STRIPE,
   [ULTRASONIC_VS_EVAPORATIVE_VS_STEAM_HUMIDIFIER.slug]: ULTRASONIC_VS_EVAPORATIVE_VS_STEAM_HUMIDIFIER,
+  [RX_9070_GRE_VS_RX_9060_XT.slug]: RX_9070_GRE_VS_RX_9060_XT,
 };
 
 /**
