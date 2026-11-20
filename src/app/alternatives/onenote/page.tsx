@@ -102,7 +102,7 @@ const TABLE_ROWS: AlternativeRow[] = [
     selfHost: "Self-hosted sync server.",
     handwriting: "Canvas note type based on Excalidraw. PDF annotation is not named in the README feature list.",
     platforms: "Windows, macOS, Linux, and a browser UI.",
-    importPath: "—",
+    importPath: "Microsoft Graph API. Authenticate in a browser so Trilium can obtain the notes. Details in the migration section.",
   },
   {
     name: "Xournal++",
@@ -180,7 +180,7 @@ const FAQS: { question: string; answer: string }[] = [
   {
     question: "Can I import my OneNote notebooks into another app?",
     answer:
-      "Joplin documents File > Import > ZIP - OneNote Notebook. The OneDrive path needs Joplin 3.5.1 or newer and may not work for notebooks larger than 2-4 GB. The Windows desktop export path needs Joplin 3.5.5 or newer, and a .onepkg file can be imported only when Joplin is running on Windows. Linwood Butterfly documents an import that selects a .one section or a .onepkg package. This roundup does not name an OneNote import path for the other apps. Microsoft documents exporting notes to PDF with File > Export, and says the PDF is a static snapshot.",
+      "Joplin documents File > Import > ZIP - OneNote Notebook. The OneDrive path needs Joplin 3.5.1 or newer and may not work for notebooks larger than 2-4 GB. The Windows desktop export path needs Joplin 3.5.5 or newer, and a .onepkg file can be imported only when Joplin is running on Windows. Linwood Butterfly documents an import that selects a .one section or a .onepkg package. Trilium's OneNote import guide says Trilium allows importing from OneNote. It says the only mechanism currently supported is via the Microsoft Graph API, which requires you to authenticate in a browser in order for the notes to be obtained by Trilium. This roundup does not name a OneNote import path for the other apps. Microsoft documents exporting notes to PDF with File > Export, and says the PDF is a static snapshot.",
   },
   {
     question: "Which OneNote alternative fits handwritten lecture notes?",
@@ -357,7 +357,7 @@ export default function OneNoteAlternativesPage() {
             <li>Xournal++ documents a pressure-sensitive stylus, layers, and PDF annotation on Windows, macOS, and Linux.</li>
             <li>Linwood Butterfly documents an infinite canvas, PDF import, and WebDAV sync, including Nextcloud, on Android, Windows, macOS, Linux, and the web, with an iOS preview.</li>
             <li>Trilium Notes documents a self-hosted sync server and an Excalidraw canvas note. AFFiNE documents Docker Compose self-hosting, free for up to 10 seats per workspace, and Outline documents running your own copy under a BSL 1.1 license.</li>
-            <li>Joplin documents an OneNote ZIP import. Microsoft documents a PDF export that it describes as a static snapshot.</li>
+            <li>Joplin documents a OneNote ZIP import. Microsoft documents a PDF export that it describes as a static snapshot.</li>
           </ul>
         </section>
 
@@ -435,7 +435,7 @@ export default function OneNoteAlternativesPage() {
             ))}
           </div>
           <p className="mt-3 text-sm text-text-secondary">
-            License and feature wording comes from each project&rsquo;s own site or repository, read on {UPDATED_LABEL}. Amounts for paid plans are left on those sites.
+            License and feature wording comes from each project&rsquo;s own site or repository, read on {UPDATED_LABEL}. The Trilium OneNote import cell comes from that project&rsquo;s user guide, opened on November 20, 2026. Amounts for paid plans are left on those sites.
           </p>
         </section>
 
@@ -474,6 +474,9 @@ export default function OneNoteAlternativesPage() {
           <h3 id="onenote-trilium" className="text-xl font-bold text-text mt-6 mb-2">Trilium Notes</h3>
           <p className="text-text leading-relaxed mb-4">
             The Trilium Notes README calls it a free, open-source, cross-platform hierarchical note-taking app for large personal knowledge bases, licensed under the GNU AGPL. It documents synchronization with a self-hosted sync server, per-note encryption, and a canvas note type for sketching diagrams based on Excalidraw. The same README documents Evernote import and Markdown import and export. Windows, macOS, and Linux builds are listed, and a server install exposes a browser UI. The README says current Chrome and Firefox versions are the browsers it supports and tests.
+          </p>
+          <p className="text-text leading-relaxed mb-4">
+            <a href="https://docs.triliumnotes.org/user-guide/concepts/import-export/import-from-apps/onenote" className="text-primary-600 font-semibold hover:underline">Trilium&rsquo;s OneNote import guide</a> says Trilium allows importing from OneNote. It says the only mechanism currently supported is via the Microsoft Graph API, which requires you to authenticate in a browser in order for the notes to be obtained by Trilium.
           </p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1">
             <li>Choose Trilium Notes if you want one open-source app with a self-hosted sync server and a hierarchical notebook.</li>
@@ -532,7 +535,7 @@ export default function OneNoteAlternativesPage() {
               <strong>AFFiNE.</strong> The self-host page, which shows a last-updated date of October 4, 2026, says you run the docs-and-whiteboard workspace with Docker Compose. It says self-hosting is free for up to 10 seats per workspace. Paid seat amounts are printed on that site and are not repeated here. The same page says the editor and most client code are MIT-licensed, and the server backend is source-available under the AFFiNE EE license. The desktop app works offline with local workspaces.
             </li>
             <li>
-              <strong>Outline.</strong> The GitHub README calls Outline a fast, collaborative, markdown-compatible knowledge base. It says a hosted app is offered at getoutline.com, and it links a hosting guide for running your own copy. The README states a BSL 1.1 license. This roundup does not call that license an open-source grant.
+              <strong>Outline.</strong> The GitHub README calls Outline a fast, collaborative knowledge base. It says a hosted app is offered at getoutline.com, and it links a hosting guide for running your own copy. The README states a BSL 1.1 license. This roundup does not call that license an open-source grant.
             </li>
             <li>
               <strong>Linwood Butterfly plus WebDAV.</strong> The app is local unless you connect WebDAV, such as Nextcloud. That is file sync for its documents, not a Joplin-style note server.
@@ -549,7 +552,7 @@ export default function OneNoteAlternativesPage() {
             How do you move notes out of OneNote?
           </h2>
           <p className="text-text leading-relaxed mb-4">
-            Use only the import path the destination app documents. This roundup names two. Keep a PDF snapshot beside the move, using the export Microsoft documents.
+            Use only the import path the destination app documents. This roundup names three. Keep a PDF snapshot beside the move, using the export Microsoft documents.
           </p>
           <h3 className="text-xl font-bold text-text mt-6 mb-2">Joplin&rsquo;s documented ZIP import</h3>
           <p className="text-text leading-relaxed mb-4">
@@ -562,6 +565,10 @@ export default function OneNoteAlternativesPage() {
           <h3 className="text-xl font-bold text-text mt-6 mb-2">Linwood Butterfly&rsquo;s documented package import</h3>
           <p className="text-text leading-relaxed mb-4">
             Butterfly&rsquo;s importing guide says the OneNote entry selects a <code>.one</code> section or a <code>.onepkg</code> package, and that a separate OneNote guide covers export steps and conversion limits. Read that guide before treating a converted notebook as complete.
+          </p>
+          <h3 className="text-xl font-bold text-text mt-6 mb-2">Trilium&rsquo;s documented Graph import</h3>
+          <p className="text-text leading-relaxed mb-4">
+            <a href="https://docs.triliumnotes.org/user-guide/concepts/import-export/import-from-apps/onenote" className="text-primary-600 font-semibold hover:underline">Trilium&rsquo;s OneNote import guide</a> says Trilium allows importing from OneNote. It says the only mechanism currently supported is via the Microsoft Graph API, which requires you to authenticate in a browser in order for the notes to be obtained by Trilium.
           </p>
           <h3 className="text-xl font-bold text-text mt-6 mb-2">PDF snapshot from Microsoft</h3>
           <p className="text-text leading-relaxed">
@@ -619,7 +626,7 @@ export default function OneNoteAlternativesPage() {
             Where these details come from
           </h2>
           <p className="text-text leading-relaxed mb-4">
-            Each link was opened on {UPDATED_LABEL}. Feature claims above are limited to what that project writes on the linked page.
+            Feature claims above are limited to what that project writes on the linked page. The Trilium OneNote import guide was opened on November 20, 2026. The other links were opened on {UPDATED_LABEL}.
           </p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-2">
             <li><a href="https://joplinapp.org/" className="text-primary-600 font-semibold hover:underline">Joplin</a> — open source, end-to-end encryption, sync targets, and platforms.</li>
@@ -632,6 +639,7 @@ export default function OneNoteAlternativesPage() {
             <li><a href="https://github.com/vrtmrz/obsidian-livesync" className="text-primary-600 font-semibold hover:underline">Self-hosted LiveSync</a> — community plugin, CouchDB, object storage, WebRTC, and the Obsidian Sync incompatibility note.</li>
             <li><a href="https://github.com/zsviczian/obsidian-excalidraw-plugin" className="text-primary-600 font-semibold hover:underline">Obsidian-Excalidraw</a> — community drawing plugin.</li>
             <li><a href="https://github.com/TriliumNext/Trilium" className="text-primary-600 font-semibold hover:underline">Trilium Notes README</a> — AGPL, sync server, Excalidraw canvas, Evernote and Markdown import.</li>
+            <li><a href="https://docs.triliumnotes.org/user-guide/concepts/import-export/import-from-apps/onenote" className="text-primary-600 font-semibold hover:underline">Trilium OneNote import</a> — the guide says Trilium allows importing from OneNote, and that the only mechanism currently supported is via the Microsoft Graph API, which requires you to authenticate in a browser in order for the notes to be obtained by Trilium. Opened on November 20, 2026.</li>
             <li><a href="https://xournalpp.github.io/" className="text-primary-600 font-semibold hover:underline">Xournal++</a> — open source, stylus, and layers.</li>
             <li><a href="https://xournalpp.github.io/installation/" className="text-primary-600 font-semibold hover:underline">Xournal++ installation</a> — Windows, Linux, and macOS.</li>
             <li><a href="https://xournalpp.github.io/guide/pdfs/" className="text-primary-600 font-semibold hover:underline">Xournal++ PDF guide</a> — Annotate PDF, <code>.xopp</code> journals, and PDF export.</li>

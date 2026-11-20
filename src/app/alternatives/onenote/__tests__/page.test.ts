@@ -36,12 +36,17 @@ describe("OneNote alternatives page", () => {
     expect(page).not.toMatch(/not documented/i);
   });
 
-  it("does not claim that Trilium imports OneNote", () => {
-    const hits = page
-      .split("\n")
-      .filter((line) => /trilium/i.test(line) && /onenote/i.test(line) && /import/i.test(line));
-    expect(hits).toEqual([]);
-    expect(page).not.toMatch(/Trilium (can |does )?import OneNote/i);
+  it("attributes Trilium's OneNote import to the user guide", () => {
+    expect(page).toContain(
+      "https://docs.triliumnotes.org/user-guide/concepts/import-export/import-from-apps/onenote",
+    );
+    expect(page).toContain("Trilium allows importing from OneNote");
+    expect(page).toContain(
+      "the only mechanism currently supported is via the Microsoft Graph API, which requires you to authenticate in a browser in order for the notes to be obtained by Trilium",
+    );
+    expect(page).not.toMatch(/markdown-compatible/);
+    expect(page).not.toMatch(/\ban OneNote\b/);
+    expect(page).not.toMatch(/Trilium (can |does )import OneNote/i);
     expect(page).not.toMatch(/import OneNote into Trilium/i);
   });
 
