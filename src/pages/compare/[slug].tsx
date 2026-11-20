@@ -253,6 +253,57 @@ const META_OVERRIDES: Record<string, { title: string; description?: string }> = 
   "miro-vs-mural": {
     title: "Miro vs Mural 2026: Pricing, AI & Features | A Versus B",
   },
+  // Nov 2026 GSC audit: pages ranking 4–20 with truncated or weak titles.
+  "disney-plus-vs-paramount-plus": {
+    title: "Disney Plus vs Paramount Plus: Worth It in 2026?",
+    description:
+      "Can't pick between Disney+ and Paramount+? Compare price tiers, live sports, kids content and originals side by side. See our verdict now.",
+  },
+  "nfl-vs-nba-viewership": {
+    title: "NFL vs NBA Viewership: Who Draws More in 2026?",
+    description:
+      "NFL vs NBA viewership: Super Bowl vs Finals audiences, regular-season TV ratings and global reach compared with data. See the numbers.",
+  },
+  "nfl-vs-nba-revenue": {
+    title: "NFL vs NBA Revenue: $18.6B vs $10.3B Explained",
+    description:
+      "Which league makes more money? NFL vs NBA revenue, TV deals, salary caps and team values compared side by side. See the full breakdown.",
+  },
+  "netflix-vs-youtube-premium": {
+    title: "YouTube Premium vs Netflix: Which to Keep?",
+    description:
+      "Paying for both? Compare Netflix and YouTube Premium on price, ad-free viewing, downloads and music. See which one is worth keeping.",
+  },
+  "youtube-music-vs-soundcloud": {
+    title: "YouTube Music vs SoundCloud: Which Is Better?",
+    description:
+      "YouTube Music vs SoundCloud: catalog size, free tier, price and indie-artist support compared side by side. See which app fits how you listen.",
+  },
+  "entertainment-style-netflix-shines-with-a-wide-variety-vs-youtube-tv-comparison-2026": {
+    title: "Netflix vs YouTube TV: On-Demand or Live TV?",
+    description:
+      "Netflix or YouTube TV? Compare price, live channels, sports and on-demand library to see if you need one, the other, or both. Get the verdict.",
+  },
+  "paramount-vs-peacock": {
+    title: "Peacock vs Paramount Plus: Sports & Price 2026",
+    description:
+      "Peacock or Paramount+? Compare NFL and live sports, originals, price tiers and ads side by side. See which streamer is worth it for you.",
+  },
+  "mike-tyson-vs-muhammad-ali": {
+    title: "Mike Tyson vs Muhammad Ali: Records Compared",
+    description:
+      "Tyson vs Ali head to head: career records, KO rates, title reigns and opponents compared with stats. See who was the greater heavyweight.",
+  },
+  "ufc-vs-boxing": {
+    title: "UFC vs Boxing: Viewership & Popularity 2026",
+    description:
+      "Is UFC more popular than boxing? Compare viewership, PPV buys, fighter pay and revenue with data. See which sport is winning in 2026.",
+  },
+  "bloomberg-vs-the-wall-street-journal": {
+    title: "Bloomberg vs WSJ: Which Is Worth Paying For?",
+    description:
+      "Bloomberg or the Wall Street Journal? Compare price, market coverage, career reporting and apps side by side. Pick the right subscription.",
+  },
 };
 
 async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteData | null> {

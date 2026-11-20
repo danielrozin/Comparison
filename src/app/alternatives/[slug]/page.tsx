@@ -11,6 +11,12 @@ import { humanizeEntityName } from "@/lib/utils/humanize";
 import { getPrisma } from "@/lib/db/prisma";
 import { isEntityPageIndexable, resolveEntityPageStatuses } from "@/lib/seo/entity-page-indexable";
 import { GOOGLE_MAPS_ALTERNATIVES_BLOG_SLUG } from "@/lib/data/google-maps-alternatives-blog";
+import {
+  buildAlternativesList,
+  alternativesTitle,
+  alternativesDescription,
+  type AlternativeRow,
+} from "@/lib/seo/alternatives-list";
 
 /** In-repo guides linked from an alternatives page (ROO-183). */
 const ALTERNATIVES_GUIDES: Record<string, { href: string; label: string; blurb: string }> = {
@@ -63,6 +69,38 @@ async function alternativesEntityStatus(slug: string): Promise<"published" | "mi
   }
 }
 
+/**
+ * One ranked, de-duplicated list shared by <title>, body, schema and FAQs.
+ * Curated picks lead (editorial ranking) and keep their row even without a
+ * live comparison; the Compare link only renders when the canonical page
+ * exists (DAN-2551: never link crawlers at 404s).
+ */
+async function loadAlternatives(slug: string, name: string): Promise<AlternativeRow[]> {
+  const compared = await getAlternativesForEntity(slug);
+  const curated = ENTITY_CONTENT[slug]?.alternatives ?? [];
+  let liveSlugs = new Set<string>();
+  if (curated.length > 0) {
+    liveSlugs = await resolveCanonicalComparisonSlugs(
+      curated.flatMap((c) => [`${slug}-vs-${c.slug}`, `${c.slug}-vs-${slug}`]),
+    );
+  }
+  const curatedWithLive = curated.map((c) => ({
+    ...c,
+    live: [`${slug}-vs-${c.slug}`, `${c.slug}-vs-${slug}`].find((cand) => liveSlugs.has(cand)) ?? null,
+  }));
+  const rows = buildAlternativesList(
+    { slug, name },
+    [
+      ...compared.map((c) => ({ name: c.name, slug: c.slug, comparisonSlug: c.comparisonSlug })),
+      ...curatedWithLive
+        .filter((c) => c.live)
+        .map((c) => ({ name: c.name, slug: c.slug, comparisonSlug: c.live as string })),
+    ],
+    curated,
+  );
+  return rows;
+}
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
@@ -73,23 +111,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // Unknown slugs 404 in the page below; keep them out of the index and do
   // not emit invented publish/modified dates for them.
   const status = await alternativesEntityStatus(slug);
-  if (
-    status === "missing" ||
-    (status === "unknown" && (await getAlternativesForEntity(slug)).length === 0)
-  ) {
+  const rows = status === "missing" ? [] : await loadAlternatives(slug, name);
+  if (status === "missing" || (status === "unknown" && rows.length === 0)) {
     return {
       title: `Alternatives to ${name}`,
       robots: { index: false, follow: false },
     };
   }
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Alternatives to ${name}`)}&type=alternatives`;
-  const content = ENTITY_CONTENT[slug];
-  const altNames = content?.alternatives.slice(0, 3).map((a) => a.name).join(", ");
-  const metaDesc = altNames
-    ? `Best alternatives to ${name} in 2026: ${altNames}, and more. Compare side-by-side and find the right option for you.`
-    : `Discover the best alternatives to ${name}. Compare ${name} against top competitors and find the best option for you.`;
+  const metaTitle = alternativesTitle(name, rows, new Date().getFullYear());
+  const metaDesc = alternativesDescription(name, rows);
   return {
-    title: `Alternatives to ${name}`,
+    title: metaTitle,
     description: metaDesc,
     robots: {
       index: true,
@@ -110,8 +143,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       },
     },
     openGraph: {
-      title: `Alternatives to ${name}`,
-      description: `Compare ${name} against top competitors and find the best option.`,
+      title: metaTitle,
+      description: metaDesc,
       url: `${SITE_URL}/alternatives/${slug}`,
       type: "article",
       siteName: SITE_NAME,
@@ -122,8 +155,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: "summary_large_image",
-      title: `Alternatives to ${name}`,
-      description: `Compare ${name} against top competitors.`,
+      title: metaTitle,
+      description: metaDesc,
       images: [{ url: ogImage, alt: `Alternatives to ${name} — comparison guide` }],
     },
     other: {
@@ -165,47 +198,22 @@ export default async function AlternativesPage({ params }: PageProps) {
   const status = await alternativesEntityStatus(slug);
   if (status === "missing") notFound();
 
-  // Find all comparisons that include this entity (DB + mock)
-  const alternatives = await getAlternativesForEntity(slug);
+  const rows = await loadAlternatives(slug, name);
 
   // DB unavailable and nothing curated or comparison-backed: this is not a
   // real entity (e.g. /alternatives/zzz-not-a-thing). Return a real 404
   // instead of a 200 shell.
-  if (status === "unknown" && alternatives.length === 0) notFound();
-
-  // Merge curated alternatives (from entity-content) with comparison-derived ones.
-  //
-  // DAN-2551: this used to synthesise `${slug}-vs-${curated.slug}` as the link target
-  // without checking the comparison exists. Most did not, so the cards, the ItemList
-  // schema and significantLink all pointed crawlers at 404s. Resolve against the real
-  // canonical catalog (both orderings) and drop curated entries with no live page.
+  if (status === "unknown" && rows.length === 0) notFound();
   const entityContent = ENTITY_CONTENT[slug];
-  if (entityContent) {
-    const existingSlugs = new Set(alternatives.map((a) => a.slug));
-    const pending = entityContent.alternatives.filter((c) => !existingSlugs.has(c.slug));
-    const liveSlugs = await resolveCanonicalComparisonSlugs(
-      pending.flatMap((c) => [`${slug}-vs-${c.slug}`, `${c.slug}-vs-${slug}`])
-    );
-
-    for (const curated of pending) {
-      const comparisonSlug = [`${slug}-vs-${curated.slug}`, `${curated.slug}-vs-${slug}`].find(
-        (candidate) => liveSlugs.has(candidate)
-      );
-      if (!comparisonSlug) continue;
-      alternatives.push({
-        name: curated.name,
-        slug: curated.slug,
-        comparisonSlug,
-        comparisonTitle: `${name} vs ${curated.name}`,
-      });
-      existingSlugs.add(curated.slug);
-    }
-  }
+  // Rows with a live comparison — the only ones schema/significantLink may cite.
+  const alternatives = rows
+    .filter((r): r is AlternativeRow & { comparisonSlug: string } => Boolean(r.comparisonSlug))
+    .map((r) => ({ ...r, comparisonSlug: r.comparisonSlug, comparisonTitle: `${name} vs ${r.name}` }));
 
   // /entity/X and /alternatives/X both 404 unless X has a published entity
   // row. Many alternatives come from comparison titles with no such row, so
   // "Learn more" and the related chips linked to 404s. Link the live ones only.
-  const altStatuses = await resolveEntityPageStatuses(alternatives.map((a) => a.slug));
+  const altStatuses = await resolveEntityPageStatuses(rows.map((a) => a.slug));
   const altPageLive = (altSlug: string) => isEntityPageIndexable(altStatuses.get(altSlug));
 
   const breadcrumbs = [
@@ -220,22 +228,49 @@ export default async function AlternativesPage({ params }: PageProps) {
     "@id": `${SITE_URL}/alternatives/${slug}#list`,
     name: `Alternatives to ${name}`,
     description: `Top alternatives to ${name} — each alternative has a full side-by-side comparison with verdict, attribute data, and FAQs on A Versus B.`,
-    numberOfItems: alternatives.length,
-    itemListOrder: "https://schema.org/ItemListOrderDescending",
-    itemListElement: alternatives.slice(0, 10).map((alt, idx) => ({
+    numberOfItems: rows.length,
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    itemListElement: rows.map((alt, idx) => ({
       "@type": "ListItem",
       position: idx + 1,
       name: alt.name,
-      url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
-      item: {
-        "@type": "Article",
-        "@id": `${SITE_URL}/compare/${alt.comparisonSlug}#article`,
-        url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
-        name: `${name} vs ${alt.name}`,
-        isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
-      },
+      ...(alt.comparisonSlug
+        ? {
+            url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
+            item: {
+              "@type": "Article",
+              "@id": `${SITE_URL}/compare/${alt.comparisonSlug}#article`,
+              url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
+              name: `${name} vs ${alt.name}`,
+              isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+            },
+          }
+        : {}),
     })),
   };
+
+  const faqs: { q: string; a: string }[] =
+    rows.length > 0
+      ? [
+          {
+            q: `What are the best alternatives to ${name}?`,
+            a: `Our top alternatives to ${name} are ${rows
+              .slice(0, 5)
+              .map((r) => r.name)
+              .join(", ")}. The table above ranks each one and says who it suits best.`,
+          },
+          {
+            q: `What is the closest alternative to ${name}?`,
+            a: rows[0].reason
+              ? `${rows[0].name}: ${rows[0].reason.replace(/\.$/, "")}.`
+              : `${rows[0].name} is the alternative most often weighed against ${name}.`,
+          },
+          {
+            q: `How do I choose between ${name} and its alternatives?`,
+            a: `Decide what matters most to you (price, features, reliability or ecosystem), then open the side-by-side comparison for each shortlisted option to see the attribute data and our verdict.`,
+          },
+        ]
+      : [];
 
   const today = new Date().toISOString().slice(0, 10);
   const altPageUrl = `${SITE_URL}/alternatives/${slug}`;
@@ -249,8 +284,8 @@ export default async function AlternativesPage({ params }: PageProps) {
     learningResourceType: "Comparison Guide",
     "@id": `${altPageUrl}#article`,
     headline: `Alternatives to ${name}`,
-    description: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
-    abstract: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
+    description: `${rows.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
+    abstract: `${rows.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
     url: altPageUrl,
     inLanguage: "en-US",
     locationCreated: { "@type": "Country", name: "United States" },
@@ -319,7 +354,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     },
     // @id on each mentions entry matches ProfilePage mainEntity for knowledge graph cohesion.
     // sameAs Wikipedia+DBpedia strengthens entity merging in AI Knowledge Graphs.
-    mentions: alternatives.slice(0, 10).map((alt) => ({
+    mentions: rows.map((alt) => ({
       "@type": "Thing",
       "@id": `${SITE_URL}/entity/${alt.slug}`,
       name: alt.name,
@@ -375,7 +410,7 @@ export default async function AlternativesPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(webPageSchema({
             title: `Alternatives to ${name}`,
-            description: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for ${new Date().getFullYear()}.`,
+            description: `${rows.length} alternatives to ${name} — compare side-by-side and find the best option for ${new Date().getFullYear()}.`,
             url: altPageUrl,
             dateModified: today,
             keywords: `${name} alternatives, ${name} competitors, best ${name} alternatives ${new Date().getFullYear()}`,
@@ -384,7 +419,7 @@ export default async function AlternativesPage({ params }: PageProps) {
           })),
         }}
       />
-      <script
+      {faqs.length > 0 && <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
@@ -393,55 +428,14 @@ export default async function AlternativesPage({ params }: PageProps) {
             "@id": `${altPageUrl}#faqpage`,
             name: `Alternatives to ${name} — FAQ`,
             url: altPageUrl,
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: `What are the best alternatives to ${name}?`,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: alternatives.length > 0
-                    ? `The top alternatives to ${name} include ${alternatives.slice(0, 5).map((a) => a.name).join(", ")}. Each has a full side-by-side comparison with specs, pros & cons, and a verdict on A Versus B.`
-                    : `A Versus B compares ${name} against its top competitors. Browse the comparisons above to find the best option for your needs.`,
-                },
-              },
-              {
-                "@type": "Question",
-                name: `How is ${name} different from its competitors?`,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: `A Versus B compares ${name} against each competitor across key attributes — features, pricing, performance, and user ratings. Click any comparison above to see a full data-driven verdict.`,
-                },
-              },
-              {
-                "@type": "Question",
-                name: `Is ${name} free to use?`,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: `Pricing varies by product. See the individual comparison pages for ${name} vs each alternative for the most up-to-date pricing details.`,
-                },
-              },
-              {
-                "@type": "Question",
-                name: `How do I choose between ${name} and its competitors?`,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: `Start by identifying the attributes most important to you — pricing, features, integrations, or performance. A Versus B compares ${name} against each competitor across these dimensions and provides a data-driven verdict to help you decide quickly.`,
-                },
-              },
-              {
-                "@type": "Question",
-                name: `Which ${name} alternative is the most popular?`,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: alternatives.length > 0
-                    ? `Based on search volume and user engagement on A Versus B, ${alternatives[0].name} is the most-compared alternative to ${name}. See the full side-by-side comparison above.`
-                    : `Explore the comparison pages above to see which alternatives draw the most attention from users evaluating ${name}.`,
-                },
-              },
-            ],
+            mainEntity: faqs.map((f) => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: { "@type": "Answer", text: f.a },
+            })),
           }),
         }}
-      />
+      />}
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-indigo-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
         <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
@@ -477,12 +471,12 @@ export default async function AlternativesPage({ params }: PageProps) {
             </div>
             <div>
               <h1 id="alternatives-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
-                Alternatives to {name}
+                Best {name} Alternatives ({new Date().getFullYear()})
               </h1>
               <div className="flex flex-wrap items-center gap-2 mt-3">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/15 rounded-full text-xs font-semibold text-white backdrop-blur-sm">
                   <svg className="w-3.5 h-3.5 text-indigo-300" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg>
-                  {alternatives.length} alternative{alternatives.length !== 1 ? "s" : ""}
+                  {rows.length} ranked alternative{rows.length !== 1 ? "s" : ""}
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/15 rounded-full text-xs font-semibold text-white backdrop-blur-sm">
                   <svg className="w-3.5 h-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
@@ -521,40 +515,45 @@ export default async function AlternativesPage({ params }: PageProps) {
         </Link>
       </div>
 
-      {alternatives.length > 0 ? (
-        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
-          {alternatives.map((alt) => (
-            <li key={alt.comparisonSlug} className="bg-white border border-border rounded-xl p-5 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-white font-bold text-lg">{alt.name.charAt(0)}</span>
-                </div>
-                <div>
-                  <h3 className="font-bold text-text">{alt.name}</h3>
-                  <p className="text-xs text-text-secondary">
-                    {entityContent?.alternatives.find((a) => a.slug === alt.slug)?.reason || `Alternative to ${name}`}
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Link
-                  href={`/compare/${alt.comparisonSlug}`}
-                  className="flex-1 text-center py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg hover:shadow-md transition-all duration-150"
-                >
-                  Compare
-                </Link>
-                {altPageLive(alt.slug) && (
-                  <Link
-                    href={`/entity/${alt.slug}`}
-                    className="flex-1 text-center py-2 bg-surface-alt text-text text-sm font-semibold rounded-lg hover:bg-primary-50 transition-colors border border-border"
-                  >
-                    Learn more
-                  </Link>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
+      {rows.length > 0 ? (
+        <div className="overflow-x-auto rounded-xl border border-border bg-white">
+          <table className="w-full text-left text-sm">
+            <caption className="sr-only">Ranked alternatives to {name}</caption>
+            <thead className="bg-surface-alt text-xs uppercase tracking-wide text-text-secondary">
+              <tr>
+                <th scope="col" className="px-4 py-3 w-12">#</th>
+                <th scope="col" className="px-4 py-3">Alternative</th>
+                <th scope="col" className="px-4 py-3">Best for</th>
+                <th scope="col" className="px-4 py-3 text-right"><span className="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((alt, idx) => (
+                <tr key={alt.slug} className="border-t border-border align-top">
+                  <td className="px-4 py-4 font-bold text-text-secondary">{idx + 1}</td>
+                  <th scope="row" className="px-4 py-4 font-bold text-text">
+                    {altPageLive(alt.slug) ? (
+                      <Link href={`/entity/${alt.slug}`} className="hover:text-primary-700 hover:underline">{alt.name}</Link>
+                    ) : (
+                      alt.name
+                    )}
+                  </th>
+                  <td className="px-4 py-4 text-text-secondary">{alt.reason || `Head-to-head rival to ${name}`}</td>
+                  <td className="px-4 py-4 text-right whitespace-nowrap">
+                    {alt.comparisonSlug && (
+                      <Link
+                        href={`/compare/${alt.comparisonSlug}`}
+                        className="inline-flex min-h-[44px] items-center rounded-lg bg-gradient-to-r from-primary-600 to-accent-600 px-4 text-sm font-semibold text-white hover:from-primary-700 hover:to-accent-700"
+                      >
+                        {name} vs {alt.name}
+                      </Link>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <div className="text-center py-16 bg-surface-alt rounded-xl">
           <p className="text-text-secondary mb-4">No alternatives found for {name} yet.</p>
@@ -578,14 +577,14 @@ export default async function AlternativesPage({ params }: PageProps) {
       )}
 
       {/* Related Alternatives — cross-link to alternatives pages for each alternative entity */}
-      {alternatives.some((alt) => altPageLive(alt.slug)) && (
+      {rows.some((alt) => altPageLive(alt.slug)) && (
         <div className="mt-10">
           <h2 className="text-xl font-bold text-text mb-4">Related Alternatives</h2>
           <p className="text-sm text-text-secondary mb-4">
             Explore alternatives pages for entities compared with {name}.
           </p>
           <div className="flex flex-wrap gap-2">
-            {alternatives.filter((alt) => altPageLive(alt.slug)).slice(0, 12).map((alt) => (
+            {rows.filter((alt) => altPageLive(alt.slug)).slice(0, 12).map((alt) => (
               <Link
                 key={`related-alt-${alt.slug}`}
                 href={`/alternatives/${alt.slug}`}
@@ -602,45 +601,17 @@ export default async function AlternativesPage({ params }: PageProps) {
       )}
 
       {/* FAQ section — AEO / FAQPage structured answer blocks */}
-      <section aria-labelledby="alternatives-faq-heading" className="mt-12 border-t border-border pt-10">
+      {faqs.length > 0 && <section aria-labelledby="alternatives-faq-heading" className="mt-12 border-t border-border pt-10">
         <h2 id="alternatives-faq-heading" className="text-2xl font-display font-bold text-text mb-6">Frequently Asked Questions</h2>
         <dl className="space-y-5">
-          <div className="bg-surface-alt rounded-xl p-5 border border-border">
-            <dt className="font-semibold text-text mb-2">What are the best alternatives to {name}?</dt>
-            <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
-              {alternatives.length > 0
-                ? `The top alternatives to ${name} include ${alternatives.slice(0, 5).map((a) => a.name).join(", ")}. Each has a full side-by-side comparison with specs, pros & cons, and a verdict on A Versus B.`
-                : `A Versus B compares ${name} against its top competitors. Browse the comparisons above to find the best option for your needs.`}
-            </dd>
-          </div>
-          <div className="bg-surface-alt rounded-xl p-5 border border-border">
-            <dt className="font-semibold text-text mb-2">How is {name} different from its competitors?</dt>
-            <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
-              A Versus B compares {name} against each competitor across key attributes — features, pricing, performance, and user ratings. Click any comparison above to see a full data-driven verdict.
-            </dd>
-          </div>
-          <div className="bg-surface-alt rounded-xl p-5 border border-border">
-            <dt className="font-semibold text-text mb-2">Is {name} free to use?</dt>
-            <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
-              Pricing varies by product. See the individual comparison pages for {name} vs each alternative for the most up-to-date pricing details.
-            </dd>
-          </div>
-          <div className="bg-surface-alt rounded-xl p-5 border border-border">
-            <dt className="font-semibold text-text mb-2">How do I choose between {name} and its competitors?</dt>
-            <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
-              Start by identifying the attributes most important to you — pricing, features, integrations, or performance. A Versus B compares {name} against each competitor across these dimensions and provides a data-driven verdict to help you decide quickly.
-            </dd>
-          </div>
-          {alternatives.length > 0 && (
-            <div className="bg-surface-alt rounded-xl p-5 border border-border">
-              <dt className="font-semibold text-text mb-2">Which {name} alternative is the most popular?</dt>
-              <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
-                Based on search volume and user engagement on A Versus B, {alternatives[0].name} is the most-compared alternative to {name}. See the full side-by-side comparison above.
-              </dd>
+          {faqs.map((f) => (
+            <div key={f.q} className="bg-surface-alt rounded-xl p-5 border border-border">
+              <dt className="font-semibold text-text mb-2">{f.q}</dt>
+              <dd className="faq-answer text-sm text-text-secondary leading-relaxed">{f.a}</dd>
             </div>
-          )}
+          ))}
         </dl>
-      </section>
+      </section>}
 
       {/* Newsletter Signup */}
       <div className="mt-12">
