@@ -908,3 +908,8 @@ export function trackUxStudyBannerDismiss(page: string) {
 }
 
 export { trackEvent };
+
+/** Landing from an AI assistant (ChatGPT, Perplexity, Gemini…) — once per session. */
+export function trackAiReferralLanding(platform: string, landingPath: string) {
+  captureClient("ai_referral_landing", { ai_platform: platform, landing_path: landingPath });
+}

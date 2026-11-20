@@ -6,6 +6,8 @@ import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, Search
 import { ExperimentProvider } from "@/lib/experiments/ExperimentProvider";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
+import { AiReferralTracker } from "@/components/tracking/AiReferralTracker";
+import { WebMcpTools } from "@/components/tracking/WebMcpTools";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "@/app/globals.css";
@@ -30,6 +32,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <GoogleTagManager />
       <MetaPixel />
       <ClarityTags />
+      <AiReferralTracker />
+      <WebMcpTools />
       <ExperimentProvider initialCookie="">
         <Header />
         <main id="main-content" className="flex-1">
