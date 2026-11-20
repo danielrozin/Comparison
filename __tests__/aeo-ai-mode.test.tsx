@@ -27,7 +27,7 @@ describe("key takeaways", () => {
       expect(s).toContain("YouTube Premium");
       expect(s.endsWith(".")).toBe(true);
     }
-    expect(t[0]).toBe("Netflix's monthly subscription price (basic ad-supported) is $9.00, vs $9.99 for YouTube Premium.");
+    expect(t[0]).toBe("Monthly Subscription Price (Basic Ad-Supported) — Netflix: $9.00; YouTube Premium: $9.99.");
   });
 
   it("puts numeric, decided differences first", () => {
@@ -41,8 +41,11 @@ describe("key takeaways", () => {
     expect(buildKeyTakeaways(undefined, "A", "B")).toEqual([]);
   });
 
-  it("uses a correct possessive for names ending in s", () => {
-    expect(takeawaySentence({ label: "Price", entityAValue: "$1", entityBValue: "$2" }, "Pixels", "B")).toBe("Pixels' price is $1, vs $2 for B.");
+  it("stays grammatical for plural labels and identical values", () => {
+    expect(takeawaySentence({ label: "Package Deals", entityAValue: "Limited packages", entityBValue: "Extensive bundles" }, "Kayak", "Expedia")).toBe(
+      "Package Deals — Kayak: Limited packages; Expedia: Extensive bundles.",
+    );
+    expect(takeawaySentence({ label: "Offline Downloads", entityAValue: "Yes", entityBValue: "yes." }, "A", "B")).toBe("Offline Downloads — A and B: Yes.");
   });
 
   it("renders a server-side list, or nothing when thin", () => {

@@ -18,23 +18,8 @@ export const TAKEAWAY_MAX_CHARS = 160;
 export const MAX_TAKEAWAYS = 5;
 export const MIN_TAKEAWAYS = 3;
 
-function lowerLabel(label: string): string {
-  // Lowercase plain Title-Case words ("Monthly Subscription Price" → "monthly
-  // subscription price") but keep acronyms and mixed-case brands ("CPU", "iOS",
-  // "YouTube") intact.
-  return label
-    .trim()
-    .split(/(\s+)/)
-    .map((w) => (/^\(?[A-Z][a-z]+(?:-[A-Z]?[a-z]+)*\)?$/.test(w) ? w.toLowerCase() : w))
-    .join("");
-}
-
 function cleanValue(v: string): string {
   return v.replace(/\s+/g, " ").trim().replace(/[.;,]+$/, "");
-}
-
-function possessive(name: string): string {
-  return /s$/i.test(name) ? `${name}'` : `${name}'s`;
 }
 
 const UNINFORMATIVE = /^(n\/?a|none|unknown|varies|—|-|tbd|not available)$/i;
@@ -43,11 +28,14 @@ export function takeawaySentence(diff: KeyDifference, nameA: string, nameB: stri
   const a = cleanValue(diff.entityAValue || "");
   const b = cleanValue(diff.entityBValue || "");
   if (!a || !b || UNINFORMATIVE.test(a) || UNINFORMATIVE.test(b)) return null;
-  if (a.toLowerCase() === b.toLowerCase()) {
-    const s = `${nameA} and ${nameB} match on ${lowerLabel(diff.label)}: ${a}.`;
-    return s.length <= TAKEAWAY_MAX_CHARS ? s : null;
-  }
-  const s = `${possessive(nameA)} ${lowerLabel(diff.label)} is ${a}, vs ${b} for ${nameB}.`;
+  const label = diff.label.replace(/\s+/g, " ").trim();
+  // "Label — A: value; B: value." stays grammatical whatever the label/value
+  // shape (plural labels, sentence-case values, parentheses), unlike
+  // "A's label is value" which broke on e.g. "package deals is Limited packages".
+  const s =
+    a.toLowerCase() === b.toLowerCase()
+      ? `${label} — ${nameA} and ${nameB}: ${a}.`
+      : `${label} — ${nameA}: ${a}; ${nameB}: ${b}.`;
   return s.length <= TAKEAWAY_MAX_CHARS ? s : null;
 }
 
