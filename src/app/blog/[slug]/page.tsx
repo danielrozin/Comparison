@@ -52,6 +52,32 @@ import {
   splitHtmlAtCompareCtas,
 } from "@/lib/data/nba-season-preview-blog";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
+import { buildPageTitle } from "@/lib/seo/metadata";
+
+// Nov 2026 GSC audit: hand-written titles/metas for posts ranking 4–20 whose
+// stored metaTitle was truncated, double-branded or buried the answer.
+const BLOG_META_OVERRIDES: Record<string, { title: string; description: string }> = {
+  "is-wayfair-furniture-better-than-ikea-honest-comparison": {
+    title: "Wayfair vs IKEA: Which Furniture Lasts Longer?",
+    description:
+      "Wayfair vs IKEA compared on build quality, price, assembly and returns, plus what owners say on Reddit. See which store to buy from.",
+  },
+  "is-chase-owned-by-capital-one-the-relationship-explained": {
+    title: "Is Chase Owned by Capital One? No — Who Owns Each",
+    description:
+      "No. Chase belongs to JPMorgan Chase and Capital One is independent. See who owns each bank and how their cards, savings and fees differ.",
+  },
+  "chick-fil-a-breakfast-menu": {
+    title: "Chick-fil-A Breakfast Menu 2026: Prices & Hours",
+    description:
+      "See the full Chick-fil-A breakfast menu with 2026 prices, breakfast hours and the best items to order, from Chicken Biscuit to Minis.",
+  },
+  "best-vpn-services-2026-complete-comparison-guide": {
+    title: "Best VPN Services 2026: NordVPN vs ExpressVPN",
+    description:
+      "Which VPN is best in 2026? Compare NordVPN, ExpressVPN, Surfshark and Proton on speed, streaming, privacy and price. See our top pick.",
+  },
+};
 
 // ---------- Tag-type inference ----------
 // Infers schema.org @type from a blog tag name for typed mentions[] — same pattern
@@ -315,8 +341,10 @@ export async function generateMetadata({
   }
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog&cat=${encodeURIComponent(article.category || "")}`;
   return {
-    title: article.metaTitle || article.title,
-    description: article.metaDescription || article.excerpt,
+    // Absolute + buildPageTitle: stored metaTitles sometimes already end in a
+    // brand ("| aversusb"), and the root template would append another one.
+    title: { absolute: buildPageTitle(BLOG_META_OVERRIDES[slug]?.title ?? (article.metaTitle || article.title)) },
+    description: BLOG_META_OVERRIDES[slug]?.description ?? (article.metaDescription || article.excerpt),
     robots: {
       index: true,
       follow: true,

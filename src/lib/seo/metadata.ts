@@ -17,6 +17,8 @@ import { SITE_NAME } from "@/lib/utils/constants";
 
 const BRAND = SITE_NAME; // "A Versus B"
 const BRAND_SUFFIX = ` | ${BRAND}`;
+// Trailing " | A Versus B", " — AVersusB", " | aversusb.net", " - aversusb" etc.
+const TRAILING_BRAND_RE = /\s*[|\-–—]\s*(?:a\s?versus\s?b|aversusb)(?:\.net)?\s*$/i;
 
 // Google typically renders ~155–160 chars of a meta description.
 export const META_DESCRIPTION_LIMIT = 160;
@@ -52,10 +54,14 @@ export function buildPageTitle(rawTitle: string | null | undefined): string {
   let title = (rawTitle || "").replace(/\s+/g, " ").trim();
 
   // Bug 1: peel off one or more trailing brand suffixes before re-appending.
-  const suffixLower = BRAND_SUFFIX.toLowerCase();
-  while (title.toLowerCase().endsWith(suffixLower)) {
-    title = title.slice(0, title.length - BRAND_SUFFIX.length).trim();
-  }
+  // Covers the display brand AND the legacy slug-style "aversusb"/"aversusb.net"
+  // suffix some generated metaTitles carry, which otherwise rendered
+  // "… | aversusb | A Versus B" (Nov 2026 audit).
+  let prev: string;
+  do {
+    prev = title;
+    title = title.replace(TRAILING_BRAND_RE, "").trim();
+  } while (title !== prev);
 
   title = stripRedundantComparisonSegment(title);
 
