@@ -73,6 +73,7 @@ import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { CompareChangeAlert } from "@/components/comparison/CompareChangeAlert";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
+import { KeyTakeaways } from "@/components/comparison/KeyTakeaways";
 import { SmartReviewLinks, type SmartReviewEntry } from "@/components/comparison/SmartReviewLinks";
 import { getEntityAggregation } from "@/lib/services/review-service";
 import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
@@ -1185,6 +1186,15 @@ export default function ComparisonPage(props: Props) {
             entityB={comparison.entities[1]}
           />
         </div>
+      )}
+
+      {/* Key takeaways — standalone ≤160-char facts in the top third (AI Mode research, Nov 2026). */}
+      {comparison.entities.length === 2 && (
+        <KeyTakeaways
+          differences={comparison.keyDifferences}
+          nameA={comparison.entities[0].name}
+          nameB={comparison.entities[1].name}
+        />
       )}
 
       {/*

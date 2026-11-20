@@ -36,6 +36,8 @@ const getPublishedComparisonCount = unstable_cache(
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
+import { AiReferralTracker } from "@/components/tracking/AiReferralTracker";
+import { WebMcpTools } from "@/components/tracking/WebMcpTools";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
 import { FirstTouchAttribution } from "@/components/tracking/FirstTouchAttribution";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -230,6 +232,8 @@ export default async function RootLayout({
         <MetaPixel />
         <ClarityTags />
         <FirstTouchAttribution />
+        <AiReferralTracker />
+        <WebMcpTools />
         <ExperimentProviderServer>
           <Header />
           <main id="main-content" className="flex-1">{children}</main>

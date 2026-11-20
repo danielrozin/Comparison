@@ -143,6 +143,7 @@ export default async function sitemap({
       { url: `${SITE_URL}/probability-vs-statistics`, lastModified: "2026-07-30", changeFrequency: "monthly", priority: 0.8 },
       { url: `${SITE_URL}/q1-2026-ai-battles`, lastModified: "2026-06-12", changeFrequency: "monthly", priority: 0.8 },
       { url: `${SITE_URL}/how-we-write-verdicts`, lastModified: "2026-07-10", changeFrequency: "monthly", priority: 0.5 },
+      { url: `${SITE_URL}/facts`, lastModified: "2026-11-20", changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/who-is-this-for`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/requests`, lastModified: ABOUT_DATE, changeFrequency: "weekly", priority: 0.5 },
       { url: `${SITE_URL}/pricing`, lastModified: "2026-08-23", changeFrequency: "weekly", priority: 0.8 },
