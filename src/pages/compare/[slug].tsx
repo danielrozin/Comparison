@@ -73,6 +73,7 @@ import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { CompareChangeAlert } from "@/components/comparison/CompareChangeAlert";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
+import { applyCompareContentOverride } from "@/lib/data/compare-content-overrides";
 import { KeyTakeaways } from "@/components/comparison/KeyTakeaways";
 import { SmartReviewLinks, type SmartReviewEntry } from "@/components/comparison/SmartReviewLinks";
 import { getEntityAggregation } from "@/lib/services/review-service";
@@ -643,10 +644,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
   // ROO-154: collapse duplicate and contradictory metric rows before the table
   // and JSON-LD are built. The stored attributes are left unchanged.
-  const enrichedComparison = presentComparisonMetrics({
-    ...comparison,
-    entities: mergedEntitiesWithStatus,
-  }) as Comparison;
+  // Nov 2026: hand-checked fact corrections + fan-out Q&A (compare-content-overrides.ts).
+  const enrichedComparison = presentComparisonMetrics(
+    applyCompareContentOverride(slug, {
+      ...comparison,
+      entities: mergedEntitiesWithStatus,
+    } as Comparison),
+  ) as Comparison;
 
   // Fallback to trending if fewer than 3 related comparisons
   let sidebarComparisons = enrichedComparison.relatedComparisons;
