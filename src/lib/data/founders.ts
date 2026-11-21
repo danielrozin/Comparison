@@ -46,6 +46,10 @@ export interface Founder {
  *  the strongest sameAs signal either site has. */
 export const SCAN2REMEMBER_URL = "https://scan2remember.com";
 export const SCAN2REMEMBER_ABOUT = "https://scan2remember.com/pages/about";
+/** The founders' studio (goldenroz.com/about names both). Its Organization node
+ *  is emitted from sister-projects.ts. */
+export const GOLDENROZ_URL = "https://goldenroz.com";
+export const CPGSITE_URL = "https://cpgsite.com";
 
 export const FOUNDERS: Founder[] = [
   {
@@ -129,12 +133,14 @@ export function founderPersonSchema(founder: Founder) {
       height: 640,
     },
     knowsAbout: founder.knowsAbout,
-    worksFor: { "@id": `${SITE_URL}/#organization` },
+    worksFor: [{ "@id": `${SITE_URL}/#organization` }, { "@id": `${GOLDENROZ_URL}/#organization` }],
     // Both point at nodes declared elsewhere in the graph, so a crawler
     // traverses to the full Organization rather than reading a stub.
     founderOf: [
       { "@id": `${SITE_URL}/#organization` },
       { "@id": `${SCAN2REMEMBER_URL}/#organization` },
+      { "@id": `${GOLDENROZ_URL}/#organization` },
+      { "@id": `${CPGSITE_URL}/#organization` },
     ],
     contactPoint: {
       "@type": "ContactPoint",
