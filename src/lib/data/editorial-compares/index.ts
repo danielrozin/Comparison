@@ -153,6 +153,7 @@ import { PADDLE_VS_STRIPE } from "./paddle-vs-stripe";
 import { ULTRASONIC_VS_EVAPORATIVE_VS_STEAM_HUMIDIFIER } from "./ultrasonic-vs-evaporative-vs-steam-humidifier";
 import { RX_9070_GRE_VS_RX_9060_XT } from "./rx-9070-gre-vs-rx-9060-xt";
 import { DAP_VS_PORTABLE_DAC_AMP } from "./dap-vs-portable-dac-amp";
+import { REFRESH_RATE_VS_RESOLUTION } from "./refresh-rate-vs-resolution";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -327,6 +328,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [ULTRASONIC_VS_EVAPORATIVE_VS_STEAM_HUMIDIFIER.slug]: ULTRASONIC_VS_EVAPORATIVE_VS_STEAM_HUMIDIFIER,
   [RX_9070_GRE_VS_RX_9060_XT.slug]: RX_9070_GRE_VS_RX_9060_XT,
   [DAP_VS_PORTABLE_DAC_AMP.slug]: DAP_VS_PORTABLE_DAC_AMP,
+  [REFRESH_RATE_VS_RESOLUTION.slug]: REFRESH_RATE_VS_RESOLUTION,
 };
 
 /**
