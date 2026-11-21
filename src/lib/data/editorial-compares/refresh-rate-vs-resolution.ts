@@ -148,7 +148,7 @@ Sony's PS5 support guide says the console supports the HDMI 2.1 specification an
 - If the TV supports 1440p, Test 1440p Output covers SDR and HDR at 60 Hz and 120 Hz, and VRR. To use 1440p output, set Resolution to 1440p.
 - VRR lets the refresh rate adjust in real time on TVs and games that support VRR.
 
-A 240 Hz console output is not in that guide. RTINGS, updated 20 May 2026, writes that HDMI Forum VRR is part of HDMI 2.1 certification and is the only VRR format the PS5 supports, and that Xbox Series X and Series S support HDMI Forum VRR and FreeSync. That VRR sentence is RTINGS' statement.
+A 240 Hz console output is not in that guide. RTINGS, updated 20 May 2026, writes that HDMI Forum VRR is part of HDMI 2.1 certification and is the only VRR format the PS5 supports. That VRR sentence is RTINGS' statement.
 
 ## When the computer cannot fill the rate
 
