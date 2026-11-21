@@ -8,9 +8,11 @@ import {
   FOUNDERS,
   SCAN2REMEMBER_ABOUT,
   SCAN2REMEMBER_URL,
+  GOLDENROZ_URL,
   founderPersonSchema,
   whatsappLink,
 } from "@/lib/data/founders";
+import { sisterOrganizationSchemas } from "@/lib/data/sister-projects";
 
 const ABOUT_TITLE = `Why We Built ${SITE_NAME} — Our Story & Founders`;
 const ABOUT_DESC = `Two founders who could not find a decent way to compare a coffee machine. Meet Daniel Rozin and Shai Goldenberg, and the curiosity that turned into ${SITE_NAME}.`;
@@ -212,22 +214,12 @@ const founderSchemas = FOUNDERS.map(founderPersonSchema);
  * founded turns "we built this too" from a marketing line into a traversable
  * edge in the knowledge graph.
  */
-const scan2rememberSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": `${SCAN2REMEMBER_URL}/#organization`,
-  name: "Scan2Remember",
-  url: SCAN2REMEMBER_URL,
-  description:
-    "Digital memorial pages and QR memorial plaques, founded by Daniel Rozin and Shai Goldenberg after each lost someone.",
-  founder: FOUNDERS.map((f) => ({ "@id": f.personId })),
-  sameAs: [SCAN2REMEMBER_ABOUT],
-};
+const sisterSchemas = sisterOrganizationSchemas();
 
 export default function AboutPage() {
   return (
     <>
-      <JsonLd data={[aboutPageSchema, faqPageSchema, ...founderSchemas, scan2rememberSchema]} />
+      <JsonLd data={[aboutPageSchema, faqPageSchema, ...founderSchemas, ...sisterSchemas]} />
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-slate-900 via-primary-900 to-indigo-900 text-white relative overflow-hidden">
@@ -470,6 +462,20 @@ export default function AboutPage() {
             {" "}— thousands of free printable coloring pages for kids and adults. Different corner of
             the internet, same rule: find something people keep searching for and can&apos;t get without
             a catch, then build it without the catch.
+          </p>
+          <p className="text-text-secondary leading-relaxed mt-4">
+            All of them are built at{" "}
+            <a
+              href={GOLDENROZ_URL}
+              target="_blank"
+              rel="noopener"
+              className="text-primary-600 font-medium hover:underline"
+            >
+              Goldenroz
+              <span className="sr-only"> (opens in new tab)</span>
+            </a>
+            , our software and marketing studio, where Shai leads the software and Daniel runs
+            marketing for client brands.
           </p>
         </div>
       </section>

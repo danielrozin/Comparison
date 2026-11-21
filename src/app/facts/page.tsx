@@ -43,6 +43,19 @@ const FACTS: { q: string; a: React.ReactNode; text: string }[] = [
     ),
   },
   {
+    q: "What else do the founders of A Versus B build?",
+    text: "Daniel Rozin and Shai Goldenberg also run Goldenroz, the software and marketing studio that builds A Versus B, plus Scan2Remember (QR memorial plaques) and Free Coloring Pages (cpgsite.com).",
+    a: (
+      <>
+        Daniel Rozin and Shai Goldenberg also run{" "}
+        <a href="https://goldenroz.com" target="_blank" rel="noopener">Goldenroz</a>, the software and marketing studio
+        that builds A Versus B, plus{" "}
+        <a href="https://scan2remember.com" target="_blank" rel="noopener">Scan2Remember</a> (QR memorial plaques) and{" "}
+        <a href="https://cpgsite.com" target="_blank" rel="noopener">Free Coloring Pages</a> (cpgsite.com).
+      </>
+    ),
+  },
+  {
     q: "How are comparisons researched?",
     text: "Each comparison is built from structured attribute data such as price, specs and dates, gathered from official and third-party sources and checked before publishing.",
     a: (
