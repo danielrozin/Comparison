@@ -37,7 +37,7 @@ const HIFIGUIDES = "https://forum.hifiguides.com/t/external-portable-dac-amp-vs-
 const SHORT_ANSWER = `Choose a portable DAC/amp when your phone or computer stays the player and you want a separate USB converter and headphone amplifier. Choose a DAP when you want a separate player with its own storage and battery, so listening does not use the phone as the source.`;
 
 const CHOOSE_TABLE = [
-  "Choose-if rows. Each row is a condition. No row is a ranked result. A named model is an example from that maker, not the whole category.",
+  "Match a situation below. This is not a ranking. A named model is an example from that maker, not the whole category.",
   "| Situation | Choose a portable DAC/amp if | Choose a DAP if |",
   "| --- | --- | --- |",
   "| Streaming apps | The apps stay on the phone, and the DAC/amp takes USB audio from that phone | You want Wi-Fi streaming on a separate player, as Sony describes for the NW-ZX707 |",
