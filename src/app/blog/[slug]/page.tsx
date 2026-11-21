@@ -13,6 +13,7 @@ import { humanizeEntityName } from "@/lib/utils/humanize";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
+import { applyBlogFanout } from "@/lib/data/blog-fanout-qa";
 import { blogAuthorName, blogOgAuthors, blogReviewFields, editorialTeamAuthorNode, isHumanReviewedBlogSlug, stripUnreviewedBodyByline } from "@/lib/editorial/blog-authorship";
 import { filterLiveCompareSlugs, resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares";
@@ -526,7 +527,8 @@ export default async function BlogPostPage({
   // live-filters — never invent dead /compare hrefs.
   const article = {
     ...rawArticle,
-    content: stripUnreviewedBodyByline(rawArticle.content, slug),
+    // Nov 2026: fan-out Quick answers + hand-checked corrections (blog-fanout-qa.ts).
+    content: applyBlogFanout(slug, stripUnreviewedBodyByline(rawArticle.content, slug)),
     relatedComparisonSlugs: await resolveBlogRelatedCompareSlugs(
       slug,
       rawArticle.relatedComparisonSlugs ?? []
