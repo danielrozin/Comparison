@@ -84,7 +84,7 @@ const personSchema = {
   familyName: "Rozin",
   url: PAGE_URL,
 
-  locale: "en_US",  email: "daniarozin@gmail.com",
+  locale: "en_US",
   jobTitle: AUTHOR_TITLE,
   worksFor: [
     { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -331,9 +331,9 @@ export default function DanielRozinPage() {
         </p>
         <p className="text-text-secondary leading-relaxed">
           For corrections or source disputes, contact:{" "}
-          <a href="mailto:daniarozin@gmail.com" className="text-primary-600 hover:underline">
-            daniarozin@gmail.com
-          </a>
+          <Link href="/contact" className="text-primary-600 hover:underline">
+            our contact page
+          </Link>
         </p>
       </section>
 

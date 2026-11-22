@@ -142,13 +142,6 @@ export function founderPersonSchema(founder: Founder) {
       { "@id": `${GOLDENROZ_URL}/#organization` },
       { "@id": `${CPGSITE_URL}/#organization` },
     ],
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "founder",
-      telephone: `+${founder.whatsapp}`,
-      url: `https://wa.me/${founder.whatsapp}`,
-      availableLanguage: ["en", "he"],
-    },
     sameAs: [
       founder.facebook,
       ...(founder.linkedin ? [founder.linkedin] : []),
