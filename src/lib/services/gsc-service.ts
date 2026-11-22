@@ -470,7 +470,7 @@ export interface GSCIndexingCoverage {
 /**
  * Fetch page-level search analytics from GSC (dimension: page).
  */
-export async function fetchGSCPageData(days = 28): Promise<GSCPageData[]> {
+export async function fetchGSCPageData(days = 28, endOffsetDays = 0): Promise<GSCPageData[]> {
   const token = await getAccessToken();
   if (!token) {
     console.warn("GSC: No access token available — returning empty page data");
@@ -478,8 +478,11 @@ export async function fetchGSCPageData(days = 28): Promise<GSCPageData[]> {
   }
 
   const siteUrl = getSiteUrl();
+  // endOffsetDays shifts the window back, e.g. (28, 3) skips GSC's ~2-3 day
+  // reporting lag and (28, 31) is the 28 days before that.
   const endDate = new Date();
-  const startDate = new Date();
+  endDate.setDate(endDate.getDate() - endOffsetDays);
+  const startDate = new Date(endDate);
   startDate.setDate(endDate.getDate() - days);
 
   const formatDate = (d: Date) => d.toISOString().split("T")[0];
