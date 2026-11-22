@@ -224,12 +224,6 @@ export function organizationSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FA
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     // diversityPolicy — included for E-E-A-T completeness (Google EEAT guidelines).
     diversityPolicy: `${SITE_URL}/about`,
-    // memberOf — voluntary but signals community affiliation to AI trust evaluators.
-    memberOf: {
-      "@type": "Organization",
-      name: "Open Comparison Initiative",
-      url: SITE_URL,
-    },
     audience: {
       "@type": "Audience",
       audienceType: "Consumers, Researchers, Decision Makers",

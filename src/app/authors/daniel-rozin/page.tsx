@@ -5,6 +5,7 @@ import { HUMAN_REVIEWED_SLUGS } from "@/lib/editorial/human-reviewed";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { SISTER_PROJECTS, sisterOrgId, sisterOrganizationSchemas } from "@/lib/data/sister-projects";
 
 const AUTHOR_NAME = "Daniel Rozin";
 const AUTHOR_TITLE = "Founder & Editor-in-Chief";
@@ -12,7 +13,7 @@ const PAGE_URL = `${SITE_URL}/authors/daniel-rozin`;
 const PAGE_TITLE = `${AUTHOR_NAME} — ${AUTHOR_TITLE}`;
 const PAGE_DESCRIPTION = `${AUTHOR_NAME} is the founder of ${SITE_NAME}, a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17 other product categories. He personally reviews the pages listed on this profile.`;
 const AUTHOR_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent(PAGE_TITLE)}&type=author`;
-const AUTHOR_LAST_EDITED = "2026-07-11"; // last content edit: 1eb76ac1 (e0d14aa0 only removed twitter metadata).
+const AUTHOR_LAST_EDITED = "2026-11-21"; // last content edit: "Other projects" section + sister Organization nodes.
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -83,15 +84,12 @@ const personSchema = {
   familyName: "Rozin",
   url: PAGE_URL,
 
-  locale: "en_US",  email: "daniarozin@gmail.com",
+  locale: "en_US",
   jobTitle: AUTHOR_TITLE,
-  worksFor: {
-    "@type": "Organization",
-    "@id": `${SITE_URL}/#organization`,
-    name: SITE_NAME,
-    url: SITE_URL,
-
-    locale: "en_US",  },
+  worksFor: [
+    { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    ...SISTER_PROJECTS.filter((p) => p.key === "goldenroz").map((p) => ({ "@id": sisterOrgId(p) })),
+  ],
   description: PAGE_DESCRIPTION,
   hasOccupation: {
     "@type": "Occupation",
@@ -234,7 +232,7 @@ const authorFaqSchema = {
 export default function DanielRozinPage() {
   return (
     <>
-      <JsonLd data={[authorBreadcrumb, personSchema, profilePageSchema, authorFaqSchema]} />
+      <JsonLd data={[authorBreadcrumb, personSchema, profilePageSchema, authorFaqSchema, ...sisterOrganizationSchemas()]} />
 
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
@@ -333,10 +331,28 @@ export default function DanielRozinPage() {
         </p>
         <p className="text-text-secondary leading-relaxed">
           For corrections or source disputes, contact:{" "}
-          <a href="mailto:daniarozin@gmail.com" className="text-primary-600 hover:underline">
-            daniarozin@gmail.com
-          </a>
+          <Link href="/contact" className="text-primary-600 hover:underline">
+            our contact page
+          </Link>
         </p>
+      </section>
+
+      <section aria-labelledby="author-projects-heading" className="mb-10">
+        <h2 id="author-projects-heading" className="text-xl font-display font-bold text-text mb-4">Other projects</h2>
+        <p className="text-text-secondary leading-relaxed mb-4">
+          Daniel builds these with {SITE_NAME} co-founder Shai Goldenberg.
+        </p>
+        <ul className="space-y-3">
+          {SISTER_PROJECTS.map((p) => (
+            <li key={p.key} className="text-text-secondary leading-relaxed">
+              <a href={p.url} target="_blank" rel="noopener" className="text-primary-600 font-semibold hover:underline">
+                {p.name}
+                <span className="sr-only"> (opens in new tab)</span>
+              </a>
+              {" "}— {p.blurb}
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section aria-labelledby="author-articles-heading" className="mb-10">
