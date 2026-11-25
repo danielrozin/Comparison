@@ -19,8 +19,8 @@ export function ProUpsellCard({ slug }: { slug: string }) {
         Comparing something we haven&apos;t covered?
       </h2>
       <p className="text-sm text-text-secondary leading-relaxed mb-4 max-w-xl">
-        Pro members request any matchup — we research it and publish the full side-by-side,
-        verdict included, within 24 hours. Try Pro free for 7 days, then $9/month. Cancel
+        Pro members build any matchup on demand — the full researched side-by-side, verdict
+        included, usually in under a minute. Try Pro free for 7 days, then $9/month. Cancel
         anytime before the trial ends and you pay nothing.
       </p>
       <TrackedPricingLink

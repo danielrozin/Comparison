@@ -88,7 +88,7 @@ export default async function PricingPage({
       <HubShell
         eyebrow="Pricing"
         title={"The comparisons are free. The superpowers aren't."}
-        lede="Reading any comparison costs nothing, forever. Pro is for the moment the comparison you need doesn't exist yet — we build it for you within 24 hours."
+        lede="Reading any comparison costs nothing, forever. Pro is for the moment the comparison you need doesn't exist yet — we build it for you on the spot, usually in under a minute."
         breadcrumbLabel="Pricing"
         beforeTitle={
           <PricingHeroCta
