@@ -24,7 +24,27 @@ import {
 
 // "capped": the site-wide daily generation cap (or a rate limit) refused it.
 // "skipped": a crawler or headless client. No generation, free links only.
-type Phase = "building" | "fallback" | "saved" | "capped" | "skipped";
+// "upgrade": this visitor used today's free build; offer the Pro trial.
+type Phase = "building" | "fallback" | "saved" | "capped" | "skipped" | "upgrade";
+
+const PRO_EMAIL_KEY = "avb-pro-email";
+
+function readProEmail(): string {
+  try {
+    return localStorage.getItem(PRO_EMAIL_KEY) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+function saveProEmail(email: string): void {
+  try {
+    if (email) localStorage.setItem(PRO_EMAIL_KEY, email);
+    else localStorage.removeItem(PRO_EMAIL_KEY);
+  } catch {
+    // Storage blocked: the member re-enters the email next time.
+  }
+}
 
 type Related = { slug: string; title: string };
 type SuggestionSource = "entity" | "category" | "popular" | "mixed" | "none";
@@ -58,6 +78,9 @@ export function OnDemandComparison({
   const [phase, setPhase] = useState<Phase>("building");
   const [elapsed, setElapsed] = useState(0);
   const [failureReason, setFailureReason] = useState("");
+  // Bumped when a Pro member submits their email, to retry the build.
+  const [attempt, setAttempt] = useState(0);
+  const [emailNotRecognized, setEmailNotRecognized] = useState(false);
   const [related, setRelated] = useState<Related[]>(() =>
     initialRelated.filter((item) => item.slug !== slug).slice(0, 4),
   );
@@ -118,6 +141,7 @@ export function OnDemandComparison({
       const attachment = lastSearchAttachment();
       trackGenerationRequested(slug, "compare_page", 0, attachment);
       const deadline = started + 70000;
+      const proEmail = readProEmail();
       // The loop ends on the deadline when no response decided the outcome.
       let failureReason = "timeout";
 
@@ -130,7 +154,7 @@ export function OnDemandComparison({
               "Content-Type": "application/json",
               "x-generation-client": "browser",
             },
-            body: JSON.stringify({ slug }),
+            body: JSON.stringify(proEmail ? { slug, email: proEmail } : { slug }),
           });
         } catch {
           failureReason = "network";
@@ -138,6 +162,14 @@ export function OnDemandComparison({
         }
         const data = await response.json().catch(() => ({}));
         if (cancelled) return;
+
+        if (response.status === 402 && data?.reason === "free_limit") {
+          if (data?.emailNotRecognized) saveProEmail("");
+          setEmailNotRecognized(Boolean(data?.emailNotRecognized));
+          setFailureReason("free_limit");
+          setPhase("upgrade");
+          return;
+        }
 
         if (response.status === 429) {
           setFailureReason(safeGenerationFailureReason(data?.reason, "rate_limit"));
@@ -175,12 +207,12 @@ export function OnDemandComparison({
       }
     }
 
-    void loadRelated();
+    if (attempt === 0) void loadRelated();
     void generate();
     return () => {
       cancelled = true;
     };
-  }, [slug]);
+  }, [slug, attempt]);
 
   // After a failed build, swap in entity or category suggestions and record
   // that the recovery UI was shown. Crawlers skip generation (`skipped`) and
@@ -277,7 +309,7 @@ export function OnDemandComparison({
               href={pricingHref(`missing-${slug}`, "missing-building")}
               className="font-semibold text-primary-600 hover:text-primary-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded"
             >
-              Pro builds any comparison within 24 hours. Try it free for 7 days.
+              Free visitors get one new comparison a day. Pro members build as many as they need. Try it free for 7 days.
             </TrackedPricingLink>
           </p>
         </>
@@ -299,6 +331,23 @@ export function OnDemandComparison({
       )}
 
       {phase === "building" && <RelatedList related={related} />}
+
+      {phase === "upgrade" && (
+        <UpgradeOffer
+          entityA={entityA}
+          entityB={entityB}
+          slug={slug}
+          related={related}
+          emailNotRecognized={emailNotRecognized}
+          onProEmail={(email) => {
+            saveProEmail(email);
+            setEmailNotRecognized(false);
+            setElapsed(0);
+            setPhase("building");
+            setAttempt((n) => n + 1);
+          }}
+        />
+      )}
 
       {(phase === "fallback" || phase === "capped" || phase === "skipped") && (
         <Fallback
@@ -339,6 +388,88 @@ function RelatedList({
         ))}
       </ul>
     </nav>
+  );
+}
+
+/** Shown after today's free build is used (founder decision, Nov 2026). */
+function UpgradeOffer({
+  entityA,
+  entityB,
+  slug,
+  related,
+  emailNotRecognized,
+  onProEmail,
+}: {
+  entityA: string;
+  entityB: string;
+  slug: string;
+  related: Related[];
+  emailNotRecognized: boolean;
+  onProEmail: (email: string) => void;
+}) {
+  const [email, setEmail] = useState("");
+  return (
+    <div className="space-y-6" data-testid="generation-upgrade">
+      <aside
+        aria-label="A Versus B Pro"
+        className="rounded-2xl border border-primary-200 bg-primary-50 p-5 text-left"
+      >
+        <p className="font-display font-bold text-text">
+          Build {entityA} vs {entityB} now with Pro
+        </p>
+        <p className="mt-1 text-sm text-text-secondary leading-relaxed">
+          You&apos;ve used today&apos;s free comparison build. Pro members build as many as they need, with
+          sources and a verdict in under a minute. Try Pro free for 7 days, then $9/month. Cancel before
+          day 7 and you pay nothing.
+        </p>
+        <TrackedPricingLink
+          src={`missing-${slug}`}
+          placement="missing-free-limit"
+          href={pricingHref(`missing-${slug}`, "missing-free-limit")}
+          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+        >
+          Start your free trial →
+        </TrackedPricingLink>
+        <p className="mt-3 text-sm text-text-secondary">Or come back tomorrow for another free build.</p>
+      </aside>
+      <form
+        className="text-left"
+        onSubmit={(event) => {
+          event.preventDefault();
+          const value = email.trim();
+          if (value) onProEmail(value);
+        }}
+      >
+        <label htmlFor="pro-email" className="block text-sm font-semibold text-text mb-2">
+          Already Pro? Enter the email you subscribed with
+        </label>
+        <div className="flex gap-2">
+          <input
+            id="pro-email"
+            type="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="you@example.com"
+            className="min-w-0 flex-1 rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          />
+          <button
+            type="submit"
+            className="inline-flex min-h-11 items-center rounded-xl border border-primary-600 px-5 py-2.5 text-sm font-bold text-primary-700 hover:bg-primary-50"
+          >
+            Build it
+          </button>
+        </div>
+        {emailNotRecognized && (
+          <p className="mt-2 text-sm text-red-700" role="alert">
+            We couldn&apos;t find an active Pro membership for that email.
+          </p>
+        )}
+      </form>
+      <MissingCompareNotify slug={slug} matchup={`${entityA} vs ${entityB}`} />
+      <RelatedList related={related} />
+    </div>
   );
 }
 

@@ -7,6 +7,10 @@
  *
  * Limits: 3 per IP per rolling hour, 10 per IP per rolling day, and
  * USER_GENERATION_DAILY_CAP (default 150) per UTC day for the whole site.
+ *
+ * Nov 2026 (founder decision): visitors get FREE_DAY_LIMIT new builds per IP
+ * per rolling day; after that the Pro trial is offered ("free_limit"). Active
+ * Pro members skip that limit and keep the 10/day abuse cap.
  */
 
 import { createHash } from "crypto";
@@ -16,9 +20,10 @@ const HOUR_MS = 60 * 60 * 1000;
 const DAY_MS = 24 * HOUR_MS;
 export const IP_HOUR_LIMIT = 3;
 export const IP_DAY_LIMIT = 10;
+export const FREE_DAY_LIMIT = 1;
 export const DEFAULT_DAILY_CAP = 150;
 
-export type RateLimitReason = "ip_hour" | "ip_day" | "global_day" | "unavailable";
+export type RateLimitReason = "free_limit" | "ip_hour" | "ip_day" | "global_day" | "unavailable";
 
 export type RateLimitDecision =
   | { allowed: true }
@@ -45,6 +50,7 @@ export async function consumeUserGenerationSlot(
   ip: string,
   slug: string,
   now: Date = new Date(),
+  options: { pro?: boolean } = {},
 ): Promise<RateLimitDecision> {
   const prisma = getPrisma();
   if (!prisma) {
@@ -75,6 +81,7 @@ export async function consumeUserGenerationSlot(
     ]);
 
     if (hourCount >= IP_HOUR_LIMIT) return { allowed: false, reason: "ip_hour" };
+    if (!options.pro && dayCount >= FREE_DAY_LIMIT) return { allowed: false, reason: "free_limit" };
     if (dayCount >= IP_DAY_LIMIT) return { allowed: false, reason: "ip_day" };
     if (globalCount >= cap) return { allowed: false, reason: "global_day" };
 

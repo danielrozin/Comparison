@@ -36,6 +36,7 @@ import {
   validateRealEntities,
 } from "@/lib/generation/user-generation-guard";
 import { consumeUserGenerationSlot } from "@/lib/generation/user-generation-rate-limit";
+import { lookupMember } from "@/lib/monetization/members";
 import type { ComparisonPageData } from "@/types";
 
 export const maxDuration = 60;
@@ -43,8 +44,15 @@ export const runtime = "nodejs";
 
 const generateSchema = z.object({
   slug: z.string().min(1).max(200).regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens"),
+  /** Pro members prove membership with the email they paid with (no login yet). */
+  email: z.string().max(254).optional(),
 });
 
+
+async function isActiveProMember(email: string): Promise<boolean> {
+  const found = await lookupMember(email);
+  return found.available && Boolean(found.member?.active);
+}
 
 function clientIp(request: NextRequest): string {
   return (
@@ -213,23 +221,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const slot = await consumeUserGenerationSlot(clientIp(request), genSlug);
-    if (!slot.allowed) {
-      await captureServerEvent("generation_failed", {
-        slug: genSlug,
-        reason: slot.reason,
-        duration_ms: 0,
-      });
-      return NextResponse.json(
-        {
-          status: "refused",
-          reason: slot.reason,
-          error: "Too many comparisons are being built right now. Please try again later.",
-        },
-        { status: 429 },
-      );
-    }
-
+    // Check the names before spending the visitor's free build on a refusal.
     const entities = await validateRealEntities(entityA, entityB);
     if (!entities.ok) {
       await captureServerEvent("generation_failed", {
@@ -244,6 +236,35 @@ export async function POST(request: NextRequest) {
           error: "We couldn't confirm both sides are real topics.",
         },
         { status: 422 },
+      );
+    }
+
+    const pro = parsed.data.email ? await isActiveProMember(parsed.data.email) : false;
+    const slot = await consumeUserGenerationSlot(clientIp(request), genSlug, new Date(), { pro });
+    if (!slot.allowed) {
+      await captureServerEvent("generation_failed", {
+        slug: genSlug,
+        reason: slot.reason,
+        duration_ms: 0,
+      });
+      if (slot.reason === "free_limit") {
+        return NextResponse.json(
+          {
+            status: "upgrade_required",
+            reason: "free_limit",
+            emailNotRecognized: Boolean(parsed.data.email) && !pro,
+            error: "You've used today's free comparison build.",
+          },
+          { status: 402 },
+        );
+      }
+      return NextResponse.json(
+        {
+          status: "refused",
+          reason: slot.reason,
+          error: "Too many comparisons are being built right now. Please try again later.",
+        },
+        { status: 429 },
       );
     }
 

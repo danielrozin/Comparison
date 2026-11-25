@@ -35,6 +35,19 @@ describe("consumeUserGenerationSlot", () => {
     expect(created).toHaveBeenCalledOnce();
   });
 
+  it("offers the trial after one free build a day; Pro members keep building", async () => {
+    counts.day = 1;
+    expect(await consumeUserGenerationSlot("203.0.113.8", "a-vs-b")).toEqual({
+      allowed: false,
+      reason: "free_limit",
+    });
+    expect(created).not.toHaveBeenCalled();
+    expect(await consumeUserGenerationSlot("203.0.113.8", "a-vs-b", new Date(), { pro: true })).toEqual({
+      allowed: true,
+    });
+    expect(created).toHaveBeenCalledOnce();
+  });
+
   it("stops an IP after 3 in an hour, 10 in a day, and the global cap", async () => {
     counts.hour = 3;
     expect(await consumeUserGenerationSlot("203.0.113.8", "a-vs-b")).toEqual({
@@ -44,7 +57,7 @@ describe("consumeUserGenerationSlot", () => {
 
     counts.hour = 0;
     counts.day = 10;
-    expect(await consumeUserGenerationSlot("203.0.113.8", "a-vs-b")).toEqual({
+    expect(await consumeUserGenerationSlot("203.0.113.8", "a-vs-b", new Date(), { pro: true })).toEqual({
       allowed: false,
       reason: "ip_day",
     });
