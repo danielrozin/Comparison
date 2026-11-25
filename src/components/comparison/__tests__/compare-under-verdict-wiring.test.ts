@@ -12,7 +12,7 @@ function source(rel: string): string {
 }
 
 const PRO_COPY =
-  "Need a comparison we haven't published? Pro builds it for you within 24 hours. Try it free for 7 days.";
+  "Need a comparison we haven't published? Pro builds it for you in about a minute. Try it free for 7 days.";
 
 describe("compare under-verdict wiring", () => {
   it("uses one under-verdict-pro SoftPricingLine on both compare layouts", () => {

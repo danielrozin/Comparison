@@ -1030,11 +1030,11 @@ function topNextStepChips(shared: CompareNextChip[], pool: CompareNextChip[]): C
 
 /** ROO-55 — the whole sentence is the link inside #compare-under-verdict. */
 const UNDER_VERDICT_PRO_LABEL =
-  "Need a comparison we haven't published? Pro builds it for you within 24 hours. Try it free for 7 days.";
+  "Need a comparison we haven't published? Pro builds it for you in about a minute. Try it free for 7 days.";
 
 /** Under the verdict itself, once the reader has the answer. */
 const VERDICT_TRIAL_LABEL =
-  "Comparing tools or vendors for work? Pro researches any matchup for you within 24 hours. Try it free for 7 days →";
+  "Comparing tools or vendors for work? Pro builds any matchup for you in about a minute. Try it free for 7 days →";
 
 export default function ComparisonPage(props: Props) {
   // N-entity (3+): multi-entity layout (parity with the App Router version).

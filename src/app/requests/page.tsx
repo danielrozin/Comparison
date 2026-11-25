@@ -199,7 +199,7 @@ export default function RequestsPage() {
               className="inline-flex items-center gap-2 rounded-xl bg-white/15 border border-white/25 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/25 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
               <span aria-hidden="true">⚡</span>
-              Don&apos;t want to wait for votes? Pro members get any comparison built within 24 hours →
+              Don&apos;t want to wait for votes? Pro members build any comparison in about a minute →
             </Link>
           </p>
           <p className="mt-3 text-sm text-primary-100">
