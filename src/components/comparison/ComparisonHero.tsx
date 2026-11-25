@@ -56,7 +56,7 @@ function EntityAvatar({
     // boxes) must be shown whole, never cropped into a circle. (User feedback
     // on /compare/honda-accord-vs-toyota-camry — the cars were cut off.)
     return (
-      <div className={`relative w-40 h-28 sm:w-52 sm:h-36 mx-auto mb-3 sm:mb-4`}>
+      <div className={`relative w-full max-w-40 aspect-[10/7] sm:max-w-52 mx-auto mb-3 sm:mb-4`}>
         <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${palette.bg} blur-md opacity-40`} />
         <div className={`relative w-full h-full rounded-2xl overflow-hidden ring-2 ${palette.ring} ${palette.shadow} bg-white/10 backdrop-blur-sm`}>
           <Image
@@ -151,11 +151,11 @@ function EntityCard({
 
   return (
     <div
-      className={`relative bg-white/10 backdrop-blur-sm border ${borderClass} rounded-2xl p-4 sm:p-6 text-center hover:bg-white/15 hover:-translate-y-1 transition-all duration-200`}
+      className={`relative min-w-0 bg-white/10 backdrop-blur-sm border ${borderClass} rounded-2xl p-3 sm:p-6 text-center hover:bg-white/15 hover:-translate-y-1 transition-all duration-200`}
     >
       {isWinner && <WinnerBadge />}
       <EntityAvatar entity={entity} variant={variant} />
-      <h3 className="text-base sm:text-xl font-bold text-white mb-1">
+      <h3 className="text-base sm:text-xl font-bold text-white mb-1 break-words">
         {isEntityPageIndexable(entity.status) ? (
           <Link
             href={`/entity/${entity.slug}`}
@@ -174,9 +174,11 @@ function EntityCard({
       {/* bestFor is authored as a full sentence, not a keyword. As a
           rounded-full inline pill it collapsed to one or two words per line in
           the ~160px mobile card and ran past the card's bottom edge. A block
-          with a normal radius and a line clamp reads correctly at any length. */}
+          with a normal radius and a line clamp reads correctly at any length.
+          No `block` class: it overrode line-clamp's display and the clamp never
+          applied (9+ lines on a 390px phone). */}
       {entity.bestFor && (
-        <p className={`mt-3 block text-xs font-semibold leading-snug px-3 py-1.5 rounded-xl line-clamp-4 ${pillClass}`}>
+        <p className={`mt-3 text-[11px] sm:text-xs font-semibold leading-snug px-2 sm:px-3 py-1.5 rounded-xl line-clamp-3 sm:line-clamp-4 break-words ${pillClass}`}>
           {entity.bestFor}
         </p>
       )}
@@ -351,14 +353,14 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
         )}
 
         {/* Entity VS Cards */}
-        <div role="group" aria-label={`${entityA.name} versus ${entityB.name}`} className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-6 items-start">
+        <div role="group" aria-label={`${entityA.name} versus ${entityB.name}`} className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-2 sm:gap-6 items-start">
           <div className="motion-safe:animate-slide-up" style={{ animationDelay: "0.2s" }}>
             <EntityCard entity={entityA} variant="a" isWinner={winner === "a"} />
           </div>
 
           {/* VS Badge */}
           <div className="flex flex-col items-center justify-center self-center gap-2 motion-safe:animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
+            <div className="relative w-10 h-10 sm:w-16 sm:h-16 flex items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 motion-safe:animate-pulse opacity-40 scale-125" />
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 shadow-lg shadow-accent-500/40" />
               <div className="absolute inset-0 rounded-full ring-2 ring-white/30" />

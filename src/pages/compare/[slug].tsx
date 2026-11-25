@@ -1018,6 +1018,16 @@ function MetaHead({ meta }: { meta: PageMeta }) {
   );
 }
 
+/**
+ * The above-fold "Next step" button shows chips[0]. Prefer a compare that
+ * shares an entity with this page (Nike vs Adidas → Nike vs Reebok) over the
+ * trending/sidebar pool (→ Gucci vs Louis Vuitton). Falls back when none exist.
+ */
+function topNextStepChips(shared: CompareNextChip[], pool: CompareNextChip[]): CompareNextChip[] {
+  const seen = new Set(shared.map((c) => c.slug));
+  return [...shared, ...pool.filter((c) => !seen.has(c.slug))];
+}
+
 /** ROO-55 — the whole sentence is the link inside #compare-under-verdict. */
 const UNDER_VERDICT_PRO_LABEL =
   "Need a comparison we haven't published? Pro builds it for you within 24 hours. Try it free for 7 days.";
@@ -1083,7 +1093,7 @@ export default function ComparisonPage(props: Props) {
           <CompareUnderVerdictNextStep
             entities={comparison.entities}
             slug={slug}
-            chips={nextStepChips}
+            chips={topNextStepChips(underVerdictChips, nextStepChips)}
           />
           <SoftPricingLine
             src={`compare-${slug}`}
@@ -1489,7 +1499,7 @@ function MultiEntityLayout({
           <CompareUnderVerdictNextStep
             entities={comparison.entities}
             slug={slug}
-            chips={nextStepChips}
+            chips={topNextStepChips(underVerdictChips, nextStepChips)}
           />
           <SoftPricingLine
             src={`compare-${slug}`}
