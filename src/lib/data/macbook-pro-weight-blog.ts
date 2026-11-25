@@ -137,7 +137,7 @@ export const MACBOOK_PRO_WEIGHT_FAQS = [
 export const MACBOOK_PRO_WEIGHT_ARTICLE: BlogArticle = {
   id: "blog-macbook-pro-weight-2025-2026",
   slug: MACBOOK_PRO_WEIGHT_BLOG_SLUG,
-  title: "MacBook Pro Weight 2025-2026: Complete Specs & Comparison Guide",
+  title: "MacBook Pro Weight 2026: 14-inch vs 16-inch",
   excerpt:
     "The 14-inch MacBook Pro weighs 3.4 to 3.6 lb (1.55 to 1.62 kg) and the 16-inch 4.7 lb (2.14 to 2.15 kg). The 13-inch MacBook Air is 2.7 lb.",
   content: CONTENT,

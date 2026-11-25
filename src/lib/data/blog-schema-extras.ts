@@ -26,7 +26,7 @@ import { CHEAPEST_CAR_INSURANCE_FAQS } from "@/lib/data/cheapest-car-insurance-b
 import { MARVEL_MOVIES_RANKED_FAQS } from "@/lib/data/marvel-movies-ranked-blog";
 import { KDENLIVE_SHOTCUT_RESOLVE_FAQS } from "@/lib/data/kdenlive-shotcut-resolve-blog";
 import { FREE_WORD_ALTERNATIVE_MAC_FAQS } from "@/lib/data/free-word-alternative-mac-blog";
-import { BLOG_FANOUT, IKEA_WAYFAIR_SLUG } from "@/lib/data/blog-fanout-qa";
+import { BLOG_FANOUT, CHASE_CAPITAL_ONE_SLUG, IKEA_WAYFAIR_SLUG, STREAMING_SPORTS_SLUG } from "@/lib/data/blog-fanout-qa";
 
 export interface BlogFaq {
   question: string;
@@ -54,6 +54,8 @@ export const BLOG_SCHEMA_EXTRAS: Record<string, BlogSchemaExtras> = {
   // Nov 2026 AI Mode: FAQs mirror the visible "Quick answers" section that
   // blog-fanout-qa.ts inserts into the post.
   [IKEA_WAYFAIR_SLUG]: { faqs: BLOG_FANOUT[IKEA_WAYFAIR_SLUG].faqs },
+  [CHASE_CAPITAL_ONE_SLUG]: { faqs: BLOG_FANOUT[CHASE_CAPITAL_ONE_SLUG].faqs },
+  [STREAMING_SPORTS_SLUG]: { faqs: BLOG_FANOUT[STREAMING_SPORTS_SLUG].faqs },
   // ROO-235: FAQs mirror the visible FAQ section of the repo article.
   "imax-vs-dolby-cinema-2026-is-the-premium-ticket-worth-it": { faqs: IMAX_DOLBY_FAQS },
   // ROO-272: FAQs mirror the visible FAQ section of the repo article.
