@@ -277,3 +277,38 @@ describe("comparisonPageSchema — 2-way regression (unchanged shape)", () => {
     expect(byType.Dataset).toBe(`${url}#dataset`);
   });
 });
+
+describe("comparisonPageSchema — BreadcrumbList integrity (GSC Nov 2026)", () => {
+  function breadcrumbLists(node: unknown, out: Record<string, unknown>[] = []) {
+    if (Array.isArray(node)) node.forEach((n) => breadcrumbLists(n, out));
+    else if (node && typeof node === "object") {
+      const n = node as Record<string, unknown>;
+      if ([n["@type"]].flat().includes("BreadcrumbList")) out.push(n);
+      Object.values(n).forEach((v) => breadcrumbLists(v, out));
+    }
+    return out;
+  }
+
+  it("never emits a typed BreadcrumbList without itemListElement (3+ entities)", () => {
+    const slug = "brick-vs-opal-vs-freedom";
+    const cmp = baseComparison(slug, "Brick vs Opal vs Freedom", [
+      entity(0, "Brick", "brick"),
+      entity(1, "Opal", "opal"),
+      entity(2, "Freedom", "freedom"),
+    ]);
+    const lists = breadcrumbLists(comparisonPageSchema(cmp));
+    expect(lists.length).toBeGreaterThan(0);
+    for (const l of lists) expect(Array.isArray(l.itemListElement) && (l.itemListElement as unknown[]).length).toBeTruthy();
+    const json = JSON.stringify(comparisonPageSchema(cmp));
+    expect(json).toContain(`"breadcrumb":{"@id":"${SITE_URL}/compare/${slug}#breadcrumbs"}`);
+  });
+
+  it("never emits a typed BreadcrumbList without itemListElement (2 entities)", () => {
+    const cmp = baseComparison("brick-vs-opal", "Brick vs Opal", [
+      entity(0, "Brick", "brick"),
+      entity(1, "Opal", "opal"),
+    ]);
+    for (const l of breadcrumbLists(comparisonPageSchema(cmp)))
+      expect(Array.isArray(l.itemListElement) && (l.itemListElement as unknown[]).length).toBeTruthy();
+  });
+});

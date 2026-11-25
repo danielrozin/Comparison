@@ -40,7 +40,9 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
     <>
       {/* Collapsible bar — shown on all screens except very wide where the sidebar fits */}
       {/* Phones skip this dropdown: it sat above the H1, and the "Jump to" row under the hero already links the sections. */}
-      <div className="hidden sm:block min-[1400px]:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4">
+      {/* rem, not px: Tailwind sorts min-[1400px] before sm: (40rem), so sm:block
+          won and wide screens showed this bar AND the sidebar below. */}
+      <div className="hidden sm:block min-[87.5rem]:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4">
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
@@ -136,7 +138,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
       </div>
 
       {/* Sidebar — visible on wide screens (≥1400px) where content has room beside it */}
-      <nav className="hidden min-[1400px]:block fixed left-4 top-1/3 z-30 w-52" aria-label="Table of contents">
+      <nav className="hidden min-[87.5rem]:block fixed left-4 top-1/3 z-30 w-52" aria-label="Table of contents">
         <div className="bg-white/95 backdrop-blur-sm border border-border rounded-2xl shadow-lg overflow-hidden">
           {/* Header */}
           <div className="px-4 py-3 border-b border-border bg-gradient-to-r from-primary-50 to-white">

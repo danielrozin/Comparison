@@ -65,6 +65,12 @@ if (token && analyticsAllowed() && !isAutomatedClient() && isProductionAnalytics
     capture_pageleave: true,
     // deliberate instrumentation via analytics.ts — autocapture is noise here
     autocapture: false,
+    // UX friction signals (Nov 2026 audit): with autocapture off the project
+    // had no $rageclick / $dead_click / $web_vitals at all, so broken taps
+    // and slow pages were invisible. These three stay independent of autocapture.
+    rageclick: true,
+    capture_dead_clicks: true,
+    capture_performance: { web_vitals: true },
     persistence: "localStorage+cookie",
     capture_exceptions: true,
     debug: process.env.NODE_ENV === "development",

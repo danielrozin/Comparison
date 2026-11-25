@@ -2588,9 +2588,10 @@ function buildMultiEntityGraph(
     dateModified: comparison.metadata.updatedAt,
     mainEntity: { "@type": "Article", "@id": `${url}#article` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    ...(comparison.category && {
-      breadcrumb: { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb` },
-    }),
+    // Reference only (no @type): a typed node whose @id matches no list is
+    // read by Google as a second, empty BreadcrumbList ("Missing field
+    // 'itemListElement'", GSC Nov 2026, /compare/brick-vs-opal).
+    breadcrumb: { "@id": `${url}#breadcrumbs` },
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${url}#speakable`,

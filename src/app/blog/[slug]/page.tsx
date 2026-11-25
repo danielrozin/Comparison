@@ -64,9 +64,14 @@ const BLOG_META_OVERRIDES: Record<string, { title: string; description: string }
       "Wayfair vs IKEA compared on build quality, price, assembly and returns, plus what owners say on Reddit. See which store to buy from.",
   },
   "is-chase-owned-by-capital-one-the-relationship-explained": {
-    title: "Is Chase Owned by Capital One? No — Who Owns Each",
+    title: "Is Capital One Part of Chase? No — Who Owns Each Bank",
     description:
-      "No. Chase belongs to JPMorgan Chase and Capital One is independent. See who owns each bank and how their cards, savings and fees differ.",
+      "No. Chase belongs to JPMorgan Chase, and Capital One is a separate public company that bought Discover in 2025. See how their cards and fees compare.",
+  },
+  "best-streaming-services-of-2026-top-picks-for-movies-tv-sports": {
+    title: "Best Streaming Services 2026 for Movies, TV & Sports",
+    description:
+      "Compare Netflix, Disney+, HBO Max, YouTube TV, Fubo and Peacock, plus the best ESPN+ shows (now ESPN Select). See which service fits you.",
   },
   "chick-fil-a-breakfast-menu": {
     title: "Chick-fil-A Breakfast Menu 2026: Prices & Hours",
