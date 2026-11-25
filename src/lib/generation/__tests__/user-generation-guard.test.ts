@@ -38,6 +38,32 @@ describe("lookupEntity", () => {
     expect(await lookupEntity("asdfqwer", fetchImpl)).toBe("no");
   });
 
+  // Nov 2026: real products and people were refused as unknown_entity.
+  const wiki = (titlesFor: Record<string, string[]>, wikidata: Record<string, string[]> = {}) =>
+    vi.fn(async (input: URL) => {
+      const q = input.searchParams.get("search") ?? "";
+      if (input.hostname === "www.wikidata.org") {
+        return { ok: true, json: async () => ({ search: (wikidata[q] ?? []).map((label) => ({ label })) }) };
+      }
+      return { ok: true, json: async () => [q, titlesFor[q] ?? [], [], []] };
+    }) as unknown as typeof fetch;
+
+  it("matches a surname or an apostrophe-split name", async () => {
+    expect(await lookupEntity("messi", wiki({ messi: ["Lionel Messi", "Messiah"] }))).toBe("yes");
+    expect(await lookupEntity("domino s", wiki({ "domino s": ["Domino's"] }))).toBe("yes");
+  });
+
+  it("falls back to the brand when the model has no page", async () => {
+    const f = wiki({ "macbook air": ["MacBook Air (Apple silicon)"], zoho: ["Zoho Corporation"] });
+    expect(await lookupEntity("macbook air m4", f)).toBe("yes");
+    expect(await lookupEntity("zoho books", f)).toBe("yes");
+  });
+
+  it("falls back to Wikidata for software without a Wikipedia page", async () => {
+    expect(await lookupEntity("weaviate", wiki({}, { weaviate: ["Weaviate"] }))).toBe("yes");
+    expect(await lookupEntity("asdfqwer", wiki({}, {}))).toBe("no");
+  });
+
   it("returns error on timeout-style failures", async () => {
     const fetchImpl = vi.fn(async () => {
       throw new Error("aborted");
