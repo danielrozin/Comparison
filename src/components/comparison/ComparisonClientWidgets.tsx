@@ -86,7 +86,7 @@ export const TableOfContents = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="min-[1700px]:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4" aria-hidden="true">
+      <div className="min-[106.25rem]:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4" aria-hidden="true">
         <div className="h-12" />
       </div>
     ),
