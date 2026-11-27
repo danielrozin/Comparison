@@ -6411,6 +6411,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-10-27T10:20:25.566Z"
+    },
+    {
+      "slug": "java-vs-python",
+      "title": "Java vs Python",
+      "entityA": "Java",
+      "entityB": "Python",
+      "category": "technology",
+      "renderer": "v3",
+      "asOf": "November 2026",
+      "videoFile": "java-vs-python.mp4",
+      "durationSeconds": 38,
+      "transcript": "Java or Python? The numbers settle it. Five categories. One winner. Here is how they actually compare. On typing system, it is dead even. Java takes execution speed. Python takes learning curve. Python takes ai/ml suitability. Java takes android development. It ends level. Your call.",
+      "chapters": [
+        {
+          "name": "Java vs Python",
+          "startOffset": 0,
+          "endOffset": 4
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 4,
+          "endOffset": 10
+        },
+        {
+          "name": "Round 1: Typing System",
+          "startOffset": 10,
+          "endOffset": 15
+        },
+        {
+          "name": "Round 2: Execution Speed",
+          "startOffset": 15,
+          "endOffset": 20
+        },
+        {
+          "name": "Round 3: Learning Curve",
+          "startOffset": 20,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 4: AI/ML Suitability",
+          "startOffset": 25,
+          "endOffset": 30
+        },
+        {
+          "name": "Round 5: Android Development",
+          "startOffset": 30,
+          "endOffset": 35
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 35,
+          "endOffset": 41
+        }
+      ],
+      "youtubeTitle": "Java vs Python: Full Comparison",
+      "youtubeDescription": "Java is a statically typed, compiled language that dominates enterprise software, Android development, and large-scale backend systems. Python is dynamically typed, easier to learn, and leads in AI/ML. Java runs faster; Python is written faster.\n\nFigures accurate as of November 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/java-vs-python\n\nFull comparison: https://www.aversusb.net/compare/java-vs-python",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-11-27T14:49:39.619Z"
     }
   ]
 }

@@ -1,0 +1,145 @@
+{
+  "title": "Java vs Python",
+  "entityA": "Java",
+  "entityB": "Python",
+  "category": "technology",
+  "shortAnswer": "Java is a statically typed, compiled language that dominates enterprise software, Android development, and large-scale backend systems. Python is dynamically typed, easier to learn, and leads in AI/ML. Java runs faster; Python is written faster.",
+  "stats": [
+    {
+      "label": "Typing System",
+      "valueA": "Static",
+      "valueB": "Dynamic",
+      "winner": "tie"
+    },
+    {
+      "label": "Execution Speed",
+      "valueA": "Faster (JVM)",
+      "valueB": "Slower (interpreted)",
+      "winner": "a"
+    },
+    {
+      "label": "Learning Curve",
+      "valueA": "Steeper",
+      "valueB": "Gentler",
+      "winner": "b"
+    },
+    {
+      "label": "AI/ML Suitability",
+      "valueA": "Limited",
+      "valueB": "Dominant",
+      "winner": "b"
+    },
+    {
+      "label": "Android Development",
+      "valueA": "Primary language",
+      "valueB": "No",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Java for enterprise, Android, and performance. Python for AI/ML, data science, and rapid development. Both are top-5 global programming languages.",
+  "slug": "java-vs-python",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Java or Python? The numbers settle it.",
+    "tape": "Five categories. One winner. Here is how they actually compare.",
+    "rounds": [
+      "On typing system, it is dead even.",
+      "Java takes execution speed.",
+      "Python takes learning curve.",
+      "Python takes ai/ml suitability.",
+      "Java takes android development."
+    ],
+    "verdict": "It ends level. Your call."
+  },
+  "audio": {
+    "cold": "video-assets/java-vs-python/audio/cold.mp3",
+    "tape": "video-assets/java-vs-python/audio/tape.mp3",
+    "rounds": [
+      "video-assets/java-vs-python/audio/round-1.mp3",
+      "video-assets/java-vs-python/audio/round-2.mp3",
+      "video-assets/java-vs-python/audio/round-3.mp3",
+      "video-assets/java-vs-python/audio/round-4.mp3",
+      "video-assets/java-vs-python/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/java-vs-python/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 126,
+    "tape": 160,
+    "rounds": [
+      150,
+      150,
+      150,
+      150,
+      150
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "Java or Python? The numbers settle it. Five categories. One winner. Here is how they actually compare. On typing system, it is dead even. Java takes execution speed. Python takes learning curve. Python takes ai/ml suitability. Java takes android development. It ends level. Your call.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Java or Python? The numbers settle it.",
+      "startOffset": 0,
+      "endOffset": 4.21
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Five categories. One winner. Here is how they actually compare.",
+      "startOffset": 4.21,
+      "endOffset": 9.54
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "On typing system, it is dead even.",
+      "startOffset": 9.54,
+      "endOffset": 14.54
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Java takes execution speed.",
+      "startOffset": 14.54,
+      "endOffset": 19.54
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Python takes learning curve.",
+      "startOffset": 19.54,
+      "endOffset": 24.54
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Python takes ai/ml suitability.",
+      "startOffset": 24.54,
+      "endOffset": 29.54
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Java takes android development.",
+      "startOffset": 29.54,
+      "endOffset": 34.54
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "It ends level. Your call.",
+      "startOffset": 34.54,
+      "endOffset": 41.04
+    }
+  ],
+  "youtubeTitle": "Java vs Python: Full Comparison",
+  "youtubeDescription": "Java is a statically typed, compiled language that dominates enterprise software, Android development, and large-scale backend systems. Python is dynamically typed, easier to learn, and leads in AI/ML. Java runs faster; Python is written faster.\n\nFigures accurate as of November 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/java-vs-python",
+  "asOf": "November 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
